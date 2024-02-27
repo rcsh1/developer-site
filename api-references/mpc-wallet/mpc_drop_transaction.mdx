@@ -14,8 +14,15 @@ description: "This endpoint accepts parameters 'cobo_id' and 'request_id' as req
 <ParamField body="gas_price" type="Int" >Gas price; must be higher than the original gas price</ParamField>
 <ParamField body="gas_limit" type="Int" >Gas limit</ParamField>
 <ParamField body="fee_amount" type="Int" >transaction fee; applicable to UTXO model; use either fee or fee_amount for UTXO model</ParamField>
-<ParamField query="auto_fuel" type="Int">How the transaction utilizes the gas station, 0: no refueling(default); 1: passive use of the gas station; 2: active use of the gas station.</ParamField>
+<ParamField query="auto_fuel" type="Int">How the transaction utilizes the gas station, 0: no refueling(default); 1: passive use of the gas station; 2: active use of the gas station. <br /> This parameter is optional, only when you activate the gas station service and use the gas station to support the transaction fee for MPC transactions, is it necessary to use this parameter.</ParamField>
 <Tip>The gas station will definitely refuel for the transaction when in active use, while for passive use, refueling by the gas station occurs only when the address balance is insufficient for transaction fees.</Tip>
+<ParamField body="extra_parameters" type="String">
+UTXO Model:
+    - utxo_from_address: Given that the new transaction fee is higher, if the new transaction requires additional inputs, then the new inputs will be selected from `utxo_from_address`. Please note that the new inputs will be selected from the current wallet if this parameter is not provided.
+```python Sample
+extra_parameters: '{"utxo_from_address": "tb1qpllcnnpt3z9nkxtj3a0jmhdj5xvxaerhv5xs5n"}'
+```
+</ParamField>
 
 
 #### Response

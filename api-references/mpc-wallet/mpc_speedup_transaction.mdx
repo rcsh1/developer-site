@@ -2,7 +2,7 @@
 title: Speedup Transaction
 api: POST /v1/custody/mpc/speedup_transaction/ 
 contentType: multipart/form-data
-description: "This endpoint allows users to speed up a previously submitted transaction by replacing it with a new transaction with higher gas price. The endpoint accepts a POST request with parameters including cobo_id, request_id, fee, gas_price, gas_limit, and fee_amount. The response is a JSON object containing the updated transaction information."
+description: "This endpoint allows users to speed up a previously submitted transaction by replacing it with a new transaction with higher transation fee. The endpoint accepts a POST request with parameters including cobo_id, request_id, fee, gas_price, gas_limit, and fee_amount. The response is a JSON object containing the updated transaction information."
 ---
 
 <Tip>Only transactions with the status 401, 402, and 403 are eligible to be replaced.</Tip>
@@ -14,8 +14,15 @@ description: "This endpoint allows users to speed up a previously submitted tran
 <ParamField body="gas_price" type="Int" >The gas price for the new transaction(must be higher than the original gas price)</ParamField>
 <ParamField body="gas_limit" type="Int" >The gas limit for the new transaction.</ParamField>
 <ParamField body="fee_amount" type="Int" >transaction fee; applicable to UTXO model; use either fee or fee_amount for UTXO model.</ParamField>
-<ParamField query="auto_fuel" type="Int">How the transaction utilizes the gas station, 0: no refueling(default); 1: passive use of the gas station; 2: active use of the gas station.</ParamField>
+<ParamField query="auto_fuel" type="Int">How the transaction utilizes the gas station, 0: no refueling(default); 1: passive use of the gas station; 2: active use of the gas station. <br /> This parameter is optional, only when you activate the gas station service and use the gas station to support the transaction fee for MPC transactions, is it necessary to use this parameter.</ParamField>
 <Tip>The gas station will definitely refuel for the transaction when in active use, while for passive use, refueling by the gas station occurs only when the address balance is insufficient for transaction fees.</Tip>
+<ParamField body="extra_parameters" type="String">
+UTXO Model:
+    - utxo_from_address: Given that the new transaction fee is higher, if the new transaction requires additional inputs, then the new inputs will be selected from `utxo_from_address`. Please note that the new inputs will be selected from the current wallet if this parameter is not provided.
+```python Sample
+extra_parameters: '{"utxo_from_address": "tb1qpllcnnpt3z9nkxtj3a0jmhdj5xvxaerhv5xs5n"}'
+```
+</ParamField>
 
 #### Response
 <ResponseField name="success" type="bool">request successful or failed</ResponseField>
