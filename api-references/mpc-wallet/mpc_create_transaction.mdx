@@ -79,7 +79,7 @@ extra_parameters: '{"instructions": "[{\\"accounts\\":[{\\"pubkey\\":\\"E4MhQWiq
 
 <ParamField body="fee_amount" type="Int" >transaction fee; applicable to UTXO model; use either fee or fee_amount for UTXO model</ParamField>
 <ParamField query="remark" type="String">The remark to withdraw</ParamField>
-<ParamField query="auto_fuel" type="Int">How the transaction utilizes the gas station, 0: no refueling(default); 1: passive use of the gas station; 2: active use of the gas station.</ParamField>
+<ParamField query="auto_fuel" type="Int">How the transaction utilizes the gas station, 0: no refueling(default); 1: passive use of the gas station; 2: active use of the gas station. <br /> This parameter is used when you've activated the gas station service and use the gas station to support the transaction fee for MPC transactions.</ParamField>
 <Tip>The gas station will definitely refuel for the transaction when in active use, while for passive use, refueling by the gas station occurs only when the address balance is insufficient for transaction fees.</Tip>
 <ParamField query="memo" type="String">Needed when you withdraw XRP</ParamField>
 
