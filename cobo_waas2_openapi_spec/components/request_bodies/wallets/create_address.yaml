@@ -1,0 +1,18 @@
+description: The request body to add address for a wallet
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        token_id:
+          type: string
+          description: ID of the token. Unique in all chains scope.
+          pattern: ^[A-Z]+(_[A-Z0-9]+)?$
+          example: 'ETH_USDT'
+        count:
+          type: integer
+          maximum: 50
+          minimum: 1
+          default: 1
+          description: The number of addresses that need to be created
+          example: 1

@@ -1,0 +1,23 @@
+type: object
+description: The data for mpc key group information.
+properties:
+  id:
+    type: string
+    example: "880311524363903326"
+    description: Unique id of the key group
+  type:
+    $ref: "./key_group_type.yaml"
+  tss_group_ids:
+    type: array
+    items:
+      $ref: "./tss_group_id.yaml"
+  key_holders:
+    type: array
+    items:
+      $ref: "./key_holder.yaml"
+  node_number:
+    type: integer
+  threshold:
+    type: integer
+  status:
+    $ref: "./key_group_status.yaml"

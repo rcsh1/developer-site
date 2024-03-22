@@ -1,0 +1,51 @@
+parameters:
+  - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
+get:
+  tags:
+    - Wallets
+  operationId: get_wallet_by_id
+  summary: Get wallet information by ID
+  description: Retrieve wallet information by ID
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_a_wallet.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"
+put:
+  tags:
+    - Wallets
+  operationId: update_wallet_by_id
+  summary: Update wallet by ID
+  description: Update wallet info by ID
+  security:
+    - CoboAuth: []
+  requestBody:
+    description: The request body to update a wallet
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/wallets/wallet_info.yaml'
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/update_wallet.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"
+delete:
+  tags:
+    - Wallets
+  operationId: delete_wallet_by_id
+  summary: Delete a wallet by ID
+  description: Delete a specific wallet by ID
+  security:
+    - CoboAuth: []
+  responses:
+    '204':
+      description: Resource successfully deleted
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

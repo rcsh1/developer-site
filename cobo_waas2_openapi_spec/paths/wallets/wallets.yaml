@@ -1,0 +1,51 @@
+post:
+  tags:
+    - Wallets
+  operationId: create_wallet
+  summary: Create new wallet
+  description: |
+    ..More detailed explanation on creating a new wallet..
+
+    Error codes this API may return:
+    | Error Code | Description |
+    | -- | -- |
+    | `2003` | 必选参数缺失 |
+    | `2006` | 参数格式或者值非法 |
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../components/request_bodies/wallets/create_wallet.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/wallets/create_wallet.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"
+get:
+  tags:
+    - Wallets
+  operationId: list_wallets
+  summary: List all wallets
+  description: Retrieve a list of wallets.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_wallets.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"

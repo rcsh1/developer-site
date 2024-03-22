@@ -1,0 +1,39 @@
+type: object
+description: max send value and fee.
+properties:
+  token:
+    type: string
+    description: token name.
+    example: 'ETH'
+  token_decimal:
+    type: integer
+    description: coin decimal precision.
+    example: 18
+  fee_token:
+    type: string
+    description: fee token name.
+    example: 'ETH'
+  fee_decimal:
+    type: integer
+    description: fee coin decimal precision.
+    example: 18
+  max_send_value:
+    type: string
+    description: the maximum sendable value for the given address or current wallet.
+    example: '841165119243622'
+  fee_per_byte:
+    type: string
+    description: transaction fees per byte for UTXO model.
+    example: '0'
+  fee_value:
+    type: string
+    description: transaction fee for UTXO model
+    example: '0'
+  gas_price:
+    type: string
+    description: gas price for account model
+    example: '43638776316'
+  gas_limit:
+    type: integer
+    description: gas limit for account model
+    example: 21000

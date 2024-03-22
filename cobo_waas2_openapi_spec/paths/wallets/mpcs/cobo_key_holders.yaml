@@ -1,0 +1,17 @@
+get:
+  tags:
+    - Wallets - MPC Wallet
+  operationId: list_cobo_key_holder
+  summary: List all cobo key holders
+  description: Retrieve a list of key holders.
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/get_cobo_key_holder.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../../components/responses/errors/404_not_found.yaml"
+    '503':
+      $ref: "../../../components/responses/errors/503_service_unavailable.yaml"

@@ -1,0 +1,21 @@
+get:
+  tags:
+    - Wallets
+  operationId: get_exchange_supported_chains
+  summary: List the supported chains by exchange id and asset id
+  description: Retrieve a list of supported chains.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/exchanges/exchange_id_required.yaml"
+    - $ref: "../../components/parameters/wallets/asset_id_required.yaml"
+    - $ref: "../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_assets.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

@@ -1,0 +1,378 @@
+openapi: 3.0.3
+
+info:
+  title: Cobo Wallet as a Service 2.0
+  description: |
+    Cobo WaaS 2.0 enables you to programmatically access Cobo's full suite of
+    crypto wallet technologies with powerful and flexible access controls.
+
+    # Wallet technologies
+    - Custodial Wallet
+    - MPC Wallet
+    - Smart Contract Wallet (Based on Safe{Wallet})
+    - Exchange Wallet
+    
+    # Risk Control technologies
+    - Workflow
+    - Access Control List (ACL)
+
+    # Risk Control targets
+    - Wallet Management
+      - User/team and their permission management
+      - Risk control configurations, e.g. whitelist, blacklist, rate-limiting etc.
+    - Blockchain Interaction
+      - Crypto transfer
+      - Smart Contract Invocation
+
+    # Important
+    HTTPS only. RESTful, resource oriented
+
+    # Get Started
+    Set up your APIs or get authorization
+
+    # Authentication and Authorization
+    CoboAuth
+
+    # Request and Response
+    application/json
+
+    # Error Handling
+
+    ### Common error codes
+    | Error Code | Description |
+    | -- | -- |
+
+    ### API-specific error codes
+    For error codes that are dedicated to a specific API, see the Error codes section in each API specification, for example, /v2/wallets.
+
+    # Rate and Usage Limiting
+
+    # Idempotent Request
+
+    # Pagination
+    # Support
+    [Developer Hub](https://cobo.com/developers)
+
+  termsOfService: https://cobo.com/waas/tos/
+  license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Cobo WaaS
+    url: https://www.cobo.com/waas
+    email: support@cobo.com
+  version: 1.0.0
+servers:
+  - url: https://api.cobo.com/v2
+    description: Production environment
+  - url: https://api.dev.cobo.com/v2
+    description: Development environment
+
+tags:
+  - name: Wallets
+    description: Operations related to all wallets.
+  - name: Wallets - MPC Wallet
+    description: Operations related to mpc wallet.
+
+paths:
+  /wallets/assets:
+    $ref: "./paths/wallets/assets.yaml"
+  /wallets/tokens:
+    $ref: "./paths/wallets/tokens.yaml"
+  /wallets/supported_chains:
+    $ref: "./paths/wallets/supported_chains.yaml"
+  /wallets/supported_tokens:
+    $ref: "./paths/wallets/supported_tokens.yaml"
+  /wallets/exchanges/supported_assets:
+    $ref: "./paths/wallets/exchange_supported_assets.yaml"
+  /wallets/exchanges/assets/supported_chains:
+    $ref: "./paths/wallets/exchange_supported_chains.yaml"
+  /wallets/{wallet_id}/tokens:
+    $ref: "./paths/wallets/wallet_token_balances.yaml"
+  /wallets/{wallet_id}/addresses/{address_id}/tokens:
+    $ref: "./paths/wallets/wallet_address_token_balances.yaml"
+  /wallets/{wallet_id}/assets:
+    $ref: "./paths/wallets/wallet_asset_balances.yaml"
+  /wallets:
+    $ref: "./paths/wallets/wallets.yaml"
+  /wallets/{wallet_id}:
+    $ref: "./paths/wallets/wallet_by_id.yaml"
+  /wallets/{wallet_id}/spendables:
+    $ref: "./paths/wallets/spendable_utxo.yaml"
+  /wallets/{wallet_id}/max_sendable_value:
+    $ref: "./paths/wallets/max_send_value.yaml"
+  /wallets/{wallet_id}/addresess:
+    $ref: "./paths/wallets/wallet_addresses.yaml"
+  /wallets/{wallet_id}/addresess{address_id}:
+    $ref: "./paths/wallets/wallet_address_by_id.yaml"
+  /wallets/address/validity:
+    $ref: "./paths/wallets/address_validity.yaml"
+
+  # mpc wallet
+  /wallets/mpc/cobo_key_holders:
+    $ref: "./paths/wallets/mpcs/cobo_key_holders.yaml"
+  /wallets/mpc/projects:
+    $ref: "./paths/wallets/mpcs/projects.yaml"
+  /wallets/mpc/projects/{project_id}:
+    $ref: "./paths/wallets/mpcs/project.yaml"
+  /wallets/mpc/vaults:
+    $ref: "./paths/wallets/mpcs/mpc_vaults.yaml"
+  /wallets/mpc/vaults/{vault_id}:
+    $ref: "./paths/wallets/mpcs/mpc_vault.yaml"
+  /wallets/mpc/vaults/{vault_id}/key_groups:
+    $ref: './paths/wallets/mpcs/key_groups.yaml'
+  /wallets/mpc/vaults/{vault_id}/key_groups/{key_group_id}:
+    $ref: './paths/wallets/mpcs/key_group.yaml'
+  /wallets/mpc/vaults/{vault_id}/tss_requests:
+    $ref: './paths/wallets/mpcs/tss_requests.yaml'
+  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}:
+    $ref: "./paths/wallets/mpcs/tss_request.yaml"
+
+components:
+  schemas:
+    Pagination:
+      $ref: "./components/schemas/pagination/metadata.yaml"
+    AssetInfo:
+      $ref: "./components/schemas/wallets/asset.yaml"
+    TokenInfo:
+      $ref: "./components/schemas/wallets/token.yaml"
+    ChainInfo:
+      $ref: "./components/schemas/wallets/chain.yaml"
+    WalletType:
+      $ref: "./components/schemas/wallets/bases/wallet_type.yaml"
+    WalletSubtype:
+      $ref: "./components/schemas/wallets/bases/wallet_subtype.yaml"
+    SmartContractWalletType:
+      $ref: "./components/schemas/wallets/smart_contracts/smart_contract_wallet_type.yaml"
+    SmartContractWalletOperationType:
+      $ref: "./components/schemas/wallets/smart_contracts/operation_type.yaml"
+    ExchangeId:
+      $ref: "./components/schemas/wallets/exchanges/exchange_id.yaml"
+    TokenBalance:
+      $ref: "./components/schemas/wallets/balances/token_balance.yaml"
+    AssetBalance:
+      $ref: "./components/schemas/wallets/balances/asset_balance.yaml"
+    SafeWallet:
+      $ref: "./components/schemas/wallets/smart_contracts/safe_wallet.yaml"
+    CustodialWalletInfo:
+      $ref: "./components/schemas/wallets/bases/base_wallet_info.yaml"
+    MPCWalletInfo:
+      $ref: "./components/schemas/wallets/mpcs/mpc_wallet_info.yaml"
+    SmartContractInfo:
+      $ref: "./components/schemas/wallets/smart_contracts/smart_contract_wallet_info.yaml"
+    ExchangeWalletInfo:
+      $ref: "./components/schemas/wallets/exchanges/exchange_wallet_info.yaml"
+    WalletInfo:
+      $ref: "./components/schemas/wallets/wallet_info.yaml"
+    BaseCreateWallet:
+      $ref: "./components/schemas/wallets/create_wallets/base_create_wallet.yaml"
+    CreatedWallet:
+      $ref: "./components/schemas/wallets/create_wallets/create_wallet.yaml"
+    UTXO:
+      $ref: "./components/schemas/wallets/balances/utxo.yaml"
+    MaxSendValue:
+      $ref: "./components/schemas/wallets/balances/max_send_value.yaml"
+    AddressInfo:
+      $ref: "./components/schemas/wallets/addresses/address_info.yaml"
+
+    # mpc wallet
+    CurveType:
+      $ref: "./components/schemas/wallets/mpcs/curve_type.yaml"
+    KeyGroup:
+      $ref: "./components/schemas/wallets/mpcs/key_group.yaml"
+    KeyGroupStatus:
+      $ref: "./components/schemas/wallets/mpcs/key_group_status.yaml"
+    KeyGroupType:
+      $ref: "./components/schemas/wallets/mpcs/key_group_type.yaml"
+    KeyHolder:
+      $ref: "./components/schemas/wallets/mpcs/key_holder.yaml"
+    KeyHolderStatus:
+      $ref: "./components/schemas/wallets/mpcs/key_holder_status.yaml"
+    KeyHolderType:
+      $ref: "./components/schemas/wallets/mpcs/key_holder_type.yaml"
+    MPCVault:
+      $ref: "./components/schemas/wallets/mpcs/mpc_vault.yaml"
+    MPCVaultType:
+      $ref: "./components/schemas/wallets/mpcs/mpc_vault_type.yaml"
+    MPCProject:
+      $ref: "./components/schemas/wallets/mpcs/project.yaml"
+    RootPubkey:
+      $ref: "./components/schemas/wallets/mpcs/root_pubkey.yaml"
+    TSSGroupId:
+      $ref: "./components/schemas/wallets/mpcs/tss_group_id.yaml"
+    TSSRequest:
+      $ref: "./components/schemas/wallets/mpcs/tss_request.yaml"
+    TSSRequestStatus:
+      $ref: "./components/schemas/wallets/mpcs/tss_request_status.yaml"
+    TSSRequestType:
+      $ref: "./components/schemas/wallets/mpcs/tss_request_type.yaml"
+
+  parameters:
+    sortByParam:
+      $ref: "./components/parameters/pagination/sort_by.yaml"
+    directionParam:
+      $ref: "./components/parameters/pagination/direction.yaml"
+    limitParam:
+      $ref: "./components/parameters/pagination/limit.yaml"
+    beforeParam:
+      $ref: "./components/parameters/pagination/before.yaml"
+    afterParam:
+      $ref: "./components/parameters/pagination/after.yaml"
+
+    optionalAssetIdParam:
+      $ref: "./components/parameters/wallets/asset_id_optional.yaml"
+    requiredAssetIdParam:
+      $ref: "./components/parameters/wallets/asset_id_required.yaml"
+    optionalTokenIdParam:
+      $ref: "./components/parameters/wallets/token_id_optional.yaml"
+    requiredSubtypeParam:
+      $ref: "./components/parameters/wallets/subtype_required.yaml"
+    optionalExchangeIdParam:
+      $ref: "./components/parameters/wallets/exchanges/exchange_id_optional.yaml"
+    requiredExchangeIdParam:
+      $ref: "./components/parameters/wallets/exchanges/exchange_id_required.yaml"
+    walletIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_path.yaml"
+    addressIdParam:
+      $ref: "./components/parameters/wallets/address_id_path.yaml"
+    requiredAddressStrParam:
+      $ref: "./components/parameters/wallets/address_str_required.yaml"
+    requiredSubWalletIdParam:
+      $ref: "./components/parameters/wallets/sub_wallet_id_required.yaml"
+    addressStrParam:
+      $ref: "./components/parameters/wallets/address_str_optional.yaml"
+    toAddressStrParam:
+      $ref: "./components/parameters/wallets/to_address_str_required.yaml"
+    fromAddressStrParam:
+      $ref: "./components/parameters/wallets/from_address_str_optional.yaml"
+
+    # mpc wallet
+    keyGroupIdParam:
+      $ref: "./components/parameters/wallets/mpcs/key_group_id_path.yaml"
+    optionalKeyGroupTypeParam:
+      $ref: "./components/parameters/wallets/mpcs/key_group_type_optional.yaml"
+    projectIdParam:
+      $ref: "./components/parameters/wallets/mpcs/project_id_path.yaml"
+    optionalTargetKeyGroupIDParam:
+      $ref: "./components/parameters/wallets/mpcs/target_key_group_id_optional.yaml"
+    requiredTssRequestActionParam:
+      $ref: "./components/parameters/wallets/mpcs/tss_request_action_required.yaml"
+    tssRequestIdParam:
+      $ref: "./components/parameters/wallets/mpcs/tss_request_id_path.yaml"
+    requiredUpdateKeyGroupActionParam:
+      $ref: "./components/parameters/wallets/mpcs/update_key_group_action_required.yaml"
+    vaultIdParam:
+      $ref: "./components/parameters/wallets/mpcs/vault_id_path.yaml"
+    optionalVaultIdQueryParam:
+      $ref: "./components/parameters/wallets/mpcs/vault_id_optional.yaml"
+    optionalVaultNameParam:
+      $ref: "./components/parameters/wallets/mpcs/vault_name_optional.yaml"
+
+  requestBodies:
+    createWalletBody:
+      $ref: "./components/request_bodies/wallets/create_wallet.yaml"
+    createAddressBody:
+      $ref: "./components/request_bodies/wallets/create_address.yaml"
+
+    # mpc wallet
+    createKeyGroupBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_key_group.yaml"
+    createMpcProjectBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_project.yaml"
+    createTssRequestBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_tss_request.yaml"
+    createMpcVaultBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_vault.yaml"
+    updateProjectBody:
+      $ref: "./components/request_bodies/wallets/mpcs/update_project.yaml"
+    updateVaultBody:
+      $ref: "./components/request_bodies/wallets/mpcs/update_vault.yaml"
+
+  responses:
+    badRequestError:
+      $ref: "./components/responses/errors/400_bad_request.yaml"
+    unauthorizedError:
+      $ref: "./components/responses/errors/401_unauthorized.yaml"
+    forbiddenError:
+      $ref: "./components/responses/errors/403_forbidden.yaml"
+    notFoundError:
+      $ref: "./components/responses/errors/404_not_found.yaml"
+    tooManyRequestError:
+      $ref: "./components/responses/errors/429_too_many_request.yaml"
+    serviceUnavailableError:
+      $ref: "./components/responses/errors/503_service_unavailable.yaml"
+
+    getAssetsResponse:
+      $ref: "./components/responses/wallets/get_assets.yaml"
+    getTokensResponse:
+      $ref: "./components/responses/wallets/get_tokens.yaml"
+    getTokenBalancesResponse:
+      $ref: "./components/responses/wallets/get_token_balances.yaml"
+    getAssetBalancesResponse:
+      $ref: "./components/responses/wallets/get_asset_balances.yaml"
+    getWalletsResponse:
+      $ref: "./components/responses/wallets/get_wallets.yaml"
+    getWalletByIdResponse:
+      $ref: "./components/responses/wallets/get_a_wallet.yaml"
+    createWalletResponse:
+      $ref: "./components/responses/wallets/create_wallet.yaml"
+    updateWalletResponse:
+      $ref: "./components/responses/wallets/update_wallet.yaml"
+    spendableListResponse:
+      $ref: "./components/responses/wallets/get_spendable_list.yaml"
+    maxSendValueResponse:
+      $ref: "./components/responses/wallets/get_max_send_value.yaml"
+    getAddressesResponse:
+      $ref: "./components/responses/wallets/get_addresses.yaml"
+    getAddressByIdResponse:
+      $ref: "./components/responses/wallets/get_a_address.yaml"
+    createAddressResponse:
+      $ref: "./components/responses/wallets/create_address.yaml"
+    updateAddressResponse:
+      $ref: "./components/responses/wallets/update_address.yaml"
+    getAddressValidityResponse:
+      $ref: "./components/responses/wallets/get_a_address_validity.yaml"
+
+    # mpc wallet
+    createKeyGroupsResponse:
+      $ref: "./components/responses/wallets/mpcs/create_key_group.yaml"
+    createMpcProjectResponse:
+      $ref: "./components/responses/wallets/mpcs/create_project.yaml"
+    createTssRequestResponse:
+      $ref: "./components/responses/wallets/mpcs/create_vault.yaml"
+    createMpcVaultResponse:
+      $ref: "./components/responses/wallets/mpcs/create_vault.yaml"
+    getCoboKeyHoldersResponse:
+      $ref: "./components/responses/wallets/mpcs/get_cobo_key_holder.yaml"
+    getKeyGroupResponse:
+      $ref: "./components/responses/wallets/mpcs/get_key_group.yaml"
+    getKeyGroupsResponse:
+      $ref: "./components/responses/wallets/mpcs/get_key_groups.yaml"
+    getMpcProjectResponse:
+      $ref: "./components/responses/wallets/mpcs/get_project.yaml"
+    getMpcProjectsResponse:
+      $ref: "./components/responses/wallets/mpcs/get_projects.yaml"
+    getTssRequestResponse:
+      $ref: "./components/responses/wallets/mpcs/get_tss_request.yaml"
+    getMpcVaultResponse:
+      $ref: "./components/responses/wallets/mpcs/get_vault.yaml"
+    getMpcVaultsResponse:
+      $ref: "./components/responses/wallets/mpcs/get_vaults.yaml"
+    deleteKeyGroupResponse:
+      $ref: "./components/responses/wallets/mpcs/delete_key_group.yaml"
+    putKeyGroupResponse:
+      $ref: "./components/responses/wallets/mpcs/put_key_group.yaml"
+    putTssRequestResponse:
+      $ref: "./components/responses/wallets/mpcs/put_tss_request.yaml"
+    putVaultResponse:
+      $ref: "./components/responses/wallets/mpcs/put_vault.yaml"
+
+  securitySchemes:
+    CoboAuth:
+      type: apiKey
+      in: header
+      name: BIZ-API-KEY
+      description: This field contains the API key.
+
+security:
+  - CoboAuth: []

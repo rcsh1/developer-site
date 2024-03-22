@@ -1,0 +1,41 @@
+get:
+  tags:
+    - Wallets - MPC Wallet
+  operationId: list_key_group
+  summary: List all mpc key groups
+  description: Retrieve a list of mpc key groups.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
+    - $ref: "../../../components/parameters/wallets/mpcs/key_group_type_optional.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/get_key_groups.yaml"
+    '401':
+      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../../components/responses/errors/429_too_many_request.yaml"
+post:
+  tags:
+    - Wallets - MPC Wallet
+  operationId: create_key_group
+  summary: create a mpc key group
+  description: create a mpc key group.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
+  requestBody:
+    $ref: "../../../components/request_bodies/wallets/mpcs/create_key_group.yaml"
+  responses:
+    '201':
+      $ref: "../../../components/responses/wallets/mpcs/create_key_group.yaml"
+    '401':
+      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../../components/responses/errors/429_too_many_request.yaml"

@@ -1,0 +1,22 @@
+type: object
+description: The data for chain information.
+required:
+  - chain_id
+properties:
+  chain_id:
+    type: string
+    description: The blockchain on which the token operates.
+    pattern: ^[A-Z]+$
+    example: 'ETH'
+  icon_url:
+    type: string
+    description: URL of the icon image.
+    example: 'https://static.waas.co/images/coins/ETH.png'
+  explorer_tx_url:
+    type: string
+    description: URL of the explorer transaction.
+    example: 'https://etherscan.io/tx/{txn_id}'
+  explorer_address_url:
+    type: string
+    description: URL of the explorer address.
+    example: 'https://etherscan.io/address/{address}'

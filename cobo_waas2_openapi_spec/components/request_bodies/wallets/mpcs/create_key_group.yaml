@@ -1,0 +1,30 @@
+description: The request body to create a mpc key group
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        group_type:
+          $ref: '../../../schemas/wallets/mpcs/key_group_type.yaml'
+        node_count:
+          type: integer
+          description: The count of tss node of the key group
+        threshold:
+          type: integer
+          description: The threshold number of tss node required for signature
+        key_holders:
+          type: array
+          items:
+            type: object
+            description: When creating MainKeyGroup and SigningKeyGroup, the cobo key holder will be added automatically
+            properties:
+              name:
+                type: string
+                example: 'key holder name'
+              type:
+                $ref: '../../../schemas/wallets/mpcs/key_holder_type.yaml'
+              tss_node_id:
+                type: string
+                description: The ID of the tss node.
+                example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+

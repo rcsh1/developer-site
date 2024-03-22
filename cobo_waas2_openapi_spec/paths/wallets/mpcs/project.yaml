@@ -1,0 +1,41 @@
+get:
+  tags:
+    - Wallets - MPC Wallet
+  operationId: get_mpc_project
+  summary: get a mpc project
+  description: get a mpc vault
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/project_id_path.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/get_project.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../../components/responses/errors/404_not_found.yaml"
+    '503':
+      $ref: "../../../components/responses/errors/503_service_unavailable.yaml"
+put:
+  tags:
+    - Wallets - MPC Wallet
+  operationId: update_mpc_project
+  summary: update a mpc project
+  description: update a mpc vault
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/project_id_path.yaml"
+  requestBody:
+    $ref: "../../../components/request_bodies/wallets/mpcs/update_project.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/get_project.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../../components/responses/errors/404_not_found.yaml"
+    '503':
+      $ref: "../../../components/responses/errors/503_service_unavailable.yaml"
+

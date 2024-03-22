@@ -1,0 +1,15 @@
+type: object
+description: The data for asset information.
+required:
+  - asset_id
+properties:
+  asset_id:
+    type: string
+    description: ID of the asset. Unique in all assets scope.
+    pattern: ^[A-Z0-9]+$
+    example: 'USDT'
+  icon_url:
+    type: string
+    description: URL of the asset
+    example: 'https://d.cobo.com/public/logos/USDT.png'
+

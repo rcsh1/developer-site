@@ -1,0 +1,18 @@
+description: The request body to create a mpc project
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "My mpc project name"
+          description: The name of the mpc project.
+        node_count:
+          type: integer
+          description: Number of tss nodes in the key group
+        threshold:
+          type: integer
+          description: The threshold number of tss node required for signature
+
+

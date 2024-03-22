@@ -1,0 +1,34 @@
+type: object
+description: The data for balance information.
+required:
+  - total
+  - available
+properties:
+  total:
+    type: string
+    description: The total balance, sum of the following fields.
+    example: '100.0'
+  available:
+    type: string
+    description: The balance free to use.
+    example: '80.5'
+  pending:
+    type: string
+    description: The pending balance not confirmed.
+    default: '0'
+    example: '10.5'
+  staked:
+    type: string
+    description: The staked balance.
+    default: '0'
+    example: '3.5'
+  frozen:
+    type: string
+    description: The frozen balance.
+    default: '0'
+    example: '2.5'
+  locked:
+    type: string
+    description: The locked balance.
+    default: '0'
+    example: '3.0'

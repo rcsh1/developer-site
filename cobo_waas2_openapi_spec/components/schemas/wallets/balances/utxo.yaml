@@ -1,0 +1,27 @@
+type: object
+description: utxo information.
+properties:
+  tx_hash:
+    type: string
+    description: Transaction hash of the UTXO.
+    example: 'dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83'
+  vout_n:
+    type: integer
+    description: Output index of the UTXO.
+    example: 0
+  address:
+    type: string
+    description: Address of the UTXO.
+    example: '2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE'
+  amount:
+    type: string
+    description: UTXO amount in decimal places (e.g. one bitcoin is divisible to eight decimal places, and 100000000 represents 1 BTC).
+    example: 100000
+  is_coinbase:
+    type: boolean
+    description: Whether the UTXO is a coinbase transaction.
+    example: false
+  confirmed_number:
+    type: integer
+    description: Number of confirmations for the UTXO.
+    example: 66716

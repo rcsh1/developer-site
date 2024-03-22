@@ -1,0 +1,19 @@
+type: object
+description: The data for mpc project information.
+properties:
+  id:
+    type: string
+    example: "0111039d-27fb-49ba-b172-6e0aa80e37ec"
+    description: Unique id of the project
+  name:
+    type: string
+    example: 'my mpc project'
+  node_count:
+    type: integer
+    description: The count of tss node of the project
+  threshold:
+    type: integer
+    description: The threshold number of project required for signature
+  create_timestamp:
+    type: integer
+    description: The create time the vault.

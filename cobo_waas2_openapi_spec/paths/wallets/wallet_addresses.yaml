@@ -1,0 +1,37 @@
+parameters:
+  - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
+post:
+  tags:
+    - Wallets
+  operationId: add_wallet_address
+  summary: Add address to a wallet
+  description: Add address to a wallet.
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../components/request_bodies/wallets/create_address.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/wallets/create_address.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+get:
+  tags:
+    - Wallets
+  operationId: list_addresses
+  summary: List wallet addresses by wallet ID
+  description: Retrieve a list of addresses.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
+    - $ref: "../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_addresses.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"
