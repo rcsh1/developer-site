@@ -1,0 +1,24 @@
+type: object
+description: The data for error response.
+required:
+  - success
+  - error_code
+  - error_description
+  - error_id
+properties:
+  success:
+    type: boolean
+    default: false
+    description: Indicates if the API operation was successful. Always false for errors.
+  error_code:
+    type: integer
+    description: A machine-readable error code.`
+    example: 1000
+  error_description:
+    type: string
+    description: A human-readable error description for users.
+    example: "API params is missing or null"
+  error_id:
+    type: string
+    description: A unique ID for the error log, mainly used for debugging.
+    example: "0b6ddf19083c4bd1a9ca01bec44b24dd"

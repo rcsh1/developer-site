@@ -1,0 +1,11 @@
+name: update_key_group_action
+in: query
+description: The action of update key group
+required: true
+schema:
+  type: string
+  description: the action of tss request.
+  enum: [
+    "upgradeToMasterKeyGroup",
+  ]
+  example: "upgradeToMasterKeyGroup"

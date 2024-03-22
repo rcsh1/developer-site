@@ -1,0 +1,16 @@
+allOf:
+  - $ref: '../base_create_wallet.yaml'
+  - type: object
+    properties:
+      wallet_type:
+        type: string
+        enum:
+          - SmartContract
+      wallet_subtype:
+        type: string
+        enum:
+          - ScSafeWallet
+      chain_id:
+        type: string
+        description: The chain  id the wallet is on.
+        example: "ETH"

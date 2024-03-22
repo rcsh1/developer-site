@@ -1,0 +1,30 @@
+type: object
+description: The data for token information.
+required:
+  - token_id
+  - chain_id
+  - asset_id
+properties:
+  token_id:
+    type: string
+    description: ID of the token. Unique in all chains scope.
+    pattern: ^[A-Z]+(_[A-Z0-9]+)?$
+    example: 'ETH_USDT'
+  chain_id:
+    type: string
+    description: The blockchain on which the token operates.
+    pattern: ^[A-Z]+$
+    example: 'ETH'
+  icon_url:
+    type: string
+    description: URL of the icon image.
+    example: 'https://static.waas.co/images/coins/ETH.png'
+  token_address:
+    type: string
+    description: Address for token, if applicable.
+    example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+  asset_id:
+    type: string
+    description: ID of the asset. Used to group token balance when needed.
+    pattern: ^[A-Z0-9]+$
+    example: 'USDT'

@@ -1,0 +1,13 @@
+type: object
+description: The data for token balance information.
+required:
+  - asset_id
+  - balance
+properties:
+  asset_id:
+    type: string
+    description: ID of the asset. Unique in all assets scope.
+    pattern: ^[A-Z0-9]+$
+    example: 'USDT'
+  balance:
+    $ref: './balance.yaml'

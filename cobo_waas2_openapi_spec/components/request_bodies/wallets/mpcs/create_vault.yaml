@@ -1,0 +1,24 @@
+description: The request body to create a mpc vault
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        project_id:
+          type: string
+          example: "0111039d-27fb-49ba-b172-6e0aa80e37ec"
+          description: The id of the mpc project.
+        name:
+          type: string
+          example: "My mpc vault"
+          description: The name of the mpc vault.
+        type:
+          $ref: '../../../schemas/wallets/mpcs/mpc_vault_type.yaml'
+        admins:
+          type: array
+          items:
+            type: string
+          example: ["tom@gmail.com","jack@gmail.com"]
+          description: "admin email of vault"
+
+

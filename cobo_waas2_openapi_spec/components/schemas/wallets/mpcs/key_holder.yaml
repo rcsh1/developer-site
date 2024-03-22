@@ -1,0 +1,17 @@
+type: object
+description: The data for mpc wallet key holder information.
+properties:
+  name:
+    type: string
+    example: 'key holder name'
+  type:
+    $ref: './key_holder_type.yaml'
+  tss_node_id:
+    type: string
+    description: The IDs of the tss node.
+    example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+  online:
+    type: boolean
+    description: Indicates if the tss node online
+  status:
+    $ref: './key_holder_status.yaml'

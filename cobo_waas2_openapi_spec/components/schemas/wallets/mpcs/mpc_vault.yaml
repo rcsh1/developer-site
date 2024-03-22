@@ -1,0 +1,29 @@
+type: object
+description: The data for mpc vault information.
+properties:
+  id:
+    type: string
+    example: "YPdbyVaVGqXXjkUsohHw"
+    description: Unique id of the vault
+  project_id:
+    type: string
+    example: "YPdbyVaVGqXXjkUsohHw"
+    description: Unique id of the project
+  name:
+    type: string
+    example: 'my mpc vault'
+  type:
+    $ref: './mpc_vault_type.yaml'
+  admins:
+    type: array
+    items:
+      type: string
+      description: The email of vault admin.
+      example: tom@gmail.com
+  root_pubkeys:
+    type: array
+    items:
+      $ref: './root_pubkey.yaml'
+  create_timestamp:
+    type: number
+    description: The create time the vault.

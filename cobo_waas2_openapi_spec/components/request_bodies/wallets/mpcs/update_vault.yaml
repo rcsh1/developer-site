@@ -1,0 +1,18 @@
+description: The request body to update a mpc vault
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The new name of vault
+          example: 'my mpc vault name'
+        admins:
+          type: array
+          items:
+            type: string
+            description: The email of vault's new admin.
+            example: tom@gmail.com
+
+

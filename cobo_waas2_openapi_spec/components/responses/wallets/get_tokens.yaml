@@ -1,0 +1,12 @@
+description: Successfully listed tokens
+content:
+  application/json:
+    schema:
+        type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '../../schemas/wallets/token.yaml'
+          pagination:
+            $ref: '../../schemas/pagination/metadata.yaml'

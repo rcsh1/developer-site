@@ -1,0 +1,22 @@
+get:
+  tags:
+    - Wallets
+  operationId: get_wallet_address_token_balances
+  summary: List the token balance by address in the wallets(to be specific)
+  description: Retrieve a list of token balance by address in wallet.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
+    - $ref: "../../components/parameters/wallets/address_id_path.yaml"
+    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
+    - $ref: "../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_token_balances.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

@@ -1,0 +1,35 @@
+allOf:
+  - $ref: './base_create_wallet.yaml'
+  - type: object
+    required:
+      - exchange
+      - apikey
+      - secret
+    properties:
+      wallet_type:
+        type: string
+        enum:
+          - Exchange
+      wallet_subtype:
+        type: string
+        enum:
+          - ExchangeWallet
+      exchange_id:
+        $ref: '../exchanges/exchange_id.yaml'
+      apikey:
+        type: string
+        description: The API Key for the exchange.
+        example: d8f062da-39f4-4a11-8b9d-12595854237f
+      secret:
+        type: string
+        description: The API Secret for the exchange.
+        example: 75B4F636193162488A3728B4A5797708
+      sub_account_ids:
+        type: array
+        description: The unique identifier associated with the exchange sub-account. It can be an email address, username, or a custom account ID.
+        items:
+          type: string
+        example: [ 'sub01@xx.com', 'sub02@xx.com']
+      additionalProperties:
+        type: string
+        description: Specific exchange wallet additional create setting properties.

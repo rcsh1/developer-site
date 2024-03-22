@@ -1,0 +1,2347 @@
+openapi: 3.0.3
+info:
+  title: Cobo Wallet as a Service 2.0
+  description: |
+    Cobo WaaS 2.0 enables you to programmatically access Cobo's full suite of
+    crypto wallet technologies with powerful and flexible access controls.
+
+    # Wallet technologies
+    - Custodial Wallet
+    - MPC Wallet
+    - Smart Contract Wallet (Based on Safe{Wallet})
+    - Exchange Wallet
+
+    # Risk Control technologies
+    - Workflow
+    - Access Control List (ACL)
+
+    # Risk Control targets
+    - Wallet Management
+      - User/team and their permission management
+      - Risk control configurations, e.g. whitelist, blacklist, rate-limiting etc.
+    - Blockchain Interaction
+      - Crypto transfer
+      - Smart Contract Invocation
+
+    # Important
+    HTTPS only. RESTful, resource oriented
+
+    # Get Started
+    Set up your APIs or get authorization
+
+    # Authentication and Authorization
+    CoboAuth
+
+    # Request and Response
+    application/json
+
+    # Error Handling
+
+    ### Common error codes
+    | Error Code | Description |
+    | -- | -- |
+
+    ### API-specific error codes
+    For error codes that are dedicated to a specific API, see the Error codes section in each API specification, for example, /v2/wallets.
+
+    # Rate and Usage Limiting
+
+    # Idempotent Request
+
+    # Pagination
+    # Support
+    [Developer Hub](https://cobo.com/developers)
+  termsOfService: 'https://cobo.com/waas/tos/'
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  contact:
+    name: Cobo WaaS
+    url: 'https://www.cobo.com/waas'
+    email: support@cobo.com
+  version: 1.0.0
+servers:
+  - url: 'https://api.cobo.com/v2'
+    description: Production environment
+  - url: 'https://api.dev.cobo.com/v2'
+    description: Development environment
+tags:
+  - name: Wallets
+    description: Operations related to all wallets.
+  - name: Wallets - MPC Wallet
+    description: Operations related to mpc wallet.
+paths:
+  /wallets/assets:
+    get:
+      tags:
+        - Wallets
+      operationId: get_assets
+      summary: List the metadata of assets
+      description: Retrieve a list of asset metadata.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalAssetIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAssetsResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/tokens:
+    get:
+      tags:
+        - Wallets
+      operationId: get_tokens
+      summary: List the metadata of tokens
+      description: Retrieve a list of token metadata.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTokensResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/supported_chains:
+    get:
+      tags:
+        - Wallets
+      operationId: get_supported_chains
+      summary: List the supported chains by wallet subtype
+      description: Retrieve a list of supported chain.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requiredSubtypeParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          description: Successfully listed chains
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ChainInfo'
+                  pagination:
+                    $ref: '#/components/schemas/Pagination'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/supported_tokens:
+    get:
+      tags:
+        - Wallets
+      operationId: get_supported_tokens
+      summary: List the supported tokens by wallet subtype and chain id if specified
+      description: Retrieve a list of supported token.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requiredSubtypeParam'
+        - name: chain_id
+          in: query
+          required: false
+          description: Unique id of the chain
+          schema:
+            type: string
+          example: ETH
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTokensResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/exchanges/supported_assets:
+    get:
+      tags:
+        - Wallets
+      operationId: get_exchange_supported_assets
+      summary: List the supported assets by exchange id
+      description: Retrieve a list of supported asset.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requiredExchangeIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAssetsResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/exchanges/assets/supported_chains:
+    get:
+      tags:
+        - Wallets
+      operationId: get_exchange_supported_chains
+      summary: List the supported chains by exchange id and asset id
+      description: Retrieve a list of supported chains.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requiredExchangeIdParam'
+        - $ref: '#/components/parameters/requiredAssetIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAssetsResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/tokens':
+    get:
+      tags:
+        - Wallets
+      operationId: get_wallet_token_balances
+      summary: List the token balance in the wallets(to be specific)
+      description: Retrieve a list of token balance in wallet.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/walletIdParam'
+        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTokenBalancesResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/addresses/{address_id}/tokens':
+    get:
+      tags:
+        - Wallets
+      operationId: get_wallet_address_token_balances
+      summary: List the token balance by address in the wallets(to be specific)
+      description: Retrieve a list of token balance by address in wallet.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/walletIdParam'
+        - $ref: '#/components/parameters/addressIdParam'
+        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTokenBalancesResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/assets':
+    get:
+      tags:
+        - Wallets
+      operationId: get_exchange_wallet_asset_balances
+      summary: List the asset balance in exchange wallet
+      description: Retrieve a list of asset balance in exchange wallet.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/walletIdParam'
+        - $ref: '#/components/parameters/requiredSubWalletIdParam'
+        - $ref: '#/components/parameters/optionalAssetIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAssetBalancesResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets:
+    post:
+      tags:
+        - Wallets
+      operationId: create_wallet
+      summary: Create new wallet
+      description: |
+        ..More detailed explanation on creating a new wallet..
+
+        Error codes this API may return:
+        | Error Code | Description |
+        | -- | -- |
+        | `2003` | 必选参数缺失 |
+        | `2006` | 参数格式或者值非法 |
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/createWalletBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createWalletResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+    get:
+      tags:
+        - Wallets
+      operationId: list_wallets
+      summary: List all wallets
+      description: Retrieve a list of wallets.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getWalletsResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+  '/wallets/{wallet_id}':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
+    get:
+      tags:
+        - Wallets
+      operationId: get_wallet_by_id
+      summary: Get wallet information by ID
+      description: Retrieve wallet information by ID
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getWalletByIdResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+    put:
+      tags:
+        - Wallets
+      operationId: update_wallet_by_id
+      summary: Update wallet by ID
+      description: Update wallet info by ID
+      security:
+        - CoboAuth: []
+      requestBody:
+        description: The request body to update a wallet
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletInfo'
+      responses:
+        '200':
+          $ref: '#/components/responses/updateWalletResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+    delete:
+      tags:
+        - Wallets
+      operationId: delete_wallet_by_id
+      summary: Delete a wallet by ID
+      description: Delete a specific wallet by ID
+      security:
+        - CoboAuth: []
+      responses:
+        '204':
+          description: Resource successfully deleted
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/spendables':
+    get:
+      tags:
+        - Wallets
+      operationId: get_spendable_list
+      summary: List the spendable utxo
+      description: Retrieve a list of spendable utxo.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/walletIdParam'
+        - $ref: '#/paths/~1wallets~1address~1validity/get/parameters/0'
+        - $ref: '#/components/parameters/addressStrParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/spendableListResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/max_sendable_value':
+    get:
+      tags:
+        - Wallets
+      operationId: get_max_send_value
+      summary: Get max sendable Vaule
+      description: Retrieve the maximum sendable vaule and the corresponding transaction fee for a given address.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/walletIdParam'
+        - $ref: '#/components/parameters/toAddressStrParam'
+        - $ref: '#/components/parameters/fromAddressStrParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/maxSendValueResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/addresess':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
+    post:
+      tags:
+        - Wallets
+      operationId: add_wallet_address
+      summary: Add address to a wallet
+      description: Add address to a wallet.
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/createAddressBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createAddressResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+    get:
+      tags:
+        - Wallets
+      operationId: list_addresses
+      summary: List wallet addresses by wallet ID
+      description: Retrieve a list of addresses.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAddressesResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/addresess{address_id}':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
+      - $ref: '#/components/parameters/addressIdParam'
+    get:
+      tags:
+        - Wallets
+      operationId: get_wallet_address_by_id
+      summary: Get address information by ID
+      description: Retrieve wallet information by ID
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getAddressByIdResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+    put:
+      tags:
+        - Wallets
+      operationId: update_wallet_address_by_id
+      summary: Update address by ID
+      description: Update address info by ID
+      security:
+        - CoboAuth: []
+      requestBody:
+        description: The request body to update a address
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressInfo'
+      responses:
+        '200':
+          $ref: '#/components/responses/updateAddressResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+    delete:
+      tags:
+        - Wallets
+      operationId: delete_wallet_address_by_id
+      summary: Delete a address by ID
+      description: Delete a specific address by ID
+      security:
+        - CoboAuth: []
+      responses:
+        '204':
+          description: Resource successfully deleted
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/address/validity:
+    get:
+      tags:
+        - Wallets
+      operationId: get_address_validity
+      summary: Get the given address validity for token
+      description: Check if the given address valid.
+      security:
+        - CoboAuth: []
+      parameters:
+        - name: token_id
+          in: query
+          required: true
+          description: Unique id of the token
+          schema:
+            type: string
+          example: ETH_USDT
+        - $ref: '#/components/parameters/requiredAddressStrParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAddressValidityResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/mpc/cobo_key_holders:
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: list_cobo_key_holder
+      summary: List all cobo key holders
+      description: Retrieve a list of key holders.
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getCoboKeyHoldersResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
+  /wallets/mpc/projects:
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: list_mpc_project
+      summary: List all mpc projects
+      description: Retrieve a list of mpc project.
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getMpcProjectsResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+    post:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: create_mpc_project
+      summary: Create a mpc project
+      description: create a mpc project
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/createMpcProjectBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createMpcProjectResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+  '/wallets/mpc/projects/{project_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: get_mpc_project
+      summary: get a mpc project
+      description: get a mpc vault
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/projectIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getMpcProjectResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
+    put:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: update_mpc_project
+      summary: update a mpc project
+      description: update a mpc vault
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/projectIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/updateProjectBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/getMpcProjectResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
+  /wallets/mpc/vaults:
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: list_mpc_vault
+      summary: List all mpc vaults
+      description: Retrieve a list of mpc vault.
+      security:
+        - CoboAuth: []
+      parameters:
+        - name: project_id
+          in: query
+          required: true
+          description: Unique id of the mpc project
+          schema:
+            type: string
+            format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - $ref: '#/components/parameters/optionalVaultIdQueryParam'
+        - $ref: '#/components/parameters/optionalVaultNameParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getMpcVaultsResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+    post:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: create_mpc_vault
+      summary: Create a mpc vault
+      description: create a mpc vault
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/createMpcVaultBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createMpcVaultResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+  '/wallets/mpc/vaults/{vault_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: get_mpc_vault
+      summary: get a mpc vault
+      description: get a mpc vault
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getMpcVaultResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
+    put:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: modify_mpc_vault
+      summary: Modify a mpc vault
+      description: modify a mpc vault
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/updateVaultBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/putVaultResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+  '/wallets/mpc/vaults/{vault_id}/key_groups':
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: list_key_group
+      summary: List all mpc key groups
+      description: Retrieve a list of mpc key groups.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/optionalKeyGroupTypeParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getKeyGroupsResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+    post:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: create_key_group
+      summary: create a mpc key group
+      description: create a mpc key group.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/createKeyGroupBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createKeyGroupsResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+  '/wallets/mpc/vaults/{vault_id}/key_groups/{key_group_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: get_key_group
+      summary: get a mpc key group
+      description: get a mpc key group.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/keyGroupIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getKeyGroupResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
+    delete:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: delete_key_group
+      summary: delete a mpc key group
+      description: delete a mpc key group.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/keyGroupIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/deleteKeyGroupResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+    put:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: update_key_group
+      summary: update a mpc key group
+      description: update a mpc key group.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/keyGroupIdParam'
+        - $ref: '#/components/parameters/requiredUpdateKeyGroupActionParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/putKeyGroupResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+  '/wallets/mpc/vaults/{vault_id}/tss_requests':
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: list_tss_request
+      summary: Get tss request information of a vault
+      description: Detailed description on retrieving tss request information
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/optionalTargetKeyGroupIDParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTssRequestResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
+    post:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: create_tss_request
+      summary: Create a tss request to generate key secrets for a tss group
+      description: Create a tss request to generate key secrets for a tss group
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/createTssRequestBody'
+      responses:
+        '201':
+          description: mpc vault successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TSSRequest'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: get_tss_request
+      summary: get a tss request
+      description: get a tss request.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/tssRequestIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTssRequestResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
+    put:
+      tags:
+        - Wallets - MPC Wallet
+      operationId: cancel_tss_request
+      summary: cancel tss request
+      description: cancel tss request.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/tssRequestIdParam'
+        - $ref: '#/components/parameters/requiredTssRequestActionParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/putTssRequestResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+components:
+  schemas:
+    Pagination:
+      type: object
+      description: The meta data for pagination.
+      properties:
+        before:
+          type: string
+          example: as19
+        after:
+          type: string
+          example: 20sa
+    AssetInfo:
+      type: object
+      description: The data for asset information.
+      required:
+        - asset_id
+      properties:
+        asset_id:
+          type: string
+          description: ID of the asset. Unique in all assets scope.
+          pattern: '^[A-Z0-9]+$'
+          example: USDT
+        icon_url:
+          type: string
+          description: URL of the asset
+          example: 'https://d.cobo.com/public/logos/USDT.png'
+    TokenInfo:
+      type: object
+      description: The data for token information.
+      required:
+        - token_id
+        - chain_id
+        - asset_id
+      properties:
+        token_id:
+          type: string
+          description: ID of the token. Unique in all chains scope.
+          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
+          example: ETH_USDT
+        chain_id:
+          type: string
+          description: The blockchain on which the token operates.
+          pattern: '^[A-Z]+$'
+          example: ETH
+        icon_url:
+          type: string
+          description: URL of the icon image.
+          example: 'https://static.waas.co/images/coins/ETH.png'
+        token_address:
+          type: string
+          description: 'Address for token, if applicable.'
+          example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+        asset_id:
+          type: string
+          description: ID of the asset. Used to group token balance when needed.
+          pattern: '^[A-Z0-9]+$'
+          example: USDT
+    ChainInfo:
+      type: object
+      description: The data for chain information.
+      required:
+        - chain_id
+      properties:
+        chain_id:
+          type: string
+          description: The blockchain on which the token operates.
+          pattern: '^[A-Z]+$'
+          example: ETH
+        icon_url:
+          type: string
+          description: URL of the icon image.
+          example: 'https://static.waas.co/images/coins/ETH.png'
+        explorer_tx_url:
+          type: string
+          description: URL of the explorer transaction.
+          example: 'https://etherscan.io/tx/{txn_id}'
+        explorer_address_url:
+          type: string
+          description: URL of the explorer address.
+          example: 'https://etherscan.io/address/{address}'
+    WalletType:
+      type: string
+      enum:
+        - Custodial
+        - MPC
+        - SmartContract
+        - Exchange
+      example: Custodial
+    WalletSubtype:
+      type: string
+      enum:
+        - CustodialAssetWallet
+        - CustodialWeb3Wallet
+        - MpcOrganizationControlledWallet
+        - MpcUserControlledWallet
+        - ScSafeWallet
+        - ExchangeWallet
+      example: CustodialAssetWallet
+    SmartContractWalletType:
+      type: string
+      enum:
+        - SafeWallet
+      example: SafeWallet
+      default: SafeWallet
+      description: What kind of smart contract does this wallet use
+    SmartContractWalletOperationType:
+      type: string
+      enum:
+        - CoboSafe
+      example: CoboSafe
+      default: CoboSafe
+      description: The way use to interact with the smart contract wallet.
+    ExchangeId:
+      type: string
+      enum:
+        - Binance
+        - OKX
+        - Deribit
+        - Bybit
+        - Gate
+      description: The exchange identifier.
+      example: Binance
+    TokenBalance:
+      type: object
+      description: The data for token balance information.
+      required:
+        - token_id
+        - balance
+      properties:
+        token_id:
+          type: string
+          description: ID of the token. Unique in all chains scope.
+          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
+          example: ETH_USDT
+        balance:
+          type: object
+          description: The data for balance information.
+          required:
+            - total
+            - available
+          properties:
+            total:
+              type: string
+              description: 'The total balance, sum of the following fields.'
+              example: '100.0'
+            available:
+              type: string
+              description: The balance free to use.
+              example: '80.5'
+            pending:
+              type: string
+              description: The pending balance not confirmed.
+              default: '0'
+              example: '10.5'
+            staked:
+              type: string
+              description: The staked balance.
+              default: '0'
+              example: '3.5'
+            frozen:
+              type: string
+              description: The frozen balance.
+              default: '0'
+              example: '2.5'
+            locked:
+              type: string
+              description: The locked balance.
+              default: '0'
+              example: '3.0'
+    AssetBalance:
+      type: object
+      description: The data for token balance information.
+      required:
+        - asset_id
+        - balance
+      properties:
+        asset_id:
+          type: string
+          description: ID of the asset. Unique in all assets scope.
+          pattern: '^[A-Z0-9]+$'
+          example: USDT
+        balance:
+          $ref: '#/components/schemas/TokenBalance/properties/balance'
+    SafeWallet:
+      allOf:
+        - allOf:
+            - $ref: '#/components/schemas/CustodialWalletInfo'
+            - type: object
+              properties:
+                chain:
+                  type: string
+                  description: The chain the wallet is on.
+                  example: ETH
+                label:
+                  type: string
+                  description: The label of the wallet.
+                  example: My Wallet
+                value:
+                  type: number
+                  format: double
+                  description: The value of the wallet in USD.
+                last_activity_timestamp:
+                  type: integer
+                  description: The last time the wallet was active.
+                supported_operation_types:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SmartContractWalletOperationType'
+                  description: The operation types supported by the wallet.
+                enabled_operation_types:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/SmartContractWalletOperationType'
+                  description: The operation types enabled by the wallet.
+        - type: object
+          required:
+            - smart_contract_wallet_type
+          properties:
+            smart_contract_wallet_type:
+              $ref: '#/components/schemas/SmartContractWalletType'
+            safe_address:
+              type: string
+              format: address
+              pattern: '^0x[a-fA-F0-9]{40}$'
+              example: '0x1234567890123456789012345678901234567890'
+              description: The address of the smart contract wallet.
+            cobo_safe_module_address:
+              type: string
+              format: address
+              pattern: '^0x[a-fA-F0-9]{40}$'
+              example: '0x1234567890123456789012345678901234567890'
+              description: The address of the cobo safe module.
+            cobo_safe_enabled:
+              type: boolean
+              description: Whether the cobo safe module is enabled.
+    CustodialWalletInfo:
+      type: object
+      description: The data for wallet information.
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        wallet_type:
+          $ref: '#/components/schemas/WalletType'
+        wallet_subtype:
+          $ref: '#/components/schemas/WalletSubtype'
+        name:
+          type: string
+          example: Example Wallet
+        org_id:
+          type: string
+          description: The owning custody organization id of the custodial wallet.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    MPCWalletInfo:
+      allOf:
+        - $ref: '#/components/schemas/CustodialWalletInfo'
+        - type: object
+          properties:
+            vault_id:
+              type: string
+              description: The owning mpc vault id of the mpc wallet.
+    SmartContractInfo:
+      oneOf:
+        - $ref: '#/components/schemas/SafeWallet'
+      discriminator:
+        propertyName: smart_contract_wallet_type
+        mapping:
+          Safe: '#/components/schemas/SafeWallet'
+    ExchangeWalletInfo:
+      allOf:
+        - $ref: '#/components/schemas/CustodialWalletInfo'
+        - type: object
+          required:
+            - id
+            - name
+            - exchange
+            - subtype
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            name:
+              type: string
+              example: Example Wallet
+            exchange_id:
+              $ref: '#/components/schemas/ExchangeId'
+            exchange_subtype:
+              type: string
+              enum:
+                - Main
+                - Sub
+              description: |
+                The type of exchange account, which can be either 'Main' or 'Sub'. A 'Main' account typically has full access and control over the funds and settings, while a 'Sub' account might have limited access or be linked to the 'Main' account.
+              example: Main
+            last_update_timestamp:
+              type: number
+              description: The timestamp indicating the last update time of the data
+              example: 1701196610
+            last_activity_timestamp:
+              type: number
+              description: The timestamp indicating the last activity time of the data
+              example: 1701196610
+            status:
+              type: string
+              description: The status of the wallet assets data update
+              enum:
+                - success
+                - fail
+              example: null
+            fail_reason:
+              type: string
+              description: Reason for update failure
+              example: Access denied
+    WalletInfo:
+      oneOf:
+        - $ref: '#/components/schemas/CustodialWalletInfo'
+        - $ref: '#/components/schemas/MPCWalletInfo'
+        - $ref: '#/components/schemas/SmartContractInfo'
+        - $ref: '#/components/schemas/ExchangeWalletInfo'
+      discriminator:
+        propertyName: type
+        mapping:
+          Custodial: '#/components/schemas/CustodialWallet'
+          MPC: '#/components/schemas/MPCWallet'
+          SmartContract: '#/components/schemas/SmartContractWallet'
+          Exchange: '#/components/schemas/ExchangeWallet'
+    BaseCreateWallet:
+      type: object
+      properties:
+        name:
+          type: string
+          example: My WaaS 2.0 Wallet
+    CreatedWallet:
+      oneOf:
+        - allOf:
+            - $ref: '#/components/schemas/BaseCreateWallet'
+            - type: object
+              properties:
+                wallet_type:
+                  type: string
+                  enum:
+                    - Custodial
+                wallet_subtype:
+                  type: string
+                  enum:
+                    - CustodialAssetWallet
+                    - CustodialWeb3Wallet
+        - allOf:
+            - $ref: '#/components/schemas/BaseCreateWallet'
+            - type: object
+              required:
+                - exchange
+                - apikey
+                - secret
+              properties:
+                wallet_type:
+                  type: string
+                  enum:
+                    - Exchange
+                wallet_subtype:
+                  type: string
+                  enum:
+                    - ExchangeWallet
+                exchange_id:
+                  $ref: '#/components/schemas/ExchangeId'
+                apikey:
+                  type: string
+                  description: The API Key for the exchange.
+                  example: d8f062da-39f4-4a11-8b9d-12595854237f
+                secret:
+                  type: string
+                  description: The API Secret for the exchange.
+                  example: 75B4F636193162488A3728B4A5797708
+                sub_account_ids:
+                  type: array
+                  description: 'The unique identifier associated with the exchange sub-account. It can be an email address, username, or a custom account ID.'
+                  items:
+                    type: string
+                  example:
+                    - sub01@xx.com
+                    - sub02@xx.com
+                additionalProperties:
+                  type: string
+                  description: Specific exchange wallet additional create setting properties.
+        - allOf:
+            - $ref: '#/components/schemas/BaseCreateWallet'
+            - type: object
+              properties:
+                wallet_type:
+                  type: string
+                  enum:
+                    - MPC
+                wallet_subtype:
+                  type: string
+                  enum:
+                    - MpcOrganizationControlledWallet
+                    - MpcUserControlledWallet
+                vault_id:
+                  type: string
+                  description: The owning mpc vault id of the mpc wallet.
+        - oneOf:
+            - allOf:
+                - allOf:
+                    - $ref: '#/components/schemas/BaseCreateWallet'
+                    - type: object
+                      properties:
+                        wallet_type:
+                          type: string
+                          enum:
+                            - SmartContract
+                        wallet_subtype:
+                          type: string
+                          enum:
+                            - ScSafeWallet
+                        chain_id:
+                          type: string
+                          description: The chain  id the wallet is on.
+                          example: ETH
+                - type: object
+                  required:
+                    - smart_contract_wallet_type
+                  properties:
+                    smart_contract_wallet_type:
+                      $ref: '#/components/schemas/SmartContractWalletType'
+                    safe_address:
+                      type: string
+                      format: address
+                      pattern: '^0x[a-fA-F0-9]{40}$'
+                      example: '0x1234567890123456789012345678901234567890'
+                      description: 'The address of the smart contract wallet. If this is not provided, WaaS 2.0 will create a new safe wallet and setup cobo safe module for user. In this case, threshold, owners is required.'
+                    owners:
+                      type: array
+                      items:
+                        type: string
+                        format: address
+                        pattern: '^0x[a-fA-F0-9]{40}$'
+                        example: '0x1234567890123456789012345678901234567890'
+                      description: The owners of the smart contract wallet. This MUST be provided when user want to create a new safe wallet.
+                    threshold:
+                      type: integer
+                      minimum: 1
+                      example: 2
+                      description: The threshold of required confirmations for the smart contract wallet. This MUST be provided when user want to create a new safe wallet.
+                    cobo_safe_address:
+                      type: string
+                      format: address
+                      pattern: '^0x[a-fA-F0-9]{40}$'
+                      example: '0x1234567890123456789012345678901234567890'
+                      description: The address of the cobo safe module. Cobo safe module must has been created & enabled when import a existing safe wallet.
+          discriminator:
+            propertyName: smart_contract_wallet_type
+            mapping:
+              Safe: '#/components/schemas/CreateSafeWallet'
+      discriminator:
+        propertyName: type
+        mapping:
+          Custodial: '#/components/schemas/CreateCustodialWallet'
+          MPC: '#/components/schemas/CreateMPCWallet'
+          SmartContract: '#/components/schemas/CreateSmartContractWallet'
+          Exchange: '#/components/schemas/CreateExchangeWallet'
+    UTXO:
+      type: object
+      description: utxo information.
+      properties:
+        tx_hash:
+          type: string
+          description: Transaction hash of the UTXO.
+          example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
+        vout_n:
+          type: integer
+          description: Output index of the UTXO.
+          example: 0
+        address:
+          type: string
+          description: Address of the UTXO.
+          example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+        amount:
+          type: string
+          description: 'UTXO amount in decimal places (e.g. one bitcoin is divisible to eight decimal places, and 100000000 represents 1 BTC).'
+          example: 100000
+        is_coinbase:
+          type: boolean
+          description: Whether the UTXO is a coinbase transaction.
+          example: false
+        confirmed_number:
+          type: integer
+          description: Number of confirmations for the UTXO.
+          example: 66716
+    MaxSendValue:
+      type: object
+      description: max send value and fee.
+      properties:
+        token:
+          type: string
+          description: token name.
+          example: ETH
+        token_decimal:
+          type: integer
+          description: coin decimal precision.
+          example: 18
+        fee_token:
+          type: string
+          description: fee token name.
+          example: ETH
+        fee_decimal:
+          type: integer
+          description: fee coin decimal precision.
+          example: 18
+        max_send_value:
+          type: string
+          description: the maximum sendable value for the given address or current wallet.
+          example: '841165119243622'
+        fee_per_byte:
+          type: string
+          description: transaction fees per byte for UTXO model.
+          example: '0'
+        fee_value:
+          type: string
+          description: transaction fee for UTXO model
+          example: '0'
+        gas_price:
+          type: string
+          description: gas price for account model
+          example: '43638776316'
+        gas_limit:
+          type: integer
+          description: gas limit for account model
+          example: 21000
+    AddressInfo:
+      type: object
+      description: The data for address information.
+      required:
+        - address_id
+        - address_str
+      properties:
+        address_id:
+          type: string
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        address_str:
+          type: string
+          description: Then blockchain address
+          example: '0x0000000000000000000000000000000000000000'
+        token_id:
+          type: string
+          description: ID of the token. Unique in all chains scope.
+          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
+          example: ETH_USDT
+        memo:
+          type: string
+          description: From address memo
+          example: '82840924'
+    CurveType:
+      type: string
+      enum:
+        - SECP256K1
+        - ED25519
+      example: ED25519
+    KeyGroup:
+      type: object
+      description: The data for mpc key group information.
+      properties:
+        id:
+          type: string
+          example: '880311524363903326'
+          description: Unique id of the key group
+        type:
+          $ref: '#/components/schemas/KeyGroupType'
+        tss_group_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/TSSGroupId'
+        key_holders:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyHolder'
+        node_number:
+          type: integer
+        threshold:
+          type: integer
+        status:
+          $ref: '#/components/schemas/KeyGroupStatus'
+    KeyGroupStatus:
+      type: string
+      enum:
+        - New
+        - Valid
+        - Unavailable
+      example: Valid
+    KeyGroupType:
+      type: string
+      enum:
+        - MainKeyGroup
+        - SigningKeyGroup
+        - RecoveryKeyGroup
+      example: MainKeyGroup
+    KeyHolder:
+      type: object
+      description: The data for mpc wallet key holder information.
+      properties:
+        name:
+          type: string
+          example: key holder name
+        type:
+          $ref: '#/components/schemas/KeyHolderType'
+        tss_node_id:
+          type: string
+          description: The IDs of the tss node.
+          example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+        online:
+          type: boolean
+          description: Indicates if the tss node online
+        status:
+          $ref: '#/components/schemas/KeyHolderStatus'
+    KeyHolderStatus:
+      type: string
+      enum:
+        - Valid
+        - NotConfigured
+        - NotActivated
+        - Changed
+      example: Valid
+    KeyHolderType:
+      type: string
+      enum:
+        - COBO
+        - MOBILE
+        - API
+      example: MOBILE
+    MPCVault:
+      type: object
+      description: The data for mpc vault information.
+      properties:
+        id:
+          type: string
+          example: YPdbyVaVGqXXjkUsohHw
+          description: Unique id of the vault
+        project_id:
+          type: string
+          example: YPdbyVaVGqXXjkUsohHw
+          description: Unique id of the project
+        name:
+          type: string
+          example: my mpc vault
+        type:
+          $ref: '#/components/schemas/MPCVaultType'
+        admins:
+          type: array
+          items:
+            type: string
+            description: The email of vault admin.
+            example: tom@gmail.com
+        root_pubkeys:
+          type: array
+          items:
+            $ref: '#/components/schemas/RootPubkey'
+        create_timestamp:
+          type: number
+          description: The create time the vault.
+    MPCVaultType:
+      type: string
+      enum:
+        - OrgControlled
+        - UserControlled
+      example: OrgControlled
+    MPCProject:
+      type: object
+      description: The data for mpc project information.
+      properties:
+        id:
+          type: string
+          example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
+          description: Unique id of the project
+        name:
+          type: string
+          example: my mpc project
+        node_count:
+          type: integer
+          description: The count of tss node of the project
+        threshold:
+          type: integer
+          description: The threshold number of project required for signature
+        create_timestamp:
+          type: integer
+          description: The create time the vault.
+    RootPubkey:
+      type: object
+      description: The data for root pubkey information.
+      properties:
+        pubkey:
+          type: string
+          description: the root pubkey of the mpc vault.
+          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
+        curve:
+          $ref: '#/components/schemas/CurveType'
+    TSSGroupId:
+      type: object
+      description: The data for tss group id information.
+      properties:
+        group_id:
+          type: string
+          description: the group id of the tss group.
+          example: mMedDioOKhTlhGyQRzMv
+        curve:
+          $ref: '#/components/schemas/CurveType'
+    TSSRequest:
+      type: object
+      description: The data for mpc tss request information.
+      properties:
+        id:
+          type: string
+          description: Unique id of the tss request.
+          example: YPdbyVaVGqXXjkUsohHw
+        type:
+          $ref: '#/components/schemas/TSSRequestType'
+        status:
+          $ref: '#/components/schemas/TSSRequestStatus'
+    TSSRequestStatus:
+      type: string
+      enum:
+        - PendingKeyHolderConfirmation
+        - KeyHolderConfirmationFailed
+        - KeyGenerating
+        - KeyGeneratingFailed
+        - SUCCESS
+      example: SUCCESS
+    TSSRequestType:
+      type: string
+      enum:
+        - KeyGen
+        - KeyGenFromKeyGroup
+        - Recovery
+      example: KeyGen
+      description: 'The type of tss request, keygen is key generation'
+  parameters:
+    sortByParam:
+      name: sort_by
+      in: query
+      description: Field of sort by
+      required: false
+      schema:
+        type: string
+        default: ''
+      example: timestamp
+    directionParam:
+      name: direction
+      in: query
+      description: Direction to sort by
+      required: false
+      schema:
+        type: string
+        enum:
+          - ASC
+          - DESC
+        default: ''
+      example: ASC
+    limitParam:
+      name: limit
+      in: query
+      description: size of page to return (pagination)
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+      example: 10
+    beforeParam:
+      name: before
+      in: query
+      description: Cursor string received from previous request
+      required: false
+      schema:
+        type: string
+        default: ''
+      example: '123'
+    afterParam:
+      name: after
+      in: query
+      description: Cursor string received from previous request
+      required: false
+      schema:
+        type: string
+        default: ''
+      example: '123'
+    optionalAssetIdParam:
+      name: asset_id
+      in: query
+      required: false
+      description: Unique id of the asset
+      schema:
+        type: string
+      example: USDT
+    requiredAssetIdParam:
+      name: asset_id
+      in: query
+      required: true
+      description: Unique id of the asset
+      schema:
+        type: string
+      example: USDT
+    optionalTokenIdParam:
+      name: token_id
+      in: query
+      required: false
+      description: Unique id of the token
+      schema:
+        type: string
+      example: ETH_USDT
+    requiredSubtypeParam:
+      name: wallet_subtype
+      in: query
+      required: true
+      description: Wallet subtype to query
+      schema:
+        $ref: '#/components/schemas/WalletSubtype'
+    optionalExchangeIdParam:
+      name: exchange_id
+      in: query
+      required: false
+      description: Exchange ID to query
+      schema:
+        $ref: '#/components/schemas/ExchangeId'
+    requiredExchangeIdParam:
+      name: exchange_id
+      in: query
+      required: true
+      description: Exchange ID to query
+      schema:
+        $ref: '#/components/schemas/ExchangeId'
+    walletIdParam:
+      name: wallet_id
+      in: path
+      required: true
+      description: Unique id of the wallet
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    addressIdParam:
+      name: address_id
+      in: path
+      required: true
+      description: Unique id of the address
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    requiredAddressStrParam:
+      name: address
+      in: query
+      required: true
+      description: The address string
+      schema:
+        type: string
+        description: Then blockchain address
+      example: '0x0000000000000000000000000000000000000000'
+    requiredSubWalletIdParam:
+      name: sub_wallet_id
+      in: query
+      required: true
+      description: Unique id of the wallet
+      schema:
+        type: string
+      example: SPOT
+    addressStrParam:
+      name: address
+      in: query
+      required: false
+      description: address
+      schema:
+        type: string
+      example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+    toAddressStrParam:
+      name: to_address
+      in: query
+      required: true
+      description: address
+      schema:
+        type: string
+      example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+    fromAddressStrParam:
+      name: from_address
+      in: query
+      required: false
+      description: address
+      schema:
+        type: string
+      example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+    keyGroupIdParam:
+      name: key_group_id
+      in: path
+      required: true
+      description: Unique id of the tss group
+      schema:
+        type: string
+      example: '880311524363903326'
+    optionalKeyGroupTypeParam:
+      name: key_group_type
+      in: query
+      description: The type of key group.
+      required: false
+      schema:
+        $ref: '#/components/schemas/KeyGroupType'
+    projectIdParam:
+      name: project_id
+      in: path
+      required: true
+      description: Unique id of the mpc project
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalTargetKeyGroupIDParam:
+      name: target_key_group_id
+      in: query
+      description: The target key group id of tss request.
+      required: false
+      schema:
+        type: string
+      example: '880311524363903326'
+    requiredTssRequestActionParam:
+      name: tss_request_action
+      in: query
+      description: The action of tss request.
+      required: true
+      schema:
+        type: string
+        description: the action of tss request.
+        enum:
+          - cancel
+        example: cancel
+    tssRequestIdParam:
+      name: tss_request_id
+      in: path
+      required: true
+      description: Unique id of the tss request
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    requiredUpdateKeyGroupActionParam:
+      name: update_key_group_action
+      in: query
+      description: The action of update key group
+      required: true
+      schema:
+        type: string
+        description: the action of tss request.
+        enum:
+          - upgradeToMasterKeyGroup
+        example: upgradeToMasterKeyGroup
+    vaultIdParam:
+      name: vault_id
+      in: path
+      required: true
+      description: Unique id of the mpc vault
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalVaultIdQueryParam:
+      name: vault_id
+      in: query
+      required: false
+      description: Unique id of the mpc vault
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalVaultNameParam:
+      name: vault_name
+      in: query
+      required: false
+      description: Unique id of the mpc vault
+      schema:
+        type: string
+      example: my vault name
+  requestBodies:
+    createWalletBody:
+      description: The request body to create a wallet
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatedWallet'
+    createAddressBody:
+      description: The request body to add address for a wallet
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token_id:
+                type: string
+                description: ID of the token. Unique in all chains scope.
+                pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
+                example: ETH_USDT
+              count:
+                type: integer
+                maximum: 50
+                minimum: 1
+                default: 1
+                description: The number of addresses that need to be created
+                example: 1
+    createKeyGroupBody:
+      description: The request body to create a mpc key group
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              group_type:
+                $ref: '#/components/schemas/KeyGroupType'
+              node_count:
+                type: integer
+                description: The count of tss node of the key group
+              threshold:
+                type: integer
+                description: The threshold number of tss node required for signature
+              key_holders:
+                type: array
+                items:
+                  type: object
+                  description: 'When creating MainKeyGroup and SigningKeyGroup, the cobo key holder will be added automatically'
+                  properties:
+                    name:
+                      type: string
+                      example: key holder name
+                    type:
+                      $ref: '#/components/schemas/KeyHolderType'
+                    tss_node_id:
+                      type: string
+                      description: The ID of the tss node.
+                      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+    createMpcProjectBody:
+      description: The request body to create a mpc project
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: My mpc project name
+                description: The name of the mpc project.
+              node_count:
+                type: integer
+                description: Number of tss nodes in the key group
+              threshold:
+                type: integer
+                description: The threshold number of tss node required for signature
+    createTssRequestBody:
+      description: The request body to create a tss request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                $ref: '#/components/schemas/TSSRequestType'
+              target_key_group_id:
+                type: string
+              used_key_group_id:
+                type: string
+              detail_params:
+                description: 'for KeyGen request, this parameters can be null'
+                type: object
+                properties:
+                  used_node_ids:
+                    type: array
+                    items:
+                      type: string
+                      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+                      description: The IDs of the tss node participating in the reshare tss request
+    createMpcVaultBody:
+      description: The request body to create a mpc vault
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              project_id:
+                type: string
+                example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
+                description: The id of the mpc project.
+              name:
+                type: string
+                example: My mpc vault
+                description: The name of the mpc vault.
+              type:
+                $ref: '#/components/schemas/MPCVaultType'
+              admins:
+                type: array
+                items:
+                  type: string
+                example:
+                  - tom@gmail.com
+                  - jack@gmail.com
+                description: admin email of vault
+    updateProjectBody:
+      description: The request body to update a mpc project
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: My mpc new project name
+                description: The name of the mpc project.
+    updateVaultBody:
+      description: The request body to update a mpc vault
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The new name of vault
+                example: my mpc vault name
+              admins:
+                type: array
+                items:
+                  type: string
+                  description: The email of vault's new admin.
+                  example: tom@gmail.com
+  responses:
+    badRequestError:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/responses/notFoundError/content/application~1json/schema'
+    unauthorizedError:
+      description: Unauthorized Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/responses/notFoundError/content/application~1json/schema'
+    forbiddenError:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/responses/notFoundError/content/application~1json/schema'
+    notFoundError:
+      description: Resource Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The data for error response.
+            required:
+              - success
+              - error_code
+              - error_description
+              - error_id
+            properties:
+              success:
+                type: boolean
+                default: false
+                description: Indicates if the API operation was successful. Always false for errors.
+              error_code:
+                type: integer
+                description: A machine-readable error code.`
+                example: 1000
+              error_description:
+                type: string
+                description: A human-readable error description for users.
+                example: API params is missing or null
+              error_id:
+                type: string
+                description: 'A unique ID for the error log, mainly used for debugging.'
+                example: 0b6ddf19083c4bd1a9ca01bec44b24dd
+    tooManyRequestError:
+      description: Too Many Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/responses/notFoundError/content/application~1json/schema'
+    serviceUnavailableError:
+      description: Unknown Internal Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/responses/notFoundError/content/application~1json/schema'
+    getAssetsResponse:
+      description: Successfully listed assets
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssetInfo'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getTokensResponse:
+      description: Successfully listed tokens
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TokenInfo'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getTokenBalancesResponse:
+      description: Successfully listed tokens
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TokenBalance'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getAssetBalancesResponse:
+      description: Successfully listed tokens
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssetBalance'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getWalletsResponse:
+      description: Successfully listed wallets
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WalletInfo'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getWalletByIdResponse:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletInfo'
+    createWalletResponse:
+      description: Successfully created wallet
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletInfo'
+    updateWalletResponse:
+      description: Successfully updated address
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WalletInfo'
+    spendableListResponse:
+      description: Successfully listed utxo
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/UTXO'
+    maxSendValueResponse:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MaxSendValue'
+    getAddressesResponse:
+      description: Successfully listed addresses
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressInfo'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getAddressByIdResponse:
+      description: Successfully listed addresses
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressInfo'
+    createAddressResponse:
+      description: Successfully created address for a wallet
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/AddressInfo'
+    updateAddressResponse:
+      description: Successfully updated address
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddressInfo'
+    getAddressValidityResponse:
+      description: Successfully get address validity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              validity:
+                type: boolean
+                description: The validity of the address.
+                example: true
+    createKeyGroupsResponse:
+      description: mpc vault successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KeyGroup'
+    createMpcProjectResponse:
+      description: mpc project successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MPCProject'
+    createTssRequestResponse:
+      $ref: '#/components/responses/createMpcVaultResponse'
+    createMpcVaultResponse:
+      description: mpc vault successfully created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MPCVault'
+    getCoboKeyHoldersResponse:
+      description: Successfully listed mpc tss groups
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeyHolder'
+    getKeyGroupResponse:
+      description: Successfully get mpc tss group
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KeyGroup'
+    getKeyGroupsResponse:
+      description: Successfully listed mpc tss groups
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeyGroup'
+    getMpcProjectResponse:
+      description: Successfully listed mpc vaults
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MPCProject'
+    getMpcProjectsResponse:
+      description: Successfully listed mpc projects
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/MPCProject'
+    getTssRequestResponse:
+      description: get mpc tss request successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TSSRequest'
+    getMpcVaultResponse:
+      description: Successfully get mpc vault
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MPCVault'
+    getMpcVaultsResponse:
+      description: Successfully listed mpc vaults
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/MPCVault'
+    deleteKeyGroupResponse:
+      description: Successfully deleted mpc tss group
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KeyGroup'
+    putKeyGroupResponse:
+      description: Successfully modify mpc tss group
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KeyGroup'
+    putTssRequestResponse:
+      description: modify mpc tss request successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TSSRequest'
+    putVaultResponse:
+      description: Successfully modify mpc vault
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MPCVault'
+  securitySchemes:
+    CoboAuth:
+      type: apiKey
+      in: header
+      name: BIZ-API-KEY
+      description: This field contains the API key.
+security:
+  - CoboAuth: []

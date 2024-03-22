@@ -1,0 +1,18 @@
+type: object
+description: The data for wallet information.
+properties:
+  wallet_id:
+    type: string
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  wallet_type:
+    $ref: './wallet_type.yaml'
+  wallet_subtype:
+    $ref: './wallet_subtype.yaml'
+  name:
+    type: string
+    example: 'Example Wallet'
+  org_id:
+    type: string
+    description: The owning custody organization id of the custodial wallet.
+    example: "f47ac10b-58cc-4372-a567-0e02b2c3d479"

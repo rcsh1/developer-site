@@ -1,0 +1,42 @@
+allOf:
+  - $ref: './base_create_smart_contract_wallet.yaml'
+  - type: object
+    required:
+      - smart_contract_wallet_type
+    properties:
+      smart_contract_wallet_type:
+        $ref: '../../smart_contracts/smart_contract_wallet_type.yaml'
+      safe_address:
+        type: string
+        format: address
+        pattern: "^0x[a-fA-F0-9]{40}$"
+        example: '0x1234567890123456789012345678901234567890'
+        description: >- 
+          The address of the smart contract wallet. If this is not provided, WaaS 2.0 will
+          create a new safe wallet and setup cobo safe module for user.
+          In this case, threshold, owners is required.
+      owners:
+        type: array
+        items:
+          type: string
+          format: address
+          pattern: "^0x[a-fA-F0-9]{40}$"
+          example: '0x1234567890123456789012345678901234567890'
+        description: >-
+          The owners of the smart contract wallet. This MUST be provided when user want to
+          create a new safe wallet.
+      threshold:
+        type: integer 
+        minimum: 1
+        example: 2
+        description: >-
+          The threshold of required confirmations for the smart contract wallet. This MUST be provided when user want to
+          create a new safe wallet.
+      cobo_safe_address:
+        type: string
+        format: address
+        pattern: "^0x[a-fA-F0-9]{40}$"
+        example: '0x1234567890123456789012345678901234567890'
+        description: >-
+          The address of the cobo safe module. Cobo safe module must has been created & enabled
+          when import a existing safe wallet.

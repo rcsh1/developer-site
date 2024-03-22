@@ -1,0 +1,12 @@
+oneOf:
+- $ref: './bases/base_wallet_info.yaml'
+- $ref: './mpcs/mpc_wallet_info.yaml'
+- $ref: './smart_contracts/smart_contract_wallet_info.yaml'
+- $ref: './exchanges/exchange_wallet_info.yaml'
+discriminator:
+  propertyName: type
+  mapping:
+    Custodial: '#/components/schemas/CustodialWallet'
+    MPC: '#/components/schemas/MPCWallet'
+    SmartContract: '#/components/schemas/SmartContractWallet'
+    Exchange: '#/components/schemas/ExchangeWallet'

@@ -1,0 +1,17 @@
+description: The request body to create a tss request
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        type:
+          $ref: '../../../schemas/wallets/mpcs/tss_request_type.yaml'
+        target_key_group_id:
+          type: string
+        used_key_group_id:
+          type: string
+        detail_params:
+          $ref: "../../../schemas/wallets/mpcs/tss_request_detail_param.yaml"
+          description: for KeyGen request, this parameters can be null
+
+
