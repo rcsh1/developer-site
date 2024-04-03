@@ -1,0 +1,35 @@
+---
+title: "Address Encodings"
+description: ""
+---
+
+| **Enum** | **Encodings** |
+|:----|:----|
+| 0 | ENCODING_P2PKH |
+| 1 | ENCODING_P2SH_P2WPKH |
+| 2 | ENCODING_BECH32 |
+| 3 | ENCODING_P2PKH_UNCOMPRESSED |
+| 4 | ENCODING_P2SH_P2MS |
+| 5 | ENCODING_P2SH_P2WSH_P2MS |
+| 6 | ENCODING_P2TR |
+
+## BTC
+- Legacy: ENCODING_P2PKH
+- Nested SegWit (P2SH): ENCODING_P2SH_P2WPKH
+- Native SegWit (Bech32):ENCODING_BECH32
+- Taproot: ENCODING_P2TR
+
+## ADA
+- ENCODING_P2PKH
+
+## CFZ
+- old hex address: ENCODING_P2PKH
+- new base32 address: ENCODING_P2SH_P2WPKH(default)
+
+## DASH
+- ENCODING_P2PKH (default)
+- ENCODING_P2PKH_UNCOMPRESSED
+
+Cryptocurrencies that do not support specifying the main chain address format, the default address format is ENCODING_P2PKH (0).
+
+
