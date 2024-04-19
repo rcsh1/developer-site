@@ -34,3 +34,13 @@ description: "Frequently Asked Questions about Transaction Management"
             - **API Call**: Use the "[transaction\_history](/api-references/custody-wallet/transaction\_history)" endpoint to query transaction records for a specific coin and address. Filter the returned data using parameters such as side, max\_id, min\_id, begin\_time, end\_time, and include\_financial. The maximum number of transactions that can be returned is 50.
         </ResponseField>
   </Expandable>
+
+
+ ###  In rare instances where an on-chain transaction that has been successfully confirmed is rolled back, how will Cobo handle the transaction that should have been credited?
+    <Expandable title="Answer">
+        <ResponseField >
+            For Cobo Full Custody: If a transaction has reached the required number of confirmations but is later rolled back due to a hard fork, we will contact you promptly to resolve the issue.
+
+            For Cobo MPC Co-Managed Custody and MPC Lite: The transaction confirmation count serves only as a reference (provided by Cobo). You maintain complete control over your blockchain addresses, enabling you to autonomously manage rolled-back transactions without requiring Cobo's assistance.
+        </ResponseField>
+  </Expandable>
