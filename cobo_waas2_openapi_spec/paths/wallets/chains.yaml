@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Wallets
+  operationId: get_chains
+  summary: List the metadata of chain
+  description: Retrieve a list of chain metadata.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/chain_id_optional.yaml"
+    - $ref: "../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_chains.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

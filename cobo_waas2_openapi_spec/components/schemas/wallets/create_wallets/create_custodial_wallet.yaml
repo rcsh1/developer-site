@@ -1,6 +1,9 @@
 allOf:
   - $ref: './base_create_wallet.yaml'
   - type: object
+    required:
+      - wallet_type
+      - wallet_subtype
     properties:
       wallet_type:
         type: string
@@ -9,5 +12,5 @@ allOf:
       wallet_subtype:
         type: string
         enum:
-          - CustodialAssetWallet
-          - CustodialWeb3Wallet
+          - Asset
+          - Web3

@@ -1,0 +1,15 @@
+parameters:
+  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml"
+post:
+  tags:
+    - Transactions
+  operationId: resend_transaction_by_id
+  summary: Resend a transaction by ID
+  description: Resend a transaction.
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../components/responses/transactions/get_a_transaction.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

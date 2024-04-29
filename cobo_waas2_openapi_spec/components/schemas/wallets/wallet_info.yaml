@@ -4,7 +4,7 @@ oneOf:
 - $ref: './smart_contracts/smart_contract_wallet_info.yaml'
 - $ref: './exchanges/exchange_wallet_info.yaml'
 discriminator:
-  propertyName: type
+  propertyName: wallet_type
   mapping:
     Custodial: '#/components/schemas/CustodialWallet'
     MPC: '#/components/schemas/MPCWallet'

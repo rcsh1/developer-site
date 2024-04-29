@@ -1,0 +1,20 @@
+type: object
+description: The eip1559 fee data for estimate fees or transfer.
+required:
+  - fee_type
+  - standard
+properties:
+  fee_type:
+    $ref: './fee_type.yaml'
+  slow:
+    allOf:
+      - $ref: './base_fee_price_eip1559.yaml'
+      - $ref: './fee_data.yaml'
+  standard:
+    allOf:
+      - $ref: './base_fee_price_eip1559.yaml'
+      - $ref: './fee_data.yaml'
+  fast:
+    allOf:
+      - $ref: './base_fee_price_eip1559.yaml'
+      - $ref: './fee_data.yaml'

@@ -1,0 +1,24 @@
+get:
+  tags:
+    - Transactions
+  operationId: list_transactions
+  summary: List all transactions
+  description: Retrieve a list of transactions.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/transactions/request_id_optional.yaml"
+    - $ref: "../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/transactions/get_transactions.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"

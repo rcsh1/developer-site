@@ -3,7 +3,6 @@ description: The data for token information.
 required:
   - token_id
   - chain_id
-  - asset_id
 properties:
   token_id:
     type: string
@@ -15,6 +14,15 @@ properties:
     description: The blockchain on which the token operates.
     pattern: ^[A-Z]+$
     example: 'ETH'
+  symbol:
+    type: string
+    description: Symbol for the token.
+    pattern: ^[A-Za-z0-9]+$
+    example: "USDT"
+  description:
+    type: string
+    description: The description of the token.
+    example: 'Tether USDT'
   icon_url:
     type: string
     description: URL of the icon image.

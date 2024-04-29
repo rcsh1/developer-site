@@ -22,11 +22,7 @@ put:
   security:
     - CoboAuth: []
   requestBody:
-    description: The request body to update a wallet
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/schemas/wallets/wallet_info.yaml'
+    $ref: '../../components/request_bodies/wallets/update_wallet.yaml'
   responses:
     '200':
       $ref: "../../components/responses/wallets/update_wallet.yaml"

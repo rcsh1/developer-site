@@ -1,0 +1,15 @@
+type: string
+enum:
+  - '*' # all events
+  - wallet.created
+  - wallet.mpc.tss_node.created
+  - transaction.inbound.submitted
+  - transaction.outbound.confirmed
+  - wallet.transfer.created
+  - wallet.transfer.pending_approval
+  - wallet.transfer.confirmed
+  - wallet.smart_contract_call.canceled
+  - wallet.smart_contract_call.rbf
+example: wallet.created
+description: >-
+  The list of supported events. `['*']` indicates that all events are subscribed.

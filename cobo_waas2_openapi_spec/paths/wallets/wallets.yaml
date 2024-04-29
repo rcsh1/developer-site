@@ -35,6 +35,9 @@ get:
   security:
     - CoboAuth: []
   parameters:
+    - $ref: "../../components/parameters/wallets/wallet_type_optional.yaml"
+    - $ref: "../../components/parameters/wallets/wallet_subtype_optional.yaml"
+    - $ref: "../../components/parameters/wallets/mpcs/vault_id_optional.yaml"
     - $ref: "../../components/parameters/pagination/sort_by.yaml"
     - $ref: "../../components/parameters/pagination/direction.yaml"
     - $ref: "../../components/parameters/pagination/limit.yaml"

@@ -1,0 +1,18 @@
+get:
+  tags:
+    - Transactions
+  operationId: get_chain_fee_price
+  summary: Get the fee price data for chain and/or token(Hold, TBD after normalize fee settings)
+  description: Retrieve the fee price data.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/chain_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/transactions/get_chain_fee_price.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

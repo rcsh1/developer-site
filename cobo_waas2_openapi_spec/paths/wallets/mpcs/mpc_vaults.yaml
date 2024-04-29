@@ -7,9 +7,7 @@ get:
   security:
     - CoboAuth: []
   parameters:
-    - $ref: "../../../components/parameters/wallets/mpcs/project_id_required.yaml"
-    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_optional.yaml"
-    - $ref: "../../../components/parameters/wallets/mpcs/vault_name_optional.yaml"
+    - $ref: "../../../components/parameters/wallets/mpcs/project_id_optional.yaml"
   responses:
     '200':
       $ref: "../../../components/responses/wallets/mpcs/get_vaults.yaml"

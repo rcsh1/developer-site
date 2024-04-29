@@ -1,0 +1,43 @@
+type: object
+description: The base data for transfer transaction.
+required:
+  - request_id
+  - request_type
+  - source
+  - token_id
+  - amount
+  - destination
+properties:
+  request_id:
+    type: string
+    description: Unique id of the request.
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  request_type:
+    $ref: '../request_type.yaml'
+  source:
+    $ref: './sources/transfer_source.yaml'
+  token_id:
+    type: string
+    description: ID of the token. Unique in all chains scope.
+    pattern: ^[A-Z]+(_[A-Z0-9]+)?$
+    example: 'ETH_USDT'
+  amount:
+    type: string
+    description: >
+      Transaction value (Note that this is an absolute value.
+      If you trade 1.5 ETH, then the value is 1.5)
+    example: '1.5'
+  destination:
+    $ref: './destinations/transfer_destination.yaml'
+  category_names:
+    type: array
+    description: The category names for transfer.
+    items:
+      type: string
+      example: 'Trading'
+  description:
+    type: string
+    description: The description for transfer.
+    example: 'Transfer from wallet'
+  fee:
+    $ref: '../fees/transaction_fee.yaml'

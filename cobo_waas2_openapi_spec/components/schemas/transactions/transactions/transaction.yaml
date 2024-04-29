@@ -1,0 +1,74 @@
+type: object
+description: The data for transaction information.
+properties:
+  transaction_id:
+    type: string
+    description: Unique transaction ID
+    format: uuid
+    example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
+  wallet_id:
+    type: string
+    description: Wallet ID
+    example: "624ce4e5-e985-4394-a196-fd7752aff96e"
+  request_id:
+    type: string
+    description: Request ID
+    example: "web_send_by_user_327_1610444045047"
+  cobo_id:
+    type: string
+    description: Cobo ID
+    example: "20231213122855000000000000000000"
+  status:
+    $ref: './transaction_status.yaml'
+  sub_status:
+    $ref: './transaction_sub_status.yaml'
+  type:
+    $ref: './transaction_type.yaml'
+  from_type:
+    $ref: './transaction_address_type.yaml'
+  from_address:
+    type: array
+    items:
+      $ref: './transaction_address.yaml'
+  from_info:
+    type: string
+    description: From wallet info
+    example: "MPC Wallet #1"
+  to_type:
+    $ref: './transaction_address_type.yaml'
+  to_address:
+    type: array
+    items:
+      $ref: './transaction_address.yaml'
+  to_info:
+    type: string
+    description: To wallet info
+    example: "DeFi Wallet #1"
+  network:
+    $ref: './network.yaml'
+  txid:
+    type: string
+    example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+  assets:
+    type: array
+    items:
+      $ref: './transaction_asset.yaml'
+  category:
+    type: array
+    items:
+      $ref: './transaction_category.yaml'
+  description:
+    type: string
+    example: "withdrawal to exchange trading account"
+  created_time:
+    type: number
+    description: Transaction creation time
+    example: 1610445878970
+  updated_time:
+    type: number
+    description: Transaction update time
+    example: 1610445878970
+  delegate:
+    type: string
+    description: Transaction delegate address
+    example: "0xdAC17F958D2ee523a2206206994597C13D831ec7"

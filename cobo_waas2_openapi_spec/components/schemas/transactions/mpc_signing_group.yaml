@@ -1,0 +1,13 @@
+type: object
+description: The data for mpc signing key group.
+properties:
+  used_key_group_id:
+    type: string
+    description: Unique id of the using key group.
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  used_node_ids:
+    type: array
+    items:
+      type: string
+      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+      description: The IDs of the tss node participating in the signing. If it is empty, all nodes in the signing key group will participate in the signature.

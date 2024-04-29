@@ -1,0 +1,27 @@
+type: object
+required:
+  - exchange_id
+  - exchange_subtype
+  - exchange_account_id
+properties:
+  exchange_id:
+    $ref: './exchange_id.yaml'
+  exchange_subtype:
+    type: string
+    enum: ['Main', 'Sub']
+    description: >
+      The type of exchange account, which can be either 'Main' or 'Sub'.
+      A 'Main' account typically has full access and control over the funds
+      and settings, while a 'Sub' account might have limited access or be
+      linked to the 'Main' account.
+    example: 'Main'
+  exchange_account_id:
+    type: string
+    description: The linked exchange account id.
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  parent_wallet_id:
+    type: string
+    description: The parent wallet id for this wallet if presented.
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'

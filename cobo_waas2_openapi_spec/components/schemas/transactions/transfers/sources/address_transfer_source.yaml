@@ -1,0 +1,10 @@
+allOf:
+  - $ref: "./base_transfer_source.yaml"
+  - type: object
+    required:
+      - address_str
+    properties:
+      address_str:
+        type: string
+        description: From address
+        example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
