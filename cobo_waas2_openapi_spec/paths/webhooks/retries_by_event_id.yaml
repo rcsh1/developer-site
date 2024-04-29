@@ -1,0 +1,16 @@
+parameters:
+  - $ref: "../../components/parameters/webhooks/event_id_path.yaml"
+post:
+  tags:
+    - Developers - Webhooks
+  description: Retry a failed event by given id.
+  operationId: retry_webhook_event
+  security:
+    - CoboAuth: [ ]
+  responses:
+    '201':
+      $ref: "../../components/responses/webhooks/retry_webhook_event.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

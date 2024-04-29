@@ -1,0 +1,23 @@
+parameters:
+  - $ref: "../../../components/parameters/wallets/exchanges/exchange_id_path.yaml"
+get:
+  tags:
+    - Wallets - Exchange Wallet
+  operationId: get_exchange_supported_assets
+  summary: List the supported assets by exchange id
+  description: Retrieve a list of supported asset.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../../components/parameters/pagination/before.yaml"
+    - $ref: "../../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/get_assets.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../../components/responses/errors/404_not_found.yaml"

@@ -1,0 +1,15 @@
+post:
+  tags:
+    - Transactions
+  operationId: create_smart_contract_call_transaction
+  summary: Create a smart contract call transaction
+  description: Create a transaction to call a smart contract.
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../components/request_bodies/transactions/create_smart_contract_call_transaction.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/transactions/get_a_transaction.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

@@ -1,0 +1,16 @@
+parameters:
+  - $ref: "../../components/parameters/webhooks/event_id_path.yaml"
+get:
+  tags:
+    - Developers - Webhooks
+  description: Get webhook event by give ID.
+  operationId: get_webhook_event
+  security:
+    - CoboAuth: [ ]
+  responses:
+    '200':
+      $ref: "../../components/responses/webhooks/get_webhook_event.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

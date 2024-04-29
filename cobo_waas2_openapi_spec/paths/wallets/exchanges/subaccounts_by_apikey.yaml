@@ -1,0 +1,19 @@
+parameters:
+  - $ref: "../../../components/parameters/wallets/exchanges/exchange_id_path.yaml"
+get:
+  tags:
+    - Wallets - Exchange Wallet
+  operationId: list_sub_accounts_by_apikey
+  summary: List exchange sub accounts by apikey
+  description: Retrieve a list of exchange sub accounts.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/wallets/exchanges/apikey_optional.yaml"
+    - $ref: "../../../components/parameters/wallets/exchanges/secret_optional.yaml"
+    - $ref: "../../../components/parameters/wallets/exchanges/passphrase_optional.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/exchanges/get_sub_account_ids.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"

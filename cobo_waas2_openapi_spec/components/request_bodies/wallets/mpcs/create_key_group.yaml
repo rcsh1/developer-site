@@ -3,6 +3,11 @@ content:
   application/json:
     schema:
       type: object
+      required:
+        - group_type
+        - node_count
+        - threshold
+        - key_holders
       properties:
         group_type:
           $ref: '../../../schemas/wallets/mpcs/key_group_type.yaml'

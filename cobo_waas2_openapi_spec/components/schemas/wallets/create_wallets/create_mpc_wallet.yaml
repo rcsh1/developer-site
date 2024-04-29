@@ -1,6 +1,10 @@
 allOf:
   - $ref: './base_create_wallet.yaml'
   - type: object
+    required:
+      - wallet_type
+      - wallet_subtype
+      - vault_id
     properties:
       wallet_type:
         type: string
@@ -9,8 +13,8 @@ allOf:
       wallet_subtype:
         type: string
         enum:
-          - MpcOrganizationControlledWallet
-          - MpcUserControlledWallet
+          - Org-Controlled
+          - User-Controlled
       vault_id:
         type: string
         description: "The owning mpc vault id of the mpc wallet."

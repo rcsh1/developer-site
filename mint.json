@@ -4,10 +4,10 @@
   "metadata": {
     "og:title": "Cobo Developer Hub",
     "og:description": "An institutional-grade, open platform for Web3 developers. Browse our resources to build innovative blockchain products and secure crypto custody solutions."
-   },
+  },
   "analytics": {
     "ga4": {
-        "measurementId": "G-L7HJ1E4SJW"
+      "measurementId": "G-L7HJ1E4SJW"
     }
   },
   "logo": {
@@ -21,6 +21,10 @@
     "light": "#4D9CFF",
     "dark": "#0050B4"
   },
+  "versions": [
+    "V1",
+    "V2"
+  ],
   "topbarLinks": [
     {
       "name": "Explore Cobo",
@@ -161,9 +165,10 @@
     {
       "group": "Overview",
       "pages": [
-        "api-references/overview/authentication",
-        "api-references/overview/playground"
-      ]
+        "api-references/v1/overview/authentication",
+        "api-references/v1/overview/playground"
+      ],
+      "version": "V1"
     },
     {
       "group": "SDKs",
@@ -204,42 +209,44 @@
         "faqs/api-callback"
       ]
     },
-  {
-    "group": "Wallet, Address and Transactions",
-    "pages": [
-      "guides/howtos/deposit-and-withdrawal-transaction-status",
-      "guides/howtos/create-manage-deposit-addresses",
-      "guides/howtos/querying-deposit-transactions",
-      "guides/howtos/creating-withdrawal-transactions",
-      "guides/howtos/manage-balance-and-transactions"
-    ]
+    {
+      "group": "Wallet, Address and Transactions",
+      "pages": [
+        "guides/howtos/deposit-and-withdrawal-transaction-status",
+        "guides/howtos/create-manage-deposit-addresses",
+        "guides/howtos/querying-deposit-transactions",
+        "guides/howtos/creating-withdrawal-transactions",
+        "guides/howtos/manage-balance-and-transactions"
+      ]
     },
     {
-    "group": "Events and Notifications",
-    "pages": [
-      "guides/howtos/configure-api-callback",
-      "guides/howtos/api-error-handling-and-reporting"
-    ]
+      "group": "Events and Notifications",
+      "pages": [
+        "guides/howtos/configure-api-callback",
+        "guides/howtos/api-error-handling-and-reporting"
+      ]
     },
     {
-    "group": "MPC Wallets Specific",
-    "pages": [
-      "guides/howtos/auto-token-sweeping-for-mpc-wallets",
-      "guides/howtos/creating-web3-transactions",
-      "guides/howtos/estimate-transaction-fees",
-      "guides/howtos/rbf"
-    ]
+      "group": "MPC Wallets Specific",
+      "pages": [
+        "guides/howtos/auto-token-sweeping-for-mpc-wallets",
+        "guides/howtos/creating-web3-transactions",
+        "guides/howtos/estimate-transaction-fees",
+        "guides/howtos/rbf"
+      ]
     },
     {
-    "group": "Security Best Practices",
-    "pages": [
-      "guides/howtos/api-security-key",
-      "guides/howtos/api-configuration-best-practices"]
+      "group": "Security Best Practices",
+      "pages": [
+        "guides/howtos/api-security-key",
+        "guides/howtos/api-configuration-best-practices"
+      ]
     },
     {
-    "group": "Working with UTXO Model",
-    "pages": [
-      "guides/howtos/creating-utxo-transactions"]
+      "group": "Working with UTXO Model",
+      "pages": [
+        "guides/howtos/creating-utxo-transactions"
+      ]
     },
     {
       "group": "Custodial Wallet APIs",
@@ -247,82 +254,89 @@
         {
           "group": "Account",
           "pages": [
-            "api-references/custody-wallet/org_info",
-            "api-references/custody-wallet/coin_info",
-            "api-references/custody-wallet/get_supported_coins",
-            "api-references/custody-wallet/new_address",
-            "api-references/custody-wallet/new_addresses",
-            "api-references/custody-wallet/address_info",
-            "api-references/custody-wallet/addresses_info",
-            "api-references/custody-wallet/is_valid_address",
-            "api-references/custody-wallet/address_history"
-          ]
+            "api-references/v1/custody-wallet/org_info",
+            "api-references/v1/custody-wallet/coin_info",
+            "api-references/v1/custody-wallet/get_supported_coins",
+            "api-references/v1/custody-wallet/new_address",
+            "api-references/v1/custody-wallet/new_addresses",
+            "api-references/v1/custody-wallet/address_info",
+            "api-references/v1/custody-wallet/addresses_info",
+            "api-references/v1/custody-wallet/is_valid_address",
+            "api-references/v1/custody-wallet/address_history"
+          ],
+          "version": "V1"
         },
         {
           "group": "Loop Alliance",
           "pages": [
-            "api-references/custody-wallet/internal_address_info",
-            "api-references/custody-wallet/internal_address_info_batch",
-            "api-references/custody-wallet/loop-explorer"
-          ]
+            "api-references/v1/custody-wallet/internal_address_info",
+            "api-references/v1/custody-wallet/internal_address_info_batch",
+            "api-references/v1/custody-wallet/loop-explorer"
+          ],
+          "version": "V1"
         },
         {
           "group": "Transactions",
           "pages": [
-            "api-references/custody-wallet/transaction",
-            "api-references/custody-wallet/transactions_by_id",
-            "api-references/custody-wallet/transactions_by_request_ids",
-            "api-references/custody-wallet/transaction_by_txid",
-            "api-references/custody-wallet/transactions_by_time",
-            "api-references/custody-wallet/transactions_by_time_ex",
-            "api-references/custody-wallet/pending_transaction",
-            "api-references/custody-wallet/pending_transactions",
-            "api-references/custody-wallet/transaction_history"
-          ]
+            "api-references/v1/custody-wallet/transaction",
+            "api-references/v1/custody-wallet/transactions_by_id",
+            "api-references/v1/custody-wallet/transactions_by_request_ids",
+            "api-references/v1/custody-wallet/transaction_by_txid",
+            "api-references/v1/custody-wallet/transactions_by_time",
+            "api-references/v1/custody-wallet/transactions_by_time_ex",
+            "api-references/v1/custody-wallet/pending_transaction",
+            "api-references/v1/custody-wallet/pending_transactions",
+            "api-references/v1/custody-wallet/transaction_history"
+          ],
+          "version": "V1"
         },
         {
           "group": "Withdraw",
           "pages": [
-            "api-references/custody-wallet/new_withdraw_request",
-            "api-references/custody-wallet/withdraw_info_by_request_id"
-          ]
+            "api-references/v1/custody-wallet/new_withdraw_request",
+            "api-references/v1/custody-wallet/withdraw_info_by_request_id"
+          ],
+          "version": "V1"
         },
         {
           "group": "Staking",
           "pages": [
-            "api-references/custody-wallet/staking/staking_product",
-            "api-references/custody-wallet/staking/staking_products",
-            "api-references/custody-wallet/staking/staking_stake",
-            "api-references/custody-wallet/staking/staking_unstake",
-            "api-references/custody-wallet/staking/stakings",
-            "api-references/custody-wallet/staking/unstakings",
-            "api-references/custody-wallet/staking/staking_history"
-          ]
+            "api-references/v1/custody-wallet/staking/staking_product",
+            "api-references/v1/custody-wallet/staking/staking_products",
+            "api-references/v1/custody-wallet/staking/staking_stake",
+            "api-references/v1/custody-wallet/staking/staking_unstake",
+            "api-references/v1/custody-wallet/staking/stakings",
+            "api-references/v1/custody-wallet/staking/unstakings",
+            "api-references/v1/custody-wallet/staking/staking_history"
+          ],
+          "version": "V1"
         },
         {
           "group": "Trading",
           "pages": [
-            "api-references/custody-wallet/trading/trading_withdraw",
-            "api-references/custody-wallet/trading/trading_withdraw_info",
-            "api-references/custody-wallet/trading/trading_deposit",
-            "api-references/custody-wallet/trading/trading_deposit_info",
-            "api-references/custody-wallet/trading/trading_transfer",
-            "api-references/custody-wallet/trading/trading_transfer_info"
-          ]
+            "api-references/v1/custody-wallet/trading/trading_withdraw",
+            "api-references/v1/custody-wallet/trading/trading_withdraw_info",
+            "api-references/v1/custody-wallet/trading/trading_deposit",
+            "api-references/v1/custody-wallet/trading/trading_deposit_info",
+            "api-references/v1/custody-wallet/trading/trading_transfer",
+            "api-references/v1/custody-wallet/trading/trading_transfer_info"
+          ],
+          "version": "V1"
         },
         {
           "group": "Gas Station",
           "pages": [
-            "api-references/custody-wallet/get_gas_station_balance",
-            "api-references/custody-wallet/coin_info",
-            "api-references/custody-wallet/transaction",
-            "api-references/custody-wallet/transactions_by_request_ids",
-            "api-references/custody-wallet/transaction_by_txid",
-            "api-references/custody-wallet/transactions_by_time",
-            "api-references/custody-wallet/transactions_by_id"
+            "api-references/v1/custody-wallet/get_gas_station_balance",
+            "api-references/v1/custody-wallet/coin_info",
+            "api-references/v1/custody-wallet/transaction",
+            "api-references/v1/custody-wallet/transactions_by_request_ids",
+            "api-references/v1/custody-wallet/transaction_by_txid",
+            "api-references/v1/custody-wallet/transactions_by_time",
+            "api-references/v1/custody-wallet/transactions_by_id"
           ]
         }
-      ]
+      ],
+      "version": "V1"
     },
     {
       "group": "MPC Wallet APIs",
@@ -330,85 +344,182 @@
         {
           "group": "Account",
           "pages": [
-            "api-references/mpc-wallet/mpc_get_supported_chains",
-            "api-references/mpc-wallet/mpc_get_supported_coins",
-            "api-references/mpc-wallet/mpc_coin_info",
-            "api-references/mpc-wallet/mpc_get_wallet_supported_coins",
-            "api-references/mpc-wallet/mpc_is_valid_address",
-            "api-references/mpc-wallet/mpc_generate_addresses",
-            "api-references/mpc-wallet/mpc_generate_address_memo",
-            "api-references/mpc-wallet/mpc_update_address_description",
-            "api-references/mpc-wallet/mpc_list_addresses",
-            "api-references/mpc-wallet/mpc_get_balance",
-            "api-references/mpc-wallet/mpc_list_balances",
-            "api-references/mpc-wallet/mpc_list_spendable",
-            "api-references/mpc-wallet/mpc_estimate_fee",
-            "api-references/mpc-wallet/mpc_get_max_send_amount",
-            "api-references/mpc-wallet/mpc_get_supported_nft_collections"
-          ]
+            "api-references/v1/mpc-wallet/mpc_get_supported_chains",
+            "api-references/v1/mpc-wallet/mpc_get_supported_coins",
+            "api-references/v1/mpc-wallet/mpc_coin_info",
+            "api-references/v1/mpc-wallet/mpc_get_wallet_supported_coins",
+            "api-references/v1/mpc-wallet/mpc_is_valid_address",
+            "api-references/v1/mpc-wallet/mpc_generate_addresses",
+            "api-references/v1/mpc-wallet/mpc_generate_address_memo",
+            "api-references/v1/mpc-wallet/mpc_update_address_description",
+            "api-references/v1/mpc-wallet/mpc_list_addresses",
+            "api-references/v1/mpc-wallet/mpc_get_balance",
+            "api-references/v1/mpc-wallet/mpc_list_balances",
+            "api-references/v1/mpc-wallet/mpc_list_spendable",
+            "api-references/v1/mpc-wallet/mpc_estimate_fee",
+            "api-references/v1/mpc-wallet/mpc_get_max_send_amount",
+            "api-references/v1/mpc-wallet/mpc_get_supported_nft_collections"
+          ],
+          "version": "V1"
         },
         {
           "group": "Transaction",
           "pages": [
-            "api-references/mpc-wallet/mpc_list_transactions",
-            "api-references/mpc-wallet/mpc_transactions_by_request_ids",
-            "api-references/mpc-wallet/mpc_transactions_by_cobo_ids",
-            "api-references/mpc-wallet/mpc_transactions_by_tx_hash"
-          ]
+            "api-references/v1/mpc-wallet/mpc_list_transactions",
+            "api-references/v1/mpc-wallet/mpc_transactions_by_request_ids",
+            "api-references/v1/mpc-wallet/mpc_transactions_by_cobo_ids",
+            "api-references/v1/mpc-wallet/mpc_transactions_by_tx_hash"
+          ],
+          "version": "V1"
         },
         {
           "group": "Withdraw",
           "pages": [
-            "api-references/mpc-wallet/mpc_create_transaction",
-            "api-references/mpc-wallet/mpc_speedup_transaction",
-            "api-references/mpc-wallet/mpc_drop_transaction",
-            "api-references/mpc-wallet/mpc_retry_double_check"
-          ]
+            "api-references/v1/mpc-wallet/mpc_create_transaction",
+            "api-references/v1/mpc-wallet/mpc_speedup_transaction",
+            "api-references/v1/mpc-wallet/mpc_drop_transaction",
+            "api-references/v1/mpc-wallet/mpc_retry_double_check"
+          ],
+          "version": "V1"
         },
         {
           "group": "Tss Node",
           "pages": [
-            "api-references/mpc-wallet/mpc_list_tss_node_requests",
-            "api-references/mpc-wallet/mpc_list_tss_node"
-          ]
+            "api-references/v1/mpc-wallet/mpc_list_tss_node_requests",
+            "api-references/v1/mpc-wallet/mpc_list_tss_node"
+          ],
+          "version": "V1"
         },
         {
           "group": "Bind Auth",
           "pages": [
-            "api-references/mpc-wallet/auth_create_binding",
-            "api-references/mpc-wallet/auth_query_binding",
-            "api-references/mpc-wallet/auth_query_user_auth",
-            "api-references/mpc-wallet/auth_bind_addresses",
-            "api-references/mpc-wallet/auth_change_binding",
-            "api-references/mpc-wallet/auth_unbind_binding",
-            "api-references/mpc-wallet/auth_query_statement"
-          ]
+            "api-references/v1/mpc-wallet/auth_create_binding",
+            "api-references/v1/mpc-wallet/auth_query_binding",
+            "api-references/v1/mpc-wallet/auth_query_user_auth",
+            "api-references/v1/mpc-wallet/auth_bind_addresses",
+            "api-references/v1/mpc-wallet/auth_change_binding",
+            "api-references/v1/mpc-wallet/auth_unbind_binding",
+            "api-references/v1/mpc-wallet/auth_query_statement"
+          ],
+          "version": "V1"
         },
         {
           "group": "Gas Station",
           "pages": [
-            "api-references/custody-wallet/get_gas_station_balance",
-            "api-references/custody-wallet/coin_info",
-            "api-references/custody-wallet/transaction",
-            "api-references/custody-wallet/transactions_by_request_ids",
-            "api-references/custody-wallet/transaction_by_txid",
-            "api-references/custody-wallet/transactions_by_time",
-            "api-references/custody-wallet/transactions_by_id"
+            "api-references/v1/custody-wallet/get_gas_station_balance",
+            "api-references/v1/custody-wallet/coin_info",
+            "api-references/v1/custody-wallet/transaction",
+            "api-references/v1/custody-wallet/transactions_by_request_ids",
+            "api-references/v1/custody-wallet/transaction_by_txid",
+            "api-references/v1/custody-wallet/transactions_by_time",
+            "api-references/v1/custody-wallet/transactions_by_id"
           ]
         }
-      ]
+      ],
+      "version": "V1"
     },
     {
       "group": "Development",
       "pages": [
-        "api-references/development/error-codes",
-        "api-references/development/address-encoding",
-        "api-references/development/transaction-notification",
-        "api-references/development/withdrawal-confirmation",
-        "api-references/development/callback-signature",
-        "api-references/development/testing",
-        "api-references/development/changelog"
-      ]
+        "api-references/v1/development/error-codes",
+        "api-references/v1/development/address-encoding",
+        "api-references/v1/development/transaction-notification",
+        "api-references/v1/development/withdrawal-confirmation",
+        "api-references/v1/development/callback-signature",
+        "api-references/v1/development/testing",
+        "api-references/v1/development/changelog"
+      ],
+      "version": "V1"
+    },
+    {
+      "group": "Wallets",
+      "pages": [
+        "api-references/v2/wallets/list-the-metadata-of-chain",
+        "api-references/v2/wallets/list-the-metadata-of-assets",
+        "api-references/v2/wallets/list-the-metadata-of-tokens",
+        "api-references/v2/wallets/list-the-supported-chains-by-wallet-subtype",
+        "api-references/v2/wallets/list-the-supported-tokens-by-wallet-subtype-and-chain-id-if-specified",
+        "api-references/v2/wallets/list-the-token-balance-in-the-walletsto-be-specific",
+        "api-references/v2/wallets/list-the-token-balance-by-address-in-the-walletsto-be-specific",
+        "api-references/v2/wallets/list-all-wallets",
+        "api-references/v2/wallets/create-new-wallet",
+        "api-references/v2/wallets/get-wallet-information-by-id",
+        "api-references/v2/wallets/update-wallet-by-id",
+        "api-references/v2/wallets/delete-a-wallet-by-id",
+        "api-references/v2/wallets/list-the-spendable-utxo",
+        "api-references/v2/wallets/get-max-sendable-vaule",
+        "api-references/v2/wallets/list-wallet-addresses-by-wallet-id",
+        "api-references/v2/wallets/add-address-to-a-wallet",
+        "api-references/v2/wallets/get-address-information-by-id",
+        "api-references/v2/wallets/get-the-given-address-validity-for-token"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Wallets - MPC Wallet",
+      "pages": [
+        "api-references/v2/wallets--mpc-wallet/list-all-cobo-key-holders",
+        "api-references/v2/wallets--mpc-wallet/list-all-mpc-projects",
+        "api-references/v2/wallets--mpc-wallet/create-a-mpc-project",
+        "api-references/v2/wallets--mpc-wallet/get-a-mpc-project",
+        "api-references/v2/wallets--mpc-wallet/update-a-mpc-project",
+        "api-references/v2/wallets--mpc-wallet/list-all-mpc-vaults",
+        "api-references/v2/wallets--mpc-wallet/create-a-mpc-vault",
+        "api-references/v2/wallets--mpc-wallet/get-a-mpc-vault",
+        "api-references/v2/wallets--mpc-wallet/modify-a-mpc-vault",
+        "api-references/v2/wallets--mpc-wallet/list-all-mpc-key-groups",
+        "api-references/v2/wallets--mpc-wallet/create-a-mpc-key-group",
+        "api-references/v2/wallets--mpc-wallet/get-a-mpc-key-group",
+        "api-references/v2/wallets--mpc-wallet/update-a-mpc-key-group",
+        "api-references/v2/wallets--mpc-wallet/delete-a-mpc-key-group",
+        "api-references/v2/wallets--mpc-wallet/list-tss-request-information-of-a-vault",
+        "api-references/v2/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group",
+        "api-references/v2/wallets--mpc-wallet/get-a-tss-request",
+        "api-references/v2/wallets--mpc-wallet/cancel-tss-request"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Wallets - Exchange Wallet",
+      "pages": [
+        "api-references/v2/wallets--exchange-wallet/list-the-supported-assets-by-exchange-id",
+        "api-references/v2/wallets--exchange-wallet/list-the-supported-chains-by-exchange-id-and-asset-id",
+        "api-references/v2/wallets--exchange-wallet/list-the-asset-balance-in-exchange-wallet",
+        "api-references/v2/wallets--exchange-wallet/list-of-exchanges",
+        "api-references/v2/wallets--exchange-wallet/list-exchange-sub-accounts-by-wallet-id",
+        "api-references/v2/wallets--exchange-wallet/link-exchange-sub-accounts-by-wallet-id",
+        "api-references/v2/wallets--exchange-wallet/list-exchange-sub-accounts-by-apikey"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Transactions",
+      "pages": [
+        "api-references/v2/transactions/get-the-fee-price-data-for-chain-andor-tokenhold-tbd-after-normalize-fee-settings",
+        "api-references/v2/transactions/estimate-the-fee-for-transaction",
+        "api-references/v2/transactions/create-a-transfer-transaction",
+        "api-references/v2/transactions/create-a-smart-contract-call-transaction",
+        "api-references/v2/transactions/create-a-sign-message-transaction",
+        "api-references/v2/transactions/list-all-transactions",
+        "api-references/v2/transactions/get-transaction-information-by-id",
+        "api-references/v2/transactions/update-transaction-by-id",
+        "api-references/v2/transactions/drop-a-transaction-by-id",
+        "api-references/v2/transactions/resend-a-transaction-by-id",
+        "api-references/v2/transactions/speed-up-a-transaction-by-id",
+        "api-references/v2/transactions/retry-up-a-transaction-double-check-by-id"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Developers - Webhooks",
+      "pages": [
+        "api-references/v2/developers--webhooks/get-webhookseventsdefinitions",
+        "api-references/v2/developers--webhooks/get-webhooksevents",
+        "api-references/v2/developers--webhooks/get-webhooksevents-1",
+        "api-references/v2/developers--webhooks/get-webhooksevents-logs",
+        "api-references/v2/developers--webhooks/post-webhooksevents-retries"
+      ],
+      "version": "V2"
     }
   ],
   "footerSocials": {

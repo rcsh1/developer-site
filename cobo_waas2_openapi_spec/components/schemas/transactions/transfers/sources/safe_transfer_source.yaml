@@ -1,0 +1,10 @@
+allOf:
+  - $ref: "./address_transfer_source.yaml"
+  - type: object
+    required:
+      - delegate
+    properties:
+      delegate:
+        type: string
+        description: Transaction delegate address
+        example: "0xdAC17F958D2ee523a2206206994597C13D831ec7"

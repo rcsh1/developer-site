@@ -1,0 +1,14 @@
+description: Get webhook event definitions successfully.
+content:
+  application/json:
+    schema:
+      type: array
+      items:
+        type: object
+        properties:
+          event_type:
+            type: string
+            example: "wallet.created"
+          description:
+            type: string
+            example: "Occurred when a wallet is created"

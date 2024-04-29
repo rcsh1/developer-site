@@ -1,0 +1,15 @@
+type: object
+description: The estimated fee amount in fee_coin.
+required:
+  - fee_type
+  - fee_token_id
+properties:
+  fee_type:
+    $ref: './fee_type.yaml'
+  fee_token_id:
+    type: string
+    description: ID of the fee token. Unique in all chains scope.
+    pattern: ^[A-Z]+(_[A-Z0-9]+)?$
+    example: 'ETH_USDT'
+allOf:
+  - $ref: './fee_amount.yaml'

@@ -1,0 +1,12 @@
+type: string
+enum:
+  - Success
+  - Retrying
+  - Failed
+example: Success
+description: >-
+  Possible values for the webhook event status:
+
+  - `Success`: The event has been delivered, meaning that the webhook endpoint has received the event and responded successfully.
+  - `Retrying`: The event has been delivered, but the webhook endpoint has not responded successfully. The event will be retried.
+  - `Failed`: The event has been delivered, but the webhook endpoint has responded with an error. The event will not be retried.

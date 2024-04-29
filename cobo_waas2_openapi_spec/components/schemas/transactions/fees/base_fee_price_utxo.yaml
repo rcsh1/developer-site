@@ -1,0 +1,15 @@
+type: object
+description: The legacy fee price for estimate fees or transfer.
+required:
+  - fee_token_id
+  - fee_rate
+properties:
+  fee_token_id:
+    type: string
+    description: ID of the fee token. Unique in all chains scope.
+    pattern: ^[A-Z]+(_[A-Z0-9]+)?$
+    example: 'ETH_USDT'
+  fee_rate:
+    type: string
+    description: The fee rate, unit sat/vB.
+    example: '50'

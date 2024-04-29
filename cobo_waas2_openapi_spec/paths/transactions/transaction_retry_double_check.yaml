@@ -1,0 +1,16 @@
+parameters:
+  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml"
+post:
+  tags:
+    - Transactions
+  operationId: retry_transaction_double_check_by_id
+  summary: Retry up a transaction double-check by ID
+  description: Retry a transaction double-check.
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      # TBD
+      $ref: "../../components/responses/transactions/get_a_transaction.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

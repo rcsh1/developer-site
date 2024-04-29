@@ -1,0 +1,10 @@
+allOf:
+  - $ref: "./base_transfer_source.yaml"
+  - type: object
+    required:
+      - sub_wallet_id
+    properties:
+      sub_wallet_id:
+        type: string
+        description: Exchange trading account or any sub wallet info for transfer.
+        example: 'Asset'

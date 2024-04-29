@@ -1,0 +1,20 @@
+type: object
+description: Settings details for the exchange
+required:
+  - exchange_id
+  - supported_sub_wallet_ids
+properties:
+  exchange_id:
+    $ref: './exchange_id.yaml'
+  subtitle:
+    type: string
+    description: Introduction of the supported features of this exchange.
+    example: Sub Account & Trading Account
+  supported_sub_wallet_ids:
+    type: array
+    description: The trading accounts(sub_wallet_ids) supported for this exchange.
+    items:
+      type: string
+    example:
+      - SPOT
+      - FUTURE

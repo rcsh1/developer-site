@@ -2,7 +2,7 @@ allOf:
   - $ref: "../bases/base_wallet_info.yaml"
   - type: object
     properties:
-      chain:
+      chain_id:
         type: string
         description: The chain the wallet is on.
         example: "ETH"
@@ -10,20 +10,3 @@ allOf:
         type: string
         description: The label of the wallet.
         example: "My Wallet"
-      value:
-        type: number
-        format: double
-        description: The value of the wallet in USD.
-      last_activity_timestamp:
-        type: integer
-        description: The last time the wallet was active.
-      supported_operation_types:
-        type: array
-        items:
-          $ref: "./operation_type.yaml"
-        description: The operation types supported by the wallet.
-      enabled_operation_types:
-        type: array
-        items:
-          $ref: "./operation_type.yaml"
-        description: The operation types enabled by the wallet.

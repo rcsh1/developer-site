@@ -1,0 +1,16 @@
+type: object
+description: The legacy fee price for estimate fees or transfer.
+required:
+  - fee_token_id
+  - gas_price
+properties:
+  fee_token_id:
+    type: string
+    description: ID of the fee token. Unique in all chains scope.
+    pattern: ^[A-Z]+(_[A-Z0-9]+)?$
+    example: 'ETH_USDT'
+  gas_price:
+    type: string
+    description: The Price of Gas, unit GWei.
+    example: '1'
+

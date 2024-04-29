@@ -1,0 +1,19 @@
+type: object
+description: The legacy fee data for estimate fees or transfer.
+required:
+  - fee_type
+properties:
+  fee_type:
+    $ref: './fee_type.yaml'
+  slow:
+    allOf:
+      - $ref: './base_fee_price_legacy.yaml'
+      - $ref: './fee_data.yaml'
+  standard:
+    allOf:
+      - $ref: './base_fee_price_legacy.yaml'
+      - $ref: './fee_data.yaml'
+  fast:
+    allOf:
+      - $ref: './base_fee_price_legacy.yaml'
+      - $ref: './fee_data.yaml'

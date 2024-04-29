@@ -1,0 +1,44 @@
+type: object
+description: The data for webhook event log.
+required:
+  - id
+  - created_timestamp
+  - status
+  - request_headers
+  - request_body
+  - success
+properties:
+  id:
+    description: The unique identifier of the log.
+    type: string
+    format: uuid
+    example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
+  created_timestamp:
+    description: Time at which the object was created. Measured in seconds since the Unix epoch.
+    type: integer
+    example: 1701396866000
+  request_headers:
+    type: object
+    description: The request headers of the webhook event.
+    example: '{"Content-Type": "application/json"}'
+  request_body:
+    $ref: 'event.yaml'
+  response_body:
+    type: object
+    description: The response body of the webhook event.
+  response_status_code:
+    type: integer
+    description: The response status code of the webhook event.
+    example: 200
+  response_time:
+    type: integer
+    description: The response time of the webhook event in milliseconds.
+    example: 100
+  success:
+    type: boolean
+    description: The success status of the webhook event.
+    example: true
+  failure_reason:
+    type: string
+    description: The reason of the webhook event failure.
+    example: 'The webhook endpoint is not reachable.'

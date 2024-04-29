@@ -1,0 +1,8 @@
+oneOf:
+- $ref: './transfers/transfer.yaml'
+- $ref: './smart_contract_call.yaml'
+discriminator:
+  propertyName: request_type
+  mapping:
+    Transfer: '#/components/schemas/Transfer'
+    Call: '#/components/schemas/SmartContractCall'

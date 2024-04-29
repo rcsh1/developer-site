@@ -1,0 +1,15 @@
+post:
+  tags:
+    - Transactions
+  operationId: create_sign_message_transaction
+  summary: Create a sign message transaction
+  description: Create a transaction to sign message.
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../components/request_bodies/transactions/create_sign_message_transaction.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/transactions/get_a_transaction.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

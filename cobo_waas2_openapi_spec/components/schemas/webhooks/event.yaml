@@ -1,0 +1,46 @@
+type: object
+description: The data for webhook event.
+required:
+  - id
+  - url
+  - created_timestamp
+  - type
+  - data
+  - status
+properties:
+  id:
+    description: The unique identifier of the event.
+    type: string
+    format: uuid
+    example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
+  url:
+    description: The URL of the webhook endpoint.
+    maxLength: 500
+    type: string
+    format: url
+    example: 'https://example.com/webhook'
+  created_timestamp:
+    description: Time at which the object was created. Measured in seconds since the Unix epoch.
+    type: integer
+    example: 1701396866000
+  type:
+     $ref: 'event_type.yaml'
+  data:
+    type: object
+    oneOf:
+      - $ref: '../wallets/smart_contracts/smart_contract_wallet_info.yaml'
+      - $ref: '../transactions/transactions/transaction.yaml'
+  status:
+      $ref: 'event_status.yaml'
+  next_retry_timestamp:
+    description: >-
+      The timestamp of the next retry. This field is only present when the
+      event status is `Retrying`.
+    type: integer
+    example: 1701396866000
+  retries_left:
+    description: >-
+      The number of retries left. This field is only present when the
+      event status is `Retrying`.
+    type: integer
+    example: 3

@@ -12,12 +12,42 @@ allOf:
         pattern: "^0x[a-fA-F0-9]{40}$"
         example: '0x1234567890123456789012345678901234567890'
         description: The address of the smart contract wallet.
-      cobo_safe_module_address:
+      owners:
+        type: array
+        items:
+          type: string
+          format: address
+          pattern: "^0x[a-fA-F0-9]{40}$"
+          example: '0x1234567890123456789012345678901234567890'
+        description: >-
+          The owners of the smart contract wallet. This MUST be provided when user want to
+          create a new safe wallet.
+      threshold:
+        type: integer
+        minimum: 1
+        example: 2
+        description: >-
+          The threshold of required confirmations for the smart contract wallet. This MUST be provided when user want to
+          create a new safe wallet.
+      cobo_safe_address:
         type: string
         format: address
         pattern: "^0x[a-fA-F0-9]{40}$"
         example: '0x1234567890123456789012345678901234567890'
         description: The address of the cobo safe module.
-      cobo_safe_enabled:
-        type: boolean
-        description: Whether the cobo safe module is enabled.
+      initiator_wallet_id:
+        type: string
+        format: uuid
+        example: '123e4567-e89b-12d3-a456-426614174000'
+        description: >-
+          The wallet id of the initiator. This is required when user want to create a new safe wallet.
+      initiator_wallet_type:
+        type: string
+        example: 'MPC'
+        description: >-
+          The wallet type of the initiator. This is required when user want to create a new safe wallet.
+      initiator_wallet_address:
+        type: string
+        example: '0x1234567890123456789012345678901234567890'
+        description: >-
+          The wallet address of the initiator. This is required when user want to create a new safe wallet.

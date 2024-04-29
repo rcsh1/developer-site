@@ -1,0 +1,19 @@
+type: object
+description: The UTXO fee for transfer.
+required:
+  - fee_type
+properties:
+  fee_type:
+    $ref: './fee_type.yaml'
+  slow:
+    allOf:
+      - $ref: './base_fee_price_utxo.yaml'
+      - $ref: './fee_amount.yaml'
+  standard:
+    allOf:
+      - $ref: './base_fee_price_utxo.yaml'
+      - $ref: './fee_amount.yaml'
+  fast:
+    allOf:
+      - $ref: './base_fee_price_utxo.yaml'
+      - $ref: './fee_amount.yaml'

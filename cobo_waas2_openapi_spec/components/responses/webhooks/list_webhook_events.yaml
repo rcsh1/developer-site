@@ -1,0 +1,12 @@
+description: Successfully listed of webhook events.
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        data:
+          items:
+            $ref: '../../schemas/webhooks/event.yaml'
+          type: array
+        pagination:
+          $ref: '../../schemas/pagination/metadata.yaml'
