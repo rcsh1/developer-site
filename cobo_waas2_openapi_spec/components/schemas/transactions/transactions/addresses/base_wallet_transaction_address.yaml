@@ -1,0 +1,10 @@
+allOf:
+  - $ref: './base_transaction_address.yaml'
+  - type: object
+    required:
+      - wallet_id
+    properties:
+      wallet_id:
+        type: string
+        description: Unique id of the wallet.
+        example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'

@@ -13,24 +13,3 @@ get:
       $ref: "../../components/responses/transactions/get_a_transaction.yaml"
     '404':
       $ref: "../../components/responses/errors/404_not_found.yaml"
-put:
-  tags:
-    - Transactions
-  operationId: update_transaciton_by_id
-  summary: Update transaction by ID
-  description: Update information of a transaction.
-  security:
-    - CoboAuth: []
-  requestBody:
-    description: The request body to update a address
-    content:
-      application/json:
-        schema:
-          $ref: '../../components/schemas/transactions/transactions/transaction_details.yaml'
-  responses:
-    '200':
-      $ref: "../../components/responses/transactions/get_a_transaction.yaml"
-    '400':
-      $ref: "../../components/responses/errors/400_bad_request.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"

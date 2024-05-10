@@ -154,7 +154,7 @@ paths:
     $ref: "./paths/transactions/transfer.yaml"
   /transactions/call:
     $ref: "./paths/transactions/call.yaml"
-  /transactions/sign_message:
+  /transactions/sign:
     $ref: "./paths/transactions/sign.yaml"
   /transactions:
     $ref: "./paths/transactions/transactions.yaml"
@@ -178,8 +178,8 @@ paths:
     $ref: "./paths/webhooks/event_by_id.yaml"
   /webhooks/events/{event_id}/logs:
     $ref: "./paths/webhooks/logs_by_event_id.yaml"
-  /webhooks/events/{event_id}/retries:
-    $ref: "./paths/webhooks/retries_by_event_id.yaml"
+  /webhooks/events/{event_id}/retry:
+    $ref: "./paths/webhooks/retry_by_event_id.yaml"
 
 components:
   schemas:
@@ -216,7 +216,7 @@ components:
       $ref: "./components/schemas/wallets/bases/base_wallet_info.yaml"
     MPCWalletInfo:
       $ref: "./components/schemas/wallets/mpcs/mpc_wallet_info.yaml"
-    SmartContractInfo:
+    SmartContractWalletInfo:
       $ref: "./components/schemas/wallets/smart_contracts/smart_contract_wallet_info.yaml"
     ExchangeWalletInfo:
       $ref: "./components/schemas/wallets/exchanges/exchange_wallet_info.yaml"
@@ -232,6 +232,8 @@ components:
       $ref: "./components/schemas/wallets/balances/max_send_value.yaml"
     AddressInfo:
       $ref: "./components/schemas/wallets/addresses/address_info.yaml"
+    AddressEncoding:
+      $ref: "./components/schemas/wallets/addresses/address_encoding.yaml"
     CreateCustodialWallet:
       $ref: "./components/schemas/wallets/create_wallets/create_custodial_wallet.yaml"
     CreateMpcWallet:
@@ -316,18 +318,12 @@ components:
       $ref: "./components/schemas/transactions/fees/transaction_fee.yaml"
 
     # transactions
-    Network:
-      $ref: "./components/schemas/transactions/transactions/network.yaml"
     Transaction:
       $ref: "./components/schemas/transactions/transactions/transaction.yaml"
-    TransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/transaction_address.yaml"
-    TransactionAddressType:
-      $ref: "./components/schemas/transactions/transactions/transaction_address_type.yaml"
     TransactionApprover:
       $ref: "./components/schemas/transactions/transactions/transaction_approver.yaml"
-    TransactionAsset:
-      $ref: "./components/schemas/transactions/transactions/transaction_asset.yaml"
+    TransactionToken:
+      $ref: "./components/schemas/transactions/transactions/transaction_token.yaml"
     TransactionCategory:
       $ref: "./components/schemas/transactions/transactions/transaction_category.yaml"
     TransactionDetails:
@@ -346,6 +342,20 @@ components:
       $ref: "./components/schemas/transactions/transactions/transaction_token_approval.yaml"
     TransactionType:
       $ref: "./components/schemas/transactions/transactions/transaction_type.yaml"
+    MpcSigningGroup:
+      $ref: "./components/schemas/transactions/mpc_signing_group.yaml"
+    TransactionAddressType:
+      $ref: "./components/schemas/transactions/transactions/addresses/transaction_address_type.yaml"
+    BaseTransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/base_transaction_address.yaml"
+    SafeTransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/safe_transaction_address.yaml"
+    BaseWalletTransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/base_wallet_transaction_address.yaml"
+    MPCWalletTransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/mpc_wallet_transaction_address.yaml"
+    ExchangeWalletTransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/exchange_wallet_transaction_address.yaml"
 
     # transfers
     BaseTransferSource:
@@ -373,7 +383,7 @@ components:
     SmartContractCall:
       $ref: "./components/schemas/transactions/smart_contract_call.yaml"
     SignMessage:
-      $ref: "./components/schemas/transactions/sign_message.yaml"
+      $ref: "./components/schemas/transactions/message_sign.yaml"
     EstimateFee:
       $ref: "./components/schemas/transactions/estimate_fee.yaml"
 
@@ -471,6 +481,18 @@ components:
     # transactions
     optionalRequestIdParam:
       $ref: "./components/parameters/transactions/request_id_optional.yaml"
+    optionalCoboIdParam:
+      $ref: "./components/parameters/transactions/cobo_id_optional.yaml"
+    optionalTxIdParam:
+      $ref: "./components/parameters/transactions/tx_id_optional.yaml"
+    optionalTransactionTypeParam:
+      $ref: "./components/parameters/transactions/transaction_type_optional.yaml"
+    optionalTransactionStatusParam:
+      $ref: "./components/parameters/transactions/transaction_status_optional.yaml"
+    optionalMinCreatedTimestampParam:
+      $ref: "./components/parameters/transactions/min_created_timestamp_optional.yaml"
+    optionalMaxCreatedTimestampParam:
+      $ref: "./components/parameters/transactions/max_created_timestamp_optional.yaml"
     transactionIdParam:
       $ref: "./components/parameters/transactions/transaction_id_path.yaml"
 
@@ -506,8 +528,12 @@ components:
       $ref: "./components/request_bodies/transactions/create_transfer_transaction.yaml"
     createSmartContractCallBody:
       $ref: "./components/request_bodies/transactions/create_smart_contract_call_transaction.yaml"
-    createSignMessageBody:
-      $ref: "./components/request_bodies/transactions/create_sign_message_transaction.yaml"
+    createMessageSignBody:
+      $ref: "./components/request_bodies/transactions/create_message_sign_transaction.yaml"
+    estimateFeeBody:
+      $ref: "./components/request_bodies/transactions/estimate_fee.yaml"
+    feeRequestBody:
+      $ref: "./components/request_bodies/transactions/fee_request.yaml"
 
   responses:
     # misc
@@ -592,6 +618,10 @@ components:
     putVaultResponse:
       $ref: "./components/responses/wallets/mpcs/put_vault.yaml"
 
+    # exchanges
+    getSubAccountIdsResponse:
+      $ref: "./components/responses/wallets/exchanges/get_sub_account_ids.yaml"
+
     # transactions
     getChainFeeResponse:
       $ref: "./components/responses/transactions/get_chain_fee_price.yaml"
@@ -601,6 +631,8 @@ components:
       $ref: "./components/responses/transactions/get_a_transaction.yaml"
     estimateFeeResponse:
       $ref: "./components/responses/transactions/get_transaction_fee.yaml"
+    createTransactionRequestResponse:
+      $ref: "./components/responses/transactions/create_transaction_request.yaml"
 
 
   securitySchemes:

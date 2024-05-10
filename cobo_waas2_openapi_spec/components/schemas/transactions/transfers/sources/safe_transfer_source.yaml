@@ -5,6 +5,21 @@ allOf:
       - delegate
     properties:
       delegate:
-        type: string
-        description: Transaction delegate address
-        example: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+        type: object
+        properties:
+          wallet_id:
+            type: string
+            format: uuid
+            example: '123e4567-e89b-12d3-a456-426614174000'
+            description: >-
+              The wallet id of the delegate. This is required when user initiate a transfer.
+          wallet_type:
+            type: string
+            example: 'MPC'
+            description: >-
+              The wallet type of the delegate. This is required when user initiate a transfer.
+          wallet_address:
+            type: string
+            example: '0x1234567890123456789012345678901234567890'
+            description: >-
+              The wallet address of the delegate. This is required when user initiate a transfer.
