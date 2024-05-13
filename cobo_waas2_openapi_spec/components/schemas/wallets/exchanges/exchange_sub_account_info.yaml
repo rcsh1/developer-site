@@ -1,0 +1,13 @@
+type: object
+required:
+  - wallet_id
+  - account_id
+properties:
+  wallet_id:
+    type: string
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  account_id:
+    type: string
+    description: The unique identifier associated with the exchange sub-account. It can be an email address, username, or a custom account ID.
+    example: 'sub01@xx.com'

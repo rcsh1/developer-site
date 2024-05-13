@@ -1,0 +1,17 @@
+oneOf:
+- $ref: './addresses/base_transaction_address.yaml'
+- $ref: './addresses/base_wallet_transaction_address.yaml'
+- $ref: './addresses/mpc_wallet_transaction_address.yaml'
+- $ref: './addresses/safe_transaction_address.yaml'
+- $ref: './addresses/exchange_wallet_transaction_address.yaml'
+discriminator:
+  propertyName: type
+  mapping:
+    ExternalAddress: '#/components/schemas/BaseTransactionAddress'
+    GasStation: '#/components/schemas/BaseWalletTransactionAddress'
+    CustodialAssetWallet: '#/components/schemas/BaseWalletTransactionAddress'
+    CustodialWeb3Wallet: '#/components/schemas/BaseWalletTransactionAddress'
+    MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionAddress'
+    MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionAddress'
+    SafeContractWallet: '#/components/schemas/SafeWalletTransactionAddress'
+    ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionAddress'

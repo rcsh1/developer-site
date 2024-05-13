@@ -1,5 +1,14 @@
 type: object
 description: The data for transaction information.
+required:
+  - transaction_id
+  - wallet_id
+  - cobo_id
+  - status
+  - type
+  - source
+  - destination
+  - created_time
 properties:
   transaction_id:
     type: string
@@ -18,41 +27,31 @@ properties:
     type: string
     description: Cobo ID
     example: "20231213122855000000000000000000"
+  tx_id:
+    type: string
+    description: Transaction hash.
+    example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
   status:
     $ref: './transaction_status.yaml'
   sub_status:
     $ref: './transaction_sub_status.yaml'
   type:
     $ref: './transaction_type.yaml'
-  from_type:
-    $ref: './transaction_address_type.yaml'
-  from_address:
+  source:
+    $ref: './transaction_source.yaml'
+  destination:
+    $ref: './transaction_destination.yaml'
+  chain_id:
+    type: string
+    description: The blockchain on which the token operates.
+    pattern: ^[A-Z]+$
+    example: 'ETH'
+  exchange_id:
+    $ref: '../../../schemas/wallets/exchanges/exchange_id.yaml'
+  tokens:
     type: array
     items:
-      $ref: './transaction_address.yaml'
-  from_info:
-    type: string
-    description: From wallet info
-    example: "MPC Wallet #1"
-  to_type:
-    $ref: './transaction_address_type.yaml'
-  to_address:
-    type: array
-    items:
-      $ref: './transaction_address.yaml'
-  to_info:
-    type: string
-    description: To wallet info
-    example: "DeFi Wallet #1"
-  network:
-    $ref: './network.yaml'
-  txid:
-    type: string
-    example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
-  assets:
-    type: array
-    items:
-      $ref: './transaction_asset.yaml'
+      $ref: './transaction_token.yaml'
   category:
     type: array
     items:
@@ -68,7 +67,3 @@ properties:
     type: number
     description: Transaction update time
     example: 1610445878970
-  delegate:
-    type: string
-    description: Transaction delegate address
-    example: "0xdAC17F958D2ee523a2206206994597C13D831ec7"

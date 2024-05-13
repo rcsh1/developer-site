@@ -1,14 +1,17 @@
 get:
   tags:
     - Developers - Webhooks
-  description: Get all supported event definitions.
+  summary: List all supported event definitions.
+  description: |
+    This operation is used to retrieve a list of all supported event definitions in the current system.
+
+    These event definitions include different event types that trigger webhooks, enabling custom notifications and integration features within the system. A successful call to this endpoint will return a detailed list of event definitions.
+
   operationId: list_webhook_event_definitions
-  security:
-    - CoboAuth: [ ]
   responses:
     '200':
       $ref: "../../components/responses/webhooks/get_webhook_event_definitions.yaml"
     '400':
       $ref: "../../components/responses/errors/400_bad_request.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"

@@ -2,8 +2,8 @@ type: object
 description: The legacy fee data for estimate fees or transfer.
 required:
   - fee_type
-properties:
-  fee_type:
-    $ref: './fee_type.yaml'
 allOf:
+  - properties:
+      fee_type:
+        $ref: './fee_type.yaml'
   - $ref: './base_fee_price_utxo.yaml'

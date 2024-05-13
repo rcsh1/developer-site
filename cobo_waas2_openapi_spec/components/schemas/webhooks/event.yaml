@@ -20,22 +20,22 @@ properties:
     format: url
     example: 'https://example.com/webhook'
   created_timestamp:
-    description: Time at which the object was created. Measured in seconds since the Unix epoch.
+    description: The timestamp at which the object was created, represented as an integer value, typically in milliseconds since the epoch.
     type: integer
     example: 1701396866000
   type:
      $ref: 'event_type.yaml'
   data:
     type: object
-    oneOf:
-      - $ref: '../wallets/smart_contracts/smart_contract_wallet_info.yaml'
-      - $ref: '../transactions/transactions/transaction.yaml'
+    description: The data of the webhook event in json format.
+    example: {"wallet_id":"624ce4e5-e985-4394-a196-fd7752aff96e","address":"0xdAC17F958D2ee523a2206206994597C13D831ec7","amount":"1000000000000000000"}
   status:
       $ref: 'event_status.yaml'
   next_retry_timestamp:
-    description: >-
-      The timestamp of the next retry. This field is only present when the
-      event status is `Retrying`.
+    description: |
+      The timestamp indicating the next scheduled retry for this event. This field
+      is only present when the event status is set to `Retrying`. The timestamp is
+      represented as an integer value, typically in milliseconds since the epoch.
     type: integer
     example: 1701396866000
   retries_left:

@@ -3,14 +3,19 @@ parameters:
 get:
   tags:
     - Developers - Webhooks
-  description: Get webhook event logs by give ID.
+  summary: List webhook event logs by event ID.
+  description: |
+    This operation is used to retrieve a list of webhook event logs by event ID.
+    Get event IDs by calling `List triggered events`.
   operationId: get_webhook_event_logs
-  security:
-    - CoboAuth: [ ]
   responses:
     '200':
       $ref: "../../components/responses/webhooks/get_webhook_event_logs.yaml"
     '400':
       $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
     '404':
       $ref: "../../components/responses/errors/404_not_found.yaml"

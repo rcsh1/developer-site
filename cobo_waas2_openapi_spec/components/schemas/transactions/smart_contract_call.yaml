@@ -4,9 +4,9 @@ required:
   - request_id
   - request_type
   - from_wallet_id
-  - from_address
+  - from_address_str
   - chain_id
-  - to_address
+  - to_address_str
   - calldata
 properties:
   request_id:
@@ -20,7 +20,7 @@ properties:
     description: Unique id of the wallet to transfer from.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
-  from_address:
+  from_address_str:
     type: string
     description: From address
     example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
@@ -29,17 +29,16 @@ properties:
     description: The blockchain on which the token operates.
     pattern: ^[A-Z]+$
     example: 'ETH'
-  to_address:
+  to_address_str:
     type: string
     description: To address
     example: "bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v"
   value:
-    type: number
+    type: string
     description: >
       Transaction value (Note that this is an absolute value.
       If you trade 1.5 ETH, then the value is 1.5)
-    format: float
-    example: 1.5
+    example: '1.5'
   calldata:
     type: string
     description: >
@@ -48,3 +47,5 @@ properties:
     example: "U3dhZ2dlciByb2Nrcw=="
   mpc_used_key_group:
     $ref: './mpc_signing_group.yaml'
+  fee:
+    $ref: './fees/transaction_fee.yaml'

@@ -8,6 +8,16 @@ get:
     - CoboAuth: []
   parameters:
     - $ref: "../../components/parameters/transactions/request_id_optional.yaml"
+    - $ref: "../../components/parameters/transactions/cobo_id_optional.yaml"
+    - $ref: "../../components/parameters/transactions/tx_id_optional.yaml"
+    - $ref: "../../components/parameters/transactions/transaction_type_optional.yaml"
+    - $ref: "../../components/parameters/transactions/transaction_status_optional.yaml"
+    - $ref: "../../components/parameters/wallets/wallet_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/chain_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/asset_id_optional.yaml"
+    - $ref: "../../components/parameters/transactions/min_created_timestamp_optional.yaml"
+    - $ref: "../../components/parameters/transactions/max_created_timestamp_optional.yaml"
     - $ref: "../../components/parameters/pagination/sort_by.yaml"
     - $ref: "../../components/parameters/pagination/direction.yaml"
     - $ref: "../../components/parameters/pagination/limit.yaml"

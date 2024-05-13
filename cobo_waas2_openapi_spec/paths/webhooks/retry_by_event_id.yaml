@@ -3,14 +3,20 @@ parameters:
 post:
   tags:
     - Developers - Webhooks
-  description: Retry a failed event by given id.
+  summary: Retry webhook event by event ID.
+  description: |
+    This operation is used to retry a webhook event by its ID.
+    Events in `Retrying` or `Failed` status can be retried.
+    Get event IDs by calling `List triggered events`.
   operationId: retry_webhook_event
-  security:
-    - CoboAuth: [ ]
   responses:
     '201':
       $ref: "../../components/responses/webhooks/retry_webhook_event.yaml"
     '400':
       $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
     '404':
       $ref: "../../components/responses/errors/404_not_found.yaml"

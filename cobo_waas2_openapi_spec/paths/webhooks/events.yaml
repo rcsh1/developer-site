@@ -1,26 +1,28 @@
 get:
   tags:
     - Developers - Webhooks
-  description: List all events.
+  summary: List triggered events.
+  description: |
+    This operation retrieves a list of events that have been triggered within the system. 
+    The retrieved list of events can be useful for monitoring system activities, setting up event-driven workflows, and integrating with external systems to respond to specific events.
   operationId: list_events
-  security:
-    - CoboAuth: [ ]
   parameters:
-    - description: The status of event, separated by comma.
+    - description: The status of event.
       in: query
       name: status
       schema:
-        type: string
-        example: 'Success,Failed,Retrying'
+        $ref: "../../components/schemas/webhooks/event_status.yaml"
       required: false
-    - description: The type of event, separated by comma.
+      example: 'Success'
+    - description: |
+        The type of event.
+        Get event types by calling `List all supported event definitions`.
       in: query
       name: type
       schema:
-        type: string
-        example: 'wallet.created,transaction.inbound.submitted'
+        $ref: "../../components/schemas/webhooks/event_type.yaml"
       required: false
-    - $ref: "../../components/parameters/pagination/direction.yaml"
+      example: 'asset_wallet.outbound.created'
     - $ref: "../../components/parameters/pagination/limit.yaml"
     - $ref: "../../components/parameters/pagination/before.yaml"
     - $ref: "../../components/parameters/pagination/after.yaml"
@@ -29,4 +31,8 @@ get:
     '200':
       $ref: "../../components/responses/webhooks/list_webhook_events.yaml"
     '400':
-        $ref: "../../components/responses/errors/400_bad_request.yaml"
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"

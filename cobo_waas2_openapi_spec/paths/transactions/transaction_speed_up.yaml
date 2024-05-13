@@ -8,8 +8,10 @@ post:
   description: Speed up a transaction.
   security:
     - CoboAuth: []
+  requestBody:
+    $ref: "../../components/request_bodies/transactions/fee_request.yaml"
   responses:
-    '200':
-      $ref: "../../components/responses/transactions/get_a_transaction.yaml"
+    '201':
+      $ref: "../../components/responses/transactions/create_transaction_request.yaml"
     '404':
       $ref: "../../components/responses/errors/404_not_found.yaml"

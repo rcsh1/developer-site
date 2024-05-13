@@ -1,3 +1,6 @@
 allOf:
-  - $ref: "./address_transfer_source.yaml"
-  - $ref: "../../mpc_signing_group.yaml"
+  - type: object
+    properties:
+      mpc_used_key_group:
+        $ref: '../../mpc_signing_group.yaml'
+  - $ref: './address_transfer_source.yaml'
