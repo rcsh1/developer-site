@@ -1,8 +1,10 @@
 name: before
 in: query
-description: Cursor string received from previous request
+description: An object ID which serves as a cursor for pagination. For example, if you specify `before` as `as19`, the request will retrieve a list of data objects that end before the object with the object ID `as19`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+  
+  You can set either `after` or `before`, not both.
 required: false
 schema:
   type: string
   default: ""
-example: "123"
+example: "as19"

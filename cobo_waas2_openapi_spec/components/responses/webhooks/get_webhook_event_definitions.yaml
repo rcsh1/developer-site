@@ -1,4 +1,4 @@
-description: Get webhook event definitions successfully.
+description: The request was successful.
 content:
   application/json:
     schema:
@@ -8,7 +8,9 @@ content:
         properties:
           event_type:
             type: string
-            example: "wallet.created"
+            example: "asset_wallet.outbound.created"
+            description: The event type.
           description:
             type: string
-            example: "Occurred when a wallet is created"
+            example: "Occurs when a request to transfer from an Asset Wallet is created."
+            description: The event type description.
