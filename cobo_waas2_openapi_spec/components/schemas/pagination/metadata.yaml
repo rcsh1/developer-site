@@ -1,9 +1,11 @@
 type: object
-description: The meta data for pagination.
+description: The pagination information of the returned data.
 properties:
   before:
     type: string
     example: 'as19'
+    description: An object ID which serves as a cursor for pagination. For example, if the value of `before` is `as19`, the returned data ends before the object with the object ID `as19`.
   after:
     type: string
     example: '20sa'
+    description: An object ID which serves as a cursor for pagination. For example, if the value of `after` is `20sa`, the returned data starts after the object with the object ID `20sa`.

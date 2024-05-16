@@ -3,10 +3,10 @@ parameters:
 get:
   tags:
     - Developers - Webhooks
-  summary: Retrieve webhook event information by event ID.
+  summary: Retrieve event by ID
   description: |
-    This operation is used to retrieve a webhook event information by its ID.
-    Get event IDs by calling `List triggered events`.
+    This operation retrieves the information of a webhook event by the event ID.
+    You can retrieve all event IDs by calling `List all events`.
   operationId: get_webhook_event
   responses:
     '200':

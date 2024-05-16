@@ -1,8 +1,11 @@
 name: after
 in: query
-description: Cursor string received from previous request
+description: An object ID which serves as a cursor for pagination. For example, if you specify `after` as `20sa`, the request will retrieve a list of data objects that start after the object with the object ID `20sa`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+  
+  You can set either `after` or `before`, not both.
+
 required: false
 schema:
   type: string
   default: ""
-example: "123"
+example: "20sa"
