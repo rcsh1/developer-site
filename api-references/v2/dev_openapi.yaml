@@ -46,8 +46,6 @@ info:
 
     # Rate and Usage Limiting
 
-    # Idempotent Request
-
     # Pagination
     # Support
     [Developer Hub](https://cobo.com/developers)
@@ -1209,7 +1207,7 @@ paths:
                       description: The event type.
                     description:
                       type: string
-                      example: Occurs when an Asset Wallet is created.
+                      example: Occurs when a request to transfer from an Asset Wallet is created.
                       description: The event type description.
         '400':
           $ref: '#/components/responses/badRequestError'
@@ -1221,7 +1219,7 @@ paths:
         - Developers - Webhooks
       summary: List all events
       description: |
-        This operation retrieves a list of webhook events that have occurred under your account since you set up the webhook endpoint.
+        This operation retrieves a list of webhook events associated with the current API key that have occurred within the last 30 days.
       operationId: list_events
       parameters:
         - description: |
@@ -1300,7 +1298,9 @@ paths:
         - Developers - Webhooks
       summary: List event logs by ID
       description: |
-        This operation retrieves a list of webhook event logs by event ID. You can retrieve all event IDs by calling `List all events`.
+        This operation retrieves a full list of webhook event logs by event ID. 
+
+        Each retry will generate a separate event log. You can retrieve all event IDs by calling `List all events`.
       operationId: get_webhook_event_logs
       responses:
         '200':
@@ -1340,7 +1340,7 @@ paths:
                   retried:
                     type: boolean
                     example: true
-                    description: Whether the retry is successful.
+                    description: Whether the retry request has been successfully sent.
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -1357,12 +1357,12 @@ components:
       properties:
         before:
           type: string
-          example: as19
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `as19`, the returned data ends before the object with the object ID `as19`.'
+          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `foo`, the returned data ends before the object with the object ID `foo`.'
         after:
           type: string
-          example: 20sa
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `20sa`, the returned data starts after the object with the object ID `20sa`.'
+          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `bar`, the returned data starts after the object with the object ID `bar`.'
     ErrorResponse:
       type: object
       description: The response of a failed request.
@@ -1375,18 +1375,16 @@ components:
         success:
           type: boolean
           default: false
-          description: Whether the API operation is successful. This is always `false` for a failed request.
+          description: Whether the API operation was successful. This is always `false` for a failed request.
         error_code:
           type: integer
           description: The error code.
-          example: 1000
         error_description:
           type: string
           description: The error description.
-          example: API params is missing or null
         error_id:
           type: string
-          description: A unique ID for the error log. You can use it for debugging purposes.
+          description: A error log ID. You can use it for debugging purposes.
           example: 0b6ddf19083c4bd1a9ca01bec44b24dd
     AssetInfo:
       type: object
@@ -3157,7 +3155,7 @@ components:
           Call: '#/components/schemas/SmartContractCall'
     WebhookEvent:
       type: object
-      description: The information relating to the webhook event.
+      description: The webhook event payload.
       required:
         - id
         - url
@@ -3167,7 +3165,7 @@ components:
         - status
       properties:
         id:
-          description: The unique identifier of a webhook event.
+          description: The event ID.
           type: string
           format: uuid
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
@@ -3194,7 +3192,7 @@ components:
           $ref: '#/components/schemas/WebhookEventStatus'
         next_retry_timestamp:
           description: |
-            The timestamp indicating the next scheduled retry for delivering this event, in Unix timestamp format, measured in milliseconds. This field is only present if the event status is `Retrying`.
+            The timestamp indicating the next scheduled retry to deliver this event, in Unix timestamp format, measured in milliseconds. This field is only present if the event status is `Retrying`.
           type: integer
           example: 1701396866000
         retries_left:
@@ -3298,12 +3296,12 @@ components:
         - success
       properties:
         id:
-          description: The unique identifier of the event log.
+          description: The event log ID.
           type: string
           format: uuid
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
         created_timestamp:
-          description: 'The time when the event occurred, in Unix timestamp format, measured in milliseconds.'
+          description: 'The time when the log was created, in Unix timestamp format, measured in milliseconds.'
           type: integer
           example: 1701396866000
         request_headers:
@@ -3330,7 +3328,7 @@ components:
         failure_reason:
           type: string
           description: The reason why the webhook event fails to be delivered.
-          example: The webhook endpoint is not reachable.
+          example: Connect Timeout
   parameters:
     sortByParam:
       name: sort_by
@@ -3369,24 +3367,22 @@ components:
       name: before
       in: query
       description: |-
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `as19`, the request will retrieve a list of data objects that end before the object with the object ID `as19`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
-        You can set either `after` or `before`, not both.
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `bar`, the request will retrieve a list of data objects that end before the object with the object ID `bar`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
       schema:
         type: string
-        default: ''
-      example: as19
+      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
     afterParam:
       name: after
       in: query
       description: |-
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `20sa`, the request will retrieve a list of data objects that start after the object with the object ID `20sa`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
-        You can set either `after` or `before`, not both.
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `foo`, the request will retrieve a list of data objects that start after the object with the object ID `foo`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
       schema:
         type: string
-        default: ''
-      example: 20sa
+      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
     optionalAssetIdParam:
       name: asset_id
       in: query
@@ -3708,7 +3704,7 @@ components:
       name: event_id
       in: path
       required: true
-      description: The unique identifier of a webhook event. You can get a list of event IDs by calling `List all events`.
+      description: The event ID. You can get a full list of event IDs by calling `List all events`.
       schema:
         type: string
         format: uuid

@@ -14,7 +14,7 @@ properties:
     format: uuid
     example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
   created_timestamp:
-    description: The time when the event occurred, in Unix timestamp format, measured in milliseconds.
+    description: The time when the log was created, in Unix timestamp format, measured in milliseconds.
     type: integer
     example: 1701396866000
   request_headers:
@@ -41,4 +41,4 @@ properties:
   failure_reason:
     type: string
     description: The reason why the webhook event fails to be delivered.
-    example: 'The webhook endpoint is not reachable.'
+    example: 'Connect Timeout'
