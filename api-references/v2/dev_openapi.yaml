@@ -1189,7 +1189,7 @@ paths:
         - Developers - Webhooks
       summary: List all event types
       description: |
-        This operation retrieves a full list of supported event types.
+        This operation retrieves a list of supported event types.
       operationId: list_webhook_event_definitions
       responses:
         '200':
@@ -1219,7 +1219,9 @@ paths:
         - Developers - Webhooks
       summary: List all events
       description: |
-        This operation retrieves a list of webhook events associated with the current API key that have occurred within the last 30 days.
+        This operation retrieves a list of webhook events that have occurred within the last 30 days.
+
+        Note: The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Asset Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.
       operationId: list_events
       parameters:
         - description: |
@@ -1273,7 +1275,6 @@ paths:
       summary: Retrieve event by ID
       description: |
         This operation retrieves the information of a webhook event by the event ID.
-        You can retrieve all event IDs by calling `List all events`.
       operationId: get_webhook_event
       responses:
         '200':
@@ -1298,9 +1299,7 @@ paths:
         - Developers - Webhooks
       summary: List event logs by ID
       description: |
-        This operation retrieves a full list of webhook event logs by event ID. 
-
-        Each retry will generate a separate event log. You can retrieve all event IDs by calling `List all events`.
+        This operation retrieves a list of webhook event logs by event ID. Each retry will generate a separate event log.
       operationId: get_webhook_event_logs
       responses:
         '200':
@@ -1327,7 +1326,7 @@ paths:
         - Developers - Webhooks
       summary: Retry event by ID
       description: |
-        This operation retries delivering a webhook event with the specified event ID. Retry is applicable to events in the `Retrying` or `Failed` status. You can retrieve all event IDs by calling `List all events`.
+        This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event
       responses:
         '201':
@@ -3283,7 +3282,11 @@ components:
         - Retrying
         - Failed
       example: Success
-      description: 'The event status. Possible values include: - `Success`: The event has been delivered, and the webhook endpoint has responded to the event. - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, Cobo will retry delivering the event. - `Failed`: The event cannot be delivered and Cobo will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.'
+      description: |-
+        The event status. Possible values include:
+        - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
+        - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, Cobo will retry delivering the event.
+        - `Failed`: The event cannot be delivered and Cobo will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.
     WebhookEventLog:
       type: object
       description: The webhook event log.
@@ -3367,7 +3370,7 @@ components:
       name: before
       in: query
       description: |-
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `bar`, the request will retrieve a list of data objects that end before the object with the object ID `bar`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `foo`, the request will retrieve a list of data objects that end before the object with the object ID `foo`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
       schema:
@@ -3377,7 +3380,7 @@ components:
       name: after
       in: query
       description: |-
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `foo`, the request will retrieve a list of data objects that start after the object with the object ID `foo`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `bar`, the request will retrieve a list of data objects that start after the object with the object ID `bar`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
       schema:
@@ -3704,7 +3707,7 @@ components:
       name: event_id
       in: path
       required: true
-      description: The event ID. You can get a full list of event IDs by calling `List all events`.
+      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/api-references/v2/developers--webhooks/list-all-events).'
       schema:
         type: string
         format: uuid

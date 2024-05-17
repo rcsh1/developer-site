@@ -3,7 +3,9 @@ get:
     - Developers - Webhooks
   summary: List all events
   description: |
-    This operation retrieves a list of webhook events associated with the current API key that have occurred within the last 30 days.
+    This operation retrieves a list of webhook events that have occurred within the last 30 days.
+
+    Note: The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Asset Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.
   operationId: list_events
   parameters:
     - description: |
