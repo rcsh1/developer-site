@@ -46,8 +46,6 @@ info:
 
     # Rate and Usage Limiting
 
-    # Idempotent Request
-
     # Pagination
     # Support
     [Developer Hub](https://cobo.com/developers)
@@ -1189,15 +1187,13 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: List all supported event definitions.
+      summary: List all event types
       description: |
-        This operation is used to retrieve a list of all supported event definitions in the current system.
-
-        These event definitions include different event types that trigger webhooks, enabling custom notifications and integration features within the system. A successful call to this endpoint will return a detailed list of event definitions.
+        This operation retrieves a list of supported event types.
       operationId: list_webhook_event_definitions
       responses:
         '200':
-          description: Get webhook event definitions successfully.
+          description: The request was successful.
           content:
             application/json:
               schema:
@@ -1207,10 +1203,12 @@ paths:
                   properties:
                     event_type:
                       type: string
-                      example: wallet.created
+                      example: asset_wallet.outbound.created
+                      description: The event type.
                     description:
                       type: string
-                      example: Occurred when a wallet is created
+                      example: Occurs when a request to transfer from an Asset Wallet is created.
+                      description: The event type description.
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -1219,13 +1217,18 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: List triggered events.
+      summary: List all events
       description: |
-        This operation retrieves a list of events that have been triggered within the system. 
-        The retrieved list of events can be useful for monitoring system activities, setting up event-driven workflows, and integrating with external systems to respond to specific events.
+        This operation retrieves a list of webhook events that have occurred within the last 30 days.
+
+        Note: The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Asset Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.
       operationId: list_events
       parameters:
-        - description: The status of event.
+        - description: |
+            The event status. Possible values include:
+            - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
+            - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, Cobo will retry delivering the event.
+            - `Failed`: The event cannot be delivered and Cobo will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.
           in: query
           name: status
           schema:
@@ -1233,8 +1236,7 @@ paths:
           required: false
           example: Success
         - description: |
-            The type of event.
-            Get event types by calling `List all supported event definitions`.
+            The event type.
           in: query
           name: type
           schema:
@@ -1246,7 +1248,7 @@ paths:
         - $ref: '#/components/parameters/afterParam'
       responses:
         '200':
-          description: Successfully listed of webhook events.
+          description: A list of webhook events has been successfully retrieved.
           content:
             application/json:
               schema:
@@ -1270,14 +1272,13 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: Retrieve webhook event information by event ID.
+      summary: Retrieve event by ID
       description: |
-        This operation is used to retrieve a webhook event information by its ID.
-        Get event IDs by calling `List triggered events`.
+        This operation retrieves the information of a webhook event by the event ID.
       operationId: get_webhook_event
       responses:
         '200':
-          description: Get webhook event info successfully.
+          description: The webhook event information is successfully retrieved.
           content:
             application/json:
               schema:
@@ -1296,14 +1297,13 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: List webhook event logs by event ID.
+      summary: List event logs by ID
       description: |
-        This operation is used to retrieve a list of webhook event logs by event ID.
-        Get event IDs by calling `List triggered events`.
+        This operation retrieves a list of webhook event logs by event ID. Each retry will generate a separate event log.
       operationId: get_webhook_event_logs
       responses:
         '200':
-          description: Get webhook event logs successfully.
+          description: The request was successful.
           content:
             application/json:
               schema:
@@ -1324,15 +1324,13 @@ paths:
     post:
       tags:
         - Developers - Webhooks
-      summary: Retry webhook event by event ID.
+      summary: Retry event by ID
       description: |
-        This operation is used to retry a webhook event by its ID.
-        Events in `Retrying` or `Failed` status can be retried.
-        Get event IDs by calling `List triggered events`.
+        This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event
       responses:
         '201':
-          description: Retry a failed event successfully.
+          description: The request was successful.
           content:
             application/json:
               schema:
@@ -1341,6 +1339,7 @@ paths:
                   retried:
                     type: boolean
                     example: true
+                    description: Whether the retry request has been successfully sent.
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -1353,17 +1352,19 @@ components:
   schemas:
     Pagination:
       type: object
-      description: The meta data for pagination.
+      description: The pagination information of the returned data.
       properties:
         before:
           type: string
-          example: as19
+          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `foo`, the returned data ends before the object with the object ID `foo`.'
         after:
           type: string
-          example: 20sa
+          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `bar`, the returned data starts after the object with the object ID `bar`.'
     ErrorResponse:
       type: object
-      description: The data for error response.
+      description: The response of a failed request.
       required:
         - success
         - error_code
@@ -1373,18 +1374,16 @@ components:
         success:
           type: boolean
           default: false
-          description: Indicates if the API operation was successful. Always false for errors.
+          description: Whether the API operation was successful. This is always `false` for a failed request.
         error_code:
           type: integer
-          description: A machine-readable error code.`
-          example: 1000
+          description: The error code.
         error_description:
           type: string
-          description: A human-readable error description for users.
-          example: API params is missing or null
+          description: The error description.
         error_id:
           type: string
-          description: 'A unique ID for the error log, mainly used for debugging.'
+          description: A error log ID. You can use it for debugging purposes.
           example: 0b6ddf19083c4bd1a9ca01bec44b24dd
     AssetInfo:
       type: object
@@ -3155,7 +3154,7 @@ components:
           Call: '#/components/schemas/SmartContractCall'
     WebhookEvent:
       type: object
-      description: The data for webhook event.
+      description: The webhook event payload.
       required:
         - id
         - url
@@ -3165,7 +3164,7 @@ components:
         - status
       properties:
         id:
-          description: The unique identifier of the event.
+          description: The event ID.
           type: string
           format: uuid
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
@@ -3176,14 +3175,14 @@ components:
           format: url
           example: 'https://example.com/webhook'
         created_timestamp:
-          description: 'The timestamp at which the object was created, represented as an integer value, typically in milliseconds since the epoch.'
+          description: 'The time when the event occurred, in Unix timestamp format, measured in milliseconds.'
           type: integer
           example: 1701396866000
         type:
           $ref: '#/components/schemas/WebhookEventType'
         data:
           type: object
-          description: The data of the webhook event in json format.
+          description: 'The data of the webhook event, in JSON format.'
           example:
             wallet_id: 624ce4e5-e985-4394-a196-fd7752aff96e
             address: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
@@ -3192,13 +3191,11 @@ components:
           $ref: '#/components/schemas/WebhookEventStatus'
         next_retry_timestamp:
           description: |
-            The timestamp indicating the next scheduled retry for this event. This field
-            is only present when the event status is set to `Retrying`. The timestamp is
-            represented as an integer value, typically in milliseconds since the epoch.
+            The timestamp indicating the next scheduled retry to deliver this event, in Unix timestamp format, measured in milliseconds. This field is only present if the event status is `Retrying`.
           type: integer
           example: 1701396866000
         retries_left:
-          description: The number of retries left. This field is only present when the event status is `Retrying`.
+          description: The number of retries left. This field is only present if the event status is `Retrying`.
           type: integer
           example: 3
     WebhookEventType:
@@ -3277,7 +3274,7 @@ components:
         - user_controlled_wallet.inbound.confirmed
         - user_controlled_wallet.inbound.confirmations.updated
       example: asset_wallet.outbound.created
-      description: The list of supported events.
+      description: The event type.
     WebhookEventStatus:
       type: string
       enum:
@@ -3286,11 +3283,13 @@ components:
         - Failed
       example: Success
       description: |-
-        Possible values for the webhook event status:
-        - `Success`: The event has been delivered, meaning that the webhook endpoint has received the event and responded successfully. - `Retrying`: The event has been delivered, but the webhook endpoint has not responded successfully. The event will be retried. - `Failed`: The event has been delivered, but the webhook endpoint has responded with an error. The event will not be retried.
+        The event status. Possible values include:
+        - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
+        - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, Cobo will retry delivering the event.
+        - `Failed`: The event cannot be delivered and Cobo will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.
     WebhookEventLog:
       type: object
-      description: The data for webhook event log.
+      description: The webhook event log.
       required:
         - id
         - created_timestamp
@@ -3300,12 +3299,12 @@ components:
         - success
       properties:
         id:
-          description: The unique identifier of the log.
+          description: The event log ID.
           type: string
           format: uuid
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
         created_timestamp:
-          description: 'The timestamp at which the object was created, represented as an integer value, typically in milliseconds since the epoch.'
+          description: 'The time when the log was created, in Unix timestamp format, measured in milliseconds.'
           type: integer
           example: 1701396866000
         request_headers:
@@ -3323,16 +3322,16 @@ components:
           example: 200
         response_time:
           type: integer
-          description: The response time of the webhook event in milliseconds.
+          description: 'The response time of the webhook event, in milliseconds.'
           example: 100
         success:
           type: boolean
-          description: The success status of the webhook event.
+          description: Whether the webhook event has been successfully delivered.
           example: true
         failure_reason:
           type: string
-          description: The reason of the webhook event failure.
-          example: The webhook endpoint is not reachable.
+          description: The reason why the webhook event fails to be delivered.
+          example: Connect Timeout
   parameters:
     sortByParam:
       name: sort_by
@@ -3358,31 +3357,35 @@ components:
     limitParam:
       name: limit
       in: query
-      description: size of page to return (pagination)
+      description: 'The maximum number of objects to return. The value range is [1, 50].'
       required: false
       schema:
         type: integer
         format: int32
         default: 10
+        minimum: 1
+        maximum: 50
       example: 10
     beforeParam:
       name: before
       in: query
-      description: Cursor string received from previous request
+      description: |-
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `foo`, the request will retrieve a list of data objects that end before the object with the object ID `foo`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
       schema:
         type: string
-        default: ''
-      example: '123'
+      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
     afterParam:
       name: after
       in: query
-      description: Cursor string received from previous request
+      description: |-
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `bar`, the request will retrieve a list of data objects that start after the object with the object ID `bar`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
       schema:
         type: string
-        default: ''
-      example: '123'
+      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
     optionalAssetIdParam:
       name: asset_id
       in: query
@@ -3704,7 +3707,7 @@ components:
       name: event_id
       in: path
       required: true
-      description: 'Unique id of the webhook event, get event IDs by calling `List triggered events`.'
+      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/api-references/v2/developers--webhooks/list-all-events).'
       schema:
         type: string
         format: uuid
@@ -3934,37 +3937,37 @@ components:
             $ref: '#/components/schemas/TransactionFee'
   responses:
     badRequestError:
-      description: Bad Request
+      description: Bad request. Your request contains malformed syntax or invalid parameters.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     unauthorizedError:
-      description: Unauthorized Error
+      description: Unauthorized. Please provide valid credentials.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     forbiddenError:
-      description: Forbidden
+      description: Forbidden. You do not have permission to access to the requested resource.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     notFoundError:
-      description: Resource Not Found
+      description: Resource not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     tooManyRequestError:
-      description: Too Many Request
+      description: Too many requests.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
     serviceUnavailableError:
-      description: Unknown Internal Error
+      description: Unknown internal error.
       content:
         application/json:
           schema:
@@ -4287,6 +4290,6 @@ components:
       type: apiKey
       in: header
       name: BIZ-API-KEY
-      description: This field contains the API key.
+      description: The API key.
 security:
   - CoboAuth: []

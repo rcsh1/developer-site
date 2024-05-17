@@ -1,13 +1,18 @@
 get:
   tags:
     - Developers - Webhooks
-  summary: List triggered events.
+  summary: List all events
   description: |
-    This operation retrieves a list of events that have been triggered within the system. 
-    The retrieved list of events can be useful for monitoring system activities, setting up event-driven workflows, and integrating with external systems to respond to specific events.
+    This operation retrieves a list of webhook events that have occurred within the last 30 days.
+
+    Note: The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Asset Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.
   operationId: list_events
   parameters:
-    - description: The status of event.
+    - description: |
+        The event status. Possible values include:
+        - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
+        - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, Cobo will retry delivering the event.
+        - `Failed`: The event cannot be delivered and Cobo will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.
       in: query
       name: status
       schema:
@@ -15,8 +20,7 @@ get:
       required: false
       example: 'Success'
     - description: |
-        The type of event.
-        Get event types by calling `List all supported event definitions`.
+        The event type.
       in: query
       name: type
       schema:

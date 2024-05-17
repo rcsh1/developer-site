@@ -1,5 +1,5 @@
 type: object
-description: The data for webhook event log.
+description: The webhook event log.
 required:
   - id
   - created_timestamp
@@ -9,12 +9,12 @@ required:
   - success
 properties:
   id:
-    description: The unique identifier of the log.
+    description: The event log ID.
     type: string
     format: uuid
     example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
   created_timestamp:
-    description: The timestamp at which the object was created, represented as an integer value, typically in milliseconds since the epoch.
+    description: The time when the log was created, in Unix timestamp format, measured in milliseconds.
     type: integer
     example: 1701396866000
   request_headers:
@@ -32,13 +32,13 @@ properties:
     example: 200
   response_time:
     type: integer
-    description: The response time of the webhook event in milliseconds.
+    description: The response time of the webhook event, in milliseconds.
     example: 100
   success:
     type: boolean
-    description: The success status of the webhook event.
+    description: Whether the webhook event has been successfully delivered.
     example: true
   failure_reason:
     type: string
-    description: The reason of the webhook event failure.
-    example: 'The webhook endpoint is not reachable.'
+    description: The reason why the webhook event fails to be delivered.
+    example: 'Connect Timeout'

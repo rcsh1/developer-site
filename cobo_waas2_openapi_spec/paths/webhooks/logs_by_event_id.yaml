@@ -3,10 +3,9 @@ parameters:
 get:
   tags:
     - Developers - Webhooks
-  summary: List webhook event logs by event ID.
+  summary: List event logs by ID
   description: |
-    This operation is used to retrieve a list of webhook event logs by event ID.
-    Get event IDs by calling `List triggered events`.
+    This operation retrieves a list of webhook event logs by event ID. Each retry will generate a separate event log.
   operationId: get_webhook_event_logs
   responses:
     '200':

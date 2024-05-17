@@ -3,11 +3,9 @@ parameters:
 post:
   tags:
     - Developers - Webhooks
-  summary: Retry webhook event by event ID.
+  summary: Retry event by ID
   description: |
-    This operation is used to retry a webhook event by its ID.
-    Events in `Retrying` or `Failed` status can be retried.
-    Get event IDs by calling `List triggered events`.
+    This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
   operationId: retry_webhook_event
   responses:
     '201':
