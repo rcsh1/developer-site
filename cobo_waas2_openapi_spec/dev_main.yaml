@@ -61,9 +61,9 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: https://api.cobo.com/v3
+  - url: https://api.cobo.com/v2
     description: Production environment
-  - url: https://api.dev.cobo.com/v3
+  - url: https://api.dev.cobo.com/v2
     description: Development environment
 
 tags:
@@ -90,6 +90,10 @@ paths:
     $ref: "./paths/wallets/supported_chains.yaml"
   /wallets/supported_tokens:
     $ref: "./paths/wallets/supported_tokens.yaml"
+  /wallets/enabled_chains:
+    $ref: "./paths/wallets/enabled_chains.yaml"
+  /wallets/enabled_tokens:
+    $ref: "./paths/wallets/enabled_tokens.yaml"
   /wallets/{wallet_id}/tokens:
     $ref: "./paths/wallets/wallet_token_balances.yaml"
   /wallets/{wallet_id}/addresses/{address_id}/tokens:
@@ -104,8 +108,6 @@ paths:
     $ref: "./paths/wallets/max_send_value.yaml"
   /wallets/{wallet_id}/addresses:
     $ref: "./paths/wallets/wallet_addresses.yaml"
-  /wallets/{wallet_id}/addresses/{address_id}:
-    $ref: "./paths/wallets/wallet_address_by_id.yaml"
   /wallets/address/validity:
     $ref: "./paths/wallets/address_validity.yaml"
 

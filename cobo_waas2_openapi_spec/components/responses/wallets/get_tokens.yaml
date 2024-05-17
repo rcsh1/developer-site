@@ -7,6 +7,20 @@ content:
           data:
             type: array
             items:
-              $ref: '../../schemas/wallets/token.yaml'
+              type: object
+              allOf:
+                - type: object
+                  properties:
+                    can_deposit:
+                      type: boolean
+                      description: Ture if the token can be deposited, False otherwise
+                      default: false
+                      example: false
+                    can_withdraw:
+                      type: boolean
+                      description: Ture if the token can be withdrawn, False otherwise
+                      default: false
+                      example: false
+                - $ref: '../../schemas/wallets/token.yaml'
           pagination:
             $ref: '../../schemas/pagination/metadata.yaml'

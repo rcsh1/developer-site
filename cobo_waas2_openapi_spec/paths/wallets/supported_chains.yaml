@@ -2,12 +2,13 @@ get:
   tags:
     - Wallets
   operationId: get_supported_chains
-  summary: List the supported chains by wallet subtype
+  summary: List the supported chains by wallet type/subtype
   description: Retrieve a list of supported chain.
   security:
     - CoboAuth: []
   parameters:
-    - $ref: "../../components/parameters/wallets/wallet_subtype_required.yaml"
+    - $ref: "../../components/parameters/wallets/wallet_type_optional.yaml"
+    - $ref: "../../components/parameters/wallets/wallet_subtype_optional.yaml"
     - $ref: "../../components/parameters/pagination/limit.yaml"
     - $ref: "../../components/parameters/pagination/before.yaml"
     - $ref: "../../components/parameters/pagination/after.yaml"

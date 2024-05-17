@@ -1,0 +1,16 @@
+repos:
+
+-   repo: https://github.com/daveshanley/vacuum
+    rev: v0.3.11
+    hooks:
+    -   id: vacuum
+        files: cobo_waas2_openapi_spec/dev_openapi.yaml
+
+
+-   repo: local
+    hooks:
+    -   id: check-openapi-spec
+        name: Check OpenAPI Spec
+        entry: python cobo_waas2_openapi_spec/scripts/check_openapi_spec.py
+        language: system
+        files: ^(cobo_waas2_openapi_spec\/dev_openapi\.yaml)$

@@ -59,9 +59,9 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: 'https://api.cobo.com/v3'
+  - url: 'https://api.cobo.com/v2'
     description: Production environment
-  - url: 'https://api.dev.cobo.com/v3'
+  - url: 'https://api.dev.cobo.com/v2'
     description: Development environment
 tags:
   - name: Wallets
@@ -137,12 +137,13 @@ paths:
       tags:
         - Wallets
       operationId: get_supported_chains
-      summary: List the supported chains by wallet subtype
+      summary: List the supported chains by wallet type/subtype
       description: Retrieve a list of supported chain.
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/requiredWalletSubtypeParam'
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -156,12 +157,54 @@ paths:
       tags:
         - Wallets
       operationId: get_supported_tokens
-      summary: List the supported tokens by wallet subtype and chain id if specified
+      summary: List the supported tokens by wallet type/subtype and chain id if specified
       description: Retrieve a list of supported token.
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/requiredWalletSubtypeParam'
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
+        - $ref: '#/components/parameters/optionalChainIdParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTokensResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/enabled_chains:
+    get:
+      tags:
+        - Wallets
+      operationId: get_enabled_chains
+      summary: List the enabled chains by wallet type/subtype
+      description: Retrieve a list of supported chain.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getChainsResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /wallets/enabled_tokens:
+    get:
+      tags:
+        - Wallets
+      operationId: get_enabled_tokens
+      summary: List the enabled tokens by wallet type/subtype and chain id if specified
+      description: Retrieve a list of supported token.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
         - $ref: '#/components/parameters/optionalChainIdParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
@@ -377,29 +420,13 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/addressStrParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
       responses:
         '200':
           $ref: '#/components/responses/getAddressesResponse'
-        '404':
-          $ref: '#/components/responses/notFoundError'
-  '/wallets/{wallet_id}/addresses/{address_id}':
-    parameters:
-      - $ref: '#/components/parameters/walletIdParam'
-      - $ref: '#/components/parameters/addressIdParam'
-    get:
-      tags:
-        - Wallets
-      operationId: get_wallet_address_by_id
-      summary: Get address information by ID
-      description: Retrieve wallet information by ID
-      security:
-        - CoboAuth: []
-      responses:
-        '200':
-          $ref: '#/components/responses/getAddressByIdResponse'
         '404':
           $ref: '#/components/responses/notFoundError'
   /wallets/address/validity:
@@ -1764,7 +1791,7 @@ components:
           type: integer
           description: Output index of the UTXO.
           example: 0
-        address:
+        address_str:
           type: string
           description: Address of the UTXO.
           example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
@@ -1784,7 +1811,7 @@ components:
       type: object
       description: max send value and fee.
       properties:
-        token:
+        token_id:
           type: string
           description: token name.
           example: ETH
@@ -1792,7 +1819,7 @@ components:
           type: integer
           description: coin decimal precision.
           example: 18
-        fee_token:
+        fee_token_id:
           type: string
           description: fee token name.
           example: ETH
@@ -1845,11 +1872,16 @@ components:
           type: string
           description: From address memo
           example: '82840924'
-        is_internal:
-          type: boolean
-          description: 'Ture if the address is in same fund pool, False otherwise'
-          default: false
-          example: false
+        path:
+          type: string
+          description: Derivation path of address pubkey，required for MPC wallet
+          example: m/44'/60'/0'/0
+        encoding:
+          $ref: '#/components/schemas/AddressEncoding'
+        pubkey:
+          type: string
+          description: Address pubkey，required for MPC wallet
+          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
     AddressEncoding:
       type: string
       enum:
@@ -4008,7 +4040,21 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TokenInfo'
+                  type: object
+                  allOf:
+                    - type: object
+                      properties:
+                        can_deposit:
+                          type: boolean
+                          description: 'Ture if the token can be deposited, False otherwise'
+                          default: false
+                          example: false
+                        can_withdraw:
+                          type: boolean
+                          description: 'Ture if the token can be withdrawn, False otherwise'
+                          default: false
+                          example: false
+                    - $ref: '#/components/schemas/TokenInfo'
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getTokenBalancesResponse:

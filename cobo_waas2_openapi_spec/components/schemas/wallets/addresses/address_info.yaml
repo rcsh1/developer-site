@@ -22,8 +22,13 @@ properties:
     type: string
     description: From address memo
     example: "82840924"
-  is_internal:
-    type: boolean
-    description: Ture if the address is in same fund pool, False otherwise
-    default: false
-    example: false
+  path:
+    type: string
+    description: Derivation path of address pubkey，required for MPC wallet
+    example: "m/44'/60'/0'/0"
+  encoding:
+    $ref: './address_encoding.yaml'
+  pubkey:
+    type: string
+    description: Address pubkey，required for MPC wallet
+    example: "xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq"
