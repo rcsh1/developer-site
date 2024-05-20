@@ -1210,36 +1210,6 @@ paths:
           $ref: '#/components/responses/createTransactionRequestResponse'
         '404':
           $ref: '#/components/responses/notFoundError'
-  /webhooks/events/definitions:
-    get:
-      tags:
-        - Developers - Webhooks
-      summary: List all event types
-      description: |
-        This operation retrieves a list of supported event types.
-      operationId: list_webhook_event_definitions
-      responses:
-        '200':
-          description: The request was successful.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    event_type:
-                      type: string
-                      example: asset_wallet.outbound.created
-                      description: The event type.
-                    description:
-                      type: string
-                      example: Occurs when a request to transfer from an Asset Wallet is created.
-                      description: The event type description.
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
   /webhooks/events:
     get:
       tags:
