@@ -2,8 +2,17 @@ get:
   tags:
     - Wallets
   operationId: get_tokens
-  summary: List the metadata of tokens
-  description: Retrieve a list of token metadata.
+  summary: List token metadata
+  description: |
+    This endpoint retrieves metadata for tokens stored in the wallet system.
+    It provides details such as token_id, symbol, and other relevant information.
+    Pagination parameters can be used to manage the size of the response.
+    The token list is publicly accessible without any permission restrictions.
+    
+    Error codes this API may return:
+      | Error Code | Description |
+      | -- | -- |
+      | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -14,5 +23,5 @@ get:
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_tokens.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

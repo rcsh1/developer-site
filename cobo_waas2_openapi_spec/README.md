@@ -12,8 +12,14 @@
 
 编辑后，请使用以下命令打包规范：
 
+待发布版本
 ```
 $ swagger-cli bundle dev_main.yaml -o dev_openapi.yaml -t yaml
+```
+
+工作版本
+```
+$ swagger-cli bundle dev_main_working.yaml -o dev_openapi_working.yaml -t yaml
 ```
 
 通过以下命令进行check：

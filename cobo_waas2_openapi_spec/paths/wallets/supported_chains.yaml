@@ -2,8 +2,16 @@ get:
   tags:
     - Wallets
   operationId: get_supported_chains
-  summary: List the supported chains by wallet type/subtype
-  description: Retrieve a list of supported chain.
+  summary: List supported chains
+  description: |
+    This endpoint allows users to query supported chains based on wallet type and subtype. 
+    Pagination parameters can be used to manage the response size.
+    Wallet type/subtype are enumerations as described in parameters.
+    
+    Error codes this API may return:
+      | Error Code | Description |
+      | -- | -- |
+      | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -15,5 +23,5 @@ get:
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_chains.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

@@ -2,8 +2,17 @@ get:
   tags:
     - Wallets
   operationId: get_assets
-  summary: List the metadata of assets
-  description: Retrieve a list of asset metadata.
+  summary: List asset metadata
+  description: |
+    This endpoint retrieves metadata for assets stored in the wallet system.
+    It provides details such as asset_id, display_code, and other relevant information.
+    Pagination parameters can be used to manage the size of the response.
+    The asset list is publicly accessible without any permission restrictions.
+    
+    Error codes this API may return:
+      | Error Code | Description |
+      | -- | -- |
+      | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -14,5 +23,5 @@ get:
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_assets.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

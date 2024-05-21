@@ -84,6 +84,8 @@ tags:
     description: Operations related to all wallets.
   - name: Wallets - MPC Wallet
     description: Operations related to mpc wallet.
+  - name: Wallets - Exchange Wallet
+    description: Operations related to exchange wallet.
   - name: Transactions
     description: Operations related to all transactions.
   - name: Developers - Webhooks
@@ -115,6 +117,34 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/getChainsResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+  /wallets/assets:
+    get:
+      tags:
+        - Wallets
+      operationId: get_assets
+      summary: List asset metadata
+      description: |
+        This endpoint retrieves metadata for assets stored in the wallet system.
+        It provides details such as asset_id, display_code, and other relevant information.
+        Pagination parameters can be used to manage the size of the response.
+        The asset list is publicly accessible without any permission restrictions.
+
+        Error codes this API may return:
+          | Error Code | Description |
+          | -- | -- |
+          | `2006` | 参数格式或者值非法 |
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalAssetIdParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAssetsResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
   /wallets/tokens:
@@ -943,6 +973,193 @@ paths:
           $ref: '#/components/responses/forbiddenError'
         '429':
           $ref: '#/components/responses/tooManyRequestError'
+  /wallets/exchanges/settings:
+    get:
+      tags:
+        - Wallets - Exchange Wallet
+      operationId: list_exchanges
+      summary: List of exchanges
+      description: Retrieve a list of exchanges.
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          description: Successfully list of exchange sub account ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  description: Settings details for the exchange
+                  required:
+                    - exchange_id
+                    - supported_sub_wallet_ids
+                  properties:
+                    exchange_id:
+                      $ref: '#/components/schemas/ExchangeId'
+                    subtitle:
+                      type: string
+                      description: Introduction of the supported features of this exchange.
+                      example: Sub Account & Trading Account
+                    supported_sub_wallet_ids:
+                      type: array
+                      description: The trading accounts(sub_wallet_ids) supported for this exchange.
+                      items:
+                        type: string
+                      example:
+                        - SPOT
+                        - FUTURE
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+  '/wallets/exchanges/{exchange_id}/supported_assets':
+    parameters:
+      - $ref: '#/components/parameters/exchangeIdParam'
+    get:
+      tags:
+        - Wallets - Exchange Wallet
+      operationId: get_exchange_supported_assets
+      summary: List the supported assets by exchange id
+      description: Retrieve a list of supported asset.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAssetsResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/exchanges/{exchange_id}/assets/supported_chains':
+    parameters:
+      - $ref: '#/components/parameters/exchangeIdParam'
+    get:
+      tags:
+        - Wallets - Exchange Wallet
+      operationId: get_exchange_supported_chains
+      summary: List the supported chains by exchange id and asset id
+      description: Retrieve a list of supported chains.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requiredAssetIdParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          description: Successfully listed chains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainInfo'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/exchanges/assets':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
+    get:
+      tags:
+        - Wallets - Exchange Wallet
+      operationId: get_exchange_wallet_asset_balances
+      summary: List the asset balance in exchange wallet
+      description: Retrieve a list of asset balance in exchange wallet.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/requiredSubWalletIdParam'
+        - $ref: '#/components/parameters/optionalAssetIdParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAssetBalancesResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/wallets/{wallet_id}/exchanges/subaccounts':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
+    get:
+      tags:
+        - Wallets - Exchange Wallet
+      operationId: list_sub_accounts_by_wallet_id
+      summary: List exchange sub accounts by wallet id
+      description: Retrieve a list of exchange sub accounts.
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getSubAccountIdsResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+    post:
+      tags:
+        - Wallets - Exchange Wallet
+      operationId: link_sub_accounts_by_wallet_id
+      summary: Link exchange sub accounts by wallet id
+      description: Link exchange sub accounts.
+      security:
+        - CoboAuth: []
+      requestBody:
+        description: Request body for linking subaccounts
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                wallet_id:
+                  type: string
+                  description: The ID of main account wallet.
+                  example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                sub_account_ids:
+                  type: array
+                  items:
+                    type: string
+                  description: The ID list of sub accounts.
+                  example:
+                    - f47ac10b-58cc-4372-a567-0e02b2c3d479
+      responses:
+        '201':
+          $ref: '#/components/responses/getSubAccountIdsResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+  '/wallets/exchanges/{exchange_id}/subaccounts':
+    parameters:
+      - $ref: '#/components/parameters/exchangeIdParam'
+    get:
+      tags:
+        - Wallets - Exchange Wallet
+      operationId: list_sub_accounts_by_apikey
+      summary: List exchange sub accounts by apikey
+      description: Retrieve a list of exchange sub accounts.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalApikeyParam'
+        - $ref: '#/components/parameters/optionalSecretParam'
+        - $ref: '#/components/parameters/optionalPassphraseParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getSubAccountIdsResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
   /transactions/fee_price:
     get:
       tags:
@@ -1007,6 +1224,22 @@ paths:
         - CoboAuth: []
       requestBody:
         $ref: '#/components/requestBodies/createSmartContractCallBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createTransactionRequestResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+  /transactions/sign_message:
+    post:
+      tags:
+        - Transactions
+      operationId: create_sign_message_transaction
+      summary: Create a sign message transaction
+      description: Create a transaction to sign message.
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/createMessageSignBody'
       responses:
         '201':
           $ref: '#/components/responses/createTransactionRequestResponse'

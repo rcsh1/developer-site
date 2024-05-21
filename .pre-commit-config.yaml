@@ -5,6 +5,8 @@ repos:
     hooks:
     -   id: vacuum
         files: cobo_waas2_openapi_spec/dev_openapi.yaml
+    -   id: vacuum
+        files: cobo_waas2_openapi_spec/dev_openapi_working.yaml
 
 
 -   repo: local
@@ -13,4 +15,4 @@ repos:
         name: Check OpenAPI Spec
         entry: python cobo_waas2_openapi_spec/scripts/check_openapi_spec.py
         language: system
-        files: ^(cobo_waas2_openapi_spec\/dev_openapi\.yaml)$
+        files: ^(cobo_waas2_openapi_spec\/dev_openapi\.yaml|cobo_waas2_openapi_spec\/dev_openapi_working\.yaml)$

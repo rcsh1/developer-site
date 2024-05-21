@@ -18,26 +18,6 @@ get:
       $ref: "../../../components/responses/errors/404_not_found.yaml"
     '503':
       $ref: "../../../components/responses/errors/503_service_unavailable.yaml"
-delete:
-  tags:
-    - Wallets - MPC Wallet
-  operationId: delete_key_group
-  summary: delete a mpc key group
-  description: delete a mpc key group.
-  security:
-    - CoboAuth: []
-  parameters:
-    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
-    - $ref: "../../../components/parameters/wallets/mpcs/key_group_id_path.yaml"
-  responses:
-    '200':
-      $ref: "../../../components/responses/wallets/mpcs/delete_key_group.yaml"
-    '401':
-      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
-    '403':
-      $ref: "../../../components/responses/errors/403_forbidden.yaml"
-    '429':
-      $ref: "../../../components/responses/errors/429_too_many_request.yaml"
 put:
   tags:
     - Wallets - MPC Wallet
@@ -53,6 +33,26 @@ put:
   responses:
     '200':
       $ref: "../../../components/responses/wallets/mpcs/put_key_group.yaml"
+    '401':
+      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../../components/responses/errors/429_too_many_request.yaml"
+delete:
+  tags:
+    - Wallets - MPC Wallet
+  operationId: delete_key_group
+  summary: delete a mpc key group
+  description: delete a mpc key group.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
+    - $ref: "../../../components/parameters/wallets/mpcs/key_group_id_path.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/delete_key_group.yaml"
     '401':
       $ref: "../../../components/responses/errors/401_unauthorized.yaml"
     '403':

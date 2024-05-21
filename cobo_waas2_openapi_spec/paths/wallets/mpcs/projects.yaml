@@ -1,3 +1,18 @@
+post:
+  tags:
+    - Wallets - MPC Wallet
+  operationId: create_mpc_project
+  summary: Create a mpc project
+  description: create a mpc project
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../../components/request_bodies/wallets/mpcs/create_project.yaml"
+  responses:
+    '201':
+      $ref: "../../../components/responses/wallets/mpcs/create_project.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
 get:
   tags:
     - Wallets - MPC Wallet
@@ -15,18 +30,3 @@ get:
       $ref: "../../../components/responses/errors/403_forbidden.yaml"
     '429':
       $ref: "../../../components/responses/errors/429_too_many_request.yaml"
-post:
-  tags:
-    - Wallets - MPC Wallet
-  operationId: create_mpc_project
-  summary: Create a mpc project
-  description: create a mpc project
-  security:
-    - CoboAuth: []
-  requestBody:
-    $ref: "../../../components/request_bodies/wallets/mpcs/create_project.yaml"
-  responses:
-    '201':
-      $ref: "../../../components/responses/wallets/mpcs/create_project.yaml"
-    '400':
-      $ref: "../../../components/responses/errors/400_bad_request.yaml"
