@@ -87,8 +87,8 @@ tags:
     description: Operations related to all wallets.
   - name: Wallets - MPC Wallet
     description: Operations related to mpc wallet.
-#  - name: Wallets - Exchange Wallet
-#    description: Operations related to exchange wallet.
+  - name: Wallets - Exchange Wallet
+    description: Operations related to exchange wallet.
   - name: Transactions
     description: Operations related to all transactions.
   - name: Developers - Webhooks
@@ -98,8 +98,8 @@ paths:
   # wallets
   /wallets/chains:
     $ref: "./paths/wallets/chains.yaml"
-#  /wallets/assets:
-#    $ref: "./paths/wallets/assets.yaml"
+  /wallets/assets:
+    $ref: "./paths/wallets/assets.yaml"
   /wallets/tokens:
     $ref: "./paths/wallets/tokens.yaml"
   /wallets/supported_chains:
@@ -126,7 +126,6 @@ paths:
     $ref: "./paths/wallets/wallet_token_balances.yaml"
   /wallets/{wallet_id}/addresses/{address_id}/tokens:
     $ref: "./paths/wallets/wallet_address_token_balances.yaml"
-
   # mpc wallets
   /wallets/mpc/cobo_key_holders:
     $ref: "./paths/wallets/mpcs/cobo_key_holders.yaml"
@@ -148,18 +147,18 @@ paths:
     $ref: "./paths/wallets/mpcs/tss_request.yaml"
 
   # exchange wallets
-#  /wallets/exchanges/settings:
-#    $ref: "./paths/wallets/exchanges/exchange_settings.yaml"
-#  /wallets/exchanges/{exchange_id}/supported_assets:
-#    $ref: "./paths/wallets/exchanges/exchange_supported_assets.yaml"
-#  /wallets/exchanges/{exchange_id}/assets/supported_chains:
-#    $ref: "./paths/wallets/exchanges/exchange_supported_chains.yaml"
-#  /wallets/{wallet_id}/exchanges/assets:
-#    $ref: "./paths/wallets/exchanges/exchange_wallet_asset_balances.yaml"
-#  /wallets/{wallet_id}/exchanges/subaccounts:
-#    $ref: "./paths/wallets/exchanges/subaccounts_by_wallet_id.yaml"
-#  /wallets/exchanges/{exchange_id}/subaccounts:
-#    $ref: "./paths/wallets/exchanges/subaccounts_by_apikey.yaml"
+  /wallets/exchanges/settings:
+    $ref: "./paths/wallets/exchanges/exchange_settings.yaml"
+  /wallets/exchanges/{exchange_id}/supported_assets:
+    $ref: "./paths/wallets/exchanges/exchange_supported_assets.yaml"
+  /wallets/exchanges/{exchange_id}/assets/supported_chains:
+    $ref: "./paths/wallets/exchanges/exchange_supported_chains.yaml"
+  /wallets/{wallet_id}/exchanges/assets:
+    $ref: "./paths/wallets/exchanges/exchange_wallet_asset_balances.yaml"
+  /wallets/{wallet_id}/exchanges/subaccounts:
+    $ref: "./paths/wallets/exchanges/subaccounts_by_wallet_id.yaml"
+  /wallets/exchanges/{exchange_id}/subaccounts:
+    $ref: "./paths/wallets/exchanges/subaccounts_by_apikey.yaml"
 
   # transactions
   /transactions/fee_price:
@@ -170,8 +169,8 @@ paths:
     $ref: "./paths/transactions/transfer.yaml"
   /transactions/contract_call:
     $ref: "./paths/transactions/call.yaml"
-#  /transactions/sign_message:
-#    $ref: "./paths/transactions/sign.yaml"
+  /transactions/sign_message:
+    $ref: "./paths/transactions/sign.yaml"
   /transactions:
     $ref: "./paths/transactions/transactions.yaml"
   /transactions/{transaction_id}:

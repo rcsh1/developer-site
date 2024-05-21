@@ -2,8 +2,18 @@ get:
   tags:
     - Wallets
   operationId: get_enabled_tokens
-  summary: List the enabled tokens by wallet type/subtype and chain id if specified
-  description: Retrieve a list of supported token.
+  summary: List enabled tokens
+  description: |
+    This endpoint allows users to query enabled tokens based on wallet type, subtype, 
+    and chain ID if specified for the organization associated with the API key.
+    Pagination parameters can be used to manage the response size.
+    Wallet type/subtype are enumerations as described in parameters.
+    Chain_id can be get via List enabled chains.
+    
+    Error codes this API may return:
+      | Error Code | Description |
+      | -- | -- |
+      | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -16,5 +26,5 @@ get:
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_tokens.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

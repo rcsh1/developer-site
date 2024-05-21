@@ -8,18 +8,17 @@ properties:
   fee_token_id:
     type: string
     description: ID of the fee token. Unique in all chains scope.
-    pattern: ^[A-Z]+(_[A-Z0-9]+)?$
     example: 'ETH'
   max_fee:
     type: string
     description: The highest Gas price paid for the transfer, unit GWei.
     example: '1'
   max_priority_fee:
-    type: integer
+    type: string
     description: The maximum Gas price paid to miners, the higher it is, the faster it is likely to be packaged into the block, unit GWei.
     example: '0.1'
   base_fee:
-    type: integer
+    type: string
     description: The Base Fee of chain.
     example: '0.9'
 

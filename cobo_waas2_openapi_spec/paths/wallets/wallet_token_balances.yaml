@@ -2,8 +2,17 @@ get:
   tags:
     - Wallets
   operationId: get_wallet_token_balances
-  summary: List the token balance in the wallets(to be specific)
-  description: Retrieve a list of token balance in wallet.
+  summary: List Token Balances in Wallet
+  description: |
+    Retrieves a list of token balances within a wallet.
+    This endpoint allows users to query token balances based on the wallet ID and optionally token ID.
+    Pagination parameters can be used to manage the response size.
+    This endpoint is supported by Custodial/MPC wallets.
+
+    Error codes this API may return:
+      | Error Code | Description |
+      | -- | -- |
+      | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -15,5 +24,7 @@ get:
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_token_balances.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
     '404':
       $ref: "../../components/responses/errors/404_not_found.yaml"

@@ -4,7 +4,7 @@ post:
   operationId: create_wallet
   summary: Create new wallet
   description: |
-    ..More detailed explanation on creating a new wallet..
+    Creates a new wallet with the provided information.
 
     Error codes this API may return:
     | Error Code | Description |
@@ -31,7 +31,15 @@ get:
     - Wallets
   operationId: list_wallets
   summary: List all wallets
-  description: Retrieve a list of wallets.
+  description: |
+    Retrieves a list of all wallets.
+
+    This endpoint allows filtering by wallet type, subtype, and MPC vault ID (if applicable).
+    
+    Error codes this API may return:
+          | Error Code | Description |
+          | -- | -- |
+          | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:

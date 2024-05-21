@@ -4,8 +4,14 @@ post:
   tags:
     - Wallets
   operationId: add_wallet_address
-  summary: Add address to a wallet
-  description: Add address to a wallet.
+  summary: Add address to wallet
+  description: | 
+    Add an address to a wallet.
+    
+    Error codes this API may return:
+    | Error Code | Description |
+    | -- | -- |
+    | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   requestBody:
@@ -20,7 +26,13 @@ get:
     - Wallets
   operationId: list_addresses
   summary: List wallet addresses by wallet ID
-  description: Retrieve a list of addresses.
+  description: |
+    Retrieve a list of addresses associated with a wallet.
+  
+    Error codes this API may return:
+      | Error Code | Description |
+      | -- | -- |
+      | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -32,5 +44,5 @@ get:
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_addresses.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

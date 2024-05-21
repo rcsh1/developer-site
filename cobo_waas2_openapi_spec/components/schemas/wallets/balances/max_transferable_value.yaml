@@ -1,0 +1,13 @@
+type: object
+description: max send value and fee.
+properties:
+  token_id:
+    type: string
+    description: token name.
+    example: 'ETH'
+  max_send_value:
+    type: string
+    description: the maximum sendable value for the given address or current wallet.
+    example: '841165119243622'
+  fee:
+    $ref: '../../transactions/fees/transaction_fee.yaml'

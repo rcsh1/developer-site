@@ -2,8 +2,15 @@ get:
   tags:
     - Wallets
   operationId: get_spendable_list
-  summary: List the spendable utxo
-  description: Retrieve a list of spendable utxo.
+  summary: List spendable UTXOs
+  description: |
+    Retrieves a list of spendable unspent transaction outputs (UTXOs) for a given wallet and token.
+    This endpoint allows users to query UTXOs that can be spent in transactions.
+    
+    Error codes this API may return:
+      | Error Code | Description |
+      | -- | -- |
+      | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -13,5 +20,5 @@ get:
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_spendable_list.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
