@@ -9,6 +9,7 @@ required:
   - source
   - destination
   - created_time
+  - updated_time
 properties:
   transaction_id:
     type: string
@@ -27,7 +28,11 @@ properties:
     type: string
     description: Cobo ID
     example: "20231213122855000000000000000000"
-  tx_id:
+  initiator:
+    type: string
+    description: Transaction initiator
+    example: "API Prod Key #1"
+  transaction_hash:
     type: string
     description: Transaction hash.
     example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
@@ -52,6 +57,8 @@ properties:
     type: array
     items:
       $ref: './transaction_token.yaml'
+  fee:
+    $ref: '../fees/transaction_fee.yaml'
   category:
     type: array
     items:
@@ -59,6 +66,15 @@ properties:
   description:
     type: string
     example: "withdrawal to exchange trading account"
+  confirmed_num:
+    type: number
+    description: Transaction confirmed number
+    example: 12
+  confirming_threshold:
+    type: integer
+    format: int32
+    description: Number of confirmations required for a transaction, such as 15 for ETH chain.
+    example: 15
   created_time:
     type: number
     description: Transaction creation time
