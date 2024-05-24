@@ -169,21 +169,21 @@ paths:
   /transactions/transfer:
     $ref: "./paths/transactions/transfer.yaml"
   /transactions/contract_call:
-    $ref: "./paths/transactions/call.yaml"
+    $ref: "./paths/transactions/contract_call.yaml"
 #  /transactions/sign_message:
-#    $ref: "./paths/transactions/sign.yaml"
+#    $ref: "./paths/transactions/sign_message.yaml"
   /transactions:
     $ref: "./paths/transactions/transactions.yaml"
   /transactions/{transaction_id}:
     $ref: "./paths/transactions/transaction_by_id.yaml"
   /transactions/{transaction_id}/resend:
     $ref: "./paths/transactions/transaction_resend.yaml"
+  /transactions/{transaction_id}/cancel:
+    $ref: "./paths/transactions/transaction_cancel.yaml"
   /transactions/{transaction_id}/drop:
     $ref: "./paths/transactions/transaction_drop.yaml"
   /transactions/{transaction_id}/speedup:
     $ref: "./paths/transactions/transaction_speed_up.yaml"
-  /transactions/{transaction_id}/callback_confirmation/retry:
-    $ref: "./paths/transactions/transaction_callback_confirmation_retry.yaml"
 
   # webhooks
   /webhooks/events:
@@ -295,9 +295,9 @@ components:
     FeeType:
       $ref: "./components/schemas/transactions/fees/fee_type.yaml"
     FeeAmount:
-      $ref: "./components/schemas/transactions/fees/fee_amount.yaml"
+      $ref: "./components/schemas/transactions/fees/fee_max_fee_amount.yaml"
     FeeData:
-      $ref: "./components/schemas/transactions/fees/fee_data.yaml"
+      $ref: "./components/schemas/transactions/fees/fee_gas_limit.yaml"
     EvmEip1559FeeBasePrice:
       $ref: "./components/schemas/transactions/fees/base_fee_price_eip1559.yaml"
     EvmLegacyFeeBasePrice:
@@ -394,12 +394,22 @@ components:
       $ref: "./components/schemas/transactions/transfers/destinations/transfer_destination.yaml"
     Transfer:
       $ref: "./components/schemas/transactions/transfers/transfer.yaml"
-    SmartContractCall:
-      $ref: "./components/schemas/transactions/smart_contract_call.yaml"
     SignMessage:
       $ref: "./components/schemas/transactions/message_sign.yaml"
     EstimateFee:
       $ref: "./components/schemas/transactions/estimate_fee.yaml"
+
+    # contract call
+    BaseContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/base_contract_call_source.yaml"
+    MpcContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/mpc_contract_call_source.yaml"
+    SafeContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/safe_contract_call_source.yaml"
+    ContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/contract_call_source.yaml"
+    ContractCall:
+      $ref: "./components/schemas/transactions/contract_calls/contract_call.yaml"
 
     # webhook
     WebhookEvent:

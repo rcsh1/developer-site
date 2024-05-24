@@ -21,12 +21,6 @@ properties:
     description: ID of the token. Unique in all chains scope.
     pattern: ^[A-Z]+(_[A-Z0-9]+)?$
     example: 'ETH_USDT'
-  amount:
-    type: string
-    description: >
-      Transaction value (Note that this is an absolute value.
-      If you trade 1.5 ETH, then the value is 1.5)
-    example: '1.5'
   destination:
     $ref: './destinations/transfer_destination.yaml'
   category_names:
