@@ -1100,6 +1100,22 @@ paths:
           $ref: '#/components/responses/createTransactionRequestResponse'
         '404':
           $ref: '#/components/responses/notFoundError'
+  '/transactions/{transaction_id}/cancel':
+    parameters:
+      - $ref: '#/components/parameters/transactionIdParam'
+    post:
+      tags:
+        - Transactions
+      operationId: cancel_transaction_by_id
+      summary: Cancel a transaction by ID
+      description: Cancel a transaction.
+      security:
+        - CoboAuth: []
+      responses:
+        '201':
+          $ref: '#/components/responses/createTransactionRequestResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
   '/transactions/{transaction_id}/drop':
     parameters:
       - $ref: '#/components/parameters/transactionIdParam'
@@ -1131,22 +1147,6 @@ paths:
         - CoboAuth: []
       requestBody:
         $ref: '#/components/requestBodies/feeRequestBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/createTransactionRequestResponse'
-        '404':
-          $ref: '#/components/responses/notFoundError'
-  '/transactions/{transaction_id}/callback_confirmation/retry':
-    parameters:
-      - $ref: '#/components/parameters/transactionIdParam'
-    post:
-      tags:
-        - Transactions
-      operationId: retry_transaction_double_check_by_id
-      summary: Retry up a transaction double-check by ID
-      description: Retry a transaction double-check.
-      security:
-        - CoboAuth: []
       responses:
         '201':
           $ref: '#/components/responses/createTransactionRequestResponse'
@@ -2118,9 +2118,9 @@ components:
       type: object
       description: The estimated fee amount in fee_coin.
       properties:
-        fee_amount:
+        max_fee_amount:
           type: string
-          description: The estimated fee amount in fee_coin.
+          description: The max fee amount in fee_coin.
           example: '0.1'
     FeeData:
       type: object
@@ -2130,10 +2130,6 @@ components:
           type: string
           description: The Limit of gas.
           default: '21000'
-        fee_amount:
-          type: string
-          description: The estimated fee amount in fee_coin.
-          example: '0.1'
     EvmEip1559FeeBasePrice:
       type: object
       description: The base eip1559 fee price for estimate fees or transfer.
@@ -2146,10 +2142,6 @@ components:
           type: string
           description: ID of the fee token. Unique in all chains scope.
           example: ETH
-        max_fee:
-          type: string
-          description: 'The highest Gas price paid for the transfer, unit GWei.'
-          example: '1'
         max_priority_fee:
           type: string
           description: 'The maximum Gas price paid to miners, the higher it is, the faster it is likely to be packaged into the block, unit GWei.'
@@ -2811,12 +2803,49 @@ components:
               description: From address
               example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
     MpcTransferSource:
-      allOf:
-        - type: object
+      type: object
+      description: The base data for transfer source.
+      required:
+        - source_type
+        - wallet_id
+      properties:
+        source_type:
+          $ref: '#/components/schemas/WalletSubtype'
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        account_input:
+          type: object
           properties:
-            mpc_used_key_group:
-              $ref: '#/components/schemas/MpcSigningGroup'
-        - $ref: '#/components/schemas/AddressTransferSource'
+            address_str:
+              type: string
+              description: From address
+              example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+        utxo_inputs:
+          type: object
+          properties:
+            included_inputs:
+              type: array
+              items:
+                type: object
+                properties:
+                  tx_hash:
+                    type: string
+                    description: UTXO tx hash to include
+                    example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+            excluded_inputs:
+              type: array
+              items:
+                type: object
+                properties:
+                  tx_hash:
+                    type: string
+                    description: UTXO tx hash to exclude
+                    example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+        mpc_used_key_group:
+          $ref: '#/components/schemas/MpcSigningGroup'
     SafeTransferSource:
       allOf:
         - $ref: '#/components/schemas/AddressTransferSource'
@@ -2868,21 +2897,53 @@ components:
           Sub: '#/components/schemas/ExchangeTransferSource'
     AddressTransferDestination:
       type: object
-      description: The data for address destination.
+      description: The data for address destination. Only one of account_output or utxo_outputs needed.
       required:
         - destination_type
-        - address_str
       properties:
         destination_type:
           $ref: '#/components/schemas/TransferDestinationType'
-        address_str:
-          type: string
-          description: Destination address
-          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
-        memo:
-          type: string
-          description: Destination address memo
-          example: '82840924'
+        account_output:
+          type: object
+          properties:
+            address_str:
+              type: string
+              description: Destination address
+              example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+            memo:
+              type: string
+              description: Destination address memo
+              example: '82840924'
+            amount:
+              type: string
+              description: |
+                Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+              example: '1.5'
+        utxo_outputs:
+          type: object
+          properties:
+            outputs:
+              type: array
+              items:
+                type: object
+                properties:
+                  address_str:
+                    type: string
+                    description: Destination address
+                    example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
+                  amount:
+                    type: string
+                    description: |
+                      Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+                    example: '1.5'
+                  script:
+                    type: string
+                    description: Script of the output
+                    example: 76a914fb37342f6275b13936799def06f2DEMO
+            change_address:
+              type: string
+              description: Change address
+              example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
     ExchangeTransferDestination:
       type: object
       description: The data for exchange destination.
@@ -2902,6 +2963,11 @@ components:
           type: string
           description: Exchange trading account or any sub wallet info for transfer.
           example: Asset
+        amount:
+          type: string
+          description: |
+            Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+          example: '1.5'
     TransferDestinationType:
       type: string
       enum:
@@ -2946,11 +3012,6 @@ components:
           description: ID of the token. Unique in all chains scope.
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
-        amount:
-          type: string
-          description: |
-            Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
-          example: '1.5'
         destination:
           $ref: '#/components/schemas/TransferDestination'
         category_names:
@@ -2963,57 +3024,6 @@ components:
           type: string
           description: The description for transfer.
           example: Transfer from wallet
-        fee:
-          $ref: '#/components/schemas/TransactionFee'
-    SmartContractCall:
-      type: object
-      description: The data for create smart contract call transaction.
-      required:
-        - request_id
-        - request_type
-        - from_wallet_id
-        - from_address_str
-        - chain_id
-        - to_address_str
-        - calldata
-      properties:
-        request_id:
-          type: string
-          description: Unique id of the request.
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
-        from_wallet_id:
-          type: string
-          description: Unique id of the wallet to transfer from.
-          format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        from_address_str:
-          type: string
-          description: From address
-          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
-        chain_id:
-          type: string
-          description: The blockchain on which the token operates.
-          pattern: '^[A-Z]+$'
-          example: ETH
-        to_address_str:
-          type: string
-          description: To address
-          example: bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v
-        value:
-          type: string
-          description: |
-            Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
-          example: '1.5'
-        calldata:
-          type: string
-          description: |
-            calldata for this transaction. Commonly used as part of contract interaction.
-          format: byte
-          example: U3dhZ2dlciByb2Nrcw==
-        mpc_used_key_group:
-          $ref: '#/components/schemas/MpcSigningGroup'
         fee:
           $ref: '#/components/schemas/TransactionFee'
     SignMessage:
@@ -3060,12 +3070,123 @@ components:
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/Transfer'
-        - $ref: '#/components/schemas/SmartContractCall'
+        - $ref: '#/components/schemas/ContractCall'
       discriminator:
         propertyName: request_type
         mapping:
           Transfer: '#/components/schemas/Transfer'
           Call: '#/components/schemas/SmartContractCall'
+    BaseContractCallSource:
+      type: object
+      description: The base data for contract call source.
+      required:
+        - source_type
+        - wallet_id
+        - address_str
+      properties:
+        source_type:
+          type: string
+          enum:
+            - Org-Controlled
+            - User-Controlled
+            - 'Safe{Wallet}'
+          example: Org-Controlled
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        address_str:
+          type: string
+          description: From address
+          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+    MpcContractCallSource:
+      allOf:
+        - $ref: '#/components/schemas/BaseContractCallSource'
+        - type: object
+          required:
+            - mpc_used_key_group
+          properties:
+            mpc_used_key_group:
+              $ref: '#/components/schemas/MpcSigningGroup'
+    SafeContractCallSource:
+      allOf:
+        - $ref: '#/components/schemas/BaseContractCallSource'
+        - type: object
+          required:
+            - delegate
+          properties:
+            delegate:
+              type: object
+              properties:
+                wallet_id:
+                  type: string
+                  format: uuid
+                  example: 123e4567-e89b-12d3-a456-426614174000
+                  description: The wallet id of the delegate. This is required when user initiate a transfer.
+                wallet_type:
+                  type: string
+                  example: MPC
+                  description: The wallet type of the delegate. This is required when user initiate a transfer.
+                wallet_address:
+                  type: string
+                  example: '0x1234567890123456789012345678901234567890'
+                  description: The wallet address of the delegate. This is required when user initiate a transfer.
+                mpc_used_key_group:
+                  $ref: '#/components/schemas/MpcSigningGroup'
+    ContractCallSource:
+      oneOf:
+        - $ref: '#/components/schemas/MpcContractCallSource'
+        - $ref: '#/components/schemas/SafeContractCallSource'
+      discriminator:
+        propertyName: source_type
+        mapping:
+          Org-Controlled: '#/components/schemas/MpcContractCallSource'
+          User-Controlled: '#/components/schemas/MpcContractCallSource'
+          'Safe{Wallet}': '#/components/schemas/SafeContractCallSource'
+    ContractCall:
+      type: object
+      description: The data for create smart contract call transaction.
+      required:
+        - request_id
+        - request_type
+        - chain_id
+        - source
+        - to_address_str
+        - calldata
+      properties:
+        request_id:
+          type: string
+          description: Unique id of the request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        request_type:
+          $ref: '#/components/schemas/Transfer/properties/request_type'
+        chain_id:
+          type: string
+          description: The blockchain on which the token operates.
+          example: ETH
+        source:
+          $ref: '#/components/schemas/ContractCallSource'
+        destination:
+          type: object
+          properties:
+            address_str:
+              type: string
+              description: To address
+              example: bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v
+            value:
+              type: string
+              description: |
+                Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+              example: '1.5'
+            calldata:
+              type: string
+              description: |
+                calldata for this transaction. Commonly used as part of contract interaction.
+              format: byte
+              example: U3dhZ2dlciByb2Nrcw==
+        fee:
+          $ref: '#/components/schemas/TransactionFee'
     WebhookEvent:
       type: object
       description: The webhook event payload.
@@ -3822,7 +3943,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SmartContractCall'
+            $ref: '#/components/schemas/ContractCall'
     createMessageSignBody:
       description: The request body to create a message sign transaction
       content:

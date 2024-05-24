@@ -3,14 +3,13 @@ parameters:
 post:
   tags:
     - Transactions
-  operationId: retry_transaction_double_check_by_id
-  summary: Retry up a transaction double-check by ID
-  description: Retry a transaction double-check.
+  operationId: cancel_transaction_by_id
+  summary: Cancel a transaction by ID
+  description: Cancel a transaction.
   security:
     - CoboAuth: []
   responses:
     '201':
-      # TBD
       $ref: "../../components/responses/transactions/create_transaction_request.yaml"
     '404':
       $ref: "../../components/responses/errors/404_not_found.yaml"
