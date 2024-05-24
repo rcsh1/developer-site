@@ -1,4 +1,4 @@
-description: The request body to update a wallet
+description: The request body.
 content:
   application/json:
     schema:
@@ -7,25 +7,26 @@ content:
         name:
           type: string
           example: 'Example Wallet'
+          description: The wallet name.
         apikey:
           type: string
-          description: The API Key for the exchange.
+          description: The API key of your exchange account.
           example: 'd8f062da-39f4-4a11-8b9d-12595854237f'
         secret:
           type: string
-          description: The API Secret for the exchange.
+          description: The API secret of your exchange account. # 为什么创建钱包的时候没有这个字段？
           example: '75B4F636193162488A3728B4A5797708'
         passphrase:
           type: string
-          description: The passphrase for the exchange.
+          description: The passphrase of your exchange account. # 为什么创建钱包的时候没有这个字段？
           example: 'sXASDKWKLLsWWEE'
         ga_code:
           type: string
-          description: The ga_code for the exchange.
+          description: The ga_code for the exchange. # 这是什么
           example: 'sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708'
         sub_account_ids:
           type: array
-          description: The unique identifier associated with the exchange sub-account. It can be an email address, username, or a custom account ID.
+          description: The unique identifier associated with the Sub Account. It can be an email address, a user name, or a custom account ID. # 能不能简单说 Sub Account ID
           items:
             type: string
           example: [ 'sub01@xx.com', 'sub02@xx.com']

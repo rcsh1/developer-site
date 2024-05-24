@@ -1,6 +1,15 @@
 name: wallet_type
 in: query
 required: false
-description: Wallet type to query
+description: |
+  The wallet type.
+  
+  - `Custodial`: Custodial Wallets
+
+  - `MPC`: MPC Wallets
+  
+  - `SmartContract`: Smart Contract Wallets
+  
+  - `Exchange`: Exchange Wallets
 schema:
   $ref: '../../schemas/wallets/bases/wallet_type.yaml'

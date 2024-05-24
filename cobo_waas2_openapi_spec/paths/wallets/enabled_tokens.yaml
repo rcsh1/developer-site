@@ -4,16 +4,10 @@ get:
   operationId: get_enabled_tokens
   summary: List enabled tokens
   description: |
-    This endpoint allows users to query enabled tokens based on wallet type, subtype, 
-    and chain ID if specified for the organization associated with the API key.
-    Pagination parameters can be used to manage the response size.
-    Wallet type/subtype are enumerations as described in parameters.
-    Chain_id can be get via List enabled chains.
     
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    This operation retrieves all the tokens enabled for the organization associated with your API key. You can also specify the wallet type, subtype, and chain ID you want to query.
+    
+    You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.
   security:
     - CoboAuth: []
   parameters:

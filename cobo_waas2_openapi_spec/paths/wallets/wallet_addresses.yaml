@@ -6,12 +6,7 @@ post:
   operationId: add_wallet_address
   summary: Add address to wallet
   description: | 
-    Add an address to a wallet.
-    
-    Error codes this API may return:
-    | Error Code | Description |
-    | -- | -- |
-    | `2006` | 参数格式或者值非法 |
+    This operation creates one or more addresses for the specified wallet.
   security:
     - CoboAuth: []
   requestBody:
@@ -27,12 +22,7 @@ get:
   operationId: list_addresses
   summary: List wallet addresses by wallet ID
   description: |
-    Retrieve a list of addresses associated with a wallet.
-  
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    This operation retrieves a list of addresses under the specified wallet.
   security:
     - CoboAuth: []
   parameters:

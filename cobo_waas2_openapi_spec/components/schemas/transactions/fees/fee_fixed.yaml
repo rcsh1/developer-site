@@ -1,5 +1,5 @@
 type: object
-description: The estimated fee amount in fee_coin.
+description: The estimated transaction fee in fee_coin.
 required:
   - fee_type
 allOf:
@@ -9,6 +9,6 @@ allOf:
         $ref: './fee_type.yaml'
       fee_token_id:
         type: string
-        description: ID of the fee token. Unique in all chains scope.
+        description: The token ID of the transaction fee. Unique in all chains scope.
         example: 'ETH_USDT'
   - $ref: './fee_amount.yaml'

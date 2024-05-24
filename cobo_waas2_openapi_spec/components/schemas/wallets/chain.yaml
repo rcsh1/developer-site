@@ -1,25 +1,26 @@
 type: object
-description: The data for chain information.
+description: The chain information.
 required:
   - chain_id
 properties:
   chain_id:
     type: string
-    description: The blockchain on which the token operates.
+    description: The chain on which the token operates.
     example: 'ETH'
   symbol:
     type: string
-    description: Symbol for the chain.
+    description: The chain symbol.
     example: "USDT"
   icon_url:
     type: string
-    description: URL of the icon image.
-    example: 'https://static.waas.co/images/coins/ETH.png'
-  explorer_tx_url:
+    description: The URL of the chain icon.
+    example: 'https://static.waas.co/images/coins/ETH.png' # 这个链接打不开
+  explorer_tx_url: # Is there only one explorer for one chain?
     type: string
-    description: URL of the explorer transaction.
+    description: The transaction URL on the blockchain explorer. # Txn_id is a specific ID? But the operation does not specify any transaction or address https://etherscan.io/tx/0x4c7847888b39a77746f0f7612f0badd63e8eeeac24c54ad318a6f73ceb80902b
+
     example: 'https://etherscan.io/tx/{txn_id}'
   explorer_address_url:
     type: string
-    description: URL of the explorer address.
+    description: The address URL on the blockchain explorer. # 同上
     example: 'https://etherscan.io/address/{address}'

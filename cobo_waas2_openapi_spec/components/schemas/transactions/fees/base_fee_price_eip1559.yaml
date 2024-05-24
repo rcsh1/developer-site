@@ -1,5 +1,5 @@
 type: object
-description: The base eip1559 fee price for estimate fees or transfer.
+description: The base transaction fee when using the EIP 1559 method.
 required:
   - max_fee
   - max_priority_fee
@@ -7,18 +7,18 @@ required:
 properties:
   fee_token_id:
     type: string
-    description: ID of the fee token. Unique in all chains scope.
+    description: The token ID of the transaction fee. Unique in all chains scope. # Unique in all chains scope. 是什么意思？
     example: 'ETH'
   max_fee:
     type: string
-    description: The highest Gas price paid for the transfer, unit GWei.
+    description: The max fee, in gwei. The max fee represents the total gas price you are willing to pay for your transaction.
     example: '1'
   max_priority_fee:
     type: string
-    description: The maximum Gas price paid to miners, the higher it is, the faster it is likely to be packaged into the block, unit GWei.
+    description: The max priority fee, in gwei. The max priority fee represents the highest amount of miner tips you are willing to pay for your transaction.
     example: '0.1'
   base_fee:
     type: string
-    description: The Base Fee of chain.
+    description: The base fee of chain.
     example: '0.9'
 

@@ -1,16 +1,16 @@
 type: object
-description: The data for asset information.
+description: The asset information.
 required:
   - asset_id
 properties:
   asset_id:
     type: string
-    description: ID of the asset. Unique in all assets scope.
+    description: The asset ID. # This ID is unique in all assets scope. 可以省略吗？
     pattern: ^[A-Z0-9]+$
     example: 'USDT'
   display_code:
     type: string
-    description: Display code for the asset.
+    description: The display code of the asset.
     pattern: ^[A-Z0-9]+$
     example: 'USDT'
   description:
@@ -19,6 +19,6 @@ properties:
     example: 'Tether USDT'
   icon_url:
     type: string
-    description: URL of the asset
+    description: The URL of the asset.
     example: 'https://d.cobo.com/public/logos/USDT.png'
 

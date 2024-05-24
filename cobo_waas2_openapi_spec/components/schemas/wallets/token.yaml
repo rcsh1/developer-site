@@ -1,12 +1,12 @@
 type: object
-description: The data for token information.
+description: The token information.
 required:
   - token_id
   - chain_id
 properties:
   token_id:
     type: string
-    description: ID of the token. Unique in all chains scope.
+    description: The token ID. Unique in all chains scope.
     example: 'ETH_USDT'
   chain_id:
     type: string
@@ -14,21 +14,21 @@ properties:
     example: 'ETH'
   symbol:
     type: string
-    description: Symbol for the token.
+    description: The token symbol.
     example: "USDT"
   description:
     type: string
-    description: The description of the token.
+    description: The token description.
     example: 'Tether USDT'
   icon_url:
     type: string
-    description: URL of the icon image.
+    description: The URL of the token icon.
     example: 'https://static.waas.co/images/coins/ETH.png'
   token_address:
     type: string
-    description: Address for token, if applicable.
+    description: The token address, if applicable.
     example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
   asset_id:
     type: string
-    description: ID of the asset. Used to group token balance when needed.
+    description: The asset ID, which is used to group token balance.
     example: 'USDT'

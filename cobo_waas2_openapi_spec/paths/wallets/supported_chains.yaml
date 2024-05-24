@@ -4,14 +4,7 @@ get:
   operationId: get_supported_chains
   summary: List supported chains
   description: |
-    This endpoint allows users to query supported chains based on wallet type and subtype. 
-    Pagination parameters can be used to manage the response size.
-    Wallet type/subtype are enumerations as described in parameters.
-    
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    This operation retrieves all supported chains for the organization associated with your API key. You can also specify the wallet type and subtype you want to query.
   security:
     - CoboAuth: []
   parameters:

@@ -1,12 +1,12 @@
 type: object
-description: The data for balance information.
+description: The balance details.
 required:
   - total
   - available
 properties:
   total:
     type: string
-    description: The total balance, sum of the following fields.
+    description: The total balance, which is the sum of the remaining fields.
     example: '100.0'
   available:
     type: string
@@ -14,7 +14,7 @@ properties:
     example: '80.5'
   pending:
     type: string
-    description: The pending balance not confirmed.
+    description: The balance pending confirmation.
     default: '0'
     example: '10.5'
   locked:

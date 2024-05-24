@@ -3,16 +3,10 @@ get:
     - Wallets
   operationId: get_chains
   summary: List chain metadata
-  description: |
-    This endpoint retrieves metadata for available blockchain chains.
-    It provides details such as chain_id, name, and other relevant information.
-    Pagination parameters can be used to manage the size of the response.
-    The chain list is publicly accessible without any permission restrictions.
+  description: | # cobo portal 支持的所有链？
+    This operation retrieves the metadata of available chains. 
     
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    It provides details such as chain ID, chain name, and other relevant information. The chain metadata is publicly available without any permission restrictions.
   security:
     - CoboAuth: []
   parameters:

@@ -6,12 +6,7 @@ get:
   operationId: get_wallet_by_id
   summary: Retrieve wallet information by ID
   description: |
-    Retrieves detailed information about a wallet identified by its unique ID.
-    
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    This operation retrieves detailed information about the specified wallet.
   security:
     - CoboAuth: []
   responses:
@@ -27,13 +22,9 @@ put:
   operationId: update_wallet_by_id
   summary: Update wallet by ID
   description: |
-    Updates information for a specific wallet identified by its ID.
-    This endpoint is supported by Exchange wallets only.
-    
-    Error codes this API may return:
-    | Error Code | Description |
-    | -- | -- |
-    | `2006` | 参数格式或者值非法 |
+    This operation updates the information of a specified wallet.
+  
+    <Note>This operation is applicable to Exchange Wallets only.</Note>
   security:
     - CoboAuth: []
   requestBody:
@@ -51,18 +42,13 @@ delete:
   operationId: delete_wallet_by_id
   summary: Delete wallet by ID
   description: |
-      Deletes a specific wallet identified by its ID.
-      This endpoint is supported by Exchange wallets only.
-    
-      Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+      This operation deletes the specified wallet.
+      <Note>This operation is applicable to Exchange Wallets only.</Note>
   security:
     - CoboAuth: []
   responses:
     '204':
-      description: Resource successfully deleted
+      description: Resource successfully deleted.
     '400':
       $ref: "../../components/responses/errors/400_bad_request.yaml"
     '404':

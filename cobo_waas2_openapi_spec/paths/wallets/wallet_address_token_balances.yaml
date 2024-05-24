@@ -2,17 +2,9 @@ get:
   tags:
     - Wallets
   operationId: get_wallet_address_token_balances
-  summary: List Token Balances by Address in Wallet
+  summary: List token balances by address
   description: |
-    Retrieves a list of token balances for a specific address within a wallet.
-    This endpoint allows users to query token balances based on the wallet ID, address ID, and optionally token ID.
-    Pagination parameters can be used to manage the response size.
-    This endpoint is supported by MPC wallets.
-    
-    Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+    The operation retrieves a list of token balances for a specified address within an MPC Wallet. 
   security:
     - CoboAuth: []
   parameters:

@@ -4,15 +4,9 @@ get:
   operationId: get_tokens
   summary: List token metadata
   description: |
-    This endpoint retrieves metadata for tokens stored in the wallet system.
-    It provides details such as token_id, symbol, and other relevant information.
-    Pagination parameters can be used to manage the size of the response.
-    The token list is publicly accessible without any permission restrictions.
+    This operation retrieves the metadata of the tokens stored under your account.
     
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    It provides details such as token ID, token symbol, and other relevant information. The token metadata is publicly available without any permission restrictions.
   security:
     - CoboAuth: []
   parameters:

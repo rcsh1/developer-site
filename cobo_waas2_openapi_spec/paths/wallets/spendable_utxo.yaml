@@ -4,13 +4,7 @@ get:
   operationId: get_spendable_list
   summary: List spendable UTXOs
   description: |
-    Retrieves a list of spendable unspent transaction outputs (UTXOs) for a given wallet and token.
-    This endpoint allows users to query UTXOs that can be spent in transactions.
-    
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    The operation retrieves a list of spendable unspent transaction outputs (UTXOs) for the specified wallet and token.
   security:
     - CoboAuth: []
   parameters:

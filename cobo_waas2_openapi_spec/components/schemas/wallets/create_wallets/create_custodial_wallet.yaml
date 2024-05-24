@@ -8,9 +8,10 @@ allOf:
       wallet_type:
         type: string
         enum:
-          - Custodial
+          - Custodial # 为啥只有一个 type？
+        description: The wallet type.
       wallet_subtype:
         type: string
         enum:
-          - Asset
+          - Asset #需要加解释
           - Web3
