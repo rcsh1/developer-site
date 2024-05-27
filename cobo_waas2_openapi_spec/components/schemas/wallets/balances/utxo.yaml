@@ -13,13 +13,17 @@ properties:
     type: string
     description: Address of the UTXO.
     example: '2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE'
-  amount:
-    type: string
-    description: UTXO amount in decimal places (e.g. one bitcoin is divisible to eight decimal places, and 100000000 represents 1 BTC).
-    example: 100000
+  token_balances:
+    type: array
+    items:
+      $ref: './token_balance.yaml'
   is_coinbase:
     type: boolean
     description: Whether the UTXO is a coinbase transaction.
+    example: false
+  is_locked:
+    type: boolean
+    description: Whether the UTXO is locked.
     example: false
   confirmed_number:
     type: integer

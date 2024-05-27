@@ -1,3 +1,5 @@
+parameters:
+  - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
 get:
   tags:
     - Wallets
@@ -14,9 +16,9 @@ get:
   security:
     - CoboAuth: []
   parameters:
-    - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
-    - $ref: "../../components/parameters/wallets/token_id_required.yaml"
+    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
     - $ref: "../../components/parameters/wallets/address_str_optional.yaml"
+    - $ref: "../../components/parameters/wallets/utxo_tx_hash_optional.yaml"
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_spendable_list.yaml"

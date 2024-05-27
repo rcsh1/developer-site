@@ -395,6 +395,8 @@ paths:
         '404':
           $ref: '#/components/responses/notFoundError'
   '/wallets/{wallet_id}/spendables':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
     get:
       tags:
         - Wallets
@@ -411,12 +413,37 @@ paths:
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/walletIdParam'
-        - $ref: '#/components/parameters/requiredTokenIdParam'
+        - $ref: '#/components/parameters/optionalTokenIdParam'
         - $ref: '#/components/parameters/addressStrParam'
+        - $ref: '#/components/parameters/optionalUtxoTxHashParam'
       responses:
         '200':
           $ref: '#/components/responses/spendableListResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+  '/wallets/{wallet_id}/spendables/lock':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
+    post:
+      tags:
+        - Wallets
+      operationId: lock_spendable_list
+      summary: Lock/Unlock the spendable in list
+      description: |
+        Retrieves a list of token balance of the spendable unspent transaction outputs (UTXOs) for a given wallet.
+        This endpoint allows users to query token balances of the spendable in the wallet.
+
+        Error codes this API may return:
+          | Error Code | Description |
+          | -- | -- |
+          | `2006` | 参数格式或者值非法 |
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/lockSpendablesBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/lockSpendableResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
   '/wallets/{wallet_id}/max_transferable_value':
@@ -1691,13 +1718,17 @@ components:
           type: string
           description: Address of the UTXO.
           example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
-        amount:
-          type: string
-          description: 'UTXO amount in decimal places (e.g. one bitcoin is divisible to eight decimal places, and 100000000 represents 1 BTC).'
-          example: 100000
+        token_balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenBalance'
         is_coinbase:
           type: boolean
           description: Whether the UTXO is a coinbase transaction.
+          example: false
+        is_locked:
+          type: boolean
+          description: Whether the UTXO is locked.
           example: false
         confirmed_number:
           type: integer
@@ -1711,9 +1742,9 @@ components:
           type: string
           description: token name.
           example: ETH
-        max_send_value:
+        max_transferable_value:
           type: string
-          description: the maximum sendable value for the given address or current wallet.
+          description: the maximum transferable value for the given address or current wallet.
           example: '841165119243622'
         fee:
           $ref: '#/components/schemas/TransactionFee'
@@ -2134,7 +2165,6 @@ components:
       type: object
       description: The base eip1559 fee price for estimate fees or transfer.
       required:
-        - max_fee
         - max_priority_fee
         - base_fee
       properties:
@@ -3042,31 +3072,37 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
           $ref: '#/components/schemas/Transfer/properties/request_type'
-        from_wallet_id:
-          type: string
-          description: Unique id of the wallet to sign message.
-          format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        from_address_str:
-          type: string
-          description: signing address
-          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
         chain_id:
           type: string
           description: The blockchain on which the token operates.
           pattern: '^[A-Z]+$'
           example: ETH
-        message:
-          type: string
-          description: 'Raw data to be signed, Base 64 encoded'
-          example: YWFhYQ==
-        structured_data:
-          type: string
-          description: 'Structured data to be signed, JSON encoded'
-          example: |
-            {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
-        mpc_used_key_group:
-          $ref: '#/components/schemas/MpcSigningGroup'
+        source:
+          type: object
+          properties:
+            wallet_id:
+              type: string
+              description: Unique id of the wallet to sign message.
+              format: uuid
+              example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+            address_str:
+              type: string
+              description: From address
+              example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+            mpc_used_key_group:
+              $ref: '#/components/schemas/MpcSigningGroup'
+        destination:
+          type: object
+          properties:
+            message:
+              type: string
+              description: 'Raw data to be signed, Base 64 encoded'
+              example: YWFhYQ==
+            structured_data:
+              type: string
+              description: 'Structured data to be signed, JSON encoded'
+              example: |
+                {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/Transfer'
@@ -3093,7 +3129,7 @@ components:
           example: Org-Controlled
         wallet_id:
           type: string
-          description: Unique id of the wallet to transfer from.
+          description: Unique id of the wallet to initiate contract call from.
           format: uuid
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         address_str:
@@ -3541,6 +3577,15 @@ components:
       schema:
         type: string
       example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+    optionalUtxoTxHashParam:
+      name: tx_hash
+      in: query
+      required: true
+      description: Transaction hash of the UTXO.
+      schema:
+        type: string
+        description: Transaction hash of the UTXO.
+      example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
     keyGroupIdParam:
       name: key_group_id
       in: path
@@ -3804,6 +3849,22 @@ components:
                 example: 1
               encoding:
                 $ref: '#/components/schemas/AddressEncoding'
+    lockSpendablesBody:
+      description: The request body to lock/unlock spendable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tx_hashes:
+                type: array
+                items:
+                  type: string
+                  example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
+              is_locked:
+                type: boolean
+                description: 'True if to lock the UTXOs, False to unlock.'
+                example: true
     createKeyGroupBody:
       description: The request body to create a mpc key group
       content:
@@ -4117,6 +4178,17 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/UTXO'
+    lockSpendableResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              retried:
+                type: boolean
+                example: true
+                description: Whether the spendable lock/unlock has been successfully executed.
     maxTransferableValueResponse:
       description: Successful operation
       content:
