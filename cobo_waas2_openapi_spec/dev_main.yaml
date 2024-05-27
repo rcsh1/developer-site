@@ -115,7 +115,9 @@ paths:
   /wallets/{wallet_id}:
     $ref: "./paths/wallets/wallet_by_id.yaml"
   /wallets/{wallet_id}/spendables:
-    $ref: "./paths/wallets/spendable_utxo.yaml"
+    $ref: "./paths/wallets/spendables.yaml"
+  /wallets/{wallet_id}/spendables/lock:
+    $ref: "./paths/wallets/spendables_lock.yaml"
   /wallets/{wallet_id}/max_transferable_value:
     $ref: "./paths/wallets/max_transferable_value.yaml"
   /wallets/{wallet_id}/addresses:
@@ -465,6 +467,8 @@ components:
       $ref: "./components/parameters/wallets/to_address_str_required.yaml"
     fromAddressStrParam:
       $ref: "./components/parameters/wallets/from_address_str_optional.yaml"
+    optionalUtxoTxHashParam:
+      $ref: "./components/parameters/wallets/utxo_tx_hash_optional.yaml"
 
     # mpc wallets
     keyGroupIdParam:
@@ -530,6 +534,8 @@ components:
       $ref: "./components/request_bodies/wallets/update_wallet.yaml"
     createAddressBody:
       $ref: "./components/request_bodies/wallets/create_address.yaml"
+    lockSpendablesBody:
+      $ref: "./components/request_bodies/wallets/lock_spendables.yaml"
 
     # mpc wallets
     createKeyGroupBody:
@@ -593,6 +599,8 @@ components:
       $ref: "./components/responses/wallets/update_wallet.yaml"
     spendableListResponse:
       $ref: "./components/responses/wallets/get_spendable_list.yaml"
+    lockSpendableResponse:
+      $ref: "./components/responses/wallets/lock_spendables.yaml"
     maxTransferableValueResponse:
       $ref: "./components/responses/wallets/get_max_transferable_value.yaml"
     getAddressesResponse:
