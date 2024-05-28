@@ -4,13 +4,7 @@ post:
   operationId: create_key_group
   summary: Create a mpc key group
   description: |
-    Create a mpc key group for vault ID with the provided information. 
-    
-    Error codes this API may return:
-    | Error Code | Description |
-    | -- | -- |
-    | `2003` | 必选参数缺失 |
-    | `2006` | 参数格式或者值非法 |
+    Create a mpc key group for vault ID with the provided information.
   security:
     - CoboAuth: []
   parameters:
@@ -33,12 +27,7 @@ get:
   summary: List all mpc key groups
   description: |
     Retrieves a list of all key groups. 
-    This endpoint allows filtering by vault ID and key group type. 
-    
-    Error codes this API may return:
-    | Error Code | Description |
-    | -- | -- |
-    | `2006` | 参数格式或者值非法 |
+    This endpoint allows filtering by vault ID and key group type.
   security:
     - CoboAuth: []
   parameters:

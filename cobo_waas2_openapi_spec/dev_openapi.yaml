@@ -629,13 +629,7 @@ paths:
       operationId: create_mpc_project
       summary: Create a mpc project
       description: |
-        Create a mpc project with the provided information. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2003` | 必选参数缺失 |
-        | `2006` | 参数格式或者值非法 |
+        Create a mpc project with the provided information.
       security:
         - CoboAuth: []
       requestBody:
@@ -651,12 +645,7 @@ paths:
       operationId: list_mpc_project
       summary: List all mpc projects
       description: |
-        Retrieves a list of mpc projects. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        Retrieves a list of mpc projects.
       security:
         - CoboAuth: []
       responses:
@@ -677,12 +666,7 @@ paths:
       description: |
         Get detailed information about a mpc project identified by its unique ID. 
 
-        Get project ids by calling list_mpc_project. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        Get project ids by calling list_mpc_project.
       security:
         - CoboAuth: []
       parameters:
@@ -702,12 +686,7 @@ paths:
       operationId: update_mpc_project
       summary: Update a mpc project
       description: |
-        Update a mpc project name information by its ID. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        Update a mpc project name information by its ID.
       security:
         - CoboAuth: []
       parameters:
@@ -730,13 +709,7 @@ paths:
       operationId: create_mpc_vault
       summary: Create a mpc vault
       description: |
-        Create a mpc vault with the provided information. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2003` | 必选参数缺失 |
-        | `2006` | 参数格式或者值非法 |
+        Create a mpc vault with the provided information.
       security:
         - CoboAuth: []
       requestBody:
@@ -753,12 +726,7 @@ paths:
       summary: List all mpc vaults
       description: |
         Retrieves a list of mpc vaults. 
-        This endpoint allows filtering by project ID. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        This endpoint allows filtering by project ID.
       security:
         - CoboAuth: []
       parameters:
@@ -786,12 +754,7 @@ paths:
       summary: Get a mpc vault information
       description: |
         Get detailed information about a mpc vault identified by its unique ID. 
-        Get vault ids by calling list_mpc_vault. 
-
-        Error codes this API may return:
-          | Error Code | Description |
-          | -- | -- |
-          | `2006` | 参数格式或者值非法 |
+        Get vault ids by calling list_mpc_vault.
       security:
         - CoboAuth: []
       parameters:
@@ -811,12 +774,7 @@ paths:
       operationId: modify_mpc_vault
       summary: Update a mpc vault information
       description: |
-        Update a mpc vault name information by its ID. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        Update a mpc vault name information by its ID.
       security:
         - CoboAuth: []
       parameters:
@@ -839,13 +797,7 @@ paths:
       operationId: create_key_group
       summary: Create a mpc key group
       description: |
-        Create a mpc key group for vault ID with the provided information. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2003` | 必选参数缺失 |
-        | `2006` | 参数格式或者值非法 |
+        Create a mpc key group for vault ID with the provided information.
       security:
         - CoboAuth: []
       parameters:
@@ -868,12 +820,7 @@ paths:
       summary: List all mpc key groups
       description: |
         Retrieves a list of all key groups. 
-        This endpoint allows filtering by vault ID and key group type. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        This endpoint allows filtering by vault ID and key group type.
       security:
         - CoboAuth: []
       parameters:
@@ -895,12 +842,7 @@ paths:
       operationId: get_key_group
       summary: Get a mpc key group information by group id
       description: |
-        Get detailed information about a key group identified by its unique ID. 
-
-        Error codes this API may return:
-          | Error Code | Description |
-          | -- | -- |
-          | `2006` | 参数格式或者值非法 |
+        Get detailed information about a key group identified by its unique ID.
       security:
         - CoboAuth: []
       parameters:
@@ -925,11 +867,6 @@ paths:
 
         Action:
         - UpgradeToMainKeyGroup: change group type to main key group
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
       security:
         - CoboAuth: []
       parameters:
@@ -978,13 +915,7 @@ paths:
       operationId: create_tss_request
       summary: Create a tss request to generate key secrets for a tss group
       description: |
-        Create a tss request to generate key secrets for a tss group. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2003` | 必选参数缺失 |
-        | `2006` | 参数格式或者值非法 |
+        Create a tss request to generate key secrets for a tss group.
       security:
         - CoboAuth: []
       parameters:
@@ -1011,12 +942,7 @@ paths:
       summary: List tss request information by vault ID
       description: |
         Retrieving list of tss request information by vault ID.
-        This endpoint allows filtering by key group ID. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        This endpoint allows filtering by key group ID.
       security:
         - CoboAuth: []
       parameters:
@@ -1039,12 +965,7 @@ paths:
       summary: Get a tss request information
       description: |
         Get detailed information about a tss request identified by its unique ID. 
-        Get project ids by calling list_tss_request. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        Get project ids by calling list_tss_request.
       security:
         - CoboAuth: []
       parameters:
@@ -1065,12 +986,7 @@ paths:
       operationId: cancel_tss_request
       summary: Cancel a tss request
       description: |
-        Cancel a mpc tss request by its ID. 
-
-        Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+        Cancel a mpc tss request by its ID.
       security:
         - CoboAuth: []
       parameters:

@@ -4,13 +4,7 @@ post:
   operationId: create_mpc_vault
   summary: Create a mpc vault
   description: |
-    Create a mpc vault with the provided information. 
-
-    Error codes this API may return:
-    | Error Code | Description |
-    | -- | -- |
-    | `2003` | 必选参数缺失 |
-    | `2006` | 参数格式或者值非法 |
+    Create a mpc vault with the provided information.
   security:
     - CoboAuth: []
   requestBody:
@@ -27,12 +21,7 @@ get:
   summary: List all mpc vaults
   description: |
     Retrieves a list of mpc vaults. 
-    This endpoint allows filtering by project ID. 
-
-    Error codes this API may return:
-    | Error Code | Description |
-    | -- | -- |
-    | `2006` | 参数格式或者值非法 |
+    This endpoint allows filtering by project ID.
   security:
     - CoboAuth: []
   parameters:

@@ -4,12 +4,7 @@ get:
   operationId: get_key_group
   summary: Get a mpc key group information by group id
   description: |
-    Get detailed information about a key group identified by its unique ID. 
-    
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    Get detailed information about a key group identified by its unique ID.
   security:
     - CoboAuth: []
   parameters:
@@ -34,11 +29,7 @@ put:
     
     Action:
     - UpgradeToMainKeyGroup: change group type to main key group
-    
-    Error codes this API may return:
-    | Error Code | Description |
-    | -- | -- |
-    | `2006` | 参数格式或者值非法 |
+
   security:
     - CoboAuth: []
   parameters:
