@@ -1306,6 +1306,21 @@ paths:
         - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/optionalAssetIdListParam'
+        - name: vault_id
+          in: query
+          required: false
+          description: Unique id of the mpc vault
+          schema:
+            type: string
+            format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - name: project_id
+          in: query
+          description: Unique id of the mpc project
+          schema:
+            type: string
+            format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
         - $ref: '#/components/parameters/optionalMaxCreatedTimestampParam'
         - $ref: '#/components/parameters/sortByParam'
