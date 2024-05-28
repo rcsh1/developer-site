@@ -3,5 +3,8 @@ in: query
 required: false
 description: Unique id of the token
 schema:
-  type: string
-example: 'ETH_USDT'
+  type: array
+  items:
+    type: string
+example:
+  - 'ETH_USDT'

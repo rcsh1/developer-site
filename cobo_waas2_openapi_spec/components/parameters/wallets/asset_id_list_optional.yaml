@@ -3,5 +3,8 @@ in: query
 required: false
 description: Unique id of the asset
 schema:
-  type: string
-example: 'USDT'
+  type: array
+  items:
+    type: string
+example:
+  - 'USDT'
