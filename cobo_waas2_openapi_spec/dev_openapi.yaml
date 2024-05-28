@@ -721,13 +721,7 @@ paths:
       security:
         - CoboAuth: []
       parameters:
-        - name: project_id
-          in: query
-          description: Unique id of the mpc project
-          schema:
-            type: string
-            format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - $ref: '#/components/parameters/optionalProjectIdQueryParam'
       responses:
         '200':
           $ref: '#/components/responses/getMpcVaultsResponse'
@@ -1073,6 +1067,8 @@ paths:
         - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/optionalAssetIdListParam'
+        - $ref: '#/components/parameters/optionalVaultIdListQueryParam'
+        - $ref: '#/components/parameters/optionalProjectIdListQueryParam'
         - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
         - $ref: '#/components/parameters/optionalMaxCreatedTimestampParam'
         - $ref: '#/components/parameters/sortByParam'
@@ -3658,6 +3654,22 @@ components:
         type: string
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalProjectIdQueryParam:
+      name: project_id
+      in: query
+      description: Unique id of the mpc project
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalProjectIdListQueryParam:
+      name: project_id
+      in: query
+      description: Unique id of the mpc project
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     optionalTargetKeyGroupIdParam:
       name: target_key_group_id
       in: query
@@ -3707,6 +3719,15 @@ components:
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     optionalVaultIdQueryParam:
+      name: vault_id
+      in: query
+      required: false
+      description: Unique id of the mpc vault
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalVaultIdListQueryParam:
       name: vault_id
       in: query
       required: false
