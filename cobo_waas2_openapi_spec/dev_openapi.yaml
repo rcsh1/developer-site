@@ -3800,6 +3800,13 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/TransactionType'
+    optionalTransactionStatusParam:
+      name: status
+      in: query
+      required: false
+      description: The status of a transaction
+      schema:
+        $ref: '#/components/schemas/TransactionStatus'
     optionalTransactionStatusListParam:
       name: status
       in: query
