@@ -439,12 +439,18 @@ components:
     # wallets
     optionalAssetIdParam:
       $ref: "./components/parameters/wallets/asset_id_optional.yaml"
+    optionalAssetIdListParam:
+      $ref: "./components/parameters/wallets/asset_id_list_optional.yaml"
     requiredAssetIdParam:
       $ref: "./components/parameters/wallets/asset_id_required.yaml"
     optionalChainIdParam:
       $ref: "./components/parameters/wallets/chain_id_optional.yaml"
+    optionalChainIdListParam:
+      $ref: "./components/parameters/wallets/chain_id_list_optional.yaml"
     optionalTokenIdParam:
       $ref: "./components/parameters/wallets/token_id_optional.yaml"
+    optionalTokenListIdParam:
+      $ref: "./components/parameters/wallets/token_id_list_optional.yaml"
     requiredTokenIdParam:
       $ref: "./components/parameters/wallets/token_id_required.yaml"
     requiredWalletSubtypeParam:
@@ -455,6 +461,10 @@ components:
       $ref: "./components/parameters/wallets/wallet_subtype_optional.yaml"
     walletIdParam:
       $ref: "./components/parameters/wallets/wallet_id_path.yaml"
+    optionalWalletIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_optional.yaml"
+    optionalWalletListIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_list_optional.yaml"
     addressIdParam:
       $ref: "./components/parameters/wallets/address_id_path.yaml"
     requiredAddressStrParam:
@@ -513,8 +523,12 @@ components:
       $ref: "./components/parameters/transactions/cobo_id_optional.yaml"
     optionalTransactionTypeParam:
       $ref: "./components/parameters/transactions/transaction_type_optional.yaml"
+    optionalTransactionTypeListParam:
+      $ref: "./components/parameters/transactions/transaction_type_list_optional.yaml"
     optionalTransactionStatusParam:
       $ref: "./components/parameters/transactions/transaction_status_optional.yaml"
+    optionalTransactionStatusListParam:
+      $ref: "./components/parameters/transactions/transaction_status_list_optional.yaml"
     optionalMinCreatedTimestampParam:
       $ref: "./components/parameters/transactions/min_created_timestamp_optional.yaml"
     optionalMaxCreatedTimestampParam:

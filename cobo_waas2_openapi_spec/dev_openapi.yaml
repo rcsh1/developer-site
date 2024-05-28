@@ -1066,19 +1066,13 @@ paths:
           schema:
             type: string
           example: 239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28
-        - $ref: '#/components/parameters/optionalTransactionTypeParam'
-        - $ref: '#/components/parameters/optionalTransactionStatusParam'
-        - name: wallet_id
-          in: query
-          required: false
-          description: Unique id of the wallet
-          schema:
-            type: string
-            format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        - $ref: '#/components/parameters/optionalChainIdParam'
-        - $ref: '#/components/parameters/optionalTokenIdParam'
-        - $ref: '#/components/parameters/optionalAssetIdParam'
+        - $ref: '#/components/parameters/optionalTransactionTypeListParam'
+        - $ref: '#/components/parameters/optionalTransactionStatusListParam'
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletListIdParam'
+        - $ref: '#/components/parameters/optionalChainIdListParam'
+        - $ref: '#/components/parameters/optionalTokenListIdParam'
+        - $ref: '#/components/parameters/optionalAssetIdListParam'
         - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
         - $ref: '#/components/parameters/optionalMaxCreatedTimestampParam'
         - $ref: '#/components/parameters/sortByParam'
@@ -3465,6 +3459,17 @@ components:
       schema:
         type: string
       example: USDT
+    optionalAssetIdListParam:
+      name: asset_id
+      in: query
+      required: false
+      description: Unique id of the asset
+      schema:
+        type: array
+        items:
+          type: string
+      example:
+        - USDT
     requiredAssetIdParam:
       name: asset_id
       in: query
@@ -3481,6 +3486,17 @@ components:
       schema:
         type: string
       example: ETH
+    optionalChainIdListParam:
+      name: chain_id
+      in: query
+      required: false
+      description: Unique id of the chain
+      schema:
+        type: array
+        items:
+          type: string
+      example:
+        - ETH
     optionalTokenIdParam:
       name: token_id
       in: query
@@ -3489,6 +3505,17 @@ components:
       schema:
         type: string
       example: ETH_USDT
+    optionalTokenListIdParam:
+      name: token_id
+      in: query
+      required: false
+      description: Unique id of the token
+      schema:
+        type: array
+        items:
+          type: string
+      example:
+        - ETH_USDT
     requiredTokenIdParam:
       name: token_id
       in: query
@@ -3527,6 +3554,27 @@ components:
         type: string
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalWalletIdParam:
+      name: wallet_id
+      in: query
+      required: false
+      description: Unique id of the wallet
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalWalletListIdParam:
+      name: wallet_id
+      in: query
+      required: false
+      description: Unique id of the wallet
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+      example:
+        - f47ac10b-58cc-4372-a567-0e02b2c3d479
     addressIdParam:
       name: address_id
       in: path
@@ -3743,6 +3791,15 @@ components:
       description: The type of a transaction
       schema:
         $ref: '#/components/schemas/TransactionType'
+    optionalTransactionTypeListParam:
+      name: type
+      in: query
+      required: false
+      description: The type of a transaction
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/TransactionType'
     optionalTransactionStatusParam:
       name: status
       in: query
@@ -3750,6 +3807,15 @@ components:
       description: The status of a transaction
       schema:
         $ref: '#/components/schemas/TransactionStatus'
+    optionalTransactionStatusListParam:
+      name: status
+      in: query
+      required: false
+      description: The status of a transaction
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/TransactionStatus'
     optionalMinCreatedTimestampParam:
       name: min_created_timestamp
       in: query
