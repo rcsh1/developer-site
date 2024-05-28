@@ -3,7 +3,14 @@ post:
     - Wallets - MPC Wallet
   operationId: create_mpc_project
   summary: Create a mpc project
-  description: create a mpc project
+  description: |
+    Create a mpc project with the provided information. 
+    
+    Error codes this API may return:
+    | Error Code | Description |
+    | -- | -- |
+    | `2003` | 必选参数缺失 |
+    | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   requestBody:
@@ -18,7 +25,13 @@ get:
     - Wallets - MPC Wallet
   operationId: list_mpc_project
   summary: List all mpc projects
-  description: Retrieve a list of mpc project.
+  description: |
+    Retrieves a list of mpc projects. 
+
+    Error codes this API may return:
+    | Error Code | Description |
+    | -- | -- |
+    | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   responses:

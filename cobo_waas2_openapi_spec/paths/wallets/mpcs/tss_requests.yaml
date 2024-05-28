@@ -3,7 +3,14 @@ post:
     - Wallets - MPC Wallet
   operationId: create_tss_request
   summary: Create a tss request to generate key secrets for a tss group
-  description: Create a tss request to generate key secrets for a tss group
+  description: |
+    Create a tss request to generate key secrets for a tss group. 
+    
+    Error codes this API may return:
+    | Error Code | Description |
+    | -- | -- |
+    | `2003` | 必选参数缺失 |
+    | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
@@ -23,8 +30,15 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: list_tss_request
-  summary: List tss request information of a vault
-  description: Detailed description on retrieving list of tss request information
+  summary: List tss request information by vault ID
+  description: |
+    Retrieving list of tss request information by vault ID.
+    This endpoint allows filtering by key group ID. 
+    
+    Error codes this API may return:
+    | Error Code | Description |
+    | -- | -- |
+    | `2006` | 参数格式或者值非法 |
   security:
     - CoboAuth: []
   parameters:
