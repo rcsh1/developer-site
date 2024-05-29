@@ -2,8 +2,11 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: get_mpc_project
-  summary: get a mpc project
-  description: get a mpc vault
+  summary: Get a mpc project information
+  description: |
+    Get detailed information about a mpc project identified by its unique ID. 
+    
+    Get project ids by calling list_mpc_project.
   security:
     - CoboAuth: []
   parameters:
@@ -21,8 +24,9 @@ put:
   tags:
     - Wallets - MPC Wallet
   operationId: update_mpc_project
-  summary: update a mpc project
-  description: update a mpc vault
+  summary: Update a mpc project
+  description: |
+    Update a mpc project name information by its ID.
   security:
     - CoboAuth: []
   parameters:
