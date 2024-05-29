@@ -10,17 +10,17 @@ properties:
   symbol:
     type: string
     description: The chain symbol.
-    example: "USDT"
+    example: "ETH"
   icon_url:
     type: string
     description: The URL of the chain icon.
-    example: 'https://static.waas.co/images/coins/ETH.png' # 这个链接打不开
-  explorer_tx_url: # Is there only one explorer for one chain?
+    example: 'https://static.waas.co/images/coins/ETH.png'
+  explorer_tx_url:
     type: string
-    description: The transaction URL on the blockchain explorer. # Txn_id is a specific ID? But the operation does not specify any transaction or address https://etherscan.io/tx/0x4c7847888b39a77746f0f7612f0badd63e8eeeac24c54ad318a6f73ceb80902b
+    description: The transaction URL pattern on the blockchain explorer. You can use it to concatenate the transaction URLs.
 
     example: 'https://etherscan.io/tx/{txn_id}'
   explorer_address_url:
     type: string
-    description: The address URL on the blockchain explorer. # 同上
+    description: The address URL pattern on the blockchain explorer. You can use it to concatenate the address URLs.
     example: 'https://etherscan.io/address/{address}'

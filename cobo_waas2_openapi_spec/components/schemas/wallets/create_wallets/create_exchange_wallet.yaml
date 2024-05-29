@@ -12,13 +12,16 @@ allOf:
         type: string
         enum:
           - Exchange
-        description: The wallet type.
+        description: The wallet type. Possible value includes `Exchange`, which indicates the Exchange Wallets.
       wallet_subtype:
         type: string
-        enum: # 加解释
+        enum:
           - Main
           - Sub
-        description: The wallet subtype. 
+        description: |
+          The wallet subtype. Possible values include:
+            - `Main`: Main Account
+            - `Sub`: Sub Account
       exchange_id:
         $ref: '../exchanges/exchange_id.yaml'
       apikey:
@@ -35,11 +38,11 @@ allOf:
         example: 'sXASDKWKLLsWWEE'
       ga_code:
         type: string
-        description: The ga_code for the exchange. # 需要确认
+        description: The GA code for the exchange.
         example: 'sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708'
       sub_account_ids:
         type: array
-        description: The unique identifier associated with the Sub Account. It can be an email address, a user name, or a custom account ID. # 能不能简单说 Sub Account ID
+        description: The Sub Account ID. It can be an email address, a user name, or a custom account ID.
         items:
           type: string
         example: [ 'sub01@xx.com', 'sub02@xx.com']

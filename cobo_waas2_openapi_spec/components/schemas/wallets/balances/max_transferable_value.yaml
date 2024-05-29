@@ -1,5 +1,5 @@
 type: object
-description: The maximum amount that you can transfer from the specified wallet address, along with the corresponding transaction fee.
+description: The maximum amount you can transfer from the wallet or the specified wallet address, along with the corresponding transaction fee.
 properties:
   token_id:
     type: string
@@ -7,7 +7,7 @@ properties:
     example: 'ETH'
   max_send_value:
     type: string
-    description: The maximum amount that you can transfer from the specified wallet address.
+    description: The maximum amount you can transfer from the wallet or the specified wallet address.
     example: '841165119243622'
   fee:
     $ref: '../../transactions/fees/transaction_fee.yaml'

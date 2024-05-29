@@ -11,7 +11,7 @@ properties:
     $ref: './exchange_id.yaml'
   parent_wallet_id:
     type: string
-    description: The wallet ID of the Main Account, if applicable. # The parent wallet id for this wallet if presented.
+    description: The wallet ID of the Main Account associated with the Sub Account. This is returned only if you are querying a Sub Account.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   sub_accounts:

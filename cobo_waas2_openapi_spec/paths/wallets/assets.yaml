@@ -3,10 +3,10 @@ get:
     - Wallets
   operationId: get_assets
   summary: List asset metadata
-  description: | # assets stored in the wallet system. 可以改成 stored under your account 吗
-    This operation retrieves the metadata of the assets stored under your account.
+  description: |
+    This operation retrieves the metadata of all assets supported by Cobo WaaS 2.0.
     
-    It provides details such as asset IDs, display codes, and other relevant information. The asset metadata is publicly available without any permission restrictions.
+    It provides details such as asset IDs, asset symbols, and other relevant information. The asset metadata is publicly available without any permission restrictions.
   security:
     - CoboAuth: []
   parameters:

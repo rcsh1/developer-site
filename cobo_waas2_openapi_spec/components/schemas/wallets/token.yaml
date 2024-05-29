@@ -6,7 +6,7 @@ required:
 properties:
   token_id:
     type: string
-    description: The token ID. Unique in all chains scope.
+    description: The token ID.
     example: 'ETH_USDT'
   chain_id:
     type: string
@@ -30,5 +30,5 @@ properties:
     example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
   asset_id:
     type: string
-    description: The asset ID, which is used to group token balance.
+    description: The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.
     example: 'USDT'

@@ -8,10 +8,14 @@ allOf:
       wallet_type:
         type: string
         enum:
-          - Custodial # 为啥只有一个 type？
-        description: The wallet type.
+          - Custodial
+        description: The wallet type. Possible value includes `Custodial`, which indicates the Custodial Wallets.
       wallet_subtype:
         type: string
         enum:
-          - Asset #需要加解释
+          - Asset
           - Web3
+        description: |
+          The wallet subtype. Possible values include:
+            - `Asset`: Custodial Wallets (Asset)
+            - `Web3`: Custodial Wallets (Web3)

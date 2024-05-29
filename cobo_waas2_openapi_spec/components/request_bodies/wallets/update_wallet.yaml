@@ -14,19 +14,19 @@ content:
           example: 'd8f062da-39f4-4a11-8b9d-12595854237f'
         secret:
           type: string
-          description: The API secret of your exchange account. # 为什么创建钱包的时候没有这个字段？
+          description: The API secret of your exchange account.
           example: '75B4F636193162488A3728B4A5797708'
         passphrase:
           type: string
-          description: The passphrase of your exchange account. # 为什么创建钱包的时候没有这个字段？
+          description: The passphrase of your exchange account.
           example: 'sXASDKWKLLsWWEE'
         ga_code:
           type: string
-          description: The ga_code for the exchange. # 这是什么
+          description: The GA code for the exchange.
           example: 'sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708'
         sub_account_ids:
           type: array
-          description: The unique identifier associated with the Sub Account. It can be an email address, a user name, or a custom account ID. # 能不能简单说 Sub Account ID
+          description: The Sub Account ID. It can be an email address, a user name, or a custom account ID.
           items:
             type: string
           example: [ 'sub01@xx.com', 'sub02@xx.com']
