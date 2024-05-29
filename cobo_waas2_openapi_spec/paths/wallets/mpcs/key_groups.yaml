@@ -2,8 +2,9 @@ post:
   tags:
     - Wallets - MPC Wallet
   operationId: create_key_group
-  summary: create a mpc key group
-  description: create a mpc key group.
+  summary: Create a mpc key group
+  description: |
+    Create a mpc key group for vault ID with the provided information.
   security:
     - CoboAuth: []
   parameters:
@@ -24,7 +25,9 @@ get:
     - Wallets - MPC Wallet
   operationId: list_key_group
   summary: List all mpc key groups
-  description: Retrieve a list of mpc key groups.
+  description: |
+    Retrieves a list of all key groups. 
+    This endpoint allows filtering by vault ID and key group type.
   security:
     - CoboAuth: []
   parameters:

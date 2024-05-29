@@ -1,7 +1,6 @@
 type: object
 description: The base transaction fee when using the EIP 1559 method.
 required:
-  - max_fee
   - max_priority_fee
   - base_fee
 properties:
@@ -9,10 +8,6 @@ properties:
     type: string
     description: The token ID of the transaction fee.
     example: 'ETH'
-  max_fee:
-    type: string
-    description: The max fee, in gwei. The max fee represents the total gas price you are willing to pay for your transaction.
-    example: '1'
   max_priority_fee:
     type: string
     description: The max priority fee, in gwei. The max priority fee represents the highest amount of miner tips you are willing to pay for your transaction.

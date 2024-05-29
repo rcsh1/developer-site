@@ -2,8 +2,10 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: get_tss_request
-  summary: get a tss request
-  description: get a tss request.
+  summary: Get a tss request information
+  description: |
+    Get detailed information about a tss request identified by its unique ID. 
+    Get project ids by calling list_tss_request.
   security:
     - CoboAuth: []
   parameters:
@@ -22,8 +24,9 @@ put:
   tags:
     - Wallets - MPC Wallet
   operationId: cancel_tss_request
-  summary: cancel tss request
-  description: cancel tss request.
+  summary: Cancel a tss request
+  description:  |
+    Cancel a mpc tss request by its ID.
   security:
     - CoboAuth: []
   parameters:

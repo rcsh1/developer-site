@@ -1,0 +1,16 @@
+description: The request body to lock/unlock spendable
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        tx_hashes:
+          type: array
+          items:
+            type: string
+            example: 'dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83'
+        is_locked:
+          type: boolean
+          description: True if to lock the UTXOs, False to unlock.
+          example: true
+

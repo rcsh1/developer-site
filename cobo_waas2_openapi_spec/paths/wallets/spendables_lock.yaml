@@ -1,0 +1,18 @@
+parameters:
+  - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
+post:
+  tags:
+    - Wallets
+  operationId: lock_spendable_list
+  summary: Lock/Unlock the UTXOs in tx hash list
+  description: |
+    Lock/Unlock the UTXOs in the given tx hash list. The Locked UTXO can not be transferred until unlocked.
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../components/request_bodies/wallets/lock_spendables.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/lock_spendables.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

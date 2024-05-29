@@ -13,28 +13,34 @@ properties:
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   request_type:
     $ref: './request_type.yaml'
-  from_wallet_id:
-    type: string
-    description: Unique id of the wallet to sign message.
-    format: uuid
-    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
-  from_address_str:
-    type: string
-    description: signing address
-    example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
   chain_id:
     type: string
     description: The blockchain on which the token operates.
     pattern: ^[A-Z]+$
     example: 'ETH'
-  message:
-    type: string
-    description: Raw data to be signed, Base 64 encoded
-    example: 'YWFhYQ=='
-  structured_data:
-    type: string
-    description: Structured data to be signed, JSON encoded
-    example: |
-      {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
-  mpc_used_key_group:
-    $ref: './mpc_signing_group.yaml'
+  source:
+    type: object
+    properties:
+      wallet_id:
+        type: string
+        description: Unique id of the wallet to sign message.
+        format: uuid
+        example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      address_str:
+        type: string
+        description: From address
+        example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+      mpc_used_key_group:
+        $ref: './mpc_signing_group.yaml'
+  destination:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Raw data to be signed, Base 64 encoded
+        example: 'YWFhYQ=='
+      structured_data:
+        type: string
+        description: Structured data to be signed, JSON encoded
+        example: |
+          {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}

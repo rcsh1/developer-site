@@ -2,8 +2,9 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: get_key_group
-  summary: get a mpc key group
-  description: get a mpc key group.
+  summary: Get a mpc key group information by group id
+  description: |
+    Get detailed information about a key group identified by its unique ID.
   security:
     - CoboAuth: []
   parameters:
@@ -22,8 +23,13 @@ put:
   tags:
     - Wallets - MPC Wallet
   operationId: update_key_group
-  summary: update a mpc key group
-  description: update a mpc key group.
+  summary: Update a mpc key group information
+  description: |
+    Update a mpc key group type information by its ID. 
+    
+    Action:
+    - UpgradeToMainKeyGroup: change group type to main key group
+
   security:
     - CoboAuth: []
   parameters:
@@ -43,8 +49,9 @@ delete:
   tags:
     - Wallets - MPC Wallet
   operationId: delete_key_group
-  summary: delete a mpc key group
-  description: delete a mpc key group.
+  summary: Delete a mpc key group
+  description: |
+    Delete a key group by its unique ID.
   security:
     - CoboAuth: []
   parameters:

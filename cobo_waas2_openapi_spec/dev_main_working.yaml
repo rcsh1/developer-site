@@ -115,7 +115,9 @@ paths:
   /wallets/{wallet_id}:
     $ref: "./paths/wallets/wallet_by_id.yaml"
   /wallets/{wallet_id}/spendables:
-    $ref: "./paths/wallets/spendable_utxo.yaml"
+    $ref: "./paths/wallets/spendables.yaml"
+  /wallets/{wallet_id}/spendables/lock:
+    $ref: "./paths/wallets/spendables_lock.yaml"
   /wallets/{wallet_id}/max_transferable_value:
     $ref: "./paths/wallets/max_transferable_value.yaml"
   /wallets/{wallet_id}/addresses:
@@ -126,6 +128,7 @@ paths:
     $ref: "./paths/wallets/wallet_token_balances.yaml"
   /wallets/{wallet_id}/addresses/{address_id}/tokens:
     $ref: "./paths/wallets/wallet_address_token_balances.yaml"
+
   # mpc wallets
   /wallets/mpc/cobo_key_holders:
     $ref: "./paths/wallets/mpcs/cobo_key_holders.yaml"
@@ -168,21 +171,21 @@ paths:
   /transactions/transfer:
     $ref: "./paths/transactions/transfer.yaml"
   /transactions/contract_call:
-    $ref: "./paths/transactions/call.yaml"
-  /transactions/sign_message:
-    $ref: "./paths/transactions/sign.yaml"
+    $ref: "./paths/transactions/contract_call.yaml"
+  /transactions/message_sign:
+    $ref: "./paths/transactions/message_sign.yaml"
   /transactions:
     $ref: "./paths/transactions/transactions.yaml"
   /transactions/{transaction_id}:
     $ref: "./paths/transactions/transaction_by_id.yaml"
   /transactions/{transaction_id}/resend:
     $ref: "./paths/transactions/transaction_resend.yaml"
+  /transactions/{transaction_id}/cancel:
+    $ref: "./paths/transactions/transaction_cancel.yaml"
   /transactions/{transaction_id}/drop:
     $ref: "./paths/transactions/transaction_drop.yaml"
   /transactions/{transaction_id}/speedup:
     $ref: "./paths/transactions/transaction_speed_up.yaml"
-  /transactions/{transaction_id}/callback_confirmation/retry:
-    $ref: "./paths/transactions/transaction_callback_confirmation_retry.yaml"
 
   # webhooks
   /webhooks/events:
@@ -294,9 +297,9 @@ components:
     FeeType:
       $ref: "./components/schemas/transactions/fees/fee_type.yaml"
     FeeAmount:
-      $ref: "./components/schemas/transactions/fees/fee_amount.yaml"
+      $ref: "./components/schemas/transactions/fees/fee_max_fee_amount.yaml"
     FeeData:
-      $ref: "./components/schemas/transactions/fees/fee_data.yaml"
+      $ref: "./components/schemas/transactions/fees/fee_gas_limit.yaml"
     EvmEip1559FeeBasePrice:
       $ref: "./components/schemas/transactions/fees/base_fee_price_eip1559.yaml"
     EvmLegacyFeeBasePrice:
@@ -393,12 +396,22 @@ components:
       $ref: "./components/schemas/transactions/transfers/destinations/transfer_destination.yaml"
     Transfer:
       $ref: "./components/schemas/transactions/transfers/transfer.yaml"
-    SmartContractCall:
-      $ref: "./components/schemas/transactions/smart_contract_call.yaml"
     SignMessage:
       $ref: "./components/schemas/transactions/message_sign.yaml"
     EstimateFee:
       $ref: "./components/schemas/transactions/estimate_fee.yaml"
+
+    # contract call
+    BaseContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/base_contract_call_source.yaml"
+    MpcContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/mpc_contract_call_source.yaml"
+    SafeContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/safe_contract_call_source.yaml"
+    ContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/contract_call_source.yaml"
+    ContractCall:
+      $ref: "./components/schemas/transactions/contract_calls/contract_call.yaml"
 
     # webhook
     WebhookEvent:
@@ -426,12 +439,18 @@ components:
     # wallets
     optionalAssetIdParam:
       $ref: "./components/parameters/wallets/asset_id_optional.yaml"
+    optionalAssetIdListParam:
+      $ref: "./components/parameters/wallets/asset_id_list_optional.yaml"
     requiredAssetIdParam:
       $ref: "./components/parameters/wallets/asset_id_required.yaml"
     optionalChainIdParam:
       $ref: "./components/parameters/wallets/chain_id_optional.yaml"
+    optionalChainIdListParam:
+      $ref: "./components/parameters/wallets/chain_id_list_optional.yaml"
     optionalTokenIdParam:
       $ref: "./components/parameters/wallets/token_id_optional.yaml"
+    optionalTokenListIdParam:
+      $ref: "./components/parameters/wallets/token_id_list_optional.yaml"
     requiredTokenIdParam:
       $ref: "./components/parameters/wallets/token_id_required.yaml"
     requiredWalletSubtypeParam:
@@ -442,6 +461,10 @@ components:
       $ref: "./components/parameters/wallets/wallet_subtype_optional.yaml"
     walletIdParam:
       $ref: "./components/parameters/wallets/wallet_id_path.yaml"
+    optionalWalletIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_optional.yaml"
+    optionalWalletListIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_list_optional.yaml"
     addressIdParam:
       $ref: "./components/parameters/wallets/address_id_path.yaml"
     requiredAddressStrParam:
@@ -454,6 +477,8 @@ components:
       $ref: "./components/parameters/wallets/to_address_str_required.yaml"
     fromAddressStrParam:
       $ref: "./components/parameters/wallets/from_address_str_optional.yaml"
+    optionalUtxoTxHashParam:
+      $ref: "./components/parameters/wallets/utxo_tx_hash_optional.yaml"
 
     # mpc wallets
     keyGroupIdParam:
@@ -498,8 +523,12 @@ components:
       $ref: "./components/parameters/transactions/cobo_id_optional.yaml"
     optionalTransactionTypeParam:
       $ref: "./components/parameters/transactions/transaction_type_optional.yaml"
+    optionalTransactionTypeListParam:
+      $ref: "./components/parameters/transactions/transaction_type_list_optional.yaml"
     optionalTransactionStatusParam:
       $ref: "./components/parameters/transactions/transaction_status_optional.yaml"
+    optionalTransactionStatusListParam:
+      $ref: "./components/parameters/transactions/transaction_status_list_optional.yaml"
     optionalMinCreatedTimestampParam:
       $ref: "./components/parameters/transactions/min_created_timestamp_optional.yaml"
     optionalMaxCreatedTimestampParam:
@@ -519,6 +548,8 @@ components:
       $ref: "./components/request_bodies/wallets/update_wallet.yaml"
     createAddressBody:
       $ref: "./components/request_bodies/wallets/create_address.yaml"
+    lockSpendablesBody:
+      $ref: "./components/request_bodies/wallets/lock_spendables.yaml"
 
     # mpc wallets
     createKeyGroupBody:
@@ -582,6 +613,8 @@ components:
       $ref: "./components/responses/wallets/update_wallet.yaml"
     spendableListResponse:
       $ref: "./components/responses/wallets/get_spendable_list.yaml"
+    lockSpendableResponse:
+      $ref: "./components/responses/wallets/lock_spendables.yaml"
     maxTransferableValueResponse:
       $ref: "./components/responses/wallets/get_max_transferable_value.yaml"
     getAddressesResponse:
@@ -637,6 +670,8 @@ components:
     getTransactionByIdResponse:
       $ref: "./components/responses/transactions/get_a_transaction.yaml"
     estimateFeeResponse:
+      $ref: "./components/responses/transactions/get_estimation_fee.yaml"
+    transactionFeeResponse:
       $ref: "./components/responses/transactions/get_transaction_fee.yaml"
     createTransactionRequestResponse:
       $ref: "./components/responses/transactions/create_transaction_request.yaml"
