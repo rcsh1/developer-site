@@ -172,8 +172,8 @@ paths:
     $ref: "./paths/transactions/transfer.yaml"
   /transactions/contract_call:
     $ref: "./paths/transactions/contract_call.yaml"
-  /transactions/sign_message:
-    $ref: "./paths/transactions/sign_message.yaml"
+  /transactions/message_sign:
+    $ref: "./paths/transactions/message_sign.yaml"
   /transactions:
     $ref: "./paths/transactions/transactions.yaml"
   /transactions/{transaction_id}:
@@ -670,6 +670,8 @@ components:
     getTransactionByIdResponse:
       $ref: "./components/responses/transactions/get_a_transaction.yaml"
     estimateFeeResponse:
+      $ref: "./components/responses/transactions/get_estimation_fee.yaml"
+    transactionFeeResponse:
       $ref: "./components/responses/transactions/get_transaction_fee.yaml"
     createTransactionRequestResponse:
       $ref: "./components/responses/transactions/create_transaction_request.yaml"

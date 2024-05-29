@@ -428,15 +428,9 @@ paths:
       tags:
         - Wallets
       operationId: lock_spendable_list
-      summary: Lock/Unlock the spendable in list
+      summary: Lock/Unlock the UTXOs in tx hash list
       description: |
-        Retrieves a list of token balance of the spendable unspent transaction outputs (UTXOs) for a given wallet.
-        This endpoint allows users to query token balances of the spendable in the wallet.
-
-        Error codes this API may return:
-          | Error Code | Description |
-          | -- | -- |
-          | `2006` | 参数格式或者值非法 |
+        Lock/Unlock the UTXOs in the given tx hash list. The Locked UTXO can not be transferred until unlocked.
       security:
         - CoboAuth: []
       requestBody:
@@ -1449,10 +1443,6 @@ components:
           type: string
           description: URL of the explorer transaction.
           example: 'https://etherscan.io/tx/{txn_id}'
-        explorer_address_url:
-          type: string
-          description: URL of the explorer address.
-          example: 'https://etherscan.io/address/{address}'
     WalletType:
       type: string
       enum:
@@ -4299,7 +4289,7 @@ components:
           schema:
             type: object
             properties:
-              retried:
+              executed:
                 type: boolean
                 example: true
                 description: Whether the spendable lock/unlock has been successfully executed.
@@ -4478,6 +4468,12 @@ components:
           schema:
             $ref: '#/components/schemas/Transaction'
     estimateFeeResponse:
+      description: Successful get a transaction detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EstimationFee'
+    transactionFeeResponse:
       description: Successful get a transaction detail
       content:
         application/json:
