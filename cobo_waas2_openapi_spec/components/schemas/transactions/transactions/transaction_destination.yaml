@@ -1,15 +1,17 @@
 oneOf:
-- $ref: './addresses/base_transaction_address.yaml'
-- $ref: './addresses/base_wallet_transaction_address.yaml'
-- $ref: './addresses/exchange_wallet_transaction_address.yaml'
+- $ref: './addresses/destination_address.yaml'
+- $ref: './addresses/wallets/destination_address.yaml'
+- $ref: './addresses/wallets/mpcs/destination_address.yaml'
+- $ref: './addresses/wallets/smart_contracts/destination_address.yaml'
+- $ref: './addresses/wallets/exchanges/destination_address.yaml'
 discriminator:
   propertyName: source_type
   mapping:
-    ExternalAddress: '#/components/schemas/BaseTransactionAddress'
-    GasStation: '#/components/schemas/BaseWalletTransactionAddress'
-    CustodialAssetWallet: '#/components/schemas/BaseWalletTransactionAddress'
-    CustodialWeb3Wallet: '#/components/schemas/BaseWalletTransactionAddress'
-    MPCClientControlledWallet: '#/components/schemas/BaseWalletTransactionAddress'
-    MPCUserControlledWallet: '#/components/schemas/BaseWalletTransactionAddress'
-    SafeContractWallet: '#/components/schemas/BaseWalletTransactionAddress'
-    ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionAddress'
+    ExternalAddress: '#/components/schemas/TransactionDestinationAddress'
+    GasStation: '#/components/schemas/WalletTransactionDestinationAddress'
+    CustodialAssetWallet: '#/components/schemas/WalletTransactionDestinationAddress'
+    CustodialWeb3Wallet: '#/components/schemas/WalletTransactionDestinationAddress'
+    MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionDestinationAddress'
+    MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionDestinationAddress'
+    SafeContractWallet: '#/components/schemas/SmartContractWalletTransactionDestinationAddress'
+    ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionDestinationAddress'

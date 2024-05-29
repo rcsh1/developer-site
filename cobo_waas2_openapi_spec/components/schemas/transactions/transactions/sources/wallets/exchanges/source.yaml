@@ -1,12 +1,12 @@
 allOf:
-  - $ref: "./base_wallet_transaction_address.yaml"
   - type: object
     required:
       - exchange_id
     properties:
       exchange_id:
-        $ref: '../../../../schemas/wallets/exchanges/exchange_id.yaml'
+        $ref: '../../../../../../schemas/wallets/exchanges/exchange_id.yaml'
       sub_wallet_id:
         type: string
         description: Exchange trading account or any sub wallet info for transfer.
         example: 'Asset'
+  - $ref: "../source.yaml"

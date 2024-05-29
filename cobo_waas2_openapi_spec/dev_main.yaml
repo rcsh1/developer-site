@@ -361,17 +361,27 @@ components:
     MpcSigningGroup:
       $ref: "./components/schemas/transactions/mpc_signing_group.yaml"
     TransactionAddressType:
-      $ref: "./components/schemas/transactions/transactions/addresses/transaction_address_type.yaml"
-    BaseTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/base_transaction_address.yaml"
-    SafeTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/safe_transaction_address.yaml"
-    BaseWalletTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/base_wallet_transaction_address.yaml"
+      $ref: "./components/schemas/transactions/transactions/addresses/address_type.yaml"
+    TransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/address.yaml"
+    TransactionDestinationAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/destination_address.yaml"
+    WalletTransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/address.yaml"
+    WalletTransactionDestinationAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/destination_address.yaml"
+    SmartContractWalletTransactionAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/smart_contracts/address.yaml"
+    SmartContractWalletTransactionDesintationAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/smart_contracts/destination_address.yaml"
     MPCWalletTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/mpc_wallet_transaction_address.yaml"
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/mpcs/address.yaml"
+    MPCWalletTransactionDesintationAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/mpcs/destination_address.yaml"
     ExchangeWalletTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/exchange_wallet_transaction_address.yaml"
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/exchanges/address.yaml"
+    ExchangeWalletTransactionDestinationAddress:
+      $ref: "./components/schemas/transactions/transactions/addresses/wallets/exchanges/destination_address.yaml"
 
     # transfers
     BaseTransferSource:
