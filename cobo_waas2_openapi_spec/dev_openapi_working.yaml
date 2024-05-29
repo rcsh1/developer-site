@@ -458,15 +458,9 @@ paths:
       tags:
         - Wallets
       operationId: lock_spendable_list
-      summary: Lock/Unlock the spendable in list
+      summary: Lock/Unlock the UTXOs in tx hash list
       description: |
-        Retrieves a list of token balance of the spendable unspent transaction outputs (UTXOs) for a given wallet.
-        This endpoint allows users to query token balances of the spendable in the wallet.
-
-        Error codes this API may return:
-          | Error Code | Description |
-          | -- | -- |
-          | `2006` | 参数格式或者值非法 |
+        Lock/Unlock the UTXOs in the given tx hash list. The Locked UTXO can not be transferred until unlocked.
       security:
         - CoboAuth: []
       requestBody:
@@ -640,7 +634,7 @@ paths:
         - Wallets - MPC Wallet
       operationId: list_cobo_key_holder
       summary: List all cobo key holders
-      description: Retrieve a list of key holders.
+      description: This endpoint allows users to query cobo key holders information.
       security:
         - CoboAuth: []
       responses:
@@ -658,7 +652,8 @@ paths:
         - Wallets - MPC Wallet
       operationId: create_mpc_project
       summary: Create a mpc project
-      description: create a mpc project
+      description: |
+        Create a mpc project with the provided information.
       security:
         - CoboAuth: []
       requestBody:
@@ -673,7 +668,8 @@ paths:
         - Wallets - MPC Wallet
       operationId: list_mpc_project
       summary: List all mpc projects
-      description: Retrieve a list of mpc project.
+      description: |
+        Retrieves a list of mpc projects.
       security:
         - CoboAuth: []
       responses:
@@ -690,8 +686,11 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: get_mpc_project
-      summary: get a mpc project
-      description: get a mpc vault
+      summary: Get a mpc project information
+      description: |
+        Get detailed information about a mpc project identified by its unique ID. 
+
+        Get project ids by calling list_mpc_project.
       security:
         - CoboAuth: []
       parameters:
@@ -709,8 +708,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: update_mpc_project
-      summary: update a mpc project
-      description: update a mpc vault
+      summary: Update a mpc project
+      description: |
+        Update a mpc project name information by its ID.
       security:
         - CoboAuth: []
       parameters:
@@ -732,7 +732,8 @@ paths:
         - Wallets - MPC Wallet
       operationId: create_mpc_vault
       summary: Create a mpc vault
-      description: create a mpc vault
+      description: |
+        Create a mpc vault with the provided information.
       security:
         - CoboAuth: []
       requestBody:
@@ -747,7 +748,9 @@ paths:
         - Wallets - MPC Wallet
       operationId: list_mpc_vault
       summary: List all mpc vaults
-      description: Retrieve a list of mpc vault.
+      description: |
+        Retrieves a list of mpc vaults. 
+        This endpoint allows filtering by project ID.
       security:
         - CoboAuth: []
       parameters:
@@ -772,8 +775,10 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: get_mpc_vault
-      summary: get a mpc vault
-      description: get a mpc vault
+      summary: Get a mpc vault information
+      description: |
+        Get detailed information about a mpc vault identified by its unique ID. 
+        Get vault ids by calling list_mpc_vault.
       security:
         - CoboAuth: []
       parameters:
@@ -791,8 +796,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: modify_mpc_vault
-      summary: Modify a mpc vault
-      description: modify a mpc vault
+      summary: Update a mpc vault information
+      description: |
+        Update a mpc vault name information by its ID.
       security:
         - CoboAuth: []
       parameters:
@@ -813,8 +819,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: create_key_group
-      summary: create a mpc key group
-      description: create a mpc key group.
+      summary: Create a mpc key group
+      description: |
+        Create a mpc key group for vault ID with the provided information.
       security:
         - CoboAuth: []
       parameters:
@@ -835,7 +842,9 @@ paths:
         - Wallets - MPC Wallet
       operationId: list_key_group
       summary: List all mpc key groups
-      description: Retrieve a list of mpc key groups.
+      description: |
+        Retrieves a list of all key groups. 
+        This endpoint allows filtering by vault ID and key group type.
       security:
         - CoboAuth: []
       parameters:
@@ -855,8 +864,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: get_key_group
-      summary: get a mpc key group
-      description: get a mpc key group.
+      summary: Get a mpc key group information by group id
+      description: |
+        Get detailed information about a key group identified by its unique ID.
       security:
         - CoboAuth: []
       parameters:
@@ -875,8 +885,12 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: update_key_group
-      summary: update a mpc key group
-      description: update a mpc key group.
+      summary: Update a mpc key group information
+      description: |
+        Update a mpc key group type information by its ID. 
+
+        Action:
+        - UpgradeToMainKeyGroup: change group type to main key group
       security:
         - CoboAuth: []
       parameters:
@@ -896,8 +910,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: delete_key_group
-      summary: delete a mpc key group
-      description: delete a mpc key group.
+      summary: Delete a mpc key group
+      description: |
+        Delete a key group by its unique ID.
       security:
         - CoboAuth: []
       parameters:
@@ -918,7 +933,8 @@ paths:
         - Wallets - MPC Wallet
       operationId: create_tss_request
       summary: Create a tss request to generate key secrets for a tss group
-      description: Create a tss request to generate key secrets for a tss group
+      description: |
+        Create a tss request to generate key secrets for a tss group.
       security:
         - CoboAuth: []
       parameters:
@@ -942,8 +958,10 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: list_tss_request
-      summary: List tss request information of a vault
-      description: Detailed description on retrieving list of tss request information
+      summary: List tss request information by vault ID
+      description: |
+        Retrieving list of tss request information by vault ID.
+        This endpoint allows filtering by key group ID.
       security:
         - CoboAuth: []
       parameters:
@@ -963,8 +981,10 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: get_tss_request
-      summary: get a tss request
-      description: get a tss request.
+      summary: Get a tss request information
+      description: |
+        Get detailed information about a tss request identified by its unique ID. 
+        Get project ids by calling list_tss_request.
       security:
         - CoboAuth: []
       parameters:
@@ -983,8 +1003,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: cancel_tss_request
-      summary: cancel tss request
-      description: cancel tss request.
+      summary: Cancel a tss request
+      description: |
+        Cancel a mpc tss request by its ID.
       security:
         - CoboAuth: []
       parameters:
@@ -1256,7 +1277,7 @@ paths:
           $ref: '#/components/responses/createTransactionRequestResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
-  /transactions/sign_message:
+  /transactions/message_sign:
     post:
       tags:
         - Transactions
@@ -1674,10 +1695,6 @@ components:
           type: string
           description: URL of the explorer transaction.
           example: 'https://etherscan.io/tx/{txn_id}'
-        explorer_address_url:
-          type: string
-          description: URL of the explorer address.
-          example: 'https://etherscan.io/address/{address}'
     WalletType:
       type: string
       enum:
@@ -4499,7 +4516,7 @@ components:
           schema:
             type: object
             properties:
-              retried:
+              executed:
                 type: boolean
                 example: true
                 description: Whether the spendable lock/unlock has been successfully executed.
@@ -4678,6 +4695,12 @@ components:
           schema:
             $ref: '#/components/schemas/Transaction'
     estimateFeeResponse:
+      description: Successful get a transaction detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EstimationFee'
+    transactionFeeResponse:
       description: Successful get a transaction detail
       content:
         application/json:

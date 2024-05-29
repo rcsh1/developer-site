@@ -4,15 +4,9 @@ post:
   tags:
     - Wallets
   operationId: lock_spendable_list
-  summary: Lock/Unlock the spendable in list
+  summary: Lock/Unlock the UTXOs in tx hash list
   description: |
-    Retrieves a list of token balance of the spendable unspent transaction outputs (UTXOs) for a given wallet.
-    This endpoint allows users to query token balances of the spendable in the wallet.
-    
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    Lock/Unlock the UTXOs in the given tx hash list. The Locked UTXO can not be transferred until unlocked.
   security:
     - CoboAuth: []
   requestBody:
