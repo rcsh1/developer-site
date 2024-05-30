@@ -2305,24 +2305,24 @@ components:
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
     TransactionFee:
-      - oneOf:
-          - $ref: '#/components/schemas/EvmEip1559TransactionFee'
-          - $ref: '#/components/schemas/EvmLegacyTransactionFee'
-          - $ref: '#/components/schemas/UtxoTransactionFee'
-          - $ref: '#/components/schemas/FixedFee'
-        discriminator:
-          propertyName: fee_type
-          mapping:
-            EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionFee'
-            EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
-            UTXO: '#/components/schemas/UtxoTransactionFee'
-            Fixed: '#/components/schemas/FixedFee'
-      - type:
-          properties:
-            fee_used:
-              type: string
-              description: The fee amount in fee_coin.
-              example: '0.1'
+      oneOf:
+        - $ref: '#/components/schemas/EvmEip1559TransactionFee'
+        - $ref: '#/components/schemas/EvmLegacyTransactionFee'
+        - $ref: '#/components/schemas/UtxoTransactionFee'
+        - $ref: '#/components/schemas/FixedFee'
+      discriminator:
+        propertyName: fee_type
+        mapping:
+          EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionFee'
+          EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
+          UTXO: '#/components/schemas/UtxoTransactionFee'
+          Fixed: '#/components/schemas/FixedFee'
+      type:
+        properties:
+          fee_used:
+            type: string
+            description: The fee amount in fee_coin.
+            example: '0.1'
     Transaction:
       type: object
       description: The data for transaction information.
