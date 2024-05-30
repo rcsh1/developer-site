@@ -2399,7 +2399,6 @@ components:
             - $ref: '#/components/schemas/BaseTransactionDestination'
             - $ref: '#/components/schemas/BaseWalletTransactionDestination'
             - $ref: '#/components/schemas/MPCWalletTransactionDestination'
-            - $ref: '#/components/schemas/SmartContractWalletTransactionDestination'
             - $ref: '#/components/schemas/ExchangeWalletTransactionDestination'
           discriminator:
             propertyName: source_type
@@ -2410,7 +2409,7 @@ components:
               CustodialWeb3Wallet: '#/components/schemas/BaseWalletTransactionDestination'
               MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionDestination'
               MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionDestination'
-              SafeContractWallet: '#/components/schemas/SmartContractWalletTransactionDestination'
+              SafeContractWallet: '#/components/schemas/BaseTransactionDestination'
               ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionDestination'
         fee:
           $ref: '#/components/schemas/TransactionFee'
@@ -2829,10 +2828,6 @@ components:
           properties:
             mpc_used_key_group:
               $ref: '#/components/schemas/MpcSigningGroup'
-        - $ref: '#/components/schemas/BaseWalletTransactionDestination'
-    SmartContractWalletTransactionDestination:
-      allOf:
-        - $ref: '#/components/schemas/SmartContractWalletTransactionSource'
         - $ref: '#/components/schemas/BaseWalletTransactionDestination'
     ExchangeWalletTransactionDestination:
       allOf:

@@ -2,7 +2,6 @@ oneOf:
 - $ref: './destinations/destination.yaml'
 - $ref: './destinations/wallets/destination.yaml'
 - $ref: './destinations/wallets/mpcs/destination.yaml'
-- $ref: './destinations/wallets/smart_contracts/destination.yaml'
 - $ref: './destinations/wallets/exchanges/destination.yaml'
 discriminator:
   propertyName: source_type
@@ -13,5 +12,5 @@ discriminator:
     CustodialWeb3Wallet: '#/components/schemas/BaseWalletTransactionDestination'
     MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionDestination'
     MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionDestination'
-    SafeContractWallet: '#/components/schemas/SmartContractWalletTransactionDestination'
+    SafeContractWallet: '#/components/schemas/BaseTransactionDestination'
     ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionDestination'
