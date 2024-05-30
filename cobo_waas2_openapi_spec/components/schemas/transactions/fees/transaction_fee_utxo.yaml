@@ -8,5 +8,9 @@ allOf:
     properties:
       fee_type:
         $ref: './fee_type.yaml'
+      fee_used:
+        type: string
+        description: The fee amount in fee_coin.
+        example: "0.1"
   - $ref: './base_fee_price_utxo.yaml'
   - $ref: './fee_max_fee_amount.yaml'

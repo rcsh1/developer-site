@@ -2617,6 +2617,10 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
+            fee_used:
+              type: string
+              description: The fee amount in fee_coin.
+              example: '0.1'
         - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     EvmLegacyTransactionFee:
@@ -2629,6 +2633,10 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
+            fee_used:
+              type: string
+              description: The fee amount in fee_coin.
+              example: '0.1'
         - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     UtxoTransactionFee:
@@ -2641,6 +2649,10 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
+            fee_used:
+              type: string
+              description: The fee amount in fee_coin.
+              example: '0.1'
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
     TransactionFee:
@@ -2656,12 +2668,6 @@ components:
           EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
           UTXO: '#/components/schemas/UtxoTransactionFee'
           Fixed: '#/components/schemas/FixedFee'
-      type:
-        properties:
-          fee_used:
-            type: string
-            description: The fee amount in fee_coin.
-            example: '0.1'
     Transaction:
       type: object
       description: The data for transaction information.
@@ -3047,6 +3053,7 @@ components:
         - SafeContractWallet
         - ExchangeAccount
         - GasStation
+        - CoboPortal
         - ExternalAddress
       example: CustodialAssetWallet
       description: Enumeration representing the address type of a transaction.
