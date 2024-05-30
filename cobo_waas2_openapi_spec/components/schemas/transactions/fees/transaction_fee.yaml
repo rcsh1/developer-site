@@ -1,12 +1,18 @@
-oneOf:
-- $ref: './transaction_fee_eip1559.yaml'
-- $ref: './transaction_fee_legacy.yaml'
-- $ref: './transaction_fee_utxo.yaml'
-- $ref: './fee_fixed.yaml'
-discriminator:
-  propertyName: fee_type
-  mapping:
-    EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionFee'
-    EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
-    UTXO: '#/components/schemas/UtxoTransactionFee'
-    Fixed: '#/components/schemas/FixedFee'
+- oneOf:
+  - $ref: './transaction_fee_eip1559.yaml'
+  - $ref: './transaction_fee_legacy.yaml'
+  - $ref: './transaction_fee_utxo.yaml'
+  - $ref: './fee_fixed.yaml'
+  discriminator:
+    propertyName: fee_type
+    mapping:
+      EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionFee'
+      EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
+      UTXO: '#/components/schemas/UtxoTransactionFee'
+      Fixed: '#/components/schemas/FixedFee'
+- type:
+    properties:
+      fee_used:
+        type: string
+        description: The fee amount in fee_coin.
+        example: "0.1"

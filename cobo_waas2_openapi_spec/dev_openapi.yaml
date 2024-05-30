@@ -1337,6 +1337,10 @@ components:
           type: string
           description: The transaction URL on the blockchain explorer.
           example: 'https://etherscan.io/tx/{txn_id}'
+        explorer_address_url:
+          type: string
+          description: URL of the explorer address.
+          example: 'https://etherscan.io/address/{address}'
     WalletType:
       type: string
       enum:
@@ -2301,27 +2305,32 @@ components:
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
     TransactionFee:
-      oneOf:
-        - $ref: '#/components/schemas/EvmEip1559TransactionFee'
-        - $ref: '#/components/schemas/EvmLegacyTransactionFee'
-        - $ref: '#/components/schemas/UtxoTransactionFee'
-        - $ref: '#/components/schemas/FixedFee'
-      discriminator:
-        propertyName: fee_type
-        mapping:
-          EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionFee'
-          EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
-          UTXO: '#/components/schemas/UtxoTransactionFee'
-          Fixed: '#/components/schemas/FixedFee'
+      - oneOf:
+          - $ref: '#/components/schemas/EvmEip1559TransactionFee'
+          - $ref: '#/components/schemas/EvmLegacyTransactionFee'
+          - $ref: '#/components/schemas/UtxoTransactionFee'
+          - $ref: '#/components/schemas/FixedFee'
+        discriminator:
+          propertyName: fee_type
+          mapping:
+            EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionFee'
+            EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
+            UTXO: '#/components/schemas/UtxoTransactionFee'
+            Fixed: '#/components/schemas/FixedFee'
+      - type:
+          properties:
+            fee_used:
+              type: string
+              description: The fee amount in fee_coin.
+              example: '0.1'
     Transaction:
       type: object
       description: The data for transaction information.
       required:
         - transaction_id
-        - wallet_id
-        - cobo_id
-        - status
         - type
+        - status
+        - chain_id
         - source
         - destination
         - created_time
@@ -2332,22 +2341,10 @@ components:
           description: Unique transaction ID
           format: uuid
           example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
-        wallet_id:
-          type: string
-          description: Wallet ID
-          example: 624ce4e5-e985-4394-a196-fd7752aff96e
         request_id:
           type: string
           description: Request ID
           example: web_send_by_user_327_1610444045047
-        cobo_id:
-          type: string
-          description: Cobo ID
-          example: '20231213122855000000000000000000'
-        initiator:
-          type: string
-          description: Transaction initiator
-          example: 'API Prod Key #1'
         transaction_hash:
           type: string
           description: Transaction hash.
@@ -2358,62 +2355,86 @@ components:
           $ref: '#/components/schemas/TransactionSubStatus'
         type:
           $ref: '#/components/schemas/TransactionType'
-        source:
-          oneOf:
-            - $ref: '#/components/schemas/TransactionAddress'
-            - $ref: '#/components/schemas/WalletTransactionAddress'
-            - $ref: '#/components/schemas/MPCWalletTransactionAddress'
-            - $ref: '#/components/schemas/SmartContractWalletTransactionAddress'
-            - $ref: '#/components/schemas/ExchangeWalletTransactionAddress'
-          discriminator:
-            propertyName: type
-            mapping:
-              ExternalAddress: '#/components/schemas/TransactionAddress'
-              GasStation: '#/components/schemas/WalletTransactionAddress'
-              CustodialAssetWallet: '#/components/schemas/WalletTransactionAddress'
-              CustodialWeb3Wallet: '#/components/schemas/WalletTransactionAddress'
-              MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionAddress'
-              MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionAddress'
-              SafeContractWallet: '#/components/schemas/SmartContractWalletTransactionAddress'
-              ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionAddress'
-        destination:
-          oneOf:
-            - $ref: '#/components/schemas/TransactionDestinationAddress'
-            - $ref: '#/components/schemas/WalletTransactionDestinationAddress'
-            - $ref: '#/components/schemas/MPCWalletTransactionDesintationAddress'
-            - $ref: '#/components/schemas/SmartContractWalletTransactionDesintationAddress'
-            - $ref: '#/components/schemas/ExchangeWalletTransactionDestinationAddress'
-          discriminator:
-            propertyName: source_type
-            mapping:
-              ExternalAddress: '#/components/schemas/TransactionDestinationAddress'
-              GasStation: '#/components/schemas/WalletTransactionDestinationAddress'
-              CustodialAssetWallet: '#/components/schemas/WalletTransactionDestinationAddress'
-              CustodialWeb3Wallet: '#/components/schemas/WalletTransactionDestinationAddress'
-              MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionDestinationAddress'
-              MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionDestinationAddress'
-              SafeContractWallet: '#/components/schemas/SmartContractWalletTransactionDestinationAddress'
-              ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionDestinationAddress'
         chain_id:
           type: string
           description: The blockchain on which the token operates.
           pattern: '^[A-Z]+$'
           example: ETH
-        exchange_id:
-          $ref: '#/components/schemas/ExchangeId'
-        tokens:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionToken'
+        source:
+          oneOf:
+            - type: object
+              description: The data for transaction source information.
+              required:
+                - type
+              properties:
+                type:
+                  $ref: '#/components/schemas/TransactionAddressType'
+                address:
+                  type: string
+                  description: Address
+                  example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+            - $ref: '#/components/schemas/BaseWalletTransactionSource'
+            - $ref: '#/components/schemas/MPCWalletTransactionSource'
+            - $ref: '#/components/schemas/SmartContractWalletTransactionSource'
+            - $ref: '#/components/schemas/ExchangeWalletTransactionSource'
+          discriminator:
+            propertyName: type
+            mapping:
+              ExternalAddress: '#/components/schemas/BaseTransactionSource'
+              GasStation: '#/components/schemas/BaseWalletTransactionSource'
+              CustodialAssetWallet: '#/components/schemas/BaseWalletTransactionSource'
+              CustodialWeb3Wallet: '#/components/schemas/BaseWalletTransactionSource'
+              MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionSource'
+              MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionSource'
+              SafeContractWallet: '#/components/schemas/SmartContractWalletTransactionSource'
+              ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionSource'
+        destination:
+          oneOf:
+            - $ref: '#/components/schemas/BaseTransactionDestination'
+            - $ref: '#/components/schemas/BaseWalletTransactionDestination'
+            - $ref: '#/components/schemas/MPCWalletTransactionDestination'
+            - $ref: '#/components/schemas/SmartContractWalletTransactionDestination'
+            - $ref: '#/components/schemas/ExchangeWalletTransactionDestination'
+          discriminator:
+            propertyName: source_type
+            mapping:
+              ExternalAddress: '#/components/schemas/BaseTransactionDestination'
+              GasStation: '#/components/schemas/BaseWalletTransactionDestination'
+              CustodialAssetWallet: '#/components/schemas/BaseWalletTransactionDestination'
+              CustodialWeb3Wallet: '#/components/schemas/BaseWalletTransactionDestination'
+              MPCClientControlledWallet: '#/components/schemas/MPCWalletTransactionDestination'
+              MPCUserControlledWallet: '#/components/schemas/MPCWalletTransactionDestination'
+              SafeContractWallet: '#/components/schemas/SmartContractWalletTransactionDestination'
+              ExchangeAccount: '#/components/schemas/ExchangeWalletTransactionDestination'
         fee:
           $ref: '#/components/schemas/TransactionFee'
-        category:
+        initiator:
+          type: string
+          description: 'Transaction initiator, apikey or operator'
+          example: 'API Prod Key #1'
+        initiator_type:
+          $ref: '#/components/schemas/TransactionInitiatorType'
+        approvers:
           type: array
           items:
-            $ref: '#/components/schemas/TransactionCategory'
-        description:
+            $ref: '#/components/schemas/TransactionApprover'
+        signers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionSigner'
+        algorithm:
           type: string
-          example: withdrawal to exchange trading account
+          description: Transaction message signing algorithm
+        message:
+          type: string
+          description: Transaction raw message
+          example: this to certify that am owner this wallet address
+        calldata:
+          type: string
+          description: |
+            calldata for this transaction. Commonly used as part of contract interaction.
+          format: byte
+          example: U3dhZ2dlciByb2Nrcw==
         confirmed_num:
           type: number
           description: Transaction confirmed number
@@ -2423,6 +2444,37 @@ components:
           format: int32
           description: 'Number of confirmations required for a transaction, such as 15 for ETH chain.'
           example: 15
+        block_number:
+          type: integer
+          description: Block number
+          example: 123
+        block_hash:
+          type: string
+          description: Block hash
+          example: '0xc9ee947f8bb6027c161888bf0d004bec05e7c2beec7e6b187dc512174e438735'
+        nonce:
+          type: integer
+          description: Transaction nonce
+          example: 9
+        replaced_by_transaction_id:
+          type: string
+          description: Replace by transaction ID
+          format: uuid
+          example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
+        replaced_by_transaction_hash:
+          type: string
+          description: Replace by transaction hash
+          example: 239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28
+        category:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionCategory'
+        failed_reason:
+          type: string
+          example: Rejected by signer Cobo TSS
+        description:
+          type: string
+          example: withdrawal to exchange trading account
         created_time:
           type: number
           description: Transaction creation time
@@ -2447,7 +2499,7 @@ components:
             - Approved
             - Rejected
           example: Pending
-    TransactionToken:
+    TransactionTokenAmount:
       type: object
       description: The data for transaction asset information.
       required:
@@ -2659,44 +2711,53 @@ components:
         - ExternalAddress
       example: CustodialAssetWallet
       description: Enumeration representing the address type of a transaction.
-    TransactionAddress:
+    BaseTransactionSource:
       type: object
       description: The data for transaction source information.
       required:
         - type
       properties:
         type:
-          $ref: '#/components/schemas/TransactionAddressType'
+          type: string
+          enum:
+            - CustodialAssetWallet
+            - CustodialWeb3Wallet
+            - MPCClientControlledWallet
+            - MPCUserControlledWallet
+            - SafeContractWallet
+            - ExchangeAccount
+            - GasStation
+            - ExternalAddress
+          example: CustodialAssetWallet
+          description: Enumeration representing the address type of a transaction.
         address:
           type: string
           description: Address
           example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
-    TransactionDestinationAddress:
+        amounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionTokenAmount'
+    BaseWalletTransactionSource:
       allOf:
-        - $ref: '#/components/schemas/TransactionAddress'
+        - $ref: '#/components/schemas/BaseTransactionSource'
         - type: object
-          description: Address memo/tag.
-          properties:
-            memo:
-              type: string
-              description: Address memo/tag.
-              example: '82840924'
-    WalletTransactionAddress:
-      allOf:
-        - $ref: '#/components/schemas/TransactionAddress'
-        - type: object
-          required:
-            - wallet_id
           properties:
             wallet_id:
               type: string
               description: Unique id of the wallet.
               example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    WalletTransactionDestinationAddress:
+    MPCWalletTransactionSource:
       allOf:
-        - $ref: '#/components/schemas/WalletTransactionAddress'
-        - $ref: '#/components/schemas/TransactionDestinationAddress/allOf/1'
-    SmartContractWalletTransactionAddress:
+        - type: object
+          properties:
+            mpc_used_key_group:
+              $ref: '#/components/schemas/MpcSigningGroup'
+            broker:
+              type: string
+              example: cobo001
+        - $ref: '#/components/schemas/BaseWalletTransactionSource'
+    SmartContractWalletTransactionSource:
       allOf:
         - type: object
           required:
@@ -2718,26 +2779,8 @@ components:
                   type: string
                   example: '0x1234567890123456789012345678901234567890'
                   description: The wallet address of the delegate. This is required when user initiate a transfer.
-        - $ref: '#/components/schemas/WalletTransactionAddress'
-    SmartContractWalletTransactionDesintationAddress:
-      allOf:
-        - $ref: '#/components/schemas/SmartContractWalletTransactionAddress'
-        - $ref: '#/components/schemas/WalletTransactionDestinationAddress'
-    MPCWalletTransactionAddress:
-      allOf:
-        - type: object
-          properties:
-            mpc_used_key_group:
-              $ref: '#/components/schemas/MpcSigningGroup'
-            broker_user_id:
-              type: string
-              example: cobo001
-        - $ref: '#/components/schemas/WalletTransactionAddress'
-    MPCWalletTransactionDesintationAddress:
-      allOf:
-        - $ref: '#/components/schemas/MPCWalletTransactionAddress'
-        - $ref: '#/components/schemas/WalletTransactionDestinationAddress'
-    ExchangeWalletTransactionAddress:
+        - $ref: '#/components/schemas/BaseWalletTransactionSource'
+    ExchangeWalletTransactionSource:
       allOf:
         - type: object
           required:
@@ -2749,11 +2792,44 @@ components:
               type: string
               description: Exchange trading account or any sub wallet info for transfer.
               example: Asset
-        - $ref: '#/components/schemas/WalletTransactionAddress'
-    ExchangeWalletTransactionDestinationAddress:
+        - $ref: '#/components/schemas/BaseWalletTransactionSource'
+    BaseTransactionDestination:
       allOf:
-        - $ref: '#/components/schemas/ExchangeWalletTransactionAddress'
-        - $ref: '#/components/schemas/WalletTransactionDestinationAddress'
+        - $ref: '#/components/schemas/BaseTransactionSource'
+        - type: object
+          description: Address memo/tag.
+          properties:
+            memo:
+              type: string
+              description: Address memo/tag.
+              example: '82840924'
+    BaseWalletTransactionDestination:
+      allOf:
+        - $ref: '#/components/schemas/BaseWalletTransactionSource'
+        - $ref: '#/components/schemas/BaseTransactionDestination'
+    MPCWalletTransactionDestination:
+      allOf:
+        - type: object
+          properties:
+            message:
+              type: string
+              description: 'Raw data to be signed, Base 64 encoded'
+              example: YWFhYQ==
+            structured_data:
+              type: string
+              description: 'Structured data to be signed, JSON encoded'
+              example: |
+                {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
+        - $ref: '#/components/schemas/MPCWalletTransactionSource'
+        - $ref: '#/components/schemas/BaseWalletTransactionDestination'
+    SmartContractWalletTransactionDestination:
+      allOf:
+        - $ref: '#/components/schemas/SmartContractWalletTransactionSource'
+        - $ref: '#/components/schemas/BaseWalletTransactionDestination'
+    ExchangeWalletTransactionDestination:
+      allOf:
+        - $ref: '#/components/schemas/ExchangeWalletTransactionSource'
+        - $ref: '#/components/schemas/BaseWalletTransactionDestination'
     BaseTransferSource:
       type: object
       description: The base data for transfer source.
@@ -4462,7 +4538,7 @@ components:
           schema:
             $ref: '#/components/schemas/Transaction'
     estimateFeeResponse:
-      description: Successful get a transaction detail
+      description: Successful get the fee estimation result
       content:
         application/json:
           schema:
