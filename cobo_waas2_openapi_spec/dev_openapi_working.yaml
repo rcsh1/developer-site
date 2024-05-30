@@ -1212,14 +1212,7 @@ paths:
         - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/optionalAssetIdListParam'
-        - name: vault_id
-          in: query
-          required: false
-          description: Unique id of the mpc vault
-          schema:
-            type: string
-            format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        - $ref: '#/components/parameters/optionalVaultIdListQueryParam'
         - name: project_id
           in: query
           description: Unique id of the mpc project
@@ -4038,6 +4031,15 @@ components:
       in: query
       required: false
       description: The MPC Vault ID.
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalVaultIdListQueryParam:
+      name: vault_id
+      in: query
+      required: false
+      description: Unique id of the mpc vault
       schema:
         type: string
         format: uuid
