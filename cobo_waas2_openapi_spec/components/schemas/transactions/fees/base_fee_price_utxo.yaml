@@ -1,13 +1,13 @@
 type: object
-description: The legacy fee price for estimate fees or transfer.
+description: The base transaction fee for UTXO-based chains.
 required:
   - fee_rate
 properties:
   fee_token_id:
     type: string
-    description: ID of the fee token. Unique in all chains scope.
+    description: The token ID of the transaction fee.
     example: 'ETH'
   fee_rate:
     type: string
-    description: The fee rate, unit sat/vB.
+    description: The fee rate, in sats/vByte. The fee rate represents the satoshis you are willing to pay for each byte of data that your transaction will consume on the blockchain.
     example: '50'

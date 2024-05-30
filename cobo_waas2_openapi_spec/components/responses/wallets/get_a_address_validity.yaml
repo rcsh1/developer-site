@@ -1,4 +1,4 @@
-description: Successfully get address validity
+description: The request was successful.
 content:
   application/json:
     schema:
@@ -6,5 +6,8 @@ content:
       properties:
         validity:
           type: boolean
-          description: The validity of the address.
+          description: |
+            Whether the address is valid.
+            - `true`: The address is valid.
+            - `false`: the address is invalid.
           example: true

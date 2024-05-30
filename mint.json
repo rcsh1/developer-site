@@ -439,26 +439,46 @@
       "version": "V2"
     },
     {
+      "group": "Wallets - Exchange Wallet",
+      "pages": [
+        "api-references/v2/wallets--exchange-wallet/list-the-supported-assets-by-exchange-id",
+        "api-references/v2/wallets--exchange-wallet/list-the-supported-chains-by-exchange-id-and-asset-id",
+        "api-references/v2/wallets--exchange-wallet/list-the-asset-balance-in-exchange-wallet",
+        "api-references/v2/wallets--exchange-wallet/list-of-exchanges",
+        "api-references/v2/wallets--exchange-wallet/list-exchange-sub-accounts-by-wallet-id",
+        "api-references/v2/wallets--exchange-wallet/link-exchange-sub-accounts-by-wallet-id",
+        "api-references/v2/wallets--exchange-wallet/list-exchange-sub-accounts-by-apikey"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Development",
+      "pages": [
+        "api-references/v2/development/event-type-and-data"
+      ],
+      "version": "V2"
+    },
+    {
       "group": "Wallets",
       "pages": [
-        "api-references/v2/wallets/list-the-metadata-of-chain",
-        "api-references/v2/wallets/list-the-metadata-of-assets",
-        "api-references/v2/wallets/list-the-metadata-of-tokens",
-        "api-references/v2/wallets/list-the-supported-chains-by-wallet-subtype",
-        "api-references/v2/wallets/list-the-supported-tokens-by-wallet-subtype-and-chain-id-if-specified",
-        "api-references/v2/wallets/list-the-token-balance-in-the-walletsto-be-specific",
-        "api-references/v2/wallets/list-the-token-balance-by-address-in-the-walletsto-be-specific",
+        "api-references/v2/wallets/list-chain-metadata",
+        "api-references/v2/wallets/list-token-metadata",
+        "api-references/v2/wallets/list-supported-chains",
+        "api-references/v2/wallets/list-supported-tokens",
+        "api-references/v2/wallets/list-enabled-chains",
+        "api-references/v2/wallets/list-enabled-tokens",
         "api-references/v2/wallets/list-all-wallets",
-        "api-references/v2/wallets/create-new-wallet",
-        "api-references/v2/wallets/get-wallet-information-by-id",
+        "api-references/v2/wallets/create-wallet",
+        "api-references/v2/wallets/retrieve-wallet-information-by-id",
         "api-references/v2/wallets/update-wallet-by-id",
-        "api-references/v2/wallets/delete-a-wallet-by-id",
-        "api-references/v2/wallets/list-the-spendable-utxo",
-        "api-references/v2/wallets/get-max-sendable-vaule",
+        "api-references/v2/wallets/delete-wallet-by-id",
+        "api-references/v2/wallets/list-spendable-utxos",
+        "api-references/v2/wallets/get-max-transferable-value",
         "api-references/v2/wallets/list-wallet-addresses-by-wallet-id",
-        "api-references/v2/wallets/add-address-to-a-wallet",
-        "api-references/v2/wallets/get-address-information-by-id",
-        "api-references/v2/wallets/get-the-given-address-validity-for-token"
+        "api-references/v2/wallets/add-address-to-wallet",
+        "api-references/v2/wallets/check-address-validity",
+        "api-references/v2/wallets/list-token-balances-by-wallet",
+        "api-references/v2/wallets/list-token-balances-by-address"
       ],
       "version": "V2"
     },
@@ -487,30 +507,16 @@
       "version": "V2"
     },
     {
-      "group": "Wallets - Exchange Wallet",
-      "pages": [
-        "api-references/v2/wallets--exchange-wallet/list-the-supported-assets-by-exchange-id",
-        "api-references/v2/wallets--exchange-wallet/list-the-supported-chains-by-exchange-id-and-asset-id",
-        "api-references/v2/wallets--exchange-wallet/list-the-asset-balance-in-exchange-wallet",
-        "api-references/v2/wallets--exchange-wallet/list-of-exchanges",
-        "api-references/v2/wallets--exchange-wallet/list-exchange-sub-accounts-by-wallet-id",
-        "api-references/v2/wallets--exchange-wallet/link-exchange-sub-accounts-by-wallet-id",
-        "api-references/v2/wallets--exchange-wallet/list-exchange-sub-accounts-by-apikey"
-      ],
-      "version": "V2"
-    },
-    {
       "group": "Transactions",
       "pages": [
         "api-references/v2/transactions/get-the-fee-price-data-for-chain-andor-tokenhold-tbd-after-normalize-fee-settings",
         "api-references/v2/transactions/estimate-the-fee-for-transaction",
         "api-references/v2/transactions/create-a-transfer-transaction",
         "api-references/v2/transactions/create-a-smart-contract-call-transaction",
-        "api-references/v2/transactions/create-a-sign-message-transaction",
         "api-references/v2/transactions/list-all-transactions",
         "api-references/v2/transactions/get-transaction-information-by-id",
-        "api-references/v2/transactions/drop-a-transaction-by-id",
         "api-references/v2/transactions/resend-a-transaction-by-id",
+        "api-references/v2/transactions/drop-a-transaction-by-id",
         "api-references/v2/transactions/speed-up-a-transaction-by-id",
         "api-references/v2/transactions/retry-up-a-transaction-double-check-by-id"
       ],
@@ -519,18 +525,10 @@
     {
       "group": "Developers - Webhooks",
       "pages": [
-        "api-references/v2/developers--webhooks/list-all-event-types",
         "api-references/v2/developers--webhooks/list-all-events",
         "api-references/v2/developers--webhooks/retrieve-event-by-id",
         "api-references/v2/developers--webhooks/list-event-logs-by-id",
         "api-references/v2/developers--webhooks/retry-event-by-id"
-      ],
-      "version": "V2"
-    },
-    {
-      "group": "Development",
-      "pages": [
-        "api-references/v2/development/event-type-and-data"
       ],
       "version": "V2"
     }

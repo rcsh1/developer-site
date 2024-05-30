@@ -1,17 +1,17 @@
 type: object
-description: utxo information.
+description: The UTXO information.
 properties:
   tx_hash:
     type: string
-    description: Transaction hash of the UTXO.
+    description: The transaction hash of the UTXO.
     example: 'dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83'
   vout_n:
     type: integer
-    description: Output index of the UTXO.
+    description: The output index of the UTXO.
     example: 0
   address_str:
     type: string
-    description: Address of the UTXO.
+    description: The address of the UTXO.
     example: '2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE'
   token_balances:
     type: array
@@ -19,7 +19,7 @@ properties:
       $ref: './token_balance.yaml'
   is_coinbase:
     type: boolean
-    description: Whether the UTXO is a coinbase transaction.
+    description: Whether the UTXO comes from a coinbase transaction.
     example: false
   is_locked:
     type: boolean
@@ -27,5 +27,5 @@ properties:
     example: false
   confirmed_number:
     type: integer
-    description: Number of confirmations for the UTXO.
+    description: The number of confirmations for the UTXO. # The chain height of the UTXO.
     example: 66716

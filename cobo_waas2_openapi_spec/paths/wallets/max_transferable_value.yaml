@@ -4,14 +4,7 @@ get:
   operationId: get_max_transferable_value
   summary: Get max transferable value
   description: |
-    Retrieves the maximum transferable value and the corresponding transaction fee for a given address.
-    This endpoint allows users to determine the maximum amount that can be transferred from a wallet address,
-    along with the associated transaction fee.
-    
-    Error codes this API may return:
-        | Error Code | Description |
-        | -- | -- |
-        | `2006` | 参数格式或者值非法 |
+    This operation retrieves the maximum amount that you can transfer from a wallet or a specified wallet address, along with the corresponding transaction fee.
   security:
     - CoboAuth: []
   parameters:

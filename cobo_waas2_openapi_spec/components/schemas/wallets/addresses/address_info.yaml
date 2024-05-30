@@ -1,5 +1,5 @@
 type: object
-description: The data for address information.
+description: The address information.
 required:
   - address_id
   - address_str
@@ -9,26 +9,27 @@ properties:
     type: string
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+    description: The address ID.
   address_str:
     type: string
-    description: Then blockchain address
+    description: The wallet address.
     example: "0x0000000000000000000000000000000000000000"
   token_id:
     type: string
-    description: ID of the token. Unique in all chains scope.
+    description: The token ID.
     pattern: ^[A-Z]+(_[A-Z0-9]+)?$
     example: 'ETH_USDT'
   memo:
     type: string
-    description: From address memo
+    description: The memo code.
     example: "82840924"
   path:
     type: string
-    description: Derivation path of address pubkey，required for MPC wallet
+    description: The derivation path of the address. This field is applicable to MPC Wallets.
     example: "m/44'/60'/0'/0"
   encoding:
     $ref: './address_encoding.yaml'
   pubkey:
     type: string
-    description: Address pubkey，required for MPC wallet
+    description: The public key of the address. This field is applicable to MPC Wallets.
     example: "xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq"

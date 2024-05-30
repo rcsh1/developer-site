@@ -1,4 +1,4 @@
-description: The request body to add address for a wallet
+description: The request body to add address to a wallet.
 content:
   application/json:
     schema:
@@ -9,7 +9,7 @@ content:
       properties:
         token_id:
           type: string
-          description: ID of the token. Unique in all chains scope.
+          description: The token ID.
           pattern: ^[A-Z]+(_[A-Z0-9]+)?$
           example: 'ETH_USDT'
         count:
@@ -17,7 +17,7 @@ content:
           maximum: 50
           minimum: 1
           default: 1
-          description: The number of addresses that need to be created
+          description: The number of addresses to create.
           example: 1
         encoding:
           $ref: '../../schemas/wallets/addresses/address_encoding.yaml'

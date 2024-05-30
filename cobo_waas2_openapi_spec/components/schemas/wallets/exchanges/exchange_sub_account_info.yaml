@@ -1,4 +1,5 @@
 type: object
+description: The information of a Sub Account associated with the Main Account. This is returned only if you are querying a Main Account.
 required:
   - wallet_id
   - account_id
@@ -7,7 +8,8 @@ properties:
     type: string
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+    description: The wallet ID of the Sub Account.
   account_id:
     type: string
-    description: The unique identifier associated with the exchange sub-account. It can be an email address, username, or a custom account ID.
+    description: The Sub Account ID. It can be an email address, a user name, or a custom account ID.
     example: 'sub01@xx.com'

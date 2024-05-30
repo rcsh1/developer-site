@@ -4,15 +4,9 @@ get:
   operationId: get_assets
   summary: List asset metadata
   description: |
-    This endpoint retrieves metadata for assets stored in the wallet system.
-    It provides details such as asset_id, display_code, and other relevant information.
-    Pagination parameters can be used to manage the size of the response.
-    The asset list is publicly accessible without any permission restrictions.
+    This operation retrieves the metadata of all assets supported by Cobo WaaS 2.0.
     
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    It provides details such as asset IDs, asset symbols, and other relevant information. The asset metadata is publicly available without any permission restrictions.
   security:
     - CoboAuth: []
   parameters:

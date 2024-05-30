@@ -4,15 +4,9 @@ get:
   operationId: get_chains
   summary: List chain metadata
   description: |
-    This endpoint retrieves metadata for available blockchain chains.
-    It provides details such as chain_id, name, and other relevant information.
-    Pagination parameters can be used to manage the size of the response.
-    The chain list is publicly accessible without any permission restrictions.
+    This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
     
-    Error codes this API may return:
-      | Error Code | Description |
-      | -- | -- |
-      | `2006` | 参数格式或者值非法 |
+    It provides details such as chain ID, chain name, and other relevant information. The chain metadata is publicly available without any permission restrictions.
   security:
     - CoboAuth: []
   parameters:

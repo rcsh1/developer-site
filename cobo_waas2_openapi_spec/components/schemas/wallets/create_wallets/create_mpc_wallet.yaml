@@ -10,11 +10,16 @@ allOf:
         type: string
         enum:
           - MPC
+        description: The wallet type. Possible value includes `MPC`, which indicates the MPC Wallets.
       wallet_subtype:
         type: string
         enum:
           - Org-Controlled
           - User-Controlled
+        description: |
+          The wallet subtype. Possible values include:
+            - `Org-Controlled`: MPC Wallets (Organization-Controlled)
+            - `User-Controlled`: MPC Wallets (User-Controlled)
       vault_id:
         type: string
-        description: "The owning mpc vault id of the mpc wallet."
+        description: The ID of the owning vault.

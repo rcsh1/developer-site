@@ -1,4 +1,4 @@
-description: Successfully listed tokens
+description: The request was successful.
 content:
   application/json:
     schema:
@@ -13,12 +13,22 @@ content:
                   properties:
                     can_deposit:
                       type: boolean
-                      description: Ture if the token can be deposited, False otherwise
+                      description: |
+                        Whether the token can be deposited.
+
+                        - `true`: The token can be deposited.
+
+                        - `false`: The token cannot be deposited.
                       default: false
                       example: false
                     can_withdraw:
                       type: boolean
-                      description: Ture if the token can be withdrawn, False otherwise
+                      description: |
+                        Whether the token can be withdrawn.
+
+                        - `true`: The token can be withdrawn.
+
+                        - `false`: The token cannot be withdrawn.
                       default: false
                       example: false
                 - $ref: '../../schemas/wallets/token.yaml'

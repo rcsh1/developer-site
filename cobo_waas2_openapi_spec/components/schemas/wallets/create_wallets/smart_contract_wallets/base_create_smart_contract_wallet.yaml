@@ -10,15 +10,17 @@ allOf:
         type: string
         enum:
           - SmartContract
+        description: The Smart Contract Wallet type.
       wallet_subtype:
         type: string
         enum:
           - Safe{Wallet}
+        description: The Smart Contract Wallet subtype.
       label:
         type: string
-        description: The label of the wallet.
+        description: The wallet label.
         example: "ETH"
       chain_id:
         type: string
-        description: The chain id the wallet is on.
+        description: The ID of the chain that the wallet operates on.
         example: "ETH"

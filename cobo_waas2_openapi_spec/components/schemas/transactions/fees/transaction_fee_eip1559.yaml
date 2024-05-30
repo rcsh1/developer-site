@@ -1,5 +1,6 @@
 type: object
-description: The fee data for transaction.
+description: |
+  The transaction fee when using the EIP 1559 method. The estimated fee is calculated by multiplying the max fee by the gas limit: (max fee * gas limit).
 required:
   - fee_type
 allOf:
