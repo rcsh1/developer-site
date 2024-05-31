@@ -2285,10 +2285,6 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_used:
-              type: string
-              description: The fee amount in fee_coin.
-              example: '0.1'
         - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     EvmLegacyTransactionFee:
@@ -2302,10 +2298,6 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_used:
-              type: string
-              description: The fee amount in fee_coin.
-              example: '0.1'
         - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     UtxoTransactionFee:
@@ -2319,10 +2311,6 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_used:
-              type: string
-              description: The fee amount in fee_coin.
-              example: '0.1'
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
     TransactionTransferFee:
@@ -2398,7 +2386,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/TransactionAddressDestination'
             - $ref: '#/components/schemas/TransactionContractCallDestination'
-            - $ref: '#/components/schemas/TransactionSignMessageDestination'
+            - $ref: '#/components/schemas/TransactionMessageSignDestination'
             - $ref: '#/components/schemas/TransactionMPCWalletDestination'
             - $ref: '#/components/schemas/TransactionExchangeWalletDestination'
           discriminator:
@@ -2406,7 +2394,7 @@ components:
             mapping:
               Address: '#/components/schemas/TransactionAddressDestination'
               ContractCall: '#/components/schemas/TransactionContractCallDestination'
-              SignMessage: '#/components/schemas/TransactionSignMessageDestination'
+              MessageSign: '#/components/schemas/TransactionMessageSignDestination'
               CustodialWallet: '#/components/schemas/TransactionBaseWalletDestination'
               MPCWallet: '#/components/schemas/TransactionBaseWalletDestination'
               SafeWallet: '#/components/schemas/TransactionBaseWalletDestination'
@@ -2506,12 +2494,10 @@ components:
         token_id:
           type: string
           description: The token ID.
-          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         asset_id:
           type: string
           description: ID of the asset. Used to group token balance when needed.
-          pattern: '^[A-Z0-9]+$'
           example: USDT
         amount:
           type: string
@@ -2851,14 +2837,13 @@ components:
       required:
         - destination_type
         - token_id
-        - asset_id
       properties:
         destination_type:
           type: string
           enum:
             - Address
             - ContractCall
-            - SignMessage
+            - MessageSign
             - CustodialWallet
             - MPCWallet
             - SafeWallet
@@ -2868,12 +2853,10 @@ components:
         token_id:
           type: string
           description: The token ID.
-          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         asset_id:
           type: string
           description: ID of the asset. Used to group token balance when needed.
-          pattern: '^[A-Z0-9]+$'
           example: USDT
         account_output:
           type: object
@@ -2942,7 +2925,7 @@ components:
             calldata for this transaction. Commonly used as part of contract interaction.
           format: byte
           example: U3dhZ2dlciByb2Nrcw==
-    TransactionSignMessageDestination:
+    TransactionMessageSignDestination:
       type: object
       description: The data for transaction destination information.
       required:
@@ -2951,10 +2934,6 @@ components:
       properties:
         destination_type:
           $ref: '#/components/schemas/TransactionAddressDestination/properties/destination_type'
-        address_str:
-          type: string
-          description: Destination address
-          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
         message:
           type: string
           description: 'Raw data to be signed, Base 64 encoded'
@@ -2973,7 +2952,6 @@ components:
         - destination_type
         - wallet_id
         - token_id
-        - asset_id
         - address_str
         - amount
       properties:
@@ -2987,12 +2965,10 @@ components:
         token_id:
           type: string
           description: The token ID.
-          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         asset_id:
           type: string
           description: ID of the asset. Used to group token balance when needed.
-          pattern: '^[A-Z0-9]+$'
           example: USDT
         address_str:
           type: string
@@ -3036,12 +3012,10 @@ components:
         token_id:
           type: string
           description: The token ID.
-          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         asset_id:
           type: string
           description: ID of the asset. Used to group token balance when needed.
-          pattern: '^[A-Z0-9]+$'
           example: USDT
         address_str:
           type: string
@@ -3091,9 +3065,9 @@ components:
               description: The fee amount in fee_coin.
               example: '0.1'
             gas_used:
-              type: number
+              type: string
               description: The gas used in transaction.
-              example: 100000000
+              example: '100000000'
         - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     TransactionEvmLegacyTransactionFee:
@@ -3112,9 +3086,9 @@ components:
               description: The fee amount in fee_coin.
               example: '0.1'
             gas_used:
-              type: number
+              type: string
               description: The gas used in transaction.
-              example: 100000000
+              example: '100000000'
         - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     TransactionUtxoTransactionFee:
@@ -3385,7 +3359,6 @@ components:
         token_id:
           type: string
           description: The token ID.
-          pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'

@@ -13,8 +13,8 @@ allOf:
         description: The fee amount in fee_coin.
         example: "0.1"
       gas_used:
-        type: number
+        type: string
         description: The gas used in transaction.
-        example: 100000000
+        example: "100000000"
   - $ref: '../../fees/base_fee_price_eip1559.yaml'
   - $ref: '../../fees/fee_gas_limit.yaml'
