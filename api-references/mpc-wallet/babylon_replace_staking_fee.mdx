@@ -1,8 +1,8 @@
 ---
-title: Babylon Update Staking Fee
-api: POST /v1/custody/mpc/babylon/update_staking_fee/
+title: Babylon Replace Staking Fee
+api: POST /v1/custody/mpc/babylon/replace_staking_fee/
 contentType: multipart/form-data
-description: "This endpoint specify the pre-signed staking transaction, update the corresponding transaction fee to create a new transaction, accepting parameters such as `request_id`, `related_request_id`, `fee_rate`, and `max_staking_fee`."
+description: "This endpoint specify the pre-signed staking transaction, create a new transaction to replace the corresponding transaction, accepting parameters such as `request_id`, `related_request_id`, `fee_rate`, and `max_staking_fee`."
 ---
 
 #### Request
@@ -20,7 +20,7 @@ description: "This endpoint specify the pre-signed staking transaction, update t
 ```python Python
 request(
     "POST",
-    "/v1/custody/mpc/babylon/update_staking_fee/",
+    "/v1/custody/mpc/babylon/replace_staking_fee/",
     {
         "request_id": "1717059604245",
         "related_request_id": "1717059601673",
@@ -31,7 +31,7 @@ request(
 )
 ```
 ```javascript JavaScript
-coboFetch('POST', '/v1/custody/mpc/babylon/update_staking_fee/', {
+coboFetch('POST', '/v1/custody/mpc/babylon/replace_staking_fee/', {
     "request_id": "1717059604245",
     "related_request_id": "1717059601673",
     "fee_rate": 9.5,
@@ -46,7 +46,7 @@ coboFetch('POST', '/v1/custody/mpc/babylon/update_staking_fee/', {
     });
 ```
 ```go Go
-Request("POST", "/v1/custody/mpc/babylon/update_staking_fee/", map[string]string{
+Request("POST", "/v1/custody/mpc/babylon/replace_staking_fee/", map[string]string{
     "request_id": "1717059604245",
     "related_request_id": "1717059601673",
     "fee_rate": 9.5,
