@@ -1,0 +1,15 @@
+oneOf:
+- $ref: './address_source.yaml'
+- $ref: './base_wallet_source.yaml'
+- $ref: './mpc_wallet_source.yaml'
+- $ref: './smart_contract_wallet_source.yaml'
+- $ref: './exchange_wallet_source.yaml'
+discriminator:
+  propertyName: source_type
+  mapping:
+    Address: '#/components/schemas/TransactionAddressSource'
+    GasStation: '#/components/schemas/TransactionBaseWalletSource'
+    CustodialWallet: '#/components/schemas/TransactionBaseWalletSource'
+    MPCWallet: '#/components/schemas/TransactionMPCWalletSource'
+    SafeWallet: '#/components/schemas/TransactionSmartContractWalletSource'
+    ExchangeWallet: '#/components/schemas/TransactionExchangeWalletSource'

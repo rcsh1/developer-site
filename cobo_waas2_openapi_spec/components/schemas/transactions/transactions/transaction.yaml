@@ -2,7 +2,7 @@ type: object
 description: The data for transaction information.
 required:
   - transaction_id
-  - type
+  - transaction_type
   - status
   - chain_id
   - source
@@ -15,58 +15,40 @@ properties:
     description: Unique transaction ID
     format: uuid
     example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
+  cobo_id:
+    type: string
+    description: Cobo ID
+    example: '20231213122855000000000000000000'
   request_id:
     type: string
     description: Request ID
     example: "web_send_by_user_327_1610444045047"
-  transaction_hash:
-    type: string
-    description: Transaction hash.
-    example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+  transaction_type:
+    $ref: './transaction_type.yaml'
   status:
     $ref: './transaction_status.yaml'
   sub_status:
     $ref: './transaction_sub_status.yaml'
-  type:
-    $ref: './transaction_type.yaml'
+  failed_reason:
+    type: string
+    example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
     description: The blockchain on which the token operates.
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
-    $ref: './transaction_source.yaml'
+    $ref: './sources/transaction_source.yaml'
   destination:
-    $ref: './transaction_destination.yaml'
+    $ref: './destinations/transaction_destination.yaml'
   fee:
-    $ref: '../fees/transaction_fee.yaml'
+    $ref: './fees/transaction_fee.yaml'
   initiator:
     type: string
     description: Transaction initiator, apikey or operator
     example: "API Prod Key #1"
   initiator_type:
     $ref: './transaction_initiator_type.yaml'
-  approvers:
-    type: array
-    items:
-      $ref: './transaction_approver.yaml'
-  signers:
-    type: array
-    items:
-      $ref: './transaction_signer.yaml'
-  algorithm:
-    type: string
-    description: Transaction message signing algorithm
-  message:
-    type: string
-    description: Transaction raw message
-    example: "this to certify that am owner this wallet address"
-  calldata:
-    type: string
-    description: >
-      calldata for this transaction. Commonly used as part of contract interaction.
-    format: byte
-    example: "U3dhZ2dlciByb2Nrcw=="
   confirmed_num:
     type: number
     description: Transaction confirmed number
@@ -88,22 +70,35 @@ properties:
     type: integer
     description: Transaction nonce
     example: 9
-  replaced_by_transaction_id:
+  transaction_hash:
     type: string
-    description: Replace by transaction ID
-    format: uuid
-    example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
-  replaced_by_transaction_hash:
-    type: string
-    description: Replace by transaction hash
+    description: Transaction hash.
     example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+  replacement:
+    type: object
+    properties:
+      replaced_by_transaction_id:
+        type: string
+        description: Replace by transaction ID
+        format: uuid
+        example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
+      replaced_by_transaction_hash:
+        type: string
+        description: Replace by transaction hash
+        example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+      replaced_transaction_id:
+        type: string
+        description: Replace by transaction ID
+        format: uuid
+        example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
+      replaced_transaction_hash:
+        type: string
+        description: Replace by transaction hash
+        example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
   category:
     type: array
     items:
       $ref: './transaction_category.yaml'
-  failed_reason:
-    type: string
-    example: "Rejected by signer Cobo TSS"
   description:
     type: string
     example: "withdrawal to exchange trading account"

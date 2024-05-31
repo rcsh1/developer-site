@@ -1,0 +1,18 @@
+type: object
+description: The estimated transaction fee in fee_coin.
+required:
+  - fee_type
+allOf:
+  - type: object
+    properties:
+      fee_type:
+        $ref: '../../fees/fee_type.yaml'
+      fee_token_id:
+        type: string
+        description: The token ID of the transaction fee.
+        example: 'ETH_USDT'
+    fee_used:
+      type: string
+      description: The fee amount in fee_coin.
+      example: "0.1"
+  - $ref: '../../fees/fee_max_fee_amount.yaml'

@@ -1,0 +1,21 @@
+type: object
+description: The data for transaction destination information.
+required:
+  - destination_type
+  - address_str
+properties:
+  destination_type:
+    $ref: './destination_type.yaml'
+  address_str:
+    type: string
+    description: Destination address
+    example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+  message:
+    type: string
+    description: 'Raw data to be signed, Base 64 encoded'
+    example: YWFhYQ==
+  structured_data:
+    type: string
+    description: 'Structured data to be signed, JSON encoded'
+    example: |
+      {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}

@@ -6,9 +6,7 @@ oneOf:
 discriminator:
   propertyName: source_type
   mapping:
-    Asset: '#/components/schemas/BaseTransferSource'
-    Org-Controlled: '#/components/schemas/MpcTransferSource'
-    User-Controlled: '#/components/schemas/MpcTransferSource'
-    Safe{Wallet}: '#/components/schemas/SafeTransferSource'
-    Main: '#/components/schemas/ExchangeTransferSource'
-    Sub: '#/components/schemas/ExchangeTransferSource'
+    CustodialWallet: '#/components/schemas/BaseTransferSource'
+    MPCWallet: '#/components/schemas/MpcTransferSource'
+    SafeWallet: '#/components/schemas/SafeTransferSource'
+    ExchangeWallet: '#/components/schemas/ExchangeTransferSource'
