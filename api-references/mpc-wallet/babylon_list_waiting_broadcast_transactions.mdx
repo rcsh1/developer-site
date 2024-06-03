@@ -1,0 +1,85 @@
+---
+title: Babylon List Waiting Broadcast Transactions
+api: GET /v1/custody/mpc/babylon/list_waiting_broadcast_transactions/
+contentType: multipart/form-data
+description: "This endpoint is used to query all unbroadcasted pre-signed staking transactions based on the provided parameter `asset_coin` and `address`"
+---
+
+#### Request
+<ParamField body="asset_coin" type="String" required>code of the staking token</ParamField>
+<ParamField body="address" type="String" required>staking address</ParamField>
+
+
+#### Response
+<ResponseField name="success" type="bool">request successful or failed</ResponseField>
+<ResponseField name="result" type="object[]">
+    <Expandable title="object">
+        <ResponseField name="request_id" type="String" >Transaction request ID</ResponseField>
+        <ResponseField name="cobo_id" type="String" >Unique transaction ID in Cobo</ResponseField>
+        <ResponseField name="staking_info" type="String" >Detailed information of the staking transaction, in JSON format</ResponseField>
+        <ResponseField name="status" type="Int" >
+        | Status Type | Code |
+        | ----------- | ----------- |
+        | STAKING_TX_QUEUED| 1|
+        | STAKING_TX_WAITING_BROADCASTING| 100|
+        | STAKING_TX_BROADCASTED| 200|
+        | STAKING_TX_PENDING| 300|
+        | STAKING_ACTIVE| 400|
+        | STAKING_FAILED| 499|
+
+        <Tip>The 300 status indicates that the transaction has been confirmed on the BTC chain but not yet indexed by Babylon, while the 400 status indicates that the transaction has been successfully confirmed by the Babylon indexer.</Tip>
+        </ResponseField>
+        <ResponseField name="fee_rate" type="String" >transaction fees per byte</ResponseField>
+        <ResponseField name="max_staking_fee" type="Int" >maximum fee for the staking transaction</ResponseField>
+    </Expandable>
+</ResponseField>
+
+<RequestExample>
+```python Python
+request(
+    "GET",
+    "/v1/custody/mpc/babylon/list_waiting_broadcast_transactions/",
+    {
+        "asset_coin": "SIGNET_BTC",
+        "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
+    },
+    api_key, api_secret, host
+)
+```
+```javascript JavaScript
+coboFetch('GET', '/v1/custody/mpc/babylon/list_waiting_broadcast_transactions/', {
+    "asset_coin": "SIGNET_BTC",
+    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+```
+```go Go
+Request("GET", "/v1/custody/mpc/babylon/get_staking_info/", map[string]string{
+    "asset_coin": "SIGNET_BTC",
+    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
+})
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "success": true,
+  "result": [{
+    "request_id": "1717134063431",
+    "cobo_id": "20240531134105000300692000007801",
+    "staking_info": "{\"asset_coin\": \"SIGNET_BTC\", \"stake_address\": \"tb1pufc6zv4wquhcshgr4lay4lqa6vua3m435hqmml9w74ycxxnv329qdl6cq2\", \"amount\": 50000, \"stake_block_time\": 64000, \"finality_provider\": \"88b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384\"}",
+    "status": 200,
+    "fee_rate": "100.00000000",
+    "max_staking_fee": 50000
+  }]
+}
+
+```
+</ResponseExample>

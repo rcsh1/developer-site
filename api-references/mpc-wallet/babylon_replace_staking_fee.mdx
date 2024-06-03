@@ -1,0 +1,66 @@
+---
+title: Babylon Replace Staking Fee
+api: POST /v1/custody/mpc/babylon/replace_staking_fee/
+contentType: multipart/form-data
+description: "This endpoint specify the pre-signed staking transaction, create a new transaction to replace the corresponding transaction, accepting parameters such as `request_id`, `related_request_id`, `fee_rate`, and `max_staking_fee`."
+---
+
+#### Request
+<ParamField body="request_id" type="String" required>transaction ID (unique identifier of a transaction request, which must correspond to a client's transaction; UUID should be used and the length should be equal to or less than 120 characters)</ParamField>
+<ParamField body="related_request_id" type="String" required>request ID of the transaction to be replaced</ParamField>
+<ParamField body="fee_rate" type="Float" required>transaction fees per byte</ParamField>
+<ParamField body="max_staking_fee" type="Int" >maximum fee for constructing the transaction. If the actual fee exceeds this limit, the creation will fail. The default is None.</ParamField>
+
+
+#### Response
+<ResponseField name="success" type="bool">request successful or failed</ResponseField>
+<ResponseField name="result" type="String">""</ResponseField>
+
+<RequestExample>
+```python Python
+request(
+    "POST",
+    "/v1/custody/mpc/babylon/replace_staking_fee/",
+    {
+        "request_id": "1717059604245",
+        "related_request_id": "1717059601673",
+        "fee_rate": 9.5,
+        "max_staking_fee": 2000
+    },
+    api_key, api_secret, host
+)
+```
+```javascript JavaScript
+coboFetch('POST', '/v1/custody/mpc/babylon/replace_staking_fee/', {
+    "request_id": "1717059604245",
+    "related_request_id": "1717059601673",
+    "fee_rate": 9.5,
+    "max_staking_fee": 2000
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+```
+```go Go
+Request("POST", "/v1/custody/mpc/babylon/replace_staking_fee/", map[string]string{
+    "request_id": "1717059604245",
+    "related_request_id": "1717059601673",
+    "fee_rate": 9.5,
+    "max_staking_fee": 2000
+})
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "success": true,
+  "result": ""
+}
+
+```
+</ResponseExample>

@@ -1,0 +1,76 @@
+---
+title: Babylon Prepare Staking
+api: POST /v1/custody/mpc/babylon/prepare_staking/
+contentType: multipart/form-data
+description: "This endpoint is used to create a pre-signed staking transaction, accepting parameters such as `request_id`, `stake_info`, `fee_rate`, and `max_staking_fee`. Please note that a successfully created staking transaction will not be broadcast automatically; you need to call the `babylon/broadcast_staking_transaction` endpoint to broadcast it."
+---
+
+#### Request
+<ParamField body="request_id" type="String" required>transaction request ID (unique identifier of a transaction request, which must correspond to a client's transaction; UUID should be used and the length should be equal to or less than 120 characters)</ParamField>
+<ParamField body="stake_info" type="String" required>
+detailed information for constructing a staking transaction in JSON format
+  - asset_coin: string, code of the staking token
+  - stake_address: string, staking address
+  - amount: int, staking amount
+  - stake_block_time: int, number of staking blocks, which starts counting after the transaction is on the chain
+  - finality_provider: string, pubkey hex of the provider to be used for staking. The default is None, which uses the provider pubkey hex managed by Cobo
+```python Sample
+'{"asset_coin": "SIGNET_BTC", "stake_address": "tb1pg4n40etj6qf8c7zj0lzfswaey58f30ps4d9fnezwj5m7fc62w2pqgp0fxm", "amount": 50000, "stake_block_time": 64000, "finality_provider": "88b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384"}'
+```
+</ParamField>
+<ParamField body="fee_rate" type="Float" required>transaction fees per byte</ParamField>
+<ParamField body="max_staking_fee" type="Int" >maximum fee for constructing the transaction. If the actual fee exceeds this limit, the creation will fail. The default is None.</ParamField>
+
+
+#### Response
+<ResponseField name="success" type="bool">request successful or failed</ResponseField>
+<ResponseField name="result" type="String">""</ResponseField>
+
+<RequestExample>
+```python Python
+request(
+    "POST",
+    "/v1/custody/mpc/babylon/prepare_staking/",
+    {
+        "request_id": "1717059604245",
+        "stake_info": '{"asset_coin": "SIGNET_BTC", "stake_address": "tb1pg4n40etj6qf8c7zj0lzfswaey58f30ps4d9fnezwj5m7fc62w2pqgp0fxm", "amount": 50000, "stake_block_time": 64000, "finality_provider": "88b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384"}',
+        "fee_rate": 7.5,
+        "max_staking_fee": 2000
+    },
+    api_key, api_secret, host
+)
+```
+```javascript JavaScript
+coboFetch('POST', '/v1/custody/mpc/babylon/prepare_staking/', {
+    "request_id": "1717059604245",
+    "stake_info": '{"asset_coin": "SIGNET_BTC", "stake_address": "tb1pg4n40etj6qf8c7zj0lzfswaey58f30ps4d9fnezwj5m7fc62w2pqgp0fxm", "amount": 50000, "stake_block_time": 64000, "finality_provider": "88b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384"}',
+    "fee_rate": 7.5,
+    "max_staking_fee": 2000
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+```
+```go Go
+Request("POST", "/v1/custody/mpc/babylon/prepare_staking/", map[string]string{
+    "request_id": "1717059604245",
+    "stake_info": '{"asset_coin": "SIGNET_BTC", "stake_address": "tb1pg4n40etj6qf8c7zj0lzfswaey58f30ps4d9fnezwj5m7fc62w2pqgp0fxm", "amount": 50000, "stake_block_time": 64000, "finality_provider": "88b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384"}',
+    "fee_rate": 7.5,
+    "max_staking_fee": 2000
+})
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "success": true,
+  "result": ""
+}
+
+```
+</ResponseExample>
