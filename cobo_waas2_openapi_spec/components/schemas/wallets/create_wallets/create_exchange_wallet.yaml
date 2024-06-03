@@ -2,26 +2,10 @@ allOf:
   - $ref: './base_create_wallet.yaml'
   - type: object
     required:
-      - wallet_type
-      - wallet_subtype
       - exchange_id
       - apikey
       - secret
     properties:
-      wallet_type:
-        type: string
-        enum:
-          - Exchange
-        description: The wallet type. Possible value includes `Exchange`, which indicates the Exchange Wallets.
-      wallet_subtype:
-        type: string
-        enum:
-          - Main
-          - Sub
-        description: |
-          The wallet subtype. Possible values include:
-            - `Main`: Main Account
-            - `Sub`: Sub Account
       exchange_id:
         $ref: '../exchanges/exchange_id.yaml'
       apikey:
