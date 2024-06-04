@@ -824,7 +824,13 @@ paths:
         - $ref: '#/components/parameters/optionalTargetKeyGroupIdParam'
       responses:
         '200':
-          $ref: '#/components/responses/getTssRequestResponse'
+          description: get mpc tss request successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TSSRequest'
         '400':
           $ref: '#/components/responses/badRequestError'
         '404':
