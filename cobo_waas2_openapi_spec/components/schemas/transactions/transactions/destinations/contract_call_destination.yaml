@@ -1,0 +1,26 @@
+type: object
+description: The data for transaction destination information.
+required:
+  - destination_type
+  - address_str
+  - value
+  - calldata
+properties:
+  destination_type:
+    $ref: './destination_type.yaml'
+  address_str:
+    type: string
+    description: Destination address
+    example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+  value:
+    type: string
+    description: >
+      Transaction value (Note that this is an absolute value.
+      If you trade 1.5 ETH, then the value is 1.5)
+    example: '1.5'
+  calldata:
+    type: string
+    description: |
+      calldata for this transaction. Commonly used as part of contract interaction.
+    format: byte
+    example: U3dhZ2dlciByb2Nrcw==

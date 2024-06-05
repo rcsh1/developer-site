@@ -328,7 +328,7 @@ components:
       $ref: "./components/schemas/transactions/fees/transaction_fee_legacy.yaml"
     UtxoTransactionFee:
       $ref: "./components/schemas/transactions/fees/transaction_fee_utxo.yaml"
-    TransactionFee:
+    TransactionTransferFee:
       $ref: "./components/schemas/transactions/fees/transaction_fee.yaml"
 
     # transactions
@@ -336,8 +336,8 @@ components:
       $ref: "./components/schemas/transactions/transactions/transaction.yaml"
     TransactionApprover:
       $ref: "./components/schemas/transactions/transactions/transaction_approver.yaml"
-    TransactionToken:
-      $ref: "./components/schemas/transactions/transactions/transaction_token.yaml"
+    TransactionTokenAmount:
+      $ref: "./components/schemas/transactions/transactions/transaction_amount.yaml"
     TransactionCategory:
       $ref: "./components/schemas/transactions/transactions/transaction_category.yaml"
     TransactionDetails:
@@ -359,17 +359,43 @@ components:
     MpcSigningGroup:
       $ref: "./components/schemas/transactions/mpc_signing_group.yaml"
     TransactionAddressType:
-      $ref: "./components/schemas/transactions/transactions/addresses/transaction_address_type.yaml"
-    BaseTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/base_transaction_address.yaml"
-    SafeTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/safe_transaction_address.yaml"
-    BaseWalletTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/base_wallet_transaction_address.yaml"
-    MPCWalletTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/mpc_wallet_transaction_address.yaml"
-    ExchangeWalletTransactionAddress:
-      $ref: "./components/schemas/transactions/transactions/addresses/exchange_wallet_transaction_address.yaml"
+      $ref: "./components/schemas/transactions/transactions/transaction_address_type.yaml"
+    TransactionAddressSource:
+      $ref: "./components/schemas/transactions/transactions/sources/address_source.yaml"
+    TransactionGasStationSource:
+      $ref: "./components/schemas/transactions/transactions/sources/base_wallet_source.yaml"
+    TransactionCustodialWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/base_wallet_source.yaml"
+    TransactionMPCWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/mpc_wallet_source.yaml"
+    TransactionSafeWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/smart_contract_wallet_source.yaml"
+    TransactionExchangeWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/exchange_wallet_source.yaml"
+    TransactionAddressDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/address_destination.yaml"
+    TransactionContractCallDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/contract_call_destination.yaml"
+    TransactionMessageSignDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/sign_message_destination.yaml"
+    TransactionCustodialWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/base_wallet_destination.yaml"
+    TransactionMPCWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/base_wallet_destination.yaml"
+    TransactionSafeWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/base_wallet_destination.yaml"
+    TransactionExchangeWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/exchange_wallet_destination.yaml"
+    TransactionFixedFee:
+      $ref: "./components/schemas/transactions/transactions/fees/fee_fixed.yaml"
+    TransactionEvmEip1559TransactionFee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_eip1559.yaml"
+    TransactionEvmLegacyTransactionFee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_legacy.yaml"
+    TransactionUtxoTransactionFee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_utxo.yaml"
+    TransactionFee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee.yaml"
 
     # transfers
     BaseTransferSource:

@@ -2,10 +2,9 @@ type: object
 description: The data for transaction information.
 required:
   - transaction_id
-  - wallet_id
-  - cobo_id
+  - transaction_type
   - status
-  - type
+  - chain_id
   - source
   - destination
   - created_time
@@ -16,56 +15,40 @@ properties:
     description: Unique transaction ID
     format: uuid
     example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
-  wallet_id:
+  cobo_id:
     type: string
-    description: Wallet ID
-    example: "624ce4e5-e985-4394-a196-fd7752aff96e"
+    description: Cobo ID
+    example: '20231213122855000000000000000000'
   request_id:
     type: string
     description: Request ID
     example: "web_send_by_user_327_1610444045047"
-  cobo_id:
-    type: string
-    description: Cobo ID
-    example: "20231213122855000000000000000000"
-  initiator:
-    type: string
-    description: Transaction initiator
-    example: "API Prod Key #1"
-  transaction_hash:
-    type: string
-    description: Transaction hash.
-    example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+  transaction_type:
+    $ref: './transaction_type.yaml'
   status:
     $ref: './transaction_status.yaml'
   sub_status:
     $ref: './transaction_sub_status.yaml'
-  type:
-    $ref: './transaction_type.yaml'
-  source:
-    $ref: './transaction_source.yaml'
-  destination:
-    $ref: './transaction_destination.yaml'
+  failed_reason:
+    type: string
+    example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
     description: The blockchain on which the token operates.
     pattern: ^[A-Z]+$
     example: 'ETH'
-  exchange_id:
-    $ref: '../../../schemas/wallets/exchanges/exchange_id.yaml'
-  tokens:
-    type: array
-    items:
-      $ref: './transaction_token.yaml'
+  source:
+    $ref: './sources/transaction_source.yaml'
+  destination:
+    $ref: './destinations/transaction_destination.yaml'
   fee:
-    $ref: '../fees/transaction_fee.yaml'
-  category:
-    type: array
-    items:
-      $ref: './transaction_category.yaml'
-  description:
+    $ref: './fees/transaction_fee.yaml'
+  initiator:
     type: string
-    example: "withdrawal to exchange trading account"
+    description: Transaction initiator, apikey or operator
+    example: "API Prod Key #1"
+  initiator_type:
+    $ref: './transaction_initiator_type.yaml'
   confirmed_num:
     type: number
     description: Transaction confirmed number
@@ -75,6 +58,52 @@ properties:
     format: int32
     description: Number of confirmations required for a transaction, such as 15 for ETH chain.
     example: 15
+  block_number:
+    type: integer
+    description: Block number
+    example: 123
+  block_hash:
+    type: string
+    description: Block hash
+    example: "0xc9ee947f8bb6027c161888bf0d004bec05e7c2beec7e6b187dc512174e438735"
+  nonce:
+    type: integer
+    description: Transaction nonce
+    example: 9
+  transaction_hash:
+    type: string
+    description: Transaction hash.
+    example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+  replacement:
+    type: object
+    properties:
+      type:
+        $ref: './transaction_replacement_type.yaml'
+      replaced_by_transaction_id:
+        type: string
+        description: Replace by transaction ID
+        format: uuid
+        example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
+      replaced_by_transaction_hash:
+        type: string
+        description: Replace by transaction hash
+        example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+      replaced_transaction_id:
+        type: string
+        description: Replace by transaction ID
+        format: uuid
+        example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
+      replaced_transaction_hash:
+        type: string
+        description: Replace by transaction hash
+        example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+  category:
+    type: array
+    items:
+      $ref: './transaction_category.yaml'
+  description:
+    type: string
+    example: "withdrawal to exchange trading account"
   created_time:
     type: number
     description: Transaction creation time

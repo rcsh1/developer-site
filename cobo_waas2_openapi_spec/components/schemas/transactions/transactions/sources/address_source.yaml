@@ -1,0 +1,24 @@
+type: object
+description: The data for transaction source information.
+required:
+  - source_type
+properties:
+  source_type:
+    $ref: './source_type.yaml'
+  account_input:
+    type: object
+    properties:
+      address_str:
+        type: string
+        description: From address
+        example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+  utxo_inputs:
+    type: array
+    items:
+      type: object
+      properties:
+        # todo: vout
+        tx_hash:
+          type: string
+          description: UTXO tx hash to include
+          example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"
