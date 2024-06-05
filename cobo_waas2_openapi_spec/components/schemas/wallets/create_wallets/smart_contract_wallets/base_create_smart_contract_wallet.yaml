@@ -1,21 +1,9 @@
 allOf:
-  - $ref: '../base_create_wallet.yaml'
+  - $ref: '../create_custodial_wallet.yaml'
   - type: object
     required:
-      - wallet_type
-      - wallet_subtype
       - chain_id
     properties:
-      wallet_type:
-        type: string
-        enum:
-          - SmartContract
-        description: The Smart Contract Wallet type.
-      wallet_subtype:
-        type: string
-        enum:
-          - Safe{Wallet}
-        description: The Smart Contract Wallet subtype.
       label:
         type: string
         description: The wallet label.
