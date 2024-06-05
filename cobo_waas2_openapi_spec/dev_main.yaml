@@ -392,6 +392,10 @@ components:
       $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_utxo.yaml"
     TransactionFee:
       $ref: "./components/schemas/transactions/transactions/fees/transaction_fee.yaml"
+    TransactionRbf:
+      $ref: "./components/schemas/transactions/rbf.yaml"
+    TransactionResend:
+      $ref: "./components/schemas/transactions/resend.yaml"
 
     # transfers
     BaseTransferSource:
@@ -602,6 +606,8 @@ components:
       $ref: "./components/request_bodies/transactions/estimate_fee.yaml"
     feeRequestBody:
       $ref: "./components/request_bodies/transactions/fee_request.yaml"
+    resendTransactionBody:
+      $ref: "./components/request_bodies/transactions/resend_request.yaml"
 
   responses:
     # misc
