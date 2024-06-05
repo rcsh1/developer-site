@@ -2352,7 +2352,7 @@ components:
               SafeWallet: '#/components/schemas/TransactionBaseWalletDestination'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletDestination'
         fee:
-          $ref: '#/components/schemas/TransactionFixedFee'
+          $ref: '#/components/schemas/TransactionFee'
         initiator:
           type: string
           description: 'Transaction initiator, apikey or operator'
@@ -2985,6 +2985,25 @@ components:
           description: |
             Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
           example: '1.5'
+    TransactionFixedFee:
+      type: object
+      description: The estimated transaction fee in fee_coin.
+      required:
+        - fee_type
+      allOf:
+        - type: object
+          properties:
+            fee_type:
+              $ref: '#/components/schemas/FeeType'
+            fee_token_id:
+              type: string
+              description: The token ID of the transaction fee.
+              example: ETH_USDT
+            fee_used:
+              type: string
+              description: The fee amount in fee_coin.
+              example: '0.1'
+        - $ref: '#/components/schemas/FeeAmount'
     TransactionEvmEip1559Fee:
       type: object
       description: |
@@ -3044,29 +3063,12 @@ components:
               example: '0.1'
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
-    TransactionFixedFee:
+    TransactionFee:
       oneOf:
         - $ref: '#/components/schemas/TransactionEvmEip1559Fee'
         - $ref: '#/components/schemas/TransactionEvmLegacyFee'
         - $ref: '#/components/schemas/TransactionUtxoFee'
-        - type: object
-          description: The estimated transaction fee in fee_coin.
-          required:
-            - fee_type
-          allOf:
-            - type: object
-              properties:
-                fee_type:
-                  $ref: '#/components/schemas/FeeType'
-                fee_token_id:
-                  type: string
-                  description: The token ID of the transaction fee.
-                  example: ETH_USDT
-                fee_used:
-                  type: string
-                  description: The fee amount in fee_coin.
-                  example: '0.1'
-            - $ref: '#/components/schemas/FeeAmount'
+        - $ref: '#/components/schemas/TransactionFixedFee'
       discriminator:
         propertyName: fee_type
         mapping:
