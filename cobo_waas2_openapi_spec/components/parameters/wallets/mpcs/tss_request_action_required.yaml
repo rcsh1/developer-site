@@ -3,9 +3,4 @@ in: query
 description: The action of tss request.
 required: true
 schema:
-  type: string
-  description: the action of tss request.
-  enum: [
-    "cancel",
-  ]
-  example: "cancel"
+  $ref: "../../../schemas/wallets/mpcs/tss_request_action.yaml"
