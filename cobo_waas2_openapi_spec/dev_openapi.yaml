@@ -2274,10 +2274,10 @@ components:
       discriminator:
         propertyName: fee_type
         mapping:
-          EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionTransferFee'
-          EVM_Legacy: '#/components/schemas/EvmLegacyTransactionTransferFee'
-          UTXO: '#/components/schemas/UtxoTransactionTransferFee'
-          Fixed: '#/components/schemas/FixedTransactionTransferFee'
+          EVM_EIP_1559: '#/components/schemas/EvmEip1559TransactionFee'
+          EVM_Legacy: '#/components/schemas/EvmLegacyTransactionFee'
+          UTXO: '#/components/schemas/UtxoTransactionFee'
+          Fixed: '#/components/schemas/FixedFee'
     Transaction:
       type: object
       description: The data for transaction information.
@@ -2332,7 +2332,7 @@ components:
               GasStation: '#/components/schemas/TransactionBaseWalletSource'
               CustodialWallet: '#/components/schemas/TransactionBaseWalletSource'
               MPCWallet: '#/components/schemas/TransactionMPCWalletSource'
-              SafeWallet: '#/components/schemas/TransactionSmartContractWalletSource'
+              SafeWallet: '#/components/schemas/TransactionSafeWalletSource'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletSource'
         destination:
           oneOf:
