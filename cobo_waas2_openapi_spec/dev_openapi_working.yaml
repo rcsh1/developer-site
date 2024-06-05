@@ -851,7 +851,7 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
-        - $ref: '#/components/parameters/optionalTargetKeyGroupIdParam'
+        - $ref: '#/components/parameters/requiredTargetKeyGroupIdParam'
       responses:
         '200':
           description: get mpc tss request successfully
@@ -2250,6 +2250,12 @@ components:
         - Recovery
       example: KeyGen
       description: 'The type of tss request, keygen is key generation'
+    TSSRequestAction:
+      type: string
+      description: the action of tss request.
+      enum:
+        - cancel
+      example: cancel
     FeeType:
       type: string
       enum:
@@ -4205,11 +4211,11 @@ components:
         type: string
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    optionalTargetKeyGroupIdParam:
+    requiredTargetKeyGroupIdParam:
       name: target_key_group_id
       in: query
       description: The target key group id of tss request.
-      required: false
+      required: true
       schema:
         type: string
       example: '880311524363903326'
@@ -4219,11 +4225,7 @@ components:
       description: The action of tss request.
       required: true
       schema:
-        type: string
-        description: the action of tss request.
-        enum:
-          - cancel
-        example: cancel
+        $ref: '#/components/schemas/TSSRequestAction'
     tssRequestIdParam:
       name: tss_request_id
       in: path
