@@ -3243,7 +3243,7 @@ components:
               description: The fee amount in fee_coin.
               example: '0.1'
         - $ref: '#/components/schemas/FeeAmount'
-    TransactionEvmEip1559TransactionFee:
+    TransactionEvmEip1559Fee:
       type: object
       description: |
         The transaction fee when using the EIP 1559 method. The estimated fee is calculated by multiplying the max fee by the gas limit: (max fee * gas limit).
@@ -3264,7 +3264,7 @@ components:
               example: '100000000'
         - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
-    TransactionEvmLegacyTransactionFee:
+    TransactionEvmLegacyFee:
       type: object
       description: |
         The transaction fee when using the legacy method. The estimated fee is calculated by multiplying the gas price by the gas limit: (gas price * gas limit).
@@ -3285,7 +3285,7 @@ components:
               example: '100000000'
         - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
-    TransactionUtxoTransactionFee:
+    TransactionUtxoFee:
       type: object
       description: |
         The transaction fee for UTXO-based chains. The estimated fee is calculated by multiplying the fee rate by the transaction size: (fee rate * transaction size).
@@ -3304,9 +3304,9 @@ components:
         - $ref: '#/components/schemas/FeeAmount'
     TransactionFee:
       oneOf:
-        - $ref: '#/components/schemas/TransactionEvmEip1559TransactionFee'
-        - $ref: '#/components/schemas/TransactionEvmLegacyTransactionFee'
-        - $ref: '#/components/schemas/TransactionUtxoTransactionFee'
+        - $ref: '#/components/schemas/TransactionEvmEip1559Fee'
+        - $ref: '#/components/schemas/TransactionEvmLegacyFee'
+        - $ref: '#/components/schemas/TransactionUtxoFee'
         - $ref: '#/components/schemas/TransactionFixedFee'
       discriminator:
         propertyName: fee_type
