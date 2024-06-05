@@ -77,6 +77,8 @@ properties:
   replacement:
     type: object
     properties:
+      type:
+        $ref: './transaction_replacement_type.yaml'
       replaced_by_transaction_id:
         type: string
         description: Replace by transaction ID
