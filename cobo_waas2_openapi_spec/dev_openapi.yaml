@@ -2321,7 +2321,7 @@ components:
         source:
           oneOf:
             - $ref: '#/components/schemas/TransactionAddressSource'
-            - $ref: '#/components/schemas/TransactionGasStationSource'
+            - $ref: '#/components/schemas/TransactionBaseWalletSource'
             - $ref: '#/components/schemas/TransactionMPCWalletSource'
             - $ref: '#/components/schemas/TransactionSafeWalletSource'
             - $ref: '#/components/schemas/TransactionExchangeWalletSource'
@@ -2339,7 +2339,7 @@ components:
             - $ref: '#/components/schemas/TransactionAddressDestination'
             - $ref: '#/components/schemas/TransactionContractCallDestination'
             - $ref: '#/components/schemas/TransactionMessageSignDestination'
-            - $ref: '#/components/schemas/TransactionMPCWalletDestination'
+            - $ref: '#/components/schemas/TransactionBaseWalletDestination'
             - $ref: '#/components/schemas/TransactionExchangeWalletDestination'
           discriminator:
             propertyName: destination_type
@@ -2352,7 +2352,7 @@ components:
               SafeWallet: '#/components/schemas/TransactionBaseWalletDestination'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletDestination'
         fee:
-          $ref: '#/components/schemas/TransactionFee'
+          $ref: '#/components/schemas/TransactionFixedFee'
         initiator:
           type: string
           description: 'Transaction initiator, apikey or operator'
@@ -2688,7 +2688,7 @@ components:
                 type: string
                 description: UTXO tx hash to include
                 example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
-    TransactionGasStationSource:
+    TransactionBaseWalletSource:
       type: object
       description: The data for transaction source information.
       required:
@@ -2702,8 +2702,6 @@ components:
           description: Unique id of the wallet to transfer from.
           format: uuid
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    TransactionCustodialWalletSource:
-      $ref: '#/components/schemas/TransactionGasStationSource'
     TransactionMPCWalletSource:
       type: object
       description: The data for transaction source information.
@@ -2904,9 +2902,7 @@ components:
           description: 'Structured data to be signed, JSON encoded'
           example: |
             {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
-    TransactionCustodialWalletDestination:
-      $ref: '#/components/schemas/TransactionMPCWalletDestination'
-    TransactionMPCWalletDestination:
+    TransactionBaseWalletDestination:
       type: object
       description: The data for transaction destination information.
       required:
@@ -2944,8 +2940,6 @@ components:
           description: |
             Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
           example: '1.5'
-    TransactionSafeWalletDestination:
-      $ref: '#/components/schemas/TransactionMPCWalletDestination'
     TransactionExchangeWalletDestination:
       type: object
       description: The data for transaction destination information.
@@ -2991,26 +2985,7 @@ components:
           description: |
             Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
           example: '1.5'
-    TransactionFixedFee:
-      type: object
-      description: The estimated transaction fee in fee_coin.
-      required:
-        - fee_type
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            fee_token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH_USDT
-            fee_used:
-              type: string
-              description: The fee amount in fee_coin.
-              example: '0.1'
-        - $ref: '#/components/schemas/FeeAmount'
-    TransactionEvmEip1559TransactionFee:
+    TransactionEvmEip1559Fee:
       type: object
       description: |
         The transaction fee when using the EIP 1559 method. The estimated fee is calculated by multiplying the max fee by the gas limit: (max fee * gas limit).
@@ -3031,7 +3006,7 @@ components:
               example: '100000000'
         - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
-    TransactionEvmLegacyTransactionFee:
+    TransactionEvmLegacyFee:
       type: object
       description: |
         The transaction fee when using the legacy method. The estimated fee is calculated by multiplying the gas price by the gas limit: (gas price * gas limit).
@@ -3052,7 +3027,7 @@ components:
               example: '100000000'
         - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
-    TransactionUtxoTransactionFee:
+    TransactionUtxoFee:
       type: object
       description: |
         The transaction fee for UTXO-based chains. The estimated fee is calculated by multiplying the fee rate by the transaction size: (fee rate * transaction size).
@@ -3069,12 +3044,29 @@ components:
               example: '0.1'
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
-    TransactionFee:
+    TransactionFixedFee:
       oneOf:
-        - $ref: '#/components/schemas/TransactionEvmEip1559TransactionFee'
-        - $ref: '#/components/schemas/TransactionEvmLegacyTransactionFee'
-        - $ref: '#/components/schemas/TransactionUtxoTransactionFee'
-        - $ref: '#/components/schemas/TransactionFixedFee'
+        - $ref: '#/components/schemas/TransactionEvmEip1559Fee'
+        - $ref: '#/components/schemas/TransactionEvmLegacyFee'
+        - $ref: '#/components/schemas/TransactionUtxoFee'
+        - type: object
+          description: The estimated transaction fee in fee_coin.
+          required:
+            - fee_type
+          allOf:
+            - type: object
+              properties:
+                fee_type:
+                  $ref: '#/components/schemas/FeeType'
+                fee_token_id:
+                  type: string
+                  description: The token ID of the transaction fee.
+                  example: ETH_USDT
+                fee_used:
+                  type: string
+                  description: The fee amount in fee_coin.
+                  example: '0.1'
+            - $ref: '#/components/schemas/FeeAmount'
       discriminator:
         propertyName: fee_type
         mapping:

@@ -382,15 +382,13 @@ components:
       $ref: "./components/schemas/transactions/transactions/destinations/base_wallet_destination.yaml"
     TransactionExchangeWalletDestination:
       $ref: "./components/schemas/transactions/transactions/destinations/exchange_wallet_destination.yaml"
-    TransactionFixedFee:
-      $ref: "./components/schemas/transactions/transactions/fees/fee_fixed.yaml"
-    TransactionEvmEip1559TransactionFee:
+    TransactionEvmEip1559Fee:
       $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_eip1559.yaml"
-    TransactionEvmLegacyTransactionFee:
+    TransactionEvmLegacyFee:
       $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_legacy.yaml"
-    TransactionUtxoTransactionFee:
+    TransactionUtxoFee:
       $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_utxo.yaml"
-    TransactionFee:
+    TransactionFixedFee:
       $ref: "./components/schemas/transactions/transactions/fees/transaction_fee.yaml"
 
     # transfers

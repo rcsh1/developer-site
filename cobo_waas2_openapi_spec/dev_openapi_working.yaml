@@ -2591,7 +2591,7 @@ components:
               SafeWallet: '#/components/schemas/TransactionBaseWalletDestination'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletDestination'
         fee:
-          $ref: '#/components/schemas/TransactionFee'
+          $ref: '#/components/schemas/TransactionFixedFee'
         initiator:
           type: string
           description: 'Transaction initiator, apikey or operator'
@@ -3224,26 +3224,7 @@ components:
           description: |
             Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
           example: '1.5'
-    TransactionFixedFee:
-      type: object
-      description: The estimated transaction fee in fee_coin.
-      required:
-        - fee_type
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            fee_token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH_USDT
-            fee_used:
-              type: string
-              description: The fee amount in fee_coin.
-              example: '0.1'
-        - $ref: '#/components/schemas/FeeAmount'
-    TransactionEvmEip1559TransactionFee:
+    TransactionEvmEip1559Fee:
       type: object
       description: |
         The transaction fee when using the EIP 1559 method. The estimated fee is calculated by multiplying the max fee by the gas limit: (max fee * gas limit).
@@ -3264,7 +3245,7 @@ components:
               example: '100000000'
         - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
-    TransactionEvmLegacyTransactionFee:
+    TransactionEvmLegacyFee:
       type: object
       description: |
         The transaction fee when using the legacy method. The estimated fee is calculated by multiplying the gas price by the gas limit: (gas price * gas limit).
@@ -3285,7 +3266,7 @@ components:
               example: '100000000'
         - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
-    TransactionUtxoTransactionFee:
+    TransactionUtxoFee:
       type: object
       description: |
         The transaction fee for UTXO-based chains. The estimated fee is calculated by multiplying the fee rate by the transaction size: (fee rate * transaction size).
@@ -3302,12 +3283,29 @@ components:
               example: '0.1'
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
-    TransactionFee:
+    TransactionFixedFee:
       oneOf:
-        - $ref: '#/components/schemas/TransactionEvmEip1559TransactionFee'
-        - $ref: '#/components/schemas/TransactionEvmLegacyTransactionFee'
-        - $ref: '#/components/schemas/TransactionUtxoTransactionFee'
-        - $ref: '#/components/schemas/TransactionFixedFee'
+        - $ref: '#/components/schemas/TransactionEvmEip1559Fee'
+        - $ref: '#/components/schemas/TransactionEvmLegacyFee'
+        - $ref: '#/components/schemas/TransactionUtxoFee'
+        - type: object
+          description: The estimated transaction fee in fee_coin.
+          required:
+            - fee_type
+          allOf:
+            - type: object
+              properties:
+                fee_type:
+                  $ref: '#/components/schemas/FeeType'
+                fee_token_id:
+                  type: string
+                  description: The token ID of the transaction fee.
+                  example: ETH_USDT
+                fee_used:
+                  type: string
+                  description: The fee amount in fee_coin.
+                  example: '0.1'
+            - $ref: '#/components/schemas/FeeAmount'
       discriminator:
         propertyName: fee_type
         mapping:
