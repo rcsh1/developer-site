@@ -1030,6 +1030,8 @@ paths:
       description: Resend a transaction.
       security:
         - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/resendTransactionBody'
       responses:
         '201':
           $ref: '#/components/responses/createTransactionRequestResponse'
@@ -3076,6 +3078,28 @@ components:
           EVM_Legacy: '#/components/schemas/TransactionEvmLegacyFee'
           UTXO: '#/components/schemas/TransactionUtxoFee'
           Fixed: '#/components/schemas/TransactionFixedFee'
+    TransactionRbf:
+      type: object
+      description: The base data for drop or speedup transaction.
+      required:
+        - request_id
+      properties:
+        request_id:
+          type: string
+          description: Unique id of the request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        fee:
+          $ref: '#/components/schemas/TransactionTransferFee'
+    TransactionResend:
+      type: object
+      description: The base data for drop or speedup transaction.
+      required:
+        - request_id
+      properties:
+        request_id:
+          type: string
+          description: Unique id of the request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     BaseTransferSource:
       type: object
       description: The base data for transfer source.
@@ -4424,7 +4448,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TransactionTransferFee'
+            $ref: '#/components/schemas/TransactionRbf'
+    resendTransactionBody:
+      description: The request body of fee to initiate transaction
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionResend'
   responses:
     badRequestError:
       description: Bad request. Your request contains malformed syntax or invalid parameters.
