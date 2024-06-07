@@ -1537,14 +1537,22 @@ components:
           type: string
           description: The blockchain on which the token operates.
           example: ETH
+        asset_id:
+          type: string
+          description: 'The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.'
+          example: USDT
         symbol:
           type: string
           description: The token symbol.
           example: USDT
-        description:
+        name:
           type: string
-          description: The token description.
+          description: The token name.
           example: Tether USDT
+        decimal:
+          type: integer
+          description: The token decimal.
+          example: 18
         icon_url:
           type: string
           description: The URL of the token icon.
@@ -1553,10 +1561,18 @@ components:
           type: string
           description: 'The token address, if applicable.'
           example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
-        asset_id:
+        fee_token_id:
           type: string
-          description: 'The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.'
-          example: USDT
+          description: The fee token ID.
+          example: ETH
+        can_deposit:
+          type: boolean
+          description: Indicates if deposits are enabled for this token.
+          example: true
+        can_withdraw:
+          type: boolean
+          description: Indicates if withdrawals are enabled for this token.
+          example: true
     ChainInfo:
       type: object
       description: The chain information.
@@ -1583,6 +1599,10 @@ components:
           type: string
           description: The address URL pattern on the blockchain explorer. You can use it to concatenate the address URLs.
           example: 'https://etherscan.io/address/{address}'
+        require_memo:
+          type: boolean
+          description: Whether the chain require memo.
+          example: false
     WalletType:
       type: string
       enum:
@@ -2602,6 +2622,7 @@ components:
           $ref: '#/components/schemas/TransactionInitiatorType'
         confirmed_num:
           type: number
+          format: int32
           description: Transaction confirmed number
           example: 12
         confirming_threshold:
@@ -2611,8 +2632,14 @@ components:
           example: 15
         block_number:
           type: integer
+          format: int64
           description: Block number
           example: 123
+        block_time:
+          type: integer
+          format: int64
+          description: Block time
+          example: 1717740319
         block_hash:
           type: string
           description: Block hash
@@ -2662,12 +2689,26 @@ components:
         description:
           type: string
           example: withdrawal to exchange trading account
+        force_internal:
+          type: boolean
+          description: Whether the transfer request to be executed as a loop transfer.
+          example: false
+        force_external:
+          type: boolean
+          description: Whether the transfer request to be executed as a onchain transfer.
+          example: false
+        is_loop:
+          type: boolean
+          description: Whether the transfer is a loop transfer.
+          example: false
         created_time:
           type: number
+          format: int64
           description: Transaction creation time
           example: 1610445878970
         updated_time:
           type: number
+          format: int64
           description: Transaction update time
           example: 1610445878970
     TransactionApprover:
@@ -3591,6 +3632,14 @@ components:
           example: Transfer from wallet
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
+        force_internal:
+          type: boolean
+          description: Whether the transfer to be executed as a loop transfer.
+          example: false
+        force_external:
+          type: boolean
+          description: Whether the transfer to be executed as a onchain transfer.
+          example: false
     SignMessage:
       type: object
       description: The data for create a message-signing transaction.

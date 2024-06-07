@@ -12,14 +12,22 @@ properties:
     type: string
     description: The blockchain on which the token operates.
     example: 'ETH'
+  asset_id:
+    type: string
+    description: The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.
+    example: 'USDT'
   symbol:
     type: string
     description: The token symbol.
     example: "USDT"
-  description:
+  name:
     type: string
-    description: The token description.
+    description: The token name.
     example: 'Tether USDT'
+  decimal:
+    type: integer
+    description: The token decimal.
+    example: 18
   icon_url:
     type: string
     description: The URL of the token icon.
@@ -28,7 +36,15 @@ properties:
     type: string
     description: The token address, if applicable.
     example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
-  asset_id:
+  fee_token_id:
     type: string
-    description: The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.
-    example: 'USDT'
+    description: The fee token ID.
+    example: 'ETH'
+  can_deposit:
+    type: boolean
+    description: Indicates if deposits are enabled for this token.
+    example: true
+  can_withdraw:
+    type: boolean
+    description: Indicates if withdrawals are enabled for this token.
+    example: true
