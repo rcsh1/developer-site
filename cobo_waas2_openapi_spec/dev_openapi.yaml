@@ -2306,7 +2306,7 @@ components:
           type: string
           description: Request ID
           example: web_send_by_user_327_1610444045047
-        transaction_type:
+        type:
           $ref: '#/components/schemas/TransactionType'
         status:
           $ref: '#/components/schemas/TransactionStatus'
@@ -2657,6 +2657,17 @@ components:
         - ExternalAddress
       example: CustodialAssetWallet
       description: Enumeration representing the address type of a transaction.
+    TransactionSourceType:
+      type: string
+      enum:
+        - Address
+        - CustodialWallet
+        - MPCWallet
+        - SafeWallet
+        - ExchangeWallet
+        - GasStation
+      example: ExternalAddress
+      description: Enumeration representing the source type of a transaction.
     TransactionAddressSource:
       type: object
       description: The data for transaction source information.
@@ -2664,16 +2675,7 @@ components:
         - source_type
       properties:
         source_type:
-          type: string
-          enum:
-            - Address
-            - CustodialWallet
-            - MPCWallet
-            - SafeWallet
-            - ExchangeWallet
-            - GasStation
-          example: ExternalAddress
-          description: Enumeration representing the source type of a transaction.
+          $ref: '#/components/schemas/TransactionSourceType'
         account_input:
           type: object
           properties:
@@ -2698,7 +2700,7 @@ components:
         - wallet_id
       properties:
         source_type:
-          $ref: '#/components/schemas/TransactionAddressSource/properties/source_type'
+          $ref: '#/components/schemas/TransactionSourceType'
         wallet_id:
           type: string
           description: Unique id of the wallet to transfer from.
@@ -2713,7 +2715,7 @@ components:
         - mpc_used_key_group
       properties:
         source_type:
-          $ref: '#/components/schemas/TransactionAddressSource/properties/source_type'
+          $ref: '#/components/schemas/TransactionSourceType'
         wallet_id:
           type: string
           description: Unique id of the wallet to transfer from.
@@ -2746,7 +2748,7 @@ components:
         - delegate
       properties:
         source_type:
-          $ref: '#/components/schemas/TransactionAddressSource/properties/source_type'
+          $ref: '#/components/schemas/TransactionSourceType'
         wallet_id:
           type: string
           description: Unique id of the wallet to transfer from.
@@ -2779,7 +2781,7 @@ components:
         - wallet_id
       properties:
         source_type:
-          $ref: '#/components/schemas/TransactionAddressSource/properties/source_type'
+          $ref: '#/components/schemas/TransactionSourceType'
         exchange_id:
           $ref: '#/components/schemas/ExchangeId'
         wallet_id:
@@ -2792,6 +2794,18 @@ components:
           description: Unique id of the wallet to transfer from.
           format: uuid
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    TransactionDestinationType:
+      type: string
+      enum:
+        - Address
+        - ContractCall
+        - MessageSign
+        - CustodialWallet
+        - MPCWallet
+        - SafeWallet
+        - ExchangeWallet
+      example: Address
+      description: Enumeration representing the destination type of a transaction.
     TransactionAddressDestination:
       type: object
       description: The data for transaction destination information.
@@ -2800,17 +2814,7 @@ components:
         - token_id
       properties:
         destination_type:
-          type: string
-          enum:
-            - Address
-            - ContractCall
-            - MessageSign
-            - CustodialWallet
-            - MPCWallet
-            - SafeWallet
-            - ExchangeWallet
-          example: Address
-          description: Enumeration representing the destination type of a transaction.
+          $ref: '#/components/schemas/TransactionDestinationType'
         token_id:
           type: string
           description: The token ID.
@@ -2870,7 +2874,7 @@ components:
         - calldata
       properties:
         destination_type:
-          $ref: '#/components/schemas/TransactionAddressDestination/properties/destination_type'
+          $ref: '#/components/schemas/TransactionDestinationType'
         address_str:
           type: string
           description: Destination address
@@ -2894,7 +2898,7 @@ components:
         - address_str
       properties:
         destination_type:
-          $ref: '#/components/schemas/TransactionAddressDestination/properties/destination_type'
+          $ref: '#/components/schemas/TransactionDestinationType'
         message:
           type: string
           description: 'Raw data to be signed, Base 64 encoded'
@@ -2915,7 +2919,7 @@ components:
         - amount
       properties:
         destination_type:
-          $ref: '#/components/schemas/TransactionAddressDestination/properties/destination_type'
+          $ref: '#/components/schemas/TransactionDestinationType'
         wallet_id:
           type: string
           description: Unique id of the wallet to transfer from.
@@ -2953,7 +2957,7 @@ components:
         - amount
       properties:
         destination_type:
-          $ref: '#/components/schemas/TransactionAddressDestination/properties/destination_type'
+          $ref: '#/components/schemas/TransactionDestinationType'
         exchange_id:
           $ref: '#/components/schemas/ExchangeId'
         wallet_id:
