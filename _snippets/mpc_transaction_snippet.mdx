@@ -69,14 +69,17 @@
     **only use in non-web3 wallet:**
     | Transaction Type | Code |
     | ----------- | ----------- |
-    | TRANSACTION_FROM_WEB| 100|
-    | TRANSACTION_FROM_API| 102|
-    | TRANSACTION_RBF_API_SPEEDUP| 103|
-    | TRANSACTION_RBF_WEB_SPEEDUP| 104|
-    | TRANSACTION_RBF_API_DROP| 105|
-    | TRANSACTION_RBF_WEB_DROP| 106|
-    | TRANSACTION_FROM_EXTERNAL| 107|
-    | TRANSACTION_FROM_DEPOSIT| 1000|
+    | TYPE_MPC_WEB| 100|
+    | TYPE_MPC_API| 102|
+    | TYPE_RBF_API_SPEEDUP| 103|
+    | TYPE_RBF_WEB_SPEEDUP| 104|
+    | TYPE_RBF_API_DROP| 105|
+    | TYPE_RBF_WEB_DROP| 106|
+    | TYPE_MPC_TRANSACTION_FROM_EXTERNAL| 107|
+    | TYPE_MPC_RESEND_WEB| 108|
+    | TYPE_MPC_BABYLON_STAKE| 500|
+    | TYPE_MPC_BABYLON_STAKE_RBF| 501|
+    | TYPE_FROM_DEPOSIT| 1000|
 
     **only use in web3 wallet:**
     | Transaction Type | Code |
@@ -89,7 +92,7 @@
     | TYPE_MPC_WEB3_RBF_WEB_SPEEDUP| 309|
     | TYPE_MPC_WEB3_RBF_API_DROP| 310|
     | TYPE_MPC_WEB3_RBF_WEB_DROP| 311|
-    | TRANSACTION_FROM_DEPOSIT| 1000|
+    | TYPE_FROM_DEPOSIT| 1000|
     </ResponseField>
     <ResponseField name="operation" type="Int" >action type; it will be empty if the action is making a deposit (TRANSFER: 100, CONTRACT_CALL: 200)</ResponseField>
     <ResponseField name="block_detail" type="object" >
