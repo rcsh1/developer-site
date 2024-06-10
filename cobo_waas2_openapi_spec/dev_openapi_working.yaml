@@ -277,6 +277,8 @@ paths:
       summary: List all wallets
       description: |
         This operation retrieves the information of all wallets under your organization. You can filter the result by wallet type, subtype, and Vault ID (for MPC Wallets).
+
+        <Note>Ensure that either the wallet type or subtype is provided at least.</Note>
       security:
         - CoboAuth: []
       parameters:
@@ -403,6 +405,8 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/walletIdParam'
+        - $ref: '#/components/parameters/requiredTokenIdParam'
+        - $ref: '#/components/parameters/requiredFeeRateParam'
         - $ref: '#/components/parameters/toAddressStrParam'
         - $ref: '#/components/parameters/fromAddressStrParam'
       responses:
@@ -1976,7 +1980,7 @@ components:
         - ENCODING_P2SH_P2MS
         - ENCODING_P2SH_P2WSH_P2MS
         - ENCODING_P2TR
-      description: The address encoding formats. This parameter only applies to blockchains with Bitcoin-like architecture.
+      description: The address encoding formats. This field only applies to blockchains with Bitcoin-like architecture.
       example: ENCODING_P2PKH
     CreateCustodialWallet:
       type: object
@@ -2360,7 +2364,7 @@ components:
         fee_token_id:
           type: string
           description: The token ID of the transaction fee.
-          example: ETH
+          example: BTC
         fee_rate:
           type: string
           description: 'The fee rate, in sats/vByte. The fee rate represents the satoshis you are willing to pay for each byte of data that your transaction will consume on the blockchain.'
@@ -4121,6 +4125,14 @@ components:
       schema:
         type: string
       example: ETH_USDT
+    requiredFeeRateParam:
+      name: fee_rate
+      in: query
+      required: true
+      description: The fee rate in sats/vByte or fee_price in gwei.
+      schema:
+        type: string
+      example: '0.001'
     requiredWalletSubtypeParam:
       name: wallet_subtype
       in: query
