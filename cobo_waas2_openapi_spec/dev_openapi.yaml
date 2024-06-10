@@ -298,7 +298,7 @@ paths:
       description: |
         This operation updates the information of a specified wallet.
 
-        <Note>This operation is applicable to Exchange Wallets only.</Note>
+        <Note>This operation is applicable to Exchange Wallets to update the API key etc. For other wallet type, only the name can be updated.</Note>
       security:
         - CoboAuth: []
       requestBody:
@@ -887,8 +887,10 @@ paths:
       tags:
         - Transactions
       operationId: get_chain_fee_price
-      summary: 'Get the fee price data for chain and/or token(Hold, TBD after normalize fee settings)'
-      description: Retrieve the fee price data.
+      summary: Retrieve fee price data for chain and/or token
+      description: |
+        This endpoint retrieves fee price data for a specific blockchain network and/or token.
+        Users can specify the chain ID or token ID as parameters to filter the results.
       security:
         - CoboAuth: []
       parameters:
@@ -906,8 +908,10 @@ paths:
       tags:
         - Transactions
       operationId: estimate_fee
-      summary: Estimate the fee for transaction
-      description: Estimate the transaction fee.
+      summary: Estimate transaction fee
+      description: |
+        This endpoint calculates the fee required for a transaction based on factors such as network congestion and transaction complexity.
+        Users can provide transaction details in the request body, and the response will contain the estimated fee.
       security:
         - CoboAuth: []
       requestBody:
@@ -925,7 +929,10 @@ paths:
         - Transactions
       operationId: create_transfer_transaction
       summary: Create a transfer transaction
-      description: Create a transaction to transfer funds from one account to another.
+      description: |
+        This endpoint generates a transaction to transfer funds from one account to another.
+        Users need to provide details such as sender and recipient addresses, token id, and amount to transfer in the request body.
+        Upon successful creation, a transaction request is returned, which can then be used for tracking the process.
       security:
         - CoboAuth: []
       requestBody:
@@ -939,9 +946,13 @@ paths:
     post:
       tags:
         - Transactions
-      operationId: create_smart_contract_call_transaction
-      summary: Create a smart contract call transaction
-      description: Create a transaction to call a smart contract.
+      operationId: create_contract_call_transaction
+      summary: Create transaction to call smart contract
+      description: |
+        This endpoint generates a transaction to invoke a function within a smart contract on the blockchain.
+        The request body should include details such as the contract address, function to call, and any required parameters encoded as the calldata.
+        Upon successful creation, a transaction request is returned, which can then be submitted to the blockchain for execution.
+        This endpoint only applies to ethereum-like blockchains for now.
       security:
         - CoboAuth: []
       requestBody:
@@ -957,7 +968,10 @@ paths:
         - Transactions
       operationId: list_transactions
       summary: List all transactions
-      description: Retrieve a list of transactions.
+      description: |
+        This endpoint retrieves a list of transactions based on various optional parameters.
+        Users can filter transactions by request ID, cobo ID, transaction ID, transaction hash, type, status, and timestamps etc.
+        Pagination parameters such as sorting, limit, before, and after are also available for result management.
       security:
         - CoboAuth: []
       parameters:
@@ -1010,8 +1024,10 @@ paths:
       tags:
         - Transactions
       operationId: get_transaction_by_id
-      summary: Get transaction information by ID
-      description: Detailed description on retrieving transaction information by id
+      summary: Retrieve transaction information by ID
+      description: |
+        This endpoint provides detailed information about a transaction based on its unique identifier.
+        Users can retrieve various details such as transaction status, timestamps, and involved parties.
       security:
         - CoboAuth: []
       responses:
@@ -1026,8 +1042,10 @@ paths:
       tags:
         - Transactions
       operationId: resend_transaction_by_id
-      summary: Resend a transaction by ID
-      description: Resend a transaction.
+      summary: Resend transaction by ID
+      description: |
+        This endpoint allows users to resend (re-attempt) a transaction based on its unique identifier.
+        Resending a transaction initiates a new attempt to process the transaction failed previously.
       security:
         - CoboAuth: []
       requestBody:
@@ -1044,8 +1062,10 @@ paths:
       tags:
         - Transactions
       operationId: cancel_transaction_by_id
-      summary: Cancel a transaction by ID
-      description: Cancel a transaction.
+      summary: Cancel transaction by ID
+      description: |
+        This endpoint allows users to cancel a transaction based on its unique identifier. 
+        The transaction can be cancelled if the transaction has not been approved by risk control.
       security:
         - CoboAuth: []
       responses:
@@ -1060,8 +1080,10 @@ paths:
       tags:
         - Transactions
       operationId: drop_transaction_by_id
-      summary: Drop a transaction by ID
-      description: Drop a transaction.
+      summary: Drop transaction by ID
+      description: |
+        This endpoint allows users to drop (remove) a transaction based on its unique identifier.
+        Dropping a transaction will trigger a RBF transaction.
       security:
         - CoboAuth: []
       requestBody:
@@ -1078,8 +1100,10 @@ paths:
       tags:
         - Transactions
       operationId: speedup_transaction_by_id
-      summary: Speed up a transaction by ID
-      description: Speed up a transaction.
+      summary: Speed up transaction by ID
+      description: |
+        This endpoint allows users to speed up (accelerate) a transaction based on its unique identifier.
+        Speeding up a transaction involves adjusting the fee to prioritize its processing.
       security:
         - CoboAuth: []
       requestBody:
@@ -2051,7 +2075,7 @@ components:
       description: The fee type.
     FeeAmount:
       type: object
-      description: The estimated transaction fee in transaction tokens.
+      description: The estimated max transaction fee amount.
       properties:
         max_fee_amount:
           type: string
@@ -2059,7 +2083,7 @@ components:
           example: '0.1'
     FeeData:
       type: object
-      description: The estimated fee in fee_coin.
+      description: The estimated gas limit to execute the transaction.
       properties:
         gas_limit:
           type: string
@@ -2067,7 +2091,7 @@ components:
           default: '21000'
     EvmEip1559FeeBasePrice:
       type: object
-      description: The base transaction fee when using the EIP 1559 method.
+      description: The transaction fee price when using the EIP 1559 fee modal.
       required:
         - max_priority_fee
         - base_fee
@@ -2082,11 +2106,11 @@ components:
           example: '0.1'
         base_fee:
           type: string
-          description: The base fee of chain.
+          description: 'The base fee of chain, in gwei.'
           example: '0.9'
     EvmLegacyFeeBasePrice:
       type: object
-      description: The base transaction fee when using the legacy method.
+      description: The transaction fee price when using the legacy fee modal.
       required:
         - gas_price
       properties:
@@ -2100,7 +2124,7 @@ components:
           example: '1'
     UtxoFeeBasePrice:
       type: object
-      description: The base transaction fee for UTXO-based chains.
+      description: The transaction fee rate for UTXO-based chains.
       required:
         - fee_rate
       properties:
@@ -2114,7 +2138,7 @@ components:
           example: '50'
     EvmEip1559FeePrice:
       type: object
-      description: The transaction fee when using the EIP 1669 method.
+      description: The transaction fee price when using the EIP 1559 fee modal.
       required:
         - fee_type
       allOf:
@@ -2125,7 +2149,7 @@ components:
         - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
     EvmLegacyFeePrice:
       type: object
-      description: The transaction fee when using the legacy method.
+      description: The transaction fee when using the legacy fee modal.
       required:
         - fee_type
       allOf:
@@ -2146,7 +2170,7 @@ components:
         - $ref: '#/components/schemas/UtxoFeeBasePrice'
     FixedFee:
       type: object
-      description: The estimated transaction fee in fee_coin.
+      description: The estimated transaction fee for fixed-fee chain.
       required:
         - fee_type
       allOf:
@@ -2161,7 +2185,7 @@ components:
         - $ref: '#/components/schemas/FeeAmount'
     EvmEip1559Fee:
       type: object
-      description: The estimated transaction fee when using the EIP 1559 method.
+      description: The estimated transaction fee when using the EIP 1559 fee modal.
       required:
         - fee_type
         - standard
@@ -2182,7 +2206,7 @@ components:
             - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
-      description: The estimated transaction fee when using the legacy method.
+      description: The estimated transaction fee when using the legacy fee modal.
       required:
         - fee_type
         - standard
@@ -2251,7 +2275,7 @@ components:
     EvmEip1559TransactionFee:
       type: object
       description: |
-        The transaction fee when using the EIP 1559 method. The estimated fee is calculated by multiplying the max fee by the gas limit: (max fee * gas limit).
+        The transaction fee when using the EIP 1559 fee modal. The estimated fee is calculated by multiplying the max fee by the gas limit: ((base price + max priority fee) * gas limit).
       required:
         - fee_type
       allOf:
@@ -2264,7 +2288,7 @@ components:
     EvmLegacyTransactionFee:
       type: object
       description: |
-        The transaction fee when using the legacy method. The estimated fee is calculated by multiplying the gas price by the gas limit: (gas price * gas limit).
+        The transaction fee when using the legacy fee modal. The estimated fee is calculated by multiplying the gas price by the gas limit: (gas price * gas limit).
       required:
         - fee_type
       allOf:
@@ -3171,49 +3195,42 @@ components:
               description: From address
               example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
     MpcTransferSource:
-      type: object
-      description: The base data for transfer source.
-      required:
-        - source_type
-        - wallet_id
-      properties:
-        source_type:
-          $ref: '#/components/schemas/WalletSubtype'
-        wallet_id:
-          type: string
-          description: Unique id of the wallet to transfer from.
-          format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        account_input:
-          type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseTransferSource'
+        - type: object
+          required:
+            - mpc_used_key_group
           properties:
-            address_str:
-              type: string
-              description: From address
-              example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
-        utxo_inputs:
-          type: object
-          properties:
-            included_inputs:
-              type: array
-              items:
-                type: object
-                properties:
-                  tx_hash:
-                    type: string
-                    description: UTXO tx hash to include
-                    example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
-            excluded_inputs:
-              type: array
-              items:
-                type: object
-                properties:
-                  tx_hash:
-                    type: string
-                    description: UTXO tx hash to exclude
-                    example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
-        mpc_used_key_group:
-          $ref: '#/components/schemas/MpcSigningGroup'
+            account_input:
+              type: object
+              properties:
+                address_str:
+                  type: string
+                  description: From address
+                  example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+            utxo_inputs:
+              type: object
+              properties:
+                included_inputs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tx_hash:
+                        type: string
+                        description: UTXO tx hash to include
+                        example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+                excluded_inputs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      tx_hash:
+                        type: string
+                        description: UTXO tx hash to exclude
+                        example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+            mpc_used_key_group:
+              $ref: '#/components/schemas/MpcSigningGroup'
     SafeTransferSource:
       allOf:
         - $ref: '#/components/schemas/AddressTransferSource'
@@ -3312,6 +3329,14 @@ components:
               type: string
               description: Change address
               example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
+        force_internal:
+          type: boolean
+          description: Whether the transfer to be executed as a loop transfer.
+          example: false
+        force_external:
+          type: boolean
+          description: Whether the transfer to be executed as a onchain transfer.
+          example: false
     ExchangeTransferDestination:
       type: object
       description: The data for exchange destination.
@@ -3370,8 +3395,8 @@ components:
           type: string
           enum:
             - Transfer
-            - Call
-            - Sign
+            - ContractCall
+            - MessageSign
           example: Transfer
         source:
           $ref: '#/components/schemas/TransferSource'
@@ -3393,17 +3418,9 @@ components:
           example: Transfer from wallet
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
-        force_internal:
-          type: boolean
-          description: Whether the transfer to be executed as a loop transfer.
-          example: false
-        force_external:
-          type: boolean
-          description: Whether the transfer to be executed as a onchain transfer.
-          example: false
     SignMessage:
       type: object
-      description: The data for create a message-signing transaction.
+      description: The data for create a message sign transaction.
       required:
         - request_id
         - request_type
@@ -3814,7 +3831,7 @@ components:
       name: asset_id
       in: query
       required: false
-      description: Unique id of the asset
+      description: The asset ID list.
       schema:
         type: array
         items:
@@ -3841,7 +3858,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: Unique id of the chain
+      description: The chain ID.
       schema:
         type: array
         items:
@@ -3860,7 +3877,7 @@ components:
       name: token_id
       in: query
       required: false
-      description: Unique id of the token
+      description: The token ID list.
       schema:
         type: array
         items:
@@ -3957,7 +3974,7 @@ components:
       name: wallet_id
       in: query
       required: false
-      description: Unique id of the wallet
+      description: The wallet ID list.
       schema:
         type: array
         items:
@@ -4282,15 +4299,15 @@ components:
                 description: The wallet name.
               apikey:
                 type: string
-                description: The API key of your exchange account.
+                description: The API key of your exchange account. Only needed when updating exchange wallets.
                 example: d8f062da-39f4-4a11-8b9d-12595854237f
               secret:
                 type: string
-                description: The API secret of your exchange account.
+                description: The API secret of your exchange account. Only needed when updating exchange wallets.
                 example: 75B4F636193162488A3728B4A5797708
               passphrase:
                 type: string
-                description: The passphrase of your exchange account.
+                description: The passphrase of your exchange account. Only needed when updating exchange wallets.
                 example: sXASDKWKLLsWWEE
               ga_code:
                 type: string
@@ -4298,7 +4315,7 @@ components:
                 example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
               sub_account_ids:
                 type: array
-                description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID.'
+                description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. Only needed when updating exchange wallets.'
                 items:
                   type: string
                 example:
@@ -4479,7 +4496,7 @@ components:
           schema:
             $ref: '#/components/schemas/Transfer'
     createSmartContractCallBody:
-      description: The request body to create a smart contract transaction
+      description: The request body to create a contract call transaction
       content:
         application/json:
           schema:
@@ -4491,19 +4508,19 @@ components:
           schema:
             $ref: '#/components/schemas/SignMessage'
     estimateFeeBody:
-      description: The request body to estimate fee of transfer or call transaction
+      description: The request body to estimate fee of transfer or contract call transaction
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/EstimateFee'
     feeRequestBody:
-      description: The request body of fee to initiate transaction
+      description: The request body of fee to initiate drop/speed_up transactions
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/TransactionRbf'
     resendTransactionBody:
-      description: The request body of fee to initiate transaction
+      description: The request body of fee to initiate resend transaction
       content:
         application/json:
           schema:
