@@ -1,43 +1,36 @@
-type: object
-description: The base data for transfer source.
-required:
-  - source_type
-  - wallet_id
-properties:
-  source_type:
-    $ref: '../../../wallets/bases/wallet_subtype.yaml'
-  wallet_id:
-    type: string
-    description: Unique id of the wallet to transfer from.
-    format: uuid
-    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
-  account_input:
-    type: object
+allOf:
+  - $ref: "./base_transfer_source.yaml"
+  - type: object
+    required:
+      - mpc_used_key_group
     properties:
-      address_str:
-        type: string
-        description: From address
-        example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
-  utxo_inputs:
-    type: object
-    properties:
-      included_inputs:
-        type: array
-        items:
-          type: object
-          properties:
-            tx_hash:
-              type: string
-              description: UTXO tx hash to include
-              example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"
-      excluded_inputs:
-        type: array
-        items:
-          type: object
-          properties:
-            tx_hash:
-              type: string
-              description: UTXO tx hash to exclude
-              example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"
-  mpc_used_key_group:
-    $ref: '../../mpc_signing_group.yaml'
+      account_input:
+        type: object
+        properties:
+          address_str:
+            type: string
+            description: From address
+            example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+      utxo_inputs:
+        type: object
+        properties:
+          included_inputs:
+            type: array
+            items:
+              type: object
+              properties:
+                tx_hash:
+                  type: string
+                  description: UTXO tx hash to include
+                  example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"
+          excluded_inputs:
+            type: array
+            items:
+              type: object
+              properties:
+                tx_hash:
+                  type: string
+                  description: UTXO tx hash to exclude
+                  example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"
+      mpc_used_key_group:
+        $ref: '../../mpc_signing_group.yaml'
