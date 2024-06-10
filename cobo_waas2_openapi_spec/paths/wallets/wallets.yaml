@@ -28,6 +28,8 @@ get:
   summary: List all wallets
   description: |
     This operation retrieves the information of all wallets under your organization. You can filter the result by wallet type, subtype, and Vault ID (for MPC Wallets).
+    
+    <Note>Ensure that either the wallet type or subtype is provided at least.</Note>
   security:
     - CoboAuth: []
   parameters:
