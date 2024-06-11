@@ -4277,7 +4277,7 @@ components:
     optionalUtxoTxHashParam:
       name: tx_hash
       in: query
-      required: true
+      required: false
       description: Transaction hash of the UTXO.
       schema:
         type: string
@@ -4592,6 +4592,8 @@ components:
         application/json:
           schema:
             type: object
+            required:
+              - tx_hashes
             properties:
               tx_hashes:
                 type: array
@@ -4601,6 +4603,7 @@ components:
               is_locked:
                 type: boolean
                 description: 'True if to lock the UTXOs, False to unlock.'
+                default: true
                 example: true
     createKeyGroupBody:
       description: The request body to create a mpc key group
@@ -5099,7 +5102,12 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ChainFeePrice'
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainFeePrice'
     getTransactionsResponse:
       description: Successfully listed transactions
       content:
@@ -5124,7 +5132,12 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/EstimationFee'
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EstimationFee'
     transactionFeeResponse:
       description: Successful get a transaction detail
       content:
