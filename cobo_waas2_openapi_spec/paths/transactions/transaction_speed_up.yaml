@@ -4,8 +4,10 @@ post:
   tags:
     - Transactions
   operationId: speedup_transaction_by_id
-  summary: Speed up a transaction by ID
-  description: Speed up a transaction.
+  summary: Speed up transaction by ID
+  description: |
+    This endpoint allows users to speed up (accelerate) a transaction based on its unique identifier.
+    Speeding up a transaction involves adjusting the fee to prioritize its processing.
   security:
     - CoboAuth: []
   requestBody:

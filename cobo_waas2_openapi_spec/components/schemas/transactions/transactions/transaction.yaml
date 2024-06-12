@@ -23,7 +23,7 @@ properties:
     type: string
     description: Request ID
     example: "web_send_by_user_327_1610444045047"
-  transaction_type:
+  type:
     $ref: './transaction_type.yaml'
   status:
     $ref: './transaction_status.yaml'
@@ -51,6 +51,7 @@ properties:
     $ref: './transaction_initiator_type.yaml'
   confirmed_num:
     type: number
+    format: int32
     description: Transaction confirmed number
     example: 12
   confirming_threshold:
@@ -60,8 +61,14 @@ properties:
     example: 15
   block_number:
     type: integer
+    format: int64
     description: Block number
     example: 123
+  block_time:
+    type: integer
+    format: int64
+    description: Block time
+    example: 1717740319
   block_hash:
     type: string
     description: Block hash
@@ -104,11 +111,25 @@ properties:
   description:
     type: string
     example: "withdrawal to exchange trading account"
+  force_internal:
+    type: boolean
+    description: Whether the transfer request to be executed as a loop transfer.
+    example: false
+  force_external:
+    type: boolean
+    description: Whether the transfer request to be executed as a onchain transfer.
+    example: false
+  is_loop:
+    type: boolean
+    description: Whether the transfer is a loop transfer.
+    example: false
   created_time:
     type: number
+    format: int64
     description: Transaction creation time
     example: 1610445878970
   updated_time:
     type: number
+    format: int64
     description: Transaction update time
     example: 1610445878970

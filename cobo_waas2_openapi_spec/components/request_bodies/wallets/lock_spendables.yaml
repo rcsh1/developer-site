@@ -3,6 +3,8 @@ content:
   application/json:
     schema:
       type: object
+      required:
+        - tx_hashes
       properties:
         tx_hashes:
           type: array
@@ -12,5 +14,6 @@ content:
         is_locked:
           type: boolean
           description: True if to lock the UTXOs, False to unlock.
+          default: true
           example: true
 

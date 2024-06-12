@@ -3,7 +3,10 @@ post:
     - Transactions
   operationId: create_transfer_transaction
   summary: Create a transfer transaction
-  description: Create a transaction to transfer funds from one account to another.
+  description: |
+    This endpoint generates a transaction to transfer funds from one account to another.
+    Users need to provide details such as sender and recipient addresses, token id, and amount to transfer in the request body.
+    Upon successful creation, a transaction request is returned, which can then be used for tracking the process.
   security:
     - CoboAuth: []
   requestBody:
