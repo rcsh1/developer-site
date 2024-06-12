@@ -4,9 +4,8 @@ post:
   operationId: create_transfer_transaction
   summary: Create a transfer transaction
   description: |
-    This endpoint generates a transaction to transfer funds from one account to another.
-    Users need to provide details such as sender and recipient addresses, token id, and amount to transfer in the request body.
-    Upon successful creation, a transaction request is returned, which can then be used for tracking the process.
+    This operation transfers funds from one account to another based on the details that you provide, such as sender and recipient addresses, token ID, and amount to be transferred. # fund 是什么概念？token 吗
+    Upon successful creation, a transaction request is returned, which can then be used for tracking the process. # 感觉每个 post 类型的操作应该都是返回  transaction request 不需要说吧
   security:
     - CoboAuth: []
   requestBody:
