@@ -1,5 +1,5 @@
 type: object
-description: The transaction fee rate for UTXO-based chains.
+description: The transaction fee rate for UTXO-based chains such as Bitcoin.
 required:
   - fee_rate
 properties:
@@ -9,5 +9,5 @@ properties:
     example: 'BTC'
   fee_rate:
     type: string
-    description: The fee rate, in sats/vByte. The fee rate represents the satoshis you are willing to pay for each byte of data that your transaction will consume on the blockchain.
+    description: The fee rate in SATS/vByte. The fee rate represents the Satoshis you are willing to pay for each byte of data that your transaction will consume on the blockchain.
     example: '50'

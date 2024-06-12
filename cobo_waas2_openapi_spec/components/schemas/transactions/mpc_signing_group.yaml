@@ -1,13 +1,13 @@
 type: object
-description: The data for mpc signing key group.
+description: The data of the Signing Group of an MPC wallet.
 properties:
   used_key_group_id:
     type: string
-    description: Unique id of the using key group.
+    description: The ID of the Signing Group.
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   used_node_ids:
     type: array
     items:
       type: string
-      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
-      description: The IDs of the tss node participating in the signing. If it is empty, all nodes in the signing key group will participate in the signature.
+      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA # 为什么有些字符串 id 有单引号有些没有
+      description: The ID of the TSS Nodes that participate in the signature. If this property is empty, all TSS Nodes in the Signing Group will participate in the signature.

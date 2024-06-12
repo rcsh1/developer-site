@@ -1,4 +1,4 @@
-description: Successful create a smart contract call request
+description: The request was successful.
 content:
   application/json:
     schema:
@@ -6,11 +6,11 @@ content:
       properties:
         request_id:
           type: string
-          description: Unique id of the request.
+          description: The request ID.
           example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
         transaction_id:
           type: string
-          description: The transaction id of of the request.
+          description: The transaction ID.
           example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
         status:
           $ref: '../../schemas/transactions/transactions/transaction_status.yaml'

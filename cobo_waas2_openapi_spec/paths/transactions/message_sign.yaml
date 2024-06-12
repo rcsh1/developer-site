@@ -3,9 +3,8 @@ post:
     - Transactions
   operationId: create_message_sign_transaction
   summary: Create transaction to sign a message
-  description: |
-    This endpoint generates a transaction to sign a message using cryptographic techniques.
-    Users can provide the message to sign in the request body, and the response will contain the transaction request.
+  description: # sign message for what? if this operaion means to sign a message, the message must be required
+    This operation creates a transaction to sign a message using cryptographic techniques. You can provide the message to be signed in the request body.
   security:
     - CoboAuth: []
   requestBody:

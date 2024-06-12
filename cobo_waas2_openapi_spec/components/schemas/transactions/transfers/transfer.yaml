@@ -1,5 +1,5 @@
 type: object
-description: The base data for transfer transaction.
+description: The base data for a transfer transaction.
 required:
   - request_id
   - request_type
@@ -10,7 +10,7 @@ required:
 properties:
   request_id:
     type: string
-    description: Unique id of the request.
+    description: The request ID.
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   request_type:
     $ref: '../request_type.yaml'

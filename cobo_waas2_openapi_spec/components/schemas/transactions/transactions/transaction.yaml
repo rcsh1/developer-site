@@ -1,5 +1,5 @@
 type: object
-description: The data for transaction information.
+description: The data of the transaction details.
 required:
   - transaction_id
   - transaction_type
@@ -12,17 +12,17 @@ required:
 properties:
   transaction_id:
     type: string
-    description: Unique transaction ID
+    description: The transaction ID.
     format: uuid
     example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
   cobo_id:
     type: string
-    description: Cobo ID
+    description: Cobo ID # what is cobo ID 
     example: '20231213122855000000000000000000'
   request_id:
     type: string
-    description: Request ID
-    example: "web_send_by_user_327_1610444045047"
+    description: The Request ID.
+    example: "web_send_by_user_327_1610444045047" # somewhere double quotes some single quotes
   type:
     $ref: './transaction_type.yaml'
   status:
@@ -34,7 +34,7 @@ properties:
     example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
-    description: The blockchain on which the token operates.
+    description: The ID of the blockchain on which the token operates.
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
@@ -45,64 +45,64 @@ properties:
     $ref: './fees/transaction_fee.yaml'
   initiator:
     type: string
-    description: Transaction initiator, apikey or operator
+    description: The transaction initiator. # the example seems like an external code, where from
     example: "API Prod Key #1"
   initiator_type:
     $ref: './transaction_initiator_type.yaml'
   confirmed_num:
     type: number
     format: int32
-    description: Transaction confirmed number
+    description: The transaction confirmation number.
     example: 12
   confirming_threshold:
     type: integer
     format: int32
-    description: Number of confirmations required for a transaction, such as 15 for ETH chain.
+    description: The minimum number of confirmation required for a transaction, such as 6 for the Bitcoin chain and 15 for the ETH chain.
     example: 15
   block_number:
     type: integer
     format: int64
-    description: Block number
+    description: The block number.
     example: 123
   block_time:
     type: integer
     format: int64
-    description: Block time
+    description: Block time # what's this
     example: 1717740319
   block_hash:
     type: string
-    description: Block hash
+    description: The block hash.
     example: "0xc9ee947f8bb6027c161888bf0d004bec05e7c2beec7e6b187dc512174e438735"
   nonce:
     type: integer
-    description: Transaction nonce
+    description: The transaction nonce.
     example: 9
   transaction_hash:
     type: string
-    description: Transaction hash.
+    description: The transaction hash.
     example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
-  replacement:
+  replacement: # dont know what replace is
     type: object
     properties:
       type:
         $ref: './transaction_replacement_type.yaml'
       replaced_by_transaction_id:
         type: string
-        description: Replace by transaction ID
+        description: The transaction ID of the replacement.
         format: uuid
         example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
       replaced_by_transaction_hash:
         type: string
-        description: Replace by transaction hash
+        description: The transaction hash of the replacement.
         example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
       replaced_transaction_id:
         type: string
-        description: Replace by transaction ID
+        description: The transaction ID of the replaced transaction.
         format: uuid
         example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
       replaced_transaction_hash:
         type: string
-        description: Replace by transaction hash
+        description: The transaction hash of the replaced transaction.
         example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
   category:
     type: array
@@ -113,23 +113,24 @@ properties:
     example: "withdrawal to exchange trading account"
   force_internal:
     type: boolean
-    description: Whether the transfer request to be executed as a loop transfer.
+    description: 
+      Whether the transfer request will be executed as a loop transfer. # should this be "whether the transfer will be executed as a offchain transfer?"
     example: false
   force_external:
     type: boolean
-    description: Whether the transfer request to be executed as a onchain transfer.
+    description: Whether the transfer request will be executed as a onchain transfer.
     example: false
   is_loop:
     type: boolean
-    description: Whether the transfer is a loop transfer.
+    description: Whether the transfer is a loop transfer. # what's the difference between this and force_internal?
     example: false
   created_time:
     type: number
     format: int64
-    description: Transaction creation time
+    description: The time when the transaction was created, in Unix timestamp format, measured in milliseconds/seconds.
     example: 1610445878970
   updated_time:
     type: number
     format: int64
-    description: Transaction update time
+    description: The time when the transaction was updated, in Unix timestamp format, measured in milliseconds/seconds.
     example: 1610445878970

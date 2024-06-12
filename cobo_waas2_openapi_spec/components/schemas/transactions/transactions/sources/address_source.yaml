@@ -1,5 +1,5 @@
 type: object
-description: The data for transaction source information.
+description: The data of the transaction source.
 required:
   - source_type
 properties:
@@ -10,7 +10,7 @@ properties:
     properties:
       address_str:
         type: string
-        description: From address
+        description: From address # from
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
   utxo_inputs:
     type: array
@@ -20,5 +20,5 @@ properties:
         # todo: vout
         tx_hash:
           type: string
-          description: UTXO tx hash to include
+          description: The UTXO Tx hash to be included.
           example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"

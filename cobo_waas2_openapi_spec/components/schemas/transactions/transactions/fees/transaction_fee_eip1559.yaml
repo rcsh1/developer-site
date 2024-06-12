@@ -1,6 +1,7 @@
 type: object
 description: |
-  The transaction fee when using the EIP 1559 method. The estimated fee is calculated by multiplying the max fee by the gas limit: (max fee * gas limit).
+  The transaction fee when using the EIP 1559 method. The estimated fee is calculated by multiplying the max fee by the gas limit: (max fee * gas limit). 
+  # 为什么有的地方是 (base fee + priority fee) * gas limit
 required:
   - fee_type
 allOf:
@@ -10,11 +11,11 @@ allOf:
         $ref: '../../fees/fee_type.yaml'
       fee_used:
         type: string
-        description: The fee amount in fee_coin.
+        description: The fee amount in fee_coin. # fee coin
         example: "0.1"
       gas_used:
         type: string
-        description: The gas used in transaction.
+        description: The gas used in the transaction. # do we need to explain gas, gas station, gas limit.
         example: "100000000"
   - $ref: '../../fees/base_fee_price_eip1559.yaml'
   - $ref: '../../fees/fee_gas_limit.yaml'
