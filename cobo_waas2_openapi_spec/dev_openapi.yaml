@@ -980,8 +980,12 @@ paths:
           example: 239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28
         - $ref: '#/components/parameters/optionalTransactionTypeListParam'
         - $ref: '#/components/parameters/optionalTransactionStatusListParam'
-        - $ref: '#/components/parameters/optionalWalletTypeParam'
-        - $ref: '#/components/parameters/optionalWalletListIdParam'
+        - $ref: '#/components/parameters/optionalTransactionSourceTypeListParam'
+        - $ref: '#/components/parameters/optionalTransactionSourceAddressListParam'
+        - $ref: '#/components/parameters/optionalTransactionSourceWalletIdListParam'
+        - $ref: '#/components/parameters/optionalTransactionDestinationTypeListParam'
+        - $ref: '#/components/parameters/optionalTransactionDestinationAddressListParam'
+        - $ref: '#/components/parameters/optionalTransactionDestinationWalletIdListParam'
         - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/optionalAssetIdListParam'
@@ -2285,7 +2289,7 @@ components:
         - transaction_id
         - transaction_type
         - status
-        - chain_id
+        - initiator_type
         - source
         - destination
         - created_time
@@ -2789,9 +2793,8 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         sub_wallet_id:
           type: string
-          description: Unique id of the wallet to transfer from.
-          format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: Exchange trading account or any sub wallet info for transfer.
+          example: Asset
     TransactionAddressDestination:
       type: object
       description: The data for transaction destination information.
@@ -2967,9 +2970,8 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         sub_wallet_id:
           type: string
-          description: Unique id of the wallet to transfer from.
-          format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: Exchange trading account or any sub wallet info for transfer.
+          example: Asset
         token_id:
           type: string
           description: The token ID.
@@ -3991,9 +3993,12 @@ components:
       in: query
       description: Unique id of the mpc project
       schema:
-        type: string
-        format: uuid
-      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        type: array
+        items:
+          type: string
+          format: uuid
+      example:
+        - f47ac10b-58cc-4372-a567-0e02b2c3d479
     requiredTargetKeyGroupIdParam:
       name: target_key_group_id
       in: query
@@ -4053,9 +4058,12 @@ components:
       required: false
       description: Unique id of the mpc vault
       schema:
-        type: string
-        format: uuid
-      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        type: array
+        items:
+          type: string
+          format: uuid
+      example:
+        - f47ac10b-58cc-4372-a567-0e02b2c3d479
     optionalVaultNameParam:
       name: vault_name
       in: query
@@ -4173,6 +4181,66 @@ components:
       schema:
         type: integer
       example: 1635744000
+    optionalTransactionSourceTypeListParam:
+      name: source_type
+      in: query
+      required: false
+      description: The source type of the transaction
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/TransactionAddressSource/properties/source_type'
+    optionalTransactionSourceAddressListParam:
+      name: source_wallet_id
+      in: query
+      required: false
+      description: Unique id of the wallet
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+      example:
+        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalTransactionSourceWalletIdListParam:
+      name: source_address
+      in: query
+      required: false
+      description: The source address of the transaction
+      schema:
+        type: array
+        items:
+          type: string
+    optionalTransactionDestinationTypeListParam:
+      name: destination_type
+      in: query
+      required: false
+      description: The destination type of the transaction
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/TransactionAddressDestination/properties/destination_type'
+    optionalTransactionDestinationAddressListParam:
+      name: destination_wallet_id
+      in: query
+      required: false
+      description: Unique id of the wallet
+      schema:
+        type: array
+        items:
+          type: string
+          format: uuid
+      example:
+        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+    optionalTransactionDestinationWalletIdListParam:
+      name: destination_address
+      in: query
+      required: false
+      description: The destination address of the transaction
+      schema:
+        type: array
+        items:
+          type: string
     transactionIdParam:
       name: transaction_id
       in: path
