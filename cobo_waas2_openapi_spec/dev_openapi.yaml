@@ -479,6 +479,7 @@ paths:
       summary: List token balances by address
       description: |
         The operation retrieves a list of token balances for a specified address within an MPC Wallet. 
+        <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
         - CoboAuth: []
       parameters:
@@ -4903,12 +4904,9 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EstimationFee'
+            type: array
+            items:
+              $ref: '#/components/schemas/EstimationFee'
     transactionFeeResponse:
       description: Successful get a transaction detail
       content:
