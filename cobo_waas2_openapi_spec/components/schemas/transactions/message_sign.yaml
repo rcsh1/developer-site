@@ -1,5 +1,5 @@
 type: object
-description: The data for creating a message sign transaction
+description: The data of a transaction that signs a message
 required:
   - request_id
   - request_type
@@ -15,7 +15,7 @@ properties:
     $ref: './request_type.yaml'
   chain_id:
     type: string
-    description: The ID of the blockchain on which the token operates. # operate correct?
+    description: The chain ID. 
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
@@ -28,7 +28,7 @@ properties:
         example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
       address_str:
         type: string
-        description: From address # from
+        description: The source address. 
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       mpc_used_key_group:
         $ref: './mpc_signing_group.yaml'
@@ -37,7 +37,7 @@ properties:
     properties:
       message:
         type: string
-        description: Raw data to be signed that are encoded in Base64. # why emphasize raw data, compared with structured data?
+        description: Raw data to be signed that are encoded in Base64. #dev why emphasize raw data, compared with structured data?
         example: 'YWFhYQ=='
       structured_data:
         type: string

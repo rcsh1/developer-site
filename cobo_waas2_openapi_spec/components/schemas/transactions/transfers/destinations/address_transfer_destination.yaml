@@ -1,5 +1,7 @@
 type: object
-description: The data of the destination's address. Only one of account_output or utxo_outputs needed. #
+description: |
+  The data of the an external address destination. 
+  You can provide either of the `account_output` or the `utxo_outputs` parameters. #dev 不懂
 required:
   - destination_type
 properties:
@@ -10,16 +12,16 @@ properties:
     properties:
       address_str:
         type: string
-        description: The destination's address. # the destination's address or the destination address
+        description: The destination address. 
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       memo:
         type: string
-        description: The destination's address. memo #memo
+        description: The destination address. memo #dev
         example: "82840924"
       amount:
         type: string
         description: >
-          Transaction value (Note that this is an absolute value. #absolute
+          Transaction value (Note that this is an absolute value. #dev
           If you trade 1.5 ETH, then the value is 1.5)
         example: '1.5'
   utxo_outputs:
@@ -32,27 +34,33 @@ properties:
           properties:
             address_str:
               type: string
-              description: The destination's address.
+              description: The destination address.
               example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"
             amount:
               type: string
               description: >
-                Transaction value (Note that this is an absolute value.#absolute
+                Transaction value (Note that this is an absolute value.#dev
                 If you trade 1.5 ETH, then the value is 1.5)
               example: '1.5'
             script:
               type: string
-              description: Script of the output # what script
+              description: Script of the output #dev
               example: "76a914fb37342f6275b13936799def06f2DEMO"
       change_address:
         type: string
-        description: Change address # what's this
+        description: Change address #dev
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"
   force_internal:
     type: boolean
-    description: Whether the transfer to be executed as a loop transfer. # seems incorrect
+    description: |
+      Whether the transfer to be executed as a loop transfer. #dev
+        -`true`: The transfer will be executed as an onchain transfer.
+        -`false`: The transfer will not be executed as an onchain transfer.
     example: false
   force_external:
     type: boolean
-    description: Whether the transfer to be executed as a onchain transfer.
+    description: |
+      Whether the transfer will be executed as an onchain transfer.
+        -`true`: The transfer will be executed as an onchain transfer.
+        -`false`: The transfer will not be executed as an onchain transfer.
     example: false

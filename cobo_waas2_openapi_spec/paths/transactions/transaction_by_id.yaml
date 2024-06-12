@@ -1,12 +1,12 @@
 parameters:
-  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml" # why parameters before operation?
+  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml" 
 get:
   tags:
     - Transactions
   operationId: get_transaction_by_id
   summary: Get transaction information by ID
   description: |
-    This operation retrieves detailed information about a transaction, such as transaction status, timestamps, and involved parties.
+    This operation retrieves detailed information about a specified transaction, such as transaction status, timestamps, and involved parties.
   security:
     - CoboAuth: []
   responses:

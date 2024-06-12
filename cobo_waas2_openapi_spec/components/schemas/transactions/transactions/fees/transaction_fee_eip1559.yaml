@@ -11,11 +11,11 @@ allOf:
         $ref: '../../fees/fee_type.yaml'
       fee_used:
         type: string
-        description: The fee amount in fee_coin. # fee coin
+        description: The fee amount. 
         example: "0.1"
       gas_used:
         type: string
-        description: The gas used in the transaction. # do we need to explain gas, gas station, gas limit.
+        description: The gas used in the transaction.
         example: "100000000"
   - $ref: '../../fees/base_fee_price_eip1559.yaml'
   - $ref: '../../fees/fee_gas_limit.yaml'

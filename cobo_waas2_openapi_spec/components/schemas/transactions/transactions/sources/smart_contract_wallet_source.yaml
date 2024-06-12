@@ -9,10 +9,10 @@ properties:
     $ref: './source_type.yaml'
   wallet_id:
     type: string
-    description: The ID of the wallet that made the transfer.
+    description: The ID of the wallet that the transfer is from.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
-  delegate: # what does it mean. delegate in EIP-1559 that pays the base fee?
+  delegate: 
     type: object
     properties:
       wallet_id:
@@ -20,16 +20,16 @@ properties:
         format: uuid
         example: '123e4567-e89b-12d3-a456-426614174000'
         description: >-
-          The wallet ID of the delegate. This is required for initiating a transfer. # this is a responses so it's more like applicable?
+          The wallet ID of the delegate. This is required for initiating a transfer from Smart Contract Wallets (Safe{Wallet}). 
       wallet_type:
         type: string
         example: 'MPC'
         description: >-
-          The wallet type of the delegate. This is required for initiating a transfer.
+          The wallet type of the delegate. This is required for initiating a transfer from Smart Contract Wallets (Safe{Wallet}).
       wallet_address:
         type: string
         example: '0x1234567890123456789012345678901234567890'
         description: >-
-          The wallet address of the delegate. This is required for initiating a transfer.
+          The wallet address of the delegate. This is required for initiating a transfer from Smart Contract Wallets (Safe{Wallet}).
       mpc_used_key_group:
         $ref: '../../mpc_signing_group.yaml'

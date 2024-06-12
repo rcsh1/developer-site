@@ -17,18 +17,18 @@ enum:
   - FailedBroadcasting
 example: PendingDoubleCheck
 description: |
-  Enumeration representing the sub-status of a transaction: # to be checked
+  The transaction sub-status. Possible values include: 
     - `RejectedKYT`: The transaction is rejected due to failing Know Your Transaction (KYT) compliance checks.
     - `RejectedTravelRule`: The transaction is rejected due to failing Travel Rule compliance. 
-    - `PendingDoubleCheck`: The transaction is pending for a re-verification process. # the reasons?
+    - `PendingDoubleCheck`: The transaction is pending for a re-verification process. 
     - `PendingSpenderCheck`: The transaction is pending for a spender check.
-    - `PendingRiskControlCheck`: The transaction is pending for a risk-control check.
-    - `PendingApproverCheck`: The transaction is pending for a approver check.
-    - `RejectedCoboCheck`: The transaction is rejected due to failing a internal check by Cobo.
-    - `RejectedWhiteList`: The transaction is rejected because the sender or receiver is not included in a pre-approved whitelist.
+    - `PendingRiskControlCheck`: The transaction is pending for a Risk Control check.
+    - `PendingApproverCheck`: The transaction is pending for an approver check.
+    - `RejectedCoboCheck`: The transaction is rejected due to failing an internal check by Cobo.
+    - `RejectedWhiteList`: The transaction is rejected because the sender or receiver is not included in a whitelist.
     - `RejectedDoubleCheck`: The transaction is rejected due to failing a re-verification process.
     - `RejectedSpenderAuth`: The transaction is rejected due to failing spender authorization.
-    - `RejectedRiskControlCheck`: The transaction is rejected due to failing risk-control check.
+    - `RejectedRiskControlCheck`: The transaction is rejected due to failing the Risk Control check.
     - `RejectedApproverAuth`: The transaction is rejected due to failing approver authorization.
     - `PendingWaitSigner`: The transaction is pending for the sender to sign.
     - `FailedBySigner`: The transaction failed during the signing process.

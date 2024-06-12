@@ -9,5 +9,15 @@ enum:
   - GasStation
   - ExternalAddress
 example: CustodialAssetWallet
-description: Enumeration representing the address type of a transaction.
+description: |
+  The address type. Possible values include:
+    - `CustodialAssetWallet`: Custodial Wallets (Asset).
+    - `CustodialWeb3Wallet`: Custodial Wallets (Web3).
+    - `MPCClientControlledWallet`: MPC Wallets (Organization-Controlled).
+    - `MPCUserControlledWallet`: MPC Wallets (User-Controlled).
+    - `SafeContractWallet`: Smart Contract Wallets (Safe{Wallet}).
+    - `ExchangeAccount`: Exchange Wallets.
+    - `GasStation`: Gas stations.
+    - `ExternalAddress`: An external address. 
+
 

@@ -1,5 +1,5 @@
 type: object
-description: The base data for contract call source. #source 是什么概念
+description: The data of the source of the contract-call transaction.
 required:
   - source_type
   - wallet_id
@@ -14,5 +14,5 @@ properties:
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   address_str:
     type: string
-    description: From address # from address 是专有名词吗，还是用 the address of the transaction initiator 之类的解释
+    description: The source address. 
     example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"

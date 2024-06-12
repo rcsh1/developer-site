@@ -17,12 +17,12 @@ properties:
     example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
   cobo_id:
     type: string
-    description: Cobo ID # what is cobo ID 
+    description: Cobo ID #dev what is cobo ID? account ID?
     example: '20231213122855000000000000000000'
   request_id:
     type: string
     description: The Request ID.
-    example: "web_send_by_user_327_1610444045047" # somewhere double quotes some single quotes
+    example: "web_send_by_user_327_1610444045047" 
   type:
     $ref: './transaction_type.yaml'
   status:
@@ -34,7 +34,7 @@ properties:
     example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
-    description: The ID of the blockchain on which the token operates.
+    description: The chain ID.
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
@@ -45,7 +45,7 @@ properties:
     $ref: './fees/transaction_fee.yaml'
   initiator:
     type: string
-    description: The transaction initiator. # the example seems like an external code, where from
+    description: The transaction initiator. #dev 能填哪些值？
     example: "API Prod Key #1"
   initiator_type:
     $ref: './transaction_initiator_type.yaml'
@@ -67,7 +67,7 @@ properties:
   block_time:
     type: integer
     format: int64
-    description: Block time # what's this
+    description: Block time #dev what's this
     example: 1717740319
   block_hash:
     type: string
@@ -81,7 +81,7 @@ properties:
     type: string
     description: The transaction hash.
     example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
-  replacement: # dont know what replace is
+  replacement: #dev dont know what replace is
     type: object
     properties:
       type:
@@ -113,16 +113,24 @@ properties:
     example: "withdrawal to exchange trading account"
   force_internal:
     type: boolean
-    description: 
-      Whether the transfer request will be executed as a loop transfer. # should this be "whether the transfer will be executed as a offchain transfer?"
+    description: |
+      Whether the transfer request will be executed as a loop transfer. #dev should this be "whether the transfer will be executed as a offchain transfer?"
+        -`true`: 
+        -`false`: 
     example: false
   force_external:
     type: boolean
-    description: Whether the transfer request will be executed as a onchain transfer.
+    description:  |
+      Whether the transfer will be executed as an onchain transfer.
+        -`true`: The transfer will be executed as an onchain transfer.
+        -`false`: The transfer will not be executed as an onchain transfer.
     example: false
   is_loop:
     type: boolean
-    description: Whether the transfer is a loop transfer. # what's the difference between this and force_internal?
+    description:  |
+      Whether the transfer is a loop transfer. 
+        -`true`: The transfer is a loop transfer.
+        -`false`: The transfer is not a loop transfer.
     example: false
   created_time:
     type: number

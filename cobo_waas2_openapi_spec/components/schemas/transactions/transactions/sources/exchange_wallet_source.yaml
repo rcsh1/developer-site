@@ -11,10 +11,10 @@ properties:
     $ref: '../../../wallets/exchanges/exchange_id.yaml'
   wallet_id:
     type: string
-    description: The ID of the wallet that made the transfer.
+    description: The ID of the wallet that the transfer is from.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   sub_wallet_id:
     type: string
-    description: The exchange trading account or a sub-wallet that made the transfer. # is this external code
+    description: The exchange trading account or a sub-wallet that the transfer is from. 
     example: 'Asset'

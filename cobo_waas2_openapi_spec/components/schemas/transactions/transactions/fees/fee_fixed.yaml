@@ -1,5 +1,5 @@
 type: object
-description: The estimated transaction fee in fee_coin. # fee coin
+description: The estimated transaction fee. 
 required:
   - fee_type
 allOf:
@@ -13,6 +13,6 @@ allOf:
         example: 'ETH_USDT'
       fee_used:
         type: string
-        description: The fee amount in fee_coin. # fee coin
+        description: The fee amount. 
         example: "0.1"
   - $ref: '../../fees/fee_max_fee_amount.yaml'

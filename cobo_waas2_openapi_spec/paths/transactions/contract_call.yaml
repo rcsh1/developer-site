@@ -2,11 +2,10 @@ post:
   tags:
     - Transactions
   operationId: create_contract_call_transaction
-  summary: Create transaction to call smart contract #calldata 是什么？which can then be 这句不懂
+  summary: Create transaction to call smart contract #dev Upon successful creation, a transaction request is returned, which can then be submitted to the blockchain for execution.这句是否可以删除.body 里没有 function to call 这个属性
   description: |
     This operation creates a transaction to call a function within a smart contract on the blockchain.
-    The request body must include details such as the contract address, function to call, and any required parameters encoded as the calldata.
-    Upon successful creation, a transaction request is returned, which can then be submitted to the blockchain for execution.
+    The request body must include details such as the source address, destination address, and the function to call.
     Note: Currenly this operation only applies to ethereum-like blockchains.
   security:
     - CoboAuth: []

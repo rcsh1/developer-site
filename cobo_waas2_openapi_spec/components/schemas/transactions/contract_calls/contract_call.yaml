@@ -1,5 +1,5 @@
 type: object
-description: The data for creating transactions to call a smart contract
+description: The data of a transaction that calls a smart contract
 required:
   - request_id
   - request_type
@@ -16,7 +16,7 @@ properties:
     $ref: '../request_type.yaml'
   chain_id:
     type: string
-    description: The ID of the blockchain on which the token operates. # 有的地方就只写 chain ID，有什么规则吗？
+    description: The chain ID. 
     example: 'ETH'
   source:
     $ref: './sources/contract_call_source.yaml'
@@ -25,10 +25,10 @@ properties:
     properties:
       address_str:
         type: string
-        description: To address # 同 from address
+        description: The destination address.
         example: "bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v"
       value:
-        type: string # 下面的例子没懂什么意思，1.5 的绝对值不还是1.5吗，还是说是不带单位的意思
+        type: string #dev 下面的例子没懂什么意思，1.5 的绝对值不还是1.5吗，还是说是不带单位的意思
         description: >
           The absolute value of the transaction value. For example, if you trade 1.5 ETH, then the value is 1.5. 
         example: '1.5'

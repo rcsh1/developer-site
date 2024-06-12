@@ -1,5 +1,5 @@
 type: object
-description: The data of a transfer transaction.
+description: The data of a transfer transaction. #dev amount 是 required 但properties里没有列出
 required:
   - request_id
   - request_type
@@ -24,13 +24,13 @@ properties:
     $ref: './destinations/transfer_destination.yaml'
   category_names:
     type: array
-    description: The category names for transfer. # this serves as a comment?
+    description: The custom category for you to identify your transactions.
     items:
       type: string
       example: 'Trading'
   description:
     type: string
-    description: The description for the transfer.
+    description: The description of the transfer.
     example: 'Transfer from wallet'
   fee:
     $ref: '../fees/transaction_fee.yaml'
