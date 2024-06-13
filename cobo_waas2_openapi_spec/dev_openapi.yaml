@@ -976,6 +976,24 @@ paths:
           $ref: '#/components/responses/createTransactionRequestResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
+  /transactions/message_sign:
+    post:
+      tags:
+        - Transactions
+      operationId: create_message_sign_transaction
+      summary: Create transaction to sign a message
+      description: |
+        This endpoint generates a transaction to sign a message using cryptographic techniques.
+        Users can provide the message to sign in the request body, and the response will contain the transaction request.
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/createMessageSignBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createTransactionRequestResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
   /transactions:
     get:
       tags:
@@ -3400,7 +3418,6 @@ components:
         - request_type
         - source
         - token_id
-        - amount
         - destination
       properties:
         request_id:
