@@ -5,4 +5,8 @@ enum: [
     "Recovery",
 ]
 example: "KeyGen"
-description: The type of tss request, keygen is key generation
+description: |
+    The type of tss request.
+    KeyGen is key generation
+    KeyGenFromKeyGroup is generate RecoveryKeyGroup secret
+    Recovery is generate MainKeyGroup secret from RecoveryKeyGroup
