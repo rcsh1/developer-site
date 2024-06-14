@@ -343,6 +343,7 @@ paths:
       summary: Delete wallet by ID
       description: |
         This operation deletes the specified wallet.
+
         <Note>This operation is applicable to Exchange Wallets only.</Note>
       security:
         - CoboAuth: []
@@ -363,6 +364,8 @@ paths:
       summary: List spendable UTXOs
       description: |
         The operation retrieves a list of spendable unspent transaction outputs (UTXOs) for the specified wallet and token.
+
+        <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
         - CoboAuth: []
       parameters:
@@ -384,6 +387,8 @@ paths:
       summary: Lock/Unlock the UTXOs in tx hash list
       description: |
         Lock/Unlock the UTXOs in the given tx hash list. The Locked UTXO can not be transferred until unlocked.
+
+        <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
         - CoboAuth: []
       requestBody:
@@ -424,6 +429,8 @@ paths:
       summary: Add address to wallet
       description: |
         This operation creates one or more addresses for the specified wallet.
+
+        <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
         - CoboAuth: []
       requestBody:
@@ -479,6 +486,7 @@ paths:
       summary: List token balances by wallet
       description: |
         The operation retrieves a list of token balances within the specified wallet.
+
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
         - CoboAuth: []
@@ -503,6 +511,8 @@ paths:
       summary: List token balances by address
       description: |
         The operation retrieves a list of token balances for a specified address within an MPC Wallet. 
+
+        <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
         - CoboAuth: []
       parameters:
@@ -3619,7 +3629,6 @@ components:
         - request_type
         - source
         - token_id
-        - amount
         - destination
       properties:
         request_id:
@@ -5200,12 +5209,9 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EstimationFee'
+            type: array
+            items:
+              $ref: '#/components/schemas/EstimationFee'
     transactionFeeResponse:
       description: Successful get a transaction detail
       content:
