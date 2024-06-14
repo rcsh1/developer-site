@@ -3,9 +3,8 @@ get:
     - Transactions
   operationId: get_chain_fee_price
   summary: Get transaction fee price
-  #dev chain id 和 token id 都不是 required，不填会返回什么 fees？
   description: |
-    This opetaion retrieves the transaction fee price. You can specify the chain ID or token ID that you want to query. 
+    This opetaion retrieves the transaction fee price. You need to specify either the chain ID or token ID that you want to query. 
   security:
     - CoboAuth: []
   parameters:

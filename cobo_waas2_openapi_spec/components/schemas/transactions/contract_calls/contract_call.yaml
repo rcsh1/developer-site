@@ -1,5 +1,5 @@
 type: object
-description: The data of a transaction that calls a smart contract
+description: The data of a transaction that interacts with a smart contract
 required:
   - request_id
   - request_type
@@ -28,14 +28,14 @@ properties:
         description: The destination address.
         example: "bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v"
       value:
-        type: string #dev 下面的例子没懂什么意思，1.5 的绝对值不还是1.5吗，还是说是不带单位的意思
+        type: string 
         description: >
-          The absolute value of the transaction value. For example, if you trade 1.5 ETH, then the value is 1.5. 
+          The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5. 
         example: '1.5'
       calldata:
         type: string
         description: >
-          The calldata for this transaction. It is commonly used as part of contract interaction.
+           The data that is used to invoke a specific function or method within the specified contract at the destination address.
         format: byte
         example: "U3dhZ2dlciByb2Nrcw=="
   fee:

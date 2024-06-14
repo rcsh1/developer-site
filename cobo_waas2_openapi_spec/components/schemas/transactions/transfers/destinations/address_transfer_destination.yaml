@@ -1,7 +1,7 @@
 type: object
 description: |
   The data of the an external address destination. 
-  You can provide either of the `account_output` or the `utxo_outputs` parameters. #dev 不懂
+  Provide the `account_output` property for the destination on account-based chains such as Ethereum, or the `utxo_outputs` property for the destination on UTXO-based chains such as Bitcoin. 
 required:
   - destination_type
 properties:
@@ -16,13 +16,12 @@ properties:
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       memo:
         type: string
-        description: The destination address. memo #dev
+        description: The memo that identifies a transaction in order to credit the correct account. For transfers out of Cobo Portal, it is highly recommended to include a memo for the chains such as XRP, EOS, XLM, IOST, BNB_BNB, ATOM, LUNA, and TON.
         example: "82840924"
       amount:
         type: string
         description: >
-          Transaction value (Note that this is an absolute value. #dev
-          If you trade 1.5 ETH, then the value is 1.5)
+          The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5.
         example: '1.5'
   utxo_outputs:
     type: object
@@ -39,28 +38,27 @@ properties:
             amount:
               type: string
               description: >
-                Transaction value (Note that this is an absolute value.#dev
-                If you trade 1.5 ETH, then the value is 1.5)
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5.
               example: '1.5'
             script:
               type: string
-              description: Script of the output #dev
+              description: The script of the output. It is a programmable code fragment that defines the conditions under which the UTXO can be spent. 
               example: "76a914fb37342f6275b13936799def06f2DEMO"
       change_address:
         type: string
-        description: Change address #dev
+        description: The address used to receive the remaining funds or change from the transaction.
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"
   force_internal:
     type: boolean
     description: |
-      Whether the transfer to be executed as a loop transfer. #dev
-        -`true`: The transfer will be executed as an onchain transfer.
-        -`false`: The transfer will not be executed as an onchain transfer.
+      Whether the transfer request must be executed as a loop transfer. 
+        -`true`: The transfer request must be executed as a loop transfer. 
+        -`false`: The transfer may not be executed as a loop transfer.
     example: false
   force_external:
     type: boolean
     description: |
-      Whether the transfer will be executed as an onchain transfer.
-        -`true`: The transfer will be executed as an onchain transfer.
-        -`false`: The transfer will not be executed as an onchain transfer.
+      Whether the transfer must be executed as an onchain transfer.
+        -`true`: The transfer must be executed as an onchain transfer.
+        -`false`: The transfer may not be executed as an onchain transfer.
     example: false

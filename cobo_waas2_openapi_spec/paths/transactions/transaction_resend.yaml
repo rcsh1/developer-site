@@ -6,7 +6,9 @@ post:
   operationId: resend_transaction_by_id
   summary: Resend transaction by ID
   description: |
-    This operation resends or re-attempts a specified transaction. Resending a transaction initiates a new attempt to process the transaction that failed previously.
+    This operation resends a specified transaction. 
+    Resending a transaction initiates a new attempt to process the transaction that failed previously.
+    A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   requestBody:

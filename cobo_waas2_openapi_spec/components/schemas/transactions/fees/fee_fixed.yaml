@@ -1,5 +1,7 @@
 type: object
-description: The estimated transaction fee for fixed-fee chains. #dev fee when using the fixed-fee model or fee for fixed-fee chains?
+description: |
+  The transaction fee based on the fixed fee model.  
+  You can set a maximum fee amount. The transaction will fail if the transaction fee is greater then the specified amount. 
 required:
   - fee_type
 allOf:

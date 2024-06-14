@@ -1,5 +1,5 @@
 type: object
-description: The data of a transaction that signs a message
+description: The data of a transaction that signs a message. You can provide the message either as raw data or as structured data.
 required:
   - request_id
   - request_type
@@ -37,10 +37,10 @@ properties:
     properties:
       message:
         type: string
-        description: Raw data to be signed that are encoded in Base64. #dev why emphasize raw data, compared with structured data?
+        description: Raw data of the message to be signed, encoded in Base64 format. 
         example: 'YWFhYQ=='
       structured_data:
         type: string
-        description: Structured data to be signed that are encoded in JSON.
+        description: Structured data of the message to be signed, encoded in JSON format.
         example: |
           {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}

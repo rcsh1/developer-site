@@ -3,8 +3,9 @@ post:
     - Transactions
   operationId: create_message_sign_transaction
   summary: Create transaction to sign a message
-  description: #dev sign message for what? 
-    This operation creates a transaction to sign a message using cryptographic techniques. You can provide the message to be signed in the request body.
+  description: 
+    This operation creates a transaction to sign the provided message using cryptographic techniques.
+    A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   requestBody:

@@ -1,5 +1,5 @@
 type: object
-description: The data of the transaction details.
+description: The data of the a transaction.
 required:
   - transaction_id
   - transaction_type
@@ -17,7 +17,7 @@ properties:
     example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
   cobo_id:
     type: string
-    description: Cobo ID #dev what is cobo ID? account ID?
+    description: The Cobo ID for tracking the transaction.
     example: '20231213122855000000000000000000'
   request_id:
     type: string
@@ -45,19 +45,19 @@ properties:
     $ref: './fees/transaction_fee.yaml'
   initiator:
     type: string
-    description: The transaction initiator. #dev 能填哪些值？
+    description: The transaction initiator. 
     example: "API Prod Key #1"
   initiator_type:
     $ref: './transaction_initiator_type.yaml'
   confirmed_num:
     type: number
     format: int32
-    description: The transaction confirmation number.
+    description: The number of confirmation. It represents the acceptance of a new block that might contain several transactions by the blockchain network. With each subsequent block that is added to the chain, an additional confirmation is achieved for the blocks before it.
     example: 12
   confirming_threshold:
     type: integer
     format: int32
-    description: The minimum number of confirmation required for a transaction, such as 6 for the Bitcoin chain and 15 for the ETH chain.
+    description: The minimum number of confirmations required to deem a transaction secure. The common threshold is 6 for a Bitcoin transaction. 
     example: 15
   block_number:
     type: integer
@@ -67,7 +67,7 @@ properties:
   block_time:
     type: integer
     format: int64
-    description: Block time #dev what's this
+    description: The time when the block was created, in Unix timestamp format, measured in milliseconds/seconds.
     example: 1717740319
   block_hash:
     type: string
@@ -75,34 +75,34 @@ properties:
     example: "0xc9ee947f8bb6027c161888bf0d004bec05e7c2beec7e6b187dc512174e438735"
   nonce:
     type: integer
-    description: The transaction nonce.
+    description: The transaction nonce. It is a cryptographic value that increments with each transaction sent from an account. 
     example: 9
   transaction_hash:
     type: string
     description: The transaction hash.
     example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
-  replacement: #dev dont know what replace is
+  replacement: 
     type: object
     properties:
       type:
         $ref: './transaction_replacement_type.yaml'
       replaced_by_transaction_id:
         type: string
-        description: The transaction ID of the replacement.
+        description: The transaction ID of the transaction that this transaction was replaced by.
         format: uuid
         example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
       replaced_by_transaction_hash:
         type: string
-        description: The transaction hash of the replacement.
+        description: The transaction hash of the transaction that this transaction was replaced by.
         example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
       replaced_transaction_id:
         type: string
-        description: The transaction ID of the replaced transaction.
+        description: The transaction ID of the transaction that this transaction replaced.
         format: uuid
         example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
       replaced_transaction_hash:
         type: string
-        description: The transaction hash of the replaced transaction.
+        description: The transaction hash of the transaction that this transaction replaced.
         example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
   category:
     type: array
@@ -114,16 +114,16 @@ properties:
   force_internal:
     type: boolean
     description: |
-      Whether the transfer request will be executed as a loop transfer. #dev should this be "whether the transfer will be executed as a offchain transfer?"
-        -`true`: 
-        -`false`: 
+      Whether the transfer request must be executed as a loop transfer. 
+        -`true`: The transfer request must be executed as a loop transfer. 
+        -`false`: The transfer may not be executed as a loop transfer.
     example: false
   force_external:
     type: boolean
     description:  |
-      Whether the transfer will be executed as an onchain transfer.
-        -`true`: The transfer will be executed as an onchain transfer.
-        -`false`: The transfer will not be executed as an onchain transfer.
+      Whether the transfer must be executed as an onchain transfer.
+        -`true`: The transfer must be executed as an onchain transfer.
+        -`false`: The transfer may not be executed as an onchain transfer.
     example: false
   is_loop:
     type: boolean

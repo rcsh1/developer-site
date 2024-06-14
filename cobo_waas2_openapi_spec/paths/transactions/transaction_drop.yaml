@@ -6,7 +6,9 @@ post:
   operationId: drop_transaction_by_id
   summary: Drop transaction by ID
   description: |
-    This operation drops or removes a specified transaction. Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the sender to replace their unconfirmed transaction with a different version of that transaction that has a higher transaction fee.
+    This operation drops a specified transaction. 
+    Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be dropped if it is unconfirmed and has not yet been added to a block on the blockchain.
+    A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   requestBody:

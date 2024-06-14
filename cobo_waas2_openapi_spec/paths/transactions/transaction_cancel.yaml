@@ -6,7 +6,8 @@ post:
   operationId: cancel_transaction_by_id
   summary: Cancel transaction by ID
   description: |
-    This operation cancels a specified transaction. A transaction can be cancelled if it has not been approved by Risk Control.
+    This operation cancels a specified transaction. 
+    A transaction can be cancelled if it has not been broadcast. A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   responses:
