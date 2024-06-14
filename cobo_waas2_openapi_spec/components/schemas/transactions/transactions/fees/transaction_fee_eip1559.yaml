@@ -1,8 +1,7 @@
 type: object
 description: |
   The transaction fee based on the EIP-1559 fee model for some Ethereum Virtual Machine (EVM) chains. 
-  The estimated transaction fee is calculated by multiplying the sum of the base fee and the maximum priority fee by the gas limit. This can be expressed as: Transaction fee = (base fee + maximum priority fee) * gas limit.
-  #dev fee used 和 gas used 在公式没有体现
+  The transaction fee is calculated by multiplying the sum of the base fee price and the priority fee by the used gas. This can be expressed as: Transaction fee = (base fee price + maximum priority fee) * used gas.
 required:
   - fee_type
 allOf:
@@ -12,7 +11,7 @@ allOf:
         $ref: '../../fees/fee_type.yaml'
       fee_used:
         type: string
-        description: The fee amount. 
+        description: The transaction fee. 
         example: "0.1"
       gas_used:
         type: string

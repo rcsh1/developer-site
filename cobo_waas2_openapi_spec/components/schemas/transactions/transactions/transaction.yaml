@@ -114,23 +114,23 @@ properties:
   force_internal:
     type: boolean
     description: |
-      Whether the transfer request must be executed as a loop transfer. 
-        -`true`: The transfer request must be executed as a loop transfer. 
-        -`false`: The transfer may not be executed as a loop transfer.
+      Whether the transfer request must be executed as an off-chain transfer. 
+        -`true`: The transfer request must be executed an off-chain transfer. 
+        -`false`: The transfer may not be executed as an off-chain transfer.
     example: false
   force_external:
     type: boolean
     description:  |
-      Whether the transfer must be executed as an onchain transfer.
-        -`true`: The transfer must be executed as an onchain transfer.
-        -`false`: The transfer may not be executed as an onchain transfer.
+      Whether the transfer must be executed as an on-chain transfer.
+        -`true`: The transfer must be executed as an on-chain transfer.
+        -`false`: The transfer may not be executed as an on-chain transfer.
     example: false
   is_loop:
     type: boolean
     description:  |
-      Whether the transfer is a loop transfer. 
-        -`true`: The transfer is a loop transfer.
-        -`false`: The transfer is not a loop transfer.
+      Whether the transfer is a Cobo Superloop transfer. 
+        -`true`: The transfer is a Superloop transfer.
+        -`false`: The transfer is not a Superloop transfer.
     example: false
   created_time:
     type: number

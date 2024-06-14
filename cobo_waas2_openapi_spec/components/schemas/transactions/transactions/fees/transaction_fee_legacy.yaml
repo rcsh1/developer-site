@@ -1,6 +1,7 @@
 type: object
 description: |
-  The transaction fee based on the legacy method. The estimated fee is calculated by multiplying the gas price by the gas limit: (gas price * gas limit). 
+  The transaction fee based on the legacy fee model. 
+  The transaction fee is calculated by multiplying the gas fee price by the used gas. This can be expressed as: Transaction fee = (gas price) * used gas.
 required:
   - fee_type
 allOf:
@@ -10,7 +11,7 @@ allOf:
         $ref: '../../fees/fee_type.yaml'
       fee_used:
         type: string
-        description: The fee amount. 
+        description: The transaction fee. 
         example: "0.1"
       gas_used:
         type: string
