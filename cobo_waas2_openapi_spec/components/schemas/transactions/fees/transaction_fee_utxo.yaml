@@ -1,6 +1,7 @@
 type: object
 description: |
   The transaction fee based on the fee model for the UTXO-based chains such as Bitcoin. 
+  
   The estimated fee is calculated by multiplying the fee rate by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size.
   You can set a maximum fee amount. The transaction will fail if the transaction fee is greater then the specified amount. 
 required:

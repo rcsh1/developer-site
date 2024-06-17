@@ -1,7 +1,15 @@
 name: destination_type
 in: query
 required: false
-description: The transaction destination type.
+description: | 
+  The transaction destination type. Possible values include:
+    - `Address`: An external address. 
+    - `ContractCall`: A transaction that interacts with a smart contract.
+    - `MessageSign`: A transaction that signs a message. 
+    - `CustodialWallet`: A Custodial Wallet.
+    - `MPCWallet`: An MPC Wallet.
+    - `SafeWallet`: A Safe{Wallet}.
+    - `ExchangeWallet`: An Exchange Wallet.
 schema:
   type: array
   items:
