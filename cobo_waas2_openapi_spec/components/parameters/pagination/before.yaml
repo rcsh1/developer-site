@@ -1,7 +1,9 @@
 name: before
 in: query
-description: An object ID which serves as a cursor for pagination. For example, if you specify `before` as `foo`, the request will retrieve a list of data objects that end before the object with the object ID `foo`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
-
+description: |
+  An object ID which serves as a cursor for pagination. For example, if you specify `before` as `foo`, the request will retrieve a list of data objects that end before the object with the object ID `foo`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+  
+  If you set both `after` or `before`, only the setting of `before` will take effect.
 required: false
 schema:
   type: string
