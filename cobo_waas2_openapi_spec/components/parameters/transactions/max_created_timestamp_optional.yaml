@@ -1,7 +1,7 @@
 name: max_created_timestamp
 in: query
 required: false
-description: The maximum transaction creation timestamp in Unix epoch seconds
+description: The time when the transaction was created, in Unix timestamp format, measured in milliseconds/seconds. You can use this parameter to filter transactions where the creation time is smaller than or equal to the specified value.
 schema:
   type: integer
 example: 1635744000

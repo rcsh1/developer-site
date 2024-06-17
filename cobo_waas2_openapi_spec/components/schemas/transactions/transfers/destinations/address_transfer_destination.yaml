@@ -1,5 +1,7 @@
 type: object
-description: The data for address destination. Only one of account_output or utxo_outputs needed.
+description: |
+  The data of the an external address destination. 
+  Provide the `account_output` property for the destination on account-based chains such as Ethereum, or the `utxo_outputs` property for the destination on UTXO-based chains such as Bitcoin. 
 required:
   - destination_type
 properties:
@@ -10,17 +12,16 @@ properties:
     properties:
       address_str:
         type: string
-        description: Destination address
+        description: The destination address. 
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       memo:
         type: string
-        description: Destination address memo
+        description: The memo that identifies a transaction in order to credit the correct account. For transfers out of Cobo Portal, it is highly recommended to include a memo for the chains such as XRP, EOS, XLM, IOST, BNB_BNB, ATOM, LUNA, and TON.
         example: "82840924"
       amount:
         type: string
         description: >
-          Transaction value (Note that this is an absolute value.
-          If you trade 1.5 ETH, then the value is 1.5)
+          The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5.
         example: '1.5'
   utxo_outputs:
     type: object
@@ -32,27 +33,32 @@ properties:
           properties:
             address_str:
               type: string
-              description: Destination address
+              description: The destination address.
               example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"
             amount:
               type: string
               description: >
-                Transaction value (Note that this is an absolute value.
-                If you trade 1.5 ETH, then the value is 1.5)
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5.
               example: '1.5'
             script:
               type: string
-              description: Script of the output
+              description: The script of the output. It is a programmable code fragment that defines the conditions under which the UTXO can be spent. 
               example: "76a914fb37342f6275b13936799def06f2DEMO"
       change_address:
         type: string
-        description: Change address
+        description: The address used to receive the remaining funds or change from the transaction.
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"
   force_internal:
     type: boolean
-    description: Whether the transfer to be executed as a loop transfer.
+    description: |
+      Whether the transfer request must be executed as an off-chain transfer. 
+        - `true`: The transfer request must be executed an off-chain transfer. 
+        - `false`: The transfer may not be executed as an off-chain transfer.
     example: false
   force_external:
     type: boolean
-    description: Whether the transfer to be executed as a onchain transfer.
+    description: |
+      Whether the transfer must be executed as an on-chain transfer.
+      - `true`: The transfer must be executed as an on-chain transfer.
+      - `false`: The transfer may not be executed as an on-chain transfer.
     example: false

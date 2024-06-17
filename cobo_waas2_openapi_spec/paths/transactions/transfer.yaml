@@ -2,11 +2,11 @@ post:
   tags:
     - Transactions
   operationId: create_transfer_transaction
-  summary: Create a transfer transaction
+  summary: Create transfer transaction
   description: |
-    This endpoint generates a transaction to transfer funds from one account to another.
-    Users need to provide details such as sender and recipient addresses, token id, and amount to transfer in the request body.
-    Upon successful creation, a transaction request is returned, which can then be used for tracking the process.
+    This operation transfers assets within, into, and out of the four wallet types available on Cobo Portal. 
+    
+    A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   requestBody:

@@ -1,5 +1,5 @@
 type: object
-description: The base data for contract call source.
+description: The data of the wallet as the source of the contract call transaction.
 required:
   - source_type
   - wallet_id
@@ -9,10 +9,10 @@ properties:
     $ref: './source_type.yaml'
   wallet_id:
     type: string
-    description: Unique id of the wallet to initiate contract call from.
+    description: The ID of the wallet from which the contract call is initiated.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   address_str:
     type: string
-    description: From address
+    description: The source address. 
     example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"

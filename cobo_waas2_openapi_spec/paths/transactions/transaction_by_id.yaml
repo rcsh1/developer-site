@@ -1,13 +1,12 @@
 parameters:
-  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml"
+  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml" 
 get:
   tags:
     - Transactions
   operationId: get_transaction_by_id
-  summary: Retrieve transaction information by ID
+  summary: Get transaction information by ID
   description: |
-    This endpoint provides detailed information about a transaction based on its unique identifier.
-    Users can retrieve various details such as transaction status, timestamps, and involved parties.
+    This operation retrieves detailed information about a specified transaction, such as the transaction status, source, destination, and timestamp.
   security:
     - CoboAuth: []
   responses:

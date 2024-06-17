@@ -1,5 +1,5 @@
 type: object
-description: The data for transaction source information.
+description: The data of the wallet source.
 required:
   - source_type
   - wallet_id
@@ -8,6 +8,6 @@ properties:
     $ref: './source_type.yaml'
   wallet_id:
     type: string
-    description: Unique id of the wallet to transfer from.
+    description: The ID of the wallet that the transfer is from.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'

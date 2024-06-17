@@ -1,5 +1,5 @@
 type: object
-description: The data for transaction destination information.
+description: The general data of the destination of a wallet transaction. 
 required:
   - destination_type
   - wallet_id
@@ -11,7 +11,7 @@ properties:
     $ref: './destination_type.yaml'
   wallet_id:
     type: string
-    description: Unique id of the wallet to transfer from.
+    description: The ID of the wallet that the transfer is from.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   token_id:
@@ -20,19 +20,18 @@ properties:
     example: 'ETH_USDT'
   asset_id:
     type: string
-    description: ID of the asset. Used to group token balance when needed.
+    description: The asset ID. It can be used to group token balance.
     example: 'USDT'
   address_str:
     type: string
-    description: Destination address
+    description: The destination address.
     example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
   memo:
     type: string
-    description: Destination address memo
+    description: The memo that identifies a transaction in order to credit the correct account. For transfers out of Cobo Portal, it is highly recommended to include a memo for the chains such as XRP, EOS, XLM, IOST, BNB_BNB, ATOM, LUNA, and TON.
     example: "82840924"
   amount:
     type: string
     description: >
-      Transaction value (Note that this is an absolute value.
-      If you trade 1.5 ETH, then the value is 1.5)
+      The transaction amount. For exmaole, if you trade 1.5 ETH, then the amount is 1.5.
     example: '1.5'

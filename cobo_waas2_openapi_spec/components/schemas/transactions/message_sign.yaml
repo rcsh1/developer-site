@@ -1,5 +1,5 @@
 type: object
-description: The data for create a message sign transaction.
+description: The data of a transaction that signs a message. You can provide the message either as raw data or as structured data.
 required:
   - request_id
   - request_type
@@ -9,13 +9,13 @@ required:
 properties:
   request_id:
     type: string
-    description: Unique id of the request.
+    description: The request ID.
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   request_type:
     $ref: './request_type.yaml'
   chain_id:
     type: string
-    description: The blockchain on which the token operates.
+    description: The chain ID. 
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
@@ -23,12 +23,12 @@ properties:
     properties:
       wallet_id:
         type: string
-        description: Unique id of the wallet to sign message.
+        description: The ID of the wallet that signs the message.
         format: uuid
         example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
       address_str:
         type: string
-        description: From address
+        description: The source address. 
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       mpc_used_key_group:
         $ref: './mpc_signing_group.yaml'
@@ -37,10 +37,10 @@ properties:
     properties:
       message:
         type: string
-        description: Raw data to be signed, Base 64 encoded
+        description: Raw data of the message to be signed, encoded in Base64 format. 
         example: 'YWFhYQ=='
       structured_data:
         type: string
-        description: Structured data to be signed, JSON encoded
+        description: Structured data of the message to be signed, encoded in JSON format.
         example: |
           {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}

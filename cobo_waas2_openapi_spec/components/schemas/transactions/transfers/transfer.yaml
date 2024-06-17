@@ -1,5 +1,5 @@
 type: object
-description: The base data for transfer transaction.
+description: The data of a transfer transaction. 
 required:
   - request_id
   - request_type
@@ -9,7 +9,7 @@ required:
 properties:
   request_id:
     type: string
-    description: Unique id of the request.
+    description: The request ID.
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   request_type:
     $ref: '../request_type.yaml'
@@ -23,13 +23,13 @@ properties:
     $ref: './destinations/transfer_destination.yaml'
   category_names:
     type: array
-    description: The category names for transfer.
+    description: The custom category for you to identify your transactions.
     items:
       type: string
       example: 'Trading'
   description:
     type: string
-    description: The description for transfer.
+    description: The description of the transfer.
     example: 'Transfer from wallet'
   fee:
     $ref: '../fees/transaction_fee.yaml'

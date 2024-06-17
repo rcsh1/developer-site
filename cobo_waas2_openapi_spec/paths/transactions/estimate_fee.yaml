@@ -3,9 +3,8 @@ post:
     - Transactions
   operationId: estimate_fee
   summary: Estimate transaction fee
-  description:  |
-    This endpoint calculates the fee required for a transaction based on factors such as network congestion and transaction complexity.
-    Users can provide transaction details in the request body, and the response will contain the estimated fee.
+  description:  
+    This operation estimates the transaction fee of a transfer transaction or a smart-contract transaction, based on factors such as network congestion and transaction complexity.
   security:
     - CoboAuth: []
   requestBody:

@@ -1,7 +1,18 @@
 name: status
 in: query
 required: false
-description: The status of a transaction
+description: |
+  The transaction status. Possible values include: 
+    - `Submitted`: The transaction is submitted.
+    - `PendingScreening`: The transaction is pending for screening by Risk Control. 
+    - `PendingAuthorization`: The transaction is pending for user authorization.
+    - `PendingSignature`: The transaction is pending for signature. 
+    - `Queued`: The transaction is queued. 
+    - `Broadcasting`: The transaction is broadcasting.
+    - `Confirming`: The transaction is confirming.
+    - `Completed`: The transaction is completed.
+    - `Failed`: The transaction failed.
+    - `Rejected`: The transaction is rejected.
 schema:
   type: array
   items:

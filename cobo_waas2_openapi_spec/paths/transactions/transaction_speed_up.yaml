@@ -6,8 +6,11 @@ post:
   operationId: speedup_transaction_by_id
   summary: Speed up transaction by ID
   description: |
-    This endpoint allows users to speed up (accelerate) a transaction based on its unique identifier.
-    Speeding up a transaction involves adjusting the fee to prioritize its processing.
+    This operation speeds up a specified transaction. 
+
+    Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be sped up if it is unconfirmed and has not yet been added to a block on the blockchain. 
+    
+    A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   requestBody:
