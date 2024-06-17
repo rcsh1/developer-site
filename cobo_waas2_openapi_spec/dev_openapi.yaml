@@ -98,7 +98,7 @@ paths:
       description: |
         This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
 
-        It provides details such as chain ID, chain name, and other relevant information. The chain metadata is publicly available without any permission restrictions.
+        It provides details such as chain ID, chain name, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -118,9 +118,9 @@ paths:
       operationId: get_tokens
       summary: List token metadata
       description: |
-        This operation retrieves the metadata of the tokens stored under your account.
+        This operation retrieves the metadata of all tokens supported by Cobo WaaS 2.0.
 
-        It provides details such as token ID, token symbol, and other relevant information. The token metadata is publicly available without any permission restrictions.
+        It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token ID.  The token metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -140,7 +140,7 @@ paths:
       operationId: get_supported_chains
       summary: List supported chains
       description: |
-        This operation retrieves all chains supported by the specified wallet type or subtype.
+        This operation retrieves all chains supported by a specific wallet type or subtype.
       security:
         - CoboAuth: []
       parameters:
@@ -161,9 +161,7 @@ paths:
       operationId: get_supported_tokens
       summary: List supported tokens
       description: |
-        This operation retrieves all supported tokens for the organization associated with your API key. You can also specify the wallet type, subtype, and chain ID you want to query.
-
-        You can retrieve chain IDs by using the [List supported chains](/api-references/v2/wallets/list-supported-chains) operation.
+        This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain ID.
       security:
         - CoboAuth: []
       parameters:
@@ -185,7 +183,7 @@ paths:
       operationId: get_enabled_chains
       summary: List enabled chains
       description: |
-        This operation retrieves all the chains enabled for the organization associated with your API key. You can also specify the wallet type and subtype you want to query.
+        This operation retrieves all the chains that can be used by your organization. You can filter the result by wallet type or subtype.
       security:
         - CoboAuth: []
       parameters:
@@ -206,9 +204,7 @@ paths:
       operationId: get_enabled_tokens
       summary: List enabled tokens
       description: |
-        This operation retrieves all tokens that can be used by the organization associated with your API key. You can filter the result by wallet type, subtype, and chain ID.
-
-        You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.
+        This operation retrieves all the tokens that can be used by your organization. You can filter the result by wallet type, subtype, and chain ID.
       security:
         - CoboAuth: []
       parameters:
@@ -254,7 +250,7 @@ paths:
       description: |
         This operation retrieves the information of all wallets under your organization. You can filter the result by wallet type, subtype, and Vault ID (for MPC Wallets).
 
-        <Note>Ensure that either the wallet type or subtype is provided at least.</Note>
+        <Note>You should specify either the wallet type or subtype, or both.</Note>
       security:
         - CoboAuth: []
       parameters:
@@ -282,7 +278,7 @@ paths:
       operationId: get_wallet_by_id
       summary: Retrieve wallet information by ID
       description: |
-        This operation retrieves detailed information about the specified wallet.
+        This operation retrieves the detailed information about a specified wallet.
       security:
         - CoboAuth: []
       responses:
@@ -300,7 +296,7 @@ paths:
       description: |
         This operation updates the information of a specified wallet.
 
-        <Note>This operation is applicable to Exchange Wallets to update the API key etc. For other wallet type, only the name can be updated.</Note>
+        For Exchange Wallets, you can update the API key, API secret, and other information about your exchange accounts with this operation. For other wallet types, you can only update the wallet name.
       security:
         - CoboAuth: []
       requestBody:
@@ -318,7 +314,7 @@ paths:
       operationId: delete_wallet_by_id
       summary: Delete wallet by ID
       description: |
-        This operation deletes the specified wallet.
+        This operation deletes a specified wallet.
 
         <Note>This operation is applicable to Exchange Wallets only.</Note>
       security:
@@ -339,7 +335,7 @@ paths:
       operationId: get_spendable_list
       summary: List spendable UTXOs
       description: |
-        The operation retrieves a list of spendable unspent transaction outputs (UTXOs) for the specified wallet and token.
+        The operation retrieves a list of spendable unspent transaction outputs (UTXOs) for a specified wallet and token.
 
         <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
@@ -360,9 +356,9 @@ paths:
       tags:
         - Wallets
       operationId: lock_spendable_list
-      summary: Lock/Unlock the UTXOs in tx hash list
+      summary: Lock/Unlock UTXOs
       description: |
-        Lock/Unlock the UTXOs in the given tx hash list. The Locked UTXO can not be transferred until unlocked.
+        This operation locks/unlocks the UTXOs with specified transaction hashes. Locked UTXOs cannot be transferred until unlocked.
 
         <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
@@ -379,7 +375,7 @@ paths:
       tags:
         - Wallets
       operationId: get_max_transferable_value
-      summary: Get max transferable value
+      summary: Get maximum transferable value
       description: |
         This operation retrieves the maximum amount that you can transfer from a wallet or a specified wallet address, along with the corresponding transaction fee.
       security:
@@ -404,7 +400,7 @@ paths:
       operationId: add_wallet_address
       summary: Add address to wallet
       description: |
-        This operation creates one or more addresses for the specified wallet.
+        This operation creates one or more addresses for a specified wallet.
 
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
@@ -422,7 +418,7 @@ paths:
       operationId: list_addresses
       summary: List wallet addresses by wallet ID
       description: |
-        This operation retrieves a list of addresses under the specified wallet.
+        This operation retrieves a list of addresses under a specified wallet.
       security:
         - CoboAuth: []
       parameters:
@@ -443,7 +439,7 @@ paths:
       operationId: get_address_validity
       summary: Check address validity
       description: |
-        This operation verifies if the given address is valid for the specified token.
+        This operation verifies if a given address is valid for a specific token.
       security:
         - CoboAuth: []
       parameters:
@@ -1356,7 +1352,7 @@ components:
           example: ETH_USDT
         chain_id:
           type: string
-          description: The blockchain on which the token operates.
+          description: The ID of the chain on which the token operates.
           example: ETH
         asset_id:
           type: string
@@ -1384,15 +1380,15 @@ components:
           example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
         fee_token_id:
           type: string
-          description: The fee token ID.
+          description: The fee token ID. A fee token is the token with which you pay transaction fees.
           example: ETH
         can_deposit:
           type: boolean
-          description: Indicates if deposits are enabled for this token.
+          description: Whether deposits are enabled for this token.
           example: true
         can_withdraw:
           type: boolean
-          description: Indicates if withdrawals are enabled for this token.
+          description: Whether withdrawals are enabled for this token.
           example: true
     ChainInfo:
       type: object
@@ -1402,7 +1398,7 @@ components:
       properties:
         chain_id:
           type: string
-          description: The chain on which the token operates.
+          description: The chain ID.
           example: ETH
         symbol:
           type: string
@@ -1422,7 +1418,7 @@ components:
           example: 'https://etherscan.io/address/{address}'
         require_memo:
           type: boolean
-          description: Whether the chain require memo.
+          description: Whether the chain requires a memo.
           example: false
     WalletType:
       type: string
@@ -1432,11 +1428,16 @@ components:
         - SmartContract
         - Exchange
       example: Custodial
-      x-enumDescriptions:
-        Custodial: Custodial Wallets.
-        MPC: MPC Wallets.
-        SmartContract: Smart Contract Wallets.
-        Exchange: Exchange Wallets.
+      description: |
+        The wallet type.
+
+        - `Custodial`: Custodial Wallets
+
+        - `MPC`: MPC Wallets
+
+        - `SmartContract`: Smart Contract Wallets
+
+        - `Exchange`: Exchange Wallets
     WalletSubtype:
       type: string
       enum:
@@ -1448,20 +1449,36 @@ components:
         - User-Controlled
         - 'Safe{Wallet}'
       example: Asset
+      description: |
+        The wallet subtype.
+
+        - `Asset`: Custodial Wallets (Asset Wallets)
+
+        - `Web3`: Custodial Wallets (Web3 Wallets)
+
+        - `Main`: Exchange Wallets (Main Account)
+
+        - `Sub`: Exchange Wallets (Sub Account)
+
+        - `Org-Controlled`: MPC Wallets (Organization-Controlled Wallets)
+
+        - `User-Controlled`: MPC Wallets (User-Controlled Wallets)
+
+        - `Safe{Wallet}`: Smart Contract Wallets (Safe{Wallet})
     SmartContractWalletType:
       type: string
       enum:
         - SafeWallet
       example: SafeWallet
       default: SafeWallet
-      description: The Smart Contract Wallet type.
+      description: The Smart Contract Wallet type. This property is applicable to Smart Contract Wallets only.
     SmartContractWalletOperationType:
       type: string
       enum:
         - CoboSafe
       example: CoboSafe
       default: CoboSafe
-      description: The way you interact with the Smart Contract Wallet.
+      description: The way you interact with the Smart Contract Wallet. This property is applicable to Smart Contract Wallets only.
     ExchangeId:
       type: string
       enum:
@@ -1470,7 +1487,7 @@ components:
         - deribit
         - bybit
         - gate
-      description: The ID of the exchange.
+      description: The ID of the exchange. This property is applicable to Exchange Wallets only.
       example: binance
     TokenBalance:
       type: object
@@ -1493,7 +1510,7 @@ components:
           properties:
             total:
               type: string
-              description: 'The total balance, which is the sum of the remaining fields.'
+              description: 'The total balance, which is the sum of the available, pending, and locked balances.'
               example: '100.0'
             available:
               type: string
@@ -1531,11 +1548,11 @@ components:
               properties:
                 chain_id:
                   type: string
-                  description: The chain the wallet operates on.
+                  description: The ID of the chain on which the wallet operates. This property is applicable to Smart Contract Wallets only.
                   example: ETH
                 label:
                   type: string
-                  description: The wallet label.
+                  description: The wallet label. This property is applicable to Smart Contract Wallets only.
                   example: My Wallet
         - type: object
           required:
@@ -1548,7 +1565,7 @@ components:
               format: address
               pattern: '^0x[a-fA-F0-9]{40}$'
               example: '0x1234567890123456789012345678901234567890'
-              description: The Smart Contract Wallet address.
+              description: 'The Smart Contract Wallet address. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
             owners:
               type: array
               items:
@@ -1556,18 +1573,18 @@ components:
                 format: address
                 pattern: '^0x[a-fA-F0-9]{40}$'
                 example: '0x1234567890123456789012345678901234567890'
-              description: 'The owners of the Smart Contract Wallet. This field is required when creating a new Safe{Wallet}.'
+              description: 'The owners of the Smart Contract Wallet. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only. '
             threshold:
               type: integer
               minimum: 1
               example: 2
-              description: 'The minimum number of confirmations required for the Smart Contract Wallet. This field is required when creating a new Safe{Wallet}. '
+              description: 'The minimum number of confirmations required for the Smart Contract Wallet. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only. '
             cobo_safe_address:
               type: string
               format: address
               pattern: '^0x[a-fA-F0-9]{40}$'
               example: '0x1234567890123456789012345678901234567890'
-              description: The address of Cobo Safe.
+              description: 'The address of Cobo Safe. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
             initiator:
               type: object
               properties:
@@ -1575,15 +1592,15 @@ components:
                   type: string
                   format: uuid
                   example: 123e4567-e89b-12d3-a456-426614174000
-                  description: 'The initiator''s wallet ID. This field is required when creating a new Safe{Wallet}. '
+                  description: 'The initiator''s wallet ID. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only. '
                 wallet_type:
                   type: string
                   example: MPC
-                  description: 'The initiator''s wallet type. This field is required when creating a new Safe{Wallet}.'
+                  description: 'The initiator''s wallet type. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only. '
                 wallet_address:
                   type: string
                   example: '0x1234567890123456789012345678901234567890'
-                  description: 'The initiator''s wallet address. This field is required when creating a new Safe{Wallet}. '
+                  description: 'The initiator''s wallet address. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only. '
     CustodialWalletInfo:
       type: object
       description: The basic information of a wallet.
@@ -1620,7 +1637,7 @@ components:
           properties:
             vault_id:
               type: string
-              description: The ID of the owning Vault.
+              description: The ID of the owning Vault. This property is applicable to MPC Wallets only.
     SmartContractWalletInfo:
       oneOf:
         - $ref: '#/components/schemas/SafeWallet'
@@ -1638,20 +1655,19 @@ components:
           properties:
             apikey:
               type: string
-              description: The API key of your exchange account.
+              description: The API key of your exchange account. This property is applicable to Exchange Wallets only.
               example: d8f062da-39f4-4a11-8b9d-12595854237f
             exchange_id:
               $ref: '#/components/schemas/ExchangeId'
             parent_wallet_id:
               type: string
-              description: The wallet ID of the Main Account associated with the Sub Account. This is returned only if you are querying a Sub Account.
+              description: The wallet ID of the Main Account associated with the Sub Account. This property is returned only if you are creating or querying an Exchange Wallet (Sub Account). This property is applicable to Exchange Wallets only.
               format: uuid
               example: f47ac10b-58cc-4372-a567-0e02b2c3d479
             sub_accounts:
               type: array
               items:
                 type: object
-                description: The information of a Sub Account associated with the Main Account. This is returned only if you are querying a Main Account.
                 required:
                   - wallet_id
                   - account_id
@@ -1660,10 +1676,10 @@ components:
                     type: string
                     format: uuid
                     example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-                    description: The wallet ID of the Sub Account.
+                    description: The wallet ID of the Sub Account. This property is returned only if you are creating or querying an Exchange Wallet (Main Account). This property is applicable to Exchange Wallets only.
                   account_id:
                     type: string
-                    description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID.'
+                    description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. This property is returned only if you are creating or querying an Exchange Wallet (Main Account). This property is applicable to Exchange Wallets only.'
                     example: sub01@xx.com
     WalletInfo:
       oneOf:
@@ -1729,7 +1745,7 @@ components:
       properties:
         token_id:
           type: string
-          description: The token name.
+          description: The token ID.
           example: ETH
         max_transferable_value:
           type: string
@@ -1752,7 +1768,7 @@ components:
           description: The address ID.
         address_str:
           type: string
-          description: The wallet address.
+          description: The address.
           example: '0x0000000000000000000000000000000000000000'
         token_id:
           type: string
@@ -1765,13 +1781,13 @@ components:
           example: '82840924'
         path:
           type: string
-          description: The derivation path of the address. This field is applicable to MPC Wallets.
+          description: The derivation path of the address. This property is applicable to MPC Wallets only.
           example: m/44'/60'/0'/0
         encoding:
           $ref: '#/components/schemas/AddressEncoding'
         pubkey:
           type: string
-          description: The public key of the address. This field is applicable to MPC Wallets.
+          description: The public key of the address. This property is applicable to MPC Wallets only.
           example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
     AddressEncoding:
       type: string
@@ -1783,7 +1799,7 @@ components:
         - ENCODING_P2SH_P2MS
         - ENCODING_P2SH_P2WSH_P2MS
         - ENCODING_P2TR
-      description: The address encoding formats. This field only applies to blockchains with Bitcoin-like architecture.
+      description: The address encoding formats. This property only applies to blockchains that have a similar architecture to Bitcoin.
       example: ENCODING_P2PKH
     CreateCustodialWallet:
       type: object
@@ -1791,6 +1807,7 @@ components:
         - name
         - wallet_type
         - wallet_subtype
+      description: The information of Custodial Wallets.
       properties:
         name:
           type: string
@@ -1801,6 +1818,8 @@ components:
         wallet_subtype:
           $ref: '#/components/schemas/WalletSubtype'
     CreateMpcWallet:
+      type: object
+      description: The information of MPC Wallets.
       allOf:
         - $ref: '#/components/schemas/CreateCustodialWallet'
         - type: object
@@ -1809,8 +1828,10 @@ components:
           properties:
             vault_id:
               type: string
-              description: The ID of the owning vault.
+              description: The ID of the owning vault. This property is applicable to MPC Wallets only.
     CreateSmartContractWallet:
+      type: object
+      description: The information of Smart Contract Wallets.
       oneOf:
         - $ref: '#/components/schemas/CreateSafeWallet'
       discriminator:
@@ -1827,11 +1848,11 @@ components:
               properties:
                 label:
                   type: string
-                  description: The wallet label.
+                  description: The wallet label. This property is applicable to Smart Contract Wallets only.
                   example: ETH
                 chain_id:
                   type: string
-                  description: The ID of the chain that the wallet operates on.
+                  description: The ID of the chain that the wallet operates on. This property is applicable to Smart Contract Wallets only.
                   example: ETH
         - type: object
           required:
@@ -1844,7 +1865,7 @@ components:
               format: address
               pattern: '^0x[a-fA-F0-9]{40}$'
               example: '0x1234567890123456789012345678901234567890'
-              description: 'The address of the Smart Contract Wallet. If this is not provided, Cobo will create a new Safe{Wallet} and set up Cobo Safe for you. In that case, the `threshold` and `owners` fields are required.'
+              description: 'The address of the Smart Contract Wallet. If this is not provided, Cobo will create a new Safe{Wallet} and set up Cobo Safe for you. In that case, the `threshold` and `owners` properties are required. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
             owners:
               type: array
               items:
@@ -1852,18 +1873,18 @@ components:
                 format: address
                 pattern: '^0x[a-fA-F0-9]{40}$'
                 example: '0x1234567890123456789012345678901234567890'
-              description: 'The owners of the Smart Contract Wallet. This field is required when creating a new Safe{Wallet}.'
+              description: 'The owners of the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
             threshold:
               type: integer
               minimum: 1
               example: 2
-              description: 'The minimum number of confirmations required for the Smart Contract Wallet. This field is required when creating a new Safe{Wallet}.'
+              description: 'The minimum number of confirmations required for the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
             cobo_safe_address:
               type: string
               format: address
               pattern: '^0x[a-fA-F0-9]{40}$'
               example: '0x1234567890123456789012345678901234567890'
-              description: 'The address of Cobo Safe. If you are importing an existing Safe{Wallet}, Cobo Safe must has been created and enabled.'
+              description: 'The address of Cobo Safe. If you are importing an existing Safe{Wallet}, Cobo Safe must have been created and enabled. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
             initiator:
               type: object
               properties:
@@ -1871,16 +1892,18 @@ components:
                   type: string
                   format: uuid
                   example: 123e4567-e89b-12d3-a456-426614174000
-                  description: 'The initiator''s wallet ID. This field is required when creating a new Safe{Wallet}. '
+                  description: 'The initiator''s wallet ID. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
                 wallet_type:
                   type: string
                   example: MPC
-                  description: 'The initiator''s wallet type. This field is required when creating a new Safe{Wallet}. '
+                  description: 'The initiator''s wallet type. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
                 wallet_address:
                   type: string
                   example: '0x1234567890123456789012345678901234567890'
-                  description: 'The initiator''s wallet address. This field is required when creating a new Safe{Wallet}. '
+                  description: 'The initiator''s wallet address. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.'
     CreateExchangeWallet:
+      type: object
+      description: The information of Exchange Wallets.
       allOf:
         - $ref: '#/components/schemas/CreateCustodialWallet'
         - type: object
@@ -1893,23 +1916,23 @@ components:
               $ref: '#/components/schemas/ExchangeId'
             apikey:
               type: string
-              description: The API key of your exchange account.
+              description: The API key of your exchange account. This property is applicable to Exchange Wallets only.
               example: d8f062da-39f4-4a11-8b9d-12595854237f
             secret:
               type: string
-              description: The API secret of your exchange account.
+              description: The API secret of your exchange account. This property is applicable to Exchange Wallets only.
               example: 75B4F636193162488A3728B4A5797708
             passphrase:
               type: string
-              description: The passphrase of your exchange account.
+              description: The passphrase of your exchange account. This property is applicable to Exchange Wallets only.
               example: sXASDKWKLLsWWEE
             ga_code:
               type: string
-              description: The GA code for the exchange.
+              description: The GA code for the exchange. This property is applicable to Exchange Wallets only.
               example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
             sub_account_ids:
               type: array
-              description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID.'
+              description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. This property is applicable to Exchange Wallets only.'
               items:
                 type: string
               example:
@@ -1991,7 +2014,7 @@ components:
         - COBO
         - MOBILE
         - API
-      example: MOBILE
+      example: COBO
     MPCVault:
       type: object
       description: The data for mpc vault information.
@@ -2036,13 +2059,16 @@ components:
           example: my mpc project
         node_count:
           type: integer
+          example: 3
           description: The count of tss node of the project
         threshold:
           type: integer
+          example: 2
           description: The threshold number of project required for signature
         create_timestamp:
           type: integer
           format: int64
+          example: 1624975307234
           description: The create time the vault.
     RootPubkey:
       type: object
@@ -2092,7 +2118,11 @@ components:
         - KeyGenFromKeyGroup
         - Recovery
       example: KeyGen
-      description: 'The type of tss request, keygen is key generation'
+      description: |
+        The type of tss request.
+        KeyGen is key generation
+        KeyGenFromKeyGroup is generate RecoveryKeyGroup secret
+        Recovery is generate MainKeyGroup secret from RecoveryKeyGroup
     TSSRequestAction:
       type: string
       description: the action of tss request.
@@ -3883,7 +3913,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: The chain ID.
+      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.'
       schema:
         type: string
       example: ETH
@@ -3929,7 +3959,7 @@ components:
       name: fee_rate
       in: query
       required: true
-      description: The fee rate in sats/vByte or fee_price in gwei.
+      description: The fee rate in sats/vByte or fee price in gwei.
       schema:
         type: string
       example: '0.001'
@@ -4078,10 +4108,9 @@ components:
       name: tx_hash
       in: query
       required: false
-      description: Transaction hash of the UTXO.
       schema:
         type: string
-        description: Transaction hash of the UTXO.
+        description: The transaction hash of the UTXO.
       example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
     keyGroupIdParam:
       name: key_group_id
@@ -4174,7 +4203,7 @@ components:
       name: vault_id
       in: query
       required: false
-      description: The MPC Vault ID.
+      description: The MPC Vault ID. This parameter is applicable to MPC Wallets only.
       schema:
         type: string
         format: uuid
@@ -4406,15 +4435,15 @@ components:
                 description: The wallet name.
               apikey:
                 type: string
-                description: The API key of your exchange account. Only needed when updating exchange wallets.
+                description: The API key of your exchange account. This property is required when updating the information of an Exchange Wallet.
                 example: d8f062da-39f4-4a11-8b9d-12595854237f
               secret:
                 type: string
-                description: The API secret of your exchange account. Only needed when updating exchange wallets.
+                description: The API secret of your exchange account. This property is required when updating the information of an Exchange Wallet.
                 example: 75B4F636193162488A3728B4A5797708
               passphrase:
                 type: string
-                description: The passphrase of your exchange account. Only needed when updating exchange wallets.
+                description: The passphrase of your exchange account. This property is required when updating the information of an Exchange Wallet.
                 example: sXASDKWKLLsWWEE
               ga_code:
                 type: string
@@ -4422,7 +4451,7 @@ components:
                 example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
               sub_account_ids:
                 type: array
-                description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. Only needed when updating exchange wallets.'
+                description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. This property is required when updating the information of an Exchange Wallet.'
                 items:
                   type: string
                 example:
@@ -4453,7 +4482,7 @@ components:
               encoding:
                 $ref: '#/components/schemas/AddressEncoding'
     lockSpendablesBody:
-      description: The request body to lock/unlock spendable
+      description: The request body of the Lock/Unlock UTXOs operation.
       content:
         application/json:
           schema:
@@ -4463,12 +4492,16 @@ components:
             properties:
               tx_hashes:
                 type: array
+                description: A list of transaction hashes.
                 items:
                   type: string
                   example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
               is_locked:
                 type: boolean
-                description: 'True if to lock the UTXOs, False to unlock.'
+                description: |
+                  Whether to lock the UTXOs.
+                  - `true`: Lock the UTXOs. 
+                  - `false`: Unlock the UTXOs.
                 default: true
                 example: true
     createKeyGroupBody:
@@ -4526,7 +4559,7 @@ components:
                 description: Number of tss nodes in the key group
               threshold:
                 type: integer
-                description: The threshold number of tss node required for signature
+                description: 'The threshold number of tss node required for signature, must be less than or equal to node_count'
     createTssRequestBody:
       description: The request body to create a tss request
       content:
@@ -4810,7 +4843,10 @@ components:
               executed:
                 type: boolean
                 example: true
-                description: Whether the spendable lock/unlock has been successfully executed.
+                description: |
+                  Whether the locking or unlocking operation has been successfully executed.
+                  - `true`: The operation has been successfully executed.
+                  - `false`: The operation has not been executed.
     maxTransferableValueResponse:
       description: The request was successful.
       content:

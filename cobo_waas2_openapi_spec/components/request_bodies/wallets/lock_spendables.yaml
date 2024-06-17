@@ -1,4 +1,4 @@
-description: The request body to lock/unlock spendable
+description: The request body of the Lock/Unlock UTXOs operation.
 content:
   application/json:
     schema:
@@ -8,12 +8,16 @@ content:
       properties:
         tx_hashes:
           type: array
+          description: A list of transaction hashes.
           items:
             type: string
             example: 'dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83'
         is_locked:
           type: boolean
-          description: True if to lock the UTXOs, False to unlock.
+          description: | 
+             Whether to lock the UTXOs.
+             - `true`: Lock the UTXOs. 
+             - `false`: Unlock the UTXOs.
           default: true
           example: true
 

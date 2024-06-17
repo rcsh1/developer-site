@@ -1,3 +1,5 @@
+type: object
+description: The information of Exchange Wallets.
 allOf:
   - $ref: './create_custodial_wallet.yaml'
   - type: object
@@ -10,23 +12,23 @@ allOf:
         $ref: '../exchanges/exchange_id.yaml'
       apikey:
         type: string
-        description: The API key of your exchange account.
+        description: The API key of your exchange account. This property is applicable to Exchange Wallets only.
         example: 'd8f062da-39f4-4a11-8b9d-12595854237f'
       secret:
         type: string
-        description: The API secret of your exchange account.
+        description: The API secret of your exchange account. This property is applicable to Exchange Wallets only.
         example: '75B4F636193162488A3728B4A5797708'
       passphrase:
         type: string
-        description: The passphrase of your exchange account.
+        description: The passphrase of your exchange account. This property is applicable to Exchange Wallets only.
         example: 'sXASDKWKLLsWWEE'
       ga_code:
         type: string
-        description: The GA code for the exchange.
+        description: The GA code for the exchange. This property is applicable to Exchange Wallets only.
         example: 'sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708'
       sub_account_ids:
         type: array
-        description: The Sub Account ID. It can be an email address, a user name, or a custom account ID.
+        description: The Sub Account ID. It can be an email address, a user name, or a custom account ID. This property is applicable to Exchange Wallets only.
         items:
           type: string
         example: [ 'sub01@xx.com', 'sub02@xx.com']

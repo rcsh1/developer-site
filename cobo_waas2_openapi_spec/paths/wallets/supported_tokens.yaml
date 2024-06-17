@@ -4,9 +4,7 @@ get:
   operationId: get_supported_tokens
   summary: List supported tokens
   description: |
-    This operation retrieves all supported tokens for the organization associated with your API key. You can also specify the wallet type, subtype, and chain ID you want to query.
-
-    You can retrieve chain IDs by using the [List supported chains](/api-references/v2/wallets/list-supported-chains) operation.
+    This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain ID.
   security:
     - CoboAuth: []
   parameters:
