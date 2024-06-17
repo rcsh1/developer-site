@@ -1,0 +1,59 @@
+---
+title: Babylon Batch Broadcast Staking Transaction
+api: POST /v1/custody/mpc/babylon/batch_broadcast_staking_transaction/
+contentType: multipart/form-data
+description: "This endpoint is used to batch broadcast the specified pre-signed staking transactions based on the provided parameter `request_ids`"
+---
+
+#### Request
+<ParamField body="request_ids" type="String" required>A comma-separated list of transaction request IDs.</ParamField>
+
+
+#### Response
+<ResponseField name="success" type="bool">request successful or failed</ResponseField>
+<ResponseField name="result" type="object[]">
+    <Expandable title="object">
+        <ResponseField name="request_id" type="String" >Transaction request ID</ResponseField>
+        <ResponseField name="transaction_hash" type="String" >Transaction hash</ResponseField>
+    </Expandable>
+</ResponseField>
+
+<RequestExample>
+```python Python
+request(
+    "POST",
+    "/v1/custody/mpc/babylon/batch_broadcast_staking_transaction/",
+    {
+        "request_ids": "1717059604245,1718613205287"
+    },
+    api_key, api_secret, host
+)
+```
+```javascript JavaScript
+coboFetch('POST', '/v1/custody/mpc/babylon/batch_broadcast_staking_transaction/', {
+    "request_ids": "1717059604245,1718613205287"
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+```
+```go Go
+Request("POST", "/v1/custody/mpc/babylon/batch_broadcast_staking_transaction/", map[string]string{
+    "request_ids": "1717059604245,1718613205287"
+})
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "success": true,
+  "result": [{"request_id": "1717059604245", "transaction_hash": "7311feeeb9278f487be3c84662210540d8ac2dc24972721d7978915ef649f8c8"}, {"request_id": "1718613205287", "transaction_hash": "e592001044f465c43a5fc0eb22905473c550895bad60a7f731443ac070463888"}]
+}
+
+```
+</ResponseExample>
