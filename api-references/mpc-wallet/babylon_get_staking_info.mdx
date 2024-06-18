@@ -30,6 +30,7 @@ description: "This endpoint is used to query the specified pre-signed staking tr
         </ResponseField>
         <ResponseField name="fee_rate" type="String" >transaction fees per byte</ResponseField>
         <ResponseField name="max_staking_fee" type="Int" >maximum fee for the staking transaction</ResponseField>
+        <ResponseField name="sign_result" type="Json" >signature result, which is in JSON format and contains the raw transaction hex</ResponseField>
     </Expandable>
 </ResponseField>
 
@@ -73,7 +74,8 @@ Request("GET", "/v1/custody/mpc/babylon/get_staking_info/", map[string]string{
     "staking_info": "{\"asset_coin\": \"SIGNET_BTC\", \"stake_address\": \"tb1pufc6zv4wquhcshgr4lay4lqa6vua3m435hqmml9w74ycxxnv329qdl6cq2\", \"amount\": 50000, \"stake_block_time\": 64000, \"finality_provider\": \"88b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384\"}",
     "status": 200,
     "fee_rate": "100.00000000",
-    "max_staking_fee": 50000
+    "max_staking_fee": 50000,
+    "sign_result": "{\"raw_tx\": \"0200000000010197a8e32b25590962075bf8517aa117459abd26593731e3d58ecf3c8cfb1b9a750200000000000000000350c30000000000002251205e5882d46eadd557b170a4dc73970bb663c37b262da3b7eb75ff9627c51d695b0000000000000000496a476262743400b450b244d588ad9979855f1de3816987e2644035679feee1a72020e3fc0c4dc988b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384fa00125f0c0000000000225120b450b244d588ad9979855f1de3816987e2644035679feee1a72020e3fc0c4dc90140ca3ce98e6837b4404af7e1087072e7306d132ae1ccbf5377f75bd7f2ee7678c9e623e167deaca981269cc317b6c25359b6b399bfb577d5414c17002ca34e463809080300\"}"
   }
 }
 
