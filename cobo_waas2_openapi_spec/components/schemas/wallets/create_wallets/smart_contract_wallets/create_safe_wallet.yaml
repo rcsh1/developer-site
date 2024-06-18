@@ -12,7 +12,7 @@ allOf:
         pattern: "^0x[a-fA-F0-9]{40}$"
         example: '0x1234567890123456789012345678901234567890'
         description: >- 
-          The address of the Smart Contract Wallet. If this is not provided, Cobo will create a new Safe{Wallet} and set up Cobo Safe for you. In that case, the `threshold` and `owners` properties are required. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.
+          The address of the Smart Contract Wallet. If this is not provided, Cobo will create a new Safe{Wallet} and set up Cobo Safe for you. In that case, the `threshold` and `owners` properties are required.
       owners:
         type: array
         items:
@@ -21,20 +21,20 @@ allOf:
           pattern: "^0x[a-fA-F0-9]{40}$"
           example: '0x1234567890123456789012345678901234567890'
         description: >-
-          The owners of the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.
+          The owners of the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}.
       threshold:
         type: integer 
         minimum: 1
         example: 2
         description: >-
-          The minimum number of confirmations required for the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.
+          The minimum number of confirmations required for the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}.
       cobo_safe_address:
         type: string
         format: address
         pattern: "^0x[a-fA-F0-9]{40}$"
         example: '0x1234567890123456789012345678901234567890'
         description: >-
-          The address of Cobo Safe. If you are importing an existing Safe{Wallet}, Cobo Safe must have been created and enabled. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.
+          The address of Cobo Safe. If you are importing an existing Safe{Wallet}, Cobo Safe must have been created and enabled.
       initiator:
         type: object
         properties:
@@ -43,14 +43,14 @@ allOf:
             format: uuid
             example: '123e4567-e89b-12d3-a456-426614174000'
             description: >-
-              The initiator's wallet ID. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.
+              The initiator's wallet ID. This property is required when creating a new Safe{Wallet}.
           wallet_type:
             type: string
             example: 'MPC'
             description: >-
-              The initiator's wallet type. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.
+              The initiator's wallet type. This property is required when creating a new Safe{Wallet}.
           wallet_address:
             type: string
             example: '0x1234567890123456789012345678901234567890'
             description: >-
-              The initiator's wallet address. This property is required when creating a new Safe{Wallet}. This property is applicable to Smart Contract Wallets (Safe{Wallet}) only.
+              The initiator's wallet address. This property is required when creating a new Safe{Wallet}.

@@ -1,5 +1,4 @@
-type: object
-description: The information of MPC Wallets.
+title: MPC Wallets
 allOf:
   - $ref: './create_custodial_wallet.yaml'
   - type: object
@@ -8,4 +7,4 @@ allOf:
     properties:
       vault_id:
         type: string
-        description: The ID of the owning vault. This property is applicable to MPC Wallets only. 
+        description: The ID of the owning vault.
