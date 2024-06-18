@@ -11,12 +11,7 @@ description: "This endpoint is used to batch broadcast the specified pre-signed 
 
 #### Response
 <ResponseField name="success" type="bool">request successful or failed</ResponseField>
-<ResponseField name="result" type="object[]">
-    <Expandable title="object">
-        <ResponseField name="request_id" type="String" >Transaction request ID</ResponseField>
-        <ResponseField name="transaction_hash" type="String" >Transaction hash</ResponseField>
-    </Expandable>
-</ResponseField>
+<ResponseField name="result" type="object"></ResponseField>
 
 <RequestExample>
 ```python Python
@@ -52,7 +47,7 @@ Request("POST", "/v1/custody/mpc/babylon/batch_broadcast_staking_transaction/", 
 ```json
 {
   "success": true,
-  "result": [{"request_id": "1717059604245", "transaction_hash": "7311feeeb9278f487be3c84662210540d8ac2dc24972721d7978915ef649f8c8"}, {"request_id": "1718613205287", "transaction_hash": "e592001044f465c43a5fc0eb22905473c550895bad60a7f731443ac070463888"}]
+  "result": {}
 }
 
 ```
