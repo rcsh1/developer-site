@@ -1,0 +1,19 @@
+description: The request body for refreshing a new access token.
+required: true
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: The token that can be used to access protected resources.
+          example: AnCEPEp5Q8qjAOA1Lb6kVd2OlkCyJnMTeMPdLbPOM8cz176Eb5y7EJoUjJJ0vkzz
+        grant_type:
+          type: string
+          description: The type of the token issued.
+          example: Bearer
+        refresh_token:
+          type: string
+          description: The token that can be used to obtain a new access token.
+          example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
