@@ -1,6 +1,6 @@
 type: object
-description: The general data of the destination of a wallet transaction. 
-title: Wallet
+description: The information about the transaction destination. 
+title: Custodial Wallets
 required:
   - destination_type
   - wallet_id
@@ -12,7 +12,7 @@ properties:
     $ref: './destination_type.yaml'
   wallet_id:
     type: string
-    description: The ID of the wallet that the transfer is from.
+    description: The wallet ID.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   token_id:

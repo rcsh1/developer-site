@@ -1,5 +1,5 @@
 type: object
-description: The data of a transaction that signs a message. You can provide the message either as raw data or as structured data.
+description: The information about a transaction that signs a message. You can provide the message either as raw data or as structured data.
 required:
   - request_id
   - request_type
@@ -9,7 +9,7 @@ required:
 properties:
   request_id:
     type: string
-    description: The request ID.
+    description: The request ID to track your request.
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   request_type:
     $ref: './request_type.yaml'
@@ -19,28 +19,30 @@ properties:
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
+    description: The information about the transaction source.
     type: object
     properties:
       wallet_id:
         type: string
-        description: The ID of the wallet that signs the message.
+        description: The wallet ID.
         format: uuid
         example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
       address_str:
         type: string
-        description: The source address. 
+        description: The wallet address. 
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       mpc_used_key_group:
         $ref: './mpc_signing_group.yaml'
   destination:
     type: object
+    description: The information about the transaction destination.
     properties:
       message:
         type: string
-        description: Raw data of the message to be signed, encoded in Base64 format. 
+        description: The raw data of the message to be signed, encoded in Base64 format. 
         example: 'YWFhYQ=='
       structured_data:
         type: string
-        description: Structured data of the message to be signed, encoded in JSON format.
+        description: The structured data of the message to be signed, encoded in JSON format.
         example: |
           {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}

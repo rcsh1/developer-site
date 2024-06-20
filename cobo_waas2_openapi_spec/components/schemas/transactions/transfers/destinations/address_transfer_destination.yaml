@@ -1,8 +1,7 @@
 type: object
 description: |
-  The data of the an external address destination. 
-  Provide the `account_output` property for the destination on account-based chains such as Ethereum, or the `utxo_outputs` property for the destination on UTXO-based chains such as Bitcoin. 
-title: Address
+  The information about the transaction destination. For account-based chains like Ethereum, specify the `account_output` property. For UTXO-based chains like Bitcoin, specify the `utxo_outputs` property. 
+title: External addresses
 required:
   - destination_type
 properties:
@@ -13,7 +12,7 @@ properties:
     properties:
       address_str:
         type: string
-        description: The destination address. 
+        description: The external address. 
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       memo:
         type: string
@@ -22,7 +21,7 @@ properties:
       amount:
         type: string
         description: >
-          The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5.
+          The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
         example: '1.5'
   utxo_outputs:
     type: object
@@ -34,12 +33,12 @@ properties:
           properties:
             address_str:
               type: string
-              description: The destination address.
+              description: The external address.
               example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"
             amount:
               type: string
               description: >
-                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5.
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
               example: '1.5'
             script:
               type: string

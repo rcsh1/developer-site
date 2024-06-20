@@ -2,11 +2,11 @@ post:
   tags:
     - Transactions
   operationId: create_message_sign_transaction
-  summary: Create sign-message transaction
+  summary: Sign message
   description: |
     This operation creates a transaction to sign the provided message using cryptographic techniques.
-    
-    A transaction request for tracking is returned upon successful operation.
+
+    You need to provide details such as the source address, destination address, and the message to be signed. A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   requestBody:

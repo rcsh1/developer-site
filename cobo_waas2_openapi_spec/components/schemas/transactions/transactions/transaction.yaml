@@ -1,5 +1,5 @@
 type: object
-description: The data of the a transaction.
+description: The information about the a transaction.
 required:
   - transaction_id
   - transaction_type
@@ -21,7 +21,7 @@ properties:
     example: '20231213122855000000000000000000'
   request_id:
     type: string
-    description: The Request ID.
+    description: The request ID to track your request.
     example: "web_send_by_user_327_1610444045047" 
   type:
     $ref: './transaction_type.yaml'
@@ -31,7 +31,7 @@ properties:
     $ref: './transaction_sub_status.yaml'
   failed_reason:
     type: string
-    description: The reason that the transaction failed.
+    description: The reason why the transaction failed.
     example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
@@ -53,7 +53,7 @@ properties:
   confirmed_num:
     type: number
     format: int32
-    description: The number of confirmation. It represents the acceptance of a new block that might contain several transactions by the blockchain network. With each subsequent block that is added to the chain, an additional confirmation is achieved for the blocks before it.
+    description: The number of confirmations this transaction has received.
     example: 12
   confirming_threshold:
     type: integer
@@ -68,7 +68,7 @@ properties:
   block_time:
     type: integer
     format: int64
-    description: The time when the block was created, in Unix timestamp format, measured in milliseconds/seconds.
+    description: The time when the block was created, in Unix timestamp format, measured in milliseconds.
     example: 1717740319
   block_hash:
     type: string
@@ -76,7 +76,7 @@ properties:
     example: "0xc9ee947f8bb6027c161888bf0d004bec05e7c2beec7e6b187dc512174e438735"
   nonce:
     type: integer
-    description: The transaction nonce. It is a cryptographic value that increments with each transaction sent from an account. 
+    description: The transaction nonce. 
     example: 9
   transaction_hash:
     type: string
@@ -138,10 +138,10 @@ properties:
   created_time:
     type: number
     format: int64
-    description: The time when the transaction was created, in Unix timestamp format, measured in milliseconds/seconds.
+    description: The time when the transaction was created, in Unix timestamp format, measured in milliseconds.
     example: 1610445878970
   updated_time:
     type: number
     format: int64
-    description: The time when the transaction was updated, in Unix timestamp format, measured in milliseconds/seconds.
+    description: The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.
     example: 1610445878970

@@ -3,8 +3,10 @@ post:
     - Transactions
   operationId: estimate_fee
   summary: Estimate transaction fee
-  description:  
-    This operation estimates the transaction fee of a transfer transaction or a smart-contract transaction, based on factors such as network congestion and transaction complexity.
+  description: |
+    This operation estimates the transaction fee of a token transfer or a contract call, based on factors such as network congestion and transaction complexity.
+    
+    You need to specify the transaction information, including the source, destination, fee type (transaction fee model), and transaction fee price. You can get the fee model and fee price for the chain or token by calling [Get transaction fee price](./fee_price).
   security:
     - CoboAuth: []
   requestBody:

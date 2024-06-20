@@ -1,6 +1,6 @@
 type: object
-description: The data of the MPC wallet source.
-title: MPC
+description: The information about the transaction source.
+title: MPC Wallets
 required:
   - source_type
   - wallet_id
@@ -10,7 +10,7 @@ properties:
     $ref: './source_type.yaml'
   wallet_id:
     type: string
-    description: The ID of the wallet that the transfer is from.
+    description: The wallet ID.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   mpc_used_key_group:
@@ -20,7 +20,7 @@ properties:
     properties:
       address_str:
         type: string
-        description: The source address. 
+        description: The wallet address. 
         example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
   utxo_inputs:
     type: array

@@ -1,6 +1,6 @@
 type: object
 description: |
-  The transaction fee based on the legacy fee model. 
+  The transaction fee actually charged by the chain that uses the legacy fee model. 
   The transaction fee is calculated by multiplying the gas fee price by the used gas. This can be expressed as: Transaction fee = (gas price) * used gas.
 title: Legacy
 required:
@@ -16,7 +16,7 @@ allOf:
         example: "0.1"
       gas_used:
         type: string
-        description: The gas used in the transaction. 
+        description: The gas units used in the transaction. 
         example: "100000000"
   - $ref: '../../fees/base_fee_price_legacy.yaml'
   - $ref: '../../fees/fee_gas_limit.yaml'

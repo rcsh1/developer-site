@@ -1,6 +1,6 @@
 type: object
-description: The data of the destination of a contract call transaction.
-title: Contract call
+description: The information about the transaction destination.
+title: Smart contracts
 required:
   - destination_type
   - address_str
@@ -16,7 +16,7 @@ properties:
   value:
     type: string
     description: >
-      The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is 1.5.
+      The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
     example: '1.5'
   calldata:
     type: string

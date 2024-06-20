@@ -1,6 +1,6 @@
 type: object
-description: The data of the exchange wallet source.
-title: Exchange
+description: The information about the transaction source.
+title: Exchange Wallets
 required:
   - source_type
   - exchange_id
@@ -12,10 +12,10 @@ properties:
     $ref: '../../../wallets/exchanges/exchange_id.yaml'
   wallet_id:
     type: string
-    description: The ID of the wallet that the transfer is from.
+    description: The wallet ID.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   sub_wallet_id:
     type: string
-    description: The exchange trading account or a sub-wallet that the transfer is from. 
+    description: The exchange trading account or a sub-wallet ID. 
     example: 'Asset'

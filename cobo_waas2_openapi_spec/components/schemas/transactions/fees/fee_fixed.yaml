@@ -1,6 +1,10 @@
 type: object
-description: 
-  The estimated transaction fee based on the fixed fee model can vary between different chains.
+description: |
+  The transaction fee that you are willing to pay based on the fixed fee model for come blockchains. You need to specify the fee type (transaction fee model) for the chain or token. 
+
+  The fee can vary between different chains. 
+
+  You can set a maximum transaction fee. The transaction will fail if the transaction fee exceeds the maximum fee. 
 title: Fixed
 required:
   - fee_type

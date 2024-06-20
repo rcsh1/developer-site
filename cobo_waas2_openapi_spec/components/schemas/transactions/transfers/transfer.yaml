@@ -1,5 +1,5 @@
 type: object
-description: The data of a transfer transaction. 
+description: The information about a token transfer.
 title: Transfer
 required:
   - request_id
@@ -10,7 +10,7 @@ required:
 properties:
   request_id:
     type: string
-    description: The request ID.
+    description: The request ID to track your request.
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   request_type:
     $ref: '../request_type.yaml'

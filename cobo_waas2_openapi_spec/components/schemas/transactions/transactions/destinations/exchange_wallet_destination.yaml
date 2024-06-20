@@ -1,6 +1,6 @@
 type: object
-description: The data of the destination of an exchange-wallet transaction.
-title: Exchange
+description: The information about the Exchange Wallet as the transaction destination.
+title: Exchange Wallets
 required:
   - destination_type
   - exchange_id
@@ -14,12 +14,12 @@ properties:
     $ref: '../../../wallets/exchanges/exchange_id.yaml'
   wallet_id:
     type: string
-    description: The wallet ID of the destination.
+    description: The wallet ID.
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   sub_wallet_id:
     type: string
-    description: The exchange trading account or the sub-wallet ID of the destination. 
+    description: The exchange trading account or the sub-wallet ID. 
     example: 'Asset'
   token_id:
     type: string
@@ -40,5 +40,5 @@ properties:
   amount:
     type: string
     description: >
-      The quantity of the token in the transaction. For exmaple, if you trade 1.5 ETH, then the value is 1.5.
+      The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
     example: '1.5'

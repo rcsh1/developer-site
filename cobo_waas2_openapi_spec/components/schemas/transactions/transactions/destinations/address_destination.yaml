@@ -1,6 +1,6 @@
 type: object
-description: The data of the external address destination. 
-title: Address
+description: The information about the transaction destination. 
+title: External addresses
 required:
   - destination_type
   - token_id
@@ -46,7 +46,7 @@ properties:
             amount:
               type: string
               description: >
-                The transaction amount. For example, if you trade 1.5 ETH, then the amount is 1.5
+                The transaction amount. For example, if you trade 1.5 ETH, then the amount is 1.5.
               example: '1.5'
             script:
               type: string
