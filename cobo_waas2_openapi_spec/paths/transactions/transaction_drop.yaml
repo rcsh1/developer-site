@@ -8,7 +8,7 @@ post:
   description: |
     This operation drops a specified transaction. 
 
-    Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be dropped if it is unconfirmed and has not yet been added to a block on the blockchain.
+    Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be dropped if its status is `Broadcasting` or `Confirming`.
     
     A transaction request for tracking is returned upon successful operation.
   security:

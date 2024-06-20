@@ -6,9 +6,11 @@ post:
   operationId: cancel_transaction_by_id
   summary: Cancel transaction by ID
   description: |
-    This operation cancels a specified transaction. 
-
-    A transaction can be cancelled if it has not been broadcast. 
+    This operation cancels a specified transaction. A transaction can be cancelled if its status is either of the following:
+    - `Submitted`
+    - `PendingScreening`
+    - `PendingAuthorization`
+    - `PendingSignature` 
     
     A transaction request for tracking is returned upon successful operation.
   security:
