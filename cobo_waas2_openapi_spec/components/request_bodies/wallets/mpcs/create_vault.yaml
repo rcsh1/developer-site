@@ -1,4 +1,4 @@
-description: The request body to create a mpc vault
+description: The request body to create a vault.
 content:
   application/json:
     schema:
@@ -10,12 +10,21 @@ content:
         project_id:
           type: string
           example: "0111039d-27fb-49ba-b172-6e0aa80e37ec"
-          description: The id of the mpc project.
+          description: |  #if vault type is UCW then project_id is required. if OCW, project_id will be ignored
+            The Project ID.
+            
+            **Notes:**
+            1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
+            2. If `vault_type` is `UserControlled`, then `project_id` is required.
         name:
           type: string
-          example: "My mpc vault"
-          description: The name of the mpc vault.
+          example: "Name of new vault"
+          description: The name of the new vault.
         vault_type:
           $ref: '../../../schemas/wallets/mpcs/mpc_vault_type.yaml'
+          description: |
+            The vault type. Possible values include:
+            - `OrgControlled`: This vault is a collection of Organization-Controlled Wallets.
+            - `UserControlled`: This vault is a collection of User-Controlled Wallets.
 
 

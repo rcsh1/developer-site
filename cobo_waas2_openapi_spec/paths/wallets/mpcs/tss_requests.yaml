@@ -2,9 +2,15 @@ post:
   tags:
     - Wallets - MPC Wallet
   operationId: create_tss_request
-  summary: Create a tss request to generate key secrets for a tss group
-  description: |
-    Create a tss request to generate key secrets for a tss group.
+  summary: Create TSS request
+  description: | 
+    This operation creates a TSS request for `target_key_group_id` under `vault_id` to perform actions specified by `type` such as key generation and recovery.
+    
+    **Notes for the optional `used_key_group_id` and `detail_params`:**
+    
+    1. `used_key_group_id` is used only when the action `type` is either `KeyGenfromKeyGroup` or `Recovery`. This is to specify the key share group to be used as the source group to create a new `target_key_group`.
+    
+    2. `detail_params` are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
   security:
     - CoboAuth: []
   parameters:
@@ -24,10 +30,11 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: list_tss_request
-  summary: List tss request information by vault ID
+  summary: List TSS requests
   description: |
-    Retrieving list of tss request information by vault ID.
-    This endpoint allows filtering by key group ID.
+    This operation retrieves a list of TSS requests information under `vault_id`.
+    
+    The result is further filtered by the required `target_key_group_id`.
   security:
     - CoboAuth: []
   parameters:

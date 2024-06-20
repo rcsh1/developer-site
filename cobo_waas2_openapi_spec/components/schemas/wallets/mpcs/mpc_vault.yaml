@@ -1,20 +1,28 @@
 type: object
-description: The data for mpc vault information.
+description: The data for vault information.
 properties:
   id:
     type: string
     example: "YPdbyVaVGqXXjkUsohHw"
-    description: Unique id of the vault
+    description: The vault ID.
   name:
     type: string
-    example: 'my mpc vault'
+    example: 'Vault name'
+    description: The vault name.
   type:
     $ref: './mpc_vault_type.yaml'
+    description: |
+      The vault type. Possible values include:
+      - `OrgControlled`: This vault is a collection of Organization-Controlled Wallets.
+      
+      - `UserControlled`: This vault is a collection of User-Controlled Wallets.
   root_pubkeys:
     type: array
     items:
       $ref: './root_pubkey.yaml'
+      description: The vault's [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).
   create_timestamp:
     type: number
     format: int64
-    description: The create time the vault.
+    description: The vault's creation time in Unix timestamp format, measured in milliseconds.
+    example: 1718619403933.53

@@ -2,10 +2,11 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: get_mpc_vault
-  summary: Get a mpc vault information
+  summary: Get vault information
   description: |
-    Get detailed information about a mpc vault identified by its unique ID. 
-    Get vault ids by calling list_mpc_vault.
+    This operation retrieves detailed information about the vault specified by `vault_id`.
+    
+    You can obtain `vault_id`s by calling [List all vaults](/api-references/v2/wallets--mpc-wallet/list-all-mpc-vaults).
   security:
     - CoboAuth: []
   parameters:
@@ -23,9 +24,10 @@ put:
   tags:
     - Wallets - MPC Wallet
   operationId: modify_mpc_vault
-  summary: Update a mpc vault information
+  summary: Update vault name
   description: |
-    Update a mpc vault name information by its ID.
+    This operation updates the name of the vault specified by `vault_id` to `name`.
+
   security:
     - CoboAuth: []
   parameters:
