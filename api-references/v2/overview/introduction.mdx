@@ -8,7 +8,6 @@ The WaaS service supports common HTTP methods. For HTTP POST request, the WaaS s
 
 ## HTTP hosts
 The WaaS service offers several HTTP host for different use cases: 
-//TODO 是否需要列出不同环境的区别，比如 dev 才能用 playground
 - Development environment: `https://api.dev.cobo.com`
 - Production environment: `https://api.custody.cobo.com`
 - Test environment: `https://api.sandbox.cobo.com`
@@ -29,7 +28,7 @@ headers = {
 
 | Field | Description | 
 | ----------- | ----------- |
-| `Biz-Api-KeyAPI` | An API key. To learn how to create an API key, see [ API key](). //TODO 链接到生成 api key 的 guide？   | 
+| `Biz-Api-KeyAPI` | An API key. To learn how to create an API key, see [ API key]().    | 
 | `Biz-Api-Nonce`  | Nonce. The time when the request is sent in Unix timestamp format, measured in milliseconds. | 
 | `Biz-Api-Signature` | An API signature. Cobo API Key authentication requires each request to be signed except public API interfaces. To learn how to create an API signature, see [Generate an API signature](#generate-an-api-signature).  | 
 
@@ -44,7 +43,7 @@ headers = {
     | Field | Description | Example |
     | ----------- | ----------- |----------- |
     | METHOD     | The HTTP method.   | `GET` |
-    | PATH  | The request path.   | `/v2/transactions/transfer`//TODO 这个路径需要包含host吗 |
+    | PATH  | The request path.   | `/v2/transactions/transfer` |
     | TIMESTAMP  | The current time in Unix timestamp format, measured in milliseconds. | `1718587017026` |
     | PARAMS   | The query parameters. To learn more about available query parameters, see [Query parameters](#query-parameters). | `chain_id=ETH&limit=10` |
     | BODY   | The request raw body in string format.  | `{"name":"Default","wallet_subtype":"Asset","wallet_type":"Custodial"}` |
@@ -159,7 +158,6 @@ For example, if you want to retrieve 30 transaction objects that comes before th
 
 ## Understand and handle error codes
 ### Error codes
-//TODO 错误对应的解决办法？
 
 | Error code | Description | 
 | ----------- | ----------- |
@@ -168,17 +166,17 @@ For example, if you want to retrieve 30 transaction objects that comes before th
 | `2003`| Missing required parameters. |
 | `2006`| Illegal parameter format or value.|
 | `2010`| Rate limit exceeded.|
-| `2020`| Missing action parameter. //TODO 不懂 action 指什么 |
-| `2021`| Missing handler definition. //TODO 是说没设置 webhook 吗|
+| `2020`| Missing action parameter.  |
+| `2021`| Missing handler definition. |
 | `2022`| Missing required request headers. |
-| `2023`| Verification failed. //TODO 哪方面的验证？|
-| `2024`| Authentication failed. //TODO api 的鉴权吗|
-| `2025`| Forbidden access to resources. //TODO api key 的权限吗|
-| `2026`| Too many requests. //TODO 有限制吗|
-| `2027`| Quota limit exceeded. //TODO 同上|
-| `2028`| Resource not found. //TODO 就是 404 吗|
-| `2029`| Invalid status. //TODO 什么的状态？|
-| `2040`| Duplicate key violation. //TODO 什么情况会出现这个错误|
+| `2023`| Verification failed. |
+| `2024`| Authentication failed. |
+| `2025`| Forbidden access to resources. |
+| `2026`| Too many requests. |
+| `2027`| Quota limit exceeded. |
+| `2028`| Resource not found.|
+| `2029`| Invalid status. |
+| `2040`| Duplicate key violation. |
 
 ###  HTTP status codes 
 
@@ -198,22 +196,21 @@ For example, if you want to retrieve 30 transaction objects that comes before th
 
 
 ## Rate and usage limiting
-//TODO 需要 input
 
 ## Webhook events 
-Upon receiving a deposit or withdrawal request, the WaaS service sends a push message that contains the transaction data in JSON format as an HTTP POST request to a user-defined URL. To learn more about how to subscribe to webhook events, see [Webhook events]().//TODO 链接 tbd
+Upon receiving a deposit or withdrawal request, the WaaS service sends a push message that contains the transaction data in JSON format as an HTTP POST request to a user-defined URL. To learn more about how to subscribe to webhook events, see [Webhook events]().
 
 ## Callback messages
-When you receives a webhook event and want to approve or reject the request, you need to respond promptly with an HTTP body containing either `ok` for approval or `deny` for rejection with an HTTP status of `200`. Failure to provide this response will result in delayed request processing and continued pushes of the same message to the designated URL. To learn more about how to subscribe to callback messages, see [Callback messages]().//TODO 链接 tbd
+When you receives a webhook event and want to approve or reject the request, you need to respond promptly with an HTTP body containing either `ok` for approval or `deny` for rejection with an HTTP status of `200`. Failure to provide this response will result in delayed request processing and continued pushes of the same message to the designated URL. To learn more about how to subscribe to callback messages, see [Callback messages]().
 
 ## Glossary
 
 - Asset: (This concept only applies to exchange wallets) A digital representation of a valuable resource on a blockchain network. Exchange wallets group your holdings by asset, even if the same asset exists on different blockchains, for example, Bitcoin on Ethereum and Bitcoin on its native chain.
 - Chain: The specific blockchain network on which an asset or token resides. To learn more about the supported chains, see [Supported tokens and chains](https://manuals.cobo.com/en/portal/supported-tokens-custodial).
 - Token: A specific type of cryptocurrency. Wallets track your balance for each individual token.To learn more about the supported tokens, see [Supported tokens and chains](https://manuals.cobo.com/en/portal/supported-tokens-custodial).
-- API key: A unique identifier used to authenticate and authorize API requests. An API key allows an organization to initiate specific actions such as withdrawals. To learn how to create an API key, see [API keys]().//TODO 链接
+- API key: A unique identifier used to authenticate and authorize API requests. An API key allows an organization to initiate specific actions such as withdrawals. To learn how to create an API key, see [API keys]().
 - Organization/Org: Organization serves as the cornerstone for streamlined account management. The admin of the organization have the exclusive rights to manage user profiles, designate roles, assign permissions, and enforce governance policies. To learn more about organizations, see [Introduction to Organization](https://manuals.cobo.com/en/portal/organization/introduction).
-- Address: A unique identifier on a blockchain network used to send and receive cryptocurrency or other digital assets. It is recommended that you use a dedicated address for transactions of one token for MPC Wallets.//TODO 需要确认
+- Address: A unique identifier on a blockchain network used to send and receive cryptocurrency or other digital assets. It is recommended that you use a dedicated address for transactions of one token for MPC Wallets.
 - Cancel: Revoke a pending transaction before it is broadcast on the blockchain. 
 - Drop: Revoke a pending transaction before it is added to a block on the blockchain. Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. 
 - Speed up: Increase the transaction fee associated with a pending transaction to incentivize miners to prioritize it and confirm it faster. Speeding up a transaction will also trigger a RBF transaction.
