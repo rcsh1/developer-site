@@ -2156,6 +2156,9 @@ components:
           type: integer
         status:
           $ref: '#/components/schemas/KeyGroupStatus'
+        create_timestamp:
+          type: integer
+          format: int64
     KeyGroupStatus:
       type: string
       enum:
@@ -2202,7 +2205,7 @@ components:
         - COBO
         - MOBILE
         - API
-      example: MOBILE
+      example: COBO
     MPCVault:
       type: object
       description: The data for mpc vault information.
@@ -2247,13 +2250,16 @@ components:
           example: my mpc project
         node_count:
           type: integer
+          example: 3
           description: The count of tss node of the project
         threshold:
           type: integer
+          example: 2
           description: The threshold number of project required for signature
         create_timestamp:
           type: integer
           format: int64
+          example: 1624975307234
           description: The create time the vault.
     RootPubkey:
       type: object
@@ -2303,7 +2309,11 @@ components:
         - KeyGenFromKeyGroup
         - Recovery
       example: KeyGen
-      description: 'The type of tss request, keygen is key generation'
+      description: |
+        The type of tss request.
+        KeyGen is key generation
+        KeyGenFromKeyGroup is generate RecoveryKeyGroup secret
+        Recovery is generate MainKeyGroup secret from RecoveryKeyGroup
     TSSRequestAction:
       type: string
       description: the action of tss request.
@@ -4724,7 +4734,7 @@ components:
           schema:
             type: object
             required:
-              - type
+              - name
               - node_count
               - threshold
             properties:
@@ -4737,7 +4747,7 @@ components:
                 description: Number of tss nodes in the key group
               threshold:
                 type: integer
-                description: The threshold number of tss node required for signature
+                description: 'The threshold number of tss node required for signature, must be less than or equal to node_count'
     createTssRequestBody:
       description: The request body to create a tss request
       content:
