@@ -1328,6 +1328,8 @@ paths:
           $ref: '#/components/responses/unauthorizedError'
         '403':
           $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
   /stakings/estimate_fee:
     post:
       tags:
@@ -1406,6 +1408,8 @@ paths:
           $ref: '#/components/responses/unauthorizedError'
         '403':
           $ref: '#/components/responses/forbiddenError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
   /stakings/activities/unstake:
     post:
       tags:
