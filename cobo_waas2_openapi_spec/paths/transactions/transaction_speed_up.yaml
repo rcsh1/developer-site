@@ -8,13 +8,7 @@ post:
   description: |
     This operation accelerates a specified transaction. 
 
-    Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be accelerated if its status is either of the following:
-    - `Submitted`
-    - `PendingScreening`
-    - `PendingAuthorization`
-    - `PendingSignature`
-    - `Broadcasting`
-    - `Confirming`
+    Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be accelerated if its status is either `Broadcasting` or `Confirming`.
     
     A transaction request for tracking is returned upon successful operation.
   security:
