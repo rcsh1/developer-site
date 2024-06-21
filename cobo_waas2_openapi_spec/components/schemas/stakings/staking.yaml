@@ -1,0 +1,74 @@
+type: object
+description: The staking info.
+required:
+  - stake_id
+  - pool_id
+  - amount
+  - status
+  - created_at
+  - updated_at
+properties:
+  id:
+    description: The unique id of the stake.
+    type: string
+    example: '0011039d-27fb-49ba-b172-6e0aa80e37ec'
+  wallet_id:
+    description: The unique wallet id.
+    type: string
+    example: '0111039d-27fb-49ba-b172-6e0aa80e37ec'
+  address:
+    description: The staker wallet address.
+    type: string
+    example: '0x0000000000000000000000000000000000000000'
+  amounts:
+    $ref: '../../schemas/stakings/amount_details.yaml'
+  initiator:
+    description: The initiator of the stake.
+    type: string
+    example: "Vanya@cobo.com"
+  unlock_time:
+    description: The unlock time.
+    type: int64
+    example: 1640995200000
+  unlock_block_height:
+    description: The unlock block height.
+    type: int64
+    example: 871234
+  pool_id:
+    description: The unique pool id.
+    type: string
+    example: 'babylon_btc'
+  pos_chain:
+    description: The pos chain of the stake.
+    type: string
+    example: 'Babylon Chain'
+  rewards_info:
+    description: The rewards info of the stake.
+    type: object
+    example: {}
+  created_at:
+    description: The time when the stake was created.
+    type: int64
+    example: 1640995200000
+  updated_at:
+    description: The time when the stake was last updated.
+    type: int64
+    example: 1640995200000
+  validator_info:
+    description: The validator info of the stake.
+    type: object
+    properties:
+      public_key:
+        type: string
+        example: '0000000000000000000000000000000000000000000000000000000000000000'
+      name:
+        type: string
+        example: 'Cobo'
+      address:
+        type: string
+        example: '0x0000000000000000000000000000000000000000'
+      commission_rate:
+        type: string
+        example: '0.1'
+
+
