@@ -4059,10 +4059,6 @@ components:
         - type: object
           description: The stake extra of eigen layer native ETH.
           properties:
-            eigen_pod:
-              description: 'The eigen pod contract address, if not provided a new one will be created.'
-              type: string
-              example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
             fee_recipient:
               description: 'The fee recipient address, if not provided the staker address will be used.'
               type: number
@@ -4218,7 +4214,7 @@ components:
     ActivityStatus:
       type: string
       enum:
-        - Active
+        - Success
         - Processing
         - Failed
       example: Success
