@@ -93,8 +93,8 @@ tags:
     description: Operations related to all transactions.
   - name: Developers - Webhooks
     description: Operations related to webhooks.
-#  - name: OAuth
-#    description: Operations related to org OAuth.
+#  - name: Stakings
+#    description: Operations related to staking.
 
 paths:
   # wallets
@@ -189,10 +189,6 @@ paths:
   /transactions/{transaction_id}/speedup:
     $ref: "./paths/transactions/transaction_speed_up.yaml"
 
-  # oauth
-#  /oauth/token:
-#    $ref: "./paths/oauth/token.yaml"
-
   # webhooks
   /webhooks/events:
     $ref: "./paths/webhooks/events.yaml"
@@ -202,6 +198,29 @@ paths:
     $ref: "./paths/webhooks/logs_by_event_id.yaml"
   /webhooks/events/{event_id}/retry:
     $ref: "./paths/webhooks/retry_by_event_id.yaml"
+
+  # stakings
+#  /stakings/pools:
+#   $ref: "./paths/stakings/list_pools.yaml"
+#  /stakings/pools/{pool_id}:
+#    $ref: "./paths/stakings/pool_by_id.yaml"
+#  /stakings/estimate_fee:
+#    $ref: "./paths/stakings/estimate_fee.yaml"
+#  /stakings/activities/stake:
+#    $ref: "./paths/stakings/stake.yaml"
+#  /stakings:
+#    $ref: "./paths/stakings/list_stakings.yaml"
+#  /stakings/{staking_id}:
+#    $ref: "./paths/stakings/staking_by_id.yaml"
+#  /stakings/activities/unstake:
+#    $ref: "./paths/stakings/unstake.yaml"
+#  /stakings/activities/withdraw:
+#    $ref: "./paths/stakings/withdraw.yaml"
+#  /stakings/activities:
+#    $ref: "./paths/stakings/activities.yaml"
+#  /stakings/activities/{activity_id}:
+#    $ref: "./paths/stakings/activity_by_id.yaml"
+
 
 components:
   schemas:
@@ -457,6 +476,51 @@ components:
     WebhookEventLog:
       $ref: "./components/schemas/webhooks/event_log.yaml"
 
+    #stakings
+    BaseStakeExtra:
+     $ref: "./components/schemas/stakings/base_stake_extra.yaml"
+    BabylonStakeExtra:
+      $ref: "./components/schemas/stakings/babylon_stake_extra.yaml"
+    EigenLayerLstStakeExtra:
+      $ref: "./components/schemas/stakings/eigen_layer_stake_extra_lst.yaml"
+    EigenLayerNativeStakeExtra:
+      $ref: "./components/schemas/stakings/eigen_layer_stake_extra_native.yaml"
+    Activity:
+      $ref: "./components/schemas/stakings/activity.yaml"
+    CreateStakeActivity:
+      $ref: "./components/schemas/stakings/create_stake_activity.yaml"
+    CreateWithdrawActivity:
+      $ref: "./components/schemas/stakings/create_withdraw_activity.yaml"
+    CreateUnstakeActivity:
+      $ref: "./components/schemas/stakings/create_unstake_activity.yaml"
+    ActivityStatus:
+      $ref: "./components/schemas/stakings/activity_status.yaml"
+    ActivityType:
+      $ref: "./components/schemas/stakings/activity_type.yaml"
+    AmountDetails:
+      $ref: "./components/schemas/stakings/amount_details.yaml"
+    BabylonValidator:
+      $ref: "./components/schemas/stakings/babylon_validator.yaml"
+    EigenlayerValidator:
+      $ref: "./components/schemas/stakings/eigenlayer_validator.yaml"
+    PoolDetails:
+      $ref: "./components/schemas/stakings/pool_details.yaml"
+    PoolSummary:
+      $ref: "./components/schemas/stakings/pool_summary.yaml"
+    Stakings:
+      $ref: "./components/schemas/stakings/staking.yaml"
+    StakingPoolType:
+      $ref: "./components/schemas/stakings/staking_pool_type.yaml"
+    BaseEstimateStakingFee:
+      $ref: "./components/schemas/stakings/base_estimate_staking_fee.yaml"
+    EstimateStakeFee:
+      $ref: "./components/schemas/stakings/estimate_stake_fee.yaml"
+    EstimateUnstakeFee:
+      $ref: "./components/schemas/stakings/estimate_unstake_fee.yaml"
+    EstimateWithdrawFee:
+      $ref: "./components/schemas/stakings/estimate_withdraw_fee.yaml"
+
+
   parameters:
     # misc
     sortByParam:
@@ -594,6 +658,29 @@ components:
     webhookEventIdParam:
       $ref: "./components/parameters/webhooks/event_id_path.yaml"
 
+    #stakings
+    activityIdRequiredParam:
+      $ref: "./components/parameters/stakings/activity_id_required.yaml"
+    poolIdRequiredParam:
+      $ref: "./components/parameters/stakings/pool_id_required.yaml"
+    poolIdOptionalParam:
+      $ref: "./components/parameters/stakings/pool_id_optional.yaml"
+    stakingIdRequiredParam:
+      $ref: "./components/parameters/stakings/staking_id_required.yaml"
+    stakingIdOptionalParam:
+      $ref: "./components/parameters/stakings/staking_id_optional.yaml"
+    activityTypeOptionalParam:
+      $ref: "./components/parameters/stakings/activity_type.yaml"
+    activityStatusOptionalParam:
+      $ref: "./components/parameters/stakings/activity_status.yaml"
+    activityInitiatorOptionalParam:
+      $ref: "./components/parameters/stakings/activity_initiator.yaml"
+    maxModifiedTimestampOptionalParam:
+      $ref: "./components/parameters/stakings/max_modified_timestamp_optional.yaml"
+    minModifiedTimestampOptionalParam:
+      $ref: "./components/parameters/stakings/min_modified_timestamp_optional.yaml"
+
+
   requestBodies:
     # wallets
     createWalletBody:
@@ -632,6 +719,17 @@ components:
       $ref: "./components/request_bodies/transactions/fee_request.yaml"
     resendTransactionBody:
       $ref: "./components/request_bodies/transactions/resend_request.yaml"
+
+    # stakings
+    createStakeActivityBody:
+      $ref: "./components/request_bodies/stakings/create_stake_activity.yaml"
+    createWithdrawActivityBody:
+      $ref: "./components/request_bodies/stakings/create_withdraw_activity.yaml"
+    createUnstakeActivityBody:
+      $ref: "./components/request_bodies/stakings/create_unstake_activity.yaml"
+    estimateStakeActivityFeeBody:
+      $ref: "./components/request_bodies/stakings/estimate_fee.yaml"
+
 
   responses:
     # misc
@@ -732,6 +830,21 @@ components:
     createTransactionRequestResponse:
       $ref: "./components/responses/transactions/create_transaction_request.yaml"
 
+    # stakings
+    listStakingPoolsResponse:
+      $ref: "./components/responses/stakings/list_staking_pools.yaml"
+    createActivityResponse:
+      $ref: "./components/responses/stakings/create_activity.yaml"
+    activityDetailsResponse:
+      $ref: "./components/responses/stakings/activity_details.yaml"
+    stakingsDetailsResponse:
+      $ref: "./components/responses/stakings/stakings_details.yaml"
+    poolDetailsResponse:
+      $ref: "./components/responses/stakings/pool_details.yaml"
+    listStakingsResponse:
+      $ref: "./components/responses/stakings/list_stakings.yaml"
+    listActivitiesResponse:
+      $ref: "./components/responses/stakings/list_activities.yaml"
 
   securitySchemes:
     CoboAuth:

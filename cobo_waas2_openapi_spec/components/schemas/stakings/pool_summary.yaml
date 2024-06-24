@@ -1,0 +1,43 @@
+type: object
+description: The summary of the staking pool.
+required:
+  - id
+  - chain_id
+  - protocol
+  - protocol_icon_url
+  - token_id
+  - est_apr
+  - supported_wallet_types
+properties:
+  id:
+    description: The unique protocol id.
+    type: string
+    example: 'babylon_btc'
+  chain_id:
+    description: The unique chain id.
+    type: string
+    example: 'Bitcoin'
+  protocol:
+    description: The name of the protocol.
+    type: string
+    example: 'Babylon'
+  protocol_icon_url:
+    description: The URL of the protocol's icon.
+    type: string
+    format: url
+    example: 'https://example.com/icon.png'
+  supported_wallet_types:
+    description: The list of available wallet types.
+    type: array
+    items:
+      $ref: '../../schemas/wallets/bases/wallet_type.yaml'
+    example: ['MPC']
+  token_id:
+    description: The unique token id.
+    type: string
+    example: 'BTC'
+  est_apr:
+    description: The estimated APR.
+    type: number
+    format: float
+    example: 0.05
