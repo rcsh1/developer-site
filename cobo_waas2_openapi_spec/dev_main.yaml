@@ -397,8 +397,10 @@ components:
       $ref: "./components/schemas/transactions/transactions/sources/source_type.yaml"
     TransactionAddressSource:
       $ref: "./components/schemas/transactions/transactions/sources/address_source.yaml"
-    TransactionBaseWalletSource:
-      $ref: "./components/schemas/transactions/transactions/sources/base_wallet_source.yaml"
+    TransactionFeeStationWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/fee_station_wallet_source.yaml"
+    TransactionCustodialWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/custodial_wallet_source.yaml"
     TransactionMPCWalletSource:
       $ref: "./components/schemas/transactions/transactions/sources/mpc_wallet_source.yaml"
     TransactionSafeWalletSource:
@@ -413,8 +415,12 @@ components:
       $ref: "./components/schemas/transactions/transactions/destinations/contract_call_destination.yaml"
     TransactionMessageSignDestination:
       $ref: "./components/schemas/transactions/transactions/destinations/sign_message_destination.yaml"
-    TransactionBaseWalletDestination:
-      $ref: "./components/schemas/transactions/transactions/destinations/base_wallet_destination.yaml"
+    TransactionCustodialWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/custodial_wallet_destination.yaml"
+    TransactionMPCWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/mpc_wallet_destination.yaml"
+    TransactionSafeWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/safe_wallet_destination.yaml"
     TransactionExchangeWalletDestination:
       $ref: "./components/schemas/transactions/transactions/destinations/exchange_wallet_destination.yaml"
     TransactionFixedFee:

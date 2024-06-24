@@ -1907,14 +1907,10 @@ components:
               type: string
               description: The GA code for the exchange.
               example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
-            sub_account_ids:
-              type: array
-              description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID.'
-              items:
-                type: string
-              example:
-                - sub01@xx.com
-                - sub02@xx.com
+            main_wallet_id:
+              type: string
+              description: The ID of main account wallet.
+              example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     CurveType:
       type: string
       enum:
@@ -1945,6 +1941,9 @@ components:
           type: integer
         status:
           $ref: '#/components/schemas/KeyGroupStatus'
+        create_timestamp:
+          type: integer
+          format: int64
     KeyGroupStatus:
       type: string
       enum:
@@ -2410,16 +2409,17 @@ components:
         source:
           oneOf:
             - $ref: '#/components/schemas/TransactionAddressSource'
-            - $ref: '#/components/schemas/TransactionBaseWalletSource'
+            - $ref: '#/components/schemas/TransactionCustodialWalletSource'
             - $ref: '#/components/schemas/TransactionMPCWalletSource'
             - $ref: '#/components/schemas/TransactionSafeWalletSource'
             - $ref: '#/components/schemas/TransactionExchangeWalletSource'
+            - $ref: '#/components/schemas/TransactionFeeStationWalletSource'
           discriminator:
             propertyName: source_type
             mapping:
               Address: '#/components/schemas/TransactionAddressSource'
-              GasStation: '#/components/schemas/TransactionBaseWalletSource'
-              CustodialWallet: '#/components/schemas/TransactionBaseWalletSource'
+              FeeStation: '#/components/schemas/TransactionFeeStationWalletSource'
+              CustodialWallet: '#/components/schemas/TransactionCustodialWalletSource'
               MPCWallet: '#/components/schemas/TransactionMPCWalletSource'
               SafeWallet: '#/components/schemas/TransactionSafeWalletSource'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletSource'
@@ -2428,7 +2428,9 @@ components:
             - $ref: '#/components/schemas/TransactionAddressDestination'
             - $ref: '#/components/schemas/TransactionContractCallDestination'
             - $ref: '#/components/schemas/TransactionMessageSignDestination'
-            - $ref: '#/components/schemas/TransactionBaseWalletDestination'
+            - $ref: '#/components/schemas/TransactionCustodialWalletDestination'
+            - $ref: '#/components/schemas/TransactionMPCWalletDestination'
+            - $ref: '#/components/schemas/TransactionSafeWalletDestination'
             - $ref: '#/components/schemas/TransactionExchangeWalletDestination'
           discriminator:
             propertyName: destination_type
@@ -2436,9 +2438,9 @@ components:
               Address: '#/components/schemas/TransactionAddressDestination'
               ContractCall: '#/components/schemas/TransactionContractCallDestination'
               MessageSign: '#/components/schemas/TransactionMessageSignDestination'
-              CustodialWallet: '#/components/schemas/TransactionBaseWalletDestination'
-              MPCWallet: '#/components/schemas/TransactionBaseWalletDestination'
-              SafeWallet: '#/components/schemas/TransactionBaseWalletDestination'
+              CustodialWallet: '#/components/schemas/TransactionCustodialWalletDestination'
+              MPCWallet: '#/components/schemas/TransactionMPCWalletDestination'
+              SafeWallet: '#/components/schemas/TransactionSafeWalletDestination'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletDestination'
         fee:
           $ref: '#/components/schemas/TransactionFee'
@@ -2734,7 +2736,7 @@ components:
         - Withdrawal
         - TokenApproval
         - ContractCall
-        - AutoFueling
+        - TransactionFeePayment
         - RawMessage
       example: Deposit
       description: Enumeration representing the type of a transaction.
@@ -2761,7 +2763,7 @@ components:
         - MPCUserControlledWallet
         - SafeContractWallet
         - ExchangeAccount
-        - GasStation
+        - FeeStation
         - ExternalAddress
       example: CustodialAssetWallet
       description: Enumeration representing the address type of a transaction.
@@ -2773,7 +2775,7 @@ components:
         - MPCWallet
         - SafeWallet
         - ExchangeWallet
-        - GasStation
+        - FeeStation
       example: ExternalAddress
       description: Enumeration representing the source type of a transaction.
     TransactionAddressSource:
@@ -2800,7 +2802,21 @@ components:
                 type: string
                 description: UTXO tx hash to include
                 example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
-    TransactionBaseWalletSource:
+    TransactionFeeStationWalletSource:
+      type: object
+      description: The data for transaction source information.
+      required:
+        - source_type
+        - wallet_id
+      properties:
+        source_type:
+          $ref: '#/components/schemas/TransactionSourceType'
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    TransactionCustodialWalletSource:
       type: object
       description: The data for transaction source information.
       required:
@@ -3015,7 +3031,83 @@ components:
           description: 'Structured data to be signed, JSON encoded'
           example: |
             {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
-    TransactionBaseWalletDestination:
+    TransactionCustodialWalletDestination:
+      type: object
+      description: The data for transaction destination information.
+      required:
+        - destination_type
+        - wallet_id
+        - token_id
+        - address_str
+        - amount
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/TransactionDestinationType'
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        token_id:
+          type: string
+          description: The token ID.
+          example: ETH_USDT
+        asset_id:
+          type: string
+          description: ID of the asset. Used to group token balance when needed.
+          example: USDT
+        address_str:
+          type: string
+          description: Destination address
+          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+        memo:
+          type: string
+          description: Destination address memo
+          example: '82840924'
+        amount:
+          type: string
+          description: |
+            Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+          example: '1.5'
+    TransactionMPCWalletDestination:
+      type: object
+      description: The data for transaction destination information.
+      required:
+        - destination_type
+        - wallet_id
+        - token_id
+        - address_str
+        - amount
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/TransactionDestinationType'
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        token_id:
+          type: string
+          description: The token ID.
+          example: ETH_USDT
+        asset_id:
+          type: string
+          description: ID of the asset. Used to group token balance when needed.
+          example: USDT
+        address_str:
+          type: string
+          description: Destination address
+          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+        memo:
+          type: string
+          description: Destination address memo
+          example: '82840924'
+        amount:
+          type: string
+          description: |
+            Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+          example: '1.5'
+    TransactionSafeWalletDestination:
       type: object
       description: The data for transaction destination information.
       required:
@@ -3634,7 +3726,6 @@ components:
         - created_timestamp
         - type
         - data
-        - status
       properties:
         id:
           description: The event ID.
@@ -3654,12 +3745,7 @@ components:
         type:
           $ref: '#/components/schemas/WebhookEventType'
         data:
-          type: object
-          description: 'The data of the webhook event, in JSON format.'
-          example:
-            wallet_id: 624ce4e5-e985-4394-a196-fd7752aff96e
-            address: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
-            amount: '1000000000000000000'
+          $ref: '#/components/schemas/Transaction'
         status:
           $ref: '#/components/schemas/WebhookEventStatus'
         next_retry_timestamp:
@@ -3674,79 +3760,13 @@ components:
     WebhookEventType:
       type: string
       enum:
-        - asset_wallet.outbound.created
-        - asset_wallet.outbound.pending_authorization
-        - asset_wallet.outbound.rejected
-        - asset_wallet.outbound.queued
-        - asset_wallet.outbound.pending_confirm
-        - asset_wallet.outbound.confirmations.updated
-        - asset_wallet.outbound.confirmed
-        - asset_wallet.outbound.failed
-        - asset_wallet.inbound.pending_confirm
-        - asset_wallet.inbound.confirmed
-        - asset_wallet.inbound.confirmations.updated
-        - web3_wallet.outbound.created
-        - web3_wallet.outbound.pending_authorization
-        - web3_wallet.outbound.rejected
-        - web3_wallet.outbound.queued
-        - web3_wallet.outbound.pending_confirm
-        - web3_wallet.outbound.confirmations.updated
-        - web3_wallet.outbound.confirmed
-        - web3_wallet.outbound.failed
-        - web3_wallet.inbound.pending_confirm
-        - web3_wallet.inbound.confirmed
-        - web3_wallet.inbound.confirmations.updated
-        - safe_wallet.outbound.created
-        - safe_wallet.outbound.pending_authorization
-        - safe_wallet.outbound.rejected
-        - safe_wallet.outbound.queued
-        - safe_wallet.outbound.pending_signature
-        - safe_wallet.outbound.pending_confirm
-        - safe_wallet.outbound.confirmations.updated
-        - safe_wallet.outbound.confirmed
-        - safe_wallet.outbound.failed
-        - safe_wallet.inbound.pending_confirm
-        - safe_wallet.inbound.confirmed
-        - safe_wallet.inbound.confirmations.updated
-        - exchange_wallet.inbound.pending_confirm
-        - exchange_wallet.inbound.confirmed
-        - exchange_wallet.outbound.created
-        - exchange_wallet.outbound.pending_authorization
-        - exchange_wallet.outbound.rejected
-        - exchange_wallet.outbound.pending_confirm
-        - exchange_wallet.outbound.confirmed
-        - exchange_wallet.outbound.failed
-        - exchange_wallet.sub_transfer.created
-        - exchange_wallet.sub_transfer.pending_authorization
-        - exchange_wallet.sub_transfer.rejected
-        - exchange_wallet.sub_transfer.pending_confirm
-        - exchange_wallet.sub_transfer.confirmed
-        - exchange_wallet.sub_transfer.failed
-        - organization_controlled_wallet.outbound.created
-        - organization_controlled_wallet.outbound.pending_authorization
-        - organization_controlled_wallet.outbound.rejected
-        - organization_controlled_wallet.outbound.queued
-        - organization_controlled_wallet.outbound.pending_signature
-        - organization_controlled_wallet.outbound.pending_confirm
-        - organization_controlled_wallet.outbound.confirmations.updated
-        - organization_controlled_wallet.outbound.confirmed
-        - organization_controlled_wallet.outbound.failed
-        - organization_controlled_wallet.inbound.pending_confirm
-        - organization_controlled_wallet.inbound.confirmed
-        - organization_controlled_wallet.inbound.confirmations.updated
-        - user_controlled_wallet.outbound.created
-        - user_controlled_wallet.outbound.pending_authorization
-        - user_controlled_wallet.outbound.rejected
-        - user_controlled_wallet.outbound.queued
-        - user_controlled_wallet.outbound.pending_signature
-        - user_controlled_wallet.outbound.pending_confirm
-        - user_controlled_wallet.outbound.confirmations.updated
-        - user_controlled_wallet.outbound.confirmed
-        - user_controlled_wallet.outbound.failed
-        - user_controlled_wallet.inbound.pending_confirm
-        - user_controlled_wallet.inbound.confirmed
-        - user_controlled_wallet.inbound.confirmations.updated
-      example: asset_wallet.outbound.created
+        - custodial_asset_wallets.transaction.updated
+        - custodial_web3_wallets.transaction.updated
+        - mpc_user_controlled_wallets.transaction.updated
+        - mpc_organization_controlled_wallets.transaction.updated
+        - smart_contract_safe_wallets.transaction.updated
+        - exchange_wallets.transaction.updated
+      example: custodial_asset_wallets.transaction.updated
       description: The event type.
     WebhookEventStatus:
       type: string
@@ -4998,14 +5018,10 @@ components:
                 type: string
                 description: The GA code for the exchange.
                 example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
-              sub_account_ids:
-                type: array
-                description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. Only needed when updating exchange wallets.'
-                items:
-                  type: string
-                example:
-                  - sub01@xx.com
-                  - sub02@xx.com
+              main_wallet_id:
+                type: string
+                description: The ID of main account wallet.
+                example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     createAddressBody:
       description: The request body to add address to a wallet.
       content:
@@ -5091,7 +5107,7 @@ components:
           schema:
             type: object
             required:
-              - type
+              - name
               - node_count
               - threshold
             properties:
