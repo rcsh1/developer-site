@@ -93,8 +93,8 @@ tags:
     description: Operations related to all transactions.
   - name: Developers - Webhooks
     description: Operations related to webhooks.
-  - name: Stakings
-    description: Operations related to staking.
+#  - name: Stakings
+#    description: Operations related to staking.
 
 paths:
   # wallets
@@ -200,26 +200,26 @@ paths:
     $ref: "./paths/webhooks/retry_by_event_id.yaml"
 
   # stakings
-  /stakings/pools:
-   $ref: "./paths/stakings/list_pools.yaml"
-  /stakings/pools/{pool_id}:
-    $ref: "./paths/stakings/pool_by_id.yaml"
-  /stakings/estimate_fee:
-    $ref: "./paths/stakings/estimate_fee.yaml"
-  /stakings/activities/stake:
-    $ref: "./paths/stakings/stake.yaml"
-  /stakings:
-    $ref: "./paths/stakings/list_stakings.yaml"
-  /stakings/{staking_id}:
-    $ref: "./paths/stakings/staking_by_id.yaml"
-  /stakings/activities/unstake:
-    $ref: "./paths/stakings/unstake.yaml"
-  /stakings/activities/withdraw:
-    $ref: "./paths/stakings/withdraw.yaml"
-  /stakings/activities:
-    $ref: "./paths/stakings/activities.yaml"
-  /stakings/activities/{activity_id}:
-    $ref: "./paths/stakings/activity_by_id.yaml"
+#  /stakings/pools:
+#   $ref: "./paths/stakings/list_pools.yaml"
+#  /stakings/pools/{pool_id}:
+#    $ref: "./paths/stakings/pool_by_id.yaml"
+#  /stakings/estimate_fee:
+#    $ref: "./paths/stakings/estimate_fee.yaml"
+#  /stakings/activities/stake:
+#    $ref: "./paths/stakings/stake.yaml"
+#  /stakings:
+#    $ref: "./paths/stakings/list_stakings.yaml"
+#  /stakings/{staking_id}:
+#    $ref: "./paths/stakings/staking_by_id.yaml"
+#  /stakings/activities/unstake:
+#    $ref: "./paths/stakings/unstake.yaml"
+#  /stakings/activities/withdraw:
+#    $ref: "./paths/stakings/withdraw.yaml"
+#  /stakings/activities:
+#    $ref: "./paths/stakings/activities.yaml"
+#  /stakings/activities/{activity_id}:
+#    $ref: "./paths/stakings/activity_by_id.yaml"
 
 
 components:
