@@ -93,6 +93,8 @@ tags:
     description: Operations related to all transactions.
   - name: Developers - Webhooks
     description: Operations related to webhooks.
+#  - name: OAuth
+#    description: Operations related to org OAuth.
 
 paths:
   # wallets
@@ -188,8 +190,8 @@ paths:
     $ref: "./paths/transactions/transaction_speed_up.yaml"
 
   # oauth
-  /oauth/token:
-    $ref: "./paths/oauth/token.yaml"
+#  /oauth/token:
+#    $ref: "./paths/oauth/token.yaml"
 
   # webhooks
   /webhooks/events:
