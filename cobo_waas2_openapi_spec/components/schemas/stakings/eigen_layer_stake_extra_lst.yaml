@@ -1,0 +1,12 @@
+allOf:
+  - $ref: './base_stake_extra.yaml'
+  - type: object
+    description: The stake extra of eigen layer lst token.
+    required:
+        - id
+    properties:
+        operator:
+          description: The operator address.
+          type: string
+          example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+
