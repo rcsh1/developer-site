@@ -4371,7 +4371,7 @@ components:
               example: '0000000000000000000000000000000000000000000000000000000000000000'
             lock_time:
               description: The staking period in milliseconds.
-              type: number
+              type: integer
               format: int64
               example: 1000000000000
     EigenLayerLstStakeExtra:
@@ -4450,11 +4450,13 @@ components:
           $ref: '#/components/schemas/ActivityStatus'
         created_time:
           description: The time when the activity was created.
-          type: int64
+          type: integer
+          format: int64
           example: 1640995200000
         updated_time:
           description: The time when the activity was last updated.
-          type: int64
+          type: integer
+          format: int64
           example: 1640995200000
     CreateStakeActivity:
       type: object
@@ -4768,11 +4770,13 @@ components:
           example: Vanya@cobo.com
         unlock_time:
           description: The unlock time.
-          type: int64
+          type: integer
+          format: int64
           example: 1640995200000
         unlock_block_height:
           description: The unlock block height.
-          type: int64
+          type: integer
+          format: int64
           example: 871234
         pool_id:
           description: The unique pool id.
@@ -4788,11 +4792,13 @@ components:
           example: {}
         created_at:
           description: The time when the stake was created.
-          type: int64
+          type: integer
+          format: int64
           example: 1640995200000
         updated_at:
           description: The time when the stake was last updated.
-          type: int64
+          type: integer
+          format: int64
           example: 1640995200000
         validator_info:
           description: The validator info of the stake.
@@ -5496,7 +5502,8 @@ components:
       required: false
       description: The maximum modified timestamp in Unix epoch seconds
       schema:
-        type: int64
+        type: integer
+        format: int64
       example: 1635744000000
     minModifiedTimestampOptionalParam:
       name: min_modified_timestamp
@@ -5504,7 +5511,8 @@ components:
       required: false
       description: The minimum modified timestamp in Unix epoch seconds
       schema:
-        type: int64
+        type: integer
+        format: int64
       example: 1635744000000
   requestBodies:
     createWalletBody:
