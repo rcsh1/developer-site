@@ -28,11 +28,13 @@ properties:
     example: "Vanya@cobo.com"
   unlock_time:
     description: The unlock time.
-    type: int64
+    type: integer
+    format: int64
     example: 1640995200000
   unlock_block_height:
     description: The unlock block height.
-    type: int64
+    type: integer
+    format: int64
     example: 871234
   pool_id:
     description: The unique pool id.
@@ -48,11 +50,13 @@ properties:
     example: {}
   created_at:
     description: The time when the stake was created.
-    type: int64
+    type: integer
+    format: int64
     example: 1640995200000
   updated_at:
     description: The time when the stake was last updated.
-    type: int64
+    type: integer
+    format: int64
     example: 1640995200000
   validator_info:
     description: The validator info of the stake.
