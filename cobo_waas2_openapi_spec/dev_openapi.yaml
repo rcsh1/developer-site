@@ -1907,14 +1907,10 @@ components:
               type: string
               description: The GA code for the exchange.
               example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
-            sub_account_ids:
-              type: array
-              description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID.'
-              items:
-                type: string
-              example:
-                - sub01@xx.com
-                - sub02@xx.com
+            main_wallet_id:
+              type: string
+              description: The ID of main account wallet.
+              example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     CurveType:
       type: string
       enum:
@@ -2410,16 +2406,17 @@ components:
         source:
           oneOf:
             - $ref: '#/components/schemas/TransactionAddressSource'
-            - $ref: '#/components/schemas/TransactionBaseWalletSource'
+            - $ref: '#/components/schemas/TransactionCustodialWalletSource'
             - $ref: '#/components/schemas/TransactionMPCWalletSource'
             - $ref: '#/components/schemas/TransactionSafeWalletSource'
             - $ref: '#/components/schemas/TransactionExchangeWalletSource'
+            - $ref: '#/components/schemas/TransactionFeeStationWalletSource'
           discriminator:
             propertyName: source_type
             mapping:
               Address: '#/components/schemas/TransactionAddressSource'
-              GasStation: '#/components/schemas/TransactionBaseWalletSource'
-              CustodialWallet: '#/components/schemas/TransactionBaseWalletSource'
+              FeeStation: '#/components/schemas/TransactionFeeStationWalletSource'
+              CustodialWallet: '#/components/schemas/TransactionCustodialWalletSource'
               MPCWallet: '#/components/schemas/TransactionMPCWalletSource'
               SafeWallet: '#/components/schemas/TransactionSafeWalletSource'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletSource'
@@ -2428,7 +2425,9 @@ components:
             - $ref: '#/components/schemas/TransactionAddressDestination'
             - $ref: '#/components/schemas/TransactionContractCallDestination'
             - $ref: '#/components/schemas/TransactionMessageSignDestination'
-            - $ref: '#/components/schemas/TransactionBaseWalletDestination'
+            - $ref: '#/components/schemas/TransactionCustodialWalletDestination'
+            - $ref: '#/components/schemas/TransactionMPCWalletDestination'
+            - $ref: '#/components/schemas/TransactionSafeWalletDestination'
             - $ref: '#/components/schemas/TransactionExchangeWalletDestination'
           discriminator:
             propertyName: destination_type
@@ -2436,9 +2435,9 @@ components:
               Address: '#/components/schemas/TransactionAddressDestination'
               ContractCall: '#/components/schemas/TransactionContractCallDestination'
               MessageSign: '#/components/schemas/TransactionMessageSignDestination'
-              CustodialWallet: '#/components/schemas/TransactionBaseWalletDestination'
-              MPCWallet: '#/components/schemas/TransactionBaseWalletDestination'
-              SafeWallet: '#/components/schemas/TransactionBaseWalletDestination'
+              CustodialWallet: '#/components/schemas/TransactionCustodialWalletDestination'
+              MPCWallet: '#/components/schemas/TransactionMPCWalletDestination'
+              SafeWallet: '#/components/schemas/TransactionSafeWalletDestination'
               ExchangeWallet: '#/components/schemas/TransactionExchangeWalletDestination'
         fee:
           $ref: '#/components/schemas/TransactionFee'
@@ -2734,7 +2733,7 @@ components:
         - Withdrawal
         - TokenApproval
         - ContractCall
-        - AutoFueling
+        - TransactionFeePayment
         - RawMessage
       example: Deposit
       description: Enumeration representing the type of a transaction.
@@ -2761,7 +2760,7 @@ components:
         - MPCUserControlledWallet
         - SafeContractWallet
         - ExchangeAccount
-        - GasStation
+        - FeeStation
         - ExternalAddress
       example: CustodialAssetWallet
       description: Enumeration representing the address type of a transaction.
@@ -2773,7 +2772,7 @@ components:
         - MPCWallet
         - SafeWallet
         - ExchangeWallet
-        - GasStation
+        - FeeStation
       example: ExternalAddress
       description: Enumeration representing the source type of a transaction.
     TransactionAddressSource:
@@ -2800,7 +2799,21 @@ components:
                 type: string
                 description: UTXO tx hash to include
                 example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
-    TransactionBaseWalletSource:
+    TransactionFeeStationWalletSource:
+      type: object
+      description: The data for transaction source information.
+      required:
+        - source_type
+        - wallet_id
+      properties:
+        source_type:
+          $ref: '#/components/schemas/TransactionSourceType'
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    TransactionCustodialWalletSource:
       type: object
       description: The data for transaction source information.
       required:
@@ -3015,7 +3028,83 @@ components:
           description: 'Structured data to be signed, JSON encoded'
           example: |
             {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
-    TransactionBaseWalletDestination:
+    TransactionCustodialWalletDestination:
+      type: object
+      description: The data for transaction destination information.
+      required:
+        - destination_type
+        - wallet_id
+        - token_id
+        - address_str
+        - amount
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/TransactionDestinationType'
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        token_id:
+          type: string
+          description: The token ID.
+          example: ETH_USDT
+        asset_id:
+          type: string
+          description: ID of the asset. Used to group token balance when needed.
+          example: USDT
+        address_str:
+          type: string
+          description: Destination address
+          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+        memo:
+          type: string
+          description: Destination address memo
+          example: '82840924'
+        amount:
+          type: string
+          description: |
+            Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+          example: '1.5'
+    TransactionMPCWalletDestination:
+      type: object
+      description: The data for transaction destination information.
+      required:
+        - destination_type
+        - wallet_id
+        - token_id
+        - address_str
+        - amount
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/TransactionDestinationType'
+        wallet_id:
+          type: string
+          description: Unique id of the wallet to transfer from.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        token_id:
+          type: string
+          description: The token ID.
+          example: ETH_USDT
+        asset_id:
+          type: string
+          description: ID of the asset. Used to group token balance when needed.
+          example: USDT
+        address_str:
+          type: string
+          description: Destination address
+          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+        memo:
+          type: string
+          description: Destination address memo
+          example: '82840924'
+        amount:
+          type: string
+          description: |
+            Transaction value (Note that this is an absolute value. If you trade 1.5 ETH, then the value is 1.5)
+          example: '1.5'
+    TransactionSafeWalletDestination:
       type: object
       description: The data for transaction destination information.
       required:
@@ -4926,14 +5015,10 @@ components:
                 type: string
                 description: The GA code for the exchange.
                 example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
-              sub_account_ids:
-                type: array
-                description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. Only needed when updating exchange wallets.'
-                items:
-                  type: string
-                example:
-                  - sub01@xx.com
-                  - sub02@xx.com
+              main_wallet_id:
+                type: string
+                description: The ID of main account wallet.
+                example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     createAddressBody:
       description: The request body to add address to a wallet.
       content:
