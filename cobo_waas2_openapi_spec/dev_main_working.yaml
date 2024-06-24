@@ -95,6 +95,8 @@ tags:
     description: Operations related to webhooks.
   - name: Stakings
     description: Operations related to staking.
+  - name: OAuth
+    description: Operations related to OAuth.
 
 paths:
   # wallets
@@ -188,6 +190,10 @@ paths:
     $ref: "./paths/transactions/transaction_drop.yaml"
   /transactions/{transaction_id}/speedup:
     $ref: "./paths/transactions/transaction_speed_up.yaml"
+
+  # oauth
+  /oauth/token:
+    $ref: "./paths/oauth/token.yaml"
 
   # webhooks
   /webhooks/events:
