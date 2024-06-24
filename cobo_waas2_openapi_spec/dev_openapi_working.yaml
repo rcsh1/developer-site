@@ -2365,6 +2365,9 @@ components:
           type: integer
         status:
           $ref: '#/components/schemas/KeyGroupStatus'
+        create_timestamp:
+          type: integer
+          format: int64
     KeyGroupStatus:
       type: string
       enum:
@@ -5528,7 +5531,7 @@ components:
           schema:
             type: object
             required:
-              - type
+              - name
               - node_count
               - threshold
             properties:
