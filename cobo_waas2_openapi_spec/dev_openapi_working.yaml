@@ -2331,14 +2331,10 @@ components:
               type: string
               description: The GA code for the exchange.
               example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
-            sub_account_ids:
-              type: array
-              description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID.'
-              items:
-                type: string
-              example:
-                - sub01@xx.com
-                - sub02@xx.com
+            main_wallet_id:
+              type: string
+              description: The ID of main account wallet.
+              example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     CurveType:
       type: string
       enum:
@@ -5515,14 +5511,10 @@ components:
                 type: string
                 description: The GA code for the exchange.
                 example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
-              sub_account_ids:
-                type: array
-                description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. Only needed when updating exchange wallets.'
-                items:
-                  type: string
-                example:
-                  - sub01@xx.com
-                  - sub02@xx.com
+              main_wallet_id:
+                type: string
+                description: The ID of main account wallet.
+                example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     createAddressBody:
       description: The request body to add address to a wallet.
       content:
