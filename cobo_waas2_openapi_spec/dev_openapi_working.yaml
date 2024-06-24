@@ -373,9 +373,8 @@ paths:
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/requiredTokenIdParam'
         - $ref: '#/components/parameters/addressStrParam'
-        - $ref: '#/components/parameters/optionalUtxoTxHashParam'
       responses:
         '200':
           $ref: '#/components/responses/spendableListResponse'
@@ -5585,16 +5584,17 @@ components:
             required:
               - tx_hashes
             properties:
-              tx_hashes:
-                type: array
-                items:
-                  type: string
-                  example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
-              is_locked:
-                type: boolean
-                description: 'True if to lock the UTXOs, False to unlock.'
-                default: true
-                example: true
+              token_id:
+                type: string
+                description: The token ID.
+                example: ETH_USDT
+              tx_hash:
+                type: string
+                example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
+              vout_n:
+                type: integer
+                description: The output index of the UTXO.
+                example: 0
     createKeyGroupBody:
       description: The request body to create a mpc key group
       content:
