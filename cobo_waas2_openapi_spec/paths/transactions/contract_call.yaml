@@ -2,12 +2,13 @@ post:
   tags:
     - Transactions
   operationId: create_contract_call_transaction
-  summary: Create transaction to call smart contract
+  summary: Call smart contract
   description: |
-    This endpoint generates a transaction to invoke a function within a smart contract on the blockchain.
-    The request body should include details such as the contract address, function to call, and any required parameters encoded as the calldata.
-    Upon successful creation, a transaction request is returned, which can then be submitted to the blockchain for execution.
-    This endpoint only applies to ethereum-like blockchains for now.
+    This operation creates a transaction to interact with a smart contract on the blockchain.
+
+    You need to provide details such as the source address, destination address, and the calldata. You can specify the fee-related properties to limit the transaction fee. A transaction request for tracking is returned upon successful operation.
+    
+    Currently, this operation only applies to blockchains that have a similar architecture to Ethereum.
   security:
     - CoboAuth: []
   requestBody:

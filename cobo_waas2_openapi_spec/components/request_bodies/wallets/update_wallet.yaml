@@ -10,23 +10,21 @@ content:
           description: The wallet name.
         apikey:
           type: string
-          description: The API key of your exchange account. Only needed when updating exchange wallets.
+          description: The API key of your exchange account. This property is required when updating the information of an Exchange Wallet.
           example: 'd8f062da-39f4-4a11-8b9d-12595854237f'
         secret:
           type: string
-          description: The API secret of your exchange account. Only needed when updating exchange wallets.
+          description: The API secret of your exchange account. This property is required when updating the information of an Exchange Wallet.
           example: '75B4F636193162488A3728B4A5797708'
         passphrase:
           type: string
-          description: The passphrase of your exchange account. Only needed when updating exchange wallets.
+          description: The passphrase of your exchange account. This property is required when updating the information of an Exchange Wallet.
           example: 'sXASDKWKLLsWWEE'
         ga_code:
           type: string
           description: The GA code for the exchange.
           example: 'sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708'
-        sub_account_ids:
-          type: array
-          description: The Sub Account ID. It can be an email address, a user name, or a custom account ID. Only needed when updating exchange wallets.
-          items:
-            type: string
-          example: [ 'sub01@xx.com', 'sub02@xx.com']
+        main_wallet_id:
+          type: string
+          description: The ID of the Exchange Wallet (Main Account).
+          example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'

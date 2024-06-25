@@ -6,15 +6,14 @@ get:
   operationId: get_spendable_list
   summary: List spendable UTXOs
   description: |
-    The operation retrieves a list of spendable unspent transaction outputs (UTXOs) for the specified wallet and token.
+    The operation retrieves a list of spendable unspent transaction outputs (UTXOs) for a specified wallet and token.
     
     <Note>This operation is applicable to MPC Wallets only.</Note>
   security:
     - CoboAuth: []
   parameters:
-    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/token_id_required.yaml"
     - $ref: "../../components/parameters/wallets/address_str_optional.yaml"
-    - $ref: "../../components/parameters/wallets/utxo_tx_hash_optional.yaml"
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_spendable_list.yaml"

@@ -2,10 +2,13 @@ post:
   tags:
     - Transactions
   operationId: create_message_sign_transaction
-  summary: Create transaction to sign a message
+  summary: Sign message
   description: |
-    This endpoint generates a transaction to sign a message using cryptographic techniques.
-    Users can provide the message to sign in the request body, and the response will contain the transaction request.
+    This operation creates a transaction to sign the provided message using cryptographic techniques.
+
+    In some scenarios, you want to sign a message for identity authentication or transaction approval. You need to provide details such as the source address, destination address, and the message to be signed. A transaction request for tracking is returned upon successful operation.
+
+    Currently, only MPC Wallets support this type of transaction to sign a message. 
   security:
     - CoboAuth: []
   requestBody:

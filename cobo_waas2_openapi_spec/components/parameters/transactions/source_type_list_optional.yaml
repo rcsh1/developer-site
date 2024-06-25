@@ -1,7 +1,14 @@
 name: source_type
 in: query
 required: false
-description: The source type of the transaction
+description: | 
+  The type of transaction source. Possible values include:
+    - `Address`: An external address.
+    - `CustodialWallet`: A Custodial Wallet.
+    - `MPCWallet`: An MPC Wallet.
+    - `SafeWallet`: A Smart Contract Wallet (Safe{Wallet}).
+    - `ExchangeWallet`: An Exchange Wallet.
+    - `FeeStation`: A Fee Station.
 schema:
   type: array
   items:

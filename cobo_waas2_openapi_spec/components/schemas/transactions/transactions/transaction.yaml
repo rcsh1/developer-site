@@ -1,5 +1,5 @@
 type: object
-description: The data for transaction information.
+description: The information about the a transaction.
 required:
   - transaction_id
   - transaction_type
@@ -12,17 +12,17 @@ required:
 properties:
   transaction_id:
     type: string
-    description: Unique transaction ID
+    description: The transaction ID.
     format: uuid
     example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
   cobo_id:
     type: string
-    description: Cobo ID
+    description: The Cobo ID for tracking the transaction.
     example: '20231213122855000000000000000000'
   request_id:
     type: string
-    description: Request ID
-    example: "web_send_by_user_327_1610444045047"
+    description: The request ID that is unique within your Organization to track your request.
+    example: "web_send_by_user_327_1610444045047" 
   type:
     $ref: './transaction_type.yaml'
   status:
@@ -31,10 +31,11 @@ properties:
     $ref: './transaction_sub_status.yaml'
   failed_reason:
     type: string
+    description: The reason why the transaction failed.
     example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
-    description: The blockchain on which the token operates.
+    description: The chain ID.
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
@@ -45,91 +46,102 @@ properties:
     $ref: './fees/transaction_fee.yaml'
   initiator:
     type: string
-    description: Transaction initiator, apikey or operator
+    description: The transaction initiator. 
     example: "API Prod Key #1"
   initiator_type:
     $ref: './transaction_initiator_type.yaml'
   confirmed_num:
     type: number
     format: int32
-    description: Transaction confirmed number
+    description: The number of confirmations this transaction has received.
     example: 12
   confirming_threshold:
     type: integer
     format: int32
-    description: Number of confirmations required for a transaction, such as 15 for ETH chain.
+    description: The minimum number of confirmations required to deem a transaction secure. The common threshold is 6 for a Bitcoin transaction. 
     example: 15
   block_number:
     type: integer
     format: int64
-    description: Block number
+    description: The block number.
     example: 123
   block_time:
     type: integer
     format: int64
-    description: Block time
+    description: The time when the block was created, in Unix timestamp format, measured in milliseconds.
     example: 1717740319
   block_hash:
     type: string
-    description: Block hash
+    description: The block hash.
     example: "0xc9ee947f8bb6027c161888bf0d004bec05e7c2beec7e6b187dc512174e438735"
   nonce:
     type: integer
-    description: Transaction nonce
+    description: The transaction nonce. 
     example: 9
   transaction_hash:
     type: string
-    description: Transaction hash.
+    description: The transaction hash.
     example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
-  replacement:
+  replacement: 
     type: object
     properties:
       type:
         $ref: './transaction_replacement_type.yaml'
       replaced_by_transaction_id:
         type: string
-        description: Replace by transaction ID
+        description: The ID of the replacement transaction that this transaction was replaced by.
         format: uuid
         example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
       replaced_by_transaction_hash:
         type: string
-        description: Replace by transaction hash
+        description: The hash of the replacement transaction that this transaction was replaced by.
         example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
       replaced_transaction_id:
         type: string
-        description: Replace by transaction ID
+        description: The ID of the transaction that this transaction replaced.
         format: uuid
         example: "aff0e1cb-15b2-4e1f-9b9d-a9133715986f"
       replaced_transaction_hash:
         type: string
-        description: Replace by transaction hash
+        description: The hash of the transaction that this transaction replaced.
         example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
   category:
     type: array
     items:
       $ref: './transaction_category.yaml'
+    description: A custom transaction category for you to identify your transfers more easily.
   description:
     type: string
+    description: The description for your transaction.
     example: "withdrawal to exchange trading account"
   force_internal:
     type: boolean
-    description: Whether the transfer request to be executed as a loop transfer.
+    description: |
+      Whether the transfer request must be executed as an off-chain transfer. 
+        - `true`: The transfer request must be executed an off-chain transfer. 
+        - `false`: The transfer may not be executed as an off-chain transfer.
     example: false
   force_external:
     type: boolean
-    description: Whether the transfer request to be executed as a onchain transfer.
+    description:  |
+      Whether the transfer must be executed as an on-chain transfer.
+        - `true`: The transfer must be executed as an on-chain transfer.
+        - `false`: The transfer may not be executed as an on-chain transfer.
     example: false
   is_loop:
     type: boolean
-    description: Whether the transfer is a loop transfer.
+    description:  |
+      Whether the transfer is a Cobo Superloop transfer. 
+        - `true`: The transfer is a Superloop transfer.
+        - `false`: The transfer is not a Superloop transfer.
     example: false
   created_time:
     type: number
     format: int64
-    description: Transaction creation time
+    description: The time when the transaction was created, in Unix timestamp format, measured in milliseconds.
     example: 1610445878970
   updated_time:
     type: number
     format: int64
-    description: Transaction update time
+    description: The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.
     example: 1610445878970

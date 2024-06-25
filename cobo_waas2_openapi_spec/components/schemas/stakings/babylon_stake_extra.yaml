@@ -1,0 +1,18 @@
+allOf:
+  - $ref: './base_stake_extra.yaml'
+  - type: object
+    description: The stake extra for babylon.
+    required:
+      - finality_provider_public_key
+      - lock_time
+    properties:
+        finality_provider_public_key:
+          description: The public key of finality provider.
+          type: string
+          pattern: '^[0-9a-fA-F]{64}$'
+          example: '0000000000000000000000000000000000000000000000000000000000000000'
+        lock_time:
+          description: The staking period in milliseconds.
+          type: integer
+          format: int64
+          example: 1000000000000

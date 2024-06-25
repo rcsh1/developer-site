@@ -3,9 +3,16 @@ post:
     - Transactions
   operationId: estimate_fee
   summary: Estimate transaction fee
-  description:  |
-    This endpoint calculates the fee required for a transaction based on factors such as network congestion and transaction complexity.
-    Users can provide transaction details in the request body, and the response will contain the estimated fee.
+  description: |
+    This operation estimates the transaction fee of a token transfer or a contract call for three different transaction speeds (slow, standard, and fast), based on factors such as network congestion and transaction complexity.
+    
+    You need to specify the transaction information, including the source address and destination address. 
+    - If you do not include a `fee` object in the request body, the response will include estimated transaction fees and recommended fee limits from the chain.
+    - If you do provide a `fee` object, the response will include fee estimates for the slow and fast transaction speeds with the provided fee as the standard speed fee.
+
+    Note: 
+    - The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model from the response represent the recommended values from the chain.
+    - The `gas_limit` property included in the request body will be ignored in a fee estimation.
   security:
     - CoboAuth: []
   requestBody:
