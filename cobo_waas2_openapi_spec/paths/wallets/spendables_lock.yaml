@@ -4,9 +4,9 @@ post:
   tags:
     - Wallets
   operationId: lock_spendable_list
-  summary: Lock/Unlock the UTXOs in tx hash list
+  summary: Lock/Unlock UTXOs
   description: |
-    Lock/Unlock the UTXOs in the given tx hash list. The Locked UTXO can not be transferred until unlocked.
+    This operation locks/unlocks the UTXOs with specified transaction hashes. Locked UTXOs cannot be transferred until unlocked.
     
     <Note>This operation is applicable to MPC Wallets only.</Note>
   security:

@@ -6,7 +6,7 @@ get:
   operationId: get_wallet_by_id
   summary: Retrieve wallet information by ID
   description: |
-    This operation retrieves detailed information about the specified wallet.
+    This operation retrieves the detailed information about a specified wallet.
   security:
     - CoboAuth: []
   responses:
@@ -24,7 +24,7 @@ put:
   description: |
     This operation updates the information of a specified wallet.
   
-    <Note>This operation is applicable to Exchange Wallets to update the API key etc. For other wallet type, only the name can be updated.</Note>
+    For Exchange Wallets, you can update the API key, API secret, and other information about your exchange accounts with this operation. For other wallet types, you can only update the wallet name.
   security:
     - CoboAuth: []
   requestBody:
@@ -42,7 +42,7 @@ delete:
   operationId: delete_wallet_by_id
   summary: Delete wallet by ID
   description: |
-      This operation deletes the specified wallet.
+      This operation deletes a specified wallet.
     
       <Note>This operation is applicable to Exchange Wallets only.</Note>
   security:

@@ -1,4 +1,4 @@
-description: The request body to lock/unlock spendable
+description: The request body of the Lock/Unlock UTXOs operation.
 content:
   application/json:
     schema:
@@ -12,6 +12,7 @@ content:
           example: 'ETH_USDT'
         tx_hash:
           type: string
+          description: The transaction hash.
           example: 'dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83'
         vout_n:
           type: integer
