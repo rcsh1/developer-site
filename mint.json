@@ -434,7 +434,12 @@
     {
       "group": "Overview",
       "pages": [
-        "api-references/v2/overview/changelog"
+        "api-references/v2/overview/changelog",
+        "api-references/v2/overview/introduction",
+        "api-references/v2/overview/authentication",
+        "api-references/v2/overview/playground",
+        "api-references/v2/overview/error-codes",
+        "api-references/v2/overview/glossary"
       ],
       "version": "V2"
     },
@@ -473,6 +478,7 @@
         "api-references/v2/wallets/update-wallet-by-id",
         "api-references/v2/wallets/delete-wallet-by-id",
         "api-references/v2/wallets/list-spendable-utxos",
+        "api-references/v2/wallets/lockunlock-the-utxos-in-tx-hash-list",
         "api-references/v2/wallets/get-max-transferable-value",
         "api-references/v2/wallets/list-wallet-addresses-by-wallet-id",
         "api-references/v2/wallets/add-address-to-wallet",
@@ -488,37 +494,38 @@
         "api-references/v2/wallets--mpc-wallet/list-all-cobo-key-holders",
         "api-references/v2/wallets--mpc-wallet/list-all-mpc-projects",
         "api-references/v2/wallets--mpc-wallet/create-a-mpc-project",
-        "api-references/v2/wallets--mpc-wallet/get-a-mpc-project",
+        "api-references/v2/wallets--mpc-wallet/get-a-mpc-project-information",
         "api-references/v2/wallets--mpc-wallet/update-a-mpc-project",
         "api-references/v2/wallets--mpc-wallet/list-all-mpc-vaults",
         "api-references/v2/wallets--mpc-wallet/create-a-mpc-vault",
-        "api-references/v2/wallets--mpc-wallet/get-a-mpc-vault",
-        "api-references/v2/wallets--mpc-wallet/modify-a-mpc-vault",
+        "api-references/v2/wallets--mpc-wallet/get-a-mpc-vault-information",
+        "api-references/v2/wallets--mpc-wallet/update-a-mpc-vault-information",
         "api-references/v2/wallets--mpc-wallet/list-all-mpc-key-groups",
         "api-references/v2/wallets--mpc-wallet/create-a-mpc-key-group",
-        "api-references/v2/wallets--mpc-wallet/get-a-mpc-key-group",
-        "api-references/v2/wallets--mpc-wallet/update-a-mpc-key-group",
+        "api-references/v2/wallets--mpc-wallet/get-a-mpc-key-group-information-by-group-id",
+        "api-references/v2/wallets--mpc-wallet/update-a-mpc-key-group-information",
         "api-references/v2/wallets--mpc-wallet/delete-a-mpc-key-group",
-        "api-references/v2/wallets--mpc-wallet/list-tss-request-information-of-a-vault",
+        "api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id",
         "api-references/v2/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group",
-        "api-references/v2/wallets--mpc-wallet/get-a-tss-request",
-        "api-references/v2/wallets--mpc-wallet/cancel-tss-request"
+        "api-references/v2/wallets--mpc-wallet/get-a-tss-request-information",
+        "api-references/v2/wallets--mpc-wallet/cancel-a-tss-request"
       ],
       "version": "V2"
     },
     {
       "group": "Transactions",
       "pages": [
-        "api-references/v2/transactions/get-the-fee-price-data-for-chain-andor-tokenhold-tbd-after-normalize-fee-settings",
-        "api-references/v2/transactions/estimate-the-fee-for-transaction",
-        "api-references/v2/transactions/create-a-transfer-transaction",
-        "api-references/v2/transactions/create-a-smart-contract-call-transaction",
+        "api-references/v2/transactions/get-transaction-fee-price",
+        "api-references/v2/transactions/estimate-transaction-fee",
+        "api-references/v2/transactions/transfer-token",
+        "api-references/v2/transactions/call-smart-contract",
+        "api-references/v2/transactions/sign-message",
         "api-references/v2/transactions/list-all-transactions",
         "api-references/v2/transactions/get-transaction-information-by-id",
-        "api-references/v2/transactions/resend-a-transaction-by-id",
-        "api-references/v2/transactions/drop-a-transaction-by-id",
-        "api-references/v2/transactions/speed-up-a-transaction-by-id",
-        "api-references/v2/transactions/retry-up-a-transaction-double-check-by-id"
+        "api-references/v2/transactions/resend-transaction-by-id",
+        "api-references/v2/transactions/cancel-transaction-by-id",
+        "api-references/v2/transactions/drop-transaction-by-id",
+        "api-references/v2/transactions/speed-up-transaction-by-id"
       ],
       "version": "V2"
     },

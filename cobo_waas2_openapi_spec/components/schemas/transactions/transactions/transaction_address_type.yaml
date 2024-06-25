@@ -9,5 +9,15 @@ enum:
   - FeeStation
   - ExternalAddress
 example: CustodialAssetWallet
-description: Enumeration representing the address type of a transaction.
+description: |
+  The address type. Possible values include:
+    - `CustodialAssetWallet`: Custodial Wallets (Asset Wallets).
+    - `CustodialWeb3Wallet`: Custodial Wallets (Web3 Wallets).
+    - `MPCClientControlledWallet`: MPC Wallets (Organization-Controlled).
+    - `MPCUserControlledWallet`: MPC Wallets (User-Controlled).
+    - `SafeContractWallet`: Smart Contract Wallets (Safe{Wallet}).
+    - `ExchangeAccount`: Exchange Wallets.
+    - `FeeStation`: A Fee Station.
+    - `ExternalAddress`: An external address. 
+
 

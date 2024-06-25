@@ -6,8 +6,11 @@ post:
   operationId: drop_transaction_by_id
   summary: Drop transaction by ID
   description: |
-    This endpoint allows users to drop (remove) a transaction based on its unique identifier.
-    Dropping a transaction will trigger a RBF transaction.
+    This operation drops a specified transaction. 
+
+    Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be dropped if its status is `Broadcasting` or `Confirming`.
+    
+    A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   requestBody:

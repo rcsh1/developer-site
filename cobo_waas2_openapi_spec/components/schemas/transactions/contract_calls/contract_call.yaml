@@ -1,5 +1,6 @@
 type: object
-description: The data for create smart contract call transaction.
+description: The information about a transaction that interacts with a smart contract
+title: Contract call
 required:
   - request_id
   - request_type
@@ -10,33 +11,33 @@ required:
 properties:
   request_id:
     type: string
-    description: Unique id of the request.
+    description: The request ID that is unique within your Organization to track your request.
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
   request_type:
     $ref: '../request_type.yaml'
   chain_id:
     type: string
-    description: The blockchain on which the token operates.
+    description: The chain ID. 
     example: 'ETH'
   source:
     $ref: './sources/contract_call_source.yaml'
   destination:
     type: object
+    description: The information about the transaction destination.
     properties:
       address_str:
         type: string
-        description: To address
+        description: The destination address.
         example: "bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v"
       value:
         type: string
         description: >
-          Transaction value (Note that this is an absolute value.
-          If you trade 1.5 ETH, then the value is 1.5)
+          The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
         example: '1.5'
       calldata:
         type: string
         description: >
-          calldata for this transaction. Commonly used as part of contract interaction.
+           The data that is used to invoke a specific function or method within the specified contract at the destination address.
         format: byte
         example: "U3dhZ2dlciByb2Nrcw=="
   fee:

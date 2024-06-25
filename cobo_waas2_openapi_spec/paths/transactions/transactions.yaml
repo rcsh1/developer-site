@@ -4,9 +4,9 @@ get:
   operationId: list_transactions
   summary: List all transactions
   description: |
-    This endpoint retrieves a list of transactions based on various optional parameters.
-    Users can filter transactions by request ID, cobo ID, transaction ID, transaction hash, type, status, and timestamps etc.
-    Pagination parameters such as sorting, limit, before, and after are also available for result management.
+    This operation retrieves all the transactions under your organization.
+    
+    You can filter the results by request ID, Cobo ID, transaction ID, transaction hash, type, status, and timestamps. You can also paginate and sort your query results.
   security:
     - CoboAuth: []
   parameters:

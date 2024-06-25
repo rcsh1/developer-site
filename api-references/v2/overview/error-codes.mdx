@@ -1,0 +1,42 @@
+---
+title: "Understand and handle error codes"
+---
+
+This article describes how to understand and handle the error codes and HTTP status codes.
+
+### Error codes
+
+| Error code | Description | 
+| ----------- | ----------- |
+| `2000` | Internal error. |
+| `2002`| Unsupported HTTP method.|
+| `2003`| Missing required parameters. |
+| `2006`| Illegal parameter format or value.|
+| `2010`| Rate limit exceeded.|
+| `2020`| Missing action parameter.  |
+| `2021`| Missing handler definition. |
+| `2022`| Missing required request headers. |
+| `2023`| Verification failed. |
+| `2024`| Authentication failed. |
+| `2025`| Forbidden access to resources. |
+| `2026`| Too many requests. |
+| `2027`| Quota limit exceeded. |
+| `2028`| Resource not found.|
+| `2029`| Invalid status. |
+| `2040`| Duplicate key violation. |
+
+###  HTTP status codes 
+
+| Status code | Description                                             |
+| --------------- | ------------------------------------------------------------ |
+| 200             | OK.                                                           |
+| 400             | Bad request.                                                  |
+| 401             | Unauthorized. Either the API key, signature, or timestamp is incorrect. |
+| 403             | Forbidden. No access allowed.                                |
+| 404             | Not Found. Requested resources not found.                    |
+| 405             | Method Not Allowed. HTTP methods used not applicable to the requested resources. |
+| 406             | Not Acceptable. Requested content format is not JSON.        |
+| 429             | Too Many Requests. Requests are limited, please reduce the request frequency. |
+| 500             | Internal Server Error. Internal server error, please try again later. |
+| 502             | Bad Gateway.                                                  |
+| 503             | Service Unavailable. Service unavailable, please try again later. |

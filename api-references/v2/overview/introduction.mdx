@@ -1,0 +1,57 @@
+---
+title: "Introduction"
+---
+Cobo Wallet-as-a-Service (WaaS) 2.0 API enables you to access Cobo's full suite of crypto wallet technologies with powerful and flexible access controls. The HTTP-based SaaS API provides a variety of capabilities, including managing wallets and addresses, sending and receiving tokens, setting up notifications and callbacks.
+
+## HTTP methods
+The WaaS service supports common HTTP methods. For HTTP POST requests, the WaaS service accepts payloads in JSON format.
+
+## HTTP hosts
+The WaaS service offers several HTTP hosts for different use cases: 
+- Development environment: `https://api.dev.cobo.com`
+- Production environment: `https://api.custody.cobo.com`
+- Test environment: `https://api.sandbox.cobo.com`
+
+## Permissions
+You can control the WaaS API usage with setting permissions.
+
+### User role-based permissions
+When you create an API key on Cobo Portal, you need to specify the user roles (viewer, spender, and operator) for the users with this API key. To learn more about the permissions for different roles, see [user roles and permissions](https://manuals.cobo.com/en/portal/organization/roles-and-permissions).
+
+### Wallet-based permissions
+When you create an API key on Cobo Portal, you need to select the wallets that can be accessed with this API key. Therefore, requests using this API key can only interact with the specified wallets.
+
+## Path parameters
+A path parameter is a variable segment embedded directly within the API endpoint URL. It allows you to specify a specific resource or data point within the API. 
+
+- Retrieve information for a specific transaction with ID `a_transaction_id`: `GET /v2/transactions/a_transaction_id`
+- Resend a failed transaction with ID `a_transaction_id`: `POST /v2/transactions/a_transaction_id/resend`
+
+## Query parameters
+A query parameter is a key-value pair appended to the end of a URL after a question mark. It allows you to filter or modify the response of an API request.
+
+### Sorting
+Some endpoints support the `sort_by` and the `direction` parameters, which enables you to sort the result based on a specified field in a specified order. 
+
+For example, if you want to sort the transactions by the `status` field in descending order, you can add the parameters to the path as `GET /v2/transactions?sort_by=status&direction=DESC`.
+
+### Pagination
+Some endpoints support pagination to retrieve data in manageable chunks. You can control the page size and navigate through the dataset using three query parameters:
+
+- `before`: This parameter specifies an object ID that acts as a starting point for retrieving data in reverse chronological order. For example, if you set `before` to `foo`, the response will contain data objects that come before the object with ID `foo`. You can retrieve the next page of data by setting `before` to the value of `pagination.after` from the previous response.
+
+- `after`: This parameter specifies an object ID that acts as a starting point for retrieving data in chronological order. For example, if you set `after` to `bar`, the response will contain data objects that come after the object with ID `bar`. You can retrieve the next page of data by setting `after` to the value of `pagination.before` from the previous response. 
+
+<Note>If both `before` and `after` are provided, only the `before` parameter will be used.</Note>
+
+- `limit`: This parameter defines the maximum number of objects you want to receive in each response. The allowed range for limit is between 1 and 50.
+
+For example, if you want to retrieve 30 transaction objects that comes before the response with `foo` as `pagination.before`, you can add the pagination parameters to the path as `GET /v2/transactions?limit=30&before=foo`.
+
+## Rate and usage limiting
+
+## Webhook events 
+Upon receiving a deposit or withdrawal request, the WaaS service sends a push message that contains the transaction data in JSON format as an HTTP POST request to a user-defined URL. To learn more about how to subscribe to webhook events, see [Webhook events]().
+
+## Callback messages
+When you receive a webhook event and want to approve or reject the request, you need to respond promptly with an HTTP body containing either `ok` for approval or `deny` for rejection with an HTTP status of `200`. Failure to provide this response will result in delayed request processing and continued pushes of the same message to the designated URL. To learn more about how to subscribe to callback messages, see [Callback messages]().

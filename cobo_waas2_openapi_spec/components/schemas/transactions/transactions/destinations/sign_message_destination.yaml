@@ -1,5 +1,6 @@
 type: object
-description: The data for transaction destination information.
+description: The information about the message as the transaction destination.
+title: Messages
 required:
   - destination_type
   - address_str
@@ -8,10 +9,10 @@ properties:
     $ref: './destination_type.yaml'
   message:
     type: string
-    description: 'Raw data to be signed, Base 64 encoded'
+    description: The raw data to be signed that are encoded in Base64.
     example: YWFhYQ==
   structured_data:
     type: string
-    description: 'Structured data to be signed, JSON encoded'
+    description: The structured data to be signed that are encoded in JSON.
     example: |
       {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}

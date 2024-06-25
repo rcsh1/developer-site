@@ -2,10 +2,9 @@ get:
   tags:
     - Transactions
   operationId: get_chain_fee_price
-  summary: Retrieve fee price data for chain and/or token
+  summary: Get transaction fee price
   description: |
-    This endpoint retrieves fee price data for a specific blockchain network and/or token.
-    Users can specify the chain ID or token ID as parameters to filter the results.
+    This operation retrieves the transaction fee model and transaction fee price for a specified chain or a specified token. 
   security:
     - CoboAuth: []
   parameters:
