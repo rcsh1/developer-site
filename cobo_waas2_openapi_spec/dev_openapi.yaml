@@ -791,8 +791,8 @@ paths:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
       responses:
-        '200':
-          $ref: '#/components/responses/deleteKeyGroupResponse'
+        '204':
+          description: Resource successfully deleted.
         '401':
           $ref: '#/components/responses/unauthorizedError'
         '403':
