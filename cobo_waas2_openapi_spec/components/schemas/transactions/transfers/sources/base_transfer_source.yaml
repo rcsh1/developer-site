@@ -1,5 +1,6 @@
 type: object
-description: The base data for transfer source.
+description: The information about the transaction source.
+title: Custodial Wallets
 required:
   - source_type
   - wallet_id
@@ -8,6 +9,6 @@ properties:
     $ref: '../../../wallets/bases/wallet_subtype.yaml'
   wallet_id:
     type: string
-    description: Unique id of the wallet to transfer from.
+    description: The wallet ID. 
     format: uuid
     example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'

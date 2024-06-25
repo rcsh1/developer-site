@@ -1,3 +1,4 @@
+title: MPC Wallets
 allOf:
   - $ref: "./base_transfer_source.yaml"
   - type: object
@@ -9,7 +10,7 @@ allOf:
         properties:
           address_str:
             type: string
-            description: From address
+            description: The wallet address.
             example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
       utxo_inputs:
         type: object
@@ -21,7 +22,7 @@ allOf:
               properties:
                 tx_hash:
                   type: string
-                  description: UTXO tx hash to include
+                  description: The transaction hash of UTXO to be consumed in the transaction.
                   example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"
           excluded_inputs:
             type: array
@@ -30,7 +31,7 @@ allOf:
               properties:
                 tx_hash:
                   type: string
-                  description: UTXO tx hash to exclude
+                  description: The transaction hash of UTXO not to be consumed in the transaction.
                   example: "7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo"
       mpc_used_key_group:
         $ref: '../../mpc_signing_group.yaml'

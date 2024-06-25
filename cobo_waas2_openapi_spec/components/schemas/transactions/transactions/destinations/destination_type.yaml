@@ -8,5 +8,13 @@ enum:
   - SafeWallet
   - ExchangeWallet
 example: Address
-description: Enumeration representing the destination type of a transaction.
+description: | 
+  The transaction destination type. Possible values include:
+    - `Address`: An external address. 
+    - `ContractCall`: A smart contract.
+    - `MessageSign`: A message to be signed. 
+    - `CustodialWallet`: A Custodial Wallet.
+    - `MPCWallet`: An MPC Wallet.
+    - `SafeWallet`: A Smart Contract Wallet (Safe{Wallet}).
+    - `ExchangeWallet`: An Exchange Wallet.
 

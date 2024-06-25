@@ -6,8 +6,13 @@ post:
   operationId: cancel_transaction_by_id
   summary: Cancel transaction by ID
   description: |
-    This endpoint allows users to cancel a transaction based on its unique identifier. 
-    The transaction can be cancelled if the transaction has not been approved by risk control.
+    This operation cancels a specified transaction. A transaction can be cancelled if its status is either of the following:
+    - `Submitted`
+    - `PendingScreening`
+    - `PendingAuthorization`
+    - `PendingSignature` 
+    
+    A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
   responses:
