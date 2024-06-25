@@ -5817,7 +5817,9 @@ components:
           schema:
             type: object
             required:
-              - tx_hashes
+              - token_id
+              - tx_hash
+              - vout_n
             properties:
               token_id:
                 type: string
@@ -5831,6 +5833,11 @@ components:
                 type: integer
                 description: The output index of the UTXO.
                 example: 0
+              is_locked:
+                type: boolean
+                description: 'True if to lock the UTXOs, False to unlock.'
+                default: true
+                example: true
     createKeyGroupBody:
       description: The request body to create a mpc key group
       content:
