@@ -1,27 +1,28 @@
 type: object
-description: The data for mpc project information.
+description: The data for Project information.
 properties:
   id:
     type: string
     example: "0111039d-27fb-49ba-b172-6e0aa80e37ec"
-    description: Unique id of the project
+    description: The Project ID.
   org_id:
     type: string
     example: "f3b4a616-9c43-462e-8cb4-343e304fee64"
-    description: Unique id of org
+    description: The Organization ID.
   name:
     type: string
-    example: 'my mpc project'
+    example: 'Project name'
+    description: The Project name.
   node_count:
     type: integer
     example: 3
-    description: The count of tss node of the project
+    description: The number of key share holders in the Project.
   threshold:
     type: integer
     example: 2
-    description: The threshold number of project required for signature
+    description: The number of key share holders required to sign an operation in the Project.
   create_timestamp:
     type: integer
     format: int64
-    example: 1624975307234
-    description: The create time the vault.
+    example: 1718619403933.53
+    description: The Project's creation time in Unix timestamp format, measured in milliseconds.

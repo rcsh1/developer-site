@@ -2,10 +2,11 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: get_tss_request
-  summary: Get a tss request information
+  summary: Get TSS request
   description: |
-    Get detailed information about a tss request identified by its unique ID. 
-    Get project ids by calling list_tss_request.
+    This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
+    
+    You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
   security:
     - CoboAuth: []
   parameters:
@@ -24,9 +25,15 @@ put:
   tags:
     - Wallets - MPC Wallet
   operationId: cancel_tss_request
-  summary: Cancel a tss request
+  summary: Cancel TSS request
   description:  |
-    Cancel a mpc tss request by its ID.
+    This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
+    
+    The specific action to be taken is specified by `tss_request_action`.
+    
+    You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+    
+
   security:
     - CoboAuth: []
   parameters:
