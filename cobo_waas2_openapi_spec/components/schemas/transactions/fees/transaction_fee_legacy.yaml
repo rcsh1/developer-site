@@ -1,10 +1,6 @@
 type: object
 description: |
-  The transaction fee that you are willing to pay based on the legacy fee model for some Ethereum Virtual Machine (EVM) chains. You need to specify the fee type (transaction fee model) and fee price for the chain or token. You can get the fee model and fee price for the chain or token by calling [Get transaction fee price](./fee_price). 
-
-  The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used).
-
-  You can set a gas limit to control the used gas units.
+  The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). The gas units used must be smaller than the gas limit.
 required:
   - fee_type
 title: Legacy

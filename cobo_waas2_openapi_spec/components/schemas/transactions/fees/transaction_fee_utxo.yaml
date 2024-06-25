@@ -1,10 +1,6 @@
 type: object
 description: |
-  The transaction fee that you are willing to pay based on the EIP-1559 fee model for UTXO-based chains, such as Bitcoin. You need to specify the fee type (transaction fee model) and fee price for the chain or token. You can get the fee model and fee price for the chain or token by calling [Get transaction fee price](./fee_price).
-
-  The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size.
-  
-  You can set a maximum transaction fee. The transaction will fail if the transaction fee exceeds the maximum fee. 
+  The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee. 
 required:
   - fee_type
 title: UTXO
