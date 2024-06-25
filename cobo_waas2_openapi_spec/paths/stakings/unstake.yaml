@@ -1,0 +1,18 @@
+post:
+  tags:
+    - Stakings
+  summary: Create unstake activity
+  description: |
+    This operation creates a unstake activity.
+  operationId: create_unstake_activity
+  requestBody:
+    $ref: "../../components/request_bodies/stakings/create_unstake_activity.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/stakings/create_activity.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"

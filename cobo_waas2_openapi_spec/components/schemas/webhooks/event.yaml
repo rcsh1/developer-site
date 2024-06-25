@@ -6,7 +6,6 @@ required:
   - created_timestamp
   - type
   - data
-  - status
 properties:
   id:
     description: The event ID.
@@ -26,9 +25,7 @@ properties:
   type:
      $ref: 'event_type.yaml'
   data:
-    type: object
-    description: The data of the webhook event, in JSON format.
-    example: {"wallet_id":"624ce4e5-e985-4394-a196-fd7752aff96e","address":"0xdAC17F958D2ee523a2206206994597C13D831ec7","amount":"1000000000000000000"}
+     $ref: '../transactions/transactions/transaction.yaml'
   status:
       $ref: 'event_status.yaml'
   next_retry_timestamp:

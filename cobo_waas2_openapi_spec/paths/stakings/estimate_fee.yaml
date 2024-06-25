@@ -1,0 +1,17 @@
+post:
+  tags:
+    - Stakings
+  operationId: get_staking_estimation_fee
+  summary: Estimate staking transaction fee
+  description:  |
+    This endpoint calculates the fee required for a transaction based on factors such as network congestion and transaction complexity.
+    Users can provide transaction details in the request body, and the response will contain the estimated fee.
+  requestBody:
+    $ref: "../../components/request_bodies/stakings/estimate_fee.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/transactions/get_estimation_fee.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

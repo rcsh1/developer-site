@@ -1,0 +1,36 @@
+get:
+  tags:
+    - OAuth
+  operationId: get_token
+  summary: Get Access Token
+  description: |
+    If the Org has already authorized the App, the App can retrieve an Access Token through this interface.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/oauth/client_id_in_query_required.yaml"
+    - $ref: "../../components/parameters/oauth/org_id_required.yaml"
+    - $ref: "../../components/parameters/oauth/grant_type_in_query_required.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/oauth/get_token.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+
+post:
+  tags:
+    - OAuth
+  operationId: refresh_token
+  summary: Refresh Access Token
+  description: |
+    Use fefresh token to obtain a new access token.
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../components/parameters/oauth/refresh_token_body.yaml"
+
+  responses:
+    '200':
+      $ref: "../../components/responses/oauth/get_token.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

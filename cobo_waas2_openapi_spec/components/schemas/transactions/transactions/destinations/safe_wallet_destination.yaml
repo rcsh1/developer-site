@@ -1,0 +1,38 @@
+type: object
+description: The data for transaction destination information.
+required:
+  - destination_type
+  - wallet_id
+  - token_id
+  - address_str
+  - amount
+properties:
+  destination_type:
+    $ref: './destination_type.yaml'
+  wallet_id:
+    type: string
+    description: Unique id of the wallet to transfer from.
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  token_id:
+    type: string
+    description: The token ID.
+    example: 'ETH_USDT'
+  asset_id:
+    type: string
+    description: ID of the asset. Used to group token balance when needed.
+    example: 'USDT'
+  address_str:
+    type: string
+    description: Destination address
+    example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+  memo:
+    type: string
+    description: Destination address memo
+    example: "82840924"
+  amount:
+    type: string
+    description: >
+      Transaction value (Note that this is an absolute value.
+      If you trade 1.5 ETH, then the value is 1.5)
+    example: '1.5'
