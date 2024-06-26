@@ -75,10 +75,10 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: 'https://api.cobo.com/v2'
-    description: Production environment
   - url: 'https://api.dev.cobo.com/v2'
     description: Development environment
+  - url: 'https://api.cobo.com/v2'
+    description: Production environment
 tags:
   - name: Wallets
     description: Operations related to all wallets.
@@ -1799,7 +1799,7 @@ components:
         max_transferable_value:
           type: string
           description: The maximum amount you can transfer from the wallet or the specified wallet address.
-          example: '841165119243622'
+          example: '3.0'
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     AddressInfo:
@@ -2402,6 +2402,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
             - $ref: '#/components/schemas/FeeData'
+        customized:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
       description: The estimated transaction fee based on the legacy fee model.
@@ -2424,6 +2428,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
             - $ref: '#/components/schemas/FeeData'
+        customized:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     UtxoFee:
       type: object
       description: The estimated transaction fee for UTXO-based chains.
@@ -2443,6 +2451,10 @@ components:
             - $ref: '#/components/schemas/UtxoFeeBasePrice'
             - $ref: '#/components/schemas/FeeAmount'
         fast:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
+        customized:
           allOf:
             - $ref: '#/components/schemas/UtxoFeeBasePrice'
             - $ref: '#/components/schemas/FeeAmount'
@@ -3838,9 +3850,9 @@ components:
       required:
         - request_id
         - request_type
-        - signing_wallet_id
-        - signing_address
         - chain_id
+        - source
+        - destination
       properties:
         request_id:
           type: string
@@ -3883,13 +3895,84 @@ components:
                 {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
     EstimateFee:
       oneOf:
-        - $ref: '#/components/schemas/Transfer'
-        - $ref: '#/components/schemas/ContractCall'
+        - $ref: '#/components/schemas/EstimateFeeTransfer'
+        - $ref: '#/components/schemas/EstimateFeeContractCall'
       discriminator:
         propertyName: request_type
         mapping:
-          Transfer: '#/components/schemas/Transfer'
-          Call: '#/components/schemas/ContractCall'
+          Transfer: '#/components/schemas/EstimateFeeTransfer'
+          Call: '#/components/schemas/EstimateFeeContractCall'
+    EstimateFeeTransfer:
+      type: object
+      description: The information about a token transfer.
+      title: Transfer
+      required:
+        - request_id
+        - request_type
+        - source
+        - token_id
+        - destination
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is unique within your Organization to track your request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        request_type:
+          $ref: '#/components/schemas/Transfer/properties/request_type'
+        source:
+          $ref: '#/components/schemas/TransferSource'
+        token_id:
+          type: string
+          description: The token ID.
+          example: ETH_USDT
+        destination:
+          $ref: '#/components/schemas/TransferDestination'
+        fee:
+          $ref: '#/components/schemas/ChainFeePrice'
+    EstimateFeeContractCall:
+      type: object
+      description: The information about a transaction that interacts with a smart contract
+      title: Contract call
+      required:
+        - request_id
+        - request_type
+        - chain_id
+        - source
+        - destination
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is unique within your Organization to track your request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        request_type:
+          $ref: '#/components/schemas/Transfer/properties/request_type'
+        chain_id:
+          type: string
+          description: The chain ID.
+          example: ETH
+        source:
+          $ref: '#/components/schemas/ContractCallSource'
+        destination:
+          type: object
+          description: The information about the transaction destination.
+          properties:
+            address_str:
+              type: string
+              description: The destination address.
+              example: bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v
+            value:
+              type: string
+              description: |
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
+              example: '1.5'
+            calldata:
+              type: string
+              description: |
+                The data that is used to invoke a specific function or method within the specified contract at the destination address.
+              format: byte
+              example: U3dhZ2dlciByb2Nrcw==
+        fee:
+          $ref: '#/components/schemas/ChainFeePrice'
     BaseContractCallSource:
       type: object
       description: The information about the transaction source.
@@ -3974,8 +4057,7 @@ components:
         - request_type
         - chain_id
         - source
-        - to_address_str
-        - calldata
+        - destination
       properties:
         request_id:
           type: string
@@ -6024,16 +6106,13 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ChainFeePrice'
-                description: |
-                  The fee price for the specified chain or token. 
+            type: array
+            items:
+              $ref: '#/components/schemas/ChainFeePrice'
+            description: |
+              The fee price for the specified chain or token. 
 
-                  The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
+              The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
       description: The request was successful.
       content:

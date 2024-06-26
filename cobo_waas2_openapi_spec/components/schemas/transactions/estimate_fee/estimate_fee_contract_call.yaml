@@ -19,7 +19,7 @@ properties:
     description: The chain ID. 
     example: 'ETH'
   source:
-    $ref: './sources/contract_call_source.yaml'
+    $ref: '../contract_calls/sources/contract_call_source.yaml'
   destination:
     type: object
     description: The information about the transaction destination.
@@ -40,4 +40,4 @@ properties:
         format: byte
         example: "U3dhZ2dlciByb2Nrcw=="
   fee:
-    $ref: '../fees/transaction_fee.yaml'
+    $ref: '../fees/chain_fee_price.yaml'
