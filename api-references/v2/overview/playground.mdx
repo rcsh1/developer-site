@@ -2,27 +2,36 @@
 title: "API Playground"
 ---
 
-The API Playground is a web-based tool designed specifically for developers who want to explore and experiment with APIs. You can browse and explore the endpoints directly within the Developer Hub, without leaving the browser.
+The API Playground is a web-based tool designed for developers looking to explore and experiment with the Cobo WaaS 2.0 API directly within the Developer Hub, all within the browser.
 
-The API Playground consists of two parts:
-- The request composer in the middle allows you to easily modify the authorization header, path parameters, query parameters, and request body as needed. 
-- The request viewer and the response viewer on the right shows the sample request body and and sample response body in all supported languages. The request viewer will adjust accordingly aligned with your modification in the request composer.
+![API Playground](images/api-reference/playground.png)
 
-<Note>Currently sending API requests through the API Playground is not supported.</Note>
+### Overview
 
-## Prerequisites
-To use this feature, you need to complete the following:
-- Create and set up your Cobo Account for use in the development environment. For xx, see []().
-- Generate an API key for use in the development environment. For xx, see []().
-- Add the API key used to Cobo Portal. For xx, see []().
+The API Playground consists of two main parts:
 
-<Note><ul><li>Cobo Accounts and API keys for the production environment are not compatible with the API Playground.</li><li>For security reasons, please NEVER provide your API Secret for the production environment while using the API Playground.</li></ul></Note>
+- Request composer located in the center. It allows easy modification of the authorization header, path parameters, query parameters, and request body as needed.
+- Request viewer and response viewer located on the right. They display sample request bodies and response bodies in all supported languages. The request viewer updates in real-time as you make changes in the request composer.
 
-## How to use the API Playground
+### Prerequisites
 
-1. Locate the API endpoint you wish to test.
-2. Enter your private key into the “BIZ-API-KEY” field in the Authorization header.
-3. Enter the query parameters for a GET operation or the request body for a POST operation if necessary.
-4. Click the “Send” button to send the request.
+To use the API Playground, ensure the following:
+
+- Create and configure your Cobo Account for the development environment. For instructions on creating and setting up a Cobo Account, see [Cobo Account Setup]().
+- Generate an API key specifically for the development environment and configure it on Cobo Portal. For instructions on generating and setting up an API key, see [API Key Setup]().
+
+**Note:**
+- Cobo Accounts and API keys intended for production environments are not compatible with the API Playground.
+- For security reasons, never disclose your API Secret in the API Playground.
+
+### Test an API endpoint
+
+1. Select the API endpoint you wish to test.
+2. Modify the request as follows:
+   - Enter your private key into the `BIZ-API-KEY` field under the Authorization header.
+   - Add path parameters or query parameters for a GET operation, or include the request body for a POST operation if required.
+3. Click the **Send** button to submit the request.
+
+Upon successful submission, the response viewer will display the actual response returned by the API.
 
 
