@@ -2,9 +2,9 @@ get:
   tags:
     - Wallets - MPC Wallet
   operationId: get_key_group
-  summary: Get a mpc key group information by group id
+  summary: Get key share group information
   description: |
-    Get detailed information about a key group identified by its unique ID.
+    This operation retrieves detailed information about the key share group specified by `key_group_id` and located under `vault_id`.
   security:
     - CoboAuth: []
   parameters:
@@ -23,13 +23,11 @@ put:
   tags:
     - Wallets - MPC Wallet
   operationId: update_key_group
-  summary: Update a mpc key group information
-  description: |
-    Update a mpc key group type information by its ID. 
+  summary: Update key share group
+  description: | 
+    This operation updates a key share group based on the action specified by `update_key_group_action`.
     
-    Action:
-    - UpgradeToMainKeyGroup: change group type to main key group
-
+    The key share group to be updated is specified by `key_group_id` and `vault_id`.
   security:
     - CoboAuth: []
   parameters:
@@ -49,17 +47,16 @@ delete:
   tags:
     - Wallets - MPC Wallet
   operationId: delete_key_group
-  summary: Delete a mpc key group
-  description: |
-    Delete a key group by its unique ID.
+  summary: Delete key share group
+  description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
   security:
     - CoboAuth: []
   parameters:
     - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
     - $ref: "../../../components/parameters/wallets/mpcs/key_group_id_path.yaml"
   responses:
-    '200':
-      $ref: "../../../components/responses/wallets/mpcs/delete_key_group.yaml"
+    '204':
+      description: Resource successfully deleted.
     '401':
       $ref: "../../../components/responses/errors/401_unauthorized.yaml"
     '403':

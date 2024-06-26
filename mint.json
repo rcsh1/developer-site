@@ -66,13 +66,13 @@
       ]
     },
     {
-      "group": "Custodial Wallet",
+      "group": "Custodial Wallets",
       "pages": [
         "overview/custodial-wallet"
       ]
     },
     {
-      "group": "MPC Wallet",
+      "group": "MPC Wallets",
       "pages": [
         "overview/mpc-wallet/mpc-introduction",
         {
@@ -96,7 +96,7 @@
       ]
     },
     {
-      "group": "Smart Contract Wallet",
+      "group": "Smart Contract Wallets",
       "pages": [
         {
           "group": "Cobo Safe",
@@ -249,7 +249,7 @@
       ]
     },
     {
-      "group": "Custodial Wallet APIs",
+      "group": "Custodial Wallets API",
       "pages": [
         {
           "group": "Account",
@@ -339,7 +339,7 @@
       "version": "V1"
     },
     {
-      "group": "MPC Wallet APIs",
+      "group": "MPC Wallets API",
       "pages": [
         {
           "group": "Account",
@@ -443,7 +443,14 @@
       "version": "V2"
     },
     {
-      "group": "Wallets - Exchange Wallet",
+      "group": "Troubleshooting",
+      "pages": [
+        "api-references/v2/troubleshooting/error-codes"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Wallets - Exchange Wallets",
       "pages": [
         "api-references/v2/wallets--exchange-wallet/list-the-supported-assets-by-exchange-id",
         "api-references/v2/wallets--exchange-wallet/list-the-supported-chains-by-exchange-id-and-asset-id",
@@ -463,39 +470,7 @@
       "version": "V2"
     },
     {
-      "group": "Troubleshooting",
-      "pages": [
-        "api-references/v2/troubleshooting/error-codes"
-      ],
-      "version": "V2"
-    },
-    {
-      "group": "Wallets",
-      "pages": [
-        "api-references/v2/wallets/list-chain-metadata",
-        "api-references/v2/wallets/list-token-metadata",
-        "api-references/v2/wallets/list-supported-chains",
-        "api-references/v2/wallets/list-supported-tokens",
-        "api-references/v2/wallets/list-enabled-chains",
-        "api-references/v2/wallets/list-enabled-tokens",
-        "api-references/v2/wallets/list-all-wallets",
-        "api-references/v2/wallets/create-wallet",
-        "api-references/v2/wallets/retrieve-wallet-information-by-id",
-        "api-references/v2/wallets/update-wallet-by-id",
-        "api-references/v2/wallets/delete-wallet-by-id",
-        "api-references/v2/wallets/list-spendable-utxos",
-        "api-references/v2/wallets/lockunlock-the-utxos-in-tx-hash-list",
-        "api-references/v2/wallets/get-max-transferable-value",
-        "api-references/v2/wallets/list-wallet-addresses-by-wallet-id",
-        "api-references/v2/wallets/add-address-to-wallet",
-        "api-references/v2/wallets/check-address-validity",
-        "api-references/v2/wallets/list-token-balances-by-wallet",
-        "api-references/v2/wallets/list-token-balances-by-address"
-      ],
-      "version": "V2"
-    },
-    {
-      "group": "Wallets - MPC Wallet",
+      "group": "Wallets - MPC Wallets",
       "pages": [
         "api-references/v2/wallets--mpc-wallet/list-all-cobo-key-holders",
         "api-references/v2/wallets--mpc-wallet/list-all-mpc-projects",
@@ -515,6 +490,55 @@
         "api-references/v2/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group",
         "api-references/v2/wallets--mpc-wallet/get-a-tss-request-information",
         "api-references/v2/wallets--mpc-wallet/cancel-a-tss-request"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Wallets",
+      "pages": [
+        "api-references/v2/wallets/list-chain-metadata",
+        "api-references/v2/wallets/list-token-metadata",
+        "api-references/v2/wallets/list-supported-chains",
+        "api-references/v2/wallets/list-supported-tokens",
+        "api-references/v2/wallets/list-enabled-chains",
+        "api-references/v2/wallets/list-enabled-tokens",
+        "api-references/v2/wallets/list-all-wallets",
+        "api-references/v2/wallets/create-wallet",
+        "api-references/v2/wallets/retrieve-wallet-information-by-id",
+        "api-references/v2/wallets/update-wallet-by-id",
+        "api-references/v2/wallets/delete-wallet-by-id",
+        "api-references/v2/wallets/list-spendable-utxos",
+        "api-references/v2/wallets/lockunlock-utxos",
+        "api-references/v2/wallets/get-maximum-transferable-value",
+        "api-references/v2/wallets/list-wallet-addresses-by-wallet-id",
+        "api-references/v2/wallets/add-address-to-wallet",
+        "api-references/v2/wallets/check-address-validity",
+        "api-references/v2/wallets/list-token-balances-by-wallet",
+        "api-references/v2/wallets/list-token-balances-by-address"
+      ],
+      "version": "V2"
+    },
+    {
+      "group": "Wallets - MPC Wallet",
+      "pages": [
+        "api-references/v2/wallets--mpc-wallet/list-all-cobo-key-share-holders",
+        "api-references/v2/wallets--mpc-wallet/list-all-projects",
+        "api-references/v2/wallets--mpc-wallet/create-project",
+        "api-references/v2/wallets--mpc-wallet/get-project-information",
+        "api-references/v2/wallets--mpc-wallet/update-project-name",
+        "api-references/v2/wallets--mpc-wallet/list-all-vaults",
+        "api-references/v2/wallets--mpc-wallet/create-vault",
+        "api-references/v2/wallets--mpc-wallet/get-vault-information",
+        "api-references/v2/wallets--mpc-wallet/update-vault-name",
+        "api-references/v2/wallets--mpc-wallet/list-all-key-share-groups",
+        "api-references/v2/wallets--mpc-wallet/create-key-share-group",
+        "api-references/v2/wallets--mpc-wallet/get-key-share-group-information",
+        "api-references/v2/wallets--mpc-wallet/update-key-share-group",
+        "api-references/v2/wallets--mpc-wallet/delete-key-share-group",
+        "api-references/v2/wallets--mpc-wallet/list-tss-callbackrequest",
+        "api-references/v2/wallets--mpc-wallet/create-a-tss-callbackrequest",
+        "api-references/v2/wallets--mpc-wallet/get-tss-callbackrequest",
+        "api-references/v2/wallets--mpc-wallet/cancel-tss-callbackrequest"
       ],
       "version": "V2"
     },

@@ -1,9 +1,11 @@
 type: object
-description: The param for create reshare tss request
 properties:
   used_node_ids:
     type: array
     items:
       type: string
-      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
-      description: The IDs of the tss node participating in the reshare tss request
+    example: [1AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijkl, 2AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijkl]
+    description: |
+      The TSS Node IDs participating in creating a new key share group when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`. 
+      
+      **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), for `used_node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`.

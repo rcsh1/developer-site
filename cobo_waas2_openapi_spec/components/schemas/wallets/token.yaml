@@ -10,7 +10,7 @@ properties:
     example: 'ETH_USDT'
   chain_id:
     type: string
-    description: The blockchain on which the token operates.
+    description: The ID of the chain on which the token operates.
     example: 'ETH'
   asset_id:
     type: string
@@ -38,13 +38,13 @@ properties:
     example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
   fee_token_id:
     type: string
-    description: The fee token ID.
+    description: The fee token ID. A fee token is the token with which you pay transaction fees.
     example: 'ETH'
   can_deposit:
     type: boolean
-    description: Indicates if deposits are enabled for this token.
+    description: Whether deposits are enabled for this token.
     example: true
   can_withdraw:
     type: boolean
-    description: Indicates if withdrawals are enabled for this token.
+    description: Whether withdrawals are enabled for this token.
     example: true
