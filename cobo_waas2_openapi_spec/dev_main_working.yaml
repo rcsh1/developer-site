@@ -77,10 +77,10 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: https://api.cobo.com/v2
-    description: Production environment
   - url: https://api.dev.cobo.com/v2
     description: Development environment
+  - url: https://api.cobo.com/v2
+    description: Production environment
 
 tags:
   - name: Wallets
@@ -463,7 +463,11 @@ components:
     SignMessage:
       $ref: "./components/schemas/transactions/message_sign.yaml"
     EstimateFee:
-      $ref: "./components/schemas/transactions/estimate_fee.yaml"
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee.yaml"
+    EstimateFeeTransfer:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_transfer.yaml"
+    EstimateFeeContractCall:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_contract_call.yaml"
 
     # contract call
     BaseContractCallSource:

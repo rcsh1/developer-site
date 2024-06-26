@@ -1,8 +1,0 @@
-oneOf:
-- $ref: './transfers/transfer.yaml'
-- $ref: './contract_calls/contract_call.yaml'
-discriminator:
-  propertyName: request_type
-  mapping:
-    Transfer: '#/components/schemas/Transfer'
-    Call: '#/components/schemas/ContractCall'
