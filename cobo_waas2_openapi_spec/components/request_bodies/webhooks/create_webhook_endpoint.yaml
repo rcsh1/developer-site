@@ -1,0 +1,22 @@
+description: The request body to create a webhook endpoint
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - subscribed_events
+        - url
+      properties:
+        url:
+          description: The URL of the webhook endpoint.
+          type: string
+          format: url
+          example: 'https://example.com/webhook'
+        subscribed_events:
+          description: The list of events to subscribe for this endpoint, `['*']` indicates that all events are subscribed.
+          items:
+            $ref: '../../schemas/webhooks/event_type.yaml'
+          type: array
+        description:
+          description: The description of the webhook endpoint.
+          type: string
