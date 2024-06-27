@@ -1,0 +1,150 @@
+---
+title: "Get Approval Details"
+api: "GET /v1/custody/mpc/get_approval_details/"
+description: "This endpoint returns a JSON response with the transaction approval process data for a given transaction request ID. The endpoint requires authentication and takes a 'request_id' parameter in the GET request."
+---
+
+
+#### Request
+<ParamField query="request_id" type="String" required>Transaction request ID</ParamField>
+
+#### Response
+<ResponseField name="success" type="bool">request successful or failed</ResponseField>
+<ResponseField name="result" type="object">
+    <Expandable title="object">
+        <ResponseField name="spender" type="object">
+            <Expandable title="object">
+                <ResponseField name="role_result" type="Int">approval result of the role, 0: WAITING, 1: APPROVED, -1: DECLINED</ResponseField>
+                <ResponseField name="review_threshold" type="Int">review threshold</ResponseField>
+                <ResponseField name="user_details" type="object">
+                    <Expandable title="object">
+                        <ResponseField name="pubkey" type="object">
+                            <Expandable title="object">
+                                <ResponseField name="result" type="Int">approval result of the user, 1: UNKNOWN, 2: APPROVED, 3 DECLINED, 4: IGNORED</ResponseField>
+                                <ResponseField name="signature" type="String">signature</ResponseField>
+                                <ResponseField name="last_time" type="String">last operation time</ResponseField>
+                                <ResponseField name="language" type="String">language</ResponseField>
+                                <ResponseField name="message_version" type="String">message version</ResponseField>
+                                <ResponseField name="extra_message" type="String">extra message</ResponseField>
+                            </Expandable>
+                        </ResponseField>
+                    </Expandable>
+                </ResponseField>
+            </Expandable>
+        </ResponseField>
+        <ResponseField name="broker_user" type="object">
+            <Expandable title="object">
+                <ResponseField name="role_result" type="Int">approval result of the role, 0: WAITING, 1: APPROVED, -1: DECLINED</ResponseField>
+                <ResponseField name="review_threshold" type="Int">review threshold</ResponseField>
+                <ResponseField name="user_details" type="object">
+                    <Expandable title="object">
+                        <ResponseField name="pubkey" type="object">
+                            <Expandable title="object">
+                                <ResponseField name="result" type="Int">approval result of the user, 1: UNKNOWN, 2: APPROVED, 3 DECLINED, 4: IGNORED</ResponseField>
+                                <ResponseField name="signature" type="String">signature</ResponseField>
+                                <ResponseField name="last_time" type="String">last operation time</ResponseField>
+                                <ResponseField name="language" type="String">language</ResponseField>
+                                <ResponseField name="message_version" type="String">message version</ResponseField>
+                                <ResponseField name="extra_message" type="String">extra message</ResponseField>
+                            </Expandable>
+                        </ResponseField>
+                    </Expandable>
+                </ResponseField>
+            </Expandable>
+        </ResponseField>
+        <ResponseField name="approver" type="object">
+            <Expandable title="object">
+                <ResponseField name="role_result" type="Int">approval result of the role, 0: WAITING, 1: APPROVED, -1: DECLINED</ResponseField>
+                <ResponseField name="review_threshold" type="Int">review threshold</ResponseField>
+                <ResponseField name="user_details" type="object">
+                    <Expandable title="object">
+                        <ResponseField name="pubkey" type="object">
+                            <Expandable title="object">
+                                <ResponseField name="result" type="Int">approval result of the user, 1: UNKNOWN, 2: APPROVED, 3 DECLINED, 4: IGNORED</ResponseField>
+                                <ResponseField name="signature" type="String">signature</ResponseField>
+                                <ResponseField name="last_time" type="String">last operation time</ResponseField>
+                                <ResponseField name="language" type="String">language</ResponseField>
+                                <ResponseField name="message_version" type="String">message version</ResponseField>
+                                <ResponseField name="extra_message" type="String">extra message</ResponseField>
+                            </Expandable>
+                        </ResponseField>
+                    </Expandable>
+                </ResponseField>
+            </Expandable>
+        </ResponseField>
+    </Expandable>
+</ResponseField>
+
+<RequestExample>
+```python Python
+request(
+    "GET",
+    "/v1/custody/mpc/get_approval_details/",
+    {
+        "request_id": "1716285866523",
+    },
+    api_key, api_secret, host
+)
+```
+
+```javascript JavaScript
+coboFetch('GET', '/v1/custody/mpc/get_approval_details/', {
+    "request_id": "1716285866523",
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+```
+
+```go Go
+Request("GET", "/v1/custody/mpc/get_approval_details/", map[string]string{
+    "request_id": "1716285866523",
+})
+```
+
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "success": true,
+  "result": {
+    "spender": {},
+    "broker_user": {
+      "role_result": 1,
+      "review_threshold": 1,
+      "user_details": {
+        "51ae8dbdcf49a117e80b61ee278e4925cdf0aec29a51965da5421dd51ecaba9038373138a32a706507eb2de5112946aede58f9c996e02548e0a5a2246d46f342": {
+          "result": 2,
+          "signature": "d9db4fd719104d014d9ed6bcb79b959bd268d009c0da88f2120035aba4f2ee237389b283fad545ac756ffb2c2342d1be80a113a4dab6a486e3699cde4925663c",
+          "last_time": "2024-05-24 06:40:23.792131+00:00",
+          "language": "zh",
+          "message_version": "1.0.1",
+          "extra_message": "custody|3aM7ZZUr6ZKjtPekiz9fuFcehjGbYddW8vtLsUPvE5hXhe2gL9BJ4Ng5T9V4rEC1KXfc3cNtCPu4twcXDNPQ44eaVj8sU2jHQJ5m3jybaBZVXJFpC8DcqY1NkPppLCpTSvQCN9z7n|web_send_by_user_1475_1716532814022|1716532817"
+        }
+      }
+    },
+    "approver": {
+      "role_result": -1,
+      "review_threshold": 1,
+      "user_details": {
+        "51ae8dbdcf49a117e80b61ee278e4925cdf0aec29a51965da5421dd51ecaba9038373138a32a706507eb2de5112946aede58f9c996e02548e0a5a2246d46f342": {
+          "result": 3,
+          "signature": "0dec39cb9ac2909e037722ba753ea52342db33399d49226b1cf826e8fa0b92df440a42a623e78c7a2d3c6d90e71fd561dcfc7750531acb073a7903c50220b761",
+          "last_time": "2024-05-24 06:42:32.660555+00:00",
+          "language": "zh",
+          "message_version": "1.0.1",
+          "extra_message": "custody|3aM7ZZUr6ZKjtPekiz9fuFcehjGbYddW8vtLsUPvE5hXhe2gL9BJ4Ng5T9V4rEC1KXfc3cNtCPu4twcXDNPQ44eaVj8sU2jHQJ5m3jybaBZVXJFpC8DcqY1NkPppLCpTSvQCN9z7n|web_send_by_user_1475_1716532814022|1716532914"
+        }
+      }
+    }
+  }
+}
+
+```
+</ResponseExample>
+
