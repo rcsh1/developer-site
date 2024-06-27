@@ -524,9 +524,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: create_mpc_project
-      summary: Create Project
+      summary: Create project
       description: |
-        This operation creates a Project with the required `name`, `node_count`, and `threshold` specification.
+        This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
       security:
         - CoboAuth: []
       requestBody:
@@ -540,9 +540,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: list_mpc_project
-      summary: List all Projects
+      summary: List all projects
       description: |
-        This operation retrieves a list of all Projects.
+        This operation retrieves a list of all projects.
       security:
         - CoboAuth: []
       responses:
@@ -559,11 +559,11 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: get_mpc_project
-      summary: Get Project information
+      summary: Get project information
       description: |
-        This operation retrieves detailed information about a Project specified by `project_id`.
+        This operation retrieves detailed information about a project specified by `project_id`.
 
-        You can retrieve `project_id`s by calling [List all Projects](/api-references/v2/wallets--mpc-wallet/list-all-mpc-projects).
+        You can retrieve `project_id`s by calling [List all projects](/api-references/v2/wallets--mpc-wallet/list-all-mpc-projects).
       security:
         - CoboAuth: []
       parameters:
@@ -581,9 +581,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: update_mpc_project
-      summary: Update Project name
+      summary: Update project name
       description: |
-        This operation updates the `name` of the Project specified by `project_id`.
+        This operation updates the `name` of the project specified by `project_id`.
       security:
         - CoboAuth: []
       parameters:
@@ -628,7 +628,7 @@ paths:
       description: |
         This operation retrieves a list of all vaults.
 
-        By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single Project.
+        By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single project.
       security:
         - CoboAuth: []
       parameters:
@@ -2198,12 +2198,12 @@ components:
       example: OrgControlled
     MPCProject:
       type: object
-      description: The data for Project information.
+      description: The data for project information.
       properties:
         id:
           type: string
           example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
-          description: The Project ID.
+          description: The project ID.
         org_id:
           type: string
           example: f3b4a616-9c43-462e-8cb4-343e304fee64
@@ -2211,20 +2211,20 @@ components:
         name:
           type: string
           example: Project name
-          description: The Project name.
+          description: The project name.
         node_count:
           type: integer
           example: 3
-          description: The number of key share holders in the Project.
+          description: The number of key share holders in the project.
         threshold:
           type: integer
           example: 2
-          description: The number of key share holders required to sign an operation in the Project.
+          description: The number of key share holders required to sign an operation in the project.
         create_timestamp:
           type: integer
           format: int64
           example: 1718619403933.53
-          description: 'The Project''s creation time in Unix timestamp format, measured in milliseconds.'
+          description: 'The project''s creation time in Unix timestamp format, measured in milliseconds.'
     RootPubkey:
       type: object
       description: The data for MPC Root Extended Public Key information.
@@ -5114,7 +5114,7 @@ components:
       name: project_id
       in: path
       required: true
-      description: The Project ID.
+      description: The project ID.
       schema:
         type: string
         format: uuid
@@ -5122,7 +5122,7 @@ components:
     optionalProjectIdQueryParam:
       name: project_id
       in: query
-      description: The Project ID.
+      description: The project ID.
       schema:
         type: string
         format: uuid
@@ -5684,7 +5684,7 @@ components:
                       description: The TSS Node ID.
                       example: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijklm
     createMpcProjectBody:
-      description: The request body to create a Project.
+      description: The request body to create a project.
       content:
         application/json:
           schema:
@@ -5697,11 +5697,11 @@ components:
               name:
                 type: string
                 example: Project name
-                description: The Project name.
+                description: The project name.
               node_count:
                 type: integer
                 description: |
-                  The number of key share holders in the Project.
+                  The number of key share holders in the project.
 
                   **Notes:**
                   1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `node_count` to 2 or 3. 
@@ -5711,7 +5711,7 @@ components:
               threshold:
                 type: integer
                 description: |
-                  The number of key share holders required to sign an operation in the Project.
+                  The number of key share holders required to sign an operation in the project.
 
                   **Notes:**
                   1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `threshold` to 2 or 3. 
@@ -5770,7 +5770,7 @@ components:
                 type: string
                 example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
                 description: |
-                  The Project ID.
+                  The project ID.
 
                   **Notes:**
                   1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
@@ -5786,7 +5786,7 @@ components:
                   - `OrgControlled`: This vault is a collection of Organization-Controlled Wallets.
                   - `UserControlled`: This vault is a collection of User-Controlled Wallets.
     updateProjectBody:
-      description: The request body to update a Project's name.
+      description: The request body to update a project's name.
       content:
         application/json:
           schema:
@@ -5796,8 +5796,8 @@ components:
             properties:
               name:
                 type: string
-                example: New Project name
-                description: The Project's new name.
+                example: New project name
+                description: The project's new name.
     updateVaultBody:
       description: The request body to update a vault's name.
       content:
@@ -6148,7 +6148,7 @@ components:
           schema:
             $ref: '#/components/schemas/KeyGroup'
     createMpcProjectResponse:
-      description: Successfully created Project.
+      description: Successfully created project.
       content:
         application/json:
           schema:
@@ -6190,7 +6190,7 @@ components:
           schema:
             $ref: '#/components/schemas/MPCProject'
     getMpcProjectsResponse:
-      description: Successfully listed all Projects.
+      description: Successfully listed all projects.
       content:
         application/json:
           schema:
