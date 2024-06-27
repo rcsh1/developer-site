@@ -196,13 +196,19 @@ paths:
 #    $ref: "./paths/oauth/token.yaml"
 
   # webhooks
-  /webhooks/events:
+  /webhooks/endpoints:
+    $ref: "./paths/webhooks/endpoints.yaml"
+  /webhooks/endpoints/{endpoint_id}:
+    $ref: "./paths/webhooks/endpoint_by_id.yaml"
+  /webhooks/events/definitions:
+    $ref: "./paths/webhooks/supported_event_definitions.yaml"
+  /webhooks/endpoints/{endpoint_id}/events:
     $ref: "./paths/webhooks/events.yaml"
-  /webhooks/events/{event_id}:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}:
     $ref: "./paths/webhooks/event_by_id.yaml"
-  /webhooks/events/{event_id}/logs:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/logs:
     $ref: "./paths/webhooks/logs_by_event_id.yaml"
-  /webhooks/events/{event_id}/retry:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/retry:
     $ref: "./paths/webhooks/retry_by_event_id.yaml"
 
   # stakings
@@ -491,6 +497,10 @@ components:
       $ref: "./components/schemas/webhooks/event_status.yaml"
     WebhookEventLog:
       $ref: "./components/schemas/webhooks/event_log.yaml"
+    Endpoint:
+      $ref: "./components/schemas/webhooks/endpoint.yaml"
+    EndpointStatus:
+      $ref: "./components/schemas/webhooks/webhook_endpoint_status.yaml"
 
     #stakings
     BaseStakeExtra:
@@ -673,6 +683,8 @@ components:
     # webhooks
     webhookEventIdParam:
       $ref: "./components/parameters/webhooks/event_id_path.yaml"
+    endpointIdParam:
+      $ref: "./components/parameters/webhooks/endpoint_id_path_param.yaml"
 
     #stakings
     activityIdRequiredParam:
@@ -746,6 +758,12 @@ components:
     estimateStakeActivityFeeBody:
       $ref: "./components/request_bodies/stakings/estimate_fee.yaml"
 
+
+    # webhooks
+    createWebhookEndpointBody:
+      $ref: "./components/request_bodies/webhooks/create_webhook_endpoint.yaml"
+    updateWebhookBody:
+      $ref: "./components/request_bodies/webhooks/update_webhook_endpoint.yaml"
 
   responses:
     # misc
@@ -845,6 +863,27 @@ components:
       $ref: "./components/responses/transactions/get_transaction_fee.yaml"
     createTransactionRequestResponse:
       $ref: "./components/responses/transactions/create_transaction_request.yaml"
+
+    #webhook
+    createWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/create_webhook_endpoint.yaml"
+    getWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/get_webhook_endpoint.yaml"
+    listWebhookEndpointsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_endpoints.yaml"
+    updateWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/update_webhook_endpoint.yaml"
+    listWebhookEventsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_events.yaml"
+    getWebhookEventResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event.yaml"
+    getWebhookEventDefinitionsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_definitions.yaml"
+    retryWebhookEventResponse:
+      $ref: "./components/responses/webhooks/retry_webhook_event.yaml"
+    getWebhookEventLogsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_logs.yaml"
+
 
     # stakings
     listStakingPoolsResponse:

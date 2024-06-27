@@ -1,0 +1,12 @@
+description: Successfully listed of webhook endpoints
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        data:
+          items:
+            $ref: '../../schemas/webhooks/endpoint.yaml'
+          type: array
+        pagination:
+          $ref: '../../schemas/pagination/metadata.yaml'

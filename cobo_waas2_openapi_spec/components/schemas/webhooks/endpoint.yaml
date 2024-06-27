@@ -1,0 +1,37 @@
+type: object
+description: The data for webhook endpoint.
+required:
+  - url
+  - subscribed_events
+  - created_timestamp
+  - id
+  - status
+properties:
+  url:
+    description: The URL of the webhook endpoint.
+    maxLength: 500
+    type: string
+    format: url
+    example: 'https://example.com/webhook'
+  subscribed_events:
+    description: >-
+      The list of events to enable for this endpoint. `['*']` indicates
+      that all events are subscribed.
+    items:
+      $ref: 'event_type.yaml'
+    type: array
+  created_timestamp:
+    description: Time at which the object was created. Measured in seconds since the Unix epoch.
+    type: integer
+    example: 1701396866
+  id:
+    description: Unique identifier for the object.
+    type: string
+    format: uuid
+    example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
+  status:
+    $ref: 'webhook_endpoint_status.yaml'
+  description:
+    description: The description of the webhook endpoint.
+    type: string
+
