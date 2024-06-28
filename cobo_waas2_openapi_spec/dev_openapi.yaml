@@ -82,7 +82,7 @@ servers:
 tags:
   - name: Wallets
     description: Operations related to all wallets.
-  - name: Wallets - MPC Wallet
+  - name: Wallets - MPC Wallets
     description: Operations related to mpc wallet.
   - name: Transactions
     description: Operations related to all transactions.
@@ -501,7 +501,7 @@ paths:
   /wallets/mpc/cobo_key_holders:
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_cobo_key_holder
       summary: List all Cobo key share holders
       description: |
@@ -522,7 +522,7 @@ paths:
   /wallets/mpc/projects:
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_mpc_project
       summary: Create project
       description: |
@@ -538,7 +538,7 @@ paths:
           $ref: '#/components/responses/badRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_mpc_project
       summary: List all projects
       description: |
@@ -557,7 +557,7 @@ paths:
   '/wallets/mpc/projects/{project_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_mpc_project
       summary: Get project information
       description: |
@@ -579,7 +579,7 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: update_mpc_project
       summary: Update project name
       description: |
@@ -602,7 +602,7 @@ paths:
   /wallets/mpc/vaults:
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_mpc_vault
       summary: Create vault
       description: |
@@ -622,7 +622,7 @@ paths:
           $ref: '#/components/responses/badRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_mpc_vault
       summary: List all vaults
       description: |
@@ -645,7 +645,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_mpc_vault
       summary: Get vault information
       description: |
@@ -667,7 +667,7 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: modify_mpc_vault
       summary: Update vault name
       description: |
@@ -690,7 +690,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/key_groups':
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_key_group
       summary: Create key share group
       description: |
@@ -712,7 +712,7 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_key_group
       summary: List all key share groups
       description: |
@@ -736,7 +736,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/key_groups/{key_group_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_key_group
       summary: Get key share group information
       description: |
@@ -757,7 +757,7 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: update_key_group
       summary: Update key share group
       description: |
@@ -781,7 +781,7 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     delete:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: delete_key_group
       summary: Delete key share group
       description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
@@ -802,7 +802,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/tss_requests':
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_tss_request
       summary: Create TSS request
       description: |
@@ -834,7 +834,7 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_tss_request
       summary: List TSS requests
       description: |
@@ -864,7 +864,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_tss_request
       summary: Get TSS request
       description: |
@@ -887,7 +887,7 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: cancel_tss_request
       summary: Cancel TSS request
       description: |
