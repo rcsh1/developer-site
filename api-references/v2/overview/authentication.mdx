@@ -4,7 +4,7 @@ title: "Authentication"
 
 This article introduces the authentication methods required for using the WaaS service.
 
-To ensure secure access to your crypto assets via APIs, the WaaS service validates the use of ECDSA signatures for authentication in all API calls. Access to the API is denied without proper authentication. You need to provide an API key, a nonce, and an API signature in the request header as follows. 
+To ensure secure access to your crypto assets via APIs, the WaaS service validates the use of EDDSA signatures for authentication in all API calls. Access to the API is denied without proper authentication. You need to provide an API key, a nonce, and an API signature in the request header as follows. 
 
 <Note>If you are using Cobo's WaaS SDKs, you can skip this section because the SDKs already encapsulate the authentication mechanism for you.</Note>
 
@@ -50,7 +50,7 @@ headers = {
 
 3. Generate an Ed25519 key pair
 
-    You can use either OpenSSL or the Python library `nacl` to generate an Ed25519 key pair.
+    You can use either OpenSSL or the Python library to generate an Ed25519 key pair.
 
     - Using OpenSSL
 
@@ -67,31 +67,29 @@ headers = {
         openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | tr -d ':\n '
         ```
 
-    - Using the `nacl` Python library
+    - Using the Python library
 
-        1. Install the `nacl` library
+        1. Install the Python library
 
             In a terminal window, run the following command:
 
             ```bash
-            pip install nacl
+            pip install ed25519
             ```
 
         2. Generate a key pair
 
-            Use the `nacl` library to generate a key pair as follows:
+            Use the Python library to generate a key pair as follows:
 
             ```python
-            import nacl.signing
+            from ed25519.keys import create_keypair
 
-            # Generate a signing key (private key)
-            signing_key = nacl.signing.SigningKey.generate()
-
-            # Get the private key in hexadecimal format
-            private_key_hex = signing_key.private_key.encode(encoder=nacl.encoding.HexEncoder).decode()
-
-            # Get the public key in hexadecimal format
-            public_key_hex = signing_key.verify_key.encode(encoder=nacl.encoding.HexEncoder).decode()
+            # Create a key pair
+            sk, vk = create_keypair()
+            # Print the private key in hexadecimal format.
+            print("private key:", sk.to_seed().hex())
+            # Print the public key in hexadecimal format.
+            print("public key:", vk.to_bytes().hex())
             ```
 
 4. Sign the string with the private key
@@ -99,13 +97,10 @@ headers = {
     Use the Ed25519 private key to sign the string as follows:
 
     ```python
-    # Import the `nacl` library if you haven't.
-    import nacl.signing
-
     # Create an Ed25519 signing Key
     sk = ed25519.SigningKey(sk_s=bytes.fromhex(api_secret))
     # Sign the hashed message
-    signature = sk.sign(content_hash)
+    signature = sk.sign(digest)
     ```
 
 Now you've generated an API signature.
