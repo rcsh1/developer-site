@@ -10,7 +10,11 @@ content:
             $ref: '../../schemas/webhooks/event_type.yaml'
           type: array
         status:
-          $ref: '../../schemas/webhooks/webhook_endpoint_status.yaml'
+          type: string
+          enum:
+            - STATUS_INACTIVE
+          example: STATUS_INACTIVE
+          description: The enumeration of webhook endpoint status.
         description:
           description: The description of the webhook endpoint.
           type: string

@@ -1193,6 +1193,7 @@ paths:
     get:
       tags:
         - Developers - Webhooks
+      summary: List webhook endpoints
       description: Retrieve a list of your webhook endpoints.
       operationId: list_webhook_endpoints
       parameters:
@@ -1206,8 +1207,7 @@ paths:
           in: query
           name: event_type
           schema:
-            type: string
-          example: 'wallet.created, wallet.updated, wallet.deleted'
+            $ref: '#/components/schemas/WebhookEventType'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -1223,6 +1223,7 @@ paths:
     post:
       tags:
         - Developers - Webhooks
+      summary: Create webhook endpoint
       description: Create a new webhook endpoint.
       operationId: create_webhook_endpoint
       requestBody:
@@ -1238,6 +1239,7 @@ paths:
     get:
       tags:
         - Developers - Webhooks
+      summary: Retrieve webhook endpoint by ID
       description: Retrieves the webhook endpoint with the given ID.
       operationId: get_webhook_endpoint_by_id
       responses:
@@ -1248,10 +1250,9 @@ paths:
     put:
       tags:
         - Developers - Webhooks
+      summary: Update webhook endpoint
       description: Update a webhook endpoint.
       operationId: update_webhook_endpoint
-      security:
-        - CookieAuth: []
       requestBody:
         $ref: '#/components/requestBodies/updateWebhookBody'
       responses:
@@ -1265,6 +1266,7 @@ paths:
     get:
       tags:
         - Developers - Webhooks
+      summary: Get all supported event definitions
       description: Get all supported event definitions.
       operationId: list_webhook_event_definitions
       responses:
@@ -4294,11 +4296,16 @@ components:
         description:
           description: The description of the webhook endpoint.
           type: string
+          example: Example webhook endpoint
     EndpointStatus:
       type: string
       enum:
         - STATUS_ACTIVE
         - STATUS_INACTIVE
+        - STATUS_PENDING_ACTIVE
+        - STATUS_PENDING_INACTIVE
+        - STATUS_PENDING_UPDATE
+        - STATUS_REJECT_ACTIVE
       example: STATUS_ACTIVE
       description: The enumeration of webhook endpoint status.
     BaseStakeExtra:
@@ -5903,6 +5910,7 @@ components:
               description:
                 description: The description of the webhook endpoint.
                 type: string
+                example: Example webhook endpoint
     updateWebhookBody:
       description: The request body to update a webhook endpoint
       content:
@@ -5916,7 +5924,11 @@ components:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
               status:
-                $ref: '#/components/schemas/EndpointStatus'
+                type: string
+                enum:
+                  - STATUS_INACTIVE
+                example: STATUS_INACTIVE
+                description: The enumeration of webhook endpoint status.
               description:
                 description: The description of the webhook endpoint.
                 type: string

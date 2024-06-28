@@ -1,6 +1,7 @@
 get:
   tags:
     - Developers - Webhooks
+  summary: List webhook endpoints
   description: Retrieve a list of your webhook endpoints.
   operationId: list_webhook_endpoints
   parameters:
@@ -14,8 +15,7 @@ get:
       in: query
       name: event_type
       schema:
-        type: string
-      example: "wallet.created, wallet.updated, wallet.deleted"
+        $ref: "../../components/schemas/webhooks/event_type.yaml"
     - $ref: "../../components/parameters/pagination/limit.yaml"
     - $ref: "../../components/parameters/pagination/before.yaml"
     - $ref: "../../components/parameters/pagination/after.yaml"
@@ -31,6 +31,7 @@ get:
 post:
   tags:
     - Developers - Webhooks
+  summary: Create webhook endpoint
   description: Create a new webhook endpoint.
   operationId: create_webhook_endpoint
   requestBody:
