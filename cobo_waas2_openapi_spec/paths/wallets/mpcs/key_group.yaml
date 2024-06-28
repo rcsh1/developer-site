@@ -1,6 +1,6 @@
 get:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: get_key_group
   summary: Get key share group information
   description: |
@@ -21,7 +21,7 @@ get:
       $ref: "../../../components/responses/errors/503_service_unavailable.yaml"
 put:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: update_key_group
   summary: Update key share group
   description: | 
@@ -45,7 +45,7 @@ put:
       $ref: "../../../components/responses/errors/429_too_many_request.yaml"
 delete:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: delete_key_group
   summary: Delete key share group
   description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
