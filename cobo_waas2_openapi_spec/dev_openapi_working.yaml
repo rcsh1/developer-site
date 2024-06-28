@@ -898,15 +898,12 @@ paths:
       description: |
         This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
 
-        The specific action to be taken is specified by `tss_request_action`.
-
         You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
-        - $ref: '#/components/parameters/requiredTssRequestActionParam'
       responses:
         '200':
           $ref: '#/components/responses/putTssRequestResponse'
@@ -1110,7 +1107,7 @@ paths:
       operationId: get_chain_fee_price
       summary: Get transaction fee price
       description: |
-        This operation retrieves the transaction fee model and transaction fee price for a specified chain or a specified token.
+        This operation retrieves the transaction fee model and transaction fee price for a specified chain or a specified token. 
       security:
         - CoboAuth: []
       parameters:
@@ -1203,7 +1200,7 @@ paths:
 
         In some scenarios, you want to sign a message for identity authentication or transaction approval. You need to provide details such as the source address, destination address, and the message to be signed. A transaction request for tracking is returned upon successful operation.
 
-        Currently, only MPC Wallets support this type of transaction to sign a message.
+        Currently, only MPC Wallets support this type of transaction to sign a message. 
       security:
         - CoboAuth: []
       requestBody:
@@ -1863,7 +1860,7 @@ components:
           description: |
             Whether the API operation was successful. 
             - `true`: The operation was successful.
-            - `false`: The operation failed.
+            - `false`: The operation failed. 
         error_code:
           type: integer
           description: The error code.
@@ -3019,7 +3016,7 @@ components:
     UtxoTransactionFee:
       type: object
       description: |
-        The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee.
+        The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee. 
       required:
         - fee_type
       title: UTXO
@@ -3470,7 +3467,7 @@ components:
           - `TokenApproval`: A transaction that grants permission to access your tokens. 
           - `ContractCall`: A transaction that interacts with a smart contract.
           - `TransactionFeePayment`: A transaction that initiated from Fee Station to pay your transaction fees.
-          - `RawMessage`: A transaction that signs a message.
+          - `RawMessage`: A transaction that signs a message. 
     MpcSigningGroup:
       type: object
       description: The information about the Signing Group of an MPC Wallet.
@@ -3506,7 +3503,7 @@ components:
           - `SafeContractWallet`: Smart Contract Wallets (Safe{Wallet}).
           - `ExchangeAccount`: Exchange Wallets.
           - `FeeStation`: A Fee Station.
-          - `ExternalAddress`: An external address.
+          - `ExternalAddress`: An external address. 
     TransactionSourceType:
       type: string
       enum:
@@ -4195,7 +4192,7 @@ components:
     AddressTransferDestination:
       type: object
       description: |
-        The information about the transaction destination. For account-based chains like Ethereum, specify the `account_output` property. For UTXO-based chains like Bitcoin, specify the `utxo_outputs` property.
+        The information about the transaction destination. For account-based chains like Ethereum, specify the `account_output` property. For UTXO-based chains like Bitcoin, specify the `utxo_outputs` property. 
       title: Addresses
       required:
         - destination_type
@@ -4467,7 +4464,7 @@ components:
             value:
               type: string
               description: |
-                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
               example: '1.5'
             calldata:
               type: string
@@ -4586,7 +4583,7 @@ components:
             value:
               type: string
               description: |
-                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
               example: '1.5'
             calldata:
               type: string
@@ -5688,7 +5685,7 @@ components:
           - `TokenApproval`: A transaction that grants permission to access your tokens. 
           - `ContractCall`: A transaction that interacts with a smart contract.
           - `TransactionFeePayment`: A transaction that is initiated by Fee Station to pay your transaction fee.
-          - `RawMessage`: A transaction that signs a message.
+          - `RawMessage`: A transaction that signs a message. 
       schema:
         type: array
         items:
