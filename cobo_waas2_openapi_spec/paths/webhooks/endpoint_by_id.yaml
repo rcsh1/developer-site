@@ -3,6 +3,7 @@ parameters:
 get:
   tags:
     - Developers - Webhooks
+  summary: Retrieve webhook endpoint by ID
   description: Retrieves the webhook endpoint with the given ID.
   operationId: get_webhook_endpoint_by_id
   responses:
@@ -13,6 +14,7 @@ get:
 put:
   tags:
     - Developers - Webhooks
+  summary: Update webhook endpoint
   description: Update a webhook endpoint.
   operationId: update_webhook_endpoint
   security:
