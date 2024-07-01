@@ -2,17 +2,15 @@ get:
   tags:
     - Developers - Webhooks
   summary: List webhook endpoints
-  description: Retrieve a list of your webhook endpoints.
+  description: This operation retrieves the information of all webhook endpoints registered under your organization. You can filter the result by endpoint status and the subscribed event type.
   operationId: list_webhook_endpoints
   parameters:
-    - description: The endpoint status.
-      in: query
+    - in: query
       name: status
       schema:
         $ref: "../../components/schemas/webhooks/webhook_endpoint_status.yaml"
       required: false
-    - description: The event type to filter by.
-      in: query
+    - in: query
       name: event_type
       schema:
         $ref: "../../components/schemas/webhooks/event_type.yaml"
@@ -31,8 +29,8 @@ get:
 post:
   tags:
     - Developers - Webhooks
-  summary: Create webhook endpoint
-  description: Create a new webhook endpoint.
+  summary: Register webhook endpoint
+  description: This operation registers a new webhook endpoint for your organization.
   operationId: create_webhook_endpoint
   requestBody:
     $ref: "../../components/request_bodies/webhooks/create_webhook_endpoint.yaml"

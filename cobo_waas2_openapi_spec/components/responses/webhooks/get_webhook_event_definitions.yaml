@@ -1,4 +1,4 @@
-description: Get webhook event definitions successfully.
+description: The request was successful.
 content:
   application/json:
     schema:
@@ -13,4 +13,5 @@ content:
                   $ref: "../../../components/schemas/webhooks/event_type.yaml"
                 description:
                   type: string
-                  example: "Occurred a transaction status updated"
+                  description: The description of the webhook event type.
+                  example: "Occurs when the transaction status of a Custodial Wallet (Asset) is updated"

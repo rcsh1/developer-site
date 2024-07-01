@@ -1,5 +1,5 @@
 type: object
-description: The data for webhook endpoint.
+description: The information about a webhook endpoint.
 required:
   - url
   - subscribed_events
@@ -8,24 +8,23 @@ required:
   - status
 properties:
   url:
-    description: The URL of the webhook endpoint.
+    description: The webhook endpoint URL.
     maxLength: 500
     type: string
     format: url
     example: 'https://example.com/webhook'
   subscribed_events:
     description: >-
-      The list of events to enable for this endpoint. `['*']` indicates
-      that all events are subscribed.
+        The event types subscribed by a webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.
     items:
       $ref: 'event_type.yaml'
     type: array
   created_timestamp:
-    description: Time at which the object was created. Measured in seconds since the Unix epoch.
+    description: The time when the endpoint was registered, in Unix timestamp format, measured in seconds.
     type: integer
     example: 1701396866
   id:
-    description: Unique identifier for the object.
+    description: The webhook endpoint ID.
     type: string
     format: uuid
     example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
@@ -34,5 +33,5 @@ properties:
   description:
     description: The description of the webhook endpoint.
     type: string
-    example: 'Example webhook endpoint'
+    example: 'My webhook endpoint'
 
