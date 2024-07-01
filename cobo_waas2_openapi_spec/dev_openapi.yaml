@@ -1168,17 +1168,15 @@ paths:
       tags:
         - Developers - Webhooks
       summary: List webhook endpoints
-      description: Retrieve a list of your webhook endpoints.
+      description: This operation retrieves the information of all webhook endpoints registered under your organization. You can filter the result by endpoint status and the subscribed event type.
       operationId: list_webhook_endpoints
       parameters:
-        - description: The endpoint status.
-          in: query
+        - in: query
           name: status
           schema:
             $ref: '#/components/schemas/EndpointStatus'
           required: false
-        - description: The event type to filter by.
-          in: query
+        - in: query
           name: event_type
           schema:
             $ref: '#/components/schemas/WebhookEventType'
@@ -1197,8 +1195,8 @@ paths:
     post:
       tags:
         - Developers - Webhooks
-      summary: Create webhook endpoint
-      description: Create a new webhook endpoint.
+      summary: Register webhook endpoint
+      description: This operation registers a new webhook endpoint.
       operationId: create_webhook_endpoint
       requestBody:
         $ref: '#/components/requestBodies/createWebhookEndpointBody'
@@ -1214,7 +1212,7 @@ paths:
       tags:
         - Developers - Webhooks
       summary: Retrieve webhook endpoint by ID
-      description: Retrieves the webhook endpoint with the given ID.
+      description: This operation retrieves the information of a specified webhook endpoint.
       operationId: get_webhook_endpoint_by_id
       responses:
         '200':
@@ -1225,7 +1223,7 @@ paths:
       tags:
         - Developers - Webhooks
       summary: Update webhook endpoint
-      description: Update a webhook endpoint.
+      description: This operation updates the information of a specified webhook endpoint.
       operationId: update_webhook_endpoint
       requestBody:
         $ref: '#/components/requestBodies/updateWebhookBody'
@@ -1240,8 +1238,8 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: Get all supported event definitions
-      description: Get all supported event definitions.
+      summary: Get webhook event types
+      description: This operation retrieves all supported webhook event types.
       operationId: list_webhook_event_definitions
       responses:
         '200':
@@ -1685,6 +1683,7 @@ components:
     CustodialWalletInfo:
       type: object
       title: Custodial Wallets
+      description: The basic information of a wallet.
       required:
         - wallet_id
         - wallet_type
@@ -4171,7 +4170,7 @@ components:
         - smart_contract_safe_wallets.transaction.updated
         - exchange_wallets.transaction.updated
       example: custodial_asset_wallets.transaction.updated
-      description: The event type.
+      description: 'The event type. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
     WebhookEventStatus:
       type: string
       enum:
@@ -4231,7 +4230,7 @@ components:
           example: Connect Timeout
     Endpoint:
       type: object
-      description: The data for webhook endpoint.
+      description: The information about the webhook endpoint.
       required:
         - url
         - subscribed_events
@@ -4240,22 +4239,22 @@ components:
         - status
       properties:
         url:
-          description: The URL of the webhook endpoint.
+          description: The webhook endpoint URL.
           maxLength: 500
           type: string
           format: url
           example: 'https://example.com/webhook'
         subscribed_events:
-          description: 'The list of events to enable for this endpoint. `[''*'']` indicates that all events are subscribed.'
+          description: 'The event types subscribed by a webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
           items:
             $ref: '#/components/schemas/WebhookEventType'
           type: array
         created_timestamp:
-          description: Time at which the object was created. Measured in seconds since the Unix epoch.
+          description: 'The time when the endpoint was registered, in Unix timestamp format, measured in seconds.'
           type: integer
           example: 1701396866
         id:
-          description: Unique identifier for the object.
+          description: The webhook endpoint ID.
           type: string
           format: uuid
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
@@ -4264,7 +4263,7 @@ components:
         description:
           description: The description of the webhook endpoint.
           type: string
-          example: Example webhook endpoint
+          example: My webhook endpoint
     EndpointStatus:
       type: string
       enum:
@@ -4275,7 +4274,14 @@ components:
         - STATUS_PENDING_UPDATE
         - STATUS_REJECT_ACTIVE
       example: STATUS_ACTIVE
-      description: The enumeration of webhook endpoint status.
+      description: |
+        The webhook endpoint status. Possible values include:
+        - `STATUS_ACTIVE`: The endpoint is currently in use.
+        - `STATUS_INACTIVE`: The endpoint has been revoked and can no longer receive webhook events.
+        - `STATUS_PENDING_ACTIVE`: The endpoint is pending approval and will be available for use once it is approved.
+        - `STATUS_PENDING_INACTIVE`: The endpoint is pending approval and will be revoked after approval, after which it can no longer receive webhook events.
+        - `STATUS_PENDING_UPDATE`: The endpoint is pending approval and will be updated after approval.
+        - `STATUS_REJECT_ACTIVE`: The request to activate the endpoint has been rejected.
     BaseStakeExtra:
       type: object
       description: Base stake extra.
@@ -5404,7 +5410,7 @@ components:
       name: endpoint_id
       in: path
       required: true
-      description: Unique id of the webhook endpoint
+      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/api-references/v2/developers--webhooks/list-webhook-endpoints).'
       schema:
         type: string
         format: uuid
@@ -5847,7 +5853,7 @@ components:
                 Unstake: '#/components/schemas/EstimateUnstakeFee'
                 Withdraw: '#/components/schemas/EstimateWithdrawFee'
     createWebhookEndpointBody:
-      description: The request body to create a webhook endpoint
+      description: The request body to register a webhook endpoint.
       content:
         application/json:
           schema:
@@ -5857,12 +5863,12 @@ components:
               - url
             properties:
               url:
-                description: The URL of the webhook endpoint.
+                description: The webhook endpoint URL.
                 type: string
                 format: url
                 example: 'https://example.com/webhook'
               subscribed_events:
-                description: 'The list of events to subscribe for this endpoint, `[''*'']` indicates that all events are subscribed.'
+                description: 'The event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -5871,14 +5877,14 @@ components:
                 type: string
                 example: Example webhook endpoint
     updateWebhookBody:
-      description: The request body to update a webhook endpoint
+      description: The request body to update a webhook endpoint.
       content:
         application/json:
           schema:
             type: object
             properties:
               subscribed_events:
-                description: The list of events to subscribe for this endpoint
+                description: 'The new event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -5887,9 +5893,9 @@ components:
                 enum:
                   - STATUS_INACTIVE
                 example: STATUS_INACTIVE
-                description: The enumeration of webhook endpoint status.
+                description: The new status you want to set the webhook endpoint to.
               description:
-                description: The description of the webhook endpoint.
+                description: The webhook endpoint description.
                 type: string
                 example: My webhook endpoint
   responses:
@@ -6286,13 +6292,13 @@ components:
               status:
                 $ref: '#/components/schemas/TransactionStatus'
     createWebhookEndpointResponse:
-      description: Created a webhook endpoint successfully.
+      description: The request was successful.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Endpoint'
     getWebhookEndpointResponse:
-      description: Get webhook endpoint info successfully.
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6336,7 +6342,7 @@ components:
           schema:
             $ref: '#/components/schemas/WebhookEvent'
     getWebhookEventDefinitionsResponse:
-      description: Get webhook event definitions successfully.
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6351,6 +6357,7 @@ components:
                       $ref: '#/components/schemas/WebhookEventType'
                     description:
                       type: string
+                      description: The description of the webhook endpoint.
                       example: Occurred a transaction status updated
     retryWebhookEventResponse:
       description: The request was successful.
