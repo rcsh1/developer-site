@@ -889,31 +889,8 @@ paths:
           $ref: '#/components/responses/notFoundError'
         '503':
           $ref: '#/components/responses/serviceUnavailableError'
-  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
-    get:
-      tags:
-        - Wallets - MPC Wallets
-      operationId: get_tss_request
-      summary: Get TSS request
-      description: |
-        This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
-
-        You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
-      security:
-        - CoboAuth: []
-      parameters:
-        - $ref: '#/components/parameters/vaultIdParam'
-        - $ref: '#/components/parameters/tssRequestIdParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/getTssRequestResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '404':
-          $ref: '#/components/responses/notFoundError'
-        '503':
-          $ref: '#/components/responses/serviceUnavailableError'
-    put:
+  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel':
+    post:
       tags:
         - Wallets - MPC Wallets
       operationId: cancel_tss_request
@@ -921,15 +898,12 @@ paths:
       description: |
         This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
 
-        The specific action to be taken is specified by `tss_request_action`.
-
         You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
-        - $ref: '#/components/parameters/requiredTssRequestActionParam'
       responses:
         '200':
           $ref: '#/components/responses/putTssRequestResponse'
@@ -2777,12 +2751,6 @@ components:
         - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) and a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
 
         - `Recovery`: This is a request to create a new [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) from the [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) if the old Main Group has been lost.
-    TSSRequestAction:
-      type: string
-      description: the action of the TSS request.
-      enum:
-        - cancel
-      example: cancel
     FeeType:
       type: string
       enum:
@@ -5578,15 +5546,6 @@ components:
       schema:
         type: string
       example: '880311524363903326'
-    requiredTssRequestActionParam:
-      name: tss_request_action
-      in: query
-      description: |
-        The action of the TSS request to be taken. Possible values include:
-        - `cancel`: This action cancels the TSS request.
-      required: true
-      schema:
-        $ref: '#/components/schemas/TSSRequestAction'
     tssRequestIdParam:
       name: tss_request_id
       in: path

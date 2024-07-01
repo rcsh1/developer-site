@@ -150,8 +150,8 @@ paths:
     $ref: './paths/wallets/mpcs/key_group.yaml'
   /wallets/mpc/vaults/{vault_id}/tss_requests:
     $ref: './paths/wallets/mpcs/tss_requests.yaml'
-  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}:
-    $ref: "./paths/wallets/mpcs/tss_request.yaml"
+  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel:
+    $ref: "./paths/wallets/mpcs/tss_request_cancel.yaml"
 
   # exchange wallets
 #  /wallets/exchanges/settings:
@@ -327,8 +327,6 @@ components:
       $ref: "./components/schemas/wallets/mpcs/tss_request_status.yaml"
     TSSRequestType:
       $ref: "./components/schemas/wallets/mpcs/tss_request_type.yaml"
-    TSSRequestAction:
-      $ref: "./components/schemas/wallets/mpcs/tss_request_action.yaml"
 
     # fees
     FeeType:
@@ -619,8 +617,6 @@ components:
       $ref: "./components/parameters/wallets/mpcs/project_id_list_optional.yaml"
     requiredTargetKeyGroupIdParam:
       $ref: "./components/parameters/wallets/mpcs/target_key_group_id_required.yaml"
-    requiredTssRequestActionParam:
-      $ref: "./components/parameters/wallets/mpcs/tss_request_action_required.yaml"
     tssRequestIdParam:
       $ref: "./components/parameters/wallets/mpcs/tss_request_id_path.yaml"
     requiredUpdateKeyGroupActionParam:
