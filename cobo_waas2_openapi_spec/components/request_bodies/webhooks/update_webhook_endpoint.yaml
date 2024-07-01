@@ -1,11 +1,11 @@
-description: The request body to update a webhook endpoint
+description: The request body to update a webhook endpoint.
 content:
   application/json:
     schema:
       type: object
       properties:
         subscribed_events:
-          description: The list of events to subscribe for this endpoint
+          description: The new event types you want to subscribe to for this webhook endpoint. `['*']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.
           items:
             $ref: '../../schemas/webhooks/event_type.yaml'
           type: array
@@ -14,8 +14,9 @@ content:
           enum:
             - STATUS_INACTIVE
           example: STATUS_INACTIVE
-          description: The enumeration of webhook endpoint status.
+          description: >-
+            The new status you want to set the webhook endpoint to. If you set `status` to `STATUS_INACTIVE`, the endpoint will be revoked once the request is approved, meaning it will no longer receive any webhook events.
         description:
-          description: The description of the webhook endpoint.
+          description: The webhook endpoint description.
           type: string
           example: 'My webhook endpoint'

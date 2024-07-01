@@ -1189,7 +1189,92 @@ paths:
           $ref: '#/components/responses/createTransactionRequestResponse'
         '404':
           $ref: '#/components/responses/notFoundError'
-  /webhooks/events:
+  /webhooks/endpoints:
+    get:
+      tags:
+        - Developers - Webhooks
+      summary: List webhook endpoints
+      description: This operation retrieves the information of all webhook endpoints registered under your organization. You can filter the result by endpoint status and the subscribed event type.
+      operationId: list_webhook_endpoints
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/EndpointStatus'
+          required: false
+        - in: query
+          name: event_type
+          schema:
+            $ref: '#/components/schemas/WebhookEventType'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listWebhookEndpointsResponse'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+        '429':
+          $ref: '#/components/responses/tooManyRequestError'
+    post:
+      tags:
+        - Developers - Webhooks
+      summary: Register webhook endpoint
+      description: This operation registers a new webhook endpoint.
+      operationId: create_webhook_endpoint
+      requestBody:
+        $ref: '#/components/requestBodies/createWebhookEndpointBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createWebhookEndpointResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+  '/webhooks/endpoints/{endpoint_id}':
+    parameters:
+      - $ref: '#/components/parameters/endpointIdParam'
+    get:
+      tags:
+        - Developers - Webhooks
+      summary: Retrieve webhook endpoint by ID
+      description: This operation retrieves the information of a specified webhook endpoint.
+      operationId: get_webhook_endpoint_by_id
+      responses:
+        '200':
+          $ref: '#/components/responses/getWebhookEndpointResponse'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+    put:
+      tags:
+        - Developers - Webhooks
+      summary: Update webhook endpoint
+      description: This operation updates the information of a specified webhook endpoint.
+      operationId: update_webhook_endpoint
+      requestBody:
+        $ref: '#/components/requestBodies/updateWebhookBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/updateWebhookEndpointResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  /webhooks/events/definitions:
+    get:
+      tags:
+        - Developers - Webhooks
+      summary: Get webhook event types
+      description: This operation retrieves all supported webhook event types.
+      operationId: list_webhook_event_definitions
+      responses:
+        '200':
+          $ref: '#/components/responses/getWebhookEventDefinitionsResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+  '/webhooks/endpoints/{endpoint_id}/events':
     get:
       tags:
         - Developers - Webhooks
@@ -1200,6 +1285,7 @@ paths:
         Note: The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Asset Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.
       operationId: list_events
       parameters:
+        - $ref: '#/components/parameters/endpointIdParam'
         - description: |
             The event status. Possible values include:
             - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
@@ -1218,33 +1304,23 @@ paths:
           schema:
             $ref: '#/components/schemas/WebhookEventType'
           required: false
-          example: asset_wallet.outbound.created
+          example: custodial_asset_wallets.transaction.updated
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
       responses:
         '200':
-          description: A list of webhook events has been successfully retrieved.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    items:
-                      $ref: '#/components/schemas/WebhookEvent'
-                    type: array
-                  pagination:
-                    $ref: '#/components/schemas/Pagination'
+          $ref: '#/components/responses/listWebhookEventsResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
           $ref: '#/components/responses/unauthorizedError'
         '403':
           $ref: '#/components/responses/forbiddenError'
-  '/webhooks/events/{event_id}':
+  '/webhooks/endpoints/{endpoint_id}/events/{event_id}':
     parameters:
       - $ref: '#/components/parameters/webhookEventIdParam'
+      - $ref: '#/components/parameters/endpointIdParam'
     get:
       tags:
         - Developers - Webhooks
@@ -1254,11 +1330,7 @@ paths:
       operationId: get_webhook_event
       responses:
         '200':
-          description: The webhook event information is successfully retrieved.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WebhookEvent'
+          $ref: '#/components/responses/getWebhookEventResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -1267,9 +1339,10 @@ paths:
           $ref: '#/components/responses/forbiddenError'
         '404':
           $ref: '#/components/responses/notFoundError'
-  '/webhooks/events/{event_id}/logs':
+  '/webhooks/endpoints/{endpoint_id}/events/{event_id}/logs':
     parameters:
       - $ref: '#/components/parameters/webhookEventIdParam'
+      - $ref: '#/components/parameters/endpointIdParam'
     get:
       tags:
         - Developers - Webhooks
@@ -1279,13 +1352,7 @@ paths:
       operationId: get_webhook_event_logs
       responses:
         '200':
-          description: The request was successful.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WebhookEventLog'
+          $ref: '#/components/responses/getWebhookEventLogsResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -1294,9 +1361,10 @@ paths:
           $ref: '#/components/responses/forbiddenError'
         '404':
           $ref: '#/components/responses/notFoundError'
-  '/webhooks/events/{event_id}/retry':
+  '/webhooks/endpoints/{endpoint_id}/events/{event_id}/retry':
     parameters:
       - $ref: '#/components/parameters/webhookEventIdParam'
+      - $ref: '#/components/parameters/endpointIdParam'
     post:
       tags:
         - Developers - Webhooks
@@ -1306,16 +1374,7 @@ paths:
       operationId: retry_webhook_event
       responses:
         '201':
-          description: The request was successful.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  retried:
-                    type: boolean
-                    example: true
-                    description: Whether the retry request has been successfully sent.
+          $ref: '#/components/responses/retryWebhookEventResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -1650,6 +1709,7 @@ components:
     CustodialWalletInfo:
       type: object
       title: Custodial Wallets
+      description: The basic information of a wallet.
       required:
         - wallet_id
         - wallet_type
@@ -4142,7 +4202,7 @@ components:
         - smart_contract_safe_wallets.transaction.updated
         - exchange_wallets.transaction.updated
       example: custodial_asset_wallets.transaction.updated
-      description: The event type.
+      description: 'The event type. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
     WebhookEventStatus:
       type: string
       enum:
@@ -4200,6 +4260,60 @@ components:
           type: string
           description: The reason why the webhook event fails to be delivered.
           example: Connect Timeout
+    Endpoint:
+      type: object
+      description: The information about the webhook endpoint.
+      required:
+        - url
+        - subscribed_events
+        - created_timestamp
+        - id
+        - status
+      properties:
+        url:
+          description: The webhook endpoint URL.
+          maxLength: 500
+          type: string
+          format: url
+          example: 'https://example.com/webhook'
+        subscribed_events:
+          description: 'The event types subscribed by a webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+          items:
+            $ref: '#/components/schemas/WebhookEventType'
+          type: array
+        created_timestamp:
+          description: 'The time when the endpoint was registered, in Unix timestamp format, measured in seconds.'
+          type: integer
+          example: 1701396866
+        id:
+          description: The webhook endpoint ID.
+          type: string
+          format: uuid
+          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+        status:
+          $ref: '#/components/schemas/EndpointStatus'
+        description:
+          description: The description of the webhook endpoint.
+          type: string
+          example: My webhook endpoint
+    EndpointStatus:
+      type: string
+      enum:
+        - STATUS_ACTIVE
+        - STATUS_INACTIVE
+        - STATUS_PENDING_ACTIVE
+        - STATUS_PENDING_INACTIVE
+        - STATUS_PENDING_UPDATE
+        - STATUS_REJECT_ACTIVE
+      example: STATUS_ACTIVE
+      description: |
+        The webhook endpoint status. Possible values include:
+        - `STATUS_ACTIVE`: The endpoint is currently in use.
+        - `STATUS_INACTIVE`: The endpoint has been revoked and can no longer receive webhook events.
+        - `STATUS_PENDING_ACTIVE`: The endpoint is pending approval and will be available for use once it is approved.
+        - `STATUS_PENDING_INACTIVE`: The endpoint is pending approval and will be revoked after approval, after which it can no longer receive webhook events.
+        - `STATUS_PENDING_UPDATE`: The endpoint is pending approval and will be updated after approval.
+        - `STATUS_REJECT_ACTIVE`: The request to activate the endpoint has been rejected.
     BaseStakeExtra:
       type: object
       description: Base stake extra.
@@ -5333,6 +5447,15 @@ components:
         type: string
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    endpointIdParam:
+      name: endpoint_id
+      in: path
+      required: true
+      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/api-references/v2/developers--webhooks/list-webhook-endpoints).'
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     activityIdRequiredParam:
       name: activity_id
       in: path
@@ -5770,6 +5893,52 @@ components:
                 Stake: '#/components/schemas/EstimateStakeFee'
                 Unstake: '#/components/schemas/EstimateUnstakeFee'
                 Withdraw: '#/components/schemas/EstimateWithdrawFee'
+    createWebhookEndpointBody:
+      description: The request body to register a webhook endpoint.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - subscribed_events
+              - url
+            properties:
+              url:
+                description: The webhook endpoint URL.
+                type: string
+                format: url
+                example: 'https://example.com/webhook'
+              subscribed_events:
+                description: 'The event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                items:
+                  $ref: '#/components/schemas/WebhookEventType'
+                type: array
+              description:
+                description: The description of the webhook endpoint.
+                type: string
+                example: Example webhook endpoint
+    updateWebhookBody:
+      description: The request body to update a webhook endpoint.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              subscribed_events:
+                description: 'The new event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                items:
+                  $ref: '#/components/schemas/WebhookEventType'
+                type: array
+              status:
+                type: string
+                enum:
+                  - STATUS_INACTIVE
+                example: STATUS_INACTIVE
+                description: The new status you want to set the webhook endpoint to.
+              description:
+                description: The webhook endpoint description.
+                type: string
+                example: My webhook endpoint
   responses:
     badRequestError:
       description: Bad request. Your request contains malformed syntax or invalid parameters.
@@ -6163,6 +6332,93 @@ components:
                 example: 239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28
               status:
                 $ref: '#/components/schemas/TransactionStatus'
+    createWebhookEndpointResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Endpoint'
+    getWebhookEndpointResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Endpoint'
+    listWebhookEndpointsResponse:
+      description: Successfully listed of webhook endpoints
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                items:
+                  $ref: '#/components/schemas/Endpoint'
+                type: array
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    updateWebhookEndpointResponse:
+      description: Update webhook endpoint successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Endpoint'
+    listWebhookEventsResponse:
+      description: A list of webhook events has been successfully retrieved.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                items:
+                  $ref: '#/components/schemas/WebhookEvent'
+                type: array
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getWebhookEventResponse:
+      description: The webhook event information is successfully retrieved.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/WebhookEvent'
+    getWebhookEventDefinitionsResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              result:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    event_type:
+                      $ref: '#/components/schemas/WebhookEventType'
+                    description:
+                      type: string
+                      description: The description of the webhook endpoint.
+                      example: Occurred a transaction status updated
+    retryWebhookEventResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              retried:
+                type: boolean
+                example: true
+                description: Whether the retry request has been successfully sent.
+    getWebhookEventLogsResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebhookEventLog'
     listStakingPoolsResponse:
       description: A list of staking protocols has been successfully retrieved.
       content:
