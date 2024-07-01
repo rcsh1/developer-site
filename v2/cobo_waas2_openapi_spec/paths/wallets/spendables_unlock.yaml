@@ -3,10 +3,10 @@ parameters:
 post:
   tags:
     - Wallets
-  operationId: lock_spendable_list
-  summary: Lock UTXOs
+  operationId: unlock_spendable_list
+  summary: Unlock UTXOs
   description: |
-    This operation locks the UTXOs with specified transaction hashes. Locked UTXOs cannot be transferred until unlocked.
+    This operation unlocks the UTXOs with specified transaction hashes. Locked UTXOs cannot be transferred until unlocked.
     
     <Note>This operation is applicable to MPC Wallets only.</Note>
   security:

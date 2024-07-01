@@ -3,6 +3,10 @@ content:
   application/json:
     schema:
       type: object
+      required:
+        - request_id
+        - transaction_id
+        - status
       properties:
         request_id:
           type: string

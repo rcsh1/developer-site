@@ -3,23 +3,28 @@ description: The estimated transaction fee for UTXO-based chains.
 title: UTXO
 required:
   - fee_type
-  - standard
-properties:
-  fee_type:
-    $ref: './fee_type.yaml'
-  slow:
-    allOf:
-      - $ref: './base_fee_price_utxo.yaml'
-      - $ref: './fee_max_fee_amount.yaml'
-  standard:
-    allOf:
-      - $ref: './base_fee_price_utxo.yaml'
-      - $ref: './fee_max_fee_amount.yaml'
-  fast:
-    allOf:
-      - $ref: './base_fee_price_utxo.yaml'
-      - $ref: './fee_max_fee_amount.yaml'
-  customized:
-    allOf:
-      - $ref: './base_fee_price_utxo.yaml'
-      - $ref: './fee_max_fee_amount.yaml'
+  - rate
+  - max_fee_amount
+allOf:
+  - type: object
+    properties:
+      fee_type:
+        $ref: './fee_type.yaml'
+      fee_token_id:
+        type: string
+        description: The token ID of the transaction fee.
+        example: 'ETH'
+      rate:
+        type: object
+        required:
+          - recommended
+        properties:
+          slow:
+            $ref: './base_fee_price_utxo.yaml'
+          recommended:
+            $ref: './base_fee_price_utxo.yaml'
+          fast:
+            $ref: './base_fee_price_utxo.yaml'
+          customized:
+            $ref: './base_fee_price_utxo.yaml'
+  - $ref: './fee_max_fee_amount.yaml'

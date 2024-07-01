@@ -1,0 +1,16 @@
+parameters:
+  - $ref: "../../components/parameters/wallets/token_id_path.yaml"
+get:
+  tags:
+    - Wallets
+  operationId: get_token_by_id
+  summary: Retrieve token information by ID
+  description: |
+    This operation retrieves the detailed information about a specified token.
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_tokens.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

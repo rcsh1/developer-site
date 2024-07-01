@@ -102,10 +102,14 @@ paths:
   # wallets
   /wallets/chains:
     $ref: "./paths/wallets/chains.yaml"
-  /wallets/assets:
-    $ref: "./paths/wallets/assets.yaml"
+  /wallets/chains/{chain_id}:
+    $ref: "./paths/wallets/chain_by_id.yaml"
+#  /wallets/assets:
+#    $ref: "./paths/wallets/assets.yaml"
   /wallets/tokens:
     $ref: "./paths/wallets/tokens.yaml"
+  /wallets/tokens/{token_id}:
+    $ref: "./paths/wallets/token_by_id.yaml"
   /wallets/supported_chains:
     $ref: "./paths/wallets/supported_chains.yaml"
   /wallets/supported_tokens:
@@ -118,19 +122,25 @@ paths:
     $ref: "./paths/wallets/wallets.yaml"
   /wallets/{wallet_id}:
     $ref: "./paths/wallets/wallet_by_id.yaml"
+  /wallets/{wallet_id}/delete:
+    $ref: "./paths/wallets/wallet_by_id_delete.yaml"
   /wallets/{wallet_id}/spendables:
     $ref: "./paths/wallets/spendables.yaml"
   /wallets/{wallet_id}/spendables/lock:
     $ref: "./paths/wallets/spendables_lock.yaml"
+  /wallets/{wallet_id}/spendables/unlock:
+    $ref: "./paths/wallets/spendables_unlock.yaml"
   /wallets/{wallet_id}/max_transferable_value:
     $ref: "./paths/wallets/max_transferable_value.yaml"
   /wallets/{wallet_id}/addresses:
     $ref: "./paths/wallets/wallet_addresses.yaml"
-  /wallets/address/validity:
+  /wallets/{wallet_id}/addresses/{address}:
+    $ref: "./paths/wallets/wallet_address_by_id.yaml"
+  /wallets/address/check_validity:
     $ref: "./paths/wallets/address_validity.yaml"
   /wallets/{wallet_id}/tokens:
     $ref: "./paths/wallets/wallet_token_balances.yaml"
-  /wallets/{wallet_id}/addresses/{address_id}/tokens:
+  /wallets/{wallet_id}/addresses/{address}/tokens:
     $ref: "./paths/wallets/wallet_address_token_balances.yaml"
 
   # mpc wallets
@@ -146,7 +156,7 @@ paths:
     $ref: "./paths/wallets/mpcs/mpc_vault.yaml"
   /wallets/mpc/vaults/{vault_id}/key_groups:
     $ref: './paths/wallets/mpcs/key_groups.yaml'
-  /wallets/mpc/vaults/{vault_id}/key_groups/{key_group_id}:
+  /wallets/mpc/vaults/{vault_id}/key_groups/{key_share_group_id}:
     $ref: './paths/wallets/mpcs/key_group.yaml'
   /wallets/mpc/vaults/{vault_id}/tss_requests:
     $ref: './paths/wallets/mpcs/tss_requests.yaml'
@@ -169,7 +179,7 @@ paths:
 
   # transactions
   /transactions/fee_price:
-    $ref: "./paths/transactions/fee_price.yaml"
+    $ref: "./paths/transactions/fee_rates.yaml"
   /transactions/estimate_fee:
     $ref: "./paths/transactions/estimate_fee.yaml"
   /transactions/transfer:
@@ -196,13 +206,19 @@ paths:
     $ref: "./paths/oauth/token.yaml"
 
   # webhooks
-  /webhooks/events:
+  /webhooks/endpoints:
+    $ref: "./paths/webhooks/endpoints.yaml"
+  /webhooks/endpoints/{endpoint_id}:
+    $ref: "./paths/webhooks/endpoint_by_id.yaml"
+  /webhooks/events/definitions:
+    $ref: "./paths/webhooks/supported_event_definitions.yaml"
+  /webhooks/endpoints/{endpoint_id}/events:
     $ref: "./paths/webhooks/events.yaml"
-  /webhooks/events/{event_id}:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}:
     $ref: "./paths/webhooks/event_by_id.yaml"
-  /webhooks/events/{event_id}/logs:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/logs:
     $ref: "./paths/webhooks/logs_by_event_id.yaml"
-  /webhooks/events/{event_id}/retry:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/retry:
     $ref: "./paths/webhooks/retry_by_event_id.yaml"
 
   # stakings
@@ -240,6 +256,8 @@ components:
       $ref: "./components/schemas/wallets/asset.yaml"
     TokenInfo:
       $ref: "./components/schemas/wallets/token.yaml"
+    ExtendedTokenInfo:
+      $ref: "./components/schemas/wallets/token_extended.yaml"
     ChainInfo:
       $ref: "./components/schemas/wallets/chain.yaml"
     WalletType:
@@ -348,8 +366,8 @@ components:
       $ref: "./components/schemas/transactions/fees/fee_legacy.yaml"
     UtxoFee:
       $ref: "./components/schemas/transactions/fees/fee_utxo.yaml"
-    ChainFeePrice:
-      $ref: "./components/schemas/transactions/fees/chain_fee_price.yaml"
+    FeeRate:
+      $ref: "./components/schemas/transactions/fees/fee_rate.yaml"
     EstimationFee:
       $ref: "./components/schemas/transactions/fees/estimation_fee.yaml"
     EvmEip1559TransactionFee:
@@ -488,6 +506,10 @@ components:
       $ref: "./components/schemas/webhooks/event_status.yaml"
     WebhookEventLog:
       $ref: "./components/schemas/webhooks/event_log.yaml"
+    Endpoint:
+      $ref: "./components/schemas/webhooks/endpoint.yaml"
+    EndpointStatus:
+      $ref: "./components/schemas/webhooks/webhook_endpoint_status.yaml"
 
     #stakings
     BaseStakeExtra:
@@ -554,10 +576,14 @@ components:
       $ref: "./components/parameters/wallets/asset_id_list_optional.yaml"
     requiredAssetIdParam:
       $ref: "./components/parameters/wallets/asset_id_required.yaml"
+    chainIdParam:
+      $ref: "./components/parameters/wallets/chain_id_path.yaml"
     optionalChainIdParam:
       $ref: "./components/parameters/wallets/chain_id_optional.yaml"
     optionalChainIdListParam:
       $ref: "./components/parameters/wallets/chain_id_list_optional.yaml"
+    tokenIdParam:
+      $ref: "./components/parameters/wallets/token_id_path.yaml"
     optionalTokenIdParam:
       $ref: "./components/parameters/wallets/token_id_optional.yaml"
     optionalTokenListIdParam:
@@ -578,18 +604,18 @@ components:
       $ref: "./components/parameters/wallets/wallet_id_optional.yaml"
     optionalWalletListIdParam:
       $ref: "./components/parameters/wallets/wallet_id_list_optional.yaml"
-    addressIdParam:
-      $ref: "./components/parameters/wallets/address_id_path.yaml"
-    requiredAddressStrParam:
-      $ref: "./components/parameters/wallets/address_str_required.yaml"
+    addressParam:
+      $ref: "./components/parameters/wallets/address_path.yaml"
+    requiredAddressParam:
+      $ref: "./components/parameters/wallets/address_required.yaml"
     requiredSubWalletIdParam:
       $ref: "./components/parameters/wallets/exchanges/sub_wallet_id_required.yaml"
-    addressStrParam:
-      $ref: "./components/parameters/wallets/address_str_optional.yaml"
-    toAddressStrParam:
-      $ref: "./components/parameters/wallets/to_address_str_required.yaml"
-    fromAddressStrParam:
-      $ref: "./components/parameters/wallets/from_address_str_optional.yaml"
+    optionalAddressParam:
+      $ref: "./components/parameters/wallets/address_optional.yaml"
+    toAddressParam:
+      $ref: "./components/parameters/wallets/to_address_required.yaml"
+    fromAddressParam:
+      $ref: "./components/parameters/wallets/from_address_optional.yaml"
     optionalUtxoTxHashParam:
       $ref: "./components/parameters/wallets/utxo_tx_hash_optional.yaml"
 
@@ -668,6 +694,8 @@ components:
     # webhooks
     webhookEventIdParam:
       $ref: "./components/parameters/webhooks/event_id_path.yaml"
+    endpointIdParam:
+      $ref: "./components/parameters/webhooks/endpoint_id_path_param.yaml"
 
     #stakings
     activityIdRequiredParam:
@@ -742,6 +770,12 @@ components:
       $ref: "./components/request_bodies/stakings/estimate_fee.yaml"
 
 
+    # webhooks
+    createWebhookEndpointBody:
+      $ref: "./components/request_bodies/webhooks/create_webhook_endpoint.yaml"
+    updateWebhookBody:
+      $ref: "./components/request_bodies/webhooks/update_webhook_endpoint.yaml"
+
   responses:
     # misc
     badRequestError:
@@ -760,10 +794,14 @@ components:
     # wallets
     getChainsResponse:
       $ref: "./components/responses/wallets/get_chains.yaml"
+    getChainByIdResponse:
+      $ref: "./components/responses/wallets/get_a_chain.yaml"
     getAssetsResponse:
       $ref: "./components/responses/wallets/get_assets.yaml"
     getTokensResponse:
       $ref: "./components/responses/wallets/get_tokens.yaml"
+    getTokenByIdResponse:
+      $ref: "./components/responses/wallets/get_a_token.yaml"
     getTokenBalancesResponse:
       $ref: "./components/responses/wallets/get_token_balances.yaml"
     getAssetBalancesResponse:
@@ -776,6 +814,8 @@ components:
       $ref: "./components/responses/wallets/create_wallet.yaml"
     updateWalletResponse:
       $ref: "./components/responses/wallets/update_wallet.yaml"
+    deleteWalletResponse:
+      $ref: "./components/responses/wallets/delete_wallet.yaml"
     spendableListResponse:
       $ref: "./components/responses/wallets/get_spendable_list.yaml"
     lockSpendableResponse:
@@ -829,7 +869,7 @@ components:
 
     # transactions
     getChainFeeResponse:
-      $ref: "./components/responses/transactions/get_chain_fee_price.yaml"
+      $ref: "./components/responses/transactions/get_fee_rates.yaml"
     getTransactionsResponse:
       $ref: "./components/responses/transactions/get_transactions.yaml"
     getTransactionByIdResponse:
@@ -840,6 +880,27 @@ components:
       $ref: "./components/responses/transactions/get_transaction_fee.yaml"
     createTransactionRequestResponse:
       $ref: "./components/responses/transactions/create_transaction_request.yaml"
+
+    #webhook
+    createWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/create_webhook_endpoint.yaml"
+    getWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/get_webhook_endpoint.yaml"
+    listWebhookEndpointsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_endpoints.yaml"
+    updateWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/update_webhook_endpoint.yaml"
+    listWebhookEventsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_events.yaml"
+    getWebhookEventResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event.yaml"
+    getWebhookEventDefinitionsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_definitions.yaml"
+    retryWebhookEventResponse:
+      $ref: "./components/responses/webhooks/retry_webhook_event.yaml"
+    getWebhookEventLogsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_logs.yaml"
+
 
     # stakings
     listStakingPoolsResponse:

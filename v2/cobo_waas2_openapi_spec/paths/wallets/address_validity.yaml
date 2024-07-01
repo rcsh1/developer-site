@@ -1,7 +1,7 @@
 get:
   tags:
     - Wallets
-  operationId: get_address_validity
+  operationId: check_address_validity
   summary: Check address validity
   description: |
     This operation verifies if a given address is valid for a specific token.
@@ -9,7 +9,7 @@ get:
     - CoboAuth: []
   parameters:
     - $ref: "../../components/parameters/wallets/token_id_required.yaml"
-    - $ref: "../../components/parameters/wallets/address_str_required.yaml"
+    - $ref: "../../components/parameters/wallets/address_required.yaml"
   responses:
     '200':
       $ref: "../../components/responses/wallets/get_a_address_validity.yaml"
