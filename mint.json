@@ -12,18 +12,22 @@
   },
   "logo": {
     "dark": "/logo/dark.png",
-    "light": "/logo/light.png",
+    "light": "/logo/light.svg",
     "href": "https://www.cobo.com"
   },
-  "favicon": "/logo/cobo.png",
+  "modeToggle": {
+    "default": "light",
+    "isHidden": true
+  },
+  "favicon": "/logo/cobo.svg",
   "colors": {
-    "primary": "#0069ED",
-    "light": "#4D9CFF",
-    "dark": "#0050B4"
+    "primary": "#1F32D6",
+    "light": "#1F32D6",
+    "dark": "#1F32D6"
   },
   "versions": [
-    "V1",
-    "V2"
+    "Version 1.0",
+    "Version 2.0"
   ],
   "topbarLinks": [
     {
@@ -35,65 +39,107 @@
     "name": "Log In",
     "url": "https://home.custody.cobo.com/#/login"
   },
+  "primaryTab": {
+    "name": "",
+    "isDefaultHidden": true
+  },
   "tabs": [
     {
+      "name": "Documentation",
+      "url": "v1/overview",
+      "version": "Version 1.0"
+    },
+    {
       "name": "Get Started",
-      "url": "get-started"
+      "url": "v1/get-started",
+      "version": "Version 1.0"
     },
     {
       "name": "API References",
-      "url": "api-references"
+      "url": "v1/api-references",
+      "version": "Version 1.0"
     },
     {
       "name": "SDKs and Tools",
-      "url": "sdks-and-tools"
+      "url": "v1/sdks-and-tools",
+      "version": "Version 1.0"
     },
     {
       "name": "Guides",
-      "url": "guides"
+      "url": "v1/guides",
+      "version": "Version 1.0"
     },
     {
       "name": "FAQs",
-      "url": "faqs"
+      "url": "v1/faqs",
+      "version": "Version 1.0"
+    },
+    {
+      "name": "Guides",
+      "url": "v2/guides",
+      "version": "Version 2.0"
+    },
+    {
+      "name": "API References",
+      "url": "v2/api-references",
+      "version": "Version 2.0"
+    },
+    {
+      "name": "Cobo Portal Apps",
+      "url": "v2/cobo-portal-apps",
+      "version": "Version 2.0"
+    },
+    {
+      "name": "Developer Tools",
+      "url": "v2/developer-tools",
+      "version": "Version 2.0"
+    },
+    {
+      "name": "FAQs",
+      "url": "v2/faqs",
+      "version": "Version 2.0"
     }
   ],
   "navigation": [
     {
       "group": "Overview",
       "pages": [
-        "overview/introduction",
-        "overview/waas-introduction"
-      ]
+        "v1/overview/introduction",
+        "v1/overview/waas-introduction"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Custodial Wallets",
       "pages": [
-        "overview/custodial-wallet"
-      ]
+        "v1/overview/custodial-wallet"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "MPC Wallets",
       "pages": [
-        "overview/mpc-wallet/mpc-introduction",
+        "v1/overview/mpc-wallet/mpc-introduction",
         {
           "group": "TSS Node Callback",
           "pages": [
-            "overview/mpc-wallet/callback/tss-node-callback-mechanism",
+            "v1/overview/mpc-wallet/callback/tss-node-callback-mechanism",
             {
               "group": "Callback Server Requirements",
               "pages": [
-                "overview/mpc-wallet/callback/callback-server-requirements/callback-api",
-                "overview/mpc-wallet/callback/callback-server-requirements/keygen-request",
-                "overview/mpc-wallet/callback/callback-server-requirements/sign-request",
-                "overview/mpc-wallet/callback/callback-server-requirements/reshare-request",
-                "overview/mpc-wallet/callback/callback-server-requirements/callback-server-examples"
+                "v1/overview/mpc-wallet/callback/callback-server-requirements/callback-api",
+                "v1/overview/mpc-wallet/callback/callback-server-requirements/keygen-request",
+                "v1/overview/mpc-wallet/callback/callback-server-requirements/sign-request",
+                "v1/overview/mpc-wallet/callback/callback-server-requirements/reshare-request",
+                "v1/overview/mpc-wallet/callback/callback-server-requirements/callback-server-examples"
               ]
             },
-            "overview/mpc-wallet/callback/callback-server-configuration",
-            "overview/mpc-wallet/callback/tss-node-configuration-and-callback-server-startup"
+            "v1/overview/mpc-wallet/callback/callback-server-configuration",
+            "v1/overview/mpc-wallet/callback/tss-node-configuration-and-callback-server-startup"
           ]
         }
-      ]
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Smart Contract Wallets",
@@ -101,34 +147,34 @@
         {
           "group": "Cobo Safe",
           "pages": [
-            "overview/smart-contract-wallet/cobosafe",
+            "v1/overview/smart-contract-wallet/cobosafe",
             {
               "group": "Contracts",
               "pages": [
-                "overview/smart-contract-wallet/en/1_overview",
+                "v1/overview/smart-contract-wallet/en/1_overview",
                 {
                   "group": "Cobo Account",
                   "pages": [
-                    "overview/smart-contract-wallet/en/2_1_account",
-                    "overview/smart-contract-wallet/en/2_2_cobosafe",
-                    "overview/smart-contract-wallet/en/2_3_cobosmart",
-                    "overview/smart-contract-wallet/en/2_4_send_tx"
+                    "v1/overview/smart-contract-wallet/en/2_1_account",
+                    "v1/overview/smart-contract-wallet/en/2_2_cobosafe",
+                    "v1/overview/smart-contract-wallet/en/2_3_cobosmart",
+                    "v1/overview/smart-contract-wallet/en/2_4_send_tx"
                   ]
                 },
-                "overview/smart-contract-wallet/en/3_rolemanager",
+                "v1/overview/smart-contract-wallet/en/3_rolemanager",
                 {
                   "group": "Authorizer",
                   "pages": [
-                    "overview/smart-contract-wallet/en/4_1_authorizer",
-                    "overview/smart-contract-wallet/en/4_2_sample",
-                    "overview/smart-contract-wallet/en/4_3_ACL",
-                    "overview/smart-contract-wallet/en/4_4_hint",
-                    "overview/smart-contract-wallet/en/4_5_others"
+                    "v1/overview/smart-contract-wallet/en/4_1_authorizer",
+                    "v1/overview/smart-contract-wallet/en/4_2_sample",
+                    "v1/overview/smart-contract-wallet/en/4_3_ACL",
+                    "v1/overview/smart-contract-wallet/en/4_4_hint",
+                    "v1/overview/smart-contract-wallet/en/4_5_others"
                   ]
                 },
-                "overview/smart-contract-wallet/en/5_argus",
-                "overview/smart-contract-wallet/en/6_audit",
-                "overview/smart-contract-wallet/en/7_deployment"
+                "v1/overview/smart-contract-wallet/en/5_argus",
+                "v1/overview/smart-contract-wallet/en/6_audit",
+                "v1/overview/smart-contract-wallet/en/7_deployment"
               ]
             }
           ]
@@ -136,39 +182,42 @@
         {
           "group": "Cobo Argus",
           "pages": [
-            "overview/smart-contract-wallet/coboargus"
+            "v1/overview/smart-contract-wallet/coboargus"
           ]
         }
-      ]
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Community",
       "pages": [
-        "community/github",
-        "community/twitter",
-        "community/linkedln",
-        "community/discord",
-        "community/telegram",
-        "community/news"
-      ]
-    },
-    {
-      "group": "Overview",
-      "pages": [
-        "get-started/overview/quickstart",
-        "get-started/overview/full-custody-quick-start",
-        "get-started/overview/mpc-quick-start",
-        "get-started/overview/mpc-lite-quick-start",
-        "get-started/overview/first-wallet-tutorial"
-      ]
-    },
-    {
-      "group": "Overview",
-      "pages": [
-        "api-references/v1/overview/authentication",
-        "api-references/v1/overview/playground"
+        "v1/overview/community/github",
+        "v1/overview/community/twitter",
+        "v1/overview/community/linkedln",
+        "v1/overview/community/discord",
+        "v1/overview/community/telegram",
+        "v1/overview/community/news"
       ],
-      "version": "V1"
+      "version": "Version 1.0"
+    },
+    {
+      "group": "Overview",
+      "pages": [
+        "v1/get-started/overview/quickstart",
+        "v1/get-started/overview/full-custody-quick-start",
+        "v1/get-started/overview/mpc-quick-start",
+        "v1/get-started/overview/mpc-lite-quick-start",
+        "v1/get-started/overview/first-wallet-tutorial"
+      ],
+      "version": "Version 1.0"
+    },
+    {
+      "group": "Overview",
+      "pages": [
+        "v1/api-references/overview/authentication",
+        "v1/api-references/overview/playground"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "SDKs",
@@ -176,77 +225,86 @@
         {
           "group": "WaaS",
           "pages": [
-            "sdks-and-tools/sdks/waas/python",
-            "sdks-and-tools/sdks/waas/javascript",
-            "sdks-and-tools/sdks/waas/java",
-            "sdks-and-tools/sdks/waas/go",
-            "sdks-and-tools/sdks/waas/php"
-          ]
+            "v1/sdks-and-tools/sdks/waas/python",
+            "v1/sdks-and-tools/sdks/waas/javascript",
+            "v1/sdks-and-tools/sdks/waas/java",
+            "v1/sdks-and-tools/sdks/waas/go",
+            "v1/sdks-and-tools/sdks/waas/php"
+          ],
+          "version": "Version 1.0"
         },
         {
           "group": "Cobo Safe",
           "pages": [
-            "sdks-and-tools/sdks/cobo-safe/python",
-            "sdks-and-tools/sdks/cobo-safe/js"
-          ]
+            "v1/sdks-and-tools/sdks/cobo-safe/python",
+            "v1/sdks-and-tools/sdks/cobo-safe/js"
+          ],
+          "version": "Version 1.0"
         }
       ]
     },
     {
       "group": "Tools",
       "pages": [
-        "sdks-and-tools/tools/pycobosafe",
-        "sdks-and-tools/tools/recovery-kit"
-      ]
+        "v1/sdks-and-tools/tools/pycobosafe",
+        "v1/sdks-and-tools/tools/recovery-kit"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "FAQs",
       "pages": [
-        "faqs/address-management",
-        "faqs/coin-management",
-        "faqs/transaction-management",
-        "faqs/api-key",
-        "faqs/api-callback"
-      ]
+        "v1/faqs/address-management",
+        "v1/faqs/coin-management",
+        "v1/faqs/transaction-management",
+        "v1/faqs/api-key",
+        "v1/faqs/api-callback"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Wallet, Address and Transactions",
       "pages": [
-        "guides/howtos/deposit-and-withdrawal-transaction-status",
-        "guides/howtos/create-manage-deposit-addresses",
-        "guides/howtos/querying-deposit-transactions",
-        "guides/howtos/creating-withdrawal-transactions",
-        "guides/howtos/manage-balance-and-transactions"
-      ]
+        "v1/guides/howtos/deposit-and-withdrawal-transaction-status",
+        "v1/guides/howtos/create-manage-deposit-addresses",
+        "v1/guides/howtos/querying-deposit-transactions",
+        "v1/guides/howtos/creating-withdrawal-transactions",
+        "v1/guides/howtos/manage-balance-and-transactions"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Events and Notifications",
       "pages": [
-        "guides/howtos/configure-api-callback",
-        "guides/howtos/api-error-handling-and-reporting"
-      ]
+        "v1/guides/howtos/configure-api-callback",
+        "v1/guides/howtos/api-error-handling-and-reporting"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "MPC Wallets Specific",
       "pages": [
-        "guides/howtos/auto-token-sweeping-for-mpc-wallets",
-        "guides/howtos/creating-web3-transactions",
-        "guides/howtos/estimate-transaction-fees",
-        "guides/howtos/rbf"
-      ]
+        "v1/guides/howtos/auto-token-sweeping-for-mpc-wallets",
+        "v1/guides/howtos/creating-web3-transactions",
+        "v1/guides/howtos/estimate-transaction-fees",
+        "v1/guides/howtos/rbf"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Security Best Practices",
       "pages": [
-        "guides/howtos/api-security-key",
-        "guides/howtos/api-configuration-best-practices"
-      ]
+        "v1/guides/howtos/api-security-key",
+        "v1/guides/howtos/api-configuration-best-practices"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Working with UTXO Model",
       "pages": [
-        "guides/howtos/creating-utxo-transactions"
-      ]
+        "v1/guides/howtos/creating-utxo-transactions"
+      ],
+      "version": "Version 1.0"
     },
     {
       "group": "Custodial Wallets API",
@@ -254,89 +312,90 @@
         {
           "group": "Account",
           "pages": [
-            "api-references/v1/custody-wallet/org_info",
-            "api-references/v1/custody-wallet/coin_info",
-            "api-references/v1/custody-wallet/get_supported_coins",
-            "api-references/v1/custody-wallet/new_address",
-            "api-references/v1/custody-wallet/new_addresses",
-            "api-references/v1/custody-wallet/address_info",
-            "api-references/v1/custody-wallet/addresses_info",
-            "api-references/v1/custody-wallet/is_valid_address",
-            "api-references/v1/custody-wallet/address_history"
+            "v1/api-references/custody-wallet/org_info",
+            "v1/api-references/custody-wallet/coin_info",
+            "v1/api-references/custody-wallet/get_supported_coins",
+            "v1/api-references/custody-wallet/new_address",
+            "v1/api-references/custody-wallet/new_addresses",
+            "v1/api-references/custody-wallet/address_info",
+            "v1/api-references/custody-wallet/addresses_info",
+            "v1/api-references/custody-wallet/is_valid_address",
+            "v1/api-references/custody-wallet/address_history"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Loop Alliance",
           "pages": [
-            "api-references/v1/custody-wallet/internal_address_info",
-            "api-references/v1/custody-wallet/internal_address_info_batch",
-            "api-references/v1/custody-wallet/loop-explorer"
+            "v1/api-references/custody-wallet/internal_address_info",
+            "v1/api-references/custody-wallet/internal_address_info_batch",
+            "v1/api-references/custody-wallet/loop-explorer"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Transactions",
           "pages": [
-            "api-references/v1/custody-wallet/transaction",
-            "api-references/v1/custody-wallet/transactions_by_id",
-            "api-references/v1/custody-wallet/transactions_by_request_ids",
-            "api-references/v1/custody-wallet/transaction_by_txid",
-            "api-references/v1/custody-wallet/transactions_by_time",
-            "api-references/v1/custody-wallet/transactions_by_time_ex",
-            "api-references/v1/custody-wallet/pending_transaction",
-            "api-references/v1/custody-wallet/pending_transactions",
-            "api-references/v1/custody-wallet/transaction_history"
+            "v1/api-references/custody-wallet/transaction",
+            "v1/api-references/custody-wallet/transactions_by_id",
+            "v1/api-references/custody-wallet/transactions_by_request_ids",
+            "v1/api-references/custody-wallet/transaction_by_txid",
+            "v1/api-references/custody-wallet/transactions_by_time",
+            "v1/api-references/custody-wallet/transactions_by_time_ex",
+            "v1/api-references/custody-wallet/pending_transaction",
+            "v1/api-references/custody-wallet/pending_transactions",
+            "v1/api-references/custody-wallet/transaction_history"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Withdraw",
           "pages": [
-            "api-references/v1/custody-wallet/new_withdraw_request",
-            "api-references/v1/custody-wallet/withdraw_info_by_request_id"
+            "v1/api-references/custody-wallet/new_withdraw_request",
+            "v1/api-references/custody-wallet/withdraw_info_by_request_id"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Staking",
           "pages": [
-            "api-references/v1/custody-wallet/staking/staking_product",
-            "api-references/v1/custody-wallet/staking/staking_products",
-            "api-references/v1/custody-wallet/staking/staking_stake",
-            "api-references/v1/custody-wallet/staking/staking_unstake",
-            "api-references/v1/custody-wallet/staking/stakings",
-            "api-references/v1/custody-wallet/staking/unstakings",
-            "api-references/v1/custody-wallet/staking/staking_history"
+            "v1/api-references/custody-wallet/staking/staking_product",
+            "v1/api-references/custody-wallet/staking/staking_products",
+            "v1/api-references/custody-wallet/staking/staking_stake",
+            "v1/api-references/custody-wallet/staking/staking_unstake",
+            "v1/api-references/custody-wallet/staking/stakings",
+            "v1/api-references/custody-wallet/staking/unstakings",
+            "v1/api-references/custody-wallet/staking/staking_history"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Trading",
           "pages": [
-            "api-references/v1/custody-wallet/trading/trading_withdraw",
-            "api-references/v1/custody-wallet/trading/trading_withdraw_info",
-            "api-references/v1/custody-wallet/trading/trading_deposit",
-            "api-references/v1/custody-wallet/trading/trading_deposit_info",
-            "api-references/v1/custody-wallet/trading/trading_transfer",
-            "api-references/v1/custody-wallet/trading/trading_transfer_info"
+            "v1/api-references/custody-wallet/trading/trading_withdraw",
+            "v1/api-references/custody-wallet/trading/trading_withdraw_info",
+            "v1/api-references/custody-wallet/trading/trading_deposit",
+            "v1/api-references/custody-wallet/trading/trading_deposit_info",
+            "v1/api-references/custody-wallet/trading/trading_transfer",
+            "v1/api-references/custody-wallet/trading/trading_transfer_info"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Gas Station",
           "pages": [
-            "api-references/v1/custody-wallet/get_gas_station_balance",
-            "api-references/v1/custody-wallet/coin_info",
-            "api-references/v1/custody-wallet/transaction",
-            "api-references/v1/custody-wallet/transactions_by_request_ids",
-            "api-references/v1/custody-wallet/transaction_by_txid",
-            "api-references/v1/custody-wallet/transactions_by_time",
-            "api-references/v1/custody-wallet/transactions_by_id"
-          ]
+            "v1/api-references/custody-wallet/get_gas_station_balance",
+            "v1/api-references/custody-wallet/coin_info",
+            "v1/api-references/custody-wallet/transaction",
+            "v1/api-references/custody-wallet/transactions_by_request_ids",
+            "v1/api-references/custody-wallet/transaction_by_txid",
+            "v1/api-references/custody-wallet/transactions_by_time",
+            "v1/api-references/custody-wallet/transactions_by_id"
+          ],
+          "version": "Version 1.0"
         }
       ],
-      "version": "V1"
+      "version": "Version 1.0"
     },
     {
       "group": "MPC Wallets API",
@@ -344,187 +403,324 @@
         {
           "group": "Account",
           "pages": [
-            "api-references/v1/mpc-wallet/mpc_get_supported_chains",
-            "api-references/v1/mpc-wallet/mpc_get_supported_coins",
-            "api-references/v1/mpc-wallet/mpc_coin_info",
-            "api-references/v1/mpc-wallet/mpc_get_wallet_supported_coins",
-            "api-references/v1/mpc-wallet/mpc_is_valid_address",
-            "api-references/v1/mpc-wallet/mpc_generate_addresses",
-            "api-references/v1/mpc-wallet/mpc_generate_address_memo",
-            "api-references/v1/mpc-wallet/mpc_update_address_description",
-            "api-references/v1/mpc-wallet/mpc_list_addresses",
-            "api-references/v1/mpc-wallet/mpc_get_balance",
-            "api-references/v1/mpc-wallet/mpc_list_balances",
-            "api-references/v1/mpc-wallet/mpc_list_spendable",
-            "api-references/v1/mpc-wallet/mpc_estimate_fee",
-            "api-references/v1/mpc-wallet/mpc_get_max_send_amount",
-            "api-references/v1/mpc-wallet/mpc_get_supported_nft_collections"
+            "v1/api-references/mpc-wallet/mpc_get_supported_chains",
+            "v1/api-references/mpc-wallet/mpc_get_supported_coins",
+            "v1/api-references/mpc-wallet/mpc_coin_info",
+            "v1/api-references/mpc-wallet/mpc_get_wallet_supported_coins",
+            "v1/api-references/mpc-wallet/mpc_is_valid_address",
+            "v1/api-references/mpc-wallet/mpc_generate_addresses",
+            "v1/api-references/mpc-wallet/mpc_generate_address_memo",
+            "v1/api-references/mpc-wallet/mpc_update_address_description",
+            "v1/api-references/mpc-wallet/mpc_list_addresses",
+            "v1/api-references/mpc-wallet/mpc_get_balance",
+            "v1/api-references/mpc-wallet/mpc_list_balances",
+            "v1/api-references/mpc-wallet/mpc_list_spendable",
+            "v1/api-references/mpc-wallet/mpc_estimate_fee",
+            "v1/api-references/mpc-wallet/mpc_get_max_send_amount",
+            "v1/api-references/mpc-wallet/mpc_get_supported_nft_collections"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Transaction",
           "pages": [
-            "api-references/v1/mpc-wallet/mpc_list_transactions",
-            "api-references/v1/mpc-wallet/mpc_transactions_by_request_ids",
-            "api-references/v1/mpc-wallet/mpc_transactions_by_cobo_ids",
-            "api-references/v1/mpc-wallet/mpc_transactions_by_tx_hash"
+            "v1/api-references/mpc-wallet/mpc_list_transactions",
+            "v1/api-references/mpc-wallet/mpc_transactions_by_request_ids",
+            "v1/api-references/mpc-wallet/mpc_transactions_by_cobo_ids",
+            "v1/api-references/mpc-wallet/mpc_transactions_by_tx_hash"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Withdraw",
           "pages": [
-            "api-references/v1/mpc-wallet/mpc_create_transaction",
-            "api-references/v1/mpc-wallet/mpc_speedup_transaction",
-            "api-references/v1/mpc-wallet/mpc_drop_transaction",
-            "api-references/v1/mpc-wallet/mpc_retry_double_check"
+            "v1/api-references/mpc-wallet/mpc_create_transaction",
+            "v1/api-references/mpc-wallet/mpc_speedup_transaction",
+            "v1/api-references/mpc-wallet/mpc_drop_transaction",
+            "v1/api-references/mpc-wallet/mpc_retry_double_check"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Tss Node",
           "pages": [
-            "api-references/v1/mpc-wallet/mpc_list_tss_node_requests",
-            "api-references/v1/mpc-wallet/mpc_list_tss_node"
+            "v1/api-references/mpc-wallet/mpc_list_tss_node_requests",
+            "v1/api-references/mpc-wallet/mpc_list_tss_node"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Bind Auth",
           "pages": [
-            "api-references/v1/mpc-wallet/auth_create_binding",
-            "api-references/v1/mpc-wallet/auth_query_binding",
-            "api-references/v1/mpc-wallet/auth_query_user_auth",
-            "api-references/v1/mpc-wallet/auth_bind_addresses",
-            "api-references/v1/mpc-wallet/auth_change_binding",
-            "api-references/v1/mpc-wallet/auth_unbind_binding",
-            "api-references/v1/mpc-wallet/auth_query_statement"
+            "v1/api-references/mpc-wallet/auth_create_binding",
+            "v1/api-references/mpc-wallet/auth_query_binding",
+            "v1/api-references/mpc-wallet/auth_query_user_auth",
+            "v1/api-references/mpc-wallet/auth_bind_addresses",
+            "v1/api-references/mpc-wallet/auth_change_binding",
+            "v1/api-references/mpc-wallet/auth_unbind_binding",
+            "v1/api-references/mpc-wallet/auth_query_statement"
           ],
-          "version": "V1"
+          "version": "Version 1.0"
         },
         {
           "group": "Gas Station",
           "pages": [
-            "api-references/v1/custody-wallet/get_gas_station_balance",
-            "api-references/v1/custody-wallet/coin_info",
-            "api-references/v1/custody-wallet/transaction",
-            "api-references/v1/custody-wallet/transactions_by_request_ids",
-            "api-references/v1/custody-wallet/transaction_by_txid",
-            "api-references/v1/custody-wallet/transactions_by_time",
-            "api-references/v1/custody-wallet/transactions_by_id"
+            "v1/api-references/custody-wallet/get_gas_station_balance",
+            "v1/api-references/custody-wallet/coin_info",
+            "v1/api-references/custody-wallet/transaction",
+            "v1/api-references/custody-wallet/transactions_by_request_ids",
+            "v1/api-references/custody-wallet/transaction_by_txid",
+            "v1/api-references/custody-wallet/transactions_by_time",
+            "v1/api-references/custody-wallet/transactions_by_id"
           ]
         }
       ],
-      "version": "V1"
+      "version": "Version 1.0"
     },
     {
       "group": "Development",
       "pages": [
-        "api-references/v1/development/error-codes",
-        "api-references/v1/development/address-encoding",
-        "api-references/v1/development/transaction-notification",
-        "api-references/v1/development/withdrawal-confirmation",
-        "api-references/v1/development/callback-signature",
-        "api-references/v1/development/testing",
-        "api-references/v1/development/changelog"
+        "v1/api-references/development/error-codes",
+        "v1/api-references/development/address-encoding",
+        "v1/api-references/development/transaction-notification",
+        "v1/api-references/development/withdrawal-confirmation",
+        "v1/api-references/development/callback-signature",
+        "v1/api-references/development/testing",
+        "v1/api-references/development/changelog"
       ],
-      "version": "V1"
+      "version": "Version 1.0"
     },
     {
       "group": "Overview",
       "pages": [
-        "api-references/v2/overview/changelog",
-        "api-references/v2/overview/introduction",
-        "api-references/v2/overview/authentication",
-        "api-references/v2/overview/playground",
-        "api-references/v2/overview/error-codes",
-        "api-references/v2/overview/glossary"
+        "v2/guides/placeholder1"
       ],
-      "version": "V2"
+      "version": "Version 2.0"
     },
     {
-      "group": "Development",
+      "group": "Get started",
       "pages": [
-        "api-references/v2/development/event-type-and-data"
+        "v2/guides/placeholder2"
       ],
-      "version": "V2"
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Basic features",
+      "pages": [
+        "v2/guides/placeholder3"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Advanced features",
+      "pages": [
+        "v2/guides/placeholder4"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Best practices",
+      "pages": [
+        "v2/guides/placeholder5"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Case studies",
+      "pages": [
+        "v2/guides/placeholder6"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Troubleshooting",
+      "pages": [
+        "v2/guides/placeholder7"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Overview",
+      "pages": [
+        "v2/api-references/overview/changelog",
+        "v2/api-references/overview/introduction",
+        "v2/api-references/overview/authentication",
+        "v2/api-references/overview/playground",
+        "v2/api-references/overview/error-codes",
+        "v2/api-references/overview/glossary"
+      ],
+      "version": "Version 2.0"
     },
     {
       "group": "Wallets",
       "pages": [
-        "api-references/v2/wallets/list-chain-metadata",
-        "api-references/v2/wallets/list-token-metadata",
-        "api-references/v2/wallets/list-supported-chains",
-        "api-references/v2/wallets/list-supported-tokens",
-        "api-references/v2/wallets/list-enabled-chains",
-        "api-references/v2/wallets/list-enabled-tokens",
-        "api-references/v2/wallets/list-all-wallets",
-        "api-references/v2/wallets/create-wallet",
-        "api-references/v2/wallets/retrieve-wallet-information-by-id",
-        "api-references/v2/wallets/update-wallet-by-id",
-        "api-references/v2/wallets/delete-wallet-by-id",
-        "api-references/v2/wallets/list-spendable-utxos",
-        "api-references/v2/wallets/lockunlock-utxos",
-        "api-references/v2/wallets/get-maximum-transferable-value",
-        "api-references/v2/wallets/list-wallet-addresses-by-wallet-id",
-        "api-references/v2/wallets/add-address-to-wallet",
-        "api-references/v2/wallets/check-address-validity",
-        "api-references/v2/wallets/list-token-balances-by-wallet",
-        "api-references/v2/wallets/list-token-balances-by-address"
+        {
+          "group": "General",
+          "pages": [
+            "v2/api-references/wallets/list-chain-metadata",
+            "v2/api-references/wallets/list-token-metadata",
+            "v2/api-references/wallets/list-supported-chains",
+            "v2/api-references/wallets/list-supported-tokens",
+            "v2/api-references/wallets/list-enabled-chains",
+            "v2/api-references/wallets/list-enabled-tokens",
+            "v2/api-references/wallets/list-all-wallets",
+            "v2/api-references/wallets/create-wallet",
+            "v2/api-references/wallets/retrieve-wallet-information-by-id",
+            "v2/api-references/wallets/update-wallet-by-id",
+            "v2/api-references/wallets/delete-wallet-by-id",
+            "v2/api-references/wallets/list-spendable-utxos",
+            "v2/api-references/wallets/lockunlock-utxos",
+            "v2/api-references/wallets/get-maximum-transferable-value",
+            "v2/api-references/wallets/list-wallet-addresses-by-wallet-id",
+            "v2/api-references/wallets/add-address-to-wallet",
+            "v2/api-references/wallets/check-address-validity",
+            "v2/api-references/wallets/list-token-balances-by-wallet",
+            "v2/api-references/wallets/list-token-balances-by-address"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "MPC Wallets",
+          "pages": [
+            "v2/api-references/wallets--mpc-wallet/list-all-cobo-key-share-holders",
+            "v2/api-references/wallets--mpc-wallet/list-all-projects",
+            "v2/api-references/wallets--mpc-wallet/create-project",
+            "v2/api-references/wallets--mpc-wallet/get-project-information",
+            "v2/api-references/wallets--mpc-wallet/update-project-name",
+            "v2/api-references/wallets--mpc-wallet/list-all-vaults",
+            "v2/api-references/wallets--mpc-wallet/create-vault",
+            "v2/api-references/wallets--mpc-wallet/get-vault-information",
+            "v2/api-references/wallets--mpc-wallet/update-vault-name",
+            "v2/api-references/wallets--mpc-wallet/list-all-key-share-groups",
+            "v2/api-references/wallets--mpc-wallet/create-key-share-group",
+            "v2/api-references/wallets--mpc-wallet/get-key-share-group-information",
+            "v2/api-references/wallets--mpc-wallet/update-key-share-group",
+            "v2/api-references/wallets--mpc-wallet/delete-key-share-group",
+            "v2/api-references/wallets--mpc-wallet/list-tss-requests",
+            "v2/api-references/wallets--mpc-wallet/create-tss-request",
+            "v2/api-references/wallets--mpc-wallet/get-tss-request",
+            "v2/api-references/wallets--mpc-wallet/cancel-tss-request"
+          ],
+          "version": "Version 2.0"
+        }
       ],
-      "version": "V2"
-    },
-    {
-      "group": "Wallets - MPC Wallet",
-      "pages": [
-        "api-references/v2/wallets--mpc-wallet/list-all-cobo-key-share-holders",
-        "api-references/v2/wallets--mpc-wallet/list-all-projects",
-        "api-references/v2/wallets--mpc-wallet/create-project",
-        "api-references/v2/wallets--mpc-wallet/get-project-information",
-        "api-references/v2/wallets--mpc-wallet/update-project-name",
-        "api-references/v2/wallets--mpc-wallet/list-all-vaults",
-        "api-references/v2/wallets--mpc-wallet/create-vault",
-        "api-references/v2/wallets--mpc-wallet/get-vault-information",
-        "api-references/v2/wallets--mpc-wallet/update-vault-name",
-        "api-references/v2/wallets--mpc-wallet/list-all-key-share-groups",
-        "api-references/v2/wallets--mpc-wallet/create-key-share-group",
-        "api-references/v2/wallets--mpc-wallet/get-key-share-group-information",
-        "api-references/v2/wallets--mpc-wallet/update-key-share-group",
-        "api-references/v2/wallets--mpc-wallet/delete-key-share-group",
-        "api-references/v2/wallets--mpc-wallet/list-tss-requests",
-        "api-references/v2/wallets--mpc-wallet/create-tss-request",
-        "api-references/v2/wallets--mpc-wallet/get-tss-request",
-        "api-references/v2/wallets--mpc-wallet/cancel-tss-request"
-      ],
-      "version": "V2"
+      "version": "Version 2.0"
     },
     {
       "group": "Transactions",
       "pages": [
-        "api-references/v2/transactions/get-transaction-fee-price",
-        "api-references/v2/transactions/estimate-transaction-fee",
-        "api-references/v2/transactions/transfer-token",
-        "api-references/v2/transactions/call-smart-contract",
-        "api-references/v2/transactions/sign-message",
-        "api-references/v2/transactions/list-all-transactions",
-        "api-references/v2/transactions/get-transaction-information-by-id",
-        "api-references/v2/transactions/resend-transaction-by-id",
-        "api-references/v2/transactions/cancel-transaction-by-id",
-        "api-references/v2/transactions/drop-transaction-by-id",
-        "api-references/v2/transactions/speed-up-transaction-by-id"
+        {
+          "group": "Transaction operations",
+          "pages": [
+            "v2/api-references/transactions/get-transaction-fee-price",
+            "v2/api-references/transactions/estimate-transaction-fee",
+            "v2/api-references/transactions/transfer-token",
+            "v2/api-references/transactions/call-smart-contract",
+            "v2/api-references/transactions/sign-message",
+            "v2/api-references/transactions/list-all-transactions",
+            "v2/api-references/transactions/get-transaction-information-by-id",
+            "v2/api-references/transactions/resend-transaction-by-id",
+            "v2/api-references/transactions/cancel-transaction-by-id",
+            "v2/api-references/transactions/drop-transaction-by-id",
+            "v2/api-references/transactions/speed-up-transaction-by-id"
+          ],
+          "version": "Version 2.0"
+        }
       ],
-      "version": "V2"
+      "version": "Version 2.0"
     },
     {
-      "group": "Developers - Webhooks",
+      "group": "Webhooks",
       "pages": [
-        "api-references/v2/developers--webhooks/list-all-events",
-        "api-references/v2/developers--webhooks/retrieve-event-by-id",
-        "api-references/v2/developers--webhooks/list-event-logs-by-id",
-        "api-references/v2/developers--webhooks/retry-event-by-id"
+        {
+          "group": "Webhook operations",
+          "pages": [
+            "v2/api-references/developers--webhooks/list-all-events",
+            "v2/api-references/developers--webhooks/retrieve-event-by-id",
+            "v2/api-references/developers--webhooks/list-event-logs-by-id",
+            "v2/api-references/developers--webhooks/retry-event-by-id"
+          ],
+          "version": "Version 2.0"
+        }
       ],
-      "version": "V2"
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Troubleshooting",
+      "pages": [
+        "v2/api-references/placeholder4"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Overview",
+      "pages": [
+        "v2/cobo-portal-apps/placeholder1"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "SuperLoop",
+      "pages": [
+        "v2/cobo-portal-apps/placeholder2"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "DeFi Bots",
+      "pages": [
+        "v2/cobo-portal-apps/placeholder3"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Cobo Payment",
+      "pages": [
+        "v2/cobo-portal-apps/placeholder4"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Overview",
+      "pages": [
+        "v2/developer-tools/placeholder1"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "SDKs",
+      "pages": [
+        "v2/developer-tools/placeholder2"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Tools",
+      "pages": [
+        "v2/developer-tools/placeholder3"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Cobo CLI",
+      "pages": [
+        "v2/developer-tools/placeholder4"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Sample application",
+      "pages": [
+        "v2/developer-tools/placeholder5"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "FAQs",
+      "pages": [
+        "v2/faqs/placeholder1"
+      ],
+      "version": "Version 2.0"
     }
   ],
   "footerSocials": {
