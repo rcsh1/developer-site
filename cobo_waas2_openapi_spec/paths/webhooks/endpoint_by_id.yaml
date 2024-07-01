@@ -1,0 +1,28 @@
+parameters:
+  - $ref: "../../components/parameters/webhooks/endpoint_id_path_param.yaml"
+get:
+  tags:
+    - Developers - Webhooks
+  summary: Retrieve webhook endpoint by ID
+  description: Retrieves the webhook endpoint with the given ID.
+  operationId: get_webhook_endpoint_by_id
+  responses:
+    '200':
+      $ref: "../../components/responses/webhooks/get_webhook_endpoint.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"
+put:
+  tags:
+    - Developers - Webhooks
+  summary: Update webhook endpoint
+  description: Update a webhook endpoint.
+  operationId: update_webhook_endpoint
+  requestBody:
+    $ref: "../../components/request_bodies/webhooks/update_webhook_endpoint.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/webhooks/update_webhook_endpoint.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

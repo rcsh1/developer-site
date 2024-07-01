@@ -75,10 +75,10 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: 'https://api.cobo.com/v2'
-    description: Production environment
   - url: 'https://api.dev.cobo.com/v2'
     description: Development environment
+  - url: 'https://api.cobo.com/v2'
+    description: Production environment
 tags:
   - name: Wallets
     description: Operations related to all wallets.
@@ -524,9 +524,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: create_mpc_project
-      summary: Create Project
+      summary: Create project
       description: |
-        This operation creates a Project with the required `name`, `node_count`, and `threshold` specification.
+        This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
       security:
         - CoboAuth: []
       requestBody:
@@ -540,9 +540,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: list_mpc_project
-      summary: List all Projects
+      summary: List all projects
       description: |
-        This operation retrieves a list of all Projects.
+        This operation retrieves a list of all projects.
       security:
         - CoboAuth: []
       responses:
@@ -559,11 +559,11 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: get_mpc_project
-      summary: Get Project information
+      summary: Get project information
       description: |
-        This operation retrieves detailed information about a Project specified by `project_id`.
+        This operation retrieves detailed information about a project specified by `project_id`.
 
-        You can retrieve `project_id`s by calling [List all Projects](/api-references/v2/wallets--mpc-wallet/list-all-mpc-projects).
+        You can retrieve `project_id`s by calling [List all projects](/api-references/v2/wallets--mpc-wallet/list-all-mpc-projects).
       security:
         - CoboAuth: []
       parameters:
@@ -581,9 +581,9 @@ paths:
       tags:
         - Wallets - MPC Wallet
       operationId: update_mpc_project
-      summary: Update Project name
+      summary: Update project name
       description: |
-        This operation updates the `name` of the Project specified by `project_id`.
+        This operation updates the `name` of the project specified by `project_id`.
       security:
         - CoboAuth: []
       parameters:
@@ -628,7 +628,7 @@ paths:
       description: |
         This operation retrieves a list of all vaults.
 
-        By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single Project.
+        By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single project.
       security:
         - CoboAuth: []
       parameters:
@@ -791,8 +791,8 @@ paths:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
       responses:
-        '200':
-          $ref: '#/components/responses/deleteKeyGroupResponse'
+        '204':
+          description: Resource successfully deleted.
         '401':
           $ref: '#/components/responses/unauthorizedError'
         '403':
@@ -1799,7 +1799,7 @@ components:
         max_transferable_value:
           type: string
           description: The maximum amount you can transfer from the wallet or the specified wallet address.
-          example: '841165119243622'
+          example: '3.0'
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     AddressInfo:
@@ -2139,12 +2139,12 @@ components:
       example: OrgControlled
     MPCProject:
       type: object
-      description: The data for Project information.
+      description: The data for project information.
       properties:
         id:
           type: string
           example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
-          description: The Project ID.
+          description: The project ID.
         org_id:
           type: string
           example: f3b4a616-9c43-462e-8cb4-343e304fee64
@@ -2152,20 +2152,20 @@ components:
         name:
           type: string
           example: Project name
-          description: The Project name.
+          description: The project name.
         node_count:
           type: integer
           example: 3
-          description: The number of key share holders in the Project.
+          description: The number of key share holders in the project.
         threshold:
           type: integer
           example: 2
-          description: The number of key share holders required to sign an operation in the Project.
+          description: The number of key share holders required to sign an operation in the project.
         create_timestamp:
           type: integer
           format: int64
           example: 1718619403933.53
-          description: 'The Project''s creation time in Unix timestamp format, measured in milliseconds.'
+          description: 'The project''s creation time in Unix timestamp format, measured in milliseconds.'
     RootPubkey:
       type: object
       description: The data for MPC Root Extended Public Key information.
@@ -2402,6 +2402,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
             - $ref: '#/components/schemas/FeeData'
+        customized:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
       description: The estimated transaction fee based on the legacy fee model.
@@ -2424,6 +2428,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
             - $ref: '#/components/schemas/FeeData'
+        customized:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     UtxoFee:
       type: object
       description: The estimated transaction fee for UTXO-based chains.
@@ -2443,6 +2451,10 @@ components:
             - $ref: '#/components/schemas/UtxoFeeBasePrice'
             - $ref: '#/components/schemas/FeeAmount'
         fast:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
+        customized:
           allOf:
             - $ref: '#/components/schemas/UtxoFeeBasePrice'
             - $ref: '#/components/schemas/FeeAmount'
@@ -3838,9 +3850,9 @@ components:
       required:
         - request_id
         - request_type
-        - signing_wallet_id
-        - signing_address
         - chain_id
+        - source
+        - destination
       properties:
         request_id:
           type: string
@@ -3883,13 +3895,84 @@ components:
                 {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
     EstimateFee:
       oneOf:
-        - $ref: '#/components/schemas/Transfer'
-        - $ref: '#/components/schemas/ContractCall'
+        - $ref: '#/components/schemas/EstimateFeeTransfer'
+        - $ref: '#/components/schemas/EstimateFeeContractCall'
       discriminator:
         propertyName: request_type
         mapping:
-          Transfer: '#/components/schemas/Transfer'
-          Call: '#/components/schemas/ContractCall'
+          Transfer: '#/components/schemas/EstimateFeeTransfer'
+          Call: '#/components/schemas/EstimateFeeContractCall'
+    EstimateFeeTransfer:
+      type: object
+      description: The information about a token transfer.
+      title: Transfer
+      required:
+        - request_id
+        - request_type
+        - source
+        - token_id
+        - destination
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is unique within your Organization to track your request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        request_type:
+          $ref: '#/components/schemas/Transfer/properties/request_type'
+        source:
+          $ref: '#/components/schemas/TransferSource'
+        token_id:
+          type: string
+          description: The token ID.
+          example: ETH_USDT
+        destination:
+          $ref: '#/components/schemas/TransferDestination'
+        fee:
+          $ref: '#/components/schemas/ChainFeePrice'
+    EstimateFeeContractCall:
+      type: object
+      description: The information about a transaction that interacts with a smart contract
+      title: Contract call
+      required:
+        - request_id
+        - request_type
+        - chain_id
+        - source
+        - destination
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is unique within your Organization to track your request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        request_type:
+          $ref: '#/components/schemas/Transfer/properties/request_type'
+        chain_id:
+          type: string
+          description: The chain ID.
+          example: ETH
+        source:
+          $ref: '#/components/schemas/ContractCallSource'
+        destination:
+          type: object
+          description: The information about the transaction destination.
+          properties:
+            address_str:
+              type: string
+              description: The destination address.
+              example: bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v
+            value:
+              type: string
+              description: |
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
+              example: '1.5'
+            calldata:
+              type: string
+              description: |
+                The data that is used to invoke a specific function or method within the specified contract at the destination address.
+              format: byte
+              example: U3dhZ2dlciByb2Nrcw==
+        fee:
+          $ref: '#/components/schemas/ChainFeePrice'
     BaseContractCallSource:
       type: object
       description: The information about the transaction source.
@@ -3974,8 +4057,7 @@ components:
         - request_type
         - chain_id
         - source
-        - to_address_str
-        - calldata
+        - destination
       properties:
         request_id:
           type: string
@@ -4931,7 +5013,7 @@ components:
       name: project_id
       in: path
       required: true
-      description: The Project ID.
+      description: The project ID.
       schema:
         type: string
         format: uuid
@@ -4939,7 +5021,7 @@ components:
     optionalProjectIdQueryParam:
       name: project_id
       in: query
-      description: The Project ID.
+      description: The project ID.
       schema:
         type: string
         format: uuid
@@ -5402,7 +5484,9 @@ components:
           schema:
             type: object
             required:
-              - tx_hashes
+              - token_id
+              - tx_hash
+              - vout_n
             properties:
               token_id:
                 type: string
@@ -5416,6 +5500,11 @@ components:
                 type: integer
                 description: The output index of the UTXO.
                 example: 0
+              is_locked:
+                type: boolean
+                description: 'True if to lock the UTXOs, False to unlock.'
+                default: true
+                example: true
     createKeyGroupBody:
       description: The request body to create a key share group.
       content:
@@ -5485,7 +5574,7 @@ components:
                       description: The TSS Node ID.
                       example: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijklm
     createMpcProjectBody:
-      description: The request body to create a Project.
+      description: The request body to create a project.
       content:
         application/json:
           schema:
@@ -5498,11 +5587,11 @@ components:
               name:
                 type: string
                 example: Project name
-                description: The Project name.
+                description: The project name.
               node_count:
                 type: integer
                 description: |
-                  The number of key share holders in the Project.
+                  The number of key share holders in the project.
 
                   **Notes:**
                   1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `node_count` to 2 or 3. 
@@ -5512,7 +5601,7 @@ components:
               threshold:
                 type: integer
                 description: |
-                  The number of key share holders required to sign an operation in the Project.
+                  The number of key share holders required to sign an operation in the project.
 
                   **Notes:**
                   1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `threshold` to 2 or 3. 
@@ -5571,7 +5660,7 @@ components:
                 type: string
                 example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
                 description: |
-                  The Project ID.
+                  The project ID.
 
                   **Notes:**
                   1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
@@ -5587,7 +5676,7 @@ components:
                   - `OrgControlled`: This vault is a collection of Organization-Controlled Wallets.
                   - `UserControlled`: This vault is a collection of User-Controlled Wallets.
     updateProjectBody:
-      description: The request body to update a Project's name.
+      description: The request body to update a project's name.
       content:
         application/json:
           schema:
@@ -5597,8 +5686,8 @@ components:
             properties:
               name:
                 type: string
-                example: New Project name
-                description: The Project's new name.
+                example: New project name
+                description: The project's new name.
     updateVaultBody:
       description: The request body to update a vault's name.
       content:
@@ -5908,7 +5997,7 @@ components:
           schema:
             $ref: '#/components/schemas/KeyGroup'
     createMpcProjectResponse:
-      description: Successfully created Project.
+      description: Successfully created project.
       content:
         application/json:
           schema:
@@ -5950,7 +6039,7 @@ components:
           schema:
             $ref: '#/components/schemas/MPCProject'
     getMpcProjectsResponse:
-      description: Successfully listed all Projects.
+      description: Successfully listed all projects.
       content:
         application/json:
           schema:
@@ -6017,16 +6106,13 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ChainFeePrice'
-                description: |
-                  The fee price for the specified chain or token. 
+            type: array
+            items:
+              $ref: '#/components/schemas/ChainFeePrice'
+            description: |
+              The fee price for the specified chain or token. 
 
-                  The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
+              The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
       description: The request was successful.
       content:

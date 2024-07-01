@@ -75,14 +75,14 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: 'https://api.cobo.com/v2'
-    description: Production environment
   - url: 'https://api.dev.cobo.com/v2'
     description: Development environment
+  - url: 'https://api.cobo.com/v2'
+    description: Production environment
 tags:
   - name: Wallets
     description: Operations related to all wallets.
-  - name: Wallets - MPC Wallet
+  - name: Wallets - MPC Wallets
     description: Operations related to mpc wallet.
   - name: Wallets - Exchange Wallet
     description: Operations related to exchange wallet.
@@ -529,10 +529,13 @@ paths:
   /wallets/mpc/cobo_key_holders:
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_cobo_key_holder
-      summary: List all cobo key holders
-      description: This endpoint allows users to query cobo key holders information.
+      summary: List all Cobo key share holders
+      description: |
+        This operation retrieves a list of all Cobo key share holders and their information. 
+
+        **Note:** Currently, `type` will only return `COBO` and will never return `MOBILE` or `API`.
       security:
         - CoboAuth: []
       responses:
@@ -547,11 +550,11 @@ paths:
   /wallets/mpc/projects:
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_mpc_project
-      summary: Create a mpc project
+      summary: Create project
       description: |
-        Create a mpc project with the provided information.
+        This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
       security:
         - CoboAuth: []
       requestBody:
@@ -563,11 +566,11 @@ paths:
           $ref: '#/components/responses/badRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_mpc_project
-      summary: List all mpc projects
+      summary: List all projects
       description: |
-        Retrieves a list of mpc projects.
+        This operation retrieves a list of all projects.
       security:
         - CoboAuth: []
       responses:
@@ -582,13 +585,13 @@ paths:
   '/wallets/mpc/projects/{project_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_mpc_project
-      summary: Get a mpc project information
+      summary: Get project information
       description: |
-        Get detailed information about a mpc project identified by its unique ID. 
+        This operation retrieves detailed information about a project specified by `project_id`.
 
-        Get project ids by calling list_mpc_project.
+        You can retrieve `project_id`s by calling [List all projects](/api-references/v2/wallets--mpc-wallet/list-all-mpc-projects).
       security:
         - CoboAuth: []
       parameters:
@@ -604,11 +607,11 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: update_mpc_project
-      summary: Update a mpc project
+      summary: Update project name
       description: |
-        Update a mpc project name information by its ID.
+        This operation updates the `name` of the project specified by `project_id`.
       security:
         - CoboAuth: []
       parameters:
@@ -627,11 +630,15 @@ paths:
   /wallets/mpc/vaults:
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_mpc_vault
-      summary: Create a mpc vault
+      summary: Create vault
       description: |
-        Create a mpc vault with the provided information.
+        This operation creates a vault with the specified `name`, `vault_type`, and `project_id`.
+
+        **Notes for `project_id`:**
+        1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
+        2. If `vault_type` is `UserControlled`, then `project_id` is required.
       security:
         - CoboAuth: []
       requestBody:
@@ -643,12 +650,13 @@ paths:
           $ref: '#/components/responses/badRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_mpc_vault
-      summary: List all mpc vaults
+      summary: List all vaults
       description: |
-        Retrieves a list of mpc vaults. 
-        This endpoint allows filtering by project ID.
+        This operation retrieves a list of all vaults.
+
+        By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single project.
       security:
         - CoboAuth: []
       parameters:
@@ -665,12 +673,13 @@ paths:
   '/wallets/mpc/vaults/{vault_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_mpc_vault
-      summary: Get a mpc vault information
+      summary: Get vault information
       description: |
-        Get detailed information about a mpc vault identified by its unique ID. 
-        Get vault ids by calling list_mpc_vault.
+        This operation retrieves detailed information about the vault specified by `vault_id`.
+
+        You can obtain `vault_id`s by calling [List all vaults](/api-references/v2/wallets--mpc-wallet/list-all-mpc-vaults).
       security:
         - CoboAuth: []
       parameters:
@@ -686,11 +695,11 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: modify_mpc_vault
-      summary: Update a mpc vault information
+      summary: Update vault name
       description: |
-        Update a mpc vault name information by its ID.
+        This operation updates the name of the vault specified by `vault_id` to `name`.
       security:
         - CoboAuth: []
       parameters:
@@ -709,11 +718,11 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/key_groups':
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_key_group
-      summary: Create a mpc key group
+      summary: Create key share group
       description: |
-        Create a mpc key group for vault ID with the provided information.
+        This operation creates a key share group under the specified `vault_id` with the specified `group_type`, `node_count`, `threshold`, and `key_holders`.
       security:
         - CoboAuth: []
       parameters:
@@ -731,12 +740,13 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_key_group
-      summary: List all mpc key groups
+      summary: List all key share groups
       description: |
-        Retrieves a list of all key groups. 
-        This endpoint allows filtering by vault ID and key group type.
+        This operation retrieves a list of all key share groups under `vault_id`.
+
+        You can optionally filter the results further by specifying a `key_group_type`.
       security:
         - CoboAuth: []
       parameters:
@@ -754,11 +764,11 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/key_groups/{key_group_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_key_group
-      summary: Get a mpc key group information by group id
+      summary: Get key share group information
       description: |
-        Get detailed information about a key group identified by its unique ID.
+        This operation retrieves detailed information about the key share group specified by `key_group_id` and located under `vault_id`.
       security:
         - CoboAuth: []
       parameters:
@@ -775,14 +785,13 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: update_key_group
-      summary: Update a mpc key group information
+      summary: Update key share group
       description: |
-        Update a mpc key group type information by its ID. 
+        This operation updates a key share group based on the action specified by `update_key_share_group_action`.
 
-        Action:
-        - UpgradeToMainKeyGroup: change group type to main key group
+        The key share group to be updated is specified by `key_group_id` and `vault_id`.
       security:
         - CoboAuth: []
       parameters:
@@ -800,11 +809,10 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     delete:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: delete_key_group
-      summary: Delete a mpc key group
-      description: |
-        Delete a key group by its unique ID.
+      summary: Delete key share group
+      description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
       security:
         - CoboAuth: []
       parameters:
@@ -822,11 +830,17 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/tss_requests':
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_tss_request
-      summary: Create a tss request to generate key secrets for a tss group
+      summary: Create TSS request
       description: |
-        Create a tss request to generate key secrets for a tss group.
+        This operation creates a TSS request for `target_key_group_id` under `vault_id` to perform actions specified by `type` such as key generation and recovery.
+
+        **Notes for the optional `used_key_group_id` and `detail_params`:**
+
+        1. `used_key_group_id` is used only when the action `type` is either `KeyGenfromKeyGroup` or `Recovery`. This is to specify the key share group to be used as the source group to create a new `target_key_group`.
+
+        2. `detail_params` are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
       security:
         - CoboAuth: []
       parameters:
@@ -848,12 +862,13 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_tss_request
-      summary: List tss request information by vault ID
+      summary: List TSS requests
       description: |
-        Retrieving list of tss request information by vault ID.
-        This endpoint allows filtering by key group ID.
+        This operation retrieves a list of TSS requests information under `vault_id`.
+
+        The result is further filtered by the required `target_key_group_id`.
       security:
         - CoboAuth: []
       parameters:
@@ -861,7 +876,7 @@ paths:
         - $ref: '#/components/parameters/requiredTargetKeyGroupIdParam'
       responses:
         '200':
-          description: get mpc tss request successfully
+          description: Successfully retrieved TSS request.
           content:
             application/json:
               schema:
@@ -874,42 +889,21 @@ paths:
           $ref: '#/components/responses/notFoundError'
         '503':
           $ref: '#/components/responses/serviceUnavailableError'
-  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
-    get:
+  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel':
+    post:
       tags:
-        - Wallets - MPC Wallet
-      operationId: get_tss_request
-      summary: Get a tss request information
-      description: |
-        Get detailed information about a tss request identified by its unique ID. 
-        Get project ids by calling list_tss_request.
-      security:
-        - CoboAuth: []
-      parameters:
-        - $ref: '#/components/parameters/vaultIdParam'
-        - $ref: '#/components/parameters/tssRequestIdParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/getTssRequestResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '404':
-          $ref: '#/components/responses/notFoundError'
-        '503':
-          $ref: '#/components/responses/serviceUnavailableError'
-    put:
-      tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: cancel_tss_request
-      summary: Cancel a tss request
+      summary: Cancel TSS request
       description: |
-        Cancel a mpc tss request by its ID.
+        This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
+
+        You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
-        - $ref: '#/components/parameters/requiredTssRequestActionParam'
       responses:
         '200':
           $ref: '#/components/responses/putTssRequestResponse'
@@ -1491,6 +1485,7 @@ paths:
         Note: The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Asset Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.
       operationId: list_events
       parameters:
+        - $ref: '#/paths/~1webhooks~1events~1%7Bevent_id%7D/parameters/1'
         - description: |
             The event status. Possible values include:
             - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
@@ -1509,7 +1504,7 @@ paths:
           schema:
             $ref: '#/components/schemas/WebhookEventType'
           required: false
-          example: asset_wallet.outbound.created
+          example: custodial_asset_wallets.transaction.updated
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -1536,6 +1531,14 @@ paths:
   '/webhooks/events/{event_id}':
     parameters:
       - $ref: '#/components/parameters/webhookEventIdParam'
+      - name: endpoint_id
+        in: path
+        required: true
+        description: Unique id of the webhook endpoint
+        schema:
+          type: string
+          format: uuid
+        example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     get:
       tags:
         - Developers - Webhooks
@@ -1561,6 +1564,7 @@ paths:
   '/webhooks/events/{event_id}/logs':
     parameters:
       - $ref: '#/components/parameters/webhookEventIdParam'
+      - $ref: '#/paths/~1webhooks~1events~1%7Bevent_id%7D/parameters/1'
     get:
       tags:
         - Developers - Webhooks
@@ -1588,6 +1592,7 @@ paths:
   '/webhooks/events/{event_id}/retry':
     parameters:
       - $ref: '#/components/parameters/webhookEventIdParam'
+      - $ref: '#/paths/~1webhooks~1events~1%7Bevent_id%7D/parameters/1'
     post:
       tags:
         - Developers - Webhooks
@@ -2301,7 +2306,7 @@ components:
         max_transferable_value:
           type: string
           description: The maximum amount you can transfer from the wallet or the specified wallet address.
-          example: '841165119243622'
+          example: '3.0'
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     AddressInfo:
@@ -2491,14 +2496,22 @@ components:
       example: ED25519
     KeyGroup:
       type: object
-      description: The data for mpc key group information.
+      description: The data for key share group information.
       properties:
         id:
           type: string
           example: '880311524363903326'
-          description: Unique id of the key group
+          description: The key share group ID.
         type:
           $ref: '#/components/schemas/KeyGroupType'
+          description: |
+            The key share group type. Possible values include:
+
+            - `MainGroup`: This key share group is a [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+            - `SigningGroup`: This key share group is a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+            - `RecoveryGroup`: This key share group is a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
         tss_group_ids:
           type: array
           items:
@@ -2509,10 +2522,21 @@ components:
             $ref: '#/components/schemas/KeyHolder'
         node_count:
           type: integer
+          description: The number of key share holders in this key share group.
+          example: 3
         threshold:
           type: integer
+          description: The number of key share holders required to approve each operation in this key share group.
+          example: 2
         status:
           $ref: '#/components/schemas/KeyGroupStatus'
+          description: |
+            The status of the key share group. Possible values include:
+            - `New`: The key share group has been newly created. The status will become `Valid` after calling [Create a TSS request](/api-references/v2/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group) and specifying this key share group as the `target_key_group_id` to perform the `KeyGen` action `type`.
+
+            - `Valid`: The key share group is valid.
+
+            - `Unavailable`: The key share group is currently unavailable. This status appears when a key share holder uses [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) to change node. For example, when a key share holder changes to a new phone or loses their phone, and is in the process of setting up [Cobo Guard](https://manuals.cobo.com/en/guard/introduction) on their new phone.
         create_timestamp:
           type: integer
           format: int64
@@ -2526,27 +2550,49 @@ components:
     KeyGroupType:
       type: string
       enum:
-        - MainKeyGroup
-        - SigningKeyGroup
-        - RecoveryKeyGroup
-      example: MainKeyGroup
+        - MainGroup
+        - SigningGroup
+        - RecoveryGroup
+      example: MainGroup
     KeyHolder:
       type: object
-      description: The data for mpc wallet key holder information.
+      description: The data for MPC Wallets' key share holder information.
       properties:
         name:
           type: string
-          example: key holder name
+          description: The key share holder name.
+          example: Key share holder name
         type:
           $ref: '#/components/schemas/KeyHolderType'
+          description: |
+            Key share holder's TSS Node type. Possible values include:
+
+            - `Cobo`: The TSS Node was generated and held by Cobo.
+
+            - `Mobile`: The TSS Node was generated by a [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+
+            - `API`: The TSS Node was generated by an [API co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#api-co-signer) using the [TSS Node software package](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment).
         tss_node_id:
           type: string
-          description: The IDs of the tss node.
-          example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+          description: Key share holder's TSS Node ID.
+          example: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijklm
         online:
           type: boolean
-          description: Indicates if the tss node online
+          description: |
+            Whether the key share holder's TSS Node is online.
+            - `true`: The TSS Node is online.
+
+            - `false`: The TSS Node is offline.
         status:
+          description: |
+            The status of key share holder's TSS Node. Possible values include:
+            - `Valid`: The TSS Node is configured and activated.
+
+            - `NotConfigured`: The TSS Node has not been configured. This status is only applicable to [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+
+            - `NotActivated`: The TSS Node has not been activated. This status is only applicable to [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+
+            - `Changed`: The TSS Node has been changed. This happens when the key share holder sets up their [Cobo Guard](https://manuals.cobo.com/en/guard/introduction) on a new phone. This `Changed` status serves as a reminder for you to call [Create TSS request](/api-references/v2/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group) with the `KeyGenFromKeyGroup` and `Recovery` action `type` to finalize the setup of the key share holder's new phone. Once all set, the old TSS Node with the `Changed` status will be deleted.
           $ref: '#/components/schemas/KeyHolderStatus'
     KeyHolderStatus:
       type: string
@@ -2565,25 +2611,33 @@ components:
       example: COBO
     MPCVault:
       type: object
-      description: The data for mpc vault information.
+      description: The data for vault information.
       properties:
         id:
           type: string
           example: YPdbyVaVGqXXjkUsohHw
-          description: Unique id of the vault
+          description: The vault ID.
         name:
           type: string
-          example: my mpc vault
+          example: Vault name
+          description: The vault name.
         type:
           $ref: '#/components/schemas/MPCVaultType'
+          description: |
+            The vault type. Possible values include:
+            - `OrgControlled`: This vault is a collection of Organization-Controlled Wallets.
+
+            - `UserControlled`: This vault is a collection of User-Controlled Wallets.
         root_pubkeys:
           type: array
           items:
             $ref: '#/components/schemas/RootPubkey'
+            description: 'The vault''s [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).'
         create_timestamp:
           type: number
           format: int64
-          description: The create time the vault.
+          description: 'The vault''s creation time in Unix timestamp format, measured in milliseconds.'
+          example: 1718619403933.53
     MPCVaultType:
       type: string
       enum:
@@ -2592,59 +2646,72 @@ components:
       example: OrgControlled
     MPCProject:
       type: object
-      description: The data for mpc project information.
+      description: The data for project information.
       properties:
         id:
           type: string
           example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
-          description: Unique id of the project
+          description: The project ID.
         org_id:
           type: string
           example: f3b4a616-9c43-462e-8cb4-343e304fee64
-          description: Unique id of org
+          description: The Organization ID.
         name:
           type: string
-          example: my mpc project
+          example: Project name
+          description: The project name.
         node_count:
           type: integer
           example: 3
-          description: The count of tss node of the project
+          description: The number of key share holders in the project.
         threshold:
           type: integer
           example: 2
-          description: The threshold number of project required for signature
+          description: The number of key share holders required to sign an operation in the project.
         create_timestamp:
           type: integer
           format: int64
-          example: 1624975307234
-          description: The create time the vault.
+          example: 1718619403933.53
+          description: 'The project''s creation time in Unix timestamp format, measured in milliseconds.'
     RootPubkey:
       type: object
-      description: The data for root pubkey information.
+      description: The data for MPC Root Extended Public Key information.
       properties:
         pubkey:
           type: string
-          description: the root pubkey of the mpc vault.
+          description: 'The vault''s [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).'
           example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
         curve:
           $ref: '#/components/schemas/CurveType'
+          description: |
+            The elliptic curve type of the [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key). Possible values include:
+
+            - `SECP256K1`: The secp256k1 elliptic curve.
+
+            - `ED25519`: The Ed25519 elliptic curve.
     TSSGroupId:
       type: object
-      description: The data for tss group id information.
+      description: The data for the TSS group ID.
       properties:
         group_id:
           type: string
-          description: the group id of the tss group.
+          description: The TSS group ID.
           example: mMedDioOKhTlhGyQRzMv
         curve:
           $ref: '#/components/schemas/CurveType'
+          description: |
+            The elliptic curve type. Possible values include:
+
+            - `SECP256K1`: The secp256k1 elliptic curve.
+
+            - `ED25519`: The Ed25519 elliptic curve.
     TSSRequest:
       type: object
-      description: The data for mpc tss request information.
+      description: The data for the TSS request information.
       properties:
         id:
           type: string
-          description: Unique id of the tss request.
+          description: The TSS request ID.
           example: YPdbyVaVGqXXjkUsohHw
         type:
           $ref: '#/components/schemas/TSSRequestType'
@@ -2659,6 +2726,17 @@ components:
         - KeyGeneratingFailed
         - Success
       example: Success
+      description: |
+        The TSS request status. Possible values include:
+        - `PendingKeyHolderConfirmation`: The action done to the TSS request is currently pending enough key share holders to approve.
+
+        - `KeyHolderConfirmationFailed`: Key share holders failed to approve the the action to be done to the TSS request.
+
+        - `KeyGenerating`: The key share is currently being generated for the action to be done to the TSS request.
+
+        - `KeyGeneratingFailed`: The key share generation process has failed for the action to be done to the TSS request.
+
+        - `Success`: The action done to the TSS request has been completed successfully.
     TSSRequestType:
       type: string
       enum:
@@ -2667,16 +2745,12 @@ components:
         - Recovery
       example: KeyGen
       description: |
-        The type of tss request.
-        KeyGen is key generation
-        KeyGenFromKeyGroup is generate RecoveryKeyGroup secret
-        Recovery is generate MainKeyGroup secret from RecoveryKeyGroup
-    TSSRequestAction:
-      type: string
-      description: the action of tss request.
-      enum:
-        - cancel
-      example: cancel
+        The TSS request type. Possible values include:
+        - `KeyGen`: This is a key generation request to create a [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).
+
+        - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) and a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+        - `Recovery`: This is a request to create a new [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) from the [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) if the old Main Group has been lost.
     FeeType:
       type: string
       enum:
@@ -2829,6 +2903,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
             - $ref: '#/components/schemas/FeeData'
+        customized:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
       description: The estimated transaction fee based on the legacy fee model.
@@ -2851,6 +2929,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
             - $ref: '#/components/schemas/FeeData'
+        customized:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     UtxoFee:
       type: object
       description: The estimated transaction fee for UTXO-based chains.
@@ -2870,6 +2952,10 @@ components:
             - $ref: '#/components/schemas/UtxoFeeBasePrice'
             - $ref: '#/components/schemas/FeeAmount'
         fast:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
+        customized:
           allOf:
             - $ref: '#/components/schemas/UtxoFeeBasePrice'
             - $ref: '#/components/schemas/FeeAmount'
@@ -4265,9 +4351,9 @@ components:
       required:
         - request_id
         - request_type
-        - signing_wallet_id
-        - signing_address
         - chain_id
+        - source
+        - destination
       properties:
         request_id:
           type: string
@@ -4310,13 +4396,84 @@ components:
                 {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
     EstimateFee:
       oneOf:
-        - $ref: '#/components/schemas/Transfer'
-        - $ref: '#/components/schemas/ContractCall'
+        - $ref: '#/components/schemas/EstimateFeeTransfer'
+        - $ref: '#/components/schemas/EstimateFeeContractCall'
       discriminator:
         propertyName: request_type
         mapping:
-          Transfer: '#/components/schemas/Transfer'
-          Call: '#/components/schemas/ContractCall'
+          Transfer: '#/components/schemas/EstimateFeeTransfer'
+          Call: '#/components/schemas/EstimateFeeContractCall'
+    EstimateFeeTransfer:
+      type: object
+      description: The information about a token transfer.
+      title: Transfer
+      required:
+        - request_id
+        - request_type
+        - source
+        - token_id
+        - destination
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is unique within your Organization to track your request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        request_type:
+          $ref: '#/components/schemas/Transfer/properties/request_type'
+        source:
+          $ref: '#/components/schemas/TransferSource'
+        token_id:
+          type: string
+          description: The token ID.
+          example: ETH_USDT
+        destination:
+          $ref: '#/components/schemas/TransferDestination'
+        fee:
+          $ref: '#/components/schemas/ChainFeePrice'
+    EstimateFeeContractCall:
+      type: object
+      description: The information about a transaction that interacts with a smart contract
+      title: Contract call
+      required:
+        - request_id
+        - request_type
+        - chain_id
+        - source
+        - destination
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is unique within your Organization to track your request.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        request_type:
+          $ref: '#/components/schemas/Transfer/properties/request_type'
+        chain_id:
+          type: string
+          description: The chain ID.
+          example: ETH
+        source:
+          $ref: '#/components/schemas/ContractCallSource'
+        destination:
+          type: object
+          description: The information about the transaction destination.
+          properties:
+            address_str:
+              type: string
+              description: The destination address.
+              example: bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v
+            value:
+              type: string
+              description: |
+                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
+              example: '1.5'
+            calldata:
+              type: string
+              description: |
+                The data that is used to invoke a specific function or method within the specified contract at the destination address.
+              format: byte
+              example: U3dhZ2dlciByb2Nrcw==
+        fee:
+          $ref: '#/components/schemas/ChainFeePrice'
     BaseContractCallSource:
       type: object
       description: The information about the transaction source.
@@ -4401,8 +4558,7 @@ components:
         - request_type
         - chain_id
         - source
-        - to_address_str
-        - calldata
+        - destination
       properties:
         request_id:
           type: string
@@ -5332,17 +5488,25 @@ components:
         description: The transaction hash of the UTXO.
       example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
     keyGroupIdParam:
-      name: key_group_id
+      name: key_share_group_id
       in: path
       required: true
-      description: Unique id of the tss group
+      description: The key share group ID.
       schema:
         type: string
       example: '880311524363903326'
     optionalKeyGroupTypeParam:
       name: key_group_type
       in: query
-      description: The type of key group.
+      description: |
+        The selected key share group type to retrieve. Possible values include:
+        - `MainKeyGroup`: Only [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) will be retrieved.
+
+        - `SigningKeyGroup`: Only [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) will be retrieved.
+
+        - `RecoveryKeyGroup`: Only [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) will be retrieved.
+
+        **Note:** If left empty, all key share group types will be retrieved.
       required: false
       schema:
         $ref: '#/components/schemas/KeyGroupType'
@@ -5350,7 +5514,7 @@ components:
       name: project_id
       in: path
       required: true
-      description: Unique id of the mpc project
+      description: The project ID.
       schema:
         type: string
         format: uuid
@@ -5358,7 +5522,7 @@ components:
     optionalProjectIdQueryParam:
       name: project_id
       in: query
-      description: Unique id of the mpc project
+      description: The project ID.
       schema:
         type: string
         format: uuid
@@ -5377,43 +5541,38 @@ components:
     requiredTargetKeyGroupIdParam:
       name: target_key_group_id
       in: query
-      description: The target key group id of tss request.
+      description: The target key share group ID of the TSS request.
       required: true
       schema:
         type: string
       example: '880311524363903326'
-    requiredTssRequestActionParam:
-      name: tss_request_action
-      in: query
-      description: The action of tss request.
-      required: true
-      schema:
-        $ref: '#/components/schemas/TSSRequestAction'
     tssRequestIdParam:
       name: tss_request_id
       in: path
       required: true
-      description: Unique id of the tss request
+      description: The TSS request ID.
       schema:
         type: string
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     requiredUpdateKeyGroupActionParam:
-      name: update_key_group_action
+      name: update_key_share_group_action
       in: query
-      description: The action of update key group
+      description: |
+        The available actions of key share group update. Possible values include:
+        - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
       required: true
       schema:
         type: string
-        description: the action of tss request.
+        description: The available action of key group update.
         enum:
-          - UpgradeToMainKeyGroup
-        example: UpgradeToMainKeyGroup
+          - UpgradeToMainGroup
+        example: UpgradeToMainGroup
     vaultIdParam:
       name: vault_id
       in: path
       required: true
-      description: Unique id of the mpc vault
+      description: The vault ID.
       schema:
         type: string
         format: uuid
@@ -5839,7 +5998,7 @@ components:
                 default: true
                 example: true
     createKeyGroupBody:
-      description: The request body to create a mpc key group
+      description: The request body to create a key share group.
       content:
         application/json:
           schema:
@@ -5852,29 +6011,62 @@ components:
             properties:
               group_type:
                 $ref: '#/components/schemas/KeyGroupType'
+                description: |
+                  The type of the key share group to create. Possible values include:
+
+                  - `MainKeyGroup`: The created key share group will be a [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+                  - `SigningKeyGroup`: The created key share group will be a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+                  - `RecoveryKeyGroup`: The created key share group will be a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+                  **Note:** For `MainKeyGroup` and `SigningKeyGroup`, a Cobo key share holder will be added automatically.
               node_count:
                 type: integer
-                description: The count of tss node of the key group
+                description: |
+                  The number of key share holders in this key share group.
+
+                  **Notes:**
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `node_count` to 2 or 3. 
+
+                  2. `threshold` must be less than or equal to `node_count`.
+                example: 3
               threshold:
                 type: integer
-                description: The threshold number of tss node required for signature
+                description: |
+                  The number of key share holders required to sign an operation.
+
+                  **Notes:**
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `threshold` to 2 or 3. 
+
+                  2. `threshold` must be less than or equal to `node_count`.
+                example: 2
               key_holders:
                 type: array
                 items:
                   type: object
-                  description: 'When creating MainKeyGroup and SigningKeyGroup, the cobo key holder will be added automatically'
+                  description: 'When creating MainKeyGroup and SigningKeyGroup, the Cobo key share holder will be added automatically.'
                   properties:
                     name:
                       type: string
-                      example: key holder name
+                      description: Key share holder's name.
+                      example: Key share holder name
                     type:
                       $ref: '#/components/schemas/KeyHolderType'
+                      description: |
+                        The type of key share holder's TSS Node. Possible values include:
+
+                        - `COBO`: TSS Node was generated and held by Cobo.
+
+                        - `MOBILE`: TSS Node was generated by a [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+
+                        - `API`: TSS Node was generated aby an [API co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#api-co-signer) using the [TSS Node software package](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment).
                     tss_node_id:
                       type: string
-                      description: The ID of the tss node.
-                      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
+                      description: The TSS Node ID.
+                      example: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijklm
     createMpcProjectBody:
-      description: The request body to create a mpc project
+      description: The request body to create a project.
       content:
         application/json:
           schema:
@@ -5886,16 +6078,30 @@ components:
             properties:
               name:
                 type: string
-                example: My mpc project name
-                description: The name of the mpc project.
+                example: Project name
+                description: The project name.
               node_count:
                 type: integer
-                description: Number of tss nodes in the key group
+                description: |
+                  The number of key share holders in the project.
+
+                  **Notes:**
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `node_count` to 2 or 3. 
+
+                  2. `threshold` must be less than or equal to `node_count`.
+                example: 3
               threshold:
                 type: integer
-                description: 'The threshold number of tss node required for signature, must be less than or equal to node_count'
+                description: |
+                  The number of key share holders required to sign an operation in the project.
+
+                  **Notes:**
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `threshold` to 2 or 3. 
+
+                  2. `threshold` must be less than or equal to `node_count`.
+                example: 2
     createTssRequestBody:
-      description: The request body to create a tss request
+      description: The request body to create a TSS request.
       content:
         application/json:
           schema:
@@ -5908,20 +6114,32 @@ components:
                 $ref: '#/components/schemas/TSSRequestType'
               target_key_group_id:
                 type: string
-              used_key_group_id:
+                description: The target key share group ID.
+                example: '123456789012345678'
+              source_key_group_id:
                 type: string
+                description: |
+                  The used key share group ID.
+
+                  **Note:** `used_key_group_id` is used only when the action `type` is either `KeyGenfromKeyGroup` or `Recovery`. This is to specify the key share group to be used as the source group to create a new `target_key_group`.
+                example: '987654321098765432'
               detail_params:
-                description: 'for KeyGen request, this parameters can be null'
+                description: The parameters are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
                 type: object
                 properties:
-                  used_node_ids:
+                  node_ids:
                     type: array
                     items:
                       type: string
-                      example: cobo5yb7BNEBwwp5XXedbhnzQfvQtp132W4dH4Jz4x4eDp4KA
-                      description: The IDs of the tss node participating in the reshare tss request
+                    example:
+                      - 1AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijkl
+                      - 2AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijkl
+                    description: |
+                      The TSS Node IDs participating in creating a new key share group when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`. 
+
+                      **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), for `used_node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`.
     createMpcVaultBody:
-      description: The request body to create a mpc vault
+      description: The request body to create a vault.
       content:
         application/json:
           schema:
@@ -5933,15 +6151,24 @@ components:
               project_id:
                 type: string
                 example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
-                description: The id of the mpc project.
+                description: |
+                  The project ID.
+
+                  **Notes:**
+                  1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
+                  2. If `vault_type` is `UserControlled`, then `project_id` is required.
               name:
                 type: string
-                example: My mpc vault
-                description: The name of the mpc vault.
+                example: Name of new vault
+                description: The name of the new vault.
               vault_type:
                 $ref: '#/components/schemas/MPCVaultType'
+                description: |
+                  The vault type. Possible values include:
+                  - `OrgControlled`: This vault is a collection of Organization-Controlled Wallets.
+                  - `UserControlled`: This vault is a collection of User-Controlled Wallets.
     updateProjectBody:
-      description: The request body to update a mpc project
+      description: The request body to update a project's name.
       content:
         application/json:
           schema:
@@ -5951,10 +6178,10 @@ components:
             properties:
               name:
                 type: string
-                example: My mpc new project name
-                description: The name of the mpc project.
+                example: New project name
+                description: The project's new name.
     updateVaultBody:
-      description: The request body to update a mpc vault
+      description: The request body to update a vault's name.
       content:
         application/json:
           schema:
@@ -5964,8 +6191,8 @@ components:
             properties:
               name:
                 type: string
-                description: The new name of vault
-                example: my mpc vault name
+                description: The new name of the vault.
+                example: The new name of the vault
     createTransferBody:
       description: The request body to create a transfer transaction
       content:
@@ -6262,7 +6489,7 @@ components:
           schema:
             $ref: '#/components/schemas/KeyGroup'
     createMpcProjectResponse:
-      description: mpc project successfully created
+      description: Successfully created project.
       content:
         application/json:
           schema:
@@ -6270,13 +6497,13 @@ components:
     createTssRequestResponse:
       $ref: '#/components/responses/createMpcVaultResponse'
     createMpcVaultResponse:
-      description: mpc vault successfully created
+      description: Successfully created the vault.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/MPCVault'
     getCoboKeyHoldersResponse:
-      description: Successfully listed mpc tss groups
+      description: Successfully listed MPC Wallets' key share holder information.
       content:
         application/json:
           schema:
@@ -6290,7 +6517,7 @@ components:
           schema:
             $ref: '#/components/schemas/KeyGroup'
     getKeyGroupsResponse:
-      description: Successfully listed mpc tss groups
+      description: Successfully listed key share groups.
       content:
         application/json:
           schema:
@@ -6298,13 +6525,13 @@ components:
             items:
               $ref: '#/components/schemas/KeyGroup'
     getMpcProjectResponse:
-      description: Successfully listed mpc vaults
+      description: Successfully listed all vaults.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/MPCProject'
     getMpcProjectsResponse:
-      description: Successfully listed mpc projects
+      description: Successfully listed all projects.
       content:
         application/json:
           schema:
@@ -6312,19 +6539,19 @@ components:
             items:
               $ref: '#/components/schemas/MPCProject'
     getTssRequestResponse:
-      description: get mpc tss request successfully
+      description: Successfully retrieved TSS request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/TSSRequest'
     getMpcVaultResponse:
-      description: Successfully get mpc vault
+      description: Successfully retrieved vault information.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/MPCVault'
     getMpcVaultsResponse:
-      description: Successfully listed mpc vaults
+      description: Successfully listed all vaults.
       content:
         application/json:
           schema:
@@ -6332,7 +6559,7 @@ components:
             items:
               $ref: '#/components/schemas/MPCVault'
     deleteKeyGroupResponse:
-      description: Successfully deleted mpc tss group
+      description: Successfully deleted the specified key share group.
       content:
         application/json:
           schema:
@@ -6344,7 +6571,7 @@ components:
           schema:
             $ref: '#/components/schemas/KeyGroup'
     putTssRequestResponse:
-      description: modify mpc tss request successfully
+      description: Successfully modified the TSS request.
       content:
         application/json:
           schema:
@@ -6371,16 +6598,13 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ChainFeePrice'
-                description: |
-                  The fee price for the specified chain or token. 
+            type: array
+            items:
+              $ref: '#/components/schemas/ChainFeePrice'
+            description: |
+              The fee price for the specified chain or token. 
 
-                  The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
+              The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
       description: The request was successful.
       content:

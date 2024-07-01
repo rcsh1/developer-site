@@ -1,10 +1,10 @@
 post:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: create_mpc_project
-  summary: Create Project
+  summary: Create project
   description: | 
-    This operation creates a Project with the required `name`, `node_count`, and `threshold` specification.
+    This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
   security:
     - CoboAuth: []
   requestBody:
@@ -16,11 +16,11 @@ post:
       $ref: "../../../components/responses/errors/400_bad_request.yaml"
 get:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: list_mpc_project
-  summary: List all Projects
+  summary: List all projects
   description: |
-    This operation retrieves a list of all Projects.
+    This operation retrieves a list of all projects.
   security:
     - CoboAuth: []
   responses:

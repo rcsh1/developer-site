@@ -77,15 +77,15 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: https://api.cobo.com/v2
-    description: Production environment
   - url: https://api.dev.cobo.com/v2
     description: Development environment
+  - url: https://api.cobo.com/v2
+    description: Production environment
 
 tags:
   - name: Wallets
     description: Operations related to all wallets.
-  - name: Wallets - MPC Wallet
+  - name: Wallets - MPC Wallets
     description: Operations related to mpc wallet.
 #  - name: Wallets - Exchange Wallet
 #    description: Operations related to exchange wallet.
@@ -146,12 +146,12 @@ paths:
     $ref: "./paths/wallets/mpcs/mpc_vault.yaml"
   /wallets/mpc/vaults/{vault_id}/key_groups:
     $ref: './paths/wallets/mpcs/key_groups.yaml'
-  /wallets/mpc/vaults/{vault_id}/key_groups/{key_group_id}:
+  /wallets/mpc/vaults/{vault_id}/key_groups/{key_share_group_id}:
     $ref: './paths/wallets/mpcs/key_group.yaml'
   /wallets/mpc/vaults/{vault_id}/tss_requests:
     $ref: './paths/wallets/mpcs/tss_requests.yaml'
-  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}:
-    $ref: "./paths/wallets/mpcs/tss_request.yaml"
+  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel:
+    $ref: "./paths/wallets/mpcs/tss_request_cancel.yaml"
 
   # exchange wallets
 #  /wallets/exchanges/settings:
@@ -196,13 +196,19 @@ paths:
 #    $ref: "./paths/oauth/token.yaml"
 
   # webhooks
-  /webhooks/events:
+  /webhooks/endpoints:
+    $ref: "./paths/webhooks/endpoints.yaml"
+  /webhooks/endpoints/{endpoint_id}:
+    $ref: "./paths/webhooks/endpoint_by_id.yaml"
+  /webhooks/events/definitions:
+    $ref: "./paths/webhooks/supported_event_definitions.yaml"
+  /webhooks/endpoints/{endpoint_id}/events:
     $ref: "./paths/webhooks/events.yaml"
-  /webhooks/events/{event_id}:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}:
     $ref: "./paths/webhooks/event_by_id.yaml"
-  /webhooks/events/{event_id}/logs:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/logs:
     $ref: "./paths/webhooks/logs_by_event_id.yaml"
-  /webhooks/events/{event_id}/retry:
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/retry:
     $ref: "./paths/webhooks/retry_by_event_id.yaml"
 
   # stakings
@@ -321,8 +327,6 @@ components:
       $ref: "./components/schemas/wallets/mpcs/tss_request_status.yaml"
     TSSRequestType:
       $ref: "./components/schemas/wallets/mpcs/tss_request_type.yaml"
-    TSSRequestAction:
-      $ref: "./components/schemas/wallets/mpcs/tss_request_action.yaml"
 
     # fees
     FeeType:
@@ -464,7 +468,11 @@ components:
     SignMessage:
       $ref: "./components/schemas/transactions/message_sign.yaml"
     EstimateFee:
-      $ref: "./components/schemas/transactions/estimate_fee.yaml"
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee.yaml"
+    EstimateFeeTransfer:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_transfer.yaml"
+    EstimateFeeContractCall:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_contract_call.yaml"
 
     # contract call
     BaseContractCallSource:
@@ -487,6 +495,10 @@ components:
       $ref: "./components/schemas/webhooks/event_status.yaml"
     WebhookEventLog:
       $ref: "./components/schemas/webhooks/event_log.yaml"
+    Endpoint:
+      $ref: "./components/schemas/webhooks/endpoint.yaml"
+    EndpointStatus:
+      $ref: "./components/schemas/webhooks/webhook_endpoint_status.yaml"
 
     #stakings
     BaseStakeExtra:
@@ -594,7 +606,7 @@ components:
 
     # mpc wallets
     keyGroupIdParam:
-      $ref: "./components/parameters/wallets/mpcs/key_group_id_path.yaml"
+      $ref: "./components/parameters/wallets/mpcs/key_share_group_id_path.yaml"
     optionalKeyGroupTypeParam:
       $ref: "./components/parameters/wallets/mpcs/key_group_type_optional.yaml"
     projectIdParam:
@@ -605,12 +617,10 @@ components:
       $ref: "./components/parameters/wallets/mpcs/project_id_list_optional.yaml"
     requiredTargetKeyGroupIdParam:
       $ref: "./components/parameters/wallets/mpcs/target_key_group_id_required.yaml"
-    requiredTssRequestActionParam:
-      $ref: "./components/parameters/wallets/mpcs/tss_request_action_required.yaml"
     tssRequestIdParam:
       $ref: "./components/parameters/wallets/mpcs/tss_request_id_path.yaml"
     requiredUpdateKeyGroupActionParam:
-      $ref: "./components/parameters/wallets/mpcs/update_key_group_action_required.yaml"
+      $ref: "./components/parameters/wallets/mpcs/update_key_share_group_action_required.yaml"
     vaultIdParam:
       $ref: "./components/parameters/wallets/mpcs/vault_id_path.yaml"
     optionalVaultIdQueryParam:
@@ -669,6 +679,8 @@ components:
     # webhooks
     webhookEventIdParam:
       $ref: "./components/parameters/webhooks/event_id_path.yaml"
+    endpointIdParam:
+      $ref: "./components/parameters/webhooks/endpoint_id_path_param.yaml"
 
     #stakings
     activityIdRequiredParam:
@@ -742,6 +754,12 @@ components:
     estimateStakeActivityFeeBody:
       $ref: "./components/request_bodies/stakings/estimate_fee.yaml"
 
+
+    # webhooks
+    createWebhookEndpointBody:
+      $ref: "./components/request_bodies/webhooks/create_webhook_endpoint.yaml"
+    updateWebhookBody:
+      $ref: "./components/request_bodies/webhooks/update_webhook_endpoint.yaml"
 
   responses:
     # misc
@@ -841,6 +859,27 @@ components:
       $ref: "./components/responses/transactions/get_transaction_fee.yaml"
     createTransactionRequestResponse:
       $ref: "./components/responses/transactions/create_transaction_request.yaml"
+
+    #webhook
+    createWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/create_webhook_endpoint.yaml"
+    getWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/get_webhook_endpoint.yaml"
+    listWebhookEndpointsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_endpoints.yaml"
+    updateWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/update_webhook_endpoint.yaml"
+    listWebhookEventsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_events.yaml"
+    getWebhookEventResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event.yaml"
+    getWebhookEventDefinitionsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_definitions.yaml"
+    retryWebhookEventResponse:
+      $ref: "./components/responses/webhooks/retry_webhook_event.yaml"
+    getWebhookEventLogsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_logs.yaml"
+
 
     # stakings
     listStakingPoolsResponse:

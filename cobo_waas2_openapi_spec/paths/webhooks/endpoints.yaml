@@ -1,0 +1,43 @@
+get:
+  tags:
+    - Developers - Webhooks
+  summary: List webhook endpoints
+  description: Retrieve a list of your webhook endpoints.
+  operationId: list_webhook_endpoints
+  parameters:
+    - description: The endpoint status.
+      in: query
+      name: status
+      schema:
+        $ref: "../../components/schemas/webhooks/webhook_endpoint_status.yaml"
+      required: false
+    - description: The event type to filter by.
+      in: query
+      name: event_type
+      schema:
+        $ref: "../../components/schemas/webhooks/event_type.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/webhooks/list_webhook_endpoints.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"
+post:
+  tags:
+    - Developers - Webhooks
+  summary: Create webhook endpoint
+  description: Create a new webhook endpoint.
+  operationId: create_webhook_endpoint
+  requestBody:
+    $ref: "../../components/request_bodies/webhooks/create_webhook_endpoint.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/webhooks/create_webhook_endpoint.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

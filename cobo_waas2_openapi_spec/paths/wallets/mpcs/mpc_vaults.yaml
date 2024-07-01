@@ -1,6 +1,6 @@
 post:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: create_mpc_vault
   summary: Create vault
   description: |
@@ -21,13 +21,13 @@ post:
       $ref: "../../../components/responses/errors/400_bad_request.yaml"
 get:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: list_mpc_vault
   summary: List all vaults
   description: |
     This operation retrieves a list of all vaults.
     
-    By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single Project.
+    By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single project.
   security:
     - CoboAuth: []
   parameters:

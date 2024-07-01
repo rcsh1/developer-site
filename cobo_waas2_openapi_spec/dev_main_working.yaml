@@ -77,15 +77,15 @@ info:
     email: support@cobo.com
   version: 1.0.0
 servers:
-  - url: https://api.cobo.com/v2
-    description: Production environment
   - url: https://api.dev.cobo.com/v2
     description: Development environment
+  - url: https://api.cobo.com/v2
+    description: Production environment
 
 tags:
   - name: Wallets
     description: Operations related to all wallets.
-  - name: Wallets - MPC Wallet
+  - name: Wallets - MPC Wallets
     description: Operations related to mpc wallet.
   - name: Wallets - Exchange Wallet
     description: Operations related to exchange wallet.
@@ -150,8 +150,8 @@ paths:
     $ref: './paths/wallets/mpcs/key_group.yaml'
   /wallets/mpc/vaults/{vault_id}/tss_requests:
     $ref: './paths/wallets/mpcs/tss_requests.yaml'
-  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}:
-    $ref: "./paths/wallets/mpcs/tss_request.yaml"
+  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel:
+    $ref: "./paths/wallets/mpcs/tss_request_cancel.yaml"
 
   # exchange wallets
   /wallets/exchanges/settings:
@@ -320,8 +320,6 @@ components:
       $ref: "./components/schemas/wallets/mpcs/tss_request_status.yaml"
     TSSRequestType:
       $ref: "./components/schemas/wallets/mpcs/tss_request_type.yaml"
-    TSSRequestAction:
-      $ref: "./components/schemas/wallets/mpcs/tss_request_action.yaml"
 
     # fees
     FeeType:
@@ -463,7 +461,11 @@ components:
     SignMessage:
       $ref: "./components/schemas/transactions/message_sign.yaml"
     EstimateFee:
-      $ref: "./components/schemas/transactions/estimate_fee.yaml"
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee.yaml"
+    EstimateFeeTransfer:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_transfer.yaml"
+    EstimateFeeContractCall:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_contract_call.yaml"
 
     # contract call
     BaseContractCallSource:
@@ -593,7 +595,7 @@ components:
 
     # mpc wallets
     keyGroupIdParam:
-      $ref: "./components/parameters/wallets/mpcs/key_group_id_path.yaml"
+      $ref: "./components/parameters/wallets/mpcs/key_share_group_id_path.yaml"
     optionalKeyGroupTypeParam:
       $ref: "./components/parameters/wallets/mpcs/key_group_type_optional.yaml"
     projectIdParam:
@@ -604,12 +606,10 @@ components:
       $ref: "./components/parameters/wallets/mpcs/project_id_list_optional.yaml"
     requiredTargetKeyGroupIdParam:
       $ref: "./components/parameters/wallets/mpcs/target_key_group_id_required.yaml"
-    requiredTssRequestActionParam:
-      $ref: "./components/parameters/wallets/mpcs/tss_request_action_required.yaml"
     tssRequestIdParam:
       $ref: "./components/parameters/wallets/mpcs/tss_request_id_path.yaml"
     requiredUpdateKeyGroupActionParam:
-      $ref: "./components/parameters/wallets/mpcs/update_key_group_action_required.yaml"
+      $ref: "./components/parameters/wallets/mpcs/update_key_share_group_action_required.yaml"
     vaultIdParam:
       $ref: "./components/parameters/wallets/mpcs/vault_id_path.yaml"
     optionalVaultIdQueryParam:

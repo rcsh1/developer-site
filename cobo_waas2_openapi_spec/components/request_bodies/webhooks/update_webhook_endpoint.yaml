@@ -1,0 +1,21 @@
+description: The request body to update a webhook endpoint
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        subscribed_events:
+          description: The list of events to subscribe for this endpoint
+          items:
+            $ref: '../../schemas/webhooks/event_type.yaml'
+          type: array
+        status:
+          type: string
+          enum:
+            - STATUS_INACTIVE
+          example: STATUS_INACTIVE
+          description: The enumeration of webhook endpoint status.
+        description:
+          description: The description of the webhook endpoint.
+          type: string
+          example: 'My webhook endpoint'

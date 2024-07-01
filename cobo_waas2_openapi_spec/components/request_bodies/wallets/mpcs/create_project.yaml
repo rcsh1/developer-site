@@ -1,4 +1,4 @@
-description: The request body to create a Project.
+description: The request body to create a project.
 content:
   application/json:
     schema:
@@ -11,11 +11,11 @@ content:
         name:
           type: string
           example: "Project name"
-          description: The Project name.
+          description: The project name.
         node_count:
           type: integer
           description: | 
-            The number of key share holders in the Project.
+            The number of key share holders in the project.
             
             **Notes:**
             1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `node_count` to 2 or 3. 
@@ -25,7 +25,7 @@ content:
         threshold:
           type: integer
           description: |
-            The number of key share holders required to sign an operation in the Project.
+            The number of key share holders required to sign an operation in the project.
             
             **Notes:**
             1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `threshold` to 2 or 3. 

@@ -1,6 +1,6 @@
 get:
   tags:
-    - Wallets - MPC Wallet
+    - Wallets - MPC Wallets
   operationId: get_tss_request
   summary: Get TSS request
   description: |
@@ -21,31 +21,3 @@ get:
       $ref: "../../../components/responses/errors/404_not_found.yaml"
     '503':
       $ref: "../../../components/responses/errors/503_service_unavailable.yaml"
-put:
-  tags:
-    - Wallets - MPC Wallet
-  operationId: cancel_tss_request
-  summary: Cancel TSS request
-  description:  |
-    This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
-    
-    The specific action to be taken is specified by `tss_request_action`.
-    
-    You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
-    
-
-  security:
-    - CoboAuth: []
-  parameters:
-    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
-    - $ref: "../../../components/parameters/wallets/mpcs/tss_request_id_path.yaml"
-    - $ref: "../../../components/parameters/wallets/mpcs/tss_request_action_required.yaml"
-  responses:
-    '200':
-      $ref: "../../../components/responses/wallets/mpcs/put_tss_request.yaml"
-    '401':
-      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
-    '403':
-      $ref: "../../../components/responses/errors/403_forbidden.yaml"
-    '429':
-      $ref: "../../../components/responses/errors/429_too_many_request.yaml"

@@ -1,0 +1,16 @@
+description: Get webhook event definitions successfully.
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        result:
+            type: array
+            items:
+              type: object
+              properties:
+                event_type:
+                  $ref: "../../../components/schemas/webhooks/event_type.yaml"
+                description:
+                  type: string
+                  example: "Occurred a transaction status updated"
