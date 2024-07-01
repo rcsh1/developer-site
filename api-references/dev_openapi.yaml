@@ -82,7 +82,7 @@ servers:
 tags:
   - name: Wallets
     description: Operations related to all wallets.
-  - name: Wallets - MPC Wallet
+  - name: Wallets - MPC Wallets
     description: Operations related to mpc wallet.
   - name: Transactions
     description: Operations related to all transactions.
@@ -501,7 +501,7 @@ paths:
   /wallets/mpc/cobo_key_holders:
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_cobo_key_holder
       summary: List all Cobo key share holders
       description: |
@@ -522,7 +522,7 @@ paths:
   /wallets/mpc/projects:
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_mpc_project
       summary: Create project
       description: |
@@ -538,7 +538,7 @@ paths:
           $ref: '#/components/responses/badRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_mpc_project
       summary: List all projects
       description: |
@@ -557,7 +557,7 @@ paths:
   '/wallets/mpc/projects/{project_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_mpc_project
       summary: Get project information
       description: |
@@ -579,7 +579,7 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: update_mpc_project
       summary: Update project name
       description: |
@@ -602,7 +602,7 @@ paths:
   /wallets/mpc/vaults:
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_mpc_vault
       summary: Create vault
       description: |
@@ -622,7 +622,7 @@ paths:
           $ref: '#/components/responses/badRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_mpc_vault
       summary: List all vaults
       description: |
@@ -645,7 +645,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_mpc_vault
       summary: Get vault information
       description: |
@@ -667,7 +667,7 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: modify_mpc_vault
       summary: Update vault name
       description: |
@@ -690,7 +690,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/key_groups':
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_key_group
       summary: Create key share group
       description: |
@@ -712,7 +712,7 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_key_group
       summary: List all key share groups
       description: |
@@ -733,10 +733,10 @@ paths:
           $ref: '#/components/responses/forbiddenError'
         '429':
           $ref: '#/components/responses/tooManyRequestError'
-  '/wallets/mpc/vaults/{vault_id}/key_groups/{key_group_id}':
+  '/wallets/mpc/vaults/{vault_id}/key_groups/{key_share_group_id}':
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: get_key_group
       summary: Get key share group information
       description: |
@@ -757,11 +757,11 @@ paths:
           $ref: '#/components/responses/serviceUnavailableError'
     put:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: update_key_group
       summary: Update key share group
       description: |
-        This operation updates a key share group based on the action specified by `update_key_group_action`.
+        This operation updates a key share group based on the action specified by `update_key_share_group_action`.
 
         The key share group to be updated is specified by `key_group_id` and `vault_id`.
       security:
@@ -781,7 +781,7 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     delete:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: delete_key_group
       summary: Delete key share group
       description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
@@ -802,7 +802,7 @@ paths:
   '/wallets/mpc/vaults/{vault_id}/tss_requests':
     post:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: create_tss_request
       summary: Create TSS request
       description: |
@@ -834,7 +834,7 @@ paths:
           $ref: '#/components/responses/tooManyRequestError'
     get:
       tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: list_tss_request
       summary: List TSS requests
       description: |
@@ -861,47 +861,21 @@ paths:
           $ref: '#/components/responses/notFoundError'
         '503':
           $ref: '#/components/responses/serviceUnavailableError'
-  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
-    get:
+  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel':
+    post:
       tags:
-        - Wallets - MPC Wallet
-      operationId: get_tss_request
-      summary: Get TSS request
-      description: |
-        This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
-
-        You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
-      security:
-        - CoboAuth: []
-      parameters:
-        - $ref: '#/components/parameters/vaultIdParam'
-        - $ref: '#/components/parameters/tssRequestIdParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/getTssRequestResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '404':
-          $ref: '#/components/responses/notFoundError'
-        '503':
-          $ref: '#/components/responses/serviceUnavailableError'
-    put:
-      tags:
-        - Wallets - MPC Wallet
+        - Wallets - MPC Wallets
       operationId: cancel_tss_request
       summary: Cancel TSS request
       description: |
         This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
 
-        The specific action to be taken is specified by `tss_request_action`.
-
         You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
-        - $ref: '#/components/parameters/requiredTssRequestActionParam'
       responses:
         '200':
           $ref: '#/components/responses/putTssRequestResponse'
@@ -1194,17 +1168,15 @@ paths:
       tags:
         - Developers - Webhooks
       summary: List webhook endpoints
-      description: Retrieve a list of your webhook endpoints.
+      description: This operation retrieves the information of all webhook endpoints registered under your organization. You can filter the result by endpoint status and the subscribed event type.
       operationId: list_webhook_endpoints
       parameters:
-        - description: The endpoint status.
-          in: query
+        - in: query
           name: status
           schema:
             $ref: '#/components/schemas/EndpointStatus'
           required: false
-        - description: The event type to filter by.
-          in: query
+        - in: query
           name: event_type
           schema:
             $ref: '#/components/schemas/WebhookEventType'
@@ -1223,8 +1195,8 @@ paths:
     post:
       tags:
         - Developers - Webhooks
-      summary: Create webhook endpoint
-      description: Create a new webhook endpoint.
+      summary: Register webhook endpoint
+      description: This operation registers a new webhook endpoint.
       operationId: create_webhook_endpoint
       requestBody:
         $ref: '#/components/requestBodies/createWebhookEndpointBody'
@@ -1240,7 +1212,7 @@ paths:
       tags:
         - Developers - Webhooks
       summary: Retrieve webhook endpoint by ID
-      description: Retrieves the webhook endpoint with the given ID.
+      description: This operation retrieves the information of a specified webhook endpoint.
       operationId: get_webhook_endpoint_by_id
       responses:
         '200':
@@ -1251,7 +1223,7 @@ paths:
       tags:
         - Developers - Webhooks
       summary: Update webhook endpoint
-      description: Update a webhook endpoint.
+      description: This operation updates the information of a specified webhook endpoint.
       operationId: update_webhook_endpoint
       requestBody:
         $ref: '#/components/requestBodies/updateWebhookBody'
@@ -1266,8 +1238,8 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: Get all supported event definitions
-      description: Get all supported event definitions.
+      summary: Get webhook event types
+      description: This operation retrieves all supported webhook event types.
       operationId: list_webhook_event_definitions
       responses:
         '200':
@@ -1711,6 +1683,7 @@ components:
     CustodialWalletInfo:
       type: object
       title: Custodial Wallets
+      description: The basic information of a wallet.
       required:
         - wallet_id
         - wallet_type
@@ -2061,11 +2034,11 @@ components:
           description: |
             The key share group type. Possible values include:
 
-            - `MainKeyGroup`: This key share group is a [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+            - `MainGroup`: This key share group is a [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
 
-            - `SigningKeyGroup`: This key share group is a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+            - `SigningGroup`: This key share group is a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
 
-            - `RecoveryKeyGroup`: This key share group is a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+            - `RecoveryGroup`: This key share group is a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
         tss_group_ids:
           type: array
           items:
@@ -2104,10 +2077,10 @@ components:
     KeyGroupType:
       type: string
       enum:
-        - MainKeyGroup
-        - SigningKeyGroup
-        - RecoveryKeyGroup
-      example: MainKeyGroup
+        - MainGroup
+        - SigningGroup
+        - RecoveryGroup
+      example: MainGroup
     KeyHolder:
       type: object
       description: The data for MPC Wallets' key share holder information.
@@ -2121,9 +2094,9 @@ components:
           description: |
             Key share holder's TSS Node type. Possible values include:
 
-            - `COBO`: The TSS Node was generated and held by Cobo.
+            - `Cobo`: The TSS Node was generated and held by Cobo.
 
-            - `MOBILE`: The TSS Node was generated by a [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+            - `Mobile`: The TSS Node was generated by a [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
 
             - `API`: The TSS Node was generated by an [API co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#api-co-signer) using the [TSS Node software package](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment).
         tss_node_id:
@@ -2305,12 +2278,6 @@ components:
         - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) and a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
 
         - `Recovery`: This is a request to create a new [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) from the [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) if the old Main Group has been lost.
-    TSSRequestAction:
-      type: string
-      description: the action of the TSS request.
-      enum:
-        - cancel
-      example: cancel
     FeeType:
       type: string
       enum:
@@ -4203,7 +4170,7 @@ components:
         - smart_contract_safe_wallets.transaction.updated
         - exchange_wallets.transaction.updated
       example: custodial_asset_wallets.transaction.updated
-      description: The event type.
+      description: 'The event type. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
     WebhookEventStatus:
       type: string
       enum:
@@ -4263,7 +4230,7 @@ components:
           example: Connect Timeout
     Endpoint:
       type: object
-      description: The data for webhook endpoint.
+      description: The information about the webhook endpoint.
       required:
         - url
         - subscribed_events
@@ -4272,22 +4239,22 @@ components:
         - status
       properties:
         url:
-          description: The URL of the webhook endpoint.
+          description: The webhook endpoint URL.
           maxLength: 500
           type: string
           format: url
           example: 'https://example.com/webhook'
         subscribed_events:
-          description: 'The list of events to enable for this endpoint. `[''*'']` indicates that all events are subscribed.'
+          description: 'The event types subscribed by a webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
           items:
             $ref: '#/components/schemas/WebhookEventType'
           type: array
         created_timestamp:
-          description: Time at which the object was created. Measured in seconds since the Unix epoch.
+          description: 'The time when the endpoint was registered, in Unix timestamp format, measured in seconds.'
           type: integer
           example: 1701396866
         id:
-          description: Unique identifier for the object.
+          description: The webhook endpoint ID.
           type: string
           format: uuid
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
@@ -4296,7 +4263,7 @@ components:
         description:
           description: The description of the webhook endpoint.
           type: string
-          example: Example webhook endpoint
+          example: My webhook endpoint
     EndpointStatus:
       type: string
       enum:
@@ -4307,7 +4274,14 @@ components:
         - STATUS_PENDING_UPDATE
         - STATUS_REJECT_ACTIVE
       example: STATUS_ACTIVE
-      description: The enumeration of webhook endpoint status.
+      description: |
+        The webhook endpoint status. Possible values include:
+        - `STATUS_ACTIVE`: The endpoint is currently in use.
+        - `STATUS_INACTIVE`: The endpoint has been revoked and can no longer receive webhook events.
+        - `STATUS_PENDING_ACTIVE`: The endpoint is pending approval and will be available for use once it is approved.
+        - `STATUS_PENDING_INACTIVE`: The endpoint is pending approval and will be revoked after approval, after which it can no longer receive webhook events.
+        - `STATUS_PENDING_UPDATE`: The endpoint is pending approval and will be updated after approval.
+        - `STATUS_REJECT_ACTIVE`: The request to activate the endpoint has been rejected.
     BaseStakeExtra:
       type: object
       description: Base stake extra.
@@ -5095,7 +5069,7 @@ components:
         description: The transaction hash of the UTXO.
       example: dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83
     keyGroupIdParam:
-      name: key_group_id
+      name: key_share_group_id
       in: path
       required: true
       description: The key share group ID.
@@ -5153,15 +5127,6 @@ components:
       schema:
         type: string
       example: '880311524363903326'
-    requiredTssRequestActionParam:
-      name: tss_request_action
-      in: query
-      description: |
-        The action of the TSS request to be taken. Possible values include:
-        - `cancel`: This action cancels the TSS request.
-      required: true
-      schema:
-        $ref: '#/components/schemas/TSSRequestAction'
     tssRequestIdParam:
       name: tss_request_id
       in: path
@@ -5172,18 +5137,18 @@ components:
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     requiredUpdateKeyGroupActionParam:
-      name: update_key_group_action
+      name: update_key_share_group_action
       in: query
       description: |
         The available actions of key share group update. Possible values include:
-        - `UpgradeToMainKeyGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+        - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
       required: true
       schema:
         type: string
         description: The available action of key group update.
         enum:
-          - UpgradeToMainKeyGroup
-        example: UpgradeToMainKeyGroup
+          - UpgradeToMainGroup
+        example: UpgradeToMainGroup
     vaultIdParam:
       name: vault_id
       in: path
@@ -5445,7 +5410,7 @@ components:
       name: endpoint_id
       in: path
       required: true
-      description: Unique id of the webhook endpoint
+      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/api-references/v2/developers--webhooks/list-webhook-endpoints).'
       schema:
         type: string
         format: uuid
@@ -5741,7 +5706,7 @@ components:
                 type: string
                 description: The target key share group ID.
                 example: '123456789012345678'
-              used_key_group_id:
+              source_key_group_id:
                 type: string
                 description: |
                   The used key share group ID.
@@ -5752,7 +5717,7 @@ components:
                 description: The parameters are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
                 type: object
                 properties:
-                  used_node_ids:
+                  node_ids:
                     type: array
                     items:
                       type: string
@@ -5888,7 +5853,7 @@ components:
                 Unstake: '#/components/schemas/EstimateUnstakeFee'
                 Withdraw: '#/components/schemas/EstimateWithdrawFee'
     createWebhookEndpointBody:
-      description: The request body to create a webhook endpoint
+      description: The request body to register a webhook endpoint.
       content:
         application/json:
           schema:
@@ -5898,12 +5863,12 @@ components:
               - url
             properties:
               url:
-                description: The URL of the webhook endpoint.
+                description: The webhook endpoint URL.
                 type: string
                 format: url
                 example: 'https://example.com/webhook'
               subscribed_events:
-                description: 'The list of events to subscribe for this endpoint, `[''*'']` indicates that all events are subscribed.'
+                description: 'The event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -5912,14 +5877,14 @@ components:
                 type: string
                 example: Example webhook endpoint
     updateWebhookBody:
-      description: The request body to update a webhook endpoint
+      description: The request body to update a webhook endpoint.
       content:
         application/json:
           schema:
             type: object
             properties:
               subscribed_events:
-                description: The list of events to subscribe for this endpoint
+                description: 'The new event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -5928,9 +5893,9 @@ components:
                 enum:
                   - STATUS_INACTIVE
                 example: STATUS_INACTIVE
-                description: The enumeration of webhook endpoint status.
+                description: The new status you want to set the webhook endpoint to.
               description:
-                description: The description of the webhook endpoint.
+                description: The webhook endpoint description.
                 type: string
                 example: My webhook endpoint
   responses:
@@ -6327,13 +6292,13 @@ components:
               status:
                 $ref: '#/components/schemas/TransactionStatus'
     createWebhookEndpointResponse:
-      description: Created a webhook endpoint successfully.
+      description: The request was successful.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Endpoint'
     getWebhookEndpointResponse:
-      description: Get webhook endpoint info successfully.
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6377,7 +6342,7 @@ components:
           schema:
             $ref: '#/components/schemas/WebhookEvent'
     getWebhookEventDefinitionsResponse:
-      description: Get webhook event definitions successfully.
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6392,6 +6357,7 @@ components:
                       $ref: '#/components/schemas/WebhookEventType'
                     description:
                       type: string
+                      description: The description of the webhook endpoint.
                       example: Occurred a transaction status updated
     retryWebhookEventResponse:
       description: The request was successful.

@@ -1,4 +1,4 @@
-description: The request body to create a webhook endpoint
+description: The request body to register a webhook endpoint.
 content:
   application/json:
     schema:
@@ -8,12 +8,12 @@ content:
         - url
       properties:
         url:
-          description: The URL of the webhook endpoint.
+          description: The webhook endpoint URL.
           type: string
           format: url
           example: 'https://example.com/webhook'
         subscribed_events:
-          description: The list of events to subscribe for this endpoint, `['*']` indicates that all events are subscribed.
+          description: The event types you want to subscribe to for this webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.
           items:
             $ref: '../../schemas/webhooks/event_type.yaml'
           type: array
