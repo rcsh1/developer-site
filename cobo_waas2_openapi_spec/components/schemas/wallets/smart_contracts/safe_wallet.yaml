@@ -12,7 +12,7 @@ allOf:
         pattern: "^0x[a-fA-F0-9]{40}$"
         example: '0x1234567890123456789012345678901234567890'
         description: The Smart Contract Wallet address. 
-      owners:
+      signers:
         type: array
         items:
           type: string
@@ -20,7 +20,7 @@ allOf:
           pattern: "^0x[a-fA-F0-9]{40}$"
           example: '0x1234567890123456789012345678901234567890'
         description: >-
-          The owners of the Smart Contract Wallet. 
+          The signers of the Smart Contract Wallet.
       threshold:
         type: integer
         minimum: 1

@@ -13,7 +13,7 @@ allOf:
         example: '0x1234567890123456789012345678901234567890'
         description: >- 
           The address of the Smart Contract Wallet. If this is not provided, Cobo will create a new Safe{Wallet} and set up Cobo Safe for you. In that case, the `threshold` and `owners` properties are required.
-      owners:
+      signers:
         type: array
         items:
           type: string
@@ -21,7 +21,7 @@ allOf:
           pattern: "^0x[a-fA-F0-9]{40}$"
           example: '0x1234567890123456789012345678901234567890'
         description: >-
-          The owners of the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}.
+          The signers of the Smart Contract Wallet. This property is required when creating a new Safe{Wallet}.
       threshold:
         type: integer 
         minimum: 1

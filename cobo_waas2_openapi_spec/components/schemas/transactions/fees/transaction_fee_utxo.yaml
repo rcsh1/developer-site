@@ -9,5 +9,9 @@ allOf:
     properties:
       fee_type:
         $ref: './fee_type.yaml'
+      fee_token_id:
+        type: string
+        description: The token ID of the transaction fee.
+        example: 'BTC'
   - $ref: './base_fee_price_utxo.yaml'
   - $ref: './fee_max_fee_amount.yaml'

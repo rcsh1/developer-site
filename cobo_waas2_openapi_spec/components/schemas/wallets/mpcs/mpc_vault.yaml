@@ -11,16 +11,10 @@ properties:
     description: The vault name.
   type:
     $ref: './mpc_vault_type.yaml'
-    description: |
-      The vault type. Possible values include:
-      - `OrgControlled`: This vault is a collection of Organization-Controlled Wallets.
-      
-      - `UserControlled`: This vault is a collection of User-Controlled Wallets.
   root_pubkeys:
     type: array
     items:
       $ref: './root_pubkey.yaml'
-      description: The vault's [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).
   create_timestamp:
     type: number
     format: int64
