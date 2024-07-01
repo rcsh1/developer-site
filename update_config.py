@@ -5,10 +5,10 @@ import sys
 
 def update():
     try:
-        os.system("cp cobo_waas2_openapi_spec/dev_openapi.yaml api-references/v2/")
+        os.system("cp v2/cobo_waas2_openapi_spec/dev_openapi.yaml api-references/")
         output = os.popen(
-            "npx @mintlify/scraping@latest openapi-file api-references/v2/dev_openapi.yaml "
-            "-o api-references/v2 | sed '1d'").read()
+            "npx @mintlify/scraping@latest openapi-file v2/api-references/dev_openapi.yaml "
+            "-o api-references/ | sed '1d'").read()
         write_data = json.loads(output)
 
         with open("mint.json", "r") as file:
