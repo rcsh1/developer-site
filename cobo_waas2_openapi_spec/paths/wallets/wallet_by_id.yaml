@@ -36,21 +36,3 @@ put:
       $ref: "../../components/responses/errors/400_bad_request.yaml"
     '404':
       $ref: "../../components/responses/errors/404_not_found.yaml"
-delete:
-  tags:
-    - Wallets
-  operationId: delete_wallet_by_id
-  summary: Delete wallet by ID
-  description: |
-      This operation deletes a specified wallet.
-    
-      <Note>This operation is applicable to Exchange Wallets only.</Note>
-  security:
-    - CoboAuth: []
-  responses:
-    '204':
-      description: Resource successfully deleted.
-    '400':
-      $ref: "../../components/responses/errors/400_bad_request.yaml"
-    '404':
-      $ref: "../../components/responses/errors/404_not_found.yaml"

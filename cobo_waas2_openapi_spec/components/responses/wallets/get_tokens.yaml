@@ -7,30 +7,6 @@ content:
           data:
             type: array
             items:
-              type: object
-              allOf:
-                - type: object
-                  properties:
-                    can_deposit:
-                      type: boolean
-                      description: |
-                        Whether the token can be deposited.
-
-                        - `true`: The token can be deposited.
-
-                        - `false`: The token cannot be deposited.
-                      default: false
-                      example: false
-                    can_withdraw:
-                      type: boolean
-                      description: |
-                        Whether the token can be withdrawn.
-
-                        - `true`: The token can be withdrawn.
-
-                        - `false`: The token cannot be withdrawn.
-                      default: false
-                      example: false
-                - $ref: '../../schemas/wallets/token.yaml'
+              $ref: '../../schemas/wallets/token_extended.yaml'
           pagination:
             $ref: '../../schemas/pagination/metadata.yaml'
