@@ -13,6 +13,9 @@ post:
     2. `detail_params` are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
   security:
     - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_key_group:manage
+        - mpc_user_controlled_key_group:manage
   parameters:
     - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
   requestBody:

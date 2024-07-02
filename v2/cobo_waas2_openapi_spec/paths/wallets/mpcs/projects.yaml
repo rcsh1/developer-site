@@ -7,6 +7,8 @@ post:
     This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
   security:
     - CoboAuth: []
+    - OAuth2:
+        - mpc_user_controlled_project:manage
   requestBody:
     $ref: "../../../components/request_bodies/wallets/mpcs/create_project.yaml"
   responses:

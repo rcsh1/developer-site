@@ -8,6 +8,9 @@ post:
   description: |
     This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
   operationId: retry_webhook_event
+  security:
+    - OAuth2:
+        - webhook:resend
   responses:
     '201':
       $ref: "../../components/responses/webhooks/retry_webhook_event.yaml"

@@ -32,6 +32,9 @@ post:
   summary: Register webhook endpoint
   description: This operation registers a new webhook endpoint for your organization.
   operationId: create_webhook_endpoint
+  security:
+    - OAuth2:
+        - webhook_url:edit
   requestBody:
     $ref: "../../components/request_bodies/webhooks/create_webhook_endpoint.yaml"
   responses:

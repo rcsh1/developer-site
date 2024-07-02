@@ -12,6 +12,9 @@ post:
 
   security:
     - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_vault:manage
+        - mpc_user_controlled_vault:manage
   requestBody:
     $ref: "../../../components/request_bodies/wallets/mpcs/create_vault.yaml"
   responses:

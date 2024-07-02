@@ -30,6 +30,9 @@ put:
 
   security:
     - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_vault:manage
+        - mpc_user_controlled_vault:manage
   parameters:
     - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
   requestBody:

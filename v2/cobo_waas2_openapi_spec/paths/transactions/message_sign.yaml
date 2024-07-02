@@ -11,6 +11,9 @@ post:
     Currently, only MPC Wallets support this type of transaction to sign a message. 
   security:
     - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_wallet:message_sign
+        - mpc_user_controlled_wallet:message_sign
   requestBody:
     $ref: "../../components/request_bodies/transactions/create_message_sign_transaction.yaml"
   responses:
