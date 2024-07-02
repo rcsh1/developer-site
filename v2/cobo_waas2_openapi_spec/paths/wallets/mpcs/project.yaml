@@ -29,6 +29,8 @@ put:
     This operation updates the `name` of the project specified by `project_id`.
   security:
     - CoboAuth: []
+    - OAuth2:
+        - mpc_user_controlled_project:manage
   parameters:
     - $ref: "../../../components/parameters/wallets/mpcs/project_id_path.yaml"
   requestBody:

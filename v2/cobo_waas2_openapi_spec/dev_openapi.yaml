@@ -264,9 +264,9 @@ paths:
       security:
         - CoboAuth: []
         - OAuth2:
-            - 'CUSTODIAL_ASSET_WALLET:CREATE'
-            - 'MPC_ORGANIZATION_CONTROLLED_WALLET:CREATE'
-            - 'MPC_USER_CONTROLLED_WALLET:CREATE'
+            - 'custodial_asset_wallet:create'
+            - 'mpc_organization_controlled_wallet:create'
+            - 'mpc_user_controlled_wallet:create'
       requestBody:
         $ref: '#/components/requestBodies/createWalletBody'
       responses:
@@ -338,6 +338,10 @@ paths:
         For Exchange Wallets, you can update the API key, API secret, and other information about your exchange accounts with this operation. For other wallet types, you can only update the wallet name.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'custodial_asset_wallet:edit'
+            - 'mpc_organization_controlled_wallet:edit'
+            - 'mpc_user_controlled_wallet:edit'
       requestBody:
         $ref: '#/components/requestBodies/updateWalletBody'
       responses:
@@ -467,6 +471,10 @@ paths:
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'custodial_asset_wallet:add'
+            - 'mpc_organization_controlled_wallet:add'
+            - 'mpc_user_controlled_wallet:add'
       requestBody:
         $ref: '#/components/requestBodies/createAddressBody'
       responses:
@@ -613,6 +621,8 @@ paths:
         This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_user_controlled_project:manage'
       requestBody:
         $ref: '#/components/requestBodies/createMpcProjectBody'
       responses:
@@ -670,6 +680,8 @@ paths:
         This operation updates the `name` of the project specified by `project_id`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_user_controlled_project:manage'
       parameters:
         - $ref: '#/components/parameters/projectIdParam'
       requestBody:
@@ -697,6 +709,9 @@ paths:
         2. If `vault_type` is `UserControlled`, then `project_id` is required.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_vault:manage'
+            - 'mpc_user_controlled_vault:manage'
       requestBody:
         $ref: '#/components/requestBodies/createMpcVaultBody'
       responses:
@@ -758,6 +773,9 @@ paths:
         This operation updates the name of the vault specified by `vault_id` to `name`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_vault:manage'
+            - 'mpc_user_controlled_vault:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -781,6 +799,9 @@ paths:
         This operation creates a key share group under the specified `vault_id` with the specified `group_type`, `node_count`, `threshold`, and `key_holders`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_key_group:manage'
+            - 'mpc_user_controlled_key_group:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -850,6 +871,9 @@ paths:
         The key share group to be updated is specified by `key_group_id` and `vault_id`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_key_group:manage'
+            - 'mpc_user_controlled_key_group:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
@@ -871,6 +895,9 @@ paths:
       description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_key_group:manage'
+            - 'mpc_user_controlled_key_group:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
@@ -899,6 +926,9 @@ paths:
         2. `detail_params` are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -957,6 +987,9 @@ paths:
         You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
@@ -1032,6 +1065,10 @@ paths:
         A transaction request for tracking is returned upon successful operation.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'custodial_asset_wallet:withdraw'
+            - 'mpc_organization_controlled_wallet:withdraw'
+            - 'mpc_user_controlled_wallet:withdraw'
       requestBody:
         $ref: '#/components/requestBodies/createTransferBody'
       responses:
@@ -1053,6 +1090,9 @@ paths:
         Currently, this operation only applies to blockchains that have a similar architecture to Ethereum.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_wallet:contract_call'
+            - 'mpc_user_controlled_wallet:contract_call'
       requestBody:
         $ref: '#/components/requestBodies/createSmartContractCallBody'
       responses:
@@ -1074,6 +1114,9 @@ paths:
         Currently, only MPC Wallets support this type of transaction to sign a message. 
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_wallet:message_sign'
+            - 'mpc_user_controlled_wallet:message_sign'
       requestBody:
         $ref: '#/components/requestBodies/createMessageSignBody'
       responses:
@@ -1284,6 +1327,9 @@ paths:
       summary: Register webhook endpoint
       description: This operation registers a new webhook endpoint for your organization.
       operationId: create_webhook_endpoint
+      security:
+        - OAuth2:
+            - 'webhook_url:edit'
       requestBody:
         $ref: '#/components/requestBodies/createWebhookEndpointBody'
       responses:
@@ -1311,6 +1357,9 @@ paths:
       summary: Update webhook endpoint
       description: This operation updates the information of a specified webhook endpoint.
       operationId: update_webhook_endpoint
+      security:
+        - OAuth2:
+            - 'webhook_url:edit'
       requestBody:
         $ref: '#/components/requestBodies/updateWebhookBody'
       responses:
@@ -1432,6 +1481,9 @@ paths:
       description: |
         This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event
+      security:
+        - OAuth2:
+            - 'webhook:resend'
       responses:
         '201':
           $ref: '#/components/responses/retryWebhookEventResponse'
@@ -1531,7 +1583,7 @@ components:
         icon_url:
           type: string
           description: The URL of the token icon.
-          example: 'https://static.waas.co/images/coins/ETH.png'
+          example: 'https://d.cobo.com/public/logos/USDT.png'
         token_address:
           type: string
           description: 'The token address, if applicable.'
@@ -6565,21 +6617,30 @@ components:
           authorizationUrl: 'https://auth.cobo.com/authorize'
           tokenUrl: 'https://auth.cobo.com/oauth/token'
           scopes:
-            'CUSTODIAL_ASSET_WALLET:CREATE': Create access to custodial asset wallets
-            'CUSTODIAL_ASSET_WALLET:ADD': Generate address access to custodial asset wallets
-            'CUSTODIAL_ASSET_WALLET:EDIT': Change wallet name access to custodial asset wallets
-            'CUSTODIAL_ASSET_WALLET:WITHDRAW': Withdraw access to custodial asset wallets
-            'MPC_ORGANIZATION_CONTROLLED_WALLET:CREATE': Create access to MPC organization-controlled wallets
-            'MPC_ORGANIZATION_CONTROLLED_WALLET:ADD': Generate address access to MPC organization-controlled wallets
-            'MPC_ORGANIZATION_CONTROLLED_WALLET:EDIT': Change wallet name access to MPC organization-controlled wallets
-            'MPC_ORGANIZATION_CONTROLLED_WALLET:WITHDRAW': Withdraw access to MPC organization-controlled wallets
-            'MPC_ORGANIZATION_CONTROLLED_WALLET:CONTRACT_CALL': Contract call access to MPC organization-controlled wallets
-            'MPC_ORGANIZATION_CONTROLLED_WALLET:MESSAGE_SIGN': Message sign access to MPC organization-controlled wallets
-            'MPC_USER_CONTROLLED_WALLET:CREATE': Create access to MPC user-controlled wallets
-            'MPC_USER_CONTROLLED_WALLET:ADD': Generate address access to MPC user-controlled wallets
-            'MPC_USER_CONTROLLED_WALLET:EDIT': Change wallet name access to MPC user-controlled wallets
-            'MPC_USER_CONTROLLED_WALLET:WITHDRAW': Withdraw access to MPC user-controlled wallets
-            'MPC_USER_CONTROLLED_WALLET:CONTRACT_CALL': Contract call access to MPC user-controlled wallets
-            'MPC_USER_CONTROLLED_WALLET:MESSAGE_SIGN': Message sign access to MPC user-controlled wallets
+            'custodial_asset_wallet:create': Create access to custodial asset wallets
+            'custodial_asset_wallet:add': Generate address access to custodial asset wallets
+            'custodial_asset_wallet:edit': Change wallet name access to custodial asset wallets
+            'custodial_asset_wallet:withdraw': Withdraw access to custodial asset wallets
+            'mpc_organization_controlled_wallet:create': Create access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:add': Generate address access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:edit': Change wallet name access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:withdraw': Withdraw access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:contract_call': Contract call access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:message_sign': Message sign access to MPC organization-controlled wallets
+            'mpc_organization_controlled_vault:manage': Create/Edit access to MPC organization-controlled vaults
+            'mpc_organization_controlled_key_group:manage': Create/Edit/Delete access to MPC organization-controlled key groups
+            'mpc_organization_controlled_tss_request:manage': Create/Cancel access to MPC organization-controlled tss requests
+            'mpc_user_controlled_wallet:create': Create access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:add': Generate address access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:edit': Change wallet name access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:withdraw': Withdraw access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:contract_call': Contract call access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:message_sign': Message sign access to MPC user-controlled wallets
+            'mpc_user_controlled_project:manage': Create/Edit access to MPC user-controlled projects
+            'mpc_user_controlled_vault:manage': Create/Edit access to MPC user-controlled vaults
+            'mpc_user_controlled_key_group:manage': Create/Edit/Delete access to MPC user-controlled key groups
+            'mpc_user_controlled_tss_request:manage': Create/Cancel access to MPC user-controlled tss requests
+            'webhook:resend': Resend access to webhook events
+            'webhook_url:edit': Create/Edit access to webhook urls
 security:
   - CoboAuth: []

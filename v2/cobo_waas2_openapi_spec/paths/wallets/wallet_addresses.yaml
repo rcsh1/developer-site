@@ -11,6 +11,10 @@ post:
     <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
   security:
     - CoboAuth: []
+    - OAuth2:
+        - custodial_asset_wallet:add
+        - mpc_organization_controlled_wallet:add
+        - mpc_user_controlled_wallet:add
   requestBody:
     $ref: "../../components/request_bodies/wallets/create_address.yaml"
   responses:

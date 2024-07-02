@@ -27,6 +27,10 @@ put:
     For Exchange Wallets, you can update the API key, API secret, and other information about your exchange accounts with this operation. For other wallet types, you can only update the wallet name.
   security:
     - CoboAuth: []
+    - OAuth2:
+        - custodial_asset_wallet:edit
+        - mpc_organization_controlled_wallet:edit
+        - mpc_user_controlled_wallet:edit
   requestBody:
     $ref: '../../components/request_bodies/wallets/update_wallet.yaml'
   responses:

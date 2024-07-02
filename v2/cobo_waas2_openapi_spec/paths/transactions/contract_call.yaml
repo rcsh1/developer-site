@@ -11,6 +11,9 @@ post:
     Currently, this operation only applies to blockchains that have a similar architecture to Ethereum.
   security:
     - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_wallet:contract_call
+        - mpc_user_controlled_wallet:contract_call
   requestBody:
     $ref: "../../components/request_bodies/transactions/create_smart_contract_call_transaction.yaml"
   responses:

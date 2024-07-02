@@ -11,6 +11,10 @@ post:
     A transaction request for tracking is returned upon successful operation.
   security:
     - CoboAuth: []
+    - OAuth2:
+        - custodial_asset_wallet:withdraw
+        - mpc_organization_controlled_wallet:withdraw
+        - mpc_user_controlled_wallet:withdraw
   requestBody:
     $ref: "../../components/request_bodies/transactions/create_transfer_transaction.yaml"
   responses:
