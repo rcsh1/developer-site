@@ -924,6 +924,29 @@ components:
       in: header
       name: BIZ-API-KEY
       description: The API key.
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.cobo.com/authorize
+          tokenUrl: https://auth.cobo.com/oauth/token
+          scopes:
+            CUSTODIAL_ASSET_WALLET:CREATE: Create access to custodial asset wallets
+            CUSTODIAL_ASSET_WALLET:ADD: Generate address access to custodial asset wallets
+            CUSTODIAL_ASSET_WALLET:EDIT: Change wallet name access to custodial asset wallets
+            CUSTODIAL_ASSET_WALLET:WITHDRAW: Withdraw access to custodial asset wallets
+            MPC_ORGANIZATION_CONTROLLED_WALLET:CREATE: Create access to MPC organization-controlled wallets
+            MPC_ORGANIZATION_CONTROLLED_WALLET:ADD: Generate address access to MPC organization-controlled wallets
+            MPC_ORGANIZATION_CONTROLLED_WALLET:EDIT: Change wallet name access to MPC organization-controlled wallets
+            MPC_ORGANIZATION_CONTROLLED_WALLET:WITHDRAW: Withdraw access to MPC organization-controlled wallets
+            MPC_ORGANIZATION_CONTROLLED_WALLET:CONTRACT_CALL: Contract call access to MPC organization-controlled wallets
+            MPC_ORGANIZATION_CONTROLLED_WALLET:MESSAGE_SIGN: Message sign access to MPC organization-controlled wallets
+            MPC_USER_CONTROLLED_WALLET:CREATE: Create access to MPC user-controlled wallets
+            MPC_USER_CONTROLLED_WALLET:ADD: Generate address access to MPC user-controlled wallets
+            MPC_USER_CONTROLLED_WALLET:EDIT: Change wallet name access to MPC user-controlled wallets
+            MPC_USER_CONTROLLED_WALLET:WITHDRAW: Withdraw access to MPC user-controlled wallets
+            MPC_USER_CONTROLLED_WALLET:CONTRACT_CALL: Contract call access to MPC user-controlled wallets
+            MPC_USER_CONTROLLED_WALLET:MESSAGE_SIGN: Message sign access to MPC user-controlled wallets
 
 security:
   - CoboAuth: []

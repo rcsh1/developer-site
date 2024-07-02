@@ -8,6 +8,11 @@ post:
 
   security:
     - CoboAuth: []
+    - OAuth2:
+        - CUSTODIAL_ASSET_WALLET:CREATE
+        - MPC_ORGANIZATION_CONTROLLED_WALLET:CREATE
+        - MPC_USER_CONTROLLED_WALLET:CREATE
+
   requestBody:
     $ref: "../../components/request_bodies/wallets/create_wallet.yaml"
   responses:
