@@ -1,34 +1,60 @@
-import os
+import subprocess
 import json
 import sys
+import traceback
+
+
+def process_spec_data(original_spec_data):
+    processed_spec_data = {}
+    for group in json.loads(original_spec_data):
+        processed_spec_data[group["group"]] = group["pages"]
+    return processed_spec_data
 
 
 def update():
     try:
-        os.system("cp v2/cobo_waas2_openapi_spec/dev_openapi.yaml api-references/")
-        output = os.popen(
-            "npx @mintlify/scraping@latest openapi-file v2/api-references/dev_openapi.yaml "
-            "-o api-references/ | sed '1d'").read()
-        write_data = json.loads(output)
+        source_file = "v2/cobo_waas2_openapi_spec/dev_openapi.yaml"
+        destination_dir = "v2/api-references/"
+        api_file = f"{destination_dir}/dev_openapi.yaml"
+        mint_file = "mint.json"
 
-        with open("mint.json", "r") as file:
-            file_data = json.load(file)
+        subprocess.run(["cp", source_file, destination_dir], check=True)
 
-        for write_group in write_data:
-            write_group_name = write_group["group"]
-            for index, file_group in enumerate(file_data["navigation"]):
-                file_group_name = file_group["group"]
-                if write_group_name == file_group_name:
-                    del file_data["navigation"][index]
+        command = [
+            "npx", "@mintlify/scraping@latest", "openapi-file", api_file, "-o", destination_dir
+        ]
+        original_spec_data = subprocess.run(command, capture_output=True, text=True).stdout.split('\n', 1)[1]
 
-        for write_group in write_data:
-            write_group["version"] = "V2"
-            file_data["navigation"].append(write_group)
+        with open(mint_file, "r") as file:
+            original_mint_json = json.load(file)
 
-        with open("mint.json", "w") as file:
-            json.dump(file_data, file, indent=2)
-    except Exception as e:
-        print(e)
+        processed_spec_data = process_spec_data(original_spec_data)
+
+        navigation_update = {
+            ("Wallets", "Version 2.0"): [
+                ("Wallets", 0),
+                ("Wallets - MPC Wallet", 1)
+            ],
+            ("Transactions", "Version 2.0"): [
+                ("Transactions", 0)
+            ],
+            ("Webhooks", "Version 2.0"): [
+                ("Developers - Webhooks", 0)
+            ]
+        }
+
+        for group in original_mint_json["navigation"]:
+            if "version" in group:
+                key = (group["group"], group["version"])
+                if key in navigation_update:
+                    for sub_group, index in navigation_update[key]:
+                        group["pages"][index]["pages"] = processed_spec_data[sub_group]
+
+        with open(mint_file, "w") as file:
+            json.dump(original_mint_json, file, indent=2)
+
+    except:
+        traceback.print_exc()
         sys.exit(1)
 
 
