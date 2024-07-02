@@ -33,7 +33,7 @@ def update():
         navigation_update = {
             ("Wallets", "Version 2.0"): [
                 ("Wallets", 0),
-                ("Wallets - MPC Wallet", 1)
+                ("Wallets - MPC Wallets", 1)
             ],
             ("Transactions", "Version 2.0"): [
                 ("Transactions", 0)
