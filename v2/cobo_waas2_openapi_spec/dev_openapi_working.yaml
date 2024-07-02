@@ -6838,7 +6838,7 @@ components:
 
               The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
-      description: The request was successful.
+      description: The information about the transactions.
       content:
         application/json:
           schema:
@@ -6851,7 +6851,7 @@ components:
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getTransactionByIdResponse:
-      description: The request was successful.
+      description: The information about a transaction.
       content:
         application/json:
           schema:
