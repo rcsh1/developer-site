@@ -4401,11 +4401,11 @@ components:
               type: string
               pattern: '^[0-9a-fA-F]{64}$'
               example: '0000000000000000000000000000000000000000000000000000000000000000'
-            lock_time:
-              description: The staking period in milliseconds.
+            stake_block_time:
+              description: The stake block time.
               type: integer
               format: int64
-              example: 1000000000000
+              example: 2000
     EigenLayerLstStakeExtra:
       allOf:
         - $ref: '#/components/schemas/BaseStakeExtra'
@@ -6338,7 +6338,7 @@ components:
 
               The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
-      description: The request was successful.
+      description: The information about the transactions.
       content:
         application/json:
           schema:
@@ -6351,7 +6351,7 @@ components:
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getTransactionByIdResponse:
-      description: The request was successful.
+      description: The information about the a transaction.
       content:
         application/json:
           schema:
