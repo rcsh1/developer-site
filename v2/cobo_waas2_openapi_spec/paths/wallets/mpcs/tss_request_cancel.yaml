@@ -7,13 +7,12 @@ post:
     This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
     
     You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
-  
 
   security:
     - CoboAuth: []
     - OAuth2:
-        - mpc_organization_controlled_key_group:manage
-        - mpc_user_controlled_key_group:manage
+        - mpc_organization_controlled_tss_request:manage
+        - mpc_user_controlled_tss_request:manage
   parameters:
     - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
     - $ref: "../../../components/parameters/wallets/mpcs/tss_request_id_path.yaml"

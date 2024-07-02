@@ -927,8 +927,8 @@ paths:
       security:
         - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_key_group:manage'
-            - 'mpc_user_controlled_key_group:manage'
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -988,8 +988,8 @@ paths:
       security:
         - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_key_group:manage'
-            - 'mpc_user_controlled_key_group:manage'
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
