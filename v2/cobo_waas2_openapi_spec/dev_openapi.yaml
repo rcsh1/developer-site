@@ -98,7 +98,7 @@ paths:
       description: |
         This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
 
-        It provides details such as chain ID, chain name, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
+        It provides details such as chain ID, symbol, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -118,7 +118,7 @@ paths:
       tags:
         - Wallets
       operationId: get_chain_by_id
-      summary: Retrieve chain information by ID
+      summary: Get chain information by ID
       description: |
         This operation retrieves the detailed information about a specified chain.
       security:
@@ -157,7 +157,7 @@ paths:
       tags:
         - Wallets
       operationId: get_token_by_id
-      summary: Retrieve token information by ID
+      summary: Get token information by ID
       description: |
         This operation retrieves the detailed information about a specified token.
       security:
@@ -464,9 +464,9 @@ paths:
       tags:
         - Wallets
       operationId: generate_wallet_address
-      summary: Generate new address in wallet
+      summary: Generate new addresses in wallet
       description: |
-        This operation creates one or more addresses for a specified wallet.
+        This operation generates one or more addresses for a specified wallet.
 
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
@@ -510,9 +510,9 @@ paths:
       tags:
         - Wallets
       operationId: get_address_by_id
-      summary: Retrieve address information by ID
+      summary: Get address information by ID
       description: |
-        This operation retrieves the detailed information about a specified wallet under a specified wallet.
+        This operation retrieves the detailed information about a specified address within a wallet.
       security:
         - CoboAuth: []
       parameters:
@@ -657,7 +657,7 @@ paths:
       description: |
         This operation retrieves detailed information about a project specified by `project_id`.
 
-        You can retrieve `project_id`s by calling [List all projects](/api-references/v2/wallets--mpc-wallet/list-all-mpc-projects).
+        You can retrieve `project_id`s by calling [List all projects](/v2/api-references/wallets--mpc-wallet/list-all-mpc-projects).
       security:
         - CoboAuth: []
       parameters:
@@ -750,7 +750,7 @@ paths:
       description: |
         This operation retrieves detailed information about the vault specified by `vault_id`.
 
-        You can obtain `vault_id`s by calling [List all vaults](/api-references/v2/wallets--mpc-wallet/list-all-mpc-vaults).
+        You can obtain `vault_id`s by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
       security:
         - CoboAuth: []
       parameters:
@@ -975,6 +975,33 @@ paths:
           $ref: '#/components/responses/notFoundError'
         '503':
           $ref: '#/components/responses/serviceUnavailableError'
+  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallets
+      operationId: get_tss_request
+      summary: Get TSS request
+      description: |
+        This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
+
+        You can retrieve `tss_request_id`s by calling [List TSS requests](/v2/api-references/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/tssRequestIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTssRequestResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
   '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel':
     post:
       tags:
@@ -984,7 +1011,7 @@ paths:
       description: |
         This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
 
-        You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+        You can retrieve `tss_request_id`s by calling [List TSS requests](/v2/api-references/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1002,19 +1029,18 @@ paths:
           $ref: '#/components/responses/forbiddenError'
         '429':
           $ref: '#/components/responses/tooManyRequestError'
-  /transactions/fee_price:
+  /transactions/fee_rates:
     get:
       tags:
         - Transactions
       operationId: list_fee_rates
       summary: Get fee rates
       description: |
-        This operation retrieves current transaction fee rates on the blockchain based on the specified chain ID or token ID.
+        This operation retrieves the transaction fee model and transaction fee rates for a specified chain.
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/optionalChainIdParam'
-        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/requiredChainIdParam'
       responses:
         '200':
           $ref: '#/components/responses/getChainFeeResponse'
@@ -1393,20 +1419,13 @@ paths:
       operationId: list_events
       parameters:
         - $ref: '#/components/parameters/endpointIdParam'
-        - description: |
-            The event status. Possible values include:
-            - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
-            - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, the WaaS service will retry delivering the event.
-            - `Failed`: The event cannot be delivered and the WaaS service will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.
-          in: query
+        - in: query
           name: status
           schema:
             $ref: '#/components/schemas/WebhookEventStatus'
           required: false
           example: Success
-        - description: |
-            The event type.
-          in: query
+        - in: query
           name: type
           schema:
             $ref: '#/components/schemas/WebhookEventType'
@@ -1502,11 +1521,11 @@ components:
         before:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `foo`, the returned data ends before the object with the object ID `foo`.'
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data ends before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
         after:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `bar`, the returned data starts after the object with the object ID `bar`.'
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
     ErrorResponse:
       type: object
       description: The response of a failed request.
@@ -1600,7 +1619,7 @@ components:
           example: true
     ExtendedTokenInfo:
       type: object
-      description: The token information with deposit/withdraw status.
+      description: 'The token information, including whether the token can be deposited or withdrawn.'
       allOf:
         - type: object
           properties:
@@ -1734,7 +1753,7 @@ components:
           type: string
           description: The token ID.
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
-          example: ETH_USDT
+          example: BTC
         balance:
           type: object
           description: The balance details.
@@ -2168,7 +2187,7 @@ components:
               example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
             main_wallet_id:
               type: string
-              description: The ID of main account wallet.
+              description: The ID of the Exchange Wallet (Main Account).
               example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     CurveType:
       type: string
@@ -2459,7 +2478,7 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: ETH
@@ -2479,19 +2498,16 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: ETH
-        rate:
-          type: object
-          properties:
-            slow:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-            recommended:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-            fast:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        slow:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        recommended:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        fast:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
     UtxoFeePrice:
       type: object
       description: The transaction fee price for UTXO-based chains.
@@ -2502,7 +2518,7 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: BTC
@@ -2524,7 +2540,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH_USDT
@@ -2542,11 +2558,11 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
-            rate:
+            rates:
               type: object
               required:
                 - recommended
@@ -2573,11 +2589,11 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
-            rate:
+            rates:
               type: object
               required:
                 - recommended
@@ -2604,11 +2620,11 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
-            rate:
+            rates:
               type: object
               required:
                 - recommended
@@ -2660,7 +2676,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
@@ -2678,7 +2694,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
@@ -2696,7 +2712,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: BTC
@@ -3007,12 +3023,14 @@ components:
       enum:
         - API
         - Web
+        - App
         - External
       example: API
       description: |
         The transaction initiator type. Possible values include:
           - `API`: An API initiator, who initiates the transaction by using the WaaS API.
-          - `Web`: An API initiator, who initiates the transaction from Cobo Portal.
+          - `Web`: An web initiator, who initiates the transaction from Cobo Portal.
+          - `App`: An App initiator, who initiates the transaction from Cobo Portal App.
           - `External`: An external initiator, who initiates the transaction outside Cobo.
     TransactionSigner:
       type: object
@@ -3640,7 +3658,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH_USDT
@@ -3988,18 +4006,6 @@ components:
           type: string
           description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          type: string
-          enum:
-            - Transfer
-            - ContractCall
-            - MessageSign
-          example: Transfer
-          description: |
-            The request type. Possible values include:
-              - `Transfer`: A request to transfer tokens.
-              - `ContractCall`: A request to interact with a smart contract.
-              - `MessageSign`: A request to sign a message.
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
@@ -4034,8 +4040,6 @@ components:
           type: string
           description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
         chain_id:
           type: string
           description: The chain ID.
@@ -4094,7 +4098,17 @@ components:
           description: The request ID that is unique within your Organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
+          type: string
+          enum:
+            - Transfer
+            - ContractCall
+            - MessageSign
+          example: Transfer
+          description: |
+            The request type. Possible values include:
+              - `Transfer`: A request to transfer tokens.
+              - `ContractCall`: A request to interact with a smart contract.
+              - `MessageSign`: A request to sign a message.
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
@@ -4121,7 +4135,7 @@ components:
           description: The request ID that is unique within your Organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
+          $ref: '#/components/schemas/EstimateFeeTransfer/properties/request_type'
         chain_id:
           type: string
           description: The chain ID.
@@ -4239,8 +4253,6 @@ components:
           type: string
           description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
         chain_id:
           type: string
           description: The chain ID.
@@ -4316,7 +4328,12 @@ components:
         - wallets.transaction.failed
         - wallets.transaction.succeeded
       example: wallets.transaction.created
-      description: The event type. The event occurs when there is an update of the transaction status.
+      description: |-
+        The event type.
+          - wallets.transaction.created: This event occurs when a transaction is created.
+          - wallets.transaction.updated: This event occurs when a transaction is created or when there is an update of the transaction status.
+          - wallets.transaction.failed: This event occurs when a transaction fails.
+          - wallets.transaction.succeeded: This event occurs when a transaction has been successfully completed.
     WebhookEventStatus:
       type: string
       enum:
@@ -4391,7 +4408,7 @@ components:
           format: url
           example: 'https://example.com/webhook'
         subscribed_events:
-          description: 'The event types subscribed by a webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+          description: The event types subscribed by a webhook endpoint.
           items:
             $ref: '#/components/schemas/WebhookEventType'
           type: array
@@ -4960,7 +4977,7 @@ components:
       name: before
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `foo`, the request will retrieve a list of data objects that end before the object with the object ID `foo`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that end before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
@@ -4971,7 +4988,7 @@ components:
       name: after
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `bar`, the request will retrieve a list of data objects that start after the object with the object ID `bar`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
@@ -5009,6 +5026,14 @@ components:
       name: chain_id
       in: path
       required: true
+      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      schema:
+        type: string
+      example: ETH
+    requiredChainIdParam:
+      name: chain_id
+      in: query
+      required: true
       description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.'
       schema:
         type: string
@@ -5017,7 +5042,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
       schema:
         type: string
       example: ETH
@@ -5025,7 +5050,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: A list of chain IDs.
+      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
       schema:
         type: array
         items:
@@ -5557,7 +5582,7 @@ components:
       name: event_id
       in: path
       required: true
-      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/api-references/v2/developers--webhooks/list-all-events).'
+      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/v2/api-references/developers--webhooks/list-all-events).'
       schema:
         type: string
         format: uuid
@@ -5566,7 +5591,7 @@ components:
       name: endpoint_id
       in: path
       required: true
-      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/api-references/v2/developers--webhooks/list-webhook-endpoints).'
+      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/v2/api-references/developers--webhooks/list-webhook-endpoints).'
       schema:
         type: string
         format: uuid
@@ -5692,7 +5717,7 @@ components:
                 description: The ID of the Exchange Wallet (Main Account).
                 example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     createAddressBody:
-      description: The request body to add address to a wallet.
+      description: The request body to generates addresses for a specified wallet.
       content:
         application/json:
           schema:
@@ -6002,14 +6027,15 @@ components:
                 format: url
                 example: 'https://example.com/webhook'
               subscribed_events:
-                description: 'The event types you want to subscribe to for this webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                description: |
+                  The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
               description:
                 description: The description of the webhook endpoint.
                 type: string
-                example: Example webhook endpoint
+                example: My webhook endpoint
     updateWebhookBody:
       description: The request body to update a webhook endpoint.
       content:
@@ -6018,7 +6044,7 @@ components:
             type: object
             properties:
               subscribed_events:
-                description: 'The new event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                description: 'The new event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -6027,7 +6053,7 @@ components:
                 enum:
                   - STATUS_INACTIVE
                 example: STATUS_INACTIVE
-                description: 'The new status you want to set the webhook endpoint to. If you set `status` to `STATUS_INACTIVE`, the endpoint will be revoked once the request is approved, meaning it will no longer receive any webhook events.'
+                description: 'The new status you want to set the webhook endpoint to. If you set `status` to `STATUS_INACTIVE`, the endpoint will be revoked, meaning it will no longer receive any webhook events.'
               description:
                 description: The webhook endpoint description.
                 type: string
@@ -6166,7 +6192,7 @@ components:
           schema:
             $ref: '#/components/schemas/WalletInfo'
     createWalletResponse:
-      description: Successfully created wallet
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6178,7 +6204,7 @@ components:
           schema:
             $ref: '#/components/schemas/WalletInfo'
     deleteWalletResponse:
-      description: Successfully submit delete wallet request
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6190,9 +6216,9 @@ components:
                 type: boolean
                 example: true
                 description: |
-                  Whether the delete operation has been successfully submitted.
-                  - `true`: The operation has been successfully submitted.
-                  - `false`: The operation has not been submitted.
+                  Whether the request to delete the wallet has been successfully submitted.
+                  - `true`: The request to delete the wallet has been successfully submitted.
+                  - `false`: The request to delete the wallet has not been submitted.
     spendableListResponse:
       description: The request was successful.
       content:
@@ -6507,7 +6533,7 @@ components:
                     description:
                       type: string
                       description: The description of the webhook event type.
-                      example: Occurs when the transaction status of a Custodial Wallet (Asset) is updated
+                      example: Occurs when the transaction status is updated
     retryWebhookEventResponse:
       description: The request was successful.
       content:

@@ -13,11 +13,12 @@ content:
           format: url
           example: 'https://example.com/webhook'
         subscribed_events:
-          description: The event types you want to subscribe to for this webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.
+          description: >
+            The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
           items:
             $ref: '../../schemas/webhooks/event_type.yaml'
           type: array
         description:
           description: The description of the webhook endpoint.
           type: string
-          example: 'Example webhook endpoint'
+          example: 'My webhook endpoint'
