@@ -663,7 +663,7 @@ paths:
       description: |
         This operation retrieves detailed information about a project specified by `project_id`.
 
-        You can retrieve `project_id`s by calling [List all projects](/api-references/v2/wallets--mpc-wallet/list-all-mpc-projects).
+        You can retrieve `project_id`s by calling [List all projects](/v2/api-references/wallets--mpc-wallet/list-all-mpc-projects).
       security:
         - CoboAuth: []
       parameters:
@@ -756,7 +756,7 @@ paths:
       description: |
         This operation retrieves detailed information about the vault specified by `vault_id`.
 
-        You can obtain `vault_id`s by calling [List all vaults](/api-references/v2/wallets--mpc-wallet/list-all-mpc-vaults).
+        You can obtain `vault_id`s by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
       security:
         - CoboAuth: []
       parameters:
@@ -990,7 +990,7 @@ paths:
       description: |
         This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
 
-        You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+        You can retrieve `tss_request_id`s by calling [List TSS requests](/v2/api-references/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
         - OAuth2:
@@ -5508,7 +5508,7 @@ components:
       name: chain_id
       in: path
       required: true
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
       schema:
         type: string
       example: ETH
@@ -5516,7 +5516,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
       schema:
         type: string
       example: ETH
@@ -6056,7 +6056,7 @@ components:
       name: event_id
       in: path
       required: true
-      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/api-references/v2/developers--webhooks/list-all-events).'
+      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/v2/api-references/developers--webhooks/list-all-events).'
       schema:
         type: string
         format: uuid
@@ -6065,7 +6065,7 @@ components:
       name: endpoint_id
       in: path
       required: true
-      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/api-references/v2/developers--webhooks/list-webhook-endpoints).'
+      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/v2/api-references/developers--webhooks/list-webhook-endpoints).'
       schema:
         type: string
         format: uuid
