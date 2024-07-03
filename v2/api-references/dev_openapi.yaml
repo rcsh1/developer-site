@@ -263,6 +263,10 @@ paths:
         This operation creates a wallet with the provided information.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'custodial_asset_wallet:create'
+            - 'mpc_organization_controlled_wallet:create'
+            - 'mpc_user_controlled_wallet:create'
       requestBody:
         $ref: '#/components/requestBodies/createWalletBody'
       responses:
@@ -334,6 +338,10 @@ paths:
         For Exchange Wallets, you can update the API key, API secret, and other information about your exchange accounts with this operation. For other wallet types, you can only update the wallet name.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'custodial_asset_wallet:edit'
+            - 'mpc_organization_controlled_wallet:edit'
+            - 'mpc_user_controlled_wallet:edit'
       requestBody:
         $ref: '#/components/requestBodies/updateWalletBody'
       responses:
@@ -463,6 +471,10 @@ paths:
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'custodial_asset_wallet:add'
+            - 'mpc_organization_controlled_wallet:add'
+            - 'mpc_user_controlled_wallet:add'
       requestBody:
         $ref: '#/components/requestBodies/createAddressBody'
       responses:
@@ -609,6 +621,8 @@ paths:
         This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_user_controlled_project:manage'
       requestBody:
         $ref: '#/components/requestBodies/createMpcProjectBody'
       responses:
@@ -666,6 +680,8 @@ paths:
         This operation updates the `name` of the project specified by `project_id`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_user_controlled_project:manage'
       parameters:
         - $ref: '#/components/parameters/projectIdParam'
       requestBody:
@@ -693,6 +709,9 @@ paths:
         2. If `vault_type` is `UserControlled`, then `project_id` is required.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_vault:manage'
+            - 'mpc_user_controlled_vault:manage'
       requestBody:
         $ref: '#/components/requestBodies/createMpcVaultBody'
       responses:
@@ -754,6 +773,9 @@ paths:
         This operation updates the name of the vault specified by `vault_id` to `name`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_vault:manage'
+            - 'mpc_user_controlled_vault:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -777,6 +799,9 @@ paths:
         This operation creates a key share group under the specified `vault_id` with the specified `group_type`, `node_count`, `threshold`, and `key_holders`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_key_group:manage'
+            - 'mpc_user_controlled_key_group:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -846,6 +871,9 @@ paths:
         The key share group to be updated is specified by `key_group_id` and `vault_id`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_key_group:manage'
+            - 'mpc_user_controlled_key_group:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
@@ -867,6 +895,9 @@ paths:
       description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_key_group:manage'
+            - 'mpc_user_controlled_key_group:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
@@ -895,6 +926,9 @@ paths:
         2. `detail_params` are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -953,6 +987,9 @@ paths:
         You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
@@ -1028,6 +1065,10 @@ paths:
         A transaction request for tracking is returned upon successful operation.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'custodial_asset_wallet:withdraw'
+            - 'mpc_organization_controlled_wallet:withdraw'
+            - 'mpc_user_controlled_wallet:withdraw'
       requestBody:
         $ref: '#/components/requestBodies/createTransferBody'
       responses:
@@ -1049,6 +1090,9 @@ paths:
         Currently, this operation only applies to blockchains that have a similar architecture to Ethereum.
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_wallet:contract_call'
+            - 'mpc_user_controlled_wallet:contract_call'
       requestBody:
         $ref: '#/components/requestBodies/createSmartContractCallBody'
       responses:
@@ -1070,6 +1114,9 @@ paths:
         Currently, only MPC Wallets support this type of transaction to sign a message. 
       security:
         - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_wallet:message_sign'
+            - 'mpc_user_controlled_wallet:message_sign'
       requestBody:
         $ref: '#/components/requestBodies/createMessageSignBody'
       responses:
@@ -1280,6 +1327,9 @@ paths:
       summary: Register webhook endpoint
       description: This operation registers a new webhook endpoint for your organization.
       operationId: create_webhook_endpoint
+      security:
+        - OAuth2:
+            - 'webhook_url:edit'
       requestBody:
         $ref: '#/components/requestBodies/createWebhookEndpointBody'
       responses:
@@ -1307,6 +1357,9 @@ paths:
       summary: Update webhook endpoint
       description: This operation updates the information of a specified webhook endpoint.
       operationId: update_webhook_endpoint
+      security:
+        - OAuth2:
+            - 'webhook_url:edit'
       requestBody:
         $ref: '#/components/requestBodies/updateWebhookBody'
       responses:
@@ -1342,25 +1395,18 @@ paths:
       operationId: list_events
       parameters:
         - $ref: '#/components/parameters/endpointIdParam'
-        - description: |
-            The event status. Possible values include:
-            - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
-            - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, the WaaS service will retry delivering the event.
-            - `Failed`: The event cannot be delivered and the WaaS service will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.
-          in: query
+        - in: query
           name: status
           schema:
             $ref: '#/components/schemas/WebhookEventStatus'
           required: false
           example: Success
-        - description: |
-            The event type.
-          in: query
+        - in: query
           name: type
           schema:
             $ref: '#/components/schemas/WebhookEventType'
           required: false
-          example: custodial_asset_wallets.transaction.updated
+          example: wallets.transaction.updated
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -1428,6 +1474,9 @@ paths:
       description: |
         This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event
+      security:
+        - OAuth2:
+            - 'webhook:resend'
       responses:
         '201':
           $ref: '#/components/responses/retryWebhookEventResponse'
@@ -1448,11 +1497,11 @@ components:
         before:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `foo`, the returned data ends before the object with the object ID `foo`.'
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data ends before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
         after:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `bar`, the returned data starts after the object with the object ID `bar`.'
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
     ErrorResponse:
       type: object
       description: The response of a failed request.
@@ -1527,7 +1576,7 @@ components:
         icon_url:
           type: string
           description: The URL of the token icon.
-          example: 'https://static.waas.co/images/coins/ETH.png'
+          example: 'https://d.cobo.com/public/logos/USDT.png'
         token_address:
           type: string
           description: 'The token address, if applicable.'
@@ -4256,14 +4305,17 @@ components:
     WebhookEventType:
       type: string
       enum:
-        - custodial_asset_wallets.transaction.updated
-        - custodial_web3_wallets.transaction.updated
-        - mpc_user_controlled_wallets.transaction.updated
-        - mpc_organization_controlled_wallets.transaction.updated
-        - smart_contract_safe_wallets.transaction.updated
-        - exchange_wallets.transaction.updated
-      example: custodial_asset_wallets.transaction.updated
-      description: 'The event type. The {wallet_type}.transaction_updated event occurs when there is an update of the transaction status for the corresponding wallet type.'
+        - wallets.transaction.created
+        - wallets.transaction.updated
+        - wallets.transaction.failed
+        - wallets.transaction.succeeded
+      example: wallets.transaction.created
+      description: |-
+        The event type.
+          - wallets.transaction.created: This event occurs when a transaction is created.
+          - wallets.transaction.updated: This event occurs when a transaction is created or when there is an update of the transaction status.
+          - wallets.transaction.failed: This event occurs when a transaction fails.
+          - wallets.transaction.succeeded: This event occurs when a transaction has been successfully completed.
     WebhookEventStatus:
       type: string
       enum:
@@ -4338,7 +4390,7 @@ components:
           format: url
           example: 'https://example.com/webhook'
         subscribed_events:
-          description: 'The event types subscribed by a webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+          description: The event types subscribed by a webhook endpoint.
           items:
             $ref: '#/components/schemas/WebhookEventType'
           type: array
@@ -4397,11 +4449,11 @@ components:
               type: string
               pattern: '^[0-9a-fA-F]{64}$'
               example: '0000000000000000000000000000000000000000000000000000000000000000'
-            lock_time:
-              description: The staking period in milliseconds.
+            stake_block_time:
+              description: The stake block time.
               type: integer
               format: int64
-              example: 1000000000000
+              example: 2000
     EigenLayerLstStakeExtra:
       allOf:
         - $ref: '#/components/schemas/BaseStakeExtra'
@@ -4486,29 +4538,28 @@ components:
           type: integer
           format: int64
           example: 1640995200000
+    ActivityInitiator:
+      type: object
+      properties:
+        initiator:
+          type: string
+          example: vanya@cobo.com
+          description: The initiator of the staking activity.
     CreateStakeActivity:
       type: object
       required:
-        - protocol_id
         - amount
         - fee
         - request_id
         - wallet_id
         - address
         - pool_id
+        - extra
       properties:
-        request_id:
-          type: string
-          description: Unique id of the request.
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         wallet_id:
           type: string
           example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
           description: The id of the wallet to stake.
-        initiator:
-          type: string
-          example: vanya@cobo.com
-          description: The initiator of the staking activity.
         address:
           type: string
           example: '0x0000000000000000000000000000000000000000'
@@ -4548,10 +4599,6 @@ components:
           type: string
           example: '100.00'
           description: The amount to stake
-        initiator:
-          type: string
-          example: vanya@cobo.com
-          description: The initiator of the staking activity.
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     CreateUnstakeActivity:
@@ -4568,10 +4615,6 @@ components:
           type: string
           example: '100.00'
           description: The amount to stake
-        initiator:
-          type: string
-          example: vanya@cobo.com
-          description: The initiator of the staking activity.
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     ActivityStatus:
@@ -4832,6 +4875,9 @@ components:
           description: The validator info of the stake.
           type: object
           properties:
+            icon_url:
+              type: string
+              example: 'https://example.com/logo.png'
             public_key:
               type: string
               example: '0000000000000000000000000000000000000000000000000000000000000000'
@@ -4913,7 +4959,7 @@ components:
       name: before
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `foo`, the request will retrieve a list of data objects that end before the object with the object ID `foo`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that end before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
@@ -4924,7 +4970,7 @@ components:
       name: after
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `bar`, the request will retrieve a list of data objects that start after the object with the object ID `bar`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
@@ -5905,19 +5951,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateStakeActivity'
+            allOf:
+              - $ref: '#/components/schemas/CreateStakeActivity'
+              - $ref: '#/components/schemas/ActivityInitiator'
     createWithdrawActivityBody:
       description: The request body to create a withdraw activity.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateWithdrawActivity'
+            allOf:
+              - $ref: '#/components/schemas/CreateWithdrawActivity'
+              - $ref: '#/components/schemas/ActivityInitiator'
     createUnstakeActivityBody:
       description: The request body to create a unstake activity.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateUnstakeActivity'
+            allOf:
+              - $ref: '#/components/schemas/CreateUnstakeActivity'
+              - $ref: '#/components/schemas/ActivityInitiator'
     estimateStakeActivityFeeBody:
       description: The request body to create a get estimate fee of a staking activity.
       content:
@@ -5949,14 +6001,15 @@ components:
                 format: url
                 example: 'https://example.com/webhook'
               subscribed_events:
-                description: 'The event types you want to subscribe to for this webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                description: |
+                  The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
               description:
                 description: The description of the webhook endpoint.
                 type: string
-                example: Example webhook endpoint
+                example: My webhook endpoint
     updateWebhookBody:
       description: The request body to update a webhook endpoint.
       content:
@@ -5965,7 +6018,7 @@ components:
             type: object
             properties:
               subscribed_events:
-                description: 'The new event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                description: 'The new event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -5974,7 +6027,7 @@ components:
                 enum:
                   - STATUS_INACTIVE
                 example: STATUS_INACTIVE
-                description: 'The new status you want to set the webhook endpoint to. If you set `status` to `STATUS_INACTIVE`, the endpoint will be revoked once the request is approved, meaning it will no longer receive any webhook events.'
+                description: 'The new status you want to set the webhook endpoint to. If you set `status` to `STATUS_INACTIVE`, the endpoint will be revoked, meaning it will no longer receive any webhook events.'
               description:
                 description: The webhook endpoint description.
                 type: string
@@ -6125,11 +6178,13 @@ components:
           schema:
             $ref: '#/components/schemas/WalletInfo'
     deleteWalletResponse:
-      description: Successfully updated address
+      description: Successfully submit delete wallet request
       content:
         application/json:
           schema:
             type: object
+            required:
+              - submitted
             properties:
               submitted:
                 type: boolean
@@ -6332,7 +6387,7 @@ components:
 
               The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
-      description: The request was successful.
+      description: The information about the transactions.
       content:
         application/json:
           schema:
@@ -6345,7 +6400,7 @@ components:
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getTransactionByIdResponse:
-      description: The request was successful.
+      description: The information about a transaction.
       content:
         application/json:
           schema:
@@ -6452,7 +6507,7 @@ components:
                     description:
                       type: string
                       description: The description of the webhook event type.
-                      example: Occurs when the transaction status of a Custodial Wallet (Asset) is updated
+                      example: Occurs when the transaction status is updated
     retryWebhookEventResponse:
       description: The request was successful.
       content:
@@ -6552,5 +6607,37 @@ components:
       in: header
       name: BIZ-API-KEY
       description: The API key.
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://auth.cobo.com/authorize'
+          tokenUrl: 'https://auth.cobo.com/oauth/token'
+          scopes:
+            'custodial_asset_wallet:create': Create access to custodial asset wallets
+            'custodial_asset_wallet:add': Generate address access to custodial asset wallets
+            'custodial_asset_wallet:edit': Change wallet name access to custodial asset wallets
+            'custodial_asset_wallet:withdraw': Withdraw access to custodial asset wallets
+            'mpc_organization_controlled_wallet:create': Create access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:add': Generate address access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:edit': Change wallet name access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:withdraw': Withdraw access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:contract_call': Contract call access to MPC organization-controlled wallets
+            'mpc_organization_controlled_wallet:message_sign': Message sign access to MPC organization-controlled wallets
+            'mpc_organization_controlled_vault:manage': Create/Edit access to MPC organization-controlled vaults
+            'mpc_organization_controlled_key_group:manage': Create/Edit/Delete access to MPC organization-controlled key groups
+            'mpc_organization_controlled_tss_request:manage': Create/Cancel access to MPC organization-controlled tss requests
+            'mpc_user_controlled_wallet:create': Create access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:add': Generate address access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:edit': Change wallet name access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:withdraw': Withdraw access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:contract_call': Contract call access to MPC user-controlled wallets
+            'mpc_user_controlled_wallet:message_sign': Message sign access to MPC user-controlled wallets
+            'mpc_user_controlled_project:manage': Create/Edit access to MPC user-controlled projects
+            'mpc_user_controlled_vault:manage': Create/Edit access to MPC user-controlled vaults
+            'mpc_user_controlled_key_group:manage': Create/Edit/Delete access to MPC user-controlled key groups
+            'mpc_user_controlled_tss_request:manage': Create/Cancel access to MPC user-controlled tss requests
+            'webhook:resend': Resend access to webhook events
+            'webhook_url:edit': Create/Edit access to webhook urls
 security:
   - CoboAuth: []

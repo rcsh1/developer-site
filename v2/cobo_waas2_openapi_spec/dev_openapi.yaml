@@ -1395,20 +1395,13 @@ paths:
       operationId: list_events
       parameters:
         - $ref: '#/components/parameters/endpointIdParam'
-        - description: |
-            The event status. Possible values include:
-            - `Success`: The event has been delivered, and the webhook endpoint has responded to the event.
-            - `Retrying`: The event has been delivered, but the webhook endpoint has not responded. In this case, the WaaS service will retry delivering the event.
-            - `Failed`: The event cannot be delivered and the WaaS service will stop retrying. This may occur if the number of retries reaches 10, or if the event has been delivered but the webhook endpoint responded with an error.
-          in: query
+        - in: query
           name: status
           schema:
             $ref: '#/components/schemas/WebhookEventStatus'
           required: false
           example: Success
-        - description: |
-            The event type.
-          in: query
+        - in: query
           name: type
           schema:
             $ref: '#/components/schemas/WebhookEventType'
@@ -1504,11 +1497,11 @@ components:
         before:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `foo`, the returned data ends before the object with the object ID `foo`.'
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data ends before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
         after:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `bar`, the returned data starts after the object with the object ID `bar`.'
+          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
     ErrorResponse:
       type: object
       description: The response of a failed request.
@@ -4317,7 +4310,12 @@ components:
         - wallets.transaction.failed
         - wallets.transaction.succeeded
       example: wallets.transaction.created
-      description: The event type. The event occurs when there is an update of the transaction status.
+      description: |-
+        The event type.
+          - wallets.transaction.created: This event occurs when a transaction is created.
+          - wallets.transaction.updated: This event occurs when a transaction is created or when there is an update of the transaction status.
+          - wallets.transaction.failed: This event occurs when a transaction fails.
+          - wallets.transaction.succeeded: This event occurs when a transaction has been successfully completed.
     WebhookEventStatus:
       type: string
       enum:
@@ -4392,7 +4390,7 @@ components:
           format: url
           example: 'https://example.com/webhook'
         subscribed_events:
-          description: 'The event types subscribed by a webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+          description: The event types subscribed by a webhook endpoint.
           items:
             $ref: '#/components/schemas/WebhookEventType'
           type: array
@@ -4961,7 +4959,7 @@ components:
       name: before
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `foo`, the request will retrieve a list of data objects that end before the object with the object ID `foo`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that end before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
@@ -4972,7 +4970,7 @@ components:
       name: after
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `bar`, the request will retrieve a list of data objects that start after the object with the object ID `bar`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
@@ -6003,14 +6001,15 @@ components:
                 format: url
                 example: 'https://example.com/webhook'
               subscribed_events:
-                description: 'The event types you want to subscribe to for this webhook endpoint. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                description: |
+                  The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
               description:
                 description: The description of the webhook endpoint.
                 type: string
-                example: Example webhook endpoint
+                example: My webhook endpoint
     updateWebhookBody:
       description: The request body to update a webhook endpoint.
       content:
@@ -6019,7 +6018,7 @@ components:
             type: object
             properties:
               subscribed_events:
-                description: 'The new event types you want to subscribe to for this webhook endpoint. `[''*'']` indicates subscribing to all event types. The {wallet_type}.transaction_updated event occurs when there is any update of the transaction status for the corresponding wallet type.'
+                description: 'The new event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -6028,7 +6027,7 @@ components:
                 enum:
                   - STATUS_INACTIVE
                 example: STATUS_INACTIVE
-                description: 'The new status you want to set the webhook endpoint to. If you set `status` to `STATUS_INACTIVE`, the endpoint will be revoked once the request is approved, meaning it will no longer receive any webhook events.'
+                description: 'The new status you want to set the webhook endpoint to. If you set `status` to `STATUS_INACTIVE`, the endpoint will be revoked, meaning it will no longer receive any webhook events.'
               description:
                 description: The webhook endpoint description.
                 type: string
@@ -6508,7 +6507,7 @@ components:
                     description:
                       type: string
                       description: The description of the webhook event type.
-                      example: Occurs when the transaction status of a Custodial Wallet (Asset) is updated
+                      example: Occurs when the transaction status is updated
     retryWebhookEventResponse:
       description: The request was successful.
       content:
