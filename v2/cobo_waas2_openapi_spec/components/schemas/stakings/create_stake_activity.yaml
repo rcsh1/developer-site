@@ -1,25 +1,17 @@
 type: object
 required:
-  - protocol_id
   - amount
   - fee
   - request_id
   - wallet_id
   - address
   - pool_id
+  - extra
 properties:
-  request_id:
-    type: string
-    description: Unique id of the request.
-    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
   wallet_id:
     type: string
     example: '0111039d-27fb-49ba-b172-6e0aa80e37ec'
     description: The id of the wallet to stake.
-  initiator:
-    type: string
-    example: 'vanya@cobo.com'
-    description: The initiator of the staking activity.
   address:
     type: string
     example: '0x0000000000000000000000000000000000000000'
