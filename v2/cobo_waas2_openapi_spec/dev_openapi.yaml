@@ -98,7 +98,7 @@ paths:
       description: |
         This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
 
-        It provides details such as chain ID, chain name, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
+        It provides details such as the chain ID, chain symbol, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -118,7 +118,7 @@ paths:
       tags:
         - Wallets
       operationId: get_chain_by_id
-      summary: Retrieve chain information by ID
+      summary: Get chain information by ID
       description: |
         This operation retrieves the detailed information about a specified chain.
       security:
@@ -157,7 +157,7 @@ paths:
       tags:
         - Wallets
       operationId: get_token_by_id
-      summary: Retrieve token information by ID
+      summary: Get token information by ID
       description: |
         This operation retrieves the detailed information about a specified token.
       security:
@@ -464,9 +464,9 @@ paths:
       tags:
         - Wallets
       operationId: generate_wallet_address
-      summary: Generate new address in wallet
+      summary: Generate new addresses in wallet
       description: |
-        This operation creates one or more addresses for a specified wallet.
+        This operation generates one or more addresses for a specified wallet.
 
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
@@ -510,9 +510,9 @@ paths:
       tags:
         - Wallets
       operationId: get_address_by_id
-      summary: Retrieve address information by ID
+      summary: Get address information by ID
       description: |
-        This operation retrieves the detailed information about a specified wallet under a specified wallet.
+        This operation retrieves the detailed information about a specified address within a wallet.
       security:
         - CoboAuth: []
       parameters:
@@ -1595,7 +1595,7 @@ components:
           example: true
     ExtendedTokenInfo:
       type: object
-      description: The token information with deposit/withdraw status.
+      description: 'The token information, including whether the token can be deposited or withdrawn.'
       allOf:
         - type: object
           properties:
@@ -1729,7 +1729,7 @@ components:
           type: string
           description: The token ID.
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
-          example: ETH_USDT
+          example: BTC
         balance:
           type: object
           description: The balance details.
@@ -2163,7 +2163,7 @@ components:
               example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
             main_wallet_id:
               type: string
-              description: The ID of main account wallet.
+              description: The ID of the Exchange Wallet (Main Account).
               example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     CurveType:
       type: string
@@ -5691,7 +5691,7 @@ components:
                 description: The ID of the Exchange Wallet (Main Account).
                 example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     createAddressBody:
-      description: The request body to add address to a wallet.
+      description: The request body to generates addresses for a specified wallet.
       content:
         application/json:
           schema:
@@ -6166,7 +6166,7 @@ components:
           schema:
             $ref: '#/components/schemas/WalletInfo'
     createWalletResponse:
-      description: Successfully created wallet
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6178,7 +6178,7 @@ components:
           schema:
             $ref: '#/components/schemas/WalletInfo'
     deleteWalletResponse:
-      description: Successfully submit delete wallet request
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -6190,9 +6190,9 @@ components:
                 type: boolean
                 example: true
                 description: |
-                  Whether the delete operation has been successfully submitted.
-                  - `true`: The operation has been successfully submitted.
-                  - `false`: The operation has not been submitted.
+                  Whether the request to delete the wallet has been successfully submitted.
+                  - `true`: The request to delete the wallet has been successfully submitted.
+                  - `false`: The request to delete the wallet has not been submitted.
     spendableListResponse:
       description: The request was successful.
       content:
