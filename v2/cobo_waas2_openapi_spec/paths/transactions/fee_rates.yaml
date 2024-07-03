@@ -2,10 +2,9 @@ get:
   tags:
     - Transactions
   operationId: list_fee_rates
-  summary: List chain fee rates
+  summary: Get fee rates
   description: |
-    This operation retrieves the transaction fee model and transaction fee rates for a specified chain.
-    
+    This operation retrieves current transaction fee rates on the blockchain based on the specified chain ID.
   security:
     - CoboAuth: []
   parameters:
