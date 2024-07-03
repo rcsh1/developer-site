@@ -5363,12 +5363,15 @@ components:
       type: object
       description: The staking info.
       required:
-        - stake_id
+        - id
+        - wallet_id
+        - address
         - pool_id
-        - amount
+        - amounts
         - status
-        - created_at
-        - updated_at
+        - validator_info
+        - created_time
+        - updated_time
       properties:
         id:
           description: The unique id of the stake.
@@ -5410,12 +5413,12 @@ components:
           description: The rewards info of the stake.
           type: object
           example: {}
-        created_at:
+        created_time:
           description: The time when the stake was created.
           type: integer
           format: int64
           example: 1640995200000
-        updated_at:
+        updated_time:
           description: The time when the stake was last updated.
           type: integer
           format: int64
