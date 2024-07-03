@@ -180,7 +180,7 @@ paths:
     $ref: "./paths/wallets/exchanges/subaccounts_by_apikey.yaml"
 
   # transactions
-  /transactions/fee_price:
+  /transactions/fee_rates:
     $ref: "./paths/transactions/fee_rates.yaml"
   /transactions/estimate_fee:
     $ref: "./paths/transactions/estimate_fee.yaml"
@@ -582,6 +582,8 @@ components:
       $ref: "./components/parameters/wallets/asset_id_required.yaml"
     chainIdParam:
       $ref: "./components/parameters/wallets/chain_id_path.yaml"
+    requiredChainIdParam:
+      $ref: "./components/parameters/wallets/chain_id_required.yaml"
     optionalChainIdParam:
       $ref: "./components/parameters/wallets/chain_id_optional.yaml"
     optionalChainIdListParam:

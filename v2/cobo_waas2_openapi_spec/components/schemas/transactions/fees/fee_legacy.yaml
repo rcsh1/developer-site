@@ -10,11 +10,11 @@ allOf:
     properties:
       fee_type:
         $ref: './fee_type.yaml'
-      fee_token_id:
+      token_id:
         type: string
         description: The token ID of the transaction fee.
         example: 'ETH'
-      rate:
+      rates:
         type: object
         required:
           - recommended
