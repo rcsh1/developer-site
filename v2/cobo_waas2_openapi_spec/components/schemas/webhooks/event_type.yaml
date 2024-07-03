@@ -1,12 +1,10 @@
 type: string
 enum:
-  - custodial_asset_wallets.transaction.updated
-  - custodial_web3_wallets.transaction.updated
-  - mpc_user_controlled_wallets.transaction.updated
-  - mpc_organization_controlled_wallets.transaction.updated
-  - smart_contract_safe_wallets.transaction.updated
-  - exchange_wallets.transaction.updated
+  - wallets.transaction.created
+  - wallets.transaction.updated
+  - wallets.transaction.failed
+  - wallets.transaction.succeeded
 
-example: custodial_asset_wallets.transaction.updated
+example: wallets.transaction.created
 description: >-
-  The event type. The {wallet_type}.transaction_updated event occurs when there is an update of the transaction status for the corresponding wallet type.
+  The event type. The event occurs when there is an update of the transaction status.

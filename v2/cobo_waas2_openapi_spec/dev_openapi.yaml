@@ -1413,7 +1413,7 @@ paths:
           schema:
             $ref: '#/components/schemas/WebhookEventType'
           required: false
-          example: custodial_asset_wallets.transaction.updated
+          example: wallets.transaction.updated
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -4312,14 +4312,12 @@ components:
     WebhookEventType:
       type: string
       enum:
-        - custodial_asset_wallets.transaction.updated
-        - custodial_web3_wallets.transaction.updated
-        - mpc_user_controlled_wallets.transaction.updated
-        - mpc_organization_controlled_wallets.transaction.updated
-        - smart_contract_safe_wallets.transaction.updated
-        - exchange_wallets.transaction.updated
-      example: custodial_asset_wallets.transaction.updated
-      description: 'The event type. The {wallet_type}.transaction_updated event occurs when there is an update of the transaction status for the corresponding wallet type.'
+        - wallets.transaction.created
+        - wallets.transaction.updated
+        - wallets.transaction.failed
+        - wallets.transaction.succeeded
+      example: wallets.transaction.created
+      description: The event type. The event occurs when there is an update of the transaction status.
     WebhookEventStatus:
       type: string
       enum:
@@ -4542,29 +4540,28 @@ components:
           type: integer
           format: int64
           example: 1640995200000
+    ActivityInitiator:
+      type: object
+      properties:
+        initiator:
+          type: string
+          example: vanya@cobo.com
+          description: The initiator of the staking activity.
     CreateStakeActivity:
       type: object
       required:
-        - protocol_id
         - amount
         - fee
         - request_id
         - wallet_id
         - address
         - pool_id
+        - extra
       properties:
-        request_id:
-          type: string
-          description: Unique id of the request.
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         wallet_id:
           type: string
           example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
           description: The id of the wallet to stake.
-        initiator:
-          type: string
-          example: vanya@cobo.com
-          description: The initiator of the staking activity.
         address:
           type: string
           example: '0x0000000000000000000000000000000000000000'
@@ -4604,10 +4601,6 @@ components:
           type: string
           example: '100.00'
           description: The amount to stake
-        initiator:
-          type: string
-          example: vanya@cobo.com
-          description: The initiator of the staking activity.
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     CreateUnstakeActivity:
@@ -4624,10 +4617,6 @@ components:
           type: string
           example: '100.00'
           description: The amount to stake
-        initiator:
-          type: string
-          example: vanya@cobo.com
-          description: The initiator of the staking activity.
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     ActivityStatus:
@@ -4888,6 +4877,9 @@ components:
           description: The validator info of the stake.
           type: object
           properties:
+            icon_url:
+              type: string
+              example: 'https://example.com/logo.png'
             public_key:
               type: string
               example: '0000000000000000000000000000000000000000000000000000000000000000'
@@ -5961,19 +5953,25 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateStakeActivity'
+            allOf:
+              - $ref: '#/components/schemas/CreateStakeActivity'
+              - $ref: '#/components/schemas/ActivityInitiator'
     createWithdrawActivityBody:
       description: The request body to create a withdraw activity.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateWithdrawActivity'
+            allOf:
+              - $ref: '#/components/schemas/CreateWithdrawActivity'
+              - $ref: '#/components/schemas/ActivityInitiator'
     createUnstakeActivityBody:
       description: The request body to create a unstake activity.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateUnstakeActivity'
+            allOf:
+              - $ref: '#/components/schemas/CreateUnstakeActivity'
+              - $ref: '#/components/schemas/ActivityInitiator'
     estimateStakeActivityFeeBody:
       description: The request body to create a get estimate fee of a staking activity.
       content:
