@@ -981,6 +981,33 @@ paths:
           $ref: '#/components/responses/notFoundError'
         '503':
           $ref: '#/components/responses/serviceUnavailableError'
+  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallets
+      operationId: get_tss_request
+      summary: Get TSS request
+      description: |
+        This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
+
+        You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/tssRequestIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTssRequestResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
   '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel':
     post:
       tags:
