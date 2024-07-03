@@ -1007,11 +1007,9 @@ paths:
       tags:
         - Transactions
       operationId: list_fee_rates
-      summary: List chain fee rates
+      summary: Get fee rates
       description: |
-        This operation retrieves the transaction fee model and transaction fee rates for a specified chain or a specified token.
-
-        <Note>You must specify either the chain id or token id.</Note>
+        This operation retrieves current transaction fee rates on the blockchain based on the specified chain ID or token ID.
       security:
         - CoboAuth: []
       parameters:
@@ -2301,7 +2299,7 @@ components:
         org_id:
           type: string
           example: f3b4a616-9c43-462e-8cb4-343e304fee64
-          description: The Organization ID.
+          description: The organization ID.
         name:
           type: string
           example: Project name
@@ -2719,7 +2717,7 @@ components:
           Fixed: '#/components/schemas/FixedFee'
     Transaction:
       type: object
-      description: The information about the a transaction.
+      description: The information about a transaction.
       required:
         - transaction_id
         - transaction_type
@@ -2741,7 +2739,7 @@ components:
           example: '20231213122855000000000000000000'
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: web_send_by_user_327_1610444045047
         type:
           $ref: '#/components/schemas/TransactionType'
@@ -2895,9 +2893,10 @@ components:
         is_loop:
           type: boolean
           description: |
-            Whether the transfer is a Cobo Superloop transfer. 
-              - `true`: The transfer is a Superloop transfer.
-              - `false`: The transfer is not a Superloop transfer.
+            Whether the transfer is a Loop transfer. For more information about Loop, see [the website](https://loop.top/).
+
+            - `true`: The transfer is a Loop transfer.
+            - `false`: The transfer is not a Loop transfer.
           example: false
         created_time:
           type: number
@@ -3143,7 +3142,7 @@ components:
           - `Withdrawal`: A withdrawal transaction.
           - `TokenApproval`: A transaction that grants permission to access your tokens. 
           - `ContractCall`: A transaction that interacts with a smart contract.
-          - `TransactionFeePayment`: A transaction that initiated from Fee Station to pay your transaction fees.
+          - `TransactionFeePayment`: A transaction that is initiated from Fee Station to pay your transaction fees.
           - `RawMessage`: A transaction that signs a message. 
     MpcSigningGroup:
       type: object
@@ -3736,7 +3735,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
@@ -3748,7 +3747,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     BaseTransferSource:
       type: object
@@ -3987,7 +3986,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
           type: string
@@ -4033,7 +4032,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
           $ref: '#/components/schemas/Transfer/properties/request_type'
@@ -4238,7 +4237,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
           $ref: '#/components/schemas/Transfer/properties/request_type'
@@ -5393,7 +5392,7 @@ components:
       name: request_id
       in: query
       required: false
-      description: The request ID that is unique within your Organization to track your request.
+      description: The request ID that is unique within your organization to track your request.
       schema:
         type: string
       example: web_send_by_user_327_1610444045047
@@ -6384,7 +6383,7 @@ components:
             items:
               $ref: '#/components/schemas/FeeRate'
             description: |
-              The fee price for the specified chain or token. 
+              The fee rate for the specified chain or token. 
 
               The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
@@ -6433,7 +6432,7 @@ components:
             properties:
               request_id:
                 type: string
-                description: The request ID that is unique within your Organization to track your request.
+                description: The request ID that is unique within your organization to track your request.
                 example: f47ac10b-58cc-4372-a567-0e02b2c3d479
               transaction_id:
                 type: string
