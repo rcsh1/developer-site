@@ -13,7 +13,7 @@ With Cobo Wallet-as-a-Service, you can create and manage deposit addresses for y
 
 ## Create Addresses
 
-You can create up to 200 addresses by using [Cobo SDKs](https://github.com/CoboGlobal) and corresponding APIs ([Custodial Wallet API](/api-references/custody-wallet/new_addresses), [MPC Wallet API](/api-references/mpc-wallet/mpc_generate_addresses) )
+You can create up to 200 addresses by using [Cobo SDKs](https://github.com/CoboGlobal) and corresponding APIs ([Custodial Wallet API](/v1/api-references/custody-wallet/new_addresses), [MPC Wallet API](/v1/api-references/mpc-wallet/mpc_generate_addresses) )
 
 **Custodial Wallet**
 <CodeGroup>
@@ -132,7 +132,7 @@ public class CobоCustodyApiClientExample {
 ```
 </Accordion>
 
-You need to specify the `Coin` field in the format of **Chain Code_Token Code** (e.g., “ETH_USDT”, “TRON_USDC”). Token Code is not required for native coins (e.g., “BTC”, “ETH”). You can query the types of coins supported by your wallet via the [Get Supported Coins](/api-references/custody-wallet/get_supported_coins).
+You need to specify the `Coin` field in the format of **Chain Code_Token Code** (e.g., “ETH_USDT”, “TRON_USDC”). Token Code is not required for native coins (e.g., “BTC”, “ETH”). You can query the types of coins supported by your wallet via the [Get Supported Coins](/v1/api-references/custody-wallet/get_supported_coins).
 
 These addresses can be used to receive coins under the same chain, and EVM addresses can be used to receive coins for all EVM-compatible chains.
 
@@ -142,7 +142,7 @@ Please make sure you have added coins on Cobo Custody Web before creating any de
 
 ## Manage Addresses
 
-You can view your address list using the Get Address History ([Cusotidal Wallet API](/api-references/custody-wallet/address_history), [MPC Wallet API](/api-references/mpc-wallet/mpc_list_addresses)).
+You can view your address list using the Get Address History ([Cusotidal Wallet API](/v1/api-references/custody-wallet/address_history), [MPC Wallet API](/v1/api-references/mpc-wallet/mpc_list_addresses)).
 This API allows you to retrieve addresses by coin types. Each API request can retrieve up to 20 addresses, in either ascending or descending order.
 
 **Cusotidal Wallet**
