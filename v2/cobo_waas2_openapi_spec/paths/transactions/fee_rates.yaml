@@ -4,14 +4,12 @@ get:
   operationId: list_fee_rates
   summary: List chain fee rates
   description: |
-    This operation retrieves the transaction fee model and transaction fee rates for a specified chain or a specified token.
+    This operation retrieves the transaction fee model and transaction fee rates for a specified chain.
     
-    <Note>You must specify either the chain id or token id.</Note>
   security:
     - CoboAuth: []
   parameters:
-    - $ref: "../../components/parameters/wallets/chain_id_optional.yaml"
-    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/chain_id_required.yaml"
   responses:
     '200':
       $ref: "../../components/responses/transactions/get_fee_rates.yaml"

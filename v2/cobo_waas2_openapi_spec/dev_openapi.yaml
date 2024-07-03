@@ -98,7 +98,7 @@ paths:
       description: |
         This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
 
-        It provides details such as the chain ID, chain symbol, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
+        It provides details such as chain ID, symbol, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -984,7 +984,7 @@ paths:
       description: |
         This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
 
-        You can retrieve `tss_request_id`s by calling [List TSS requests](/api-references/v2/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+        You can retrieve `tss_request_id`s by calling [List TSS requests](/v2/api-references/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1029,21 +1029,18 @@ paths:
           $ref: '#/components/responses/forbiddenError'
         '429':
           $ref: '#/components/responses/tooManyRequestError'
-  /transactions/fee_price:
+  /transactions/fee_rates:
     get:
       tags:
         - Transactions
       operationId: list_fee_rates
       summary: List chain fee rates
       description: |
-        This operation retrieves the transaction fee model and transaction fee rates for a specified chain or a specified token.
-
-        <Note>You must specify either the chain id or token id.</Note>
+        This operation retrieves the transaction fee model and transaction fee rates for a specified chain.
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/optionalChainIdParam'
-        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/requiredChainIdParam'
       responses:
         '200':
           $ref: '#/components/responses/getChainFeeResponse'
@@ -2481,7 +2478,7 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: ETH
@@ -2501,19 +2498,16 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: ETH
-        rate:
-          type: object
-          properties:
-            slow:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-            recommended:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-            fast:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        slow:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        recommended:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        fast:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
     UtxoFeePrice:
       type: object
       description: The transaction fee price for UTXO-based chains.
@@ -2524,7 +2518,7 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: BTC
@@ -2546,7 +2540,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH_USDT
@@ -2564,11 +2558,11 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
-            rate:
+            rates:
               type: object
               required:
                 - recommended
@@ -2595,11 +2589,11 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
-            rate:
+            rates:
               type: object
               required:
                 - recommended
@@ -2626,11 +2620,11 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
-            rate:
+            rates:
               type: object
               required:
                 - recommended
@@ -2682,7 +2676,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
@@ -2700,7 +2694,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
@@ -2718,7 +2712,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: BTC
@@ -3028,12 +3022,14 @@ components:
       enum:
         - API
         - Web
+        - App
         - External
       example: API
       description: |
         The transaction initiator type. Possible values include:
           - `API`: An API initiator, who initiates the transaction by using the WaaS API.
-          - `Web`: An API initiator, who initiates the transaction from Cobo Portal.
+          - `Web`: An web initiator, who initiates the transaction from Cobo Portal.
+          - `App`: An App initiator, who initiates the transaction from Cobo Portal App.
           - `External`: An external initiator, who initiates the transaction outside Cobo.
     TransactionSigner:
       type: object
@@ -3661,7 +3657,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH_USDT
@@ -4009,18 +4005,6 @@ components:
           type: string
           description: The request ID that is unique within your Organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          type: string
-          enum:
-            - Transfer
-            - ContractCall
-            - MessageSign
-          example: Transfer
-          description: |
-            The request type. Possible values include:
-              - `Transfer`: A request to transfer tokens.
-              - `ContractCall`: A request to interact with a smart contract.
-              - `MessageSign`: A request to sign a message.
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
@@ -4055,8 +4039,6 @@ components:
           type: string
           description: The request ID that is unique within your Organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
         chain_id:
           type: string
           description: The chain ID.
@@ -4115,7 +4097,17 @@ components:
           description: The request ID that is unique within your Organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
+          type: string
+          enum:
+            - Transfer
+            - ContractCall
+            - MessageSign
+          example: Transfer
+          description: |
+            The request type. Possible values include:
+              - `Transfer`: A request to transfer tokens.
+              - `ContractCall`: A request to interact with a smart contract.
+              - `MessageSign`: A request to sign a message.
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
@@ -4142,7 +4134,7 @@ components:
           description: The request ID that is unique within your Organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
+          $ref: '#/components/schemas/EstimateFeeTransfer/properties/request_type'
         chain_id:
           type: string
           description: The chain ID.
@@ -4260,8 +4252,6 @@ components:
           type: string
           description: The request ID that is unique within your Organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
         chain_id:
           type: string
           description: The chain ID.
@@ -5036,6 +5026,14 @@ components:
       in: path
       required: true
       description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      schema:
+        type: string
+      example: ETH
+    requiredChainIdParam:
+      name: chain_id
+      in: query
+      required: true
+      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.'
       schema:
         type: string
       example: ETH
