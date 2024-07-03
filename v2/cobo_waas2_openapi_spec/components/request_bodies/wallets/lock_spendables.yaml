@@ -1,0 +1,23 @@
+description: The request body of the Lock/Unlock UTXOs operation.
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - token_id
+        - tx_hash
+        - vout_n
+      properties:
+        token_id:
+          type: string
+          description: The token ID.
+          example: 'BTC'
+        tx_hash:
+          type: string
+          description: The transaction hash.
+          example: '9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb'
+        vout_n:
+          type: integer
+          description: The output index of the UTXO.
+          example: 0
+

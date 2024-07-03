@@ -1,0 +1,44 @@
+type: object
+description: The information about the Exchange Wallet as the transaction destination.
+title: Exchange Wallets
+required:
+  - destination_type
+  - exchange_id
+  - wallet_id
+  - asset_id
+  - amount
+properties:
+  destination_type:
+    $ref: './destination_type.yaml'
+  exchange_id:
+    $ref: '../../../wallets/exchanges/exchange_id.yaml'
+  wallet_id:
+    type: string
+    description: The wallet ID.
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  sub_wallet_id:
+    type: string
+    description: The exchange trading account or the sub-wallet ID. 
+    example: 'Asset'
+  token_id:
+    type: string
+    description: The token ID.
+    example: 'ETH_USDT'
+  asset_id:
+    type: string
+    description: The asset ID. It can be used to group token balance. 
+    example: 'USDT'
+  address:
+    type: string
+    description: The destination address.
+    example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+  memo:
+    type: string
+    description: The memo that identifies a transaction in order to credit the correct account. For transfers out of Cobo Portal, it is highly recommended to include a memo for the chains such as XRP, EOS, XLM, IOST, BNB_BNB, ATOM, LUNA, and TON.
+    example: "82840924"
+  amount:
+    type: string
+    description: >
+      The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
+    example: '1.5'

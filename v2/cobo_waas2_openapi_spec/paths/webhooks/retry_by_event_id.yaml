@@ -1,0 +1,24 @@
+parameters:
+  - $ref: "../../components/parameters/webhooks/event_id_path.yaml"
+  - $ref: "../../components/parameters/webhooks/endpoint_id_path_param.yaml"
+post:
+  tags:
+    - Developers - Webhooks
+  summary: Retry event by ID
+  description: |
+    This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
+  operationId: retry_webhook_event
+  security:
+    - OAuth2:
+        - webhook:resend
+  responses:
+    '201':
+      $ref: "../../components/responses/webhooks/retry_webhook_event.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

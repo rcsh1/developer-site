@@ -1,0 +1,963 @@
+openapi: 3.0.3
+
+info:
+  title: Cobo Wallet as a Service 2.0
+  description: |
+    Cobo WaaS 2.0 enables you to programmatically access Cobo's full suite of
+    crypto wallet technologies with powerful and flexible access controls.
+
+    # Wallet technologies
+    - Custodial Wallet
+    - MPC Wallet
+    - Smart Contract Wallet (Based on Safe{Wallet}, to be supported later)
+    - Exchange Wallet(To be supported later)
+    
+    # Risk Control technologies
+    - Workflow
+    - Access Control List (ACL)
+
+    # Risk Control targets
+    - Wallet Management
+      - User/team and their permission management
+      - Risk control configurations, e.g. whitelist, blacklist, rate-limiting etc.
+    - Blockchain Interaction
+      - Crypto transfer
+      - Smart Contract Invocation
+
+    # Important
+    HTTPS only. RESTful, resource oriented
+
+    # Get Started
+    Set up your APIs or get authorization
+
+    # Authentication and Authorization
+    CoboAuth
+
+    # Request and Response
+    application/json
+
+    # Error Handling
+
+    ### Common error codes
+    | Error Code | Description |
+    | -- | -- |
+    | `2000` | Internal error |
+    | `2002` | Unsupported HTTP method |
+    | `2003` | Missing required parameters |
+    | `2006` | Illegal parameter format or value |
+    | `2010` | Exceeded frequency limit |
+    | `2020` | Missing action |
+    | `2021` | Missing handler |
+    | `2022` | Missing required request header |
+    | `2023` | Verification failed |
+    | `2024` | Authentication failed |
+    | `2025` | Forbidden |
+    | `2026` | Too many requests |
+    | `2027` | Exceed quota limit |
+    | `2028` | Not found |
+    | `2029` | Invalid status |
+    | `2040` | Duplicated key |
+
+    ### API-specific error codes
+    For error codes that are dedicated to a specific API, see the Error codes section in each API specification, for example, /v2/wallets.
+
+    # Rate and Usage Limiting
+
+    # Pagination
+    # Support
+    [Developer Hub](https://cobo.com/developers)
+
+  termsOfService: https://cobo.com/waas/tos/
+  license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Cobo WaaS
+    url: https://www.cobo.com/waas
+    email: support@cobo.com
+  version: 1.0.0
+servers:
+  - url: https://api.dev.cobo.com/v2
+    description: Development environment
+  - url: https://api.cobo.com/v2
+    description: Production environment
+
+tags:
+  - name: Wallets
+    description: Operations related to all wallets.
+  - name: Wallets - MPC Wallets
+    description: Operations related to mpc wallet.
+  - name: Wallets - Exchange Wallet
+    description: Operations related to exchange wallet.
+  - name: Transactions
+    description: Operations related to all transactions.
+  - name: Developers - Webhooks
+    description: Operations related to webhooks.
+  - name: Stakings
+    description: Operations related to staking.
+  - name: OAuth
+    description: Operations related to OAuth.
+
+paths:
+  # wallets
+  /wallets/chains:
+    $ref: "./paths/wallets/chains.yaml"
+  /wallets/chains/{chain_id}:
+    $ref: "./paths/wallets/chain_by_id.yaml"
+#  /wallets/assets:
+#    $ref: "./paths/wallets/assets.yaml"
+  /wallets/tokens:
+    $ref: "./paths/wallets/tokens.yaml"
+  /wallets/tokens/{token_id}:
+    $ref: "./paths/wallets/token_by_id.yaml"
+  /wallets/supported_chains:
+    $ref: "./paths/wallets/supported_chains.yaml"
+  /wallets/supported_tokens:
+    $ref: "./paths/wallets/supported_tokens.yaml"
+  /wallets/enabled_chains:
+    $ref: "./paths/wallets/enabled_chains.yaml"
+  /wallets/enabled_tokens:
+    $ref: "./paths/wallets/enabled_tokens.yaml"
+  /wallets:
+    $ref: "./paths/wallets/wallets.yaml"
+  /wallets/{wallet_id}:
+    $ref: "./paths/wallets/wallet_by_id.yaml"
+  /wallets/{wallet_id}/delete:
+    $ref: "./paths/wallets/wallet_by_id_delete.yaml"
+  /wallets/{wallet_id}/spendables:
+    $ref: "./paths/wallets/spendables.yaml"
+  /wallets/{wallet_id}/spendables/lock:
+    $ref: "./paths/wallets/spendables_lock.yaml"
+  /wallets/{wallet_id}/spendables/unlock:
+    $ref: "./paths/wallets/spendables_unlock.yaml"
+  /wallets/{wallet_id}/max_transferable_value:
+    $ref: "./paths/wallets/max_transferable_value.yaml"
+  /wallets/{wallet_id}/addresses:
+    $ref: "./paths/wallets/wallet_addresses.yaml"
+  /wallets/{wallet_id}/addresses/{address}:
+    $ref: "./paths/wallets/wallet_address_by_id.yaml"
+  /wallets/address/check_validity:
+    $ref: "./paths/wallets/address_validity.yaml"
+  /wallets/{wallet_id}/tokens:
+    $ref: "./paths/wallets/wallet_token_balances.yaml"
+  /wallets/{wallet_id}/addresses/{address}/tokens:
+    $ref: "./paths/wallets/wallet_address_token_balances.yaml"
+
+  # mpc wallets
+  /wallets/mpc/cobo_key_holders:
+    $ref: "./paths/wallets/mpcs/cobo_key_holders.yaml"
+  /wallets/mpc/projects:
+    $ref: "./paths/wallets/mpcs/projects.yaml"
+  /wallets/mpc/projects/{project_id}:
+    $ref: "./paths/wallets/mpcs/project.yaml"
+  /wallets/mpc/vaults:
+    $ref: "./paths/wallets/mpcs/mpc_vaults.yaml"
+  /wallets/mpc/vaults/{vault_id}:
+    $ref: "./paths/wallets/mpcs/mpc_vault.yaml"
+  /wallets/mpc/vaults/{vault_id}/key_groups:
+    $ref: './paths/wallets/mpcs/key_groups.yaml'
+  /wallets/mpc/vaults/{vault_id}/key_groups/{key_share_group_id}:
+    $ref: './paths/wallets/mpcs/key_group.yaml'
+  /wallets/mpc/vaults/{vault_id}/tss_requests:
+    $ref: './paths/wallets/mpcs/tss_requests.yaml'
+  /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel:
+    $ref: "./paths/wallets/mpcs/tss_request_cancel.yaml"
+
+  # exchange wallets
+  /wallets/exchanges/settings:
+    $ref: "./paths/wallets/exchanges/exchange_settings.yaml"
+  /wallets/exchanges/{exchange_id}/supported_assets:
+    $ref: "./paths/wallets/exchanges/exchange_supported_assets.yaml"
+  /wallets/exchanges/{exchange_id}/assets/supported_chains:
+    $ref: "./paths/wallets/exchanges/exchange_supported_chains.yaml"
+  /wallets/{wallet_id}/exchanges/assets:
+    $ref: "./paths/wallets/exchanges/exchange_wallet_asset_balances.yaml"
+  /wallets/{wallet_id}/exchanges/subaccounts:
+    $ref: "./paths/wallets/exchanges/subaccounts_by_wallet_id.yaml"
+  /wallets/exchanges/{exchange_id}/subaccounts:
+    $ref: "./paths/wallets/exchanges/subaccounts_by_apikey.yaml"
+
+  # transactions
+  /transactions/fee_price:
+    $ref: "./paths/transactions/fee_rates.yaml"
+  /transactions/estimate_fee:
+    $ref: "./paths/transactions/estimate_fee.yaml"
+  /transactions/transfer:
+    $ref: "./paths/transactions/transfer.yaml"
+  /transactions/contract_call:
+    $ref: "./paths/transactions/contract_call.yaml"
+  /transactions/message_sign:
+    $ref: "./paths/transactions/message_sign.yaml"
+  /transactions:
+    $ref: "./paths/transactions/transactions.yaml"
+  /transactions/{transaction_id}:
+    $ref: "./paths/transactions/transaction_by_id.yaml"
+  /transactions/{transaction_id}/resend:
+    $ref: "./paths/transactions/transaction_resend.yaml"
+  /transactions/{transaction_id}/cancel:
+    $ref: "./paths/transactions/transaction_cancel.yaml"
+  /transactions/{transaction_id}/drop:
+    $ref: "./paths/transactions/transaction_drop.yaml"
+  /transactions/{transaction_id}/speedup:
+    $ref: "./paths/transactions/transaction_speed_up.yaml"
+
+  # oauth
+  /oauth/token:
+    $ref: "./paths/oauth/token.yaml"
+
+  # webhooks
+  /webhooks/endpoints:
+    $ref: "./paths/webhooks/endpoints.yaml"
+  /webhooks/endpoints/{endpoint_id}:
+    $ref: "./paths/webhooks/endpoint_by_id.yaml"
+  /webhooks/events/definitions:
+    $ref: "./paths/webhooks/supported_event_definitions.yaml"
+  /webhooks/endpoints/{endpoint_id}/events:
+    $ref: "./paths/webhooks/events.yaml"
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}:
+    $ref: "./paths/webhooks/event_by_id.yaml"
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/logs:
+    $ref: "./paths/webhooks/logs_by_event_id.yaml"
+  /webhooks/endpoints/{endpoint_id}/events/{event_id}/retry:
+    $ref: "./paths/webhooks/retry_by_event_id.yaml"
+
+  # stakings
+  /stakings/pools:
+   $ref: "./paths/stakings/list_pools.yaml"
+  /stakings/pools/{pool_id}:
+    $ref: "./paths/stakings/pool_by_id.yaml"
+  /stakings/estimate_fee:
+    $ref: "./paths/stakings/estimate_fee.yaml"
+  /stakings/activities/stake:
+    $ref: "./paths/stakings/stake.yaml"
+  /stakings:
+    $ref: "./paths/stakings/list_stakings.yaml"
+  /stakings/{staking_id}:
+    $ref: "./paths/stakings/staking_by_id.yaml"
+  /stakings/activities/unstake:
+    $ref: "./paths/stakings/unstake.yaml"
+  /stakings/activities/withdraw:
+    $ref: "./paths/stakings/withdraw.yaml"
+  /stakings/activities:
+    $ref: "./paths/stakings/activities.yaml"
+  /stakings/activities/{activity_id}:
+    $ref: "./paths/stakings/activity_by_id.yaml"
+
+components:
+  schemas:
+    # misc
+    Pagination:
+      $ref: "./components/schemas/pagination/metadata.yaml"
+    ErrorResponse:
+      $ref: "./components/schemas/errors/response.yaml"
+
+    # wallets
+    AssetInfo:
+      $ref: "./components/schemas/wallets/asset.yaml"
+    TokenInfo:
+      $ref: "./components/schemas/wallets/token.yaml"
+    ExtendedTokenInfo:
+      $ref: "./components/schemas/wallets/token_extended.yaml"
+    ChainInfo:
+      $ref: "./components/schemas/wallets/chain.yaml"
+    WalletType:
+      $ref: "./components/schemas/wallets/bases/wallet_type.yaml"
+    WalletSubtype:
+      $ref: "./components/schemas/wallets/bases/wallet_subtype.yaml"
+    SmartContractWalletType:
+      $ref: "./components/schemas/wallets/smart_contracts/smart_contract_wallet_type.yaml"
+    SmartContractWalletOperationType:
+      $ref: "./components/schemas/wallets/smart_contracts/operation_type.yaml"
+    ExchangeId:
+      $ref: "./components/schemas/wallets/exchanges/exchange_id.yaml"
+    TokenBalance:
+      $ref: "./components/schemas/wallets/balances/token_balance.yaml"
+    AssetBalance:
+      $ref: "./components/schemas/wallets/balances/asset_balance.yaml"
+    SafeWallet:
+      $ref: "./components/schemas/wallets/smart_contracts/safe_wallet.yaml"
+    CustodialWalletInfo:
+      $ref: "./components/schemas/wallets/bases/base_wallet_info.yaml"
+    MPCWalletInfo:
+      $ref: "./components/schemas/wallets/mpcs/mpc_wallet_info.yaml"
+    SmartContractWalletInfo:
+      $ref: "./components/schemas/wallets/smart_contracts/smart_contract_wallet_info.yaml"
+    ExchangeWalletInfo:
+      $ref: "./components/schemas/wallets/exchanges/exchange_wallet_info.yaml"
+    WalletInfo:
+      $ref: "./components/schemas/wallets/wallet_info.yaml"
+    CreatedWallet:
+      $ref: "./components/schemas/wallets/create_wallets/create_wallet.yaml"
+    UTXO:
+      $ref: "./components/schemas/wallets/balances/utxo.yaml"
+    MaxTransferableValue:
+      $ref: "./components/schemas/wallets/balances/max_transferable_value.yaml"
+    AddressInfo:
+      $ref: "./components/schemas/wallets/addresses/address_info.yaml"
+    AddressEncoding:
+      $ref: "./components/schemas/wallets/addresses/address_encoding.yaml"
+    CreateCustodialWallet:
+      $ref: "./components/schemas/wallets/create_wallets/create_custodial_wallet.yaml"
+    CreateMpcWallet:
+      $ref: "./components/schemas/wallets/create_wallets/create_mpc_wallet.yaml"
+    CreateSmartContractWallet:
+      $ref: "./components/schemas/wallets/create_wallets/create_smart_contract_wallet.yaml"
+    CreateSafeWallet:
+      $ref: "./components/schemas/wallets/create_wallets/smart_contract_wallets/create_safe_wallet.yaml"
+    CreateExchangeWallet:
+      $ref: "./components/schemas/wallets/create_wallets/create_exchange_wallet.yaml"
+
+    # mpc wallets
+    CurveType:
+      $ref: "./components/schemas/wallets/mpcs/curve_type.yaml"
+    KeyGroup:
+      $ref: "./components/schemas/wallets/mpcs/key_group.yaml"
+    KeyGroupStatus:
+      $ref: "./components/schemas/wallets/mpcs/key_group_status.yaml"
+    KeyGroupType:
+      $ref: "./components/schemas/wallets/mpcs/key_group_type.yaml"
+    KeyHolder:
+      $ref: "./components/schemas/wallets/mpcs/key_holder.yaml"
+    KeyHolderStatus:
+      $ref: "./components/schemas/wallets/mpcs/key_holder_status.yaml"
+    KeyHolderType:
+      $ref: "./components/schemas/wallets/mpcs/key_holder_type.yaml"
+    MPCVault:
+      $ref: "./components/schemas/wallets/mpcs/mpc_vault.yaml"
+    MPCVaultType:
+      $ref: "./components/schemas/wallets/mpcs/mpc_vault_type.yaml"
+    MPCProject:
+      $ref: "./components/schemas/wallets/mpcs/project.yaml"
+    RootPubkey:
+      $ref: "./components/schemas/wallets/mpcs/root_pubkey.yaml"
+    TSSGroupId:
+      $ref: "./components/schemas/wallets/mpcs/tss_group_id.yaml"
+    TSSRequest:
+      $ref: "./components/schemas/wallets/mpcs/tss_request.yaml"
+    TSSRequestStatus:
+      $ref: "./components/schemas/wallets/mpcs/tss_request_status.yaml"
+    TSSRequestType:
+      $ref: "./components/schemas/wallets/mpcs/tss_request_type.yaml"
+
+    # fees
+    FeeType:
+      $ref: "./components/schemas/transactions/fees/fee_type.yaml"
+    FeeAmount:
+      $ref: "./components/schemas/transactions/fees/fee_max_fee_amount.yaml"
+    FeeData:
+      $ref: "./components/schemas/transactions/fees/fee_gas_limit.yaml"
+    EvmEip1559FeeBasePrice:
+      $ref: "./components/schemas/transactions/fees/base_fee_price_eip1559.yaml"
+    EvmLegacyFeeBasePrice:
+      $ref: "./components/schemas/transactions/fees/base_fee_price_legacy.yaml"
+    UtxoFeeBasePrice:
+      $ref: "./components/schemas/transactions/fees/base_fee_price_utxo.yaml"
+    EvmEip1559FeePrice:
+      $ref: "./components/schemas/transactions/fees/fee_price_eip1559.yaml"
+    EvmLegacyFeePrice:
+      $ref: "./components/schemas/transactions/fees/fee_price_legacy.yaml"
+    UtxoFeePrice:
+      $ref: "./components/schemas/transactions/fees/fee_price_utxo.yaml"
+    FixedFee:
+      $ref: "./components/schemas/transactions/fees/fee_fixed.yaml"
+    EvmEip1559Fee:
+      $ref: "./components/schemas/transactions/fees/fee_eip1559.yaml"
+    EvmLegacyFee:
+      $ref: "./components/schemas/transactions/fees/fee_legacy.yaml"
+    UtxoFee:
+      $ref: "./components/schemas/transactions/fees/fee_utxo.yaml"
+    FeeRate:
+      $ref: "./components/schemas/transactions/fees/fee_rate.yaml"
+    EstimationFee:
+      $ref: "./components/schemas/transactions/fees/estimation_fee.yaml"
+    EvmEip1559TransactionFee:
+      $ref: "./components/schemas/transactions/fees/transaction_fee_eip1559.yaml"
+    EvmLegacyTransactionFee:
+      $ref: "./components/schemas/transactions/fees/transaction_fee_legacy.yaml"
+    UtxoTransactionFee:
+      $ref: "./components/schemas/transactions/fees/transaction_fee_utxo.yaml"
+    TransactionTransferFee:
+      $ref: "./components/schemas/transactions/fees/transaction_fee.yaml"
+
+    # transactions
+    Transaction:
+      $ref: "./components/schemas/transactions/transactions/transaction.yaml"
+    TransactionApprover:
+      $ref: "./components/schemas/transactions/transactions/transaction_approver.yaml"
+    TransactionTokenAmount:
+      $ref: "./components/schemas/transactions/transactions/transaction_amount.yaml"
+    TransactionCategory:
+      $ref: "./components/schemas/transactions/transactions/transaction_category.yaml"
+    TransactionDetails:
+      $ref: "./components/schemas/transactions/transactions/transaction_details.yaml"
+    TransactionInitiatorType:
+      $ref: "./components/schemas/transactions/transactions/transaction_initiator_type.yaml"
+    TransactionSigner:
+      $ref: "./components/schemas/transactions/transactions/transaction_signer.yaml"
+    TransactionStatus:
+      $ref: "./components/schemas/transactions/transactions/transaction_status.yaml"
+    TransactionSubStatus:
+      $ref: "./components/schemas/transactions/transactions/transaction_sub_status.yaml"
+    TransactionTimeline:
+      $ref: "./components/schemas/transactions/transactions/transaction_timeline.yaml"
+    TransactionTokeApproval:
+      $ref: "./components/schemas/transactions/transactions/transaction_token_approval.yaml"
+    TransactionType:
+      $ref: "./components/schemas/transactions/transactions/transaction_type.yaml"
+    MpcSigningGroup:
+      $ref: "./components/schemas/transactions/mpc_signing_group.yaml"
+    TransactionAddressType:
+      $ref: "./components/schemas/transactions/transactions/transaction_address_type.yaml"
+    TransactionSourceType:
+      $ref: "./components/schemas/transactions/transactions/sources/source_type.yaml"
+    TransactionAddressSource:
+      $ref: "./components/schemas/transactions/transactions/sources/address_source.yaml"
+    TransactionFeeStationWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/fee_station_wallet_source.yaml"
+    TransactionCustodialWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/custodial_wallet_source.yaml"
+    TransactionMPCWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/mpc_wallet_source.yaml"
+    TransactionSafeWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/smart_contract_wallet_source.yaml"
+    TransactionExchangeWalletSource:
+      $ref: "./components/schemas/transactions/transactions/sources/exchange_wallet_source.yaml"
+    TransactionDestinationType:
+      $ref: "./components/schemas/transactions/transactions/destinations/destination_type.yaml"
+    TransactionAddressDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/address_destination.yaml"
+    TransactionContractCallDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/contract_call_destination.yaml"
+    TransactionMessageSignDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/sign_message_destination.yaml"
+    TransactionCustodialWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/custodial_wallet_destination.yaml"
+    TransactionMPCWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/mpc_wallet_destination.yaml"
+    TransactionSafeWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/safe_wallet_destination.yaml"
+    TransactionExchangeWalletDestination:
+      $ref: "./components/schemas/transactions/transactions/destinations/exchange_wallet_destination.yaml"
+    TransactionFixedFee:
+      $ref: "./components/schemas/transactions/transactions/fees/fee_fixed.yaml"
+    TransactionEvmEip1559Fee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_eip1559.yaml"
+    TransactionEvmLegacyFee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_legacy.yaml"
+    TransactionUtxoFee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee_utxo.yaml"
+    TransactionFee:
+      $ref: "./components/schemas/transactions/transactions/fees/transaction_fee.yaml"
+    TransactionRbf:
+      $ref: "./components/schemas/transactions/rbf.yaml"
+    TransactionResend:
+      $ref: "./components/schemas/transactions/resend.yaml"
+
+    # transfers
+    BaseTransferSource:
+      $ref: "./components/schemas/transactions/transfers/sources/base_transfer_source.yaml"
+    AddressTransferSource:
+      $ref: "./components/schemas/transactions/transfers/sources/address_transfer_source.yaml"
+    MpcTransferSource:
+      $ref: "./components/schemas/transactions/transfers/sources/mpc_transfer_source.yaml"
+    SafeTransferSource:
+      $ref: "./components/schemas/transactions/transfers/sources/safe_transfer_source.yaml"
+    ExchangeTransferSource:
+      $ref: "./components/schemas/transactions/transfers/sources/exchange_transfer_source.yaml"
+    TransferSource:
+      $ref: "./components/schemas/transactions/transfers/sources/transfer_source.yaml"
+    AddressTransferDestination:
+      $ref: "./components/schemas/transactions/transfers/destinations/address_transfer_destination.yaml"
+    ExchangeTransferDestination:
+      $ref: "./components/schemas/transactions/transfers/destinations/exchange_transfer_destination.yaml"
+    TransferDestinationType:
+      $ref: "./components/schemas/transactions/transfers/destinations/destination_type.yaml"
+    TransferDestination:
+      $ref: "./components/schemas/transactions/transfers/destinations/transfer_destination.yaml"
+    Transfer:
+      $ref: "./components/schemas/transactions/transfers/transfer.yaml"
+    SignMessage:
+      $ref: "./components/schemas/transactions/message_sign.yaml"
+    EstimateFee:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee.yaml"
+    EstimateFeeTransfer:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_transfer.yaml"
+    EstimateFeeContractCall:
+      $ref: "./components/schemas/transactions/estimate_fee/estimate_fee_contract_call.yaml"
+
+    # contract call
+    BaseContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/base_contract_call_source.yaml"
+    MpcContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/mpc_contract_call_source.yaml"
+    SafeContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/safe_contract_call_source.yaml"
+    ContractCallSource:
+      $ref: "./components/schemas/transactions/contract_calls/sources/contract_call_source.yaml"
+    ContractCall:
+      $ref: "./components/schemas/transactions/contract_calls/contract_call.yaml"
+
+    # webhook
+    WebhookEvent:
+      $ref: "./components/schemas/webhooks/event.yaml"
+    WebhookEventType:
+      $ref: "./components/schemas/webhooks/event_type.yaml"
+    WebhookEventStatus:
+      $ref: "./components/schemas/webhooks/event_status.yaml"
+    WebhookEventLog:
+      $ref: "./components/schemas/webhooks/event_log.yaml"
+    Endpoint:
+      $ref: "./components/schemas/webhooks/endpoint.yaml"
+    EndpointStatus:
+      $ref: "./components/schemas/webhooks/webhook_endpoint_status.yaml"
+
+    #stakings
+    BaseStakeExtra:
+     $ref: "./components/schemas/stakings/base_stake_extra.yaml"
+    BabylonStakeExtra:
+      $ref: "./components/schemas/stakings/babylon_stake_extra.yaml"
+    EigenLayerLstStakeExtra:
+      $ref: "./components/schemas/stakings/eigen_layer_stake_extra_lst.yaml"
+    EigenLayerNativeStakeExtra:
+      $ref: "./components/schemas/stakings/eigen_layer_stake_extra_native.yaml"
+    Activity:
+      $ref: "./components/schemas/stakings/activity.yaml"
+    ActivityInitiator:
+      $ref: "./components/schemas/stakings/activity_initiator.yaml"
+    CreateStakeActivity:
+      $ref: "./components/schemas/stakings/create_stake_activity.yaml"
+    CreateWithdrawActivity:
+      $ref: "./components/schemas/stakings/create_withdraw_activity.yaml"
+    CreateUnstakeActivity:
+      $ref: "./components/schemas/stakings/create_unstake_activity.yaml"
+    ActivityStatus:
+      $ref: "./components/schemas/stakings/activity_status.yaml"
+    ActivityType:
+      $ref: "./components/schemas/stakings/activity_type.yaml"
+    AmountDetails:
+      $ref: "./components/schemas/stakings/amount_details.yaml"
+    BabylonValidator:
+      $ref: "./components/schemas/stakings/babylon_validator.yaml"
+    EigenlayerValidator:
+      $ref: "./components/schemas/stakings/eigenlayer_validator.yaml"
+    PoolDetails:
+      $ref: "./components/schemas/stakings/pool_details.yaml"
+    PoolSummary:
+      $ref: "./components/schemas/stakings/pool_summary.yaml"
+    Stakings:
+      $ref: "./components/schemas/stakings/staking.yaml"
+    StakingPoolType:
+      $ref: "./components/schemas/stakings/staking_pool_type.yaml"
+    BaseEstimateStakingFee:
+      $ref: "./components/schemas/stakings/base_estimate_staking_fee.yaml"
+    EstimateStakeFee:
+      $ref: "./components/schemas/stakings/estimate_stake_fee.yaml"
+    EstimateUnstakeFee:
+      $ref: "./components/schemas/stakings/estimate_unstake_fee.yaml"
+    EstimateWithdrawFee:
+      $ref: "./components/schemas/stakings/estimate_withdraw_fee.yaml"
+
+
+  parameters:
+    # misc
+    sortByParam:
+      $ref: "./components/parameters/pagination/sort_by.yaml"
+    directionParam:
+      $ref: "./components/parameters/pagination/direction.yaml"
+    limitParam:
+      $ref: "./components/parameters/pagination/limit.yaml"
+    beforeParam:
+      $ref: "./components/parameters/pagination/before.yaml"
+    afterParam:
+      $ref: "./components/parameters/pagination/after.yaml"
+
+    # wallets
+    optionalAssetIdParam:
+      $ref: "./components/parameters/wallets/asset_id_optional.yaml"
+    optionalAssetIdListParam:
+      $ref: "./components/parameters/wallets/asset_id_list_optional.yaml"
+    requiredAssetIdParam:
+      $ref: "./components/parameters/wallets/asset_id_required.yaml"
+    chainIdParam:
+      $ref: "./components/parameters/wallets/chain_id_path.yaml"
+    optionalChainIdParam:
+      $ref: "./components/parameters/wallets/chain_id_optional.yaml"
+    optionalChainIdListParam:
+      $ref: "./components/parameters/wallets/chain_id_list_optional.yaml"
+    tokenIdParam:
+      $ref: "./components/parameters/wallets/token_id_path.yaml"
+    optionalTokenIdParam:
+      $ref: "./components/parameters/wallets/token_id_optional.yaml"
+    optionalTokenListIdParam:
+      $ref: "./components/parameters/wallets/token_id_list_optional.yaml"
+    requiredTokenIdParam:
+      $ref: "./components/parameters/wallets/token_id_required.yaml"
+    requiredFeeRateParam:
+      $ref: "./components/parameters/wallets/fee_rate_required.yaml"
+    requiredWalletSubtypeParam:
+      $ref: "./components/parameters/wallets/wallet_subtype_required.yaml"
+    optionalWalletTypeParam:
+      $ref: "./components/parameters/wallets/wallet_type_optional.yaml"
+    optionalWalletSubtypeParam:
+      $ref: "./components/parameters/wallets/wallet_subtype_optional.yaml"
+    walletIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_path.yaml"
+    optionalWalletIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_optional.yaml"
+    optionalWalletListIdParam:
+      $ref: "./components/parameters/wallets/wallet_id_list_optional.yaml"
+    addressParam:
+      $ref: "./components/parameters/wallets/address_path.yaml"
+    requiredAddressParam:
+      $ref: "./components/parameters/wallets/address_required.yaml"
+    requiredSubWalletIdParam:
+      $ref: "./components/parameters/wallets/exchanges/sub_wallet_id_required.yaml"
+    optionalAddressParam:
+      $ref: "./components/parameters/wallets/address_optional.yaml"
+    toAddressParam:
+      $ref: "./components/parameters/wallets/to_address_required.yaml"
+    fromAddressParam:
+      $ref: "./components/parameters/wallets/from_address_optional.yaml"
+    optionalUtxoTxHashParam:
+      $ref: "./components/parameters/wallets/utxo_tx_hash_optional.yaml"
+
+    # mpc wallets
+    keyGroupIdParam:
+      $ref: "./components/parameters/wallets/mpcs/key_share_group_id_path.yaml"
+    optionalKeyGroupTypeParam:
+      $ref: "./components/parameters/wallets/mpcs/key_group_type_optional.yaml"
+    projectIdParam:
+      $ref: "./components/parameters/wallets/mpcs/project_id_path.yaml"
+    optionalProjectIdQueryParam:
+      $ref: "./components/parameters/wallets/mpcs/project_id_optional.yaml"
+    optionalProjectIdListQueryParam:
+      $ref: "./components/parameters/wallets/mpcs/project_id_list_optional.yaml"
+    requiredTargetKeyGroupIdParam:
+      $ref: "./components/parameters/wallets/mpcs/target_key_group_id_required.yaml"
+    tssRequestIdParam:
+      $ref: "./components/parameters/wallets/mpcs/tss_request_id_path.yaml"
+    requiredUpdateKeyGroupActionParam:
+      $ref: "./components/parameters/wallets/mpcs/update_key_share_group_action_required.yaml"
+    vaultIdParam:
+      $ref: "./components/parameters/wallets/mpcs/vault_id_path.yaml"
+    optionalVaultIdQueryParam:
+      $ref: "./components/parameters/wallets/mpcs/vault_id_optional.yaml"
+    optionalVaultIdListQueryParam:
+      $ref: "./components/parameters/wallets/mpcs/vault_id_list_optional.yaml"
+    optionalVaultNameParam:
+      $ref: "./components/parameters/wallets/mpcs/vault_name_optional.yaml"
+
+    # exchange wallets
+    exchangeIdParam:
+      $ref: "./components/parameters/wallets/exchanges/exchange_id_path.yaml"
+    optionalExchangeIdParam:
+      $ref: "./components/parameters/wallets/exchanges/exchange_id_optional.yaml"
+    requiredExchangeIdParam:
+      $ref: "./components/parameters/wallets/exchanges/exchange_id_required.yaml"
+    optionalApikeyParam:
+      $ref: "./components/parameters/wallets/exchanges/apikey_optional.yaml"
+    optionalSecretParam:
+      $ref: "./components/parameters/wallets/exchanges/secret_optional.yaml"
+    optionalPassphraseParam:
+      $ref: "./components/parameters/wallets/exchanges/passphrase_optional.yaml"
+
+    # transactions
+    optionalRequestIdParam:
+      $ref: "./components/parameters/transactions/request_id_optional.yaml"
+    optionalCoboIdParam:
+      $ref: "./components/parameters/transactions/cobo_id_optional.yaml"
+    optionalTransactionTypeParam:
+      $ref: "./components/parameters/transactions/transaction_type_optional.yaml"
+    optionalTransactionTypeListParam:
+      $ref: "./components/parameters/transactions/transaction_type_list_optional.yaml"
+    optionalTransactionStatusParam:
+      $ref: "./components/parameters/transactions/transaction_status_optional.yaml"
+    optionalTransactionStatusListParam:
+      $ref: "./components/parameters/transactions/transaction_status_list_optional.yaml"
+    optionalMinCreatedTimestampParam:
+      $ref: "./components/parameters/transactions/min_created_timestamp_optional.yaml"
+    optionalMaxCreatedTimestampParam:
+      $ref: "./components/parameters/transactions/max_created_timestamp_optional.yaml"
+    optionalTransactionSourceTypeListParam:
+      $ref: "./components/parameters/transactions/source_type_list_optional.yaml"
+    optionalTransactionSourceAddressListParam:
+      $ref: "./components/parameters/transactions/source_wallet_id_list_optional.yaml"
+    optionalTransactionSourceWalletIdListParam:
+      $ref: "./components/parameters/transactions/source_address_list_optional.yaml"
+    optionalTransactionDestinationTypeListParam:
+      $ref: "./components/parameters/transactions/destination_type_list_optional.yaml"
+    optionalTransactionDestinationAddressListParam:
+      $ref: "./components/parameters/transactions/destination_wallet_id_list_optional.yaml"
+    optionalTransactionDestinationWalletIdListParam:
+      $ref: "./components/parameters/transactions/destination_address_list_optional.yaml"
+    transactionIdParam:
+      $ref: "./components/parameters/transactions/transaction_id_path.yaml"
+
+    # webhooks
+    webhookEventIdParam:
+      $ref: "./components/parameters/webhooks/event_id_path.yaml"
+    endpointIdParam:
+      $ref: "./components/parameters/webhooks/endpoint_id_path_param.yaml"
+
+    #stakings
+    activityIdRequiredParam:
+      $ref: "./components/parameters/stakings/activity_id_required.yaml"
+    poolIdRequiredParam:
+      $ref: "./components/parameters/stakings/pool_id_required.yaml"
+    poolIdOptionalParam:
+      $ref: "./components/parameters/stakings/pool_id_optional.yaml"
+    stakingIdRequiredParam:
+      $ref: "./components/parameters/stakings/staking_id_required.yaml"
+    stakingIdOptionalParam:
+      $ref: "./components/parameters/stakings/staking_id_optional.yaml"
+    activityTypeOptionalParam:
+      $ref: "./components/parameters/stakings/activity_type.yaml"
+    activityStatusOptionalParam:
+      $ref: "./components/parameters/stakings/activity_status.yaml"
+    activityInitiatorOptionalParam:
+      $ref: "./components/parameters/stakings/activity_initiator.yaml"
+    maxModifiedTimestampOptionalParam:
+      $ref: "./components/parameters/stakings/max_modified_timestamp_optional.yaml"
+    minModifiedTimestampOptionalParam:
+      $ref: "./components/parameters/stakings/min_modified_timestamp_optional.yaml"
+
+
+  requestBodies:
+    # wallets
+    createWalletBody:
+      $ref: "./components/request_bodies/wallets/create_wallet.yaml"
+    updateWalletBody:
+      $ref: "./components/request_bodies/wallets/update_wallet.yaml"
+    createAddressBody:
+      $ref: "./components/request_bodies/wallets/create_address.yaml"
+    lockSpendablesBody:
+      $ref: "./components/request_bodies/wallets/lock_spendables.yaml"
+
+    # mpc wallets
+    createKeyGroupBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_key_group.yaml"
+    createMpcProjectBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_project.yaml"
+    createTssRequestBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_tss_request.yaml"
+    createMpcVaultBody:
+      $ref: "./components/request_bodies/wallets/mpcs/create_vault.yaml"
+    updateProjectBody:
+      $ref: "./components/request_bodies/wallets/mpcs/update_project.yaml"
+    updateVaultBody:
+      $ref: "./components/request_bodies/wallets/mpcs/update_vault.yaml"
+
+    # transfers
+    createTransferBody:
+      $ref: "./components/request_bodies/transactions/create_transfer_transaction.yaml"
+    createSmartContractCallBody:
+      $ref: "./components/request_bodies/transactions/create_smart_contract_call_transaction.yaml"
+    createMessageSignBody:
+      $ref: "./components/request_bodies/transactions/create_message_sign_transaction.yaml"
+    estimateFeeBody:
+      $ref: "./components/request_bodies/transactions/estimate_fee.yaml"
+    feeRequestBody:
+      $ref: "./components/request_bodies/transactions/fee_request.yaml"
+    resendTransactionBody:
+      $ref: "./components/request_bodies/transactions/resend_request.yaml"
+
+    # stakings
+    createStakeActivityBody:
+      $ref: "./components/request_bodies/stakings/create_stake_activity.yaml"
+    createWithdrawActivityBody:
+      $ref: "./components/request_bodies/stakings/create_withdraw_activity.yaml"
+    createUnstakeActivityBody:
+      $ref: "./components/request_bodies/stakings/create_unstake_activity.yaml"
+    estimateStakeActivityFeeBody:
+      $ref: "./components/request_bodies/stakings/estimate_fee.yaml"
+
+
+    # webhooks
+    createWebhookEndpointBody:
+      $ref: "./components/request_bodies/webhooks/create_webhook_endpoint.yaml"
+    updateWebhookBody:
+      $ref: "./components/request_bodies/webhooks/update_webhook_endpoint.yaml"
+
+  responses:
+    # misc
+    badRequestError:
+      $ref: "./components/responses/errors/400_bad_request.yaml"
+    unauthorizedError:
+      $ref: "./components/responses/errors/401_unauthorized.yaml"
+    forbiddenError:
+      $ref: "./components/responses/errors/403_forbidden.yaml"
+    notFoundError:
+      $ref: "./components/responses/errors/404_not_found.yaml"
+    tooManyRequestError:
+      $ref: "./components/responses/errors/429_too_many_request.yaml"
+    serviceUnavailableError:
+      $ref: "./components/responses/errors/503_service_unavailable.yaml"
+
+    # wallets
+    getChainsResponse:
+      $ref: "./components/responses/wallets/get_chains.yaml"
+    getChainByIdResponse:
+      $ref: "./components/responses/wallets/get_a_chain.yaml"
+    getAssetsResponse:
+      $ref: "./components/responses/wallets/get_assets.yaml"
+    getTokensResponse:
+      $ref: "./components/responses/wallets/get_tokens.yaml"
+    getTokenByIdResponse:
+      $ref: "./components/responses/wallets/get_a_token.yaml"
+    getTokenBalancesResponse:
+      $ref: "./components/responses/wallets/get_token_balances.yaml"
+    getAssetBalancesResponse:
+      $ref: "./components/responses/wallets/get_asset_balances.yaml"
+    getWalletsResponse:
+      $ref: "./components/responses/wallets/get_wallets.yaml"
+    getWalletByIdResponse:
+      $ref: "./components/responses/wallets/get_a_wallet.yaml"
+    createWalletResponse:
+      $ref: "./components/responses/wallets/create_wallet.yaml"
+    updateWalletResponse:
+      $ref: "./components/responses/wallets/update_wallet.yaml"
+    deleteWalletResponse:
+      $ref: "./components/responses/wallets/delete_wallet.yaml"
+    spendableListResponse:
+      $ref: "./components/responses/wallets/get_spendable_list.yaml"
+    lockSpendableResponse:
+      $ref: "./components/responses/wallets/lock_spendables.yaml"
+    maxTransferableValueResponse:
+      $ref: "./components/responses/wallets/get_max_transferable_value.yaml"
+    getAddressesResponse:
+      $ref: "./components/responses/wallets/get_addresses.yaml"
+    createAddressResponse:
+      $ref: "./components/responses/wallets/create_address.yaml"
+    getAddressValidityResponse:
+      $ref: "./components/responses/wallets/get_a_address_validity.yaml"
+
+    # mpc wallets
+    createKeyGroupsResponse:
+      $ref: "./components/responses/wallets/mpcs/create_key_group.yaml"
+    createMpcProjectResponse:
+      $ref: "./components/responses/wallets/mpcs/create_project.yaml"
+    createTssRequestResponse:
+      $ref: "./components/responses/wallets/mpcs/create_vault.yaml"
+    createMpcVaultResponse:
+      $ref: "./components/responses/wallets/mpcs/create_vault.yaml"
+    getCoboKeyHoldersResponse:
+      $ref: "./components/responses/wallets/mpcs/get_cobo_key_holder.yaml"
+    getKeyGroupResponse:
+      $ref: "./components/responses/wallets/mpcs/get_key_group.yaml"
+    getKeyGroupsResponse:
+      $ref: "./components/responses/wallets/mpcs/get_key_groups.yaml"
+    getMpcProjectResponse:
+      $ref: "./components/responses/wallets/mpcs/get_project.yaml"
+    getMpcProjectsResponse:
+      $ref: "./components/responses/wallets/mpcs/get_projects.yaml"
+    getTssRequestResponse:
+      $ref: "./components/responses/wallets/mpcs/get_tss_request.yaml"
+    getMpcVaultResponse:
+      $ref: "./components/responses/wallets/mpcs/get_vault.yaml"
+    getMpcVaultsResponse:
+      $ref: "./components/responses/wallets/mpcs/get_vaults.yaml"
+    deleteKeyGroupResponse:
+      $ref: "./components/responses/wallets/mpcs/delete_key_group.yaml"
+    putKeyGroupResponse:
+      $ref: "./components/responses/wallets/mpcs/put_key_group.yaml"
+    putTssRequestResponse:
+      $ref: "./components/responses/wallets/mpcs/put_tss_request.yaml"
+    putVaultResponse:
+      $ref: "./components/responses/wallets/mpcs/put_vault.yaml"
+
+    # exchanges
+    getSubAccountIdsResponse:
+      $ref: "./components/responses/wallets/exchanges/get_sub_account_ids.yaml"
+
+    # transactions
+    getChainFeeResponse:
+      $ref: "./components/responses/transactions/get_fee_rates.yaml"
+    getTransactionsResponse:
+      $ref: "./components/responses/transactions/get_transactions.yaml"
+    getTransactionByIdResponse:
+      $ref: "./components/responses/transactions/get_a_transaction.yaml"
+    estimateFeeResponse:
+      $ref: "./components/responses/transactions/get_estimation_fee.yaml"
+    transactionFeeResponse:
+      $ref: "./components/responses/transactions/get_transaction_fee.yaml"
+    createTransactionRequestResponse:
+      $ref: "./components/responses/transactions/create_transaction_request.yaml"
+
+    #webhook
+    createWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/create_webhook_endpoint.yaml"
+    getWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/get_webhook_endpoint.yaml"
+    listWebhookEndpointsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_endpoints.yaml"
+    updateWebhookEndpointResponse:
+      $ref: "./components/responses/webhooks/update_webhook_endpoint.yaml"
+    listWebhookEventsResponse:
+      $ref: "./components/responses/webhooks/list_webhook_events.yaml"
+    getWebhookEventResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event.yaml"
+    getWebhookEventDefinitionsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_definitions.yaml"
+    retryWebhookEventResponse:
+      $ref: "./components/responses/webhooks/retry_webhook_event.yaml"
+    getWebhookEventLogsResponse:
+      $ref: "./components/responses/webhooks/get_webhook_event_logs.yaml"
+
+
+    # stakings
+    listStakingPoolsResponse:
+      $ref: "./components/responses/stakings/list_staking_pools.yaml"
+    createActivityResponse:
+      $ref: "./components/responses/stakings/create_activity.yaml"
+    activityDetailsResponse:
+      $ref: "./components/responses/stakings/activity_details.yaml"
+    stakingsDetailsResponse:
+      $ref: "./components/responses/stakings/stakings_details.yaml"
+    poolDetailsResponse:
+      $ref: "./components/responses/stakings/pool_details.yaml"
+    listStakingsResponse:
+      $ref: "./components/responses/stakings/list_stakings.yaml"
+    listActivitiesResponse:
+      $ref: "./components/responses/stakings/list_activities.yaml"
+
+  securitySchemes:
+    CoboAuth:
+      type: apiKey
+      in: header
+      name: BIZ-API-KEY
+      description: The API key.
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.cobo.com/authorize
+          tokenUrl: https://auth.cobo.com/oauth/token
+          scopes:
+            custodial_asset_wallet:create: Create access to custodial asset wallets
+            custodial_asset_wallet:add: Generate address access to custodial asset wallets
+            custodial_asset_wallet:edit: Change wallet name access to custodial asset wallets
+            custodial_asset_wallet:withdraw: Withdraw access to custodial asset wallets
+            mpc_organization_controlled_wallet:create: Create access to MPC organization-controlled wallets
+            mpc_organization_controlled_wallet:add: Generate address access to MPC organization-controlled wallets
+            mpc_organization_controlled_wallet:edit: Change wallet name access to MPC organization-controlled wallets
+            mpc_organization_controlled_wallet:withdraw: Withdraw access to MPC organization-controlled wallets
+            mpc_organization_controlled_wallet:contract_call: Contract call access to MPC organization-controlled wallets
+            mpc_organization_controlled_wallet:message_sign: Message sign access to MPC organization-controlled wallets
+            mpc_organization_controlled_vault:manage: Create/Edit access to MPC organization-controlled vaults
+            mpc_organization_controlled_key_group:manage: Create/Edit/Delete access to MPC organization-controlled key groups
+            mpc_organization_controlled_tss_request:manage: Create/Cancel access to MPC organization-controlled tss requests
+            mpc_user_controlled_wallet:create: Create access to MPC user-controlled wallets
+            mpc_user_controlled_wallet:add: Generate address access to MPC user-controlled wallets
+            mpc_user_controlled_wallet:edit: Change wallet name access to MPC user-controlled wallets
+            mpc_user_controlled_wallet:withdraw: Withdraw access to MPC user-controlled wallets
+            mpc_user_controlled_wallet:contract_call: Contract call access to MPC user-controlled wallets
+            mpc_user_controlled_wallet:message_sign: Message sign access to MPC user-controlled wallets
+            mpc_user_controlled_project:manage: Create/Edit access to MPC user-controlled projects
+            mpc_user_controlled_vault:manage: Create/Edit access to MPC user-controlled vaults
+            mpc_user_controlled_key_group:manage: Create/Edit/Delete access to MPC user-controlled key groups
+            mpc_user_controlled_tss_request:manage: Create/Cancel access to MPC user-controlled tss requests
+            webhook:resend: Resend access to webhook events
+            webhook_url:edit: Create/Edit access to webhook urls
+
+security:
+  - CoboAuth: []

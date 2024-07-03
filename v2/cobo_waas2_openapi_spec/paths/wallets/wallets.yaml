@@ -1,0 +1,56 @@
+post:
+  tags:
+    - Wallets
+  operationId: create_wallet
+  summary: Create wallet
+  description: |
+    This operation creates a wallet with the provided information.
+
+  security:
+    - CoboAuth: []
+    - OAuth2:
+        - custodial_asset_wallet:create
+        - mpc_organization_controlled_wallet:create
+        - mpc_user_controlled_wallet:create
+
+  requestBody:
+    $ref: "../../components/request_bodies/wallets/create_wallet.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/wallets/create_wallet.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"
+get:
+  tags:
+    - Wallets
+  operationId: list_wallets
+  summary: List all wallets
+  description: |
+    This operation retrieves the information of all wallets under your organization. You can filter the result by wallet type, subtype, and vault ID (for MPC Wallets).
+    
+    <Note>You must specify either the wallet type or subtype, or both.</Note>
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/wallet_type_optional.yaml"
+    - $ref: "../../components/parameters/wallets/wallet_subtype_optional.yaml"
+    - $ref: "../../components/parameters/wallets/mpcs/vault_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/mpcs/project_id_optional.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_wallets.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"

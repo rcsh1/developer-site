@@ -1,0 +1,22 @@
+type: object
+description: The data for MPC Wallets' key share holder information.
+properties:
+  name:
+    type: string
+    description: The key share holder name.
+    example: 'Key share holder name'
+  type:
+    $ref: './key_holder_type.yaml'
+  tss_node_id:
+    type: string
+    description: Key share holder's TSS Node ID.
+    example: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijklm
+  online:
+    type: boolean
+    description: |
+      Whether the key share holder's TSS Node is online.
+      - `true`: The TSS Node is online.
+      
+      - `false`: The TSS Node is offline.
+  status:
+    $ref: './key_holder_status.yaml'

@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Wallets
+  operationId: get_max_transferable_value
+  summary: Get maximum transferable value
+  description: |
+    This operation retrieves the maximum amount that you can transfer from a wallet or a specified wallet address, along with the corresponding transaction fee.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
+    - $ref: "../../components/parameters/wallets/token_id_required.yaml"
+    - $ref: "../../components/parameters/wallets/fee_rate_required.yaml"
+    - $ref: "../../components/parameters/wallets/to_address_required.yaml"
+    - $ref: "../../components/parameters/wallets/from_address_optional.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_max_transferable_value.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

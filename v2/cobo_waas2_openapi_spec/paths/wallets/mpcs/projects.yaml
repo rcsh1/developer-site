@@ -1,0 +1,36 @@
+post:
+  tags:
+    - Wallets - MPC Wallets
+  operationId: create_mpc_project
+  summary: Create project
+  description: | 
+    This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
+  security:
+    - CoboAuth: []
+    - OAuth2:
+        - mpc_user_controlled_project:manage
+  requestBody:
+    $ref: "../../../components/request_bodies/wallets/mpcs/create_project.yaml"
+  responses:
+    '201':
+      $ref: "../../../components/responses/wallets/mpcs/create_project.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
+get:
+  tags:
+    - Wallets - MPC Wallets
+  operationId: list_mpc_project
+  summary: List all projects
+  description: |
+    This operation retrieves a list of all projects.
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/get_projects.yaml"
+    '401':
+      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../../components/responses/errors/429_too_many_request.yaml"

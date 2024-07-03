@@ -1,0 +1,50 @@
+type: object
+description: The token information.
+required:
+  - token_id
+  - chain_id
+properties:
+  token_id:
+    type: string
+    description: The token ID.
+    example: 'ETH_USDT'
+  chain_id:
+    type: string
+    description: The ID of the chain on which the token operates.
+    example: 'ETH'
+  asset_id:
+    type: string
+    description: The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.
+    example: 'USDT'
+  symbol:
+    type: string
+    description: The token symbol.
+    example: "USDT"
+  name:
+    type: string
+    description: The token name.
+    example: 'Tether USDT'
+  decimal:
+    type: integer
+    description: The token decimal.
+    example: 18
+  icon_url:
+    type: string
+    description: The URL of the token icon.
+    example: 'https://d.cobo.com/public/logos/USDT.png'
+  token_address:
+    type: string
+    description: The token address, if applicable.
+    example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+  fee_token_id:
+    type: string
+    description: The fee token ID. A fee token is the token with which you pay transaction fees.
+    example: 'ETH'
+  can_deposit:
+    type: boolean
+    description: Whether deposits are enabled for this token.
+    example: true
+  can_withdraw:
+    type: boolean
+    description: Whether withdrawals are enabled for this token.
+    example: true

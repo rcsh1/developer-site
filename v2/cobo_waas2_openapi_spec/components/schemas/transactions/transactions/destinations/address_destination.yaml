@@ -1,0 +1,58 @@
+type: object
+description: The information about the transaction destination. 
+title: External addresses
+required:
+  - destination_type
+  - token_id
+properties:
+  destination_type:
+    $ref: './destination_type.yaml'
+  token_id:
+    type: string
+    description: The token ID.
+    example: 'ETH_USDT'
+  asset_id:
+    type: string
+    description: The asset ID. It can be used to group token balance.
+    example: 'USDT'
+  account_output:
+    type: object
+    properties:
+      address:
+        type: string
+        description: The destination address.
+        example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+      memo:
+        type: string
+        description: The memo that identifies a transaction in order to credit the correct account. For transfers out of Cobo Portal, it is highly recommended to include a memo for the chains such as XRP, EOS, XLM, IOST, BNB_BNB, ATOM, LUNA, and TON.
+        example: "82840924"
+      amount:
+        type: string
+        description: >
+          The transaction amount. For example, if you trade 1.5 ETH, then the amount is `1.5`.
+        example: '1.5'
+  utxo_outputs:
+    type: object
+    properties:
+      outputs:
+        type: array
+        items:
+          type: object
+          properties:
+            address:
+              type: string
+              description: The destination address.
+              example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"
+            amount:
+              type: string
+              description: >
+                The transaction amount. For example, if you trade 1.5 ETH, then the amount is `1.5`.
+              example: '1.5'
+            script:
+              type: string
+              description: The script of the output. It is a programmable code fragment that defines the conditions under which the UTXO can be spent. 
+              example: "76a914fb37342f6275b13936799def06f2DEMO"
+      change_address:
+        type: string
+        description: The address used to receive the remaining funds or change from the transaction.
+        example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO"

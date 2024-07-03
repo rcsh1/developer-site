@@ -1,0 +1,44 @@
+parameters:
+  - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
+post:
+  tags:
+    - Wallets
+  operationId: generate_wallet_address
+  summary: Generate new address in wallet
+  description: | 
+    This operation creates one or more addresses for a specified wallet.
+    
+    <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
+  security:
+    - CoboAuth: []
+    - OAuth2:
+        - custodial_asset_wallet:add
+        - mpc_organization_controlled_wallet:add
+        - mpc_user_controlled_wallet:add
+  requestBody:
+    $ref: "../../components/request_bodies/wallets/create_address.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/wallets/create_address.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+get:
+  tags:
+    - Wallets
+  operationId: list_addresses
+  summary: List wallet addresses by wallet ID
+  description: |
+    This operation retrieves a list of addresses under a specified wallet.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/wallets/token_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/address_optional.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/get_addresses.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

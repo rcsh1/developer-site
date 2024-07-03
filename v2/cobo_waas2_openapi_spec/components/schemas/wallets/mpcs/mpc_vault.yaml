@@ -1,0 +1,22 @@
+type: object
+description: The data for vault information.
+properties:
+  id:
+    type: string
+    example: "YPdbyVaVGqXXjkUsohHw"
+    description: The vault ID.
+  name:
+    type: string
+    example: 'Vault name'
+    description: The vault name.
+  type:
+    $ref: './mpc_vault_type.yaml'
+  root_pubkeys:
+    type: array
+    items:
+      $ref: './root_pubkey.yaml'
+  create_timestamp:
+    type: number
+    format: int64
+    description: The vault's creation time in Unix timestamp format, measured in milliseconds.
+    example: 1718619403933.53

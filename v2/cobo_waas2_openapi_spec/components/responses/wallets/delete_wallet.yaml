@@ -1,0 +1,15 @@
+description: Successfully submit delete wallet request
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - submitted
+      properties:
+        submitted:
+          type: boolean
+          example: true
+          description: |
+            Whether the delete operation has been successfully submitted.
+            - `true`: The operation has been successfully submitted.
+            - `false`: The operation has not been submitted.

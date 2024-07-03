@@ -1,0 +1,44 @@
+get:
+  tags:
+    - Developers - Webhooks
+  summary: List webhook endpoints
+  description: This operation retrieves the information of all webhook endpoints registered under your organization. You can filter the result by endpoint status and the subscribed event type.
+  operationId: list_webhook_endpoints
+  parameters:
+    - in: query
+      name: status
+      schema:
+        $ref: "../../components/schemas/webhooks/webhook_endpoint_status.yaml"
+      required: false
+    - in: query
+      name: event_type
+      schema:
+        $ref: "../../components/schemas/webhooks/event_type.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/webhooks/list_webhook_endpoints.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"
+post:
+  tags:
+    - Developers - Webhooks
+  summary: Register webhook endpoint
+  description: This operation registers a new webhook endpoint for your organization.
+  operationId: create_webhook_endpoint
+  security:
+    - OAuth2:
+        - webhook_url:edit
+  requestBody:
+    $ref: "../../components/request_bodies/webhooks/create_webhook_endpoint.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/webhooks/create_webhook_endpoint.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

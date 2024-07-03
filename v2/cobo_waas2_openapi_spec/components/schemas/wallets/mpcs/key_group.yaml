@@ -1,0 +1,30 @@
+type: object
+description: The data for key share group information.
+properties:
+  id:
+    type: string
+    example: "880311524363903326"
+    description: The key share group ID.
+  type:
+    $ref: "./key_group_type.yaml"
+  tss_group_ids:
+    type: array
+    items:
+      $ref: "./tss_group_id.yaml"
+  key_holders:
+    type: array
+    items:
+      $ref: "./key_holder.yaml"
+  node_count:
+    type: integer
+    description: The number of key share holders in this key share group.
+    example: 3
+  threshold:
+    type: integer
+    description: The number of key share holders required to approve each operation in this key share group.
+    example: 2
+  status:
+    $ref: "./key_group_status.yaml"
+  create_timestamp:
+    type: integer
+    format: int64

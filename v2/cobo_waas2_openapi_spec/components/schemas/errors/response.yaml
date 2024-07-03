@@ -1,0 +1,17 @@
+type: object
+description: The response of a failed request.
+required:
+  - error_code
+  - error_description
+  - error_id
+properties:
+  error_code:
+    type: integer
+    description: The error code.
+  error_description:
+    type: string
+    description: The error description.
+  error_id:
+    type: string
+    description: The error log ID. You can provide the error ID when submitting a ticket to help Cobo to locate the issue.
+    example: "0b6ddf19083c4bd1a9ca01bec44b24dd"
