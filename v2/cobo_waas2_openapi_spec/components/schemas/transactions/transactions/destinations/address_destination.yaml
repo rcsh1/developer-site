@@ -9,11 +9,11 @@ properties:
     $ref: './destination_type.yaml'
   token_id:
     type: string
-    description: The token ID.
+    description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).
     example: 'ETH_USDT'
   asset_id:
     type: string
-    description: The asset ID. It can be used to group token balance.
+    description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
     example: 'USDT'
   account_output:
     type: object
