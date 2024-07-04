@@ -300,8 +300,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalVaultIdQueryParam'
         - $ref: '#/components/parameters/optionalProjectIdQueryParam'
+        - $ref: '#/components/parameters/optionalVaultIdQueryParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -499,7 +499,14 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalTokenIdParam'
-        - $ref: '#/components/parameters/optionalAddressParam'
+        - name: addresses
+          in: query
+          required: false
+          description: 'A list of addresses, separated by comma.'
+          schema:
+            type: string
+            description: 'A list of addresses, separated by comma.'
+          example: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -523,6 +530,9 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
       responses:
         '200':
           $ref: '#/components/responses/getAddressesResponse'
@@ -2044,10 +2054,18 @@ components:
       type: object
       description: The response of a failed request.
       required:
+        - success
         - error_code
         - error_description
         - error_id
       properties:
+        success:
+          type: boolean
+          default: false
+          description: |
+            Whether the API operation was successful. 
+            - `true`: The operation was successful.
+            - `false`: The operation fai
         error_code:
           type: integer
           description: The error code.
@@ -2934,6 +2952,8 @@ components:
     FeeAmount:
       type: object
       description: The maximum transaction fee.
+      required:
+        - max_fee_amount
       properties:
         max_fee_amount:
           type: string
@@ -2941,11 +2961,14 @@ components:
           example: '0.1'
     FeeData:
       type: object
+      required:
+        - gas_limit
       properties:
         gas_limit:
           type: string
           description: The gas limit. It represents the maximum number of gas units that you are willing to pay for the execution of a transaction or Ethereum Virtual Machine (EVM) operation. The gas unit cost of each operation varies.
           default: '21000'
+          example: '21000'
     EvmEip1559FeeBasePrice:
       type: object
       description: 'The transaction fee price based on the EIP-1559 fee model, which equals the base fee price plus the maximum priority fee.'
@@ -3049,6 +3072,7 @@ components:
       title: Fixed
       required:
         - fee_type
+        - token_id
       allOf:
         - type: object
           properties:
@@ -3087,8 +3111,6 @@ components:
                   $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
                 fast:
                   $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-                customized:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
@@ -3118,8 +3140,6 @@ components:
                   $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
                 fast:
                   $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-                customized:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     UtxoFee:
       type: object
@@ -3148,8 +3168,6 @@ components:
                 recommended:
                   $ref: '#/components/schemas/UtxoFeeBasePrice'
                 fast:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-                customized:
                   $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
     FeeRate:
@@ -3185,6 +3203,7 @@ components:
       title: EIP-1559
       required:
         - fee_type
+        - token_id
       allOf:
         - type: object
           properties:
@@ -3202,6 +3221,7 @@ components:
         The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). The gas units used must be smaller than the gas limit.
       required:
         - fee_type
+        - token_id
       title: Legacy
       allOf:
         - type: object
@@ -3220,6 +3240,7 @@ components:
         The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee. 
       required:
         - fee_type
+        - token_id
       title: UTXO
       allOf:
         - type: object
@@ -4631,8 +4652,6 @@ components:
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
-        fee:
-          $ref: '#/components/schemas/FeeRate'
     EstimateFeeContractCall:
       type: object
       description: The information about a transaction that interacts with a smart contract
@@ -4675,8 +4694,6 @@ components:
                 The data that is used to invoke a specific function or method within the specified contract at the destination address.
               format: byte
               example: U3dhZ2dlciByb2Nrcw==
-        fee:
-          $ref: '#/components/schemas/FeeRate'
     BaseContractCallSource:
       type: object
       description: The information about the transaction source.
@@ -5518,16 +5535,14 @@ components:
         type: string
       example: USDT
     optionalAssetIdListParam:
-      name: asset_id
+      name: asset_ids
       in: query
       required: false
-      description: A list of asset IDs.
+      description: 'A list of asset IDs, separated by comma.'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - USDT
+        type: string
+        description: 'A list of asset IDs, separated by comma.'
+      example: 'USDT,USDC'
     requiredAssetIdParam:
       name: asset_id
       in: query
@@ -5561,16 +5576,14 @@ components:
         type: string
       example: ETH
     optionalChainIdListParam:
-      name: chain_id
+      name: chain_ids
       in: query
       required: false
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'A list of chain IDs, separated by comma. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - ETH
+        type: string
+        description: 'A list of chain IDs, separated by comma.'
+      example: 'BTC,ETH'
     tokenIdParam:
       name: token_id
       in: path
@@ -5588,16 +5601,14 @@ components:
         type: string
       example: ETH_USDT
     optionalTokenListIdParam:
-      name: token_id
+      name: token_ids
       in: query
       required: false
-      description: A list of token IDs.
+      description: 'A list of token IDs, separated by comma.'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - ETH_USDT
+        type: string
+        description: 'A list of token IDs, separated by comma.'
+      example: 'ETH_USDT,ETH_USDC'
     requiredTokenIdParam:
       name: token_id
       in: query
@@ -5693,17 +5704,14 @@ components:
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     optionalWalletListIdParam:
-      name: wallet_id
+      name: wallet_ids
       in: query
       required: false
-      description: A list of wallet IDs.
+      description: 'A list of wallet IDs, separated by comma.'
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
-      example:
-        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        type: string
+        description: 'A list of wallet IDs, separated by comma.'
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868'
     addressParam:
       name: address
       in: path

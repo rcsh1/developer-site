@@ -1,10 +1,8 @@
-name: token_id
+name: token_ids
 in: query
 required: false
-description: A list of token IDs.
+description: A list of token IDs, separated by comma.
 schema:
-  type: array
-  items:
-    type: string
-example:
-  - 'ETH_USDT'
+  type: string
+  description: A list of token IDs, separated by comma.
+example: 'ETH_USDT,ETH_USDC'
