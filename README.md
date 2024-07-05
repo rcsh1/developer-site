@@ -9,11 +9,7 @@
 
   <br />
   <br />
-  <a href="https://www.cobo.com/developers/overview/custodial-wallet">Custodial Wallet</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.cobo.com/developers/overview/mpc-wallet/mpc-introduction">MPC Wallet</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.cobo.com/developers/overview/smart-contract-wallet/cobosafe">Smart Contract Wallet</a>
+  [link to the Dev Hub]()
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://www.cobo.com/web3/channel/news">News</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
@@ -49,6 +45,31 @@ The Developer Hub mainly includes the following resources.:
 - **[MPC Wallet](https://www.cobo.com/developers/overview/mpc-wallet/mpc-introduction)**. Cobo MPC Wallet leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS).
 - **[Smart Contract Wallet](https://www.cobo.com/developers/overview/smart-contract-wallet/cobosafe)**. Cobo’s Smart Contract Wallet solution, dubbed as “Cobo Safe”, is a smart contract based access control framework on EVM compatible blockchains.
   <br />
+
+## GitHub repository directory
+Currently we offer the content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at the same time. Below is the directory structure for both versions:
+**Note**: We recommend that you upgrade to 2.0 for additional features and enhanced performance.
+
+```
+- v2
+  - api-references // The content under the API References tab, general information including overview, authentication, etc.
+  - cobo_waas2_openapi_spec // The content under the API References tab, endpoint operation-level documentation in OpenAPI spec format
+  - guides // (Coming soon) The content under the Guides tab, instructions on basic and advanced features
+  - cobo-portal-apps // (Coming soon) The content related to Cobo Portal Apps.
+  - developer-tools //  (Coming soon) The content under the Developer Tools tab, documentation for the WaaS SDKs
+  - faqs // (Coming soon) The content under the FAQs tab, frequently asked questions
+
+```
+
+```
+- v1
+  - overview // The content under the Documentation tab, introduction to the WaaS service and wallets
+  - get-started/overview // The content under the Get Started tab, basic workflows for different types of wallets
+  - api-references // The content under the API References tab, endpoint operation-level documentation
+  - guides/howtos // The content under the Guides tab, instructions on basic and advanced features
+  - sdk-and-tools // The content under the SDKs and Tools tab, documentation for the WaaS SDKs and useful tools
+  - faqs // The content under the FAQs tab, frequently asked questions
+```
 
 ## Contributing
 
