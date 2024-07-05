@@ -1,0 +1,39 @@
+---
+title: "Understand and handle error codes"
+---
+
+This article describes how to understand and handle the error codes and HTTP status codes.
+
+### Error codes
+
+| Error code | Description | Solution | 
+| ----------- | ----------- | ----------- |
+| `2000` | Internal error. | Try again later. |
+| `2002`| Unsupported HTTP method.| Use a supported HTTP method. |
+| `2003`| Missing required parameters. | Provide the required parameters. |
+| `2006`| Illegal parameter format or value.| Provide valid parameters. |
+| `2010`| Rate limit exceeded.| Try again later. |
+| `2022`| Missing required request headers. | Provide required headers. |
+| `2023`| API signature validation failed. | Use an valid API signature. |
+| `2024`| API key authentication failed. | Use a valid API key. |
+| `2025`| Forbidden access to resources. | Check the permission of your API key. |
+| `2026`| Too many requests. | Try again later. |
+| `2028`| Resource not found.| Check the requested resource URL. |
+| `2029`| Invalid status property. | Check the `status` property value. |
+| `2040`| Duplicate key. | Use a unique key. |
+
+###  HTTP status codes 
+
+| Status code | Description                                             | Solution | 
+| --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 200             | OK.                                                           |     The request was successful.       |
+| 400             | Bad request.                                                  |      Check the request parameters.      |
+| 401             | Unauthorized.  |       Check the API key, API signature, or timestamp.     |
+| 403             | Forbidden.                               |      Ensure yor have required permissions.      |
+| 404             | Not Found.               |     Check the requested resource URL.       |
+| 405             | Method Not Allowed.  |      Use a supported HTTP method.      |
+| 406             | Not Acceptable.      |      Ensure the request content format is JSON.      |
+| 429             | Too Many Requests.  |      Reduce request frequency and try again later.      |
+| 500             | Internal Server Error.   |      Try again later.      |
+| 502             | Bad Gateway.                                                  |      Check the connectivity and try again later.      |
+| 503             | Service Unavailable.  |     Try again later.        |
