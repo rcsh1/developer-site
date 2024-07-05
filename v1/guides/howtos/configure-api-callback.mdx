@@ -11,11 +11,11 @@ To use API callback on Cobo, the client will need to first set up the API callba
 Currently, Cobo supports two types of API callback: Transaction Notification and Withdraw Confirmation.
 
 **Transaction Notification:** When a deposit/withdraw transaction is scanned on chain by Cobo, it will send a push message to an URL specified by the client.
-This serves to provide clients with real-time updates on all transactions and aid in transaction reconciliation. For more information, please [click here](/api-references/development/transaction-notification).
+This serves to provide clients with real-time updates on all transactions and aid in transaction reconciliation. For more information, please [click here](/v1/api-references/development/transaction-notification).
 
 **Withdraw Confirmation:** Cobo will send a push message to the callback URL using the POST method, containing withdraw details.
 Clients are required to respond to Cobo in the RESPONSE format, indicating either 'OK' or 'Deny' in the message body. If no response or a 'Deny' response is provided, the withdraw request will be rejected.
-For more information, please [click here](/api-references/development/withdrawal-confirmation).
+For more information, please [click here](/v1/api-references/development/withdrawal-confirmation).
 
 The following provides instructions on configuring the API callback service, along with code samples for callback endpoints.
 
@@ -118,7 +118,7 @@ Security recommendations for configuring and deploying a callback server:
 
 Cobo API callback signature
 
-To enhance security, Cobo will apply ECDSA signatures to every RESPONSE message. For more information, please [click here](/api-references/development/callback-signature).
+To enhance security, Cobo will apply ECDSA signatures to every RESPONSE message. For more information, please [click here](/v1/api-references/development/callback-signature).
 To authenticate the signature, you are required to retrieve the corresponding pubkey by navigating to the "API Callback" section on the Cobo Custody Web.
 
 <img src="/v1/images/callback.png" />

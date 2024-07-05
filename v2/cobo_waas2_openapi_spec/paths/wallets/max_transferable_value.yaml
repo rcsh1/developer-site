@@ -5,6 +5,8 @@ get:
   summary: Get maximum transferable value
   description: |
     This operation retrieves the maximum amount that you can transfer from a wallet or a specified wallet address, along with the corresponding transaction fee.
+
+    You must specify `to_address` in your query because it affects the transaction fee.
   security:
     - CoboAuth: []
   parameters:

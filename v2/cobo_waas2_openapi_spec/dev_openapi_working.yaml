@@ -2107,7 +2107,7 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         chain_id:
           type: string
@@ -2115,7 +2115,7 @@ components:
           example: ETH
         asset_id:
           type: string
-          description: 'The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.'
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. '
           example: USDT
         symbol:
           type: string
@@ -2283,7 +2283,7 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: BTC
         balance:
@@ -2534,7 +2534,7 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH
         max_transferable_value:
           type: string
@@ -2561,7 +2561,7 @@ components:
           example: '0x0000000000000000000000000000000000000000'
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         memo:
@@ -3281,7 +3281,7 @@ components:
           example: '20231213122855000000000000000000'
         request_id:
           type: string
-          description: The request ID that is unique within your organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: web_send_by_user_327_1610444045047
         type:
           $ref: '#/components/schemas/TransactionType'
@@ -3475,11 +3475,11 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
           example: USDT
         amount:
           type: string
@@ -3919,11 +3919,11 @@ components:
           $ref: '#/components/schemas/TransactionDestinationType'
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
           example: USDT
         account_output:
           type: object
@@ -4031,11 +4031,11 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
           example: USDT
         address:
           type: string
@@ -4070,11 +4070,11 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
           example: USDT
         address:
           type: string
@@ -4109,11 +4109,11 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
           example: USDT
         address:
           type: string
@@ -4154,11 +4154,11 @@ components:
           example: Asset
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
           example: USDT
         address:
           type: string
@@ -4279,7 +4279,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
@@ -4291,7 +4291,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     BaseTransferSource:
       type: object
@@ -4530,13 +4530,13 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
@@ -4564,7 +4564,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
@@ -4621,7 +4621,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
           type: string
@@ -4639,7 +4639,7 @@ components:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: The token ID.
+          description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
@@ -4656,7 +4656,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
           $ref: '#/components/schemas/EstimateFeeTransfer/properties/request_type'
@@ -4773,7 +4773,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
@@ -5549,7 +5549,7 @@ components:
       name: chain_id
       in: path
       required: true
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID. You can retrieve chain IDs by using the [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains) operation.'
       schema:
         type: string
       example: ETH
@@ -5565,7 +5565,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID. You can retrieve chain IDs by using the [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains) operation.'
       schema:
         type: string
       example: ETH
@@ -5582,7 +5582,7 @@ components:
       name: token_id
       in: path
       required: true
-      description: The token ID.
+      description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
       schema:
         type: string
       example: ETH_USDT
@@ -5590,7 +5590,7 @@ components:
       name: token_id
       in: query
       required: false
-      description: The token ID.
+      description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
       schema:
         type: string
       example: ETH_USDT
@@ -5607,7 +5607,7 @@ components:
       name: token_id
       in: query
       required: true
-      description: The token ID.
+      description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
       schema:
         type: string
       example: ETH_USDT
@@ -5920,7 +5920,7 @@ components:
       name: request_id
       in: query
       required: false
-      description: The request ID that is unique within your organization to track your request.
+      description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
       schema:
         type: string
       example: web_send_by_user_327_1610444045047
@@ -6231,7 +6231,7 @@ components:
             properties:
               token_id:
                 type: string
-                description: The token ID.
+                description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
                 pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
                 example: ETH_USDT
               count:
@@ -6256,7 +6256,7 @@ components:
             properties:
               token_id:
                 type: string
-                description: The token ID.
+                description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
                 example: BTC
               tx_hash:
                 type: string
@@ -6961,7 +6961,7 @@ components:
             properties:
               request_id:
                 type: string
-                description: The request ID that is unique within your organization to track your request.
+                description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
                 example: f47ac10b-58cc-4372-a567-0e02b2c3d479
               transaction_id:
                 type: string

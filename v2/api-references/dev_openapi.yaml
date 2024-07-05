@@ -94,7 +94,7 @@ paths:
       tags:
         - Wallets
       operationId: get_chains
-      summary: List chain metadata
+      summary: List all supported chains
       description: |
         This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
 
@@ -118,7 +118,7 @@ paths:
       tags:
         - Wallets
       operationId: get_chain_by_id
-      summary: Get chain information by ID
+      summary: Get chain information
       description: |
         This operation retrieves the detailed information about a specified chain.
       security:
@@ -133,7 +133,7 @@ paths:
       tags:
         - Wallets
       operationId: get_tokens
-      summary: List token metadata
+      summary: List all supported tokens
       description: |
         This operation retrieves the metadata of all tokens supported by Cobo WaaS 2.0.
 
@@ -157,7 +157,7 @@ paths:
       tags:
         - Wallets
       operationId: get_token_by_id
-      summary: Get token information by ID
+      summary: Get token information
       description: |
         This operation retrieves the detailed information about a specified token.
       security:
@@ -172,7 +172,7 @@ paths:
       tags:
         - Wallets
       operationId: get_supported_chains
-      summary: List supported chains
+      summary: List wallet supported chains
       description: |
         This operation retrieves all chains supported by a specific wallet type or subtype.
       security:
@@ -193,7 +193,7 @@ paths:
       tags:
         - Wallets
       operationId: get_supported_tokens
-      summary: List supported tokens
+      summary: List wallet supported tokens
       description: |
         This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain ID.
       security:
@@ -215,9 +215,11 @@ paths:
       tags:
         - Wallets
       operationId: get_enabled_chains
-      summary: List enabled chains
+      summary: List organization enabled chains
       description: |
-        This operation retrieves all the chains that can be used by your organization. You can filter the result by wallet type or subtype.
+        This operation retrieves all the chains that can be used by your organization. 
+
+        You can filter the result by wallet type or subtype. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
       security:
         - CoboAuth: []
       parameters:
@@ -236,9 +238,11 @@ paths:
       tags:
         - Wallets
       operationId: get_enabled_tokens
-      summary: List enabled tokens
+      summary: List organization enabled tokens
       description: |
-        This operation retrieves all the tokens that can be used by your organization. You can filter the result by wallet type, subtype, and chain ID.
+        This operation retrieves all the tokens that can be used by your organization. 
+
+        You can filter the result by wallet type, subtype, and chain ID. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
       security:
         - CoboAuth: []
       parameters:
@@ -294,8 +298,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalVaultIdQueryParam'
         - $ref: '#/components/parameters/optionalProjectIdQueryParam'
+        - $ref: '#/components/parameters/optionalVaultIdQueryParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -315,7 +319,7 @@ paths:
       tags:
         - Wallets
       operationId: get_wallet_by_id
-      summary: Retrieve wallet information by ID
+      summary: Get wallet information
       description: |
         This operation retrieves the detailed information about a specified wallet.
       security:
@@ -331,7 +335,7 @@ paths:
       tags:
         - Wallets
       operationId: update_wallet_by_id
-      summary: Update wallet by ID
+      summary: Update wallet
       description: |
         This operation updates the information of a specified wallet.
 
@@ -358,7 +362,7 @@ paths:
       tags:
         - Wallets
       operationId: delete_wallet_by_id
-      summary: Delete wallet by ID
+      summary: Delete wallet
       description: |
         This operation deletes a specified wallet.
 
@@ -444,6 +448,8 @@ paths:
       summary: Get maximum transferable value
       description: |
         This operation retrieves the maximum amount that you can transfer from a wallet or a specified wallet address, along with the corresponding transaction fee.
+
+        You must specify `to_address` in your query because it affects the transaction fee.
       security:
         - CoboAuth: []
       parameters:
@@ -466,7 +472,7 @@ paths:
       operationId: generate_wallet_address
       summary: Generate new addresses in wallet
       description: |
-        This operation generates one or more addresses for a specified wallet.
+        This operation generates one or more addresses within a specified wallet.
 
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
@@ -486,14 +492,21 @@ paths:
       tags:
         - Wallets
       operationId: list_addresses
-      summary: List wallet addresses by wallet ID
+      summary: List wallet addresses
       description: |
-        This operation retrieves a list of addresses under a specified wallet.
+        This operation retrieves a list of addresses within a specified wallet.
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalTokenIdParam'
-        - $ref: '#/components/parameters/optionalAddressParam'
+        - name: addresses
+          in: query
+          required: false
+          description: 'A list of wallet addresses, separated by comma.'
+          schema:
+            type: string
+            description: 'A list of wallet addresses, separated by comma.'
+          example: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -510,13 +523,16 @@ paths:
       tags:
         - Wallets
       operationId: get_address_by_id
-      summary: Get address information by ID
+      summary: Get address information
       description: |
         This operation retrieves the detailed information about a specified address within a wallet.
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
       responses:
         '200':
           $ref: '#/components/responses/getAddressesResponse'
@@ -877,7 +893,23 @@ paths:
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
-        - $ref: '#/components/parameters/requiredUpdateKeyGroupActionParam'
+      requestBody:
+        description: |
+          The available actions of key share group update. Possible values include:
+          - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - update_key_share_group_action
+              properties:
+                update_key_share_group_action:
+                  type: string
+                  description: The available action of key group update.
+                  enum:
+                    - UpgradeToMainGroup
+                  example: UpgradeToMainGroup
       responses:
         '200':
           $ref: '#/components/responses/putKeyGroupResponse'
@@ -975,6 +1007,33 @@ paths:
           $ref: '#/components/responses/notFoundError'
         '503':
           $ref: '#/components/responses/serviceUnavailableError'
+  '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallets
+      operationId: get_tss_request
+      summary: Get TSS request
+      description: |
+        This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
+
+        You can retrieve `tss_request_id`s by calling [List TSS requests](/v2/api-references/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - 'mpc_organization_controlled_tss_request:manage'
+            - 'mpc_user_controlled_tss_request:manage'
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/tssRequestIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTssRequestResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '404':
+          $ref: '#/components/responses/notFoundError'
+        '503':
+          $ref: '#/components/responses/serviceUnavailableError'
   '/wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel':
     post:
       tags:
@@ -1002,21 +1061,18 @@ paths:
           $ref: '#/components/responses/forbiddenError'
         '429':
           $ref: '#/components/responses/tooManyRequestError'
-  /transactions/fee_price:
+  /transactions/fee_rates:
     get:
       tags:
         - Transactions
       operationId: list_fee_rates
-      summary: List chain fee rates
+      summary: Get fee rates
       description: |
-        This operation retrieves the transaction fee model and transaction fee rates for a specified chain or a specified token.
-
-        <Note>You must specify either the chain id or token id.</Note>
+        This operation retrieves current transaction fee rates on the blockchain based on the specified chain ID.
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/optionalChainIdParam'
-        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/requiredChainIdParam'
       responses:
         '200':
           $ref: '#/components/responses/getChainFeeResponse'
@@ -1031,11 +1087,11 @@ paths:
       operationId: estimate_fee
       summary: Estimate transaction fee
       description: |
-        This operation estimates the transaction fee of a token transfer or a contract call for three different transaction speeds (slow, standard, and fast), based on factors such as network congestion and transaction complexity.
+        This operation estimates the transaction fee of a token transfer or a contract call for three different transaction speeds (slow, recommended, and fast), based on factors such as network congestion and transaction complexity.
 
         You need to specify the transaction information, including the source address and destination address. 
         - If you do not include a `fee` object in the request body, the response will include estimated transaction fees and recommended fee limits from the chain.
-        - If you do provide a `fee` object, the response will include fee estimates for the slow and fast transaction speeds with the provided fee as the standard speed fee.
+        - If you do provide a `fee` object, the response will include fee estimates for the slow and fast transaction speeds with the provided fee as the recommended speed fee.
 
         Note: 
         - The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model from the response represent the recommended values from the chain.
@@ -1343,7 +1399,7 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: Retrieve webhook endpoint by ID
+      summary: Get webhook endpoint information
       description: This operation retrieves the information of a specified webhook endpoint.
       operationId: get_webhook_endpoint_by_id
       responses:
@@ -1426,7 +1482,7 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: Retrieve event by ID
+      summary: Retrieve event information
       description: |
         This operation retrieves the information of a webhook event by the event ID.
       operationId: get_webhook_event
@@ -1448,7 +1504,7 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: List event logs by ID
+      summary: List event logs
       description: |
         This operation retrieves a list of webhook event logs by event ID. Each retry will generate a separate event log.
       operationId: get_webhook_event_logs
@@ -1470,7 +1526,7 @@ paths:
     post:
       tags:
         - Developers - Webhooks
-      summary: Retry event by ID
+      summary: Retry event
       description: |
         This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event
@@ -1506,10 +1562,18 @@ components:
       type: object
       description: The response of a failed request.
       required:
+        - success
         - error_code
         - error_description
         - error_id
       properties:
+        success:
+          type: boolean
+          default: false
+          description: |
+            Whether the API operation was successful. 
+            - `true`: The operation was successful.
+            - `false`: The operation failed.
         error_code:
           type: integer
           description: The error code.
@@ -1528,7 +1592,7 @@ components:
       properties:
         asset_id:
           type: string
-          description: The asset ID.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         display_code:
           type: string
@@ -1551,7 +1615,7 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         chain_id:
           type: string
@@ -1559,15 +1623,15 @@ components:
           example: ETH
         asset_id:
           type: string
-          description: 'The asset ID, which is used to group the balances of the correponding tokens. For example, if you have $1,000 worth of ETH_USDT and $2,000 worth of TRON_USDT, the balance of your USDT assets will be $3,000.'
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         symbol:
           type: string
-          description: The token symbol.
+          description: 'The token symbol, which is the abbreviated name of a token.'
           example: USDT
         name:
           type: string
-          description: The token name.
+          description: 'The token name, which is the full name of a token.'
           example: Tether USDT
         decimal:
           type: integer
@@ -1628,16 +1692,16 @@ components:
       properties:
         chain_id:
           type: string
-          description: The chain ID.
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
           example: ETH
         symbol:
           type: string
-          description: The chain symbol.
+          description: 'The chain symbol, which is the abbreviated name of a chain.'
           example: ETH
         icon_url:
           type: string
           description: The URL of the chain icon.
-          example: 'https://static.waas.co/images/coins/ETH.png'
+          example: 'https://d.cobo.com/public/logos/ETH.png'
         explorer_tx_url:
           type: string
           description: The transaction URL pattern on the blockchain explorer. You can use it to concatenate the transaction URLs.
@@ -1661,13 +1725,13 @@ components:
       description: |
         The wallet type.
 
-        - `Custodial`: Custodial Wallets
+        - `Custodial`: [Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction)
 
-        - `MPC`: MPC Wallets
+        - `MPC`: [MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction)
 
-        - `SmartContract`: Smart Contract Wallets
+        - `SmartContract`: [Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)
 
-        - `Exchange`: Exchange Wallets
+        - `Exchange`: [Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction)
     WalletSubtype:
       type: string
       enum:
@@ -1727,7 +1791,7 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: BTC
         balance:
@@ -1764,7 +1828,7 @@ components:
       properties:
         asset_id:
           type: string
-          description: The asset ID.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           pattern: '^[A-Z0-9]+$'
           example: USDT
         balance:
@@ -1978,7 +2042,7 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH
         max_transferable_value:
           type: string
@@ -2005,7 +2069,7 @@ components:
           example: '0x0000000000000000000000000000000000000000'
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         memo:
@@ -2294,7 +2358,7 @@ components:
         org_id:
           type: string
           example: f3b4a616-9c43-462e-8cb4-343e304fee64
-          description: The Organization ID.
+          description: The organization ID.
         name:
           type: string
           example: Project name
@@ -2396,6 +2460,8 @@ components:
     FeeAmount:
       type: object
       description: The maximum transaction fee.
+      required:
+        - max_fee_amount
       properties:
         max_fee_amount:
           type: string
@@ -2403,11 +2469,14 @@ components:
           example: '0.1'
     FeeData:
       type: object
+      required:
+        - gas_limit
       properties:
         gas_limit:
           type: string
           description: The gas limit. It represents the maximum number of gas units that you are willing to pay for the execution of a transaction or Ethereum Virtual Machine (EVM) operation. The gas unit cost of each operation varies.
           default: '21000'
+          example: '21000'
     EvmEip1559FeeBasePrice:
       type: object
       description: 'The transaction fee price based on the EIP-1559 fee model, which equals the base fee price plus the maximum priority fee.'
@@ -2454,7 +2523,7 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: ETH
@@ -2474,19 +2543,16 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: ETH
-        rate:
-          type: object
-          properties:
-            slow:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-            recommended:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-            fast:
-              $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        slow:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        recommended:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+        fast:
+          $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
     UtxoFeePrice:
       type: object
       description: The transaction fee price for UTXO-based chains.
@@ -2497,7 +2563,7 @@ components:
       properties:
         fee_type:
           $ref: '#/components/schemas/FeeType'
-        fee_token_id:
+        token_id:
           type: string
           description: The token ID of the transaction fee.
           example: BTC
@@ -2514,12 +2580,13 @@ components:
       title: Fixed
       required:
         - fee_type
+        - token_id
       allOf:
         - type: object
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH_USDT
@@ -2530,93 +2597,78 @@ components:
       title: EIP-1559
       required:
         - fee_type
-        - rate
-        - gas_limit
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            fee_token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH
-            rate:
-              type: object
-              required:
-                - recommended
-              properties:
-                slow:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-                recommended:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-                fast:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-                customized:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-        - $ref: '#/components/schemas/FeeData'
+        - recommended
+      properties:
+        fee_type:
+          $ref: '#/components/schemas/FeeType'
+        token_id:
+          type: string
+          description: The token ID of the transaction fee.
+          example: ETH
+        slow:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        recommended:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        fast:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
       description: The estimated transaction fee based on the legacy fee model.
       title: Legacy
       required:
         - fee_type
-        - rate
-        - gas_limit
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            fee_token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH
-            rate:
-              type: object
-              required:
-                - recommended
-              properties:
-                slow:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-                recommended:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-                fast:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-                customized:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-        - $ref: '#/components/schemas/FeeData'
+        - recommended
+      properties:
+        fee_type:
+          $ref: '#/components/schemas/FeeType'
+        token_id:
+          type: string
+          description: The token ID of the transaction fee.
+          example: ETH
+        slow:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        recommended:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        fast:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     UtxoFee:
       type: object
       description: The estimated transaction fee for UTXO-based chains.
       title: UTXO
       required:
         - fee_type
-        - rate
-        - max_fee_amount
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            fee_token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH
-            rate:
-              type: object
-              required:
-                - recommended
-              properties:
-                slow:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-                recommended:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-                fast:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-                customized:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-        - $ref: '#/components/schemas/FeeAmount'
+        - recommended
+      properties:
+        fee_type:
+          $ref: '#/components/schemas/FeeType'
+        token_id:
+          type: string
+          description: The token ID of the transaction fee.
+          example: ETH
+        slow:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
+        recommended:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
+        fast:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
     FeeRate:
       oneOf:
         - $ref: '#/components/schemas/EvmEip1559FeePrice'
@@ -2650,12 +2702,13 @@ components:
       title: EIP-1559
       required:
         - fee_type
+        - token_id
       allOf:
         - type: object
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
@@ -2667,13 +2720,14 @@ components:
         The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). The gas units used must be smaller than the gas limit.
       required:
         - fee_type
+        - token_id
       title: Legacy
       allOf:
         - type: object
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH
@@ -2685,13 +2739,14 @@ components:
         The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee. 
       required:
         - fee_type
+        - token_id
       title: UTXO
       allOf:
         - type: object
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: BTC
@@ -2712,7 +2767,7 @@ components:
           Fixed: '#/components/schemas/FixedFee'
     Transaction:
       type: object
-      description: The information about the a transaction.
+      description: The information about a transaction.
       required:
         - transaction_id
         - transaction_type
@@ -2730,11 +2785,11 @@ components:
           example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
         cobo_id:
           type: string
-          description: The Cobo ID for tracking the transaction.
+          description: 'The Cobo ID, which can be used to track a transaction.'
           example: '20231213122855000000000000000000'
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: web_send_by_user_327_1610444045047
         type:
           $ref: '#/components/schemas/TransactionType'
@@ -2748,7 +2803,7 @@ components:
           example: Rejected by signer Cobo TSS
         chain_id:
           type: string
-          description: The chain ID.
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
           pattern: '^[A-Z]+$'
           example: ETH
         source:
@@ -2888,9 +2943,10 @@ components:
         is_loop:
           type: boolean
           description: |
-            Whether the transfer is a Cobo Superloop transfer. 
-              - `true`: The transfer is a Superloop transfer.
-              - `false`: The transfer is not a Superloop transfer.
+            Whether the transfer is a Loop transfer. For more information about Loop, see [the website](https://loop.top/).
+
+            - `true`: The transfer is a Loop transfer.
+            - `false`: The transfer is not a Loop transfer.
           example: false
         created_time:
           type: number
@@ -2927,11 +2983,11 @@ components:
       properties:
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         amount:
           type: string
@@ -3001,12 +3057,14 @@ components:
       enum:
         - API
         - Web
+        - App
         - External
       example: API
       description: |
         The transaction initiator type. Possible values include:
           - `API`: An API initiator, who initiates the transaction by using the WaaS API.
-          - `Web`: An API initiator, who initiates the transaction from Cobo Portal.
+          - `Web`: An web initiator, who initiates the transaction from Cobo Portal.
+          - `App`: An App initiator, who initiates the transaction from Cobo Portal Apps.
           - `External`: An external initiator, who initiates the transaction outside Cobo.
     TransactionSigner:
       type: object
@@ -3136,7 +3194,7 @@ components:
           - `Withdrawal`: A withdrawal transaction.
           - `TokenApproval`: A transaction that grants permission to access your tokens. 
           - `ContractCall`: A transaction that interacts with a smart contract.
-          - `TransactionFeePayment`: A transaction that initiated from Fee Station to pay your transaction fees.
+          - `TransactionFeePayment`: A transaction that is initiated from Fee Station to pay your transaction fees.
           - `RawMessage`: A transaction that signs a message. 
     MpcSigningGroup:
       type: object
@@ -3369,11 +3427,11 @@ components:
           $ref: '#/components/schemas/TransactionDestinationType'
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         account_output:
           type: object
@@ -3481,11 +3539,11 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         address:
           type: string
@@ -3520,11 +3578,11 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         address:
           type: string
@@ -3559,11 +3617,11 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         address:
           type: string
@@ -3604,11 +3662,11 @@ components:
           example: Asset
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
-          description: The asset ID. It can be used to group token balance.
+          description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
           example: USDT
         address:
           type: string
@@ -3634,7 +3692,7 @@ components:
           properties:
             fee_type:
               $ref: '#/components/schemas/FeeType'
-            fee_token_id:
+            token_id:
               type: string
               description: The token ID of the transaction fee.
               example: ETH_USDT
@@ -3729,7 +3787,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
@@ -3741,7 +3799,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     BaseTransferSource:
       type: object
@@ -3980,25 +4038,13 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          type: string
-          enum:
-            - Transfer
-            - ContractCall
-            - MessageSign
-          example: Transfer
-          description: |
-            The request type. Possible values include:
-              - `Transfer`: A request to transfer tokens.
-              - `ContractCall`: A request to interact with a smart contract.
-              - `MessageSign`: A request to sign a message.
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
@@ -4026,13 +4072,11 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
         chain_id:
           type: string
-          description: The chain ID.
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
           pattern: '^[A-Z]+$'
           example: ETH
         source:
@@ -4085,20 +4129,28 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
+          type: string
+          enum:
+            - Transfer
+            - ContractCall
+            - MessageSign
+          example: Transfer
+          description: |
+            The request type. Possible values include:
+              - `Transfer`: A request to transfer tokens.
+              - `ContractCall`: A request to interact with a smart contract.
+              - `MessageSign`: A request to sign a message.
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: The token ID.
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
-        fee:
-          $ref: '#/components/schemas/FeeRate'
     EstimateFeeContractCall:
       type: object
       description: The information about a transaction that interacts with a smart contract
@@ -4112,13 +4164,13 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
+          $ref: '#/components/schemas/EstimateFeeTransfer/properties/request_type'
         chain_id:
           type: string
-          description: The chain ID.
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -4141,8 +4193,6 @@ components:
                 The data that is used to invoke a specific function or method within the specified contract at the destination address.
               format: byte
               example: U3dhZ2dlciByb2Nrcw==
-        fee:
-          $ref: '#/components/schemas/FeeRate'
     BaseContractCallSource:
       type: object
       description: The information about the transaction source.
@@ -4231,13 +4281,11 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        request_type:
-          $ref: '#/components/schemas/Transfer/properties/request_type'
         chain_id:
           type: string
-          description: The chain ID.
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -4814,12 +4862,15 @@ components:
       type: object
       description: The staking info.
       required:
-        - stake_id
+        - id
+        - wallet_id
+        - address
         - pool_id
-        - amount
+        - amounts
         - status
-        - created_at
-        - updated_at
+        - validator_info
+        - created_time
+        - updated_time
       properties:
         id:
           description: The unique id of the stake.
@@ -4861,12 +4912,12 @@ components:
           description: The rewards info of the stake.
           type: object
           example: {}
-        created_at:
+        created_time:
           description: The time when the stake was created.
           type: integer
           format: int64
           example: 1640995200000
-        updated_at:
+        updated_time:
           description: The time when the stake was last updated.
           type: integer
           format: int64
@@ -4981,26 +5032,24 @@ components:
       name: asset_id
       in: query
       required: false
-      description: The asset ID.
+      description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
       schema:
         type: string
       example: USDT
     optionalAssetIdListParam:
-      name: asset_id
+      name: asset_ids
       in: query
       required: false
-      description: A list of asset IDs.
+      description: 'A list of asset IDs, separated by comma. (This concept applies to Exchange Wallets only) An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - USDT
+        type: string
+        description: 'A list of asset IDs, separated by comma.'
+      example: 'USDT,USDC'
     requiredAssetIdParam:
       name: asset_id
       in: query
       required: true
-      description: The asset ID.
+      description: '(This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
       schema:
         type: string
       example: USDT
@@ -5008,7 +5057,15 @@ components:
       name: chain_id
       in: path
       required: true
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+      schema:
+        type: string
+      example: ETH
+    requiredChainIdParam:
+      name: chain_id
+      in: query
+      required: true
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5016,26 +5073,24 @@ components:
       name: chain_id
       in: query
       required: false
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
       schema:
         type: string
       example: ETH
     optionalChainIdListParam:
-      name: chain_id
+      name: chain_ids
       in: query
       required: false
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - ETH
+        type: string
+        description: 'A list of chain IDs, separated by comma.'
+      example: 'BTC,ETH'
     tokenIdParam:
       name: token_id
       in: path
       required: true
-      description: The token ID.
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5043,26 +5098,24 @@ components:
       name: token_id
       in: query
       required: false
-      description: The token ID.
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
     optionalTokenListIdParam:
-      name: token_id
+      name: token_ids
       in: query
       required: false
-      description: A list of token IDs.
+      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - ETH_USDT
+        type: string
+        description: 'A list of token IDs, separated by comma.'
+      example: 'ETH_USDT,ETH_USDC'
     requiredTokenIdParam:
       name: token_id
       in: query
       required: true
-      description: The token ID.
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5103,13 +5156,13 @@ components:
       description: |
         The wallet type.
 
-        - `Custodial`: Custodial Wallets
+        - `Custodial`: [Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction)
 
-        - `MPC`: MPC Wallets
+        - `MPC`: [MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction)
 
-        - `SmartContract`: Smart Contract Wallets
+        - `SmartContract`: [Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)
 
-        - `Exchange`: Exchange Wallets
+        - `Exchange`: [Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction)
       schema:
         $ref: '#/components/schemas/WalletType'
     optionalWalletSubtypeParam:
@@ -5153,17 +5206,14 @@ components:
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     optionalWalletListIdParam:
-      name: wallet_id
+      name: wallet_ids
       in: query
       required: false
-      description: A list of wallet IDs.
+      description: 'A list of wallet IDs, separated by comma.'
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
-      example:
-        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        type: string
+        description: 'A list of wallet IDs, separated by comma.'
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868'
     addressParam:
       name: address
       in: path
@@ -5291,19 +5341,6 @@ components:
         type: string
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    requiredUpdateKeyGroupActionParam:
-      name: update_key_share_group_action
-      in: query
-      description: |
-        The available actions of key share group update. Possible values include:
-        - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
-      required: true
-      schema:
-        type: string
-        description: The available action of key group update.
-        enum:
-          - UpgradeToMainGroup
-        example: UpgradeToMainGroup
     vaultIdParam:
       name: vault_id
       in: path
@@ -5391,7 +5428,7 @@ components:
       name: request_id
       in: query
       required: false
-      description: The request ID that is unique within your Organization to track your request.
+      description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
       schema:
         type: string
       example: web_send_by_user_327_1610444045047
@@ -5399,7 +5436,7 @@ components:
       name: cobo_id
       in: query
       required: false
-      description: The Cobo ID for tracking the transaction.
+      description: 'The Cobo ID, which can be used to track a transaction.'
       schema:
         type: string
       example: '20231213122855000000000000000000'
@@ -5691,7 +5728,7 @@ components:
                 description: The ID of the Exchange Wallet (Main Account).
                 example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     createAddressBody:
-      description: The request body to generates addresses for a specified wallet.
+      description: The request body to generates addresses within a specified wallet.
       content:
         application/json:
           schema:
@@ -5702,7 +5739,7 @@ components:
             properties:
               token_id:
                 type: string
-                description: The token ID.
+                description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
                 pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
                 example: ETH_USDT
               count:
@@ -5727,7 +5764,7 @@ components:
             properties:
               token_id:
                 type: string
-                description: The token ID.
+                description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
                 example: BTC
               tx_hash:
                 type: string
@@ -6383,7 +6420,7 @@ components:
             items:
               $ref: '#/components/schemas/FeeRate'
             description: |
-              The fee price for the specified chain or token. 
+              The fee rate for the specified chain or token. 
 
               The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
@@ -6432,7 +6469,7 @@ components:
             properties:
               request_id:
                 type: string
-                description: The request ID that is unique within your Organization to track your request.
+                description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
                 example: f47ac10b-58cc-4372-a567-0e02b2c3d479
               transaction_id:
                 type: string
@@ -6495,19 +6532,16 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              result:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    event_type:
-                      $ref: '#/components/schemas/WebhookEventType'
-                    description:
-                      type: string
-                      description: The description of the webhook event type.
-                      example: Occurs when the transaction status is updated
+            type: array
+            items:
+              type: object
+              properties:
+                event_type:
+                  $ref: '#/components/schemas/WebhookEventType'
+                description:
+                  type: string
+                  description: The description of the webhook event type.
+                  example: Occurs when the transaction status is updated
     retryWebhookEventResponse:
       description: The request was successful.
       content:

@@ -11,7 +11,7 @@ description: "This endpoint generates new addresses for a given chain code and r
 
 <ParamField body="chain_code" type="String" required>The chain code for which the addresses are to be generated.</ParamField>
 <ParamField body="count" type="Int" required>The number of addresses to generate.</ParamField>
-<ParamField body="encoding" type="Int">The encoding of addresses to generate. The default value is None, which means the default encoding type for each blockchain is used. For more information, please [refer to](/api-references/development/address-encoding) the enum value corresponding to each encoding</ParamField>
+<ParamField body="encoding" type="Int">The encoding of addresses to generate. The default value is None, which means the default encoding type for each blockchain is used. For more information, please [refer to](/v1/api-references/development/address-encoding) the enum value corresponding to each encoding</ParamField>
 
 #### Response
 <ResponseField name="success" type="bool">request successful or failed</ResponseField>
@@ -22,7 +22,7 @@ description: "This endpoint generates new addresses for a given chain code and r
                 <ResponseField name="id" type="String" >The ID of the generated address.</ResponseField>
                 <ResponseField name="address" type="String" >The generated address.</ResponseField>
                 <ResponseField name="hd_path" type="String" >The HD path of the generated address.</ResponseField>
-                <ResponseField name="encoding" type="Int" >The encoding of the generated address. For more information, please [refer to](/api-references/development/address-encoding) the enum value corresponding to each encoding</ResponseField>
+                <ResponseField name="encoding" type="Int" >The encoding of the generated address. For more information, please [refer to](/v1/api-references/development/address-encoding) the enum value corresponding to each encoding</ResponseField>
             </Expandable>
         </ResponseField>
       </Expandable>
