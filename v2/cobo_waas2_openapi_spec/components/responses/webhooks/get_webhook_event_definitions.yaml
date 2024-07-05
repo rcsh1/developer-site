@@ -2,16 +2,14 @@ description: The request was successful.
 content:
   application/json:
     schema:
-      type: object
-      properties:
-        result:
-            type: array
-            items:
-              type: object
-              properties:
-                event_type:
-                  $ref: "../../../components/schemas/webhooks/event_type.yaml"
-                description:
-                  type: string
-                  description: The description of the webhook event type.
-                  example: "Occurs when the transaction status is updated"
+      type: array
+      items:
+        type: object
+        properties:
+          event_type:
+            $ref: "../../../components/schemas/webhooks/event_type.yaml"
+          description:
+            type: string
+            description: The description of the webhook event type.
+            example: "Occurs when the transaction status is updated"
+

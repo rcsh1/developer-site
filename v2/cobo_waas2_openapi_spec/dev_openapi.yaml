@@ -6535,19 +6535,16 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              result:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    event_type:
-                      $ref: '#/components/schemas/WebhookEventType'
-                    description:
-                      type: string
-                      description: The description of the webhook event type.
-                      example: Occurs when the transaction status is updated
+            type: array
+            items:
+              type: object
+              properties:
+                event_type:
+                  $ref: '#/components/schemas/WebhookEventType'
+                description:
+                  type: string
+                  description: The description of the webhook event type.
+                  example: Occurs when the transaction status is updated
     retryWebhookEventResponse:
       description: The request was successful.
       content:
