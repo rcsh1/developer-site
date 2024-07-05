@@ -3089,87 +3089,78 @@ components:
       title: EIP-1559
       required:
         - fee_type
-        - rate
-        - gas_limit
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH
-            rates:
-              type: object
-              required:
-                - recommended
-              properties:
-                slow:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-                recommended:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-                fast:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-        - $ref: '#/components/schemas/FeeData'
+        - recommended
+      properties:
+        fee_type:
+          $ref: '#/components/schemas/FeeType'
+        token_id:
+          type: string
+          description: The token ID of the transaction fee.
+          example: ETH
+        slow:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        recommended:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        fast:
+          allOf:
+            - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
       description: The estimated transaction fee based on the legacy fee model.
       title: Legacy
       required:
         - fee_type
-        - rate
-        - gas_limit
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH
-            rates:
-              type: object
-              required:
-                - recommended
-              properties:
-                slow:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-                recommended:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-                fast:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-        - $ref: '#/components/schemas/FeeData'
+        - recommended
+      properties:
+        fee_type:
+          $ref: '#/components/schemas/FeeType'
+        token_id:
+          type: string
+          description: The token ID of the transaction fee.
+          example: ETH
+        slow:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        recommended:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
+        fast:
+          allOf:
+            - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
+            - $ref: '#/components/schemas/FeeData'
     UtxoFee:
       type: object
       description: The estimated transaction fee for UTXO-based chains.
       title: UTXO
       required:
         - fee_type
-        - rate
-        - max_fee_amount
-      allOf:
-        - type: object
-          properties:
-            fee_type:
-              $ref: '#/components/schemas/FeeType'
-            token_id:
-              type: string
-              description: The token ID of the transaction fee.
-              example: ETH
-            rates:
-              type: object
-              required:
-                - recommended
-              properties:
-                slow:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-                recommended:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-                fast:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-        - $ref: '#/components/schemas/FeeAmount'
+        - recommended
+      properties:
+        fee_type:
+          $ref: '#/components/schemas/FeeType'
+        token_id:
+          type: string
+          description: The token ID of the transaction fee.
+          example: ETH
+        slow:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
+        recommended:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
+        fast:
+          allOf:
+            - $ref: '#/components/schemas/UtxoFeeBasePrice'
+            - $ref: '#/components/schemas/FeeAmount'
     FeeRate:
       oneOf:
         - $ref: '#/components/schemas/EvmEip1559FeePrice'
