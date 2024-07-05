@@ -1,10 +1,8 @@
-name: asset_id
+name: asset_ids
 in: query
 required: false
-description: A list of asset IDs.
+description: A list of asset IDs, separated by comma.
 schema:
-  type: array
-  items:
-    type: string
-example:
-  - 'USDT'
+  type: string
+  description: A list of asset IDs, separated by comma.
+example: 'USDT,USDC'
