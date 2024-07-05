@@ -1571,7 +1571,7 @@ components:
         error_code:
           type: integer
           description: The error code.
-        error_description:
+        error_message:
           type: string
           description: The error description.
         error_id:
@@ -2308,10 +2308,10 @@ components:
     KeyHolderType:
       type: string
       enum:
-        - COBO
-        - MOBILE
+        - Cobo
+        - Mobile
         - API
-      example: COBO
+      example: Cobo
     MPCVault:
       type: object
       description: The data for vault information.
