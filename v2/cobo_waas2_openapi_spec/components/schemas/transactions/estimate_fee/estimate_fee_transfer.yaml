@@ -18,7 +18,7 @@ properties:
     $ref: '../transfers/sources/transfer_source.yaml'
   token_id:
     type: string
-    description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
+    description: The token ID of the transaction fee. You can retrieve token IDs by using the [Get fee rates](/api-references/v2/transactions/get-fee-rates) operation.
     example: 'ETH_USDT'
   destination:
     $ref: '../transfers/destinations/transfer_destination.yaml'
