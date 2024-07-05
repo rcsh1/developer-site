@@ -6,11 +6,7 @@ post:
   description: |
     This operation estimates the transaction fee rates of a token transfer or a contract call for three different transaction speeds (slow, recommended, and fast), based on factors such as network congestion and transaction complexity.
     
-    You need to specify the transaction information, including the source address and destination address. 
-    - If you do not include a `fee` object in the request body, the response will include estimated transaction fees and recommended fee limits from the chain.
-    - If you do provide a `fee` object, the response will include fee estimates for the slow and fast transaction speeds with the provided fee as the recommended speed fee.
-
-    Note: The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model from the response represent the recommended values from the chain.
+    You need to specify the transaction information, including the request ID, request type, source address, destination address, and token ID of the transaction fee.
   security:
     - CoboAuth: []
   requestBody:
