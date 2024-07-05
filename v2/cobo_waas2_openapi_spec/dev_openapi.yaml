@@ -1087,15 +1087,9 @@ paths:
       operationId: estimate_fee
       summary: Estimate transaction fee
       description: |
-        This operation estimates the transaction fee of a token transfer or a contract call for three different transaction speeds (slow, recommended, and fast), based on factors such as network congestion and transaction complexity.
+        This operation estimates the transaction fee rates of a token transfer or a contract call for three different transaction speeds (slow, recommended, and fast), based on factors such as network congestion and transaction complexity.
 
-        You need to specify the transaction information, including the source address and destination address. 
-        - If you do not include a `fee` object in the request body, the response will include estimated transaction fees and recommended fee limits from the chain.
-        - If you do provide a `fee` object, the response will include fee estimates for the slow and fast transaction speeds with the provided fee as the recommended speed fee.
-
-        Note: 
-        - The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model from the response represent the recommended values from the chain.
-        - The `gas_limit` property included in the request body will be ignored in a fee estimation.
+        You need to specify the transaction information, including the request ID, request type, source address, destination address, and token ID of the transaction fee.
       security:
         - CoboAuth: []
       requestBody:
@@ -1246,7 +1240,7 @@ paths:
       tags:
         - Transactions
       operationId: get_transaction_by_id
-      summary: Get transaction information by ID
+      summary: Get transaction information
       description: |
         This operation retrieves detailed information about a specified transaction, such as the transaction status, source address, destination address, and timestamp.
       security:
@@ -1263,7 +1257,7 @@ paths:
       tags:
         - Transactions
       operationId: resend_transaction_by_id
-      summary: Resend transaction by ID
+      summary: Resend transaction
       description: |
         This operation resends a specified transaction. 
 
@@ -1286,7 +1280,7 @@ paths:
       tags:
         - Transactions
       operationId: cancel_transaction_by_id
-      summary: Cancel transaction by ID
+      summary: Cancel transaction
       description: |
         This operation cancels a specified transaction. A transaction can be cancelled if its status is either of the following:
         - `Submitted`
@@ -1309,7 +1303,7 @@ paths:
       tags:
         - Transactions
       operationId: drop_transaction_by_id
-      summary: Drop transaction by ID
+      summary: Drop transaction
       description: |
         This operation drops a specified transaction. 
 
@@ -1332,7 +1326,7 @@ paths:
       tags:
         - Transactions
       operationId: speedup_transaction_by_id
-      summary: Speed up transaction by ID
+      summary: Speed up transaction
       description: |
         This operation accelerates a specified transaction. 
 
@@ -2161,7 +2155,7 @@ components:
               format: address
               pattern: '^0x[a-fA-F0-9]{40}$'
               example: '0x1234567890123456789012345678901234567890'
-              description: 'The address of the Smart Contract Wallet. If this is not provided, Cobo will create a new Safe{Wallet} and set up Cobo Safe for you. In that case, the `threshold` and `owners` properties are required.'
+              description: 'The address of the Smart Contract Wallet. If this is not provided, Cobo will create a new Safe{Wallet} and set up Cobo Safe for you. In that case, the `threshold` and `signers` properties are required.'
             signers:
               type: array
               items:
@@ -2575,8 +2569,7 @@ components:
           $ref: '#/components/schemas/UtxoFeeBasePrice'
     FixedFee:
       type: object
-      description: |
-        The transaction fee that you are willing to pay based on the fixed fee model for come blockchains. The fee can vary between different chains.
+      description: The transaction fee that you are willing to pay based on the fixed fee model for come blockchains. The fee can vary between different chains.
       title: Fixed
       required:
         - fee_type
@@ -3307,7 +3300,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     TransactionMPCWalletSource:
       type: object
-      description: The information about the transaction source.
+      description: The information about the transaction source. Specify either the `account_input` property or the `utxo_inputs` property.
       title: MPC Wallets
       required:
         - source_type
@@ -3919,7 +3912,7 @@ components:
     AddressTransferDestination:
       type: object
       description: |
-        The information about the transaction destination. For account-based chains like Ethereum, specify the `account_output` property. For UTXO-based chains like Bitcoin, specify the `utxo_outputs` property. 
+        The information about the transaction destination. Specify either the `account_output` property or the `utxo_outputs` property.
       title: Addresses
       required:
         - destination_type
@@ -4147,7 +4140,7 @@ components:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID of the transaction fee. You can retrieve token IDs by using the [Get fee rates](/api-references/v2/transactions/get-fee-rates) operation.'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
