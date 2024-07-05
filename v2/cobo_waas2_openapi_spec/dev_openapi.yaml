@@ -98,7 +98,7 @@ paths:
       description: |
         This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
 
-        It provides details such as chain ID, symbol, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
+        It provides details such as the chain ID, chain symbol, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -502,10 +502,10 @@ paths:
         - name: addresses
           in: query
           required: false
-          description: 'A list of addresses, separated by comma.'
+          description: 'A list of wallet addresses, separated by comma.'
           schema:
             type: string
-            description: 'A list of addresses, separated by comma.'
+            description: 'A list of wallet addresses, separated by comma.'
           example: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
@@ -1573,7 +1573,7 @@ components:
           description: |
             Whether the API operation was successful. 
             - `true`: The operation was successful.
-            - `false`: The operation fai
+            - `false`: The operation failed.
         error_code:
           type: integer
           description: The error code.
@@ -5040,7 +5040,7 @@ components:
       name: asset_ids
       in: query
       required: false
-      description: 'A list of asset IDs, separated by comma.'
+      description: 'A list of asset IDs, separated by comma. (This concept applies to Exchange Wallets only) An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT.'
       schema:
         type: string
         description: 'A list of asset IDs, separated by comma.'
@@ -5065,7 +5065,7 @@ components:
       name: chain_id
       in: query
       required: true
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/api-references/v2/wallets/list-enabled-chains) operation.'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5081,7 +5081,7 @@ components:
       name: chain_ids
       in: query
       required: false
-      description: 'A list of chain IDs, separated by comma. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
       schema:
         type: string
         description: 'A list of chain IDs, separated by comma.'
@@ -5106,7 +5106,7 @@ components:
       name: token_ids
       in: query
       required: false
-      description: 'A list of token IDs, separated by comma.'
+      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
       schema:
         type: string
         description: 'A list of token IDs, separated by comma.'
