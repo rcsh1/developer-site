@@ -1,10 +1,8 @@
-name: chain_id
+name: chain_ids
 in: query
 required: false
-description: The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.
+description: A list of chain IDs, separated by comma. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.
 schema:
-  type: array
-  items:
-    type: string
-example:
-  - 'ETH'
+  type: string
+  description: A list of chain IDs, separated by comma.
+example: 'BTC,ETH'

@@ -1,0 +1,19 @@
+description: |
+  The available actions of key share group update. Possible values include:
+  - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - update_key_share_group_action
+      properties:
+        update_key_share_group_action:
+          type: string
+          description: The available action of key group update.
+          enum: [
+            "UpgradeToMainGroup",
+          ]
+          example: "UpgradeToMainGroup"
+
+

@@ -300,8 +300,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalVaultIdQueryParam'
         - $ref: '#/components/parameters/optionalProjectIdQueryParam'
+        - $ref: '#/components/parameters/optionalVaultIdQueryParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -499,7 +499,14 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalTokenIdParam'
-        - $ref: '#/components/parameters/optionalAddressParam'
+        - name: addresses
+          in: query
+          required: false
+          description: 'A list of addresses, separated by comma.'
+          schema:
+            type: string
+            description: 'A list of addresses, separated by comma.'
+          example: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -523,6 +530,9 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
       responses:
         '200':
           $ref: '#/components/responses/getAddressesResponse'
@@ -883,7 +893,23 @@ paths:
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
-        - $ref: '#/components/parameters/requiredUpdateKeyGroupActionParam'
+      requestBody:
+        description: |
+          The available actions of key share group update. Possible values include:
+          - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - update_key_share_group_action
+              properties:
+                update_key_share_group_action:
+                  type: string
+                  description: The available action of key group update.
+                  enum:
+                    - UpgradeToMainGroup
+                  example: UpgradeToMainGroup
       responses:
         '200':
           $ref: '#/components/responses/putKeyGroupResponse'
@@ -1227,9 +1253,9 @@ paths:
       tags:
         - Transactions
       operationId: list_fee_rates
-      summary: List chain fee rates
+      summary: Get fee rates
       description: |
-        This operation retrieves the transaction fee model and transaction fee rates for a specified chain.
+        This operation retrieves current transaction fee rates on the blockchain based on the specified chain ID.
       security:
         - CoboAuth: []
       parameters:
@@ -1248,11 +1274,11 @@ paths:
       operationId: estimate_fee
       summary: Estimate transaction fee
       description: |
-        This operation estimates the transaction fee of a token transfer or a contract call for three different transaction speeds (slow, standard, and fast), based on factors such as network congestion and transaction complexity.
+        This operation estimates the transaction fee of a token transfer or a contract call for three different transaction speeds (slow, recommended, and fast), based on factors such as network congestion and transaction complexity.
 
         You need to specify the transaction information, including the source address and destination address. 
         - If you do not include a `fee` object in the request body, the response will include estimated transaction fees and recommended fee limits from the chain.
-        - If you do provide a `fee` object, the response will include fee estimates for the slow and fast transaction speeds with the provided fee as the standard speed fee.
+        - If you do provide a `fee` object, the response will include fee estimates for the slow and fast transaction speeds with the provided fee as the recommended speed fee.
 
         Note: 
         - The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model from the response represent the recommended values from the chain.
@@ -2028,10 +2054,18 @@ components:
       type: object
       description: The response of a failed request.
       required:
+        - success
         - error_code
         - error_description
         - error_id
       properties:
+        success:
+          type: boolean
+          default: false
+          description: |
+            Whether the API operation was successful. 
+            - `true`: The operation was successful.
+            - `false`: The operation fai
         error_code:
           type: integer
           description: The error code.
@@ -2816,7 +2850,7 @@ components:
         org_id:
           type: string
           example: f3b4a616-9c43-462e-8cb4-343e304fee64
-          description: The Organization ID.
+          description: The organization ID.
         name:
           type: string
           example: Project name
@@ -2918,6 +2952,8 @@ components:
     FeeAmount:
       type: object
       description: The maximum transaction fee.
+      required:
+        - max_fee_amount
       properties:
         max_fee_amount:
           type: string
@@ -2925,11 +2961,14 @@ components:
           example: '0.1'
     FeeData:
       type: object
+      required:
+        - gas_limit
       properties:
         gas_limit:
           type: string
           description: The gas limit. It represents the maximum number of gas units that you are willing to pay for the execution of a transaction or Ethereum Virtual Machine (EVM) operation. The gas unit cost of each operation varies.
           default: '21000'
+          example: '21000'
     EvmEip1559FeeBasePrice:
       type: object
       description: 'The transaction fee price based on the EIP-1559 fee model, which equals the base fee price plus the maximum priority fee.'
@@ -3033,6 +3072,7 @@ components:
       title: Fixed
       required:
         - fee_type
+        - token_id
       allOf:
         - type: object
           properties:
@@ -3071,8 +3111,6 @@ components:
                   $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
                 fast:
                   $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
-                customized:
-                  $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     EvmLegacyFee:
       type: object
@@ -3102,8 +3140,6 @@ components:
                   $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
                 fast:
                   $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
-                customized:
-                  $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
         - $ref: '#/components/schemas/FeeData'
     UtxoFee:
       type: object
@@ -3132,8 +3168,6 @@ components:
                 recommended:
                   $ref: '#/components/schemas/UtxoFeeBasePrice'
                 fast:
-                  $ref: '#/components/schemas/UtxoFeeBasePrice'
-                customized:
                   $ref: '#/components/schemas/UtxoFeeBasePrice'
         - $ref: '#/components/schemas/FeeAmount'
     FeeRate:
@@ -3169,6 +3203,7 @@ components:
       title: EIP-1559
       required:
         - fee_type
+        - token_id
       allOf:
         - type: object
           properties:
@@ -3186,6 +3221,7 @@ components:
         The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). The gas units used must be smaller than the gas limit.
       required:
         - fee_type
+        - token_id
       title: Legacy
       allOf:
         - type: object
@@ -3204,6 +3240,7 @@ components:
         The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee. 
       required:
         - fee_type
+        - token_id
       title: UTXO
       allOf:
         - type: object
@@ -3231,7 +3268,7 @@ components:
           Fixed: '#/components/schemas/FixedFee'
     Transaction:
       type: object
-      description: The information about the a transaction.
+      description: The information about a transaction.
       required:
         - transaction_id
         - transaction_type
@@ -3253,7 +3290,7 @@ components:
           example: '20231213122855000000000000000000'
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: web_send_by_user_327_1610444045047
         type:
           $ref: '#/components/schemas/TransactionType'
@@ -3407,9 +3444,10 @@ components:
         is_loop:
           type: boolean
           description: |
-            Whether the transfer is a Cobo Superloop transfer. 
-              - `true`: The transfer is a Superloop transfer.
-              - `false`: The transfer is not a Superloop transfer.
+            Whether the transfer is a Loop transfer. For more information about Loop, see [the website](https://loop.top/).
+
+            - `true`: The transfer is a Loop transfer.
+            - `false`: The transfer is not a Loop transfer.
           example: false
         created_time:
           type: number
@@ -3527,7 +3565,7 @@ components:
         The transaction initiator type. Possible values include:
           - `API`: An API initiator, who initiates the transaction by using the WaaS API.
           - `Web`: An web initiator, who initiates the transaction from Cobo Portal.
-          - `App`: An App initiator, who initiates the transaction from Cobo Portal App.
+          - `App`: An App initiator, who initiates the transaction from Cobo Portal Apps.
           - `External`: An external initiator, who initiates the transaction outside Cobo.
     TransactionSigner:
       type: object
@@ -3657,7 +3695,7 @@ components:
           - `Withdrawal`: A withdrawal transaction.
           - `TokenApproval`: A transaction that grants permission to access your tokens. 
           - `ContractCall`: A transaction that interacts with a smart contract.
-          - `TransactionFeePayment`: A transaction that initiated from Fee Station to pay your transaction fees.
+          - `TransactionFeePayment`: A transaction that is initiated from Fee Station to pay your transaction fees.
           - `RawMessage`: A transaction that signs a message. 
     MpcSigningGroup:
       type: object
@@ -4250,7 +4288,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
@@ -4262,7 +4300,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     BaseTransferSource:
       type: object
@@ -4501,7 +4539,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         source:
           $ref: '#/components/schemas/TransferSource'
@@ -4535,7 +4573,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
@@ -4614,8 +4652,6 @@ components:
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
-        fee:
-          $ref: '#/components/schemas/FeeRate'
     EstimateFeeContractCall:
       type: object
       description: The information about a transaction that interacts with a smart contract
@@ -4658,8 +4694,6 @@ components:
                 The data that is used to invoke a specific function or method within the specified contract at the destination address.
               format: byte
               example: U3dhZ2dlciByb2Nrcw==
-        fee:
-          $ref: '#/components/schemas/FeeRate'
     BaseContractCallSource:
       type: object
       description: The information about the transaction source.
@@ -4748,7 +4782,7 @@ components:
       properties:
         request_id:
           type: string
-          description: The request ID that is unique within your Organization to track your request.
+          description: The request ID that is unique within your organization to track your request.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
@@ -5329,12 +5363,15 @@ components:
       type: object
       description: The staking info.
       required:
-        - stake_id
+        - id
+        - wallet_id
+        - address
         - pool_id
-        - amount
+        - amounts
         - status
-        - created_at
-        - updated_at
+        - validator_info
+        - created_time
+        - updated_time
       properties:
         id:
           description: The unique id of the stake.
@@ -5376,12 +5413,12 @@ components:
           description: The rewards info of the stake.
           type: object
           example: {}
-        created_at:
+        created_time:
           description: The time when the stake was created.
           type: integer
           format: int64
           example: 1640995200000
-        updated_at:
+        updated_time:
           description: The time when the stake was last updated.
           type: integer
           format: int64
@@ -5501,16 +5538,14 @@ components:
         type: string
       example: USDT
     optionalAssetIdListParam:
-      name: asset_id
+      name: asset_ids
       in: query
       required: false
-      description: A list of asset IDs.
+      description: 'A list of asset IDs, separated by comma.'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - USDT
+        type: string
+        description: 'A list of asset IDs, separated by comma.'
+      example: 'USDT,USDC'
     requiredAssetIdParam:
       name: asset_id
       in: query
@@ -5544,16 +5579,14 @@ components:
         type: string
       example: ETH
     optionalChainIdListParam:
-      name: chain_id
+      name: chain_ids
       in: query
       required: false
-      description: 'The chain ID. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
+      description: 'A list of chain IDs, separated by comma. You can retrieve chain IDs by using the [List enabled chains](/v2/api-references/wallets/list-enabled-chains) operation.'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - ETH
+        type: string
+        description: 'A list of chain IDs, separated by comma.'
+      example: 'BTC,ETH'
     tokenIdParam:
       name: token_id
       in: path
@@ -5571,16 +5604,14 @@ components:
         type: string
       example: ETH_USDT
     optionalTokenListIdParam:
-      name: token_id
+      name: token_ids
       in: query
       required: false
-      description: A list of token IDs.
+      description: 'A list of token IDs, separated by comma.'
       schema:
-        type: array
-        items:
-          type: string
-      example:
-        - ETH_USDT
+        type: string
+        description: 'A list of token IDs, separated by comma.'
+      example: 'ETH_USDT,ETH_USDC'
     requiredTokenIdParam:
       name: token_id
       in: query
@@ -5676,17 +5707,14 @@ components:
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     optionalWalletListIdParam:
-      name: wallet_id
+      name: wallet_ids
       in: query
       required: false
-      description: A list of wallet IDs.
+      description: 'A list of wallet IDs, separated by comma.'
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
-      example:
-        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        type: string
+        description: 'A list of wallet IDs, separated by comma.'
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868'
     addressParam:
       name: address
       in: path
@@ -5814,19 +5842,6 @@ components:
         type: string
         format: uuid
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-    requiredUpdateKeyGroupActionParam:
-      name: update_key_share_group_action
-      in: query
-      description: |
-        The available actions of key share group update. Possible values include:
-        - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
-      required: true
-      schema:
-        type: string
-        description: The available action of key group update.
-        enum:
-          - UpgradeToMainGroup
-        example: UpgradeToMainGroup
     vaultIdParam:
       name: vault_id
       in: path
@@ -5914,7 +5929,7 @@ components:
       name: request_id
       in: query
       required: false
-      description: The request ID that is unique within your Organization to track your request.
+      description: The request ID that is unique within your organization to track your request.
       schema:
         type: string
       example: web_send_by_user_327_1610444045047
@@ -6906,7 +6921,7 @@ components:
             items:
               $ref: '#/components/schemas/FeeRate'
             description: |
-              The fee price for the specified chain or token. 
+              The fee rate for the specified chain or token. 
 
               The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.
     getTransactionsResponse:
@@ -6955,7 +6970,7 @@ components:
             properties:
               request_id:
                 type: string
-                description: The request ID that is unique within your Organization to track your request.
+                description: The request ID that is unique within your organization to track your request.
                 example: f47ac10b-58cc-4372-a567-0e02b2c3d479
               transaction_id:
                 type: string
@@ -7018,19 +7033,16 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              result:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    event_type:
-                      $ref: '#/components/schemas/WebhookEventType'
-                    description:
-                      type: string
-                      description: The description of the webhook event type.
-                      example: Occurs when the transaction status is updated
+            type: array
+            items:
+              type: object
+              properties:
+                event_type:
+                  $ref: '#/components/schemas/WebhookEventType'
+                description:
+                  type: string
+                  description: The description of the webhook event type.
+                  example: Occurs when the transaction status is updated
     retryWebhookEventResponse:
       description: The request was successful.
       content:
