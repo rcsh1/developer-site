@@ -9,8 +9,8 @@ description: "Frequently Asked Questions about Coin Management"
     <Expandable title="Answer">
         <ResponseField >
          The withdraw fees may fluctuate based on how busy a blockchain network is. You can refer to the `abs_estimate_fee` field
-          of the [GET /v1/custody/coin_info](/api-references/custody-wallet/coin_info) endpoint to check the estimated withdraw fees associated with a Custodial Wallet.
-          For an MPC Wallet, please use the [GET /v1/custody/mpc/estimate_fee/](/api-references/mpc-wallet/mpc_estimate_fee) endpoint instead.
+          of the [GET /v1/custody/coin_info](/v1/api-references/custody-wallet/coin_info) endpoint to check the estimated withdraw fees associated with a Custodial Wallet.
+          For an MPC Wallet, please use the [GET /v1/custody/mpc/estimate_fee/](/v1/api-references/mpc-wallet/mpc_estimate_fee) endpoint instead.
 </ResponseField>
   </Expandable>
 
@@ -26,7 +26,7 @@ description: "Frequently Asked Questions about Coin Management"
 ### How do I query the minimum deposit amount for a specific coin?
    <Expandable title="Answer">
       <ResponseField >
-      You can refer to the `minimum_deposit_threshold` field of the [GET /v1/custody/get_supported_coins/](/api-references/custody-wallet/get_supported_coins)
+      You can refer to the `minimum_deposit_threshold` field of the [GET /v1/custody/get_supported_coins/](/v1/api-references/custody-wallet/get_supported_coins)
        endpoint to query the minimum deposit amount for a specific coin within a Custodial Wallet. If the response returns a zero, it indicates that the there is no minimum deposit requirement for the selected type of coins. Note that coins held under an MPC Wallet do not have any minimum deposit requirements.
       </ResponseField>
   </Expandable>

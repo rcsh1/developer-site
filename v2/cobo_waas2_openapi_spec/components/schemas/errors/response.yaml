@@ -1,9 +1,8 @@
 type: object
 description: The response of a failed request.
 required:
-  - success
   - error_code
-  - error_description
+  - error_message
   - error_id
 properties:
   success:
@@ -16,7 +15,7 @@ properties:
   error_code:
     type: integer
     description: The error code.
-  error_description:
+  error_message:
     type: string
     description: The error description.
   error_id:

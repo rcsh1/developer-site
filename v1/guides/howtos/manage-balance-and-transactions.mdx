@@ -2,7 +2,7 @@
 title: "Managing Wallet Balances"
 sidebarTitle: "Managing Wallet Balances"
 ---
-**In Custodial Wallet**, you can query the wallet balance using the [Get Account Details](/api-references/custody-wallet/org_info) , where the balance of each type of coin will be returned in the balance field of the response.
+**In Custodial Wallet**, you can query the wallet balance using the [Get Account Details](/v1/api-references/custody-wallet/org_info) , where the balance of each type of coin will be returned in the balance field of the response.
 Note that because Cobo will automatically aggregate funds in deposit addresses, the balance in a deposit address may not reflect the actual balance of the selected type of coin.
 
 <Tip>In Custodial Wallet, tokens deposited into these addresses will undergo automated aggregation (token sweep) by Cobo. You are exempt from the necessity to pre-fund or fund transaction fees for your deposit addresses. This translates into substantial savings in both development and operational efforts for your team.</Tip>
@@ -98,7 +98,7 @@ public class CoboApiExample {
 </Accordion>
 
 
-**In MPC Wallet**, you can query the balance of each address using the [Get Balances List](/api-references/mpc-wallet/mpc_list_balances) up to 50 addresses.
+**In MPC Wallet**, you can query the balance of each address using the [Get Balances List](/v1/api-references/mpc-wallet/mpc_list_balances) up to 50 addresses.
 <CodeGroup>
 ```python Python
 from cobo_custody.config import DEV_ENV

@@ -6,7 +6,7 @@ post:
   operationId: generate_wallet_address
   summary: Generate new addresses in wallet
   description: | 
-    This operation generates one or more addresses for a specified wallet.
+    This operation generates one or more addresses within a specified wallet.
     
     <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
   security:
@@ -26,9 +26,9 @@ get:
   tags:
     - Wallets
   operationId: list_addresses
-  summary: List wallet addresses by wallet ID
+  summary: List wallet addresses
   description: |
-    This operation retrieves a list of addresses under a specified wallet.
+    This operation retrieves a list of addresses within a specified wallet.
   security:
     - CoboAuth: []
   parameters:

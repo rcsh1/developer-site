@@ -37,7 +37,7 @@ When a withdrawal request for 1 BTC_USDT is submitted to a Custodial Wallet, Cob
 	"fee_decimal": 18,
 }
 ```
-For more information, please refer to the response of [transactions_by_id](/api-references/custody-wallet/transactions_by_id).
+For more information, please refer to the response of [transactions_by_id](/v1/api-references/custody-wallet/transactions_by_id).
 
 When a withdrawal request for 0.009 GETH is submitted to a MPC Wallet, the request body will be structured as follows:
 
@@ -95,7 +95,7 @@ When a withdrawal request for 0.009 GETH is submitted to a MPC Wallet, the reque
 }
 ```
 
-For more information, please refer to the response of [transactions_by_cobo_ids](/api-references/mpc-wallet/mpc_transactions_by_cobo_ids).
+For more information, please refer to the response of [transactions_by_cobo_ids](/v1/api-references/mpc-wallet/mpc_transactions_by_cobo_ids).
 
 If you approve this withdrawal request, please respond with an HTTP status of 200 and set the message body to "ok".
 
@@ -105,6 +105,6 @@ If you approve this withdrawal request, please respond with an HTTP status of 20
 
 2. Please validate the legitimacy of each withdraw request by carefully reviewing key parameters, including request_id, to_address, and amount.
 
-3. For security reasons, we strongly recommend using HTTPS and Cobo's public key for signature verification. Detailed instructions can be found in our [guide](/api-references/development/callback-signature). Please ensure that you are operating in the correct environment during the verification process.
+3. For security reasons, we strongly recommend using HTTPS and Cobo's public key for signature verification. Detailed instructions can be found in our [guide](/v1/api-references/development/callback-signature). Please ensure that you are operating in the correct environment during the verification process.
 
-For information on how to configure API callbacks, refer to this [guide](/guides/howtos/configure-api-callback).
+For information on how to configure API callbacks, refer to this [guide](/v1/guides/howtos/configure-api-callback).

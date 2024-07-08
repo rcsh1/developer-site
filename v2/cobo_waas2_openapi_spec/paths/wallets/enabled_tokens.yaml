@@ -2,9 +2,11 @@ get:
   tags:
     - Wallets
   operationId: get_enabled_tokens
-  summary: List enabled tokens
+  summary: List organization enabled tokens
   description: |
-    This operation retrieves all the tokens that can be used by your organization. You can filter the result by wallet type, subtype, and chain ID.
+    This operation retrieves all the tokens that can be used by your organization. 
+    
+    You can filter the result by wallet type, subtype, and chain ID. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
   security:
     - CoboAuth: []
   parameters:
