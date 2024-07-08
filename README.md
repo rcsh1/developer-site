@@ -9,7 +9,7 @@
 
   <br />
   <br />
-  <a href="">Developer Hub</a>
+  <a href="https://www.cobo.com/developers/v2/api-references/overview/changelog">Developer Hub</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://www.cobo.com/news">News</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
@@ -39,15 +39,18 @@
 
 The Developer Hub mainly includes the following resources.:
 
-- **[Custodial Wallets]()**. Cobo Custodial Wallets are a secure and regulated custodial wallet solution, designed specifically for institutions to manage digital assets. Custodial Wallets take the complexity out of securing your assets by managing the private keys on your behalf. 
-- **[MPC Wallets]()**. Cobo MPC Wallets leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS). Cobo Portal offers two types of MPC Wallets: Organization-Controlled Wallets and User-Controlled Wallets.
-- **[Smart Contract Wallets]()**. Cobo Smart Contract Wallets support a myriad of smart contract wallets, prominently featuring Safe{Wallet} alongside other Account Abstraction-based smart wallets. 
-- **[Exchange Wallets]()**. Cobo Portal’s Exchange Wallets are your one-stop solution for managing multiple exchange accounts effortlessly.
+- **[Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction)**. Cobo Custodial Wallets are a secure and regulated custodial wallet solution, designed specifically for institutions to manage digital assets. Custodial Wallets take the complexity out of securing your assets by managing the private keys on your behalf. 
+- **[MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction)**. Cobo MPC Wallets leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS). Cobo Portal offers two types of MPC Wallets: Organization-Controlled Wallets and User-Controlled Wallets.
+- **[Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)**. Cobo Smart Contract Wallets support a myriad of smart contract wallets, prominently featuring Safe{Wallet} alongside other Account Abstraction-based smart wallets. 
+- **[Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction)**. Cobo Portal’s Exchange Wallets are your one-stop solution for managing multiple exchange accounts effortlessly.
   <br />
 
 ## GitHub repository directory
-Currently we offer the content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at the same time. Below is the directory structure for both versions:
+Currently we offer the content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at the same time. You could switch between the two version by selecting the **Version 2.0** and the **Version 2.0** buttons. 
+
 **Note**: We recommend that you upgrade to 2.0 for additional features and enhanced performance.
+
+Below is the repository directory structure for the two versions:
 
 ```
 - v2
@@ -72,46 +75,31 @@ Currently we offer the content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at
 
 ## Contributing
 
-PRs are always welcome! To get started, follow this guide to build Cobo Developer Hub from
-source on your local machine.
+PRs are always welcome! To get started, follow this section to build Developer Hub on your local machine.
 
-Step 1.clone
+1. Clone the repository.
 
-```
-git clone git@github.com:CoboGlobal/developer-site.git
-```
+  ```shell
+  git clone git@github.com:CoboGlobal/developer-site.git
+  ```
 
-<br />
+2. Install Mintlify.
 
-Step 2. Install Mintlify on your OS:
+  ```shell
+  npm i -g mintlify
+  ```
 
-```
-npm i -g mintlify
-```
+3. Go to the root directory (where you can find the `mint.json` file) and run the following command:
 
-<br />
+  ```shell
+  mintlify dev
+  ```
 
-Step 3. Go to the docs directory (where you can find mint.json) and run the following command:
+The documentation website is now available at `http://localhost:3000`.
 
-```
-mintlify dev
-```
+Developer Hub is built on Mintlify that uses a syntax very similar to markdown. For more usage instructions, see [Mintlify Quickstart](https://mintlify.com/docs/quickstart).
 
-The documentation website is now available at http://localhost:3000.
-
-<br />
-
-Step 4. Developer Hub is built on mintlify, its syntax is very similar to markdown
-
-[Basic Syntax 👉](https://mintlify.com/docs/introduction)
-
-<br />
-
-Step 5. When you have completed the modifications locally, and after previewing with no issues,
-please proceed with the standard Fork & Pull Request process for submission.
-
-[How to Fork & Pull Request 👉](https://gist.github.com/Chaser324/ce0505fbed06b947d962)
-<br />
+When you complete the modifications locally and make sure no error or issue occur when you preview, proceed with the standard [Fork & Pull Request](https://gist.github.com/Chaser324/ce0505fbed06b947d962) process for submission.
 
 ## Contact us
 
