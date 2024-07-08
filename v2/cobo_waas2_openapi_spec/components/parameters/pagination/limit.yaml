@@ -1,11 +1,9 @@
 name: limit
 in: query
-description: The maximum number of objects to return. The value range is [1, 50].
+description: The maximum number of objects to return. The default value range is [1, 50] and can be set endpoint specified.
 required: false
 schema:
   type: integer
   format: int32
   default: 10
-  minimum: 1
-  maximum: 50
 example: 10

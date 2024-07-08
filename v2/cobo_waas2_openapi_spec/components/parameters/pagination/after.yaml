@@ -4,6 +4,8 @@ description: |
   An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
   
   If you set both `after` or `before`, only the setting of `before` will take effect.
+  
+  If the `before` is set to empty and `after` is set to `last`, the last slice is returned.
 required: false
 schema:
   type: string
