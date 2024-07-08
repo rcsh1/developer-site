@@ -9,9 +9,9 @@
 
   <br />
   <br />
-  [link to the Dev Hub]()
+  <a href="">Developer Hub</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.cobo.com/web3/channel/news">News</a>
+  <a href="https://www.cobo.com/news">News</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://discord.gg/FaZwQ9WYpj">Discord</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
@@ -25,13 +25,11 @@
 <div align="center">
   <h2>About Cobo</h2>
   <p align="left">
-  Cobo is a globally trusted leader in digital asset custody solutions.
-  As the world’s first omni-custody platform, Cobo offers the full spectrum of solutions from full custody,
-  co-managed MPC custody, to fully decentralized custody as well as wallet-as-a-service,
-  advanced DeFi investment tools and an off-exchange settlement network.
-  Trusted by over 500 institutions with billions in assets under custody,
-  Cobo inspires confidence in digital asset ownership by enabling safe and efficient management of digital assets and interactions with Web 3.0.
-  Cobo is SOC2 Type 1 and Type 2-compliance-certified and licensed in 5 jurisdictions.
+  Cobo is a trusted leader in digital asset custody and wallet infrastructure solutions. Founded in 2017 by blockchain pioneers, Cobo is trusted by more than 500 organizations worldwide, safeguarding billions of dollars in assets with a zero-incident security track record.
+
+  Today, Cobo provides the industry’s only unified digital asset wallet platform that integrates all 4 wallet technologies in one place – Custodial Wallets, MPC Wallets, Smart Contract Wallets, and Exchange Wallets. By combining a comprehensive suite of wallet solutions with advanced risk controls and developer tools, Cobo empowers organizations and developers to innovate and scale with ease.
+
+  Visit [Cobo](www.cobo.com) for more information.
   </p>
 </div>
 
@@ -41,9 +39,10 @@
 
 The Developer Hub mainly includes the following resources.:
 
-- **[Custodial Wallet](https://www.cobo.com/developers/overview/custodial-wallet)**. Cobo Custodial Wallet is built upon bank-grade security technologies such as Hardware Security Modules (HSM) and Intel Software Guard Extensions (SGX), that is battle tested in traditional financial industry.
-- **[MPC Wallet](https://www.cobo.com/developers/overview/mpc-wallet/mpc-introduction)**. Cobo MPC Wallet leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS).
-- **[Smart Contract Wallet](https://www.cobo.com/developers/overview/smart-contract-wallet/cobosafe)**. Cobo’s Smart Contract Wallet solution, dubbed as “Cobo Safe”, is a smart contract based access control framework on EVM compatible blockchains.
+- **[Custodial Wallets]()**. Cobo Custodial Wallets are a secure and regulated custodial wallet solution, designed specifically for institutions to manage digital assets. Custodial Wallets take the complexity out of securing your assets by managing the private keys on your behalf. 
+- **[MPC Wallets]()**. Cobo MPC Wallets leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS). Cobo Portal offers two types of MPC Wallets: Organization-Controlled Wallets and User-Controlled Wallets.
+- **[Smart Contract Wallets]()**. Cobo Smart Contract Wallets support a myriad of smart contract wallets, prominently featuring Safe{Wallet} alongside other Account Abstraction-based smart wallets. 
+- **[Exchange Wallets]()**. Cobo Portal’s Exchange Wallets are your one-stop solution for managing multiple exchange accounts effortlessly.
   <br />
 
 ## GitHub repository directory
