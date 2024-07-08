@@ -29,7 +29,7 @@
 
   Today, Cobo provides the industry’s only unified digital asset wallet platform that integrates all 4 wallet technologies in one place – Custodial Wallets, MPC Wallets, Smart Contract Wallets, and Exchange Wallets. By combining a comprehensive suite of wallet solutions with advanced risk controls and developer tools, Cobo empowers organizations and developers to innovate and scale with ease.
 
-  Visit [Cobo](www.cobo.com) for more information.
+  Visit [Cobo](https://www.cobo.com) for more information.
   </p>
 </div>
 
@@ -41,37 +41,31 @@ The Developer Hub mainly includes the following resources.:
 
 - **[Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction)**. Cobo Custodial Wallets are a secure and regulated custodial wallet solution, designed specifically for institutions to manage digital assets. Custodial Wallets take the complexity out of securing your assets by managing the private keys on your behalf. 
 - **[MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction)**. Cobo MPC Wallets leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS). Cobo Portal offers two types of MPC Wallets: Organization-Controlled Wallets and User-Controlled Wallets.
-- **[Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)**. Cobo Smart Contract Wallets support a myriad of smart contract wallets, prominently featuring Safe{Wallet} alongside other Account Abstraction-based smart wallets. 
+- **[Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)**. Cobo Smart Contract Wallets support a myriad of smart contract wallets, prominently featuring Safe{Wallet} alongside other account abstraction wallets. 
 - **[Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction)**. Cobo Portal’s Exchange Wallets are your one-stop solution for managing multiple exchange accounts effortlessly.
   <br />
 
 ## GitHub repository directory
-Currently we offer the content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at the same time. You could switch between the two version by selecting the **Version 2.0** and the **Version 2.0** buttons. 
-
-**Note**: We recommend that you upgrade to 2.0 for additional features and enhanced performance.
+Currently we offer  The content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at the same time. You could switch between the two version by selecting the **Version 1.0** and the **Version 2.0** buttons. 
 
 Below is the repository directory structure for the two versions:
 
-```
-- v2
-  - api-references // The content under the API References tab, general information including overview, authentication, etc.
-  - cobo_waas2_openapi_spec // The content under the API References tab, endpoint operation-level documentation in OpenAPI spec format
-  - guides // (Coming soon) The content under the Guides tab, instructions on basic and advanced features
-  - cobo-portal-apps // (Coming soon) The content related to Cobo Portal Apps.
-  - developer-tools //  (Coming soon) The content under the Developer Tools tab, documentation for the WaaS SDKs
-  - faqs // (Coming soon) The content under the FAQs tab, frequently asked questions
+- `v2`
+  - `api-references`: The content under the **API References** tab, which contains the reference information for the WaaS 2.0 API.
+  - `cobo_waas2_openapi_spec`:The WaaS 2.0 OpenAPI spec.
+  - `guides`: (Coming soon) The content under the **Guides** tab, which contains instructions on implementing basic and advanced features.
+  - `developer-tools`: (Coming soon) The content under the **Developer Tools** tab, which contains documentation for the WaaS SDKs.
+  - `faqs`: (Coming soon) The content under the **FAQs** tab, which contains answers to frequently asked questions.
 
-```
 
-```
-- v1
-  - overview // The content under the Documentation tab, introduction to the WaaS service and wallets
-  - get-started/overview // The content under the Get Started tab, basic workflows for different types of wallets
-  - api-references // The content under the API References tab, endpoint operation-level documentation
-  - guides/howtos // The content under the Guides tab, instructions on basic and advanced features
-  - sdk-and-tools // The content under the SDKs and Tools tab, documentation for the WaaS SDKs and useful tools
-  - faqs // The content under the FAQs tab, frequently asked questions
-```
+
+- `v1`
+  - `overview`: The content under the **Documentation** tab, which contains introduction to the WaaS 1.0 service and wallets.
+  - `get-started/overview`: The content under the **Get Started** tab, which explains basic workflows for different types of wallets.
+  - `api-references`: The content under the **API References** tab, which contains the reference information for the WaaS 1.0 API.
+  - `guides/howtos`: The content under the **Guides** tab, which contains instructions on implementing basic and advanced features.
+  - `sdk-and-tools`: The content under the **SDKs and Tools** tab, which contains documentation for the WaaS 1.0 SDKs and useful tools.
+  - `faqs`: The content under the **FAQs** tab, which contains answers to frequently asked questions.
 
 ## Contributing
 
