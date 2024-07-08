@@ -2041,6 +2041,10 @@ components:
     Pagination:
       type: object
       description: The pagination information of the returned data.
+      required:
+        - before
+        - after
+        - total_count
       properties:
         before:
           type: string
@@ -2050,6 +2054,10 @@ components:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
           description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
+        total_count:
+          type: number
+          example: 10000
+          description: The total count of the result set
     ErrorResponse:
       type: object
       description: The response of a failed request.
@@ -4602,10 +4610,11 @@ components:
               description: 'The raw data of the message to be signed, encoded in Base64 format.'
               example: YWFhYQ==
             structured_data:
-              type: string
+              type: object
+              additionalProperties: true
               description: 'The structured data of the message to be signed, encoded in JSON format.'
               example: |
-                {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
+                {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/EstimateFeeTransfer'
@@ -5496,14 +5505,12 @@ components:
     limitParam:
       name: limit
       in: query
-      description: 'The maximum number of objects to return. The value range is [1, 50].'
+      description: 'The maximum number of objects to return. The default value range is [1, 50] and can be set endpoint specified.'
       required: false
       schema:
         type: integer
         format: int32
         default: 10
-        minimum: 1
-        maximum: 50
       example: 10
     beforeParam:
       name: before
@@ -5512,6 +5519,8 @@ components:
         An object ID which serves as a cursor for pagination. For example, if you specify `before` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that end before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
+
+        If the `before` and `after` are both set to empty, the first slice is returned.
       required: false
       schema:
         type: string
@@ -5523,6 +5532,8 @@ components:
         An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
+
+        If the `before` is set to empty and `after` is set to `last`, the last slice is returned.
       required: false
       schema:
         type: string
