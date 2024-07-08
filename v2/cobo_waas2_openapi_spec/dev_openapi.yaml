@@ -3847,6 +3847,10 @@ components:
                         type: string
                         description: The transaction hash of UTXO to be consumed in the transaction.
                         example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+                      vout_n:
+                        type: integer
+                        description: The output index of the UTXO.
+                        example: 0
                 excluded_inputs:
                   type: array
                   items:
@@ -3856,6 +3860,10 @@ components:
                         type: string
                         description: The transaction hash of UTXO not to be consumed in the transaction.
                         example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+                      vout_n:
+                        type: integer
+                        description: The output index of the UTXO.
+                        example: 0
             mpc_used_key_group:
               $ref: '#/components/schemas/MpcSigningGroup'
     SafeTransferSource:
