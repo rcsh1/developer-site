@@ -2054,18 +2054,10 @@ components:
       type: object
       description: The response of a failed request.
       required:
-        - success
         - error_code
-        - error_description
+        - error_message
         - error_id
       properties:
-        success:
-          type: boolean
-          default: false
-          description: |
-            Whether the API operation was successful. 
-            - `true`: The operation was successful.
-            - `false`: The operation failed.
         error_code:
           type: integer
           description: The error code.
