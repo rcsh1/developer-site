@@ -2481,12 +2481,12 @@ components:
       properties:
         max_priority_fee:
           type: string
-          description: 'The maximum priority fee, in gwei. The maximum priority fee represents the highest amount of miner tips that you are willing to pay for your transaction.'
-          example: '0.1'
+          description: 'The maximum priority fee, in wei. The maximum priority fee represents the highest amount of miner tips that you are willing to pay for your transaction.'
+          example: '1000000000000'
         base_fee:
           type: string
-          description: 'The base fee price of the chain, in gwei.'
-          example: '0.9'
+          description: 'The base fee price of the chain, in wei.'
+          example: '9000000000000'
     EvmLegacyFeeBasePrice:
       type: object
       description: 'The transaction fee price based on the legacy fee model, which equals the gas price.'
@@ -2495,8 +2495,8 @@ components:
       properties:
         gas_price:
           type: string
-          description: 'The gas price, in gwei. The gas price represents the amount of ETH that must be paid to validators for processing transactions.'
-          example: '1'
+          description: 'The gas price, in wei. The gas price represents the amount of ETH that must be paid to validators for processing transactions.'
+          example: '100000000'
     UtxoFeeBasePrice:
       type: object
       description: 'The transaction fee price for UTXO-based chains (such as Bitcoin), which equals the fee rate.'
@@ -3825,8 +3825,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseTransferSource'
         - type: object
-          required:
-            - mpc_used_key_group
           properties:
             account_input:
               type: object
@@ -4083,6 +4081,9 @@ components:
         source:
           description: The information about the transaction source.
           type: object
+          required:
+            - wallet_id
+            - address
           properties:
             wallet_id:
               type: string
@@ -4229,8 +4230,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseContractCallSource'
         - type: object
-          required:
-            - mpc_used_key_group
           properties:
             mpc_used_key_group:
               $ref: '#/components/schemas/MpcSigningGroup'
