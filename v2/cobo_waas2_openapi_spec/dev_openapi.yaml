@@ -4654,7 +4654,6 @@ components:
       type: object
       required:
         - staking_id
-        - fee
       properties:
         staking_id:
           type: string
@@ -4955,6 +4954,8 @@ components:
         EigenLayerLst: The Eigen Layer staking pool for lst token.
     BaseEstimateStakingFee:
       type: object
+      required:
+        - activity_type
       properties:
         activity_type:
           $ref: '#/components/schemas/ActivityType'
@@ -6637,6 +6638,23 @@ components:
                 type: array
               pagination:
                 $ref: '#/components/schemas/Pagination'
+    estimateStakingFeeResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fee_type:
+                $ref: '#/components/schemas/FeeType'
+              fee_amount:
+                type: string
+                description: The amount of the estimate transaction fee
+                example: '0.02'
+              token_id:
+                type: string
+                description: The token ID of the transaction fee.
+                example: ETH
   securitySchemes:
     CoboAuth:
       type: apiKey
