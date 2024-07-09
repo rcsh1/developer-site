@@ -117,24 +117,24 @@ properties:
   force_internal:
     type: boolean
     description: |
-      Whether the transaction request must be executed as a [Loop](https://loop.top/) transfer.
-        - `true`: Whether the transaction request must be executed as a [Loop](https://loop.top/) transfer.
-        - `false`: Whether the transaction request may not be executed as a [Loop](https://loop.top/) transfer.
+      Whether the transaction request must be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+        - `true`: The transaction request must be executed as a Loop transfer.
+        - `false`: The transaction request may not be executed as a Loop transfer.
     example: false
   force_external:
     type: boolean
     description:  |
-      Whether the transfer must be executed as an on-chain transfer.//TODO what does this differ from internal?
-        - `true`: The transfer must be executed as an on-chain transfer.
-        - `false`: The transfer may not be executed as an on-chain transfer.
+      Whether the transaction request must not be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+        - `true`: The transaction request must not be executed as a Loop transfer.
+        - `false`: The transaction request can be executed as a Loop transfer.
     example: false
   is_loop:
     type: boolean
     description: |
-      Whether the transfer is a Loop transfer. For more information about Loop, see [the website](https://loop.top/).
+      Whether the transaction is a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
       
-      - `true`: The transfer is a Loop transfer.
-      - `false`: The transfer is not a Loop transfer.
+      - `true`: The transaction is a Loop transfer.
+      - `false`: The transaction is not a Loop transfer.
     example: false
   created_time:
     type: number
