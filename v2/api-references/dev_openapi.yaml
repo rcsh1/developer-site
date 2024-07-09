@@ -1543,6 +1543,10 @@ components:
     Pagination:
       type: object
       description: The pagination information of the returned data.
+      required:
+        - before
+        - after
+        - total_count
       properties:
         before:
           type: string
@@ -1552,26 +1556,22 @@ components:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
           description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
+        total_count:
+          type: number
+          example: 10000
+          description: The total count of the result set
     ErrorResponse:
       type: object
       description: The response of a failed request.
       required:
-        - success
         - error_code
-        - error_description
+        - error_message
         - error_id
       properties:
-        success:
-          type: boolean
-          default: false
-          description: |
-            Whether the API operation was successful. 
-            - `true`: The operation was successful.
-            - `false`: The operation failed.
         error_code:
           type: integer
           description: The error code.
-        error_description:
+        error_message:
           type: string
           description: The error description.
         error_id:
@@ -2308,10 +2308,10 @@ components:
     KeyHolderType:
       type: string
       enum:
-        - COBO
-        - MOBILE
+        - Cobo
+        - Mobile
         - API
-      example: COBO
+      example: Cobo
     MPCVault:
       type: object
       description: The data for vault information.
@@ -2481,12 +2481,12 @@ components:
       properties:
         max_priority_fee:
           type: string
-          description: 'The maximum priority fee, in gwei. The maximum priority fee represents the highest amount of miner tips that you are willing to pay for your transaction.'
-          example: '0.1'
+          description: 'The maximum priority fee, in wei. The maximum priority fee represents the highest amount of miner tips that you are willing to pay for your transaction.'
+          example: '1000000000000'
         base_fee:
           type: string
-          description: 'The base fee price of the chain, in gwei.'
-          example: '0.9'
+          description: 'The base fee price of the chain, in wei.'
+          example: '9000000000000'
     EvmLegacyFeeBasePrice:
       type: object
       description: 'The transaction fee price based on the legacy fee model, which equals the gas price.'
@@ -2495,8 +2495,8 @@ components:
       properties:
         gas_price:
           type: string
-          description: 'The gas price, in gwei. The gas price represents the amount of ETH that must be paid to validators for processing transactions.'
-          example: '1'
+          description: 'The gas price, in wei. The gas price represents the amount of ETH that must be paid to validators for processing transactions.'
+          example: '100000000'
     UtxoFeeBasePrice:
       type: object
       description: 'The transaction fee price for UTXO-based chains (such as Bitcoin), which equals the fee rate.'
@@ -2922,24 +2922,24 @@ components:
         force_internal:
           type: boolean
           description: |
-            Whether the transfer request must be executed as an off-chain transfer. 
-              - `true`: The transfer request must be executed an off-chain transfer. 
-              - `false`: The transfer may not be executed as an off-chain transfer.
+            Whether the transaction request must be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must be executed as a Loop transfer.
+              - `false`: The transaction request may not be executed as a Loop transfer.
           example: false
         force_external:
           type: boolean
           description: |
-            Whether the transfer must be executed as an on-chain transfer.
-              - `true`: The transfer must be executed as an on-chain transfer.
-              - `false`: The transfer may not be executed as an on-chain transfer.
+            Whether the transaction request must not be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must not be executed as a Loop transfer.
+              - `false`: The transaction request can be executed as a Loop transfer.
           example: false
         is_loop:
           type: boolean
           description: |
-            Whether the transfer is a Loop transfer. For more information about Loop, see [the website](https://loop.top/).
+            Whether the transaction is a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
 
-            - `true`: The transfer is a Loop transfer.
-            - `false`: The transfer is not a Loop transfer.
+            - `true`: The transaction is a Loop transfer.
+            - `false`: The transaction is not a Loop transfer.
           example: false
         created_time:
           type: number
@@ -3496,7 +3496,7 @@ components:
           example: U3dhZ2dlciByb2Nrcw==
     TransactionMessageSignDestination:
       type: object
-      description: The information about the message as the transaction destination.
+      description: The information about the transaction destination.
       title: Messages
       required:
         - destination_type
@@ -3631,7 +3631,7 @@ components:
           example: '1.5'
     TransactionExchangeWalletDestination:
       type: object
-      description: The information about the Exchange Wallet as the transaction destination.
+      description: The information about the transaction destination.
       title: Exchange Wallets
       required:
         - destination_type
@@ -3822,11 +3822,10 @@ components:
               example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
     MpcTransferSource:
       title: MPC Wallets
+      description: The information about the transaction source. Specify either the `account_input` or `utxo_inputs` property.
       allOf:
         - $ref: '#/components/schemas/BaseTransferSource'
         - type: object
-          required:
-            - mpc_used_key_group
           properties:
             account_input:
               type: object
@@ -3847,6 +3846,10 @@ components:
                         type: string
                         description: The transaction hash of UTXO to be consumed in the transaction.
                         example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+                      vout_n:
+                        type: integer
+                        description: The output index of the UTXO.
+                        example: 0
                 excluded_inputs:
                   type: array
                   items:
@@ -3856,6 +3859,10 @@ components:
                         type: string
                         description: The transaction hash of UTXO not to be consumed in the transaction.
                         example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+                      vout_n:
+                        type: integer
+                        description: The output index of the UTXO.
+                        example: 0
             mpc_used_key_group:
               $ref: '#/components/schemas/MpcSigningGroup'
     SafeTransferSource:
@@ -4075,6 +4082,9 @@ components:
         source:
           description: The information about the transaction source.
           type: object
+          required:
+            - wallet_id
+            - address
           properties:
             wallet_id:
               type: string
@@ -4096,10 +4106,11 @@ components:
               description: 'The raw data of the message to be signed, encoded in Base64 format.'
               example: YWFhYQ==
             structured_data:
-              type: string
+              type: object
+              additionalProperties: true
               description: 'The structured data of the message to be signed, encoded in JSON format.'
               example: |
-                {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
+                {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/EstimateFeeTransfer'
@@ -4220,8 +4231,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseContractCallSource'
         - type: object
-          required:
-            - mpc_used_key_group
           properties:
             mpc_used_key_group:
               $ref: '#/components/schemas/MpcSigningGroup'
@@ -4990,14 +4999,12 @@ components:
     limitParam:
       name: limit
       in: query
-      description: 'The maximum number of objects to return. The value range is [1, 50].'
+      description: 'The maximum number of objects to return. The default value range is [1, 50] and can be set endpoint specified.'
       required: false
       schema:
         type: integer
         format: int32
         default: 10
-        minimum: 1
-        maximum: 50
       example: 10
     beforeParam:
       name: before
@@ -5006,6 +5013,8 @@ components:
         An object ID which serves as a cursor for pagination. For example, if you specify `before` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that end before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
+
+        If the `before` and `after` are both set to empty, the first slice is returned.
       required: false
       schema:
         type: string
@@ -5017,6 +5026,8 @@ components:
         An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
+
+        If the `before` is set to empty and `after` is set to `last`, the last slice is returned.
       required: false
       schema:
         type: string
