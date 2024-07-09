@@ -2728,6 +2728,17 @@ components:
               type: string
               description: The passphrase of your exchange account.
               example: sXASDKWKLLsWWEE
+            memo:
+              type: string
+              description: The API memo of your exchange account.
+              example: xxx@cobo.com
+            account_identify:
+              type: string
+              description: |
+                The account identifier of your exchange account.
+                - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
+                - For OKX, this is the user's account username.
+              example: xxx@cobo.com
             ga_code:
               type: string
               description: The GA code for the exchange.
@@ -6235,6 +6246,17 @@ components:
                 type: string
                 description: The passphrase of your exchange account. This property is required when updating the information of an Exchange Wallet.
                 example: sXASDKWKLLsWWEE
+              memo:
+                type: string
+                description: The API memo of your exchange account.
+                example: xxx@cobo.com
+              account_identify:
+                type: string
+                description: |
+                  The account identifier of your exchange account.
+                  - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
+                  - For OKX, this is the user's account username.
+                example: xxx@cobo.com
               ga_code:
                 type: string
                 description: The GA code for the exchange.
