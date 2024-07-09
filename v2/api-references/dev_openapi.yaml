@@ -2194,6 +2194,17 @@ components:
               type: string
               description: The passphrase of your exchange account.
               example: sXASDKWKLLsWWEE
+            memo:
+              type: string
+              description: The API memo of your exchange account.
+              example: xxx@cobo.com
+            account_identify:
+              type: string
+              description: |
+                The account identifier of your exchange account.
+                - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
+                - For OKX, this is the user's account username.
+              example: xxx@cobo.com
             ga_code:
               type: string
               description: The GA code for the exchange.
@@ -2977,6 +2988,30 @@ components:
           format: int64
           description: 'The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.'
           example: 1610445878970
+    TransactionDetail:
+      allOf:
+        - $ref: '#/components/schemas/Transaction'
+        - type: object
+          properties:
+            timeline:
+              type: array
+              items:
+                type: object
+                description: 'The information about transaction timeline, which lists all statuses that the transaction passes through with timestamps indicating when each status is completed.'
+                properties:
+                  status:
+                    $ref: '#/components/schemas/TransactionStatus'
+                  finished:
+                    type: boolean
+                    description: |
+                      Whether the transaction status is completed:
+                        - `true`: The transaction status is completed.
+                        - `false`: The transaction is currently in the status.
+                    example: true
+                  finished_time:
+                    type: number
+                    description: 'The time when the transaction status is completed in Unix timestamp format, measured in milliseconds.'
+                    example: 1610445878970
     TransactionApprover:
       type: object
       description: The approver data for transaction.
@@ -3978,7 +4013,7 @@ components:
                 properties:
                   address:
                     type: string
-                    description: The external address.
+                    description: The destination address.
                     example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
                   amount:
                     type: string
@@ -3996,16 +4031,16 @@ components:
         force_internal:
           type: boolean
           description: |
-            Whether the transfer request must be executed as an off-chain transfer. 
-              - `true`: The transfer request must be executed an off-chain transfer. 
-              - `false`: The transfer may not be executed as an off-chain transfer.
+            Whether the transaction request must be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must be executed as a Loop transfer.
+              - `false`: The transaction request may not be executed as a Loop transfer.
           example: false
         force_external:
           type: boolean
           description: |
-            Whether the transfer must be executed as an on-chain transfer.
-            - `true`: The transfer must be executed as an on-chain transfer.
-            - `false`: The transfer may not be executed as an on-chain transfer.
+            Whether the transaction request must not be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must not be executed as a Loop transfer.
+              - `false`: The transaction request can be executed as a Loop transfer.
           example: false
     ExchangeTransferDestination:
       type: object
@@ -4681,7 +4716,6 @@ components:
       type: object
       required:
         - staking_id
-        - fee
       properties:
         staking_id:
           type: string
@@ -4982,6 +5016,8 @@ components:
         EigenLayerLst: The Eigen Layer staking pool for lst token.
     BaseEstimateStakingFee:
       type: object
+      required:
+        - activity_type
       properties:
         activity_type:
           $ref: '#/components/schemas/ActivityType'
@@ -5036,28 +5072,27 @@ components:
       name: before
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that end before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the specified ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
 
         If the `before` and `after` are both set to empty, the first slice is returned.
+        If the `before` is set to `infinity`, the last slice is returned.
       required: false
       schema:
         type: string
-      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+      example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1
     afterParam:
       name: after
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the specified ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
-
-        If the `before` is set to empty and `after` is set to `last`, the last slice is returned.
       required: false
       schema:
         type: string
-      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+      example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk
     optionalAssetIdParam:
       name: asset_id
       in: query
@@ -5749,6 +5784,17 @@ components:
                 type: string
                 description: The passphrase of your exchange account. This property is required when updating the information of an Exchange Wallet.
                 example: sXASDKWKLLsWWEE
+              memo:
+                type: string
+                description: The API memo of your exchange account.
+                example: xxx@cobo.com
+              account_identify:
+                type: string
+                description: |
+                  The account identifier of your exchange account.
+                  - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
+                  - For OKX, this is the user's account username.
+                example: xxx@cobo.com
               ga_code:
                 type: string
                 description: The GA code for the exchange.
@@ -6471,7 +6517,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Transaction'
+            $ref: '#/components/schemas/TransactionDetail'
     estimateFeeResponse:
       description: The request was successful.
       content:
@@ -6665,6 +6711,23 @@ components:
                 type: array
               pagination:
                 $ref: '#/components/schemas/Pagination'
+    estimateStakingFeeResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fee_type:
+                $ref: '#/components/schemas/FeeType'
+              fee_amount:
+                type: string
+                description: The amount of the estimate transaction fee
+                example: '0.02'
+              token_id:
+                type: string
+                description: The token ID of the transaction fee.
+                example: ETH
   securitySchemes:
     CoboAuth:
       type: apiKey

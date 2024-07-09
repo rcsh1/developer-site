@@ -2997,17 +2997,20 @@ components:
               type: array
               items:
                 type: object
-                description: The data for transaction timeline information.
+                description: 'The information about transaction timeline, which lists all statuses that the transaction passes through with timestamps indicating when each status is completed.'
                 properties:
                   status:
                     $ref: '#/components/schemas/TransactionStatus'
                   finished:
                     type: boolean
-                    description: Whether the timeline status finished
+                    description: |
+                      Whether the transaction status is completed:
+                        - `true`: The transaction status is completed.
+                        - `false`: The transaction is currently in the status.
                     example: true
                   finished_time:
                     type: number
-                    description: Timeline status finished time
+                    description: 'The time when the transaction status is completed in Unix timestamp format, measured in milliseconds.'
                     example: 1610445878970
     TransactionApprover:
       type: object
@@ -4010,7 +4013,7 @@ components:
                 properties:
                   address:
                     type: string
-                    description: The external address.
+                    description: The destination address.
                     example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
                   amount:
                     type: string
@@ -4028,16 +4031,16 @@ components:
         force_internal:
           type: boolean
           description: |
-            Whether the transfer request must be executed as an off-chain transfer. 
-              - `true`: The transfer request must be executed an off-chain transfer. 
-              - `false`: The transfer may not be executed as an off-chain transfer.
+            Whether the transaction request must be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must be executed as a Loop transfer.
+              - `false`: The transaction request may not be executed as a Loop transfer.
           example: false
         force_external:
           type: boolean
           description: |
-            Whether the transfer must be executed as an on-chain transfer.
-            - `true`: The transfer must be executed as an on-chain transfer.
-            - `false`: The transfer may not be executed as an on-chain transfer.
+            Whether the transaction request must not be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must not be executed as a Loop transfer.
+              - `false`: The transaction request can be executed as a Loop transfer.
           example: false
     ExchangeTransferDestination:
       type: object
