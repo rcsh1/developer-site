@@ -2962,6 +2962,22 @@ components:
           format: int64
           description: 'The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.'
           example: 1610445878970
+        timeline:
+          type: array
+          items:
+            type: object
+            description: The data for transaction timeline information.
+            properties:
+              status:
+                $ref: '#/components/schemas/TransactionStatus'
+              finished:
+                type: boolean
+                description: Whether the timeline status finished
+                example: true
+              finished_time:
+                type: number
+                description: Timeline status finished time
+                example: 1610445878970
     TransactionApprover:
       type: object
       description: The approver data for transaction.
