@@ -4,9 +4,7 @@ get:
   operationId: get_mpc_project
   summary: Get project information
   description: |
-    This operation retrieves detailed information about a project specified by `project_id`.
-    
-    You can retrieve `project_id`s by calling [List all projects](/v2/api-references/wallets--mpc-wallet/list-all-mpc-projects).
+    This operation retrieves detailed information about a project.
   security:
     - CoboAuth: []
   parameters:
@@ -26,7 +24,7 @@ put:
   operationId: update_mpc_project
   summary: Update project name
   description: |
-    This operation updates the `name` of the project specified by `project_id`.
+    This operation updates a project's name.
   security:
     - CoboAuth: []
     - OAuth2:

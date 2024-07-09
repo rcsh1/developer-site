@@ -8,7 +8,8 @@ description: |
   
     - `RecoveryKeyGroup`: Only [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) will be retrieved.
   
-    **Note:** If left empty, all key share group types will be retrieved.
+    **Note:** If there's no value selected for `key_group_type`, all key share group types will be retrieved.
+
 required: false
 schema:
   $ref: "../../../schemas/wallets/mpcs/key_group_type.yaml"

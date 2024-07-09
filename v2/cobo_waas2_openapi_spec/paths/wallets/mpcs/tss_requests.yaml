@@ -4,13 +4,7 @@ post:
   operationId: create_tss_request
   summary: Create TSS request
   description: | 
-    This operation creates a TSS request for `target_key_group_id` under `vault_id` to perform actions specified by `type` such as key generation and recovery.
-    
-    **Notes for the optional `used_key_group_id` and `detail_params`:**
-    
-    1. `used_key_group_id` is used only when the action `type` is either `KeyGenfromKeyGroup` or `Recovery`. This is to specify the key share group to be used as the source group to create a new `target_key_group`.
-    
-    2. `detail_params` are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
+    This operation creates a TSS request under a specified vault. You can use this operation to perform actions such as key generation and recovery.
   security:
     - CoboAuth: []
     - OAuth2:
@@ -35,9 +29,7 @@ get:
   operationId: list_tss_request
   summary: List TSS requests
   description: |
-    This operation retrieves a list of TSS requests information under `vault_id`.
-    
-    The result is further filtered by the required `target_key_group_id`.
+    This operation retrieves a list of TSS requests and their details.
   security:
     - CoboAuth: []
   parameters:

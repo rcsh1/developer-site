@@ -1,0 +1,8 @@
+allOf:
+  - $ref: './transaction.yaml'
+  - type: object
+    properties:
+      timeline:
+        type: array
+        items:
+          $ref: './transaction_timeline_item.yaml'
