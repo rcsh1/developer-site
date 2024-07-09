@@ -615,7 +615,7 @@ paths:
       description: |
         This operation retrieves a list of all Cobo key share holders and their information. 
 
-        **Note:** Currently, `type` will only return `COBO` and will never return `MOBILE` or `API`.
+        <Note>When using this operation, `type` will only return `Cobo` and will never return `Mobile` or `API`.</Note>
       security:
         - CoboAuth: []
       responses:
@@ -634,7 +634,7 @@ paths:
       operationId: create_mpc_project
       summary: Create project
       description: |
-        This operation creates a project with the required `name`, `node_count`, and `threshold` specification.
+        This operation creates a project.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -671,9 +671,7 @@ paths:
       operationId: get_mpc_project
       summary: Get project information
       description: |
-        This operation retrieves detailed information about a project specified by `project_id`.
-
-        You can retrieve `project_id`s by calling [List all projects](/v2/api-references/wallets--mpc-wallet/list-all-mpc-projects).
+        This operation retrieves detailed information about a project.
       security:
         - CoboAuth: []
       parameters:
@@ -693,7 +691,7 @@ paths:
       operationId: update_mpc_project
       summary: Update project name
       description: |
-        This operation updates the `name` of the project specified by `project_id`.
+        This operation updates a project's name.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -718,11 +716,7 @@ paths:
       operationId: create_mpc_vault
       summary: Create vault
       description: |
-        This operation creates a vault with the specified `name`, `vault_type`, and `project_id`.
-
-        **Notes for `project_id`:**
-        1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
-        2. If `vault_type` is `UserControlled`, then `project_id` is required.
+        This operation creates a vault.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -743,7 +737,7 @@ paths:
       description: |
         This operation retrieves a list of all vaults.
 
-        By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single project.
+        <Note>By optionally specifying a project ID, you can retrieve a list of all vaults under a single project.</Note>
       security:
         - CoboAuth: []
       parameters:
@@ -764,9 +758,7 @@ paths:
       operationId: get_mpc_vault
       summary: Get vault information
       description: |
-        This operation retrieves detailed information about the vault specified by `vault_id`.
-
-        You can obtain `vault_id`s by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
+        This operation retrieves detailed information about a vault.
       security:
         - CoboAuth: []
       parameters:
@@ -786,7 +778,7 @@ paths:
       operationId: modify_mpc_vault
       summary: Update vault name
       description: |
-        This operation updates the name of the vault specified by `vault_id` to `name`.
+        This operation updates a vault's name.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -812,7 +804,7 @@ paths:
       operationId: create_key_group
       summary: Create key share group
       description: |
-        This operation creates a key share group under the specified `vault_id` with the specified `group_type`, `node_count`, `threshold`, and `key_holders`.
+        This operation creates a key share group for a specified vault.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -837,9 +829,7 @@ paths:
       operationId: list_key_group
       summary: List all key share groups
       description: |
-        This operation retrieves a list of all key share groups under `vault_id`.
-
-        You can optionally filter the results further by specifying a `key_group_type`.
+        This operation retrieves all key share groups under a specified vault. You can filter the result by group type.
       security:
         - CoboAuth: []
       parameters:
@@ -861,7 +851,7 @@ paths:
       operationId: get_key_group
       summary: Get key share group information
       description: |
-        This operation retrieves detailed information about the key share group specified by `key_group_id` and located under `vault_id`.
+        This operation retrieves detailed information about a specified key share group.
       security:
         - CoboAuth: []
       parameters:
@@ -882,9 +872,7 @@ paths:
       operationId: update_key_group
       summary: Update key share group
       description: |
-        This operation updates a key share group based on the action specified by `update_key_share_group_action`.
-
-        The key share group to be updated is specified by `key_group_id` and `vault_id`.
+        This operation updates a specified active [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups). For example, you can use this operation to upgrade a Signing Group to the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
       security:
         - CoboAuth: []
         - OAuth2:
@@ -894,9 +882,6 @@ paths:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyGroupIdParam'
       requestBody:
-        description: |
-          The available actions of key share group update. Possible values include:
-          - `UpgradeToMainGroup`: This changes the specified key share group's type to [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
         content:
           application/json:
             schema:
@@ -906,7 +891,9 @@ paths:
               properties:
                 update_key_share_group_action:
                   type: string
-                  description: The available action of key group update.
+                  description: |
+                    The available actions of key share group update. Possible values include:
+                    - `UpgradeToMainGroup`: This upgrades an active [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups). The original Main Group will be permanently deleted.
                   enum:
                     - UpgradeToMainGroup
                   example: UpgradeToMainGroup
@@ -924,7 +911,7 @@ paths:
         - Wallets - MPC Wallets
       operationId: delete_key_group
       summary: Delete key share group
-      description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
+      description: This operation deletes a specified key share group.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -949,13 +936,7 @@ paths:
       operationId: create_tss_request
       summary: Create TSS request
       description: |
-        This operation creates a TSS request for `target_key_group_id` under `vault_id` to perform actions specified by `type` such as key generation and recovery.
-
-        **Notes for the optional `used_key_group_id` and `detail_params`:**
-
-        1. `used_key_group_id` is used only when the action `type` is either `KeyGenfromKeyGroup` or `Recovery`. This is to specify the key share group to be used as the source group to create a new `target_key_group`.
-
-        2. `detail_params` are used only when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`.
+        This operation creates a TSS request under a specified vault. You can use this operation to perform actions such as key generation and recovery.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -984,9 +965,7 @@ paths:
       operationId: list_tss_request
       summary: List TSS requests
       description: |
-        This operation retrieves a list of TSS requests information under `vault_id`.
-
-        The result is further filtered by the required `target_key_group_id`.
+        This operation retrieves a list of TSS requests and their details.
       security:
         - CoboAuth: []
       parameters:
@@ -1014,9 +993,7 @@ paths:
       operationId: get_tss_request
       summary: Get TSS request
       description: |
-        This operation retrieves detailed information about a TSS request in `vault_id` specified by `tss_request_id`.
-
-        You can retrieve `tss_request_id`s by calling [List TSS requests](/v2/api-references/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+        This operation retrieves detailed information about a TSS request.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1041,9 +1018,7 @@ paths:
       operationId: cancel_tss_request
       summary: Cancel TSS request
       description: |
-        This operation cancels the TSS request in `vault_id` specified by `tss_request_id`.
-
-        You can retrieve `tss_request_id`s by calling [List TSS requests](/v2/api-references/wallets--mpc-wallet/list-tss-request-information-by-vault-id).
+        This operation cancels a TSS request.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -2229,6 +2204,12 @@ components:
         - SECP256K1
         - ED25519
       example: ED25519
+      description: |
+        The elliptic curve type of the [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key). Possible values include:
+
+        - `SECP256K1`: The secp256k1 elliptic curve.
+
+        - `ED25519`: The Ed25519 elliptic curve.
     KeyGroup:
       type: object
       description: The data for key share group information.
@@ -2260,6 +2241,8 @@ components:
         create_timestamp:
           type: integer
           format: int64
+          description: 'The key share group''s creation time in Unix timestamp format, measured in milliseconds.'
+          example: 1718619403933
     KeyGroupStatus:
       type: string
       enum:
@@ -2267,6 +2250,13 @@ components:
         - Valid
         - Unavailable
       example: Valid
+      description: |
+        The status of the key share group. Possible values include:
+        - `New`: The key share group has been newly created. The status will become `Valid` after you call [Create TSS request](/api-references/v2/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group) and specifying this key share group as the target key share group.
+
+        - `Valid`: The key share group is valid.
+
+        - `Unavailable`: The key share group is currently unavailable. This status appears when a key share holder uses [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) to change node. For example, when a key share holder changes to a new phone or loses their phone, and is in the process of setting up [Cobo Guard](https://manuals.cobo.com/en/guard/introduction) on their new phone.
     KeyGroupType:
       type: string
       enum:
@@ -2274,6 +2264,16 @@ components:
         - SigningGroup
         - RecoveryGroup
       example: MainGroup
+      description: |
+        The type of key share group. Possible values include:
+
+        - `MainGroup`: A [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+        - `SigningGroup`: A [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+        - `RecoveryGroup`: A [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+
+        **Note:** For `MainGroup` and `SigningGroup`, a Cobo key share holder will be added automatically.
     KeyHolder:
       type: object
       description: The data for MPC Wallets' key share holder information.
@@ -2287,7 +2287,7 @@ components:
         tss_node_id:
           type: string
           description: Key share holder's TSS Node ID.
-          example: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijklm
+          example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
         online:
           type: boolean
           description: |
@@ -2305,6 +2305,15 @@ components:
         - NotActivated
         - Changed
       example: Valid
+      description: |
+        The status of key share holder's TSS Node. Possible values include:
+        - `Valid`: The TSS Node is configured and activated.
+
+        - `NotConfigured`: The TSS Node has not been configured. This status is only applicable to [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+
+        - `NotActivated`: The TSS Node has not been activated. This status is only applicable to [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+
+        - `Changed`: The TSS Node has been changed. This happens when the key share holder sets up their [Cobo Guard](https://manuals.cobo.com/en/guard/introduction) on a new phone. This `Changed` status serves as a reminder for you to call [Create TSS request](/api-references/v2/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group) with the `KeyGenFromKeyGroup` and `Recovery` action `type` to finalize the setup of the key share holder's new phone. Once all set, the old TSS Node with the `Changed` status will be deleted.
     KeyHolderType:
       type: string
       enum:
@@ -2312,6 +2321,14 @@ components:
         - Mobile
         - API
       example: Cobo
+      description: |
+        Key share holder's TSS Node type. Possible values include:
+
+        - `Cobo`: The TSS Node was generated and held by Cobo.
+
+        - `Mobile`: The TSS Node was generated by a [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#mobile-co-signer) using the [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
+
+        - `API`: The TSS Node was generated by an [API co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/back-up-key-share-groups#api-co-signer) using the [TSS Node software package](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment).
     MPCVault:
       type: object
       description: The data for vault information.
@@ -2334,13 +2351,18 @@ components:
           type: number
           format: int64
           description: 'The vault''s creation time in Unix timestamp format, measured in milliseconds.'
-          example: 1718619403933.53
+          example: 1718619403933
     MPCVaultType:
       type: string
       enum:
         - OrgControlled
         - UserControlled
       example: OrgControlled
+      description: |
+        The vault type. Possible values include:
+        - `OrgControlled`: This vault is a collection of [Organization-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#organization-controlled-wallets).
+
+        - `UserControlled`: This vault is a collection of [User-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#user-controlled-wallets).
     MPCProject:
       type: object
       description: The data for project information.
@@ -2352,7 +2374,7 @@ components:
         org_id:
           type: string
           example: f3b4a616-9c43-462e-8cb4-343e304fee64
-          description: The organization ID.
+          description: 'The [Organization](https://manuals.cobo.com/en/portal/organization/introduction) ID.'
         name:
           type: string
           example: Project name
@@ -2368,7 +2390,7 @@ components:
         create_timestamp:
           type: integer
           format: int64
-          example: 1718619403933.53
+          example: 1718619403933
           description: 'The project''s creation time in Unix timestamp format, measured in milliseconds.'
     RootPubkey:
       type: object
@@ -2421,7 +2443,7 @@ components:
 
         - `KeyGeneratingFailed`: The key share generation process has failed for the action to be done to the TSS request.
 
-        - `Success`: The action done to the TSS request has been completed successfully.
+        - `Success`: The action done to the TSS request has been completed successfully. If you see this status while running [Cancel TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/cancel-tss-request), this mean the specified TSS request has been successfully canceled.
     TSSRequestType:
       type: string
       enum:
@@ -2431,11 +2453,11 @@ components:
       example: KeyGen
       description: |
         The TSS request type. Possible values include:
-        - `KeyGen`: This is a key generation request to create a [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).
+        - `KeyGen`: This is a key generation request to create a [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key) and key shares for your [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created the Main Group with [Create key share group](/v2/api-references/wallets--mpc-wallets/create-key-share-group). You only need to do this once per [Organization](https://manuals.cobo.com/en/portal/organization/introduction).
 
-        - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create a [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) and a [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+        - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create key shares for your [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) or [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created these key share groups with [Create key share group](/v2/api-references/wallets--mpc-wallets/create-key-share-group).
 
-        - `Recovery`: This is a request to create a new [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) from the [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) if the old Main Group has been lost.
+        - `Recovery`: This is a request to create key shares using the [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) for a key share holder in the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) if their key share has been lost (e.g. by losing their phone).
     FeeType:
       type: string
       enum:
@@ -5293,7 +5315,7 @@ components:
 
         - `RecoveryKeyGroup`: Only [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) will be retrieved.
 
-        **Note:** If left empty, all key share group types will be retrieved.
+        **Note:** If there's no value selected for `key_group_type`, all key share group types will be retrieved.
       required: false
       schema:
         $ref: '#/components/schemas/KeyGroupType'
@@ -5301,7 +5323,7 @@ components:
       name: project_id
       in: path
       required: true
-      description: The project ID.
+      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).'
       schema:
         type: string
         format: uuid
@@ -5309,7 +5331,7 @@ components:
     optionalProjectIdQueryParam:
       name: project_id
       in: query
-      description: The project ID.
+      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).'
       schema:
         type: string
         format: uuid
@@ -5328,7 +5350,7 @@ components:
     requiredTargetKeyGroupIdParam:
       name: target_key_group_id
       in: query
-      description: The target key share group ID of the TSS request.
+      description: 'The target key share group ID of the TSS request, which you can retrieve by calling [List all key share groups](/v2/api-references/wallets--mpc-wallets/list-all-key-share-groups).'
       required: true
       schema:
         type: string
@@ -5337,7 +5359,7 @@ components:
       name: tss_request_id
       in: path
       required: true
-      description: The TSS request ID.
+      description: 'The TSS request ID, which you can retrieve by calling [List TSS requests](/v2/api-references/wallets--mpc-wallets/list-tss-requests).'
       schema:
         type: string
         format: uuid
@@ -5346,7 +5368,7 @@ components:
       name: vault_id
       in: path
       required: true
-      description: The vault ID.
+      description: 'The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).'
       schema:
         type: string
         format: uuid
@@ -5795,9 +5817,9 @@ components:
                   The number of key share holders in this key share group.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `node_count` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `node_count` to 2 or 3. 
 
-                  2. `threshold` must be less than or equal to `node_count`.
+                  2. Threshold must be less than or equal to node count.
                 example: 3
               threshold:
                 type: integer
@@ -5805,9 +5827,9 @@ components:
                   The number of key share holders required to sign an operation.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `threshold` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `threshold` to 2 or 3. 
 
-                  2. `threshold` must be less than or equal to `node_count`.
+                  2. Threshold must be less than or equal to node count.
                 example: 2
               key_holders:
                 type: array
@@ -5824,7 +5846,7 @@ components:
                     tss_node_id:
                       type: string
                       description: The TSS Node ID.
-                      example: AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijklm
+                      example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
     createMpcProjectBody:
       description: The request body to create a project.
       content:
@@ -5846,9 +5868,9 @@ components:
                   The number of key share holders in the project.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `node_count` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `node_count` to 2 or 3. 
 
-                  2. `threshold` must be less than or equal to `node_count`.
+                  2. Threshold must be less than or equal to node count.
                 example: 3
               threshold:
                 type: integer
@@ -5856,9 +5878,9 @@ components:
                   The number of key share holders required to sign an operation in the project.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), so you can only set `threshold` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `threshold` to 2 or 3. 
 
-                  2. `threshold` must be less than or equal to `node_count`.
+                  2. Threshold must be less than or equal to node count.
                 example: 2
     createTssRequestBody:
       description: The request body to create a TSS request.
@@ -5875,13 +5897,13 @@ components:
               target_key_group_id:
                 type: string
                 description: The target key share group ID.
-                example: '123456789012345678'
+                example: '912503538189021590'
               source_key_group_id:
                 type: string
                 description: |
-                  The used key share group ID.
+                  The source key share group ID.
 
-                  **Note:** `used_key_group_id` is used only when the action `type` is either `KeyGenfromKeyGroup` or `Recovery`. This is to specify the key share group to be used as the source group to create a new `target_key_group`.
+                  **Note:** `source_key_share_group_id` is used only when `type` is set to either `KeyGenfromKeyGroup` or `Recovery`. This is to specify the key share group to be used as the source key share group to create key shares for the `target_key_share_group`.
                 example: '987654321098765432'
               detail_params:
                 type: object
@@ -5891,12 +5913,12 @@ components:
                     items:
                       type: string
                     example:
-                      - 1AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijkl
-                      - 2AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghijkl
+                      - cobo1AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefgh
+                      - cobo2AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefgh
                     description: |
-                      The TSS Node IDs participating in creating a new key share group when the action `type` is either `KeyGenFromKeyGroup` or `Recovery`. 
+                      The TSS Node IDs participating in creating a new key share group when `type` is set to either `KeyGenFromKeyGroup` or `Recovery`. 
 
-                      **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (`threshold`-`node_count`), for `used_node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`.
+                      **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), for `node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`. To obtain the Cobo TSS Node ID, run [List all Cobo key share holders](/v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders).
     createMpcVaultBody:
       description: The request body to create a vault.
       content:
@@ -5911,11 +5933,11 @@ components:
                 type: string
                 example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
                 description: |
-                  The project ID.
+                  The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
 
                   **Notes:**
-                  1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
-                  2. If `vault_type` is `UserControlled`, then `project_id` is required.
+                  1. If you set `vault_type` to `OrgControlled`, the value of `project_id` will be ignored.
+                  2. If you set `vault_type` to `UserControlled`, then `project_id` is required.
               name:
                 type: string
                 example: Name of new vault

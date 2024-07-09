@@ -4,7 +4,7 @@ post:
   operationId: create_key_group
   summary: Create key share group
   description: |
-    This operation creates a key share group under the specified `vault_id` with the specified `group_type`, `node_count`, `threshold`, and `key_holders`.
+    This operation creates a key share group for a specified vault.
   security:
     - CoboAuth: []
     - OAuth2:
@@ -29,9 +29,7 @@ get:
   operationId: list_key_group
   summary: List all key share groups
   description: |
-    This operation retrieves a list of all key share groups under `vault_id`.
-    
-    You can optionally filter the results further by specifying a `key_group_type`.
+    This operation retrieves all key share groups under a specified vault. You can filter the result by group type.
   security:
     - CoboAuth: []
   parameters:

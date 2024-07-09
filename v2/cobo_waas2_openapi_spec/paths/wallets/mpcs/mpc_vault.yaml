@@ -4,9 +4,7 @@ get:
   operationId: get_mpc_vault
   summary: Get vault information
   description: |
-    This operation retrieves detailed information about the vault specified by `vault_id`.
-    
-    You can obtain `vault_id`s by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
+    This operation retrieves detailed information about a vault.
   security:
     - CoboAuth: []
   parameters:
@@ -26,7 +24,7 @@ put:
   operationId: modify_mpc_vault
   summary: Update vault name
   description: |
-    This operation updates the name of the vault specified by `vault_id` to `name`.
+    This operation updates a vault's name.
 
   security:
     - CoboAuth: []

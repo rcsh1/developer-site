@@ -11,11 +11,12 @@ content:
           type: string
           example: "0111039d-27fb-49ba-b172-6e0aa80e37ec"
           description: |
-            The project ID.
+            The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
             
             **Notes:**
-            1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
-            2. If `vault_type` is `UserControlled`, then `project_id` is required.
+            1. If you set `vault_type` to `OrgControlled`, the value of `project_id` will be ignored.
+            2. If you set `vault_type` to `UserControlled`, then `project_id` is required.
+
         name:
           type: string
           example: "Name of new vault"
