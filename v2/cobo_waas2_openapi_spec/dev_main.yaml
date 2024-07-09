@@ -385,6 +385,8 @@ components:
     # transactions
     Transaction:
       $ref: "./components/schemas/transactions/transactions/transaction.yaml"
+    TransactionDetail:
+      $ref: "./components/schemas/transactions/transactions/transaction_detail.yaml"
     TransactionApprover:
       $ref: "./components/schemas/transactions/transactions/transaction_approver.yaml"
     TransactionTokenAmount:
@@ -922,6 +924,8 @@ components:
       $ref: "./components/responses/stakings/list_stakings.yaml"
     listActivitiesResponse:
       $ref: "./components/responses/stakings/list_activities.yaml"
+    estimateStakingFeeResponse:
+      $ref: "./components/responses/stakings/estimate_fee.yaml"
 
   securitySchemes:
     CoboAuth:

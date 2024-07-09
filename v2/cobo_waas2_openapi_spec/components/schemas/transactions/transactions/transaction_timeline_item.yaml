@@ -1,0 +1,13 @@
+type: object
+description: The data for transaction timeline information.
+properties:
+  status:
+    $ref: './transaction_status.yaml'
+  finished:
+    type: boolean
+    description: Whether the timeline status finished
+    example: true
+  finished_time:
+    type: number
+    description: Timeline status finished time
+    example: 1610445878970

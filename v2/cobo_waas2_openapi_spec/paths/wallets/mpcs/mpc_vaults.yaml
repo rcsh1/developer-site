@@ -4,12 +4,7 @@ post:
   operationId: create_mpc_vault
   summary: Create vault
   description: |
-    This operation creates a vault with the specified `name`, `vault_type`, and `project_id`.
-    
-    **Notes for `project_id`:**
-    1. If `vault_type` is `OrgControlled`, the value of `project_id` will be ignored.
-    2. If `vault_type` is `UserControlled`, then `project_id` is required.
-
+    This operation creates a vault.
   security:
     - CoboAuth: []
     - OAuth2:
@@ -30,7 +25,7 @@ get:
   description: |
     This operation retrieves a list of all vaults.
     
-    By optionally specifying a `project_id`, you can retrieve a list of all vaults under a single project.
+    <Note>By optionally specifying a project ID, you can retrieve a list of all vaults under a single project.</Note>
   security:
     - CoboAuth: []
   parameters:

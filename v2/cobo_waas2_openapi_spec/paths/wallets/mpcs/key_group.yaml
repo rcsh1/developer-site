@@ -4,7 +4,7 @@ get:
   operationId: get_key_group
   summary: Get key share group information
   description: |
-    This operation retrieves detailed information about the key share group specified by `key_group_id` and located under `vault_id`.
+    This operation retrieves detailed information about a specified key share group.
   security:
     - CoboAuth: []
   parameters:
@@ -25,9 +25,7 @@ put:
   operationId: update_key_group
   summary: Update key share group
   description: | 
-    This operation updates a key share group based on the action specified by `update_key_share_group_action`.
-    
-    The key share group to be updated is specified by `key_group_id` and `vault_id`.
+    This operation updates a specified active [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups). For example, you can use this operation to upgrade a Signing Group to the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
   security:
     - CoboAuth: []
     - OAuth2:
@@ -52,7 +50,7 @@ delete:
     - Wallets - MPC Wallets
   operationId: delete_key_group
   summary: Delete key share group
-  description: This operation deletes the key share group specified by `key_group_id` under `vault_id`.
+  description: This operation deletes a specified key share group.
   security:
     - CoboAuth: []
     - OAuth2:
