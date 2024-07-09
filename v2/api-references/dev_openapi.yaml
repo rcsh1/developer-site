@@ -1069,6 +1069,8 @@ paths:
       summary: Get fee rates
       description: |
         This operation retrieves current transaction fee rates on the blockchain based on the specified chain ID.
+
+        The response can contain different properties based on the transaction fee model used by the chain, including EIP-1559 fee model, legacy fee model, UTXO fee model, and fixed fee model.
       security:
         - CoboAuth: []
       parameters:
@@ -1090,6 +1092,8 @@ paths:
         This operation estimates the transaction fee rates of a token transfer or a contract call for three different transaction speeds (slow, recommended, and fast), based on factors such as network congestion and transaction complexity.
 
         You need to specify the transaction information, including the request ID, request type, source address, destination address, and token ID of the transaction fee.
+
+        The response can contain different properties based on the transaction fee model used by the chain, including EIP-1559 fee model, legacy fee model, UTXO fee model, and fixed fee model.
       security:
         - CoboAuth: []
       requestBody:
