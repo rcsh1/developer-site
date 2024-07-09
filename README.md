@@ -9,13 +9,9 @@
 
   <br />
   <br />
-  <a href="https://www.cobo.com/developers/overview/custodial-wallet">Custodial Wallet</a>
+  <a href="https://www.cobo.com/developers/v2/api-references/overview/changelog">Developer Hub</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.cobo.com/developers/overview/mpc-wallet/mpc-introduction">MPC Wallet</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.cobo.com/developers/overview/smart-contract-wallet/cobosafe">Smart Contract Wallet</a>
-  <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-  <a href="https://www.cobo.com/web3/channel/news">News</a>
+  <a href="https://www.cobo.com/news">News</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://discord.gg/FaZwQ9WYpj">Discord</a>
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
@@ -29,13 +25,11 @@
 <div align="center">
   <h2>About Cobo</h2>
   <p align="left">
-  Cobo is a globally trusted leader in digital asset custody solutions.
-  As the world’s first omni-custody platform, Cobo offers the full spectrum of solutions from full custody,
-  co-managed MPC custody, to fully decentralized custody as well as wallet-as-a-service,
-  advanced DeFi investment tools and an off-exchange settlement network.
-  Trusted by over 500 institutions with billions in assets under custody,
-  Cobo inspires confidence in digital asset ownership by enabling safe and efficient management of digital assets and interactions with Web 3.0.
-  Cobo is SOC2 Type 1 and Type 2-compliance-certified and licensed in 5 jurisdictions.
+  Cobo is a trusted leader in digital asset custody and wallet infrastructure solutions. Founded in 2017 by blockchain pioneers, Cobo is trusted by more than 500 organizations worldwide, safeguarding billions of dollars in assets with a zero-incident security track record.
+
+  Today, Cobo provides the industry’s only unified digital asset wallet platform that integrates all 4 wallet technologies in one place – Custodial Wallets, MPC Wallets, Smart Contract Wallets, and Exchange Wallets. By combining a comprehensive suite of wallet solutions with advanced risk controls and developer tools, Cobo empowers organizations and developers to innovate and scale with ease.
+
+  Visit [Cobo](https://www.cobo.com) for more information.
   </p>
 </div>
 
@@ -45,53 +39,61 @@
 
 The Developer Hub mainly includes the following resources.:
 
-- **[Custodial Wallet](https://www.cobo.com/developers/overview/custodial-wallet)**. Cobo Custodial Wallet is built upon bank-grade security technologies such as Hardware Security Modules (HSM) and Intel Software Guard Extensions (SGX), that is battle tested in traditional financial industry.
-- **[MPC Wallet](https://www.cobo.com/developers/overview/mpc-wallet/mpc-introduction)**. Cobo MPC Wallet leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS).
-- **[Smart Contract Wallet](https://www.cobo.com/developers/overview/smart-contract-wallet/cobosafe)**. Cobo’s Smart Contract Wallet solution, dubbed as “Cobo Safe”, is a smart contract based access control framework on EVM compatible blockchains.
+- **[Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction)**. Cobo Custodial Wallets are a secure and regulated custodial wallet solution, designed specifically for institutions to manage digital assets. Custodial Wallets take the complexity out of securing your assets by managing the private keys on your behalf. 
+- **[MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction)**. Cobo MPC Wallets leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS). Cobo Portal offers two types of MPC Wallets: Organization-Controlled Wallets and User-Controlled Wallets.
+- **[Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)**. Cobo Smart Contract Wallets support a myriad of smart contract wallets, prominently featuring Safe{Wallet} alongside other account abstraction wallets. 
+- **[Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction)**. Cobo Portal’s Exchange Wallets are your one-stop solution for managing multiple exchange accounts effortlessly.
   <br />
+
+## GitHub repository directory
+Currently we offer  The content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at the same time. You could switch between the two version by selecting the **Version 1.0** and the **Version 2.0** buttons. 
+
+Below is the repository directory structure for the two versions:
+
+- `v2`
+  - `api-references`: The content under the **API References** tab, which contains the reference information for the WaaS 2.0 API.
+  - `cobo_waas2_openapi_spec`:The WaaS 2.0 OpenAPI spec.
+  - `guides`: (Coming soon) The content under the **Guides** tab, which contains instructions on implementing basic and advanced features.
+  - `developer-tools`: (Coming soon) The content under the **Developer Tools** tab, which contains documentation for the WaaS SDKs.
+  - `faqs`: (Coming soon) The content under the **FAQs** tab, which contains answers to frequently asked questions.
+
+
+
+- `v1`
+  - `overview`: The content under the **Documentation** tab, which contains introduction to the WaaS 1.0 service and wallets.
+  - `get-started/overview`: The content under the **Get Started** tab, which explains basic workflows for different types of wallets.
+  - `api-references`: The content under the **API References** tab, which contains the reference information for the WaaS 1.0 API.
+  - `guides/howtos`: The content under the **Guides** tab, which contains instructions on implementing basic and advanced features.
+  - `sdk-and-tools`: The content under the **SDKs and Tools** tab, which contains documentation for the WaaS 1.0 SDKs and useful tools.
+  - `faqs`: The content under the **FAQs** tab, which contains answers to frequently asked questions.
 
 ## Contributing
 
-PRs are always welcome! To get started, follow this guide to build Cobo Developer Hub from
-source on your local machine.
+PRs are always welcome! To get started, follow this section to build Developer Hub on your local machine.
 
-Step 1.clone
+1. Clone the repository.
 
-```
-git clone git@github.com:CoboGlobal/developer-site.git
-```
+  ```shell
+  git clone git@github.com:CoboGlobal/developer-site.git
+  ```
 
-<br />
+2. Install Mintlify.
 
-Step 2. Install Mintlify on your OS:
+  ```shell
+  npm i -g mintlify
+  ```
 
-```
-npm i -g mintlify
-```
+3. Go to the root directory (where you can find the `mint.json` file) and run the following command:
 
-<br />
+  ```shell
+  mintlify dev
+  ```
 
-Step 3. Go to the docs directory (where you can find mint.json) and run the following command:
+The documentation website is now available at `http://localhost:3000`.
 
-```
-mintlify dev
-```
+Developer Hub is built on Mintlify that uses a syntax very similar to markdown. For more usage instructions, see [Mintlify Quickstart](https://mintlify.com/docs/quickstart).
 
-The documentation website is now available at http://localhost:3000.
-
-<br />
-
-Step 4. Developer Hub is built on mintlify, its syntax is very similar to markdown
-
-[Basic Syntax 👉](https://mintlify.com/docs/introduction)
-
-<br />
-
-Step 5. When you have completed the modifications locally, and after previewing with no issues,
-please proceed with the standard Fork & Pull Request process for submission.
-
-[How to Fork & Pull Request 👉](https://gist.github.com/Chaser324/ce0505fbed06b947d962)
-<br />
+When you complete the modifications locally and make sure no error or issue occur when you preview, proceed with the standard [Fork & Pull Request](https://gist.github.com/Chaser324/ce0505fbed06b947d962) process for submission.
 
 ## Contact us
 

@@ -1518,6 +1518,10 @@ components:
     Pagination:
       type: object
       description: The pagination information of the returned data.
+      required:
+        - before
+        - after
+        - total_count
       properties:
         before:
           type: string
@@ -1527,22 +1531,18 @@ components:
           type: string
           example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
           description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
+        total_count:
+          type: number
+          example: 10000
+          description: The total count of the result set
     ErrorResponse:
       type: object
       description: The response of a failed request.
       required:
-        - success
         - error_code
-        - error_description
+        - error_message
         - error_id
       properties:
-        success:
-          type: boolean
-          default: false
-          description: |
-            Whether the API operation was successful. 
-            - `true`: The operation was successful.
-            - `false`: The operation failed.
         error_code:
           type: integer
           description: The error code.
@@ -2190,6 +2190,17 @@ components:
               type: string
               description: The passphrase of your exchange account.
               example: sXASDKWKLLsWWEE
+            memo:
+              type: string
+              description: The API memo of your exchange account.
+              example: xxx@cobo.com
+            account_identify:
+              type: string
+              description: |
+                The account identifier of your exchange account.
+                - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
+                - For OKX, this is the user's account username.
+              example: xxx@cobo.com
             ga_code:
               type: string
               description: The GA code for the exchange.
@@ -2503,12 +2514,12 @@ components:
       properties:
         max_priority_fee:
           type: string
-          description: 'The maximum priority fee, in gwei. The maximum priority fee represents the highest amount of miner tips that you are willing to pay for your transaction.'
-          example: '0.1'
+          description: 'The maximum priority fee, in wei. The maximum priority fee represents the highest amount of miner tips that you are willing to pay for your transaction.'
+          example: '1000000000000'
         base_fee:
           type: string
-          description: 'The base fee price of the chain, in gwei.'
-          example: '0.9'
+          description: 'The base fee price of the chain, in wei.'
+          example: '9000000000000'
     EvmLegacyFeeBasePrice:
       type: object
       description: 'The transaction fee price based on the legacy fee model, which equals the gas price.'
@@ -2517,8 +2528,8 @@ components:
       properties:
         gas_price:
           type: string
-          description: 'The gas price, in gwei. The gas price represents the amount of ETH that must be paid to validators for processing transactions.'
-          example: '1'
+          description: 'The gas price, in wei. The gas price represents the amount of ETH that must be paid to validators for processing transactions.'
+          example: '100000000'
     UtxoFeeBasePrice:
       type: object
       description: 'The transaction fee price for UTXO-based chains (such as Bitcoin), which equals the fee rate.'
@@ -3847,8 +3858,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseTransferSource'
         - type: object
-          required:
-            - mpc_used_key_group
           properties:
             account_input:
               type: object
@@ -4105,6 +4114,9 @@ components:
         source:
           description: The information about the transaction source.
           type: object
+          required:
+            - wallet_id
+            - address
           properties:
             wallet_id:
               type: string
@@ -4126,10 +4138,11 @@ components:
               description: 'The raw data of the message to be signed, encoded in Base64 format.'
               example: YWFhYQ==
             structured_data:
-              type: string
+              type: object
+              additionalProperties: true
               description: 'The structured data of the message to be signed, encoded in JSON format.'
               example: |
-                {\"types\":{\"EIP712Domain\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"version\",\"type\":\"string\"},{\"name\":\"chainId\",\"type\":\"uint256\"},{\"name\":\"verifyingContract\",\"type\":\"address\"}]}}
+                {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/EstimateFeeTransfer'
@@ -4250,8 +4263,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseContractCallSource'
         - type: object
-          required:
-            - mpc_used_key_group
           properties:
             mpc_used_key_group:
               $ref: '#/components/schemas/MpcSigningGroup'
@@ -4676,7 +4687,6 @@ components:
       type: object
       required:
         - staking_id
-        - fee
       properties:
         staking_id:
           type: string
@@ -4977,6 +4987,8 @@ components:
         EigenLayerLst: The Eigen Layer staking pool for lst token.
     BaseEstimateStakingFee:
       type: object
+      required:
+        - activity_type
       properties:
         activity_type:
           $ref: '#/components/schemas/ActivityType'
@@ -5020,37 +5032,38 @@ components:
     limitParam:
       name: limit
       in: query
-      description: 'The maximum number of objects to return. The value range is [1, 50].'
+      description: 'The maximum number of objects to return. The default value range is [1, 50] and can be set endpoint specified.'
       required: false
       schema:
         type: integer
         format: int32
         default: 10
-        minimum: 1
-        maximum: 50
       example: 10
     beforeParam:
       name: before
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that end before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the specified ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
+
+        If the `before` and `after` are both set to empty, the first slice is returned.
+        If the `before` is set to `infinity`, the last slice is returned.
       required: false
       schema:
         type: string
-      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+      example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1
     afterParam:
       name: after
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the request will retrieve a list of data objects that start after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the specified ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
         If you set both `after` or `before`, only the setting of `before` will take effect.
       required: false
       schema:
         type: string
-      example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+      example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk
     optionalAssetIdParam:
       name: asset_id
       in: query
@@ -5742,6 +5755,17 @@ components:
                 type: string
                 description: The passphrase of your exchange account. This property is required when updating the information of an Exchange Wallet.
                 example: sXASDKWKLLsWWEE
+              memo:
+                type: string
+                description: The API memo of your exchange account.
+                example: xxx@cobo.com
+              account_identify:
+                type: string
+                description: |
+                  The account identifier of your exchange account.
+                  - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
+                  - For OKX, this is the user's account username.
+                example: xxx@cobo.com
               ga_code:
                 type: string
                 description: The GA code for the exchange.
@@ -6658,6 +6682,23 @@ components:
                 type: array
               pagination:
                 $ref: '#/components/schemas/Pagination'
+    estimateStakingFeeResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fee_type:
+                $ref: '#/components/schemas/FeeType'
+              fee_amount:
+                type: string
+                description: The amount of the estimate transaction fee
+                example: '0.02'
+              token_id:
+                type: string
+                description: The token ID of the transaction fee.
+                example: ETH
   securitySchemes:
     CoboAuth:
       type: apiKey
