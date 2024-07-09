@@ -1,5 +1,9 @@
 type: object
 description: The pagination information of the returned data.
+required:
+  - before
+  - after
+  - total_count
 properties:
   before:
     type: string
@@ -9,3 +13,7 @@ properties:
     type: string
     example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
     description: An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.
+  total_count:
+    type: number
+    example: 10000
+    description: The total count of the result set
