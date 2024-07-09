@@ -6,13 +6,13 @@ get:
   description: |
     This operation retrieves all the tokens that can be used by your organization. 
     
-    You can filter the result by wallet type, subtype, and chain ID. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
+    You can filter the result by wallet type, subtype, and chain ID list. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
   security:
     - CoboAuth: []
   parameters:
     - $ref: "../../components/parameters/wallets/wallet_type_optional.yaml"
     - $ref: "../../components/parameters/wallets/wallet_subtype_optional.yaml"
-    - $ref: "../../components/parameters/wallets/chain_id_optional.yaml"
+    - $ref: "../../components/parameters/wallets/chain_id_list_optional.yaml"
     - $ref: "../../components/parameters/pagination/limit.yaml"
     - $ref: "../../components/parameters/pagination/before.yaml"
     - $ref: "../../components/parameters/pagination/after.yaml"

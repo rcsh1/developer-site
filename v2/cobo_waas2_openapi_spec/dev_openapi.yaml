@@ -195,13 +195,13 @@ paths:
       operationId: get_supported_tokens
       summary: List wallet supported tokens
       description: |
-        This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain ID.
+        This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain ID list.
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalChainIdParam'
+        - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -242,13 +242,13 @@ paths:
       description: |
         This operation retrieves all the tokens that can be used by your organization. 
 
-        You can filter the result by wallet type, subtype, and chain ID. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
+        You can filter the result by wallet type, subtype, and chain ID list. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
       security:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalChainIdParam'
+        - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -570,7 +570,7 @@ paths:
         - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/walletIdParam'
-        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -597,7 +597,7 @@ paths:
       security:
         - CoboAuth: []
       parameters:
-        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -5826,22 +5826,29 @@ components:
           schema:
             type: object
             required:
-              - token_id
-              - tx_hash
-              - vout_n
+              - spendables
             properties:
-              token_id:
-                type: string
-                description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
-                example: BTC
-              tx_hash:
-                type: string
-                description: The transaction hash.
-                example: 9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb
-              vout_n:
-                type: integer
-                description: The output index of the UTXO.
-                example: 0
+              spendables:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - token_id
+                    - tx_hash
+                    - vout_n
+                  properties:
+                    token_id:
+                      type: string
+                      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+                      example: BTC
+                    tx_hash:
+                      type: string
+                      description: The transaction hash.
+                      example: 9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb
+                    vout_n:
+                      type: integer
+                      description: The output index of the UTXO.
+                      example: 0
     createKeyGroupBody:
       description: The request body to create a key share group.
       content:
