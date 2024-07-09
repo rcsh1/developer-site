@@ -1884,7 +1884,22 @@ paths:
         $ref: '#/components/requestBodies/estimateStakeActivityFeeBody'
       responses:
         '201':
-          $ref: '#/components/responses/estimateFeeResponse'
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fee_type:
+                    $ref: '#/components/schemas/FeeType'
+                  fee_amount:
+                    type: string
+                    description: The amount of the estimate transaction fee
+                    example: '0.02'
+                  token_id:
+                    type: string
+                    description: The token ID of the transaction fee.
+                    example: ETH
         '400':
           $ref: '#/components/responses/badRequestError'
   /stakings/activities/stake:
@@ -1972,7 +1987,7 @@ paths:
     post:
       tags:
         - Stakings
-      summary: Create withdraw request
+      summary: Create withdraw activity
       description: |
         This operation creates a withdraw activity.
       operationId: create_withdraw_activity
@@ -5152,7 +5167,6 @@ components:
       type: object
       required:
         - staking_id
-        - fee
       properties:
         staking_id:
           type: string
@@ -5453,6 +5467,8 @@ components:
         EigenLayerLst: The Eigen Layer staking pool for lst token.
     BaseEstimateStakingFee:
       type: object
+      required:
+        - activity_type
       properties:
         activity_type:
           $ref: '#/components/schemas/ActivityType'
