@@ -1,8 +1,0 @@
-oneOf:
-- $ref: './estimate_fee_transfer.yaml'
-- $ref: './estimate_fee_contract_call.yaml'
-discriminator:
-  propertyName: request_type
-  mapping:
-    Transfer: '#/components/schemas/EstimateFeeTransfer'
-    Call: '#/components/schemas/EstimateFeeContractCall'
