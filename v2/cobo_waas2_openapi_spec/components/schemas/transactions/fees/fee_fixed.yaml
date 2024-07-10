@@ -1,0 +1,16 @@
+type: object
+description: The transaction fee that you are willing to pay based on the fixed fee model for come blockchains. The fee can vary between different chains.
+title: Fixed
+required:
+  - fee_type
+  - token_id
+allOf:
+  - type: object
+    properties:
+      fee_type:
+        $ref: './fee_type.yaml'
+      token_id:
+        type: string
+        description: The token ID of the transaction fee.
+        example: 'ETH_USDT'
+  - $ref: './fee_max_fee_amount.yaml'

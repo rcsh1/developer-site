@@ -1,0 +1,50 @@
+type: object
+description: The token information.
+required:
+  - token_id
+  - chain_id
+properties:
+  token_id:
+    type: string
+    description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).
+    example: 'ETH_USDT'
+  chain_id:
+    type: string
+    description: The ID of the chain on which the token operates.
+    example: 'ETH'
+  asset_id:
+    type: string
+    description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
+    example: 'USDT'
+  symbol:
+    type: string
+    description: The token symbol, which is the abbreviated name of a token.
+    example: "USDT"
+  name:
+    type: string
+    description: The token name, which is the full name of a token.
+    example: 'Tether USDT'
+  decimal:
+    type: integer
+    description: The token decimal.
+    example: 18
+  icon_url:
+    type: string
+    description: The URL of the token icon.
+    example: 'https://d.cobo.com/public/logos/USDT.png'
+  token_address:
+    type: string
+    description: The token address, if applicable.
+    example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+  fee_token_id:
+    type: string
+    description: The fee token ID. A fee token is the token with which you pay transaction fees.
+    example: 'ETH'
+  can_deposit:
+    type: boolean
+    description: Whether deposits are enabled for this token.
+    example: true
+  can_withdraw:
+    type: boolean
+    description: Whether withdrawals are enabled for this token.
+    example: true

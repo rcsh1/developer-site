@@ -1,0 +1,24 @@
+get:
+  tags:
+    - Wallets - MPC Wallets
+  operationId: get_tss_request
+  summary: Get TSS request
+  description: |
+    This operation retrieves detailed information about a TSS request.
+  security:
+    - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_tss_request:manage
+        - mpc_user_controlled_tss_request:manage
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
+    - $ref: "../../../components/parameters/wallets/mpcs/tss_request_id_path.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/get_tss_request.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../../components/responses/errors/404_not_found.yaml"
+    '503':
+      $ref: "../../../components/responses/errors/503_service_unavailable.yaml"

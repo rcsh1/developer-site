@@ -1,0 +1,22 @@
+parameters:
+  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml"
+post:
+  tags:
+    - Transactions
+  operationId: cancel_transaction_by_id
+  summary: Cancel transaction
+  description: |
+    This operation cancels a specified transaction. A transaction can be cancelled if its status is either of the following:
+    - `Submitted`
+    - `PendingScreening`
+    - `PendingAuthorization`
+    - `PendingSignature` 
+    
+    A transaction request for tracking is returned upon successful operation.
+  security:
+    - CoboAuth: []
+  responses:
+    '201':
+      $ref: "../../components/responses/transactions/create_transaction_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

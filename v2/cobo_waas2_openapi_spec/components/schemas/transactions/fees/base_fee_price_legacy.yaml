@@ -1,0 +1,10 @@
+type: object
+description: The transaction fee price based on the legacy fee model, which equals the gas price.
+required:
+  - gas_price
+properties:
+  gas_price:
+    type: string
+    description: The gas price, in wei. The gas price represents the amount of ETH that must be paid to validators for processing transactions.
+    example: '100000000'
+

@@ -1,0 +1,19 @@
+type: object
+description: The transaction fee price based on the legacy fee model.
+title: Legacy
+required:
+  - fee_type
+  - recommended
+properties:
+  fee_type:
+    $ref: './fee_type.yaml'
+  token_id:
+    type: string
+    description: The token ID of the transaction fee.
+    example: 'ETH'
+  slow:
+    $ref: './base_fee_price_legacy.yaml'
+  recommended:
+    $ref: './base_fee_price_legacy.yaml'
+  fast:
+    $ref: './base_fee_price_legacy.yaml'

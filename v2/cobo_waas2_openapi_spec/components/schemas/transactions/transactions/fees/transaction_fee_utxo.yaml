@@ -1,0 +1,18 @@
+type: object
+description: |
+  TThe transaction fee actually charged by the chain that uses the UTXO fee model, such as Bitcoin.
+  The transaction fee is calculated by multiplying the fee rate by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size.
+title: UTXO
+required:
+  - fee_type
+allOf:
+  - type: object
+    properties:
+      fee_type:
+        $ref: '../../fees/fee_type.yaml'
+      fee_used:
+        type: string
+        description: The transaction fee.
+        example: "0.1"
+  - $ref: '../../fees/base_fee_price_utxo.yaml'
+  - $ref: '../../fees/fee_max_fee_amount.yaml'

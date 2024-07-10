@@ -1,0 +1,45 @@
+get:
+  tags:
+    - Transactions
+  operationId: list_transactions
+  summary: List all transactions
+  description: |
+    This operation retrieves all the transactions under your organization.
+    
+    You can filter the results by request ID, Cobo ID, transaction ID, transaction hash, type, status, and timestamps. You can also paginate and sort your query results.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../components/parameters/transactions/request_id_optional.yaml"
+    - $ref: "../../components/parameters/transactions/cobo_id_optional.yaml"
+    - $ref: "../../components/parameters/transactions/transaction_id_optional.yaml"
+    - $ref: "../../components/parameters/transactions/transaction_hash_optional.yaml"
+    - $ref: "../../components/parameters/transactions/transaction_type_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/transaction_status_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/source_type_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/source_wallet_id_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/source_address_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/destination_type_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/destination_wallet_id_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/destination_address_list_optional.yaml"
+    - $ref: "../../components/parameters/wallets/chain_id_list_optional.yaml"
+    - $ref: "../../components/parameters/wallets/token_id_list_optional.yaml"
+    - $ref: "../../components/parameters/wallets/asset_id_list_optional.yaml"
+    - $ref: "../../components/parameters/wallets/mpcs/vault_id_list_optional.yaml"
+    - $ref: "../../components/parameters/wallets/mpcs/project_id_list_optional.yaml"
+    - $ref: "../../components/parameters/transactions/min_created_timestamp_optional.yaml"
+    - $ref: "../../components/parameters/transactions/max_created_timestamp_optional.yaml"
+    - $ref: "../../components/parameters/pagination/sort_by.yaml"
+    - $ref: "../../components/parameters/pagination/direction.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/transactions/get_transactions.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../components/responses/errors/429_too_many_request.yaml"

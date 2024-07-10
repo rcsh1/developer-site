@@ -1,0 +1,18 @@
+type: object
+description: |
+  The transaction fee is calculated by multiplying the fee rate (fee price) by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee. 
+required:
+  - fee_type
+  - token_id
+title: UTXO
+allOf:
+  - type: object
+    properties:
+      fee_type:
+        $ref: './fee_type.yaml'
+      token_id:
+        type: string
+        description: The token ID of the transaction fee.
+        example: 'BTC'
+  - $ref: './base_fee_price_utxo.yaml'
+  - $ref: './fee_max_fee_amount.yaml'

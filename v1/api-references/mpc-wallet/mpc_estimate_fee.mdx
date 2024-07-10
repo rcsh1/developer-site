@@ -1,0 +1,249 @@
+---
+title: Get Estimate Fee
+api: GET /v1/custody/mpc/estimate_fee/ 
+description: "This endpoint will simulate a transaction based on the parameters, and obtain the transaction fee from the blockchain. It takes in various parameters such as the coin code, amount, address, gas price, gas limit, fee, and extra parameters. The response includes the fee amount in different levels such as slow, average, fast, and custom. The custom fee corresponds to the fee or gas_price parameter."
+---
+
+<Tip> FAQ：[How do I query the withdraw fees?](/v1/faqs/coin-management#how-do-i-query-the-withdrawal-fees)</Tip>
+
+#### Request
+<ParamField query="coin" type="String" required>coin code</ParamField>
+<ParamField query="amount" type="Int" >transaction amount in decimal places (e.g. one bitcoin is divisible to eight decimal places, and 100000000 represents 1 BTC)</ParamField>
+<ParamField query="address" type="String" >deposit address</ParamField>
+<ParamField query="replace_cobo_id" type="String" >Cobo ID of a transaction designated as RBF, this parameter is used when attempting to speed up or drop a previous transaction</ParamField>
+<ParamField query="from_address" type="String" >from address</ParamField>
+<Tip>For UTXO model, the inputs in the transaction will be selected from the `from_address` based on either the `amount` or `to_address_details`. If this parameter is not provided, the inputs will be selected from the addresses in the current wallet. If the sending amount is greater than the balance, this endpoint will return error code 12007.<br /><br />
+For Account model, if the sum of sending amount and transaction fee (`gas_price` * `gas_limit`) is greater than the balance of the `from_address`, the blockchain may return insufficient funds error, and this endpoint will return default transaction fee, please note that the default transaction fee might not be very accurate compared to the fee obtained directly from the blockchain.</Tip>
+<ParamField query="to_address_details" type="Json" >list of addresses used for receiving coins associated with the UTXO model; this value must be a JSON string and has a parameter type that fits. Please note that the `to_address_details` parameter and `amount` parameter are alternative.</ParamField>
+```python Sample
+to_address_details: '[{"to_address": "2N4J1WajwKZKpRtzzUmaW9B5GEqkppqdVY9","amount": "547"},
+                      {"to_address": "tb1qycxy8d8jgff8hql09y62smw5s5mrf3ryn2j9lk","amount": "548"}]'
+```
+<Tip>For UTXO model, the parameters `from_address`, `amount`, `to_address_details`, and `input_selection` will determine the number of bytes in the transaction, and the `fee_amount` is determined by the fee_per_byte and the number of bytes.</Tip>
+<ParamField query="fee" type="Float" >transaction fees per byte; applicable to UTXO model</ParamField>
+<Tip>If specified, the `fee_amount` in the `custom` field of the response will be based on the `fee` parameter and the number of bytes in the transaction.</Tip>
+<ParamField query="gas_price" type="Int" >gas price; applicable to account model; unit: wei</ParamField>
+<ParamField query="gas_limit" type="Int" >gas limit, applicable to account model</ParamField>
+<ParamField query="extra_parameters" type="Json" >
+UTXO Model:
+    1. **input_selection:** inputs to be excluded and included in transactions associated with the UTXO model; inputs must be in correspondence with from_address (if specified); it must be a JSON string and has a structure that fits InputSelection
+    2. **inputs_to_spend:** UTXO you want as input
+        - tx_hash: Transaction tx_hash
+        - vout_n: UTXO index
+    3. **inputs_to_exclude:** UTXO you don't want as input
+        - tx_hash: Transaction tx_hash
+        - vout_n: UTXO index
+ ```python Sample
+extra_parameters: '{"input_selection":
+                      {"inputs_to_spend":[
+                        {"tx_hash": "e7ddfa61cc2a78e1661da44b10cdc862256573d2dc0485dc989fb7045ed9032c", "vout_n": 1},
+                        {"tx_hash": "eabaee1f1a196b087e78303c6eaaeb9d1166de5f8d85f4ef7872b88bfcd60914", "vout_n": 2}],
+                      "inputs_to_exclude":[
+                        {"tx_hash": "e7ddfa61cc2a78e1661da44b10cdc862256573d2dc0485dc989fb7045ed9032c", "vout_n": 3},
+                        {"tx_hash": "eabaee1f1a196b087e78303c6eaaeb9d1166de5f8d85f4ef7872b88bfcd60914", "vout_n": 4}]
+                      }
+                    }'
+```
+Web3 wallet:
+    - calldata: request data associated with an EVM contract.
+```python Sample
+extra_parameters: '{"calldata": "0xa8059cbb000000000000000000000000971948873f869e4517311b190d7eb31e30eba0ef000000000000000000000000000000000000000000000000002386f26fc10000"}'
+```
+<Tip>If specified, the `gas_limit` in the response will be determined by the `calldata`.</Tip>
+</ParamField>
+
+#### Response
+<ResponseField name="success" type="bool">request successful or failed</ResponseField>
+   <ResponseField name="result" type="object">
+      <Expandable title="object">
+        <ResponseField name="fee_coin" type="String">Fee coin code</ResponseField>
+        <ResponseField name="fee_decimal" type="Int">Fee decimal</ResponseField>
+
+        <ResponseField name="slow" type="object">
+            <Expandable title="object">
+            <ResponseField name="fee_per_byte" type="Int" >transaction fees per byte; applicable to the UTXO model</ResponseField>
+            <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
+            <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
+            <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
+            </Expandable>
+        </ResponseField>
+
+        <ResponseField name="average" type="object">
+            <Expandable title="object">
+            <ResponseField name="fee_per_byte" type="Int" >transaction fees per byte; applicable to the UTXO model</ResponseField>
+            <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
+            <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
+            <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
+            </Expandable>
+        </ResponseField>
+
+        <ResponseField name="fast" type="object">
+            <Expandable title="object">
+            <ResponseField name="fee_per_byte" type="Int" >transaction fees per byte; applicable to the UTXO model</ResponseField>
+            <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
+            <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
+            <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
+            </Expandable>
+        </ResponseField>
+
+        <ResponseField name="custom" type="object">
+            <Expandable title="object">
+            <ResponseField name="fee_per_byte" type="Float" >transaction fees per byte; applicable to the UTXO model</ResponseField>
+            <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
+            <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
+            <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
+            </Expandable>
+        </ResponseField>
+
+      </Expandable>
+</ResponseField>
+
+<RequestExample>
+```python Python
+# EVM example:
+request(
+    "GET",
+    "/v1/custody/mpc/estimate_fee/",
+    {
+        "coin": "ETH",
+        "amount": 1,
+        "address": "0x8a73abedb3053b17204b887af6231a8ac35fc2cc"
+    },
+    api_key, api_secret, host
+)
+
+# UTXO example:
+request(
+    "GET",
+    "/v1/custody/mpc/estimate_fee/",
+    {
+        "coin": "XTN",
+        "amount": 100000,
+        "from_address": "2NB8rYHkrLc54JSpjMM4VMA4GFP8n2eWZdS",
+        "address": "2MzxhujoeQZHJ9Dmma93KoWSARofFy5rjxE",
+        "fee": 2.2
+    },
+    api_key, api_secret, host
+)
+```
+```javascript JavaScript
+// EVM example:
+coboFetch('GET', '/v1/custody/mpc/estimate_fee/', {
+    "coin": "ETH",
+    "amount": 1,
+    "address": "0x8a73abedb3053b17204b887af6231a8ac35fc2cc",
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+
+// UTXO example:
+coboFetch('GET', '/v1/custody/mpc/estimate_fee/', {
+    "coin": "XTN",
+    "amount": 100000,
+    "from_address": "2NB8rYHkrLc54JSpjMM4VMA4GFP8n2eWZdS",
+    "address": "2MzxhujoeQZHJ9Dmma93KoWSARofFy5rjxE",
+    "fee": 2.2
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+```
+```go Go
+// EVM example:
+Request("GET", "/v1/custody/mpc/estimate_fee/", map[string]string{
+    "coin": "ETH",
+    "amount": 1,
+    "address": "0x8a73abedb3053b17204b887af6231a8ac35fc2cc"
+})
+
+// UTXO example:
+Request("GET", "/v1/custody/mpc/estimate_fee/", map[string]string{
+    "coin": "XTN",
+    "amount": 100000,
+    "from_address": "2NB8rYHkrLc54JSpjMM4VMA4GFP8n2eWZdS",
+    "address": "2MzxhujoeQZHJ9Dmma93KoWSARofFy5rjxE",
+    "fee": 2.2
+})
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+// EVM example:
+{
+  "success": true,
+  "result": {
+    "fee_coin": "ETH",
+    "fee_decimal": 18,
+    "rbf_minimum_fee": 0,
+    "slow": {
+      "fee_per_byte": 0,
+      "fee_amount": 0,
+      "gas_price": 13349966041,
+      "gas_limit": 21000
+    },
+    "average": {
+      "fee_per_byte": 0,
+      "fee_amount": 0,
+      "gas_price": 13349966041,
+      "gas_limit": 21000
+    },
+    "fast": {
+      "fee_per_byte": 0,
+      "fee_amount": 0,
+      "gas_price": 26699932082,
+      "gas_limit": 21000
+    },
+    "custom": {
+      "fee_per_byte": 0,
+      "fee_amount": 0,
+      "gas_price": 0,
+      "gas_limit": 0
+    }
+  }
+}
+
+// UTXO example:
+{
+  "success": true,
+  "result": {
+    "fee_coin": "XTN",
+    "fee_decimal": 8,
+    "rbf_minimum_fee": 0,
+    "slow": {
+      "fee_per_byte": 2,
+      "fee_amount": 632,
+      "gas_price": 0,
+      "gas_limit": 0
+    },
+    "average": {
+      "fee_per_byte": 5,
+      "fee_amount": 1580,
+      "gas_price": 0,
+      "gas_limit": 0
+    },
+    "fast": {
+      "fee_per_byte": 50,
+      "fee_amount": 1580,
+      "gas_price": 0,
+      "gas_limit": 0
+    },
+    "custom": {
+      "fee_per_byte": 2.2,
+      "fee_amount": 695,
+      "gas_price": 0,
+      "gas_limit": 0
+    }
+  }
+}
+```
+</ResponseExample>

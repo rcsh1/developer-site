@@ -1,0 +1,17 @@
+get:
+  tags:
+    - Wallets - Exchange Wallet
+  operationId: list_exchanges
+  summary: List of exchanges
+  description: Retrieve a list of exchanges.
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/exchanges/get_exchange_settings.yaml"
+    '401':
+      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../../components/responses/errors/429_too_many_request.yaml"

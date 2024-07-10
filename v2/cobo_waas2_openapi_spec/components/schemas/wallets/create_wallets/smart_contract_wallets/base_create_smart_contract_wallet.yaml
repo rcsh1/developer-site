@@ -1,0 +1,14 @@
+allOf:
+  - $ref: '../create_custodial_wallet.yaml'
+  - type: object
+    required:
+      - chain_id
+    properties:
+      label:
+        type: string
+        description: The wallet label.
+        example: "ETH"
+      chain_id:
+        type: string
+        description: The ID of the chain that the wallet operates on.
+        example: "ETH"

@@ -1,0 +1,22 @@
+parameters:
+  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml"
+post:
+  tags:
+    - Transactions
+  operationId: speedup_transaction_by_id
+  summary: Speed up transaction
+  description: |
+    This operation accelerates a specified transaction. 
+
+    Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be accelerated if its status is either `Broadcasting` or `Confirming`.
+    
+    A transaction request for tracking is returned upon successful operation.
+  security:
+    - CoboAuth: []
+  requestBody:
+    $ref: "../../components/request_bodies/transactions/fee_request.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/transactions/create_transaction_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

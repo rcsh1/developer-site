@@ -1,0 +1,14 @@
+type: object
+required:
+  - wallet_id
+  - account_id
+properties:
+  wallet_id:
+    type: string
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+    description: The wallet ID of the Sub Account. This property is returned only if you are creating or querying an Exchange Wallet (Main Account).
+  account_id:
+    type: string
+    description: The Sub Account ID. It can be an email address, a user name, or a custom account ID. This property is returned only if you are creating or querying an Exchange Wallet (Main Account).
+    example: 'sub01@xx.com'

@@ -1,0 +1,32 @@
+parameters:
+  - $ref: "../../components/parameters/webhooks/endpoint_id_path_param.yaml"
+get:
+  tags:
+    - Developers - Webhooks
+  summary: Get webhook endpoint information
+  description: This operation retrieves the information of a specified webhook endpoint.
+  operationId: get_webhook_endpoint_by_id
+  responses:
+    '200':
+      $ref: "../../components/responses/webhooks/get_webhook_endpoint.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"
+put:
+  tags:
+    - Developers - Webhooks
+  summary: Update webhook endpoint
+  description: This operation updates the information of a specified webhook endpoint.
+  operationId: update_webhook_endpoint
+  security:
+    - CoboAuth: []
+    - OAuth2:
+        - webhook_url:edit
+  requestBody:
+    $ref: "../../components/request_bodies/webhooks/update_webhook_endpoint.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/webhooks/update_webhook_endpoint.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

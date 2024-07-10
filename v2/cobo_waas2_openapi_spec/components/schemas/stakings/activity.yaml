@@ -1,0 +1,62 @@
+type: object
+description: The staking activity.
+required:
+  - stake_id
+  - pool_id
+  - amount
+  - status
+  - created_at
+  - updated_at
+properties:
+  id:
+    description: The unique id of the activity.
+    type: string
+    example: '0011039d-27fb-49ba-b172-6e0aa80e37ec'
+  initiator:
+    description: The initiator of the activity.
+    type: string
+    example: 'vanya@cobo.com'
+  type:
+    $ref: "./activity_type.yaml"
+  wallet_id:
+    type: string
+    example: '0111039d-27fb-49ba-b172-6e0aa80e37ec'
+    description: The id of the wallet to stake.
+  address:
+    type: string
+    example: '0x0000000000000000000000000000000000000000'
+    description: The staker wallet address.
+  pool_id:
+    type: string
+    example: 'babylon_btc'
+    description: The id of the staking pool.
+  staking_id:
+    type: string
+    example: '0011039d-27fb-49ba-b172-6e0aa80e37ec'
+    description: The id of the related staking.
+  amount:
+    type: string
+    example: '100.00'
+    description: The amount of the activity.
+  tx_ids:
+    type: array
+    items:
+      type: string
+      example: '0011039d-27fb-49ba-b172-6e0aa80e37ec'
+    description: The related txs of the activity.
+  fee:
+    $ref: '../../schemas/transactions/fees/transaction_fee.yaml'
+  status:
+    $ref : "./activity_status.yaml"
+  created_time:
+    description: The time when the activity was created.
+    type: integer
+    format: int64
+    example: 1640995200000
+  updated_time:
+    description: The time when the activity was last updated.
+    type: integer
+    format: int64
+    example: 1640995200000
+
+

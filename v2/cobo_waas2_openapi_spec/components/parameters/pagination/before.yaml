@@ -1,0 +1,14 @@
+name: before
+in: query
+description: |
+  An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+  
+  - If you set both `after` or `before`, only the setting of `before` will take effect.
+
+  - If you leave both `before` and `after` empty, the first page of data is returned.
+  
+  - If you set `before` to `infinity`, the last page of data is returned.
+required: false
+schema:
+  type: string
+example: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"

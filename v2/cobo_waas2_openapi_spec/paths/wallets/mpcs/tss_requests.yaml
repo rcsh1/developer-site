@@ -1,0 +1,46 @@
+post:
+  tags:
+    - Wallets - MPC Wallets
+  operationId: create_tss_request
+  summary: Create TSS request
+  description: | 
+    This operation creates a TSS request under a specified vault. You can use this operation to perform actions such as key generation and recovery.
+  security:
+    - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_tss_request:manage
+        - mpc_user_controlled_tss_request:manage
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
+  requestBody:
+    $ref: "../../../components/request_bodies/wallets/mpcs/create_tss_request.yaml"
+  responses:
+    '201':
+      $ref: "../../../components/responses/wallets/mpcs/create_tss_request.yaml"
+    '401':
+      $ref: "../../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../../components/responses/errors/403_forbidden.yaml"
+    '429':
+      $ref: "../../../components/responses/errors/429_too_many_request.yaml"
+get:
+  tags:
+    - Wallets - MPC Wallets
+  operationId: list_tss_request
+  summary: List TSS requests
+  description: |
+    This operation retrieves a list of TSS requests and their details.
+  security:
+    - CoboAuth: []
+  parameters:
+    - $ref: "../../../components/parameters/wallets/mpcs/vault_id_path.yaml"
+    - $ref: "../../../components/parameters/wallets/mpcs/target_key_group_id_required.yaml"
+  responses:
+    '200':
+      $ref: "../../../components/responses/wallets/mpcs/get_tss_requests.yaml"
+    '400':
+      $ref: "../../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../../components/responses/errors/404_not_found.yaml"
+    '503':
+      $ref: "../../../components/responses/errors/503_service_unavailable.yaml"
