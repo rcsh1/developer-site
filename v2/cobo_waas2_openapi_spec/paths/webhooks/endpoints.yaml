@@ -33,6 +33,7 @@ post:
   description: This operation registers a new webhook endpoint for your organization.
   operationId: create_webhook_endpoint
   security:
+    - CoboAuth: []
     - OAuth2:
         - webhook_url:edit
   requestBody:
