@@ -1237,6 +1237,8 @@ paths:
       summary: Get fee rates
       description: |
         This operation retrieves current transaction fee rates on the blockchain based on the specified chain ID.
+
+        The response can contain different properties based on the transaction fee model used by the chain, including EIP-1559 fee model, legacy fee model, UTXO fee model, and fixed fee model.
       security:
         - CoboAuth: []
       parameters:
@@ -1258,6 +1260,8 @@ paths:
         This operation estimates the transaction fee rates of a token transfer or a contract call for three different transaction speeds (slow, recommended, and fast), based on factors such as network congestion and transaction complexity.
 
         You need to specify the transaction information, including the request ID, request type, source address, destination address, and token ID of the transaction fee.
+
+        The response can contain different properties based on the transaction fee model used by the chain, including EIP-1559 fee model, legacy fee model, UTXO fee model, and fixed fee model.
       security:
         - CoboAuth: []
       requestBody:
@@ -1642,6 +1646,7 @@ paths:
       description: This operation registers a new webhook endpoint for your organization.
       operationId: create_webhook_endpoint
       security:
+        - CoboAuth: []
         - OAuth2:
             - 'webhook_url:edit'
       requestBody:
@@ -1672,6 +1677,7 @@ paths:
       description: This operation updates the information of a specified webhook endpoint.
       operationId: update_webhook_endpoint
       security:
+        - CoboAuth: []
         - OAuth2:
             - 'webhook_url:edit'
       requestBody:
@@ -1789,6 +1795,7 @@ paths:
         This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event
       security:
+        - CoboAuth: []
         - OAuth2:
             - 'webhook:resend'
       responses:
@@ -3468,24 +3475,24 @@ components:
         force_internal:
           type: boolean
           description: |
-            Whether the transfer request must be executed as an off-chain transfer. 
-              - `true`: The transfer request must be executed an off-chain transfer. 
-              - `false`: The transfer may not be executed as an off-chain transfer.
+            Whether the transaction request must be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must be executed as a Loop transfer.
+              - `false`: The transaction request may not be executed as a Loop transfer.
           example: false
         force_external:
           type: boolean
           description: |
-            Whether the transfer must be executed as an on-chain transfer.
-              - `true`: The transfer must be executed as an on-chain transfer.
-              - `false`: The transfer may not be executed as an on-chain transfer.
+            Whether the transaction request must not be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must not be executed as a Loop transfer.
+              - `false`: The transaction request can be executed as a Loop transfer.
           example: false
         is_loop:
           type: boolean
           description: |
-            Whether the transfer is a Loop transfer. For more information about Loop, see [the website](https://loop.top/).
+            Whether the transaction is a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
 
-            - `true`: The transfer is a Loop transfer.
-            - `false`: The transfer is not a Loop transfer.
+            - `true`: The transaction is a Loop transfer.
+            - `false`: The transaction is not a Loop transfer.
           example: false
         created_time:
           type: number
@@ -3506,17 +3513,20 @@ components:
               type: array
               items:
                 type: object
-                description: The data for transaction timeline information.
+                description: 'The information about transaction timeline, which lists all statuses that the transaction passes through with timestamps indicating when each status is completed.'
                 properties:
                   status:
                     $ref: '#/components/schemas/TransactionStatus'
                   finished:
                     type: boolean
-                    description: Whether the timeline status finished
+                    description: |
+                      Whether the transaction status is completed:
+                        - `true`: The transaction status is completed.
+                        - `false`: The transaction is currently in the status.
                     example: true
                   finished_time:
                     type: number
-                    description: Timeline status finished time
+                    description: 'The time when the transaction status is completed in Unix timestamp format, measured in milliseconds.'
                     example: 1610445878970
     TransactionApprover:
       type: object
@@ -4063,7 +4073,7 @@ components:
           example: U3dhZ2dlciByb2Nrcw==
     TransactionMessageSignDestination:
       type: object
-      description: The information about the message as the transaction destination.
+      description: The information about the transaction destination.
       title: Messages
       required:
         - destination_type
@@ -4198,7 +4208,7 @@ components:
           example: '1.5'
     TransactionExchangeWalletDestination:
       type: object
-      description: The information about the Exchange Wallet as the transaction destination.
+      description: The information about the transaction destination.
       title: Exchange Wallets
       required:
         - destination_type
@@ -4389,6 +4399,7 @@ components:
               example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
     MpcTransferSource:
       title: MPC Wallets
+      description: The information about the transaction source. Specify either the `account_input` or `utxo_inputs` property.
       allOf:
         - $ref: '#/components/schemas/BaseTransferSource'
         - type: object
@@ -4518,7 +4529,7 @@ components:
                 properties:
                   address:
                     type: string
-                    description: The external address.
+                    description: The destination address.
                     example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
                   amount:
                     type: string
@@ -4536,16 +4547,16 @@ components:
         force_internal:
           type: boolean
           description: |
-            Whether the transfer request must be executed as an off-chain transfer. 
-              - `true`: The transfer request must be executed an off-chain transfer. 
-              - `false`: The transfer may not be executed as an off-chain transfer.
+            Whether the transaction request must be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must be executed as a Loop transfer.
+              - `false`: The transaction request may not be executed as a Loop transfer.
           example: false
         force_external:
           type: boolean
           description: |
-            Whether the transfer must be executed as an on-chain transfer.
-            - `true`: The transfer must be executed as an on-chain transfer.
-            - `false`: The transfer may not be executed as an on-chain transfer.
+            Whether the transaction request must not be executed as a Loop transfer. For more information about Loop, see [Loop's website](https://loop.top/).
+              - `true`: The transaction request must not be executed as a Loop transfer.
+              - `false`: The transaction request can be executed as a Loop transfer.
           example: false
     ExchangeTransferDestination:
       type: object

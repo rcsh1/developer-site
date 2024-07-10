@@ -1357,6 +1357,7 @@ paths:
       description: This operation registers a new webhook endpoint for your organization.
       operationId: create_webhook_endpoint
       security:
+        - CoboAuth: []
         - OAuth2:
             - 'webhook_url:edit'
       requestBody:
@@ -1387,6 +1388,7 @@ paths:
       description: This operation updates the information of a specified webhook endpoint.
       operationId: update_webhook_endpoint
       security:
+        - CoboAuth: []
         - OAuth2:
             - 'webhook_url:edit'
       requestBody:
@@ -1504,6 +1506,7 @@ paths:
         This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event
       security:
+        - CoboAuth: []
         - OAuth2:
             - 'webhook:resend'
       responses:
