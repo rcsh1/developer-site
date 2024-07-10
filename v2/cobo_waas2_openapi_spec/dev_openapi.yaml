@@ -1092,6 +1092,13 @@ paths:
         You need to specify details such as the sender address and recipient address, token ID, and the amount to transfer. You can specify the fee-related properties to limit the transaction fee.
 
         A transaction request for tracking is returned upon successful operation.
+
+        <Note> 
+        There are some requirements towards the transfer source and destination:
+        Only Exchange source can transfer to Exchange destination.
+        Exchange Sub wallet source can only be transferred to Exchange destination.
+        Only MPC source support to transfer to multiple address by using 'utxo_outputs' property in BTC-like chains
+        </Note>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -4175,6 +4182,10 @@ components:
               description: 'The structured data of the message to be signed, encoded in JSON format.'
               example: |
                 {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
+        description:
+          type: string
+          description: The description of the message sign.
+          example: Sign message from wallet
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/EstimateFeeTransfer'
@@ -4374,6 +4385,10 @@ components:
                 The data that is used to invoke a specific function or method within the specified contract at the destination address.
               format: byte
               example: U3dhZ2dlciByb2Nrcw==
+        description:
+          type: string
+          description: The description of the contract call.
+          example: Call contract from wallet
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     WebhookEvent:
