@@ -1,0 +1,14 @@
+description: The request body to update a project's name.
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: "New project name"
+          description: The project's new name.
+
+

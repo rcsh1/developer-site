@@ -1,0 +1,20 @@
+get:
+  tags:
+    - Stakings
+  summary: Get staking by id
+  description: |
+    This operation retrieves a staking by id.
+  operationId: get_staking_by_id
+  parameters:
+    - $ref: "../../components/parameters/stakings/staking_id_required.yaml"
+  responses:
+    '200':
+      $ref: "../../components/responses/stakings/list_stakings.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

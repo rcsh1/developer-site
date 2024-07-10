@@ -1,0 +1,7 @@
+title: Smart Contract Wallets
+oneOf:
+- $ref: './safe_wallet.yaml'
+discriminator:
+  propertyName: smart_contract_wallet_type
+  mapping:
+    Safe: '#/components/schemas/SafeWallet'

@@ -1,0 +1,23 @@
+post:
+  tags:
+    - Transactions
+  operationId: create_contract_call_transaction
+  summary: Call smart contract
+  description: |
+    This operation creates a transaction to interact with a smart contract on the blockchain.
+
+    You need to provide details such as the source address, destination address, and the calldata. You can specify the fee-related properties to limit the transaction fee. A transaction request for tracking is returned upon successful operation.
+    
+    Currently, this operation only applies to blockchains that have a similar architecture to Ethereum.
+  security:
+    - CoboAuth: []
+    - OAuth2:
+        - mpc_organization_controlled_wallet:contract_call
+        - mpc_user_controlled_wallet:contract_call
+  requestBody:
+    $ref: "../../components/request_bodies/transactions/create_smart_contract_call_transaction.yaml"
+  responses:
+    '201':
+      $ref: "../../components/responses/transactions/create_transaction_request.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"

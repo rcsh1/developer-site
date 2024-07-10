@@ -1,0 +1,9 @@
+oneOf:
+- $ref: './mpc_contract_call_source.yaml'
+- $ref: './safe_contract_call_source.yaml'
+discriminator:
+  propertyName: source_type
+  mapping:
+    Org-Controlled: '#/components/schemas/MpcContractCallSource'
+    User-Controlled: '#/components/schemas/MpcContractCallSource'
+    Safe{Wallet}: '#/components/schemas/SafeContractCallSource'

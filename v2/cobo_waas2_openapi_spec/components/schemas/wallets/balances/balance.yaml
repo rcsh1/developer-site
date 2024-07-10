@@ -1,0 +1,24 @@
+type: object
+description: The balance details.
+required:
+  - total
+  - available
+properties:
+  total:
+    type: string
+    description: The total balance, which is the sum of the available, pending, and locked balances.
+    example: '100.0'
+  available:
+    type: string
+    description: The balance free to use.
+    example: '80.5'
+  pending:
+    type: string
+    description: The balance that is currently pending confirmation.
+    default: '0'
+    example: '10.5'
+  locked:
+    type: string
+    description: The balance that is currently not accessible to transactions.
+    default: '0'
+    example: '3.0'

@@ -1,0 +1,22 @@
+type: object
+description: The asset information.
+required:
+  - asset_id
+properties:
+  asset_id:
+    type: string
+    description: (This concept applies to Exchange Wallets only) The asset ID. An asset is a digital representation of a valuable resource on a blockchain network. Exchange Wallets group your holdings by asset, even if the same asset exists on different blockchains. For example, if your Exchange Wallet has 1 USDT on Ethereum and 1 USDT on TRON, then your asset balance is 2 USDT. 
+    example: 'USDT'
+  display_code:
+    type: string
+    description: The asset symbol. You can use the value for display purposes.
+    example: 'USDT'
+  description:
+    type: string
+    description: The description of the asset.
+    example: 'Tether USDT'
+  icon_url:
+    type: string
+    description: The URL of the asset icon.
+    example: 'https://d.cobo.com/public/logos/USDT.png'
+

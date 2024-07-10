@@ -1,0 +1,15 @@
+description: The request was successful.
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - validity
+      properties:
+        validity:
+          type: boolean
+          description: |
+            Whether the address is valid.
+            - `true`: The address is valid.
+            - `false`: the address is invalid.
+          example: true

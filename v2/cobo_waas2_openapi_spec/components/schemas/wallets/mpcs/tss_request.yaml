@@ -1,0 +1,12 @@
+type: object
+description: The data for the TSS request information.
+properties:
+  id:
+    type: string
+    description: The TSS request ID.
+    example: "YPdbyVaVGqXXjkUsohHw"
+  type:
+    $ref: "./tss_request_type.yaml"
+  status:
+    $ref: "./tss_request_status.yaml"
+

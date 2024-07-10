@@ -1,0 +1,18 @@
+type: object
+description: |
+  The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). The gas units used must be smaller than the gas limit.
+required:
+  - fee_type
+  - token_id
+title: Legacy
+allOf:
+  - type: object
+    properties:
+      fee_type:
+        $ref: './fee_type.yaml'
+      token_id:
+        type: string
+        description: The token ID of the transaction fee.
+        example: 'ETH'
+  - $ref: './base_fee_price_legacy.yaml'
+  - $ref: './fee_gas_limit.yaml'

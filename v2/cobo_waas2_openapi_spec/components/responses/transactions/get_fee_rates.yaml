@@ -1,0 +1,11 @@
+description: The request was successful.
+content:
+  application/json:
+    schema:
+      type: array
+      items:
+        $ref: '../../schemas/transactions/fees/fee_rate.yaml'
+      description: |
+        The fee rate for the specified chain or token. 
+        
+        The `max_priority_fee` in the EIP-1559 fee model and the `max_fee_amount` properties in the fixed fee model represent the recommended values from the chain.

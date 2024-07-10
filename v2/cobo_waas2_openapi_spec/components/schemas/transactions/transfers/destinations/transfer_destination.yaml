@@ -1,0 +1,8 @@
+oneOf:
+- $ref: './address_transfer_destination.yaml'
+- $ref: './exchange_transfer_destination.yaml'
+discriminator:
+  propertyName: destination_type
+  mapping:
+    Address: '#/components/schemas/AddressTransferDestination'
+    ExchangeWallet: '#/components/schemas/ExchangeTransferDestination'

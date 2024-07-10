@@ -1,0 +1,41 @@
+type: object
+description: The babylon validator information.
+required:
+  - name
+  - public_key
+  - icon_url
+  - commission_rate
+  - supported_pos_chains
+properties:
+  icon_url:
+    description: The URL of the validator's icon.
+    type: string
+    format: url
+    example: 'https://example.com/icon.png'
+  name:
+    description: The name of validator.
+    type: string
+    example: 'Cobo'
+  priority:
+    description: The priority of validator.
+    type: number
+    example: 0
+  public_key:
+    description: The public key of validator.
+    type: string
+    example: "eca1b104dce16c30705f4147a9c4a373ac88646c5d1bcda6a89c018940cb96a0"
+  commission_rate:
+    description: The commission rate of validator.
+    type: number
+    format: float
+    example: 0.1
+  supported_pos_chains:
+    description: The list of supported pos chains.
+    type: array
+    items:
+      type: string
+      enum:
+        - Babylon
+        - Cosmos
+    example: ['Babylon', 'Cosmos']
+

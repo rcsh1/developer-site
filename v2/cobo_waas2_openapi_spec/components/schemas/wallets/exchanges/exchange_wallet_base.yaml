@@ -1,0 +1,20 @@
+type: object
+required:
+  - apikey
+  - exchange_id
+properties:
+  apikey:
+    type: string
+    description: The API key of your exchange account.
+    example: 'd8f062da-39f4-4a11-8b9d-12595854237f'
+  exchange_id:
+    $ref: './exchange_id.yaml'
+  parent_wallet_id:
+    type: string
+    description: The wallet ID of the Main Account associated with the Sub Account. This property is returned only if you are creating or querying an Exchange Wallet (Sub Account).
+    format: uuid
+    example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  sub_accounts:
+    type: array
+    items:
+      $ref: './exchange_sub_account_info.yaml'

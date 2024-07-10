@@ -1,0 +1,18 @@
+type: string
+enum:
+  - Deposit
+  - Withdrawal
+  - TokenApproval
+  - ContractCall
+  - TransactionFeePayment
+  - RawMessage
+example: Deposit
+description: |
+  The transaction type. Possible values include: 
+    - `Deposit`: A deposit transaction.
+    - `Withdrawal`: A withdrawal transaction.
+    - `TokenApproval`: A transaction that grants permission to access your tokens. 
+    - `ContractCall`: A transaction that interacts with a smart contract.
+    - `TransactionFeePayment`: A transaction that is initiated from Fee Station to pay your transaction fees.
+    - `RawMessage`: A transaction that signs a message. 
+

@@ -1,0 +1,28 @@
+get:
+  tags:
+    - Stakings
+  summary: List activities
+  description: |
+    This operation retrieves a list staking activities.
+  operationId: list_activities
+  parameters:
+    - $ref: "../../components/parameters/stakings/pool_id_optional.yaml"
+    - $ref: "../../components/parameters/stakings/staking_id_optional.yaml"
+    - $ref: "../../components/parameters/stakings/activity_type.yaml"
+    - $ref: "../../components/parameters/stakings/activity_status.yaml"
+    - $ref: "../../components/parameters/stakings/min_modified_timestamp_optional.yaml"
+    - $ref: "../../components/parameters/stakings/max_modified_timestamp_optional.yaml"
+    - $ref: "../../components/parameters/stakings/activity_initiator.yaml"
+    - $ref: "../../components/parameters/pagination/limit.yaml"
+    - $ref: "../../components/parameters/pagination/before.yaml"
+    - $ref: "../../components/parameters/pagination/after.yaml"
+
+  responses:
+    '200':
+      $ref: "../../components/responses/stakings/list_activities.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '401':
+      $ref: "../../components/responses/errors/401_unauthorized.yaml"
+    '403':
+      $ref: "../../components/responses/errors/403_forbidden.yaml"

@@ -1,0 +1,53 @@
+allOf:
+  - $ref: './transaction.yaml'
+  - type: object
+    properties:
+      initiator:
+        type: string
+        description: Transaction initiator
+        example: "API Prod Key #1"
+      approvers:
+        type: array
+        items:
+          $ref: './transaction_approver.yaml'
+      signers:
+        type: array
+        items:
+          $ref: './transaction_signer.yaml'
+      nonce:
+        type: integer
+        description: Transaction nonce
+        example: 9
+      replaced_by:
+        type: string
+        description: Replace by transaction hash
+        example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+      fee:
+        $ref: '../fees/transaction_fee.yaml'
+      fueled_by:
+        type: string
+        description: Fueled by address
+        example: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku"
+      confirmed_num:
+        type: number
+        description: Transaction confirmed number
+        example: 12
+      confirming_threshold:
+        type: integer
+        format: int32
+        description: Number of confirmations required for a transaction, such as 15 for ETH chain.
+        example: 15
+      token_approval:
+        $ref: './transaction_token_approval.yaml'
+      message:
+        type: string
+        description: Transaction raw message
+        example: "this to certify that am owner this wallet address"
+      algorithm:
+        type: string
+        description: Transaction message signing algorithm
+      timeline:
+        type: array
+        items:
+          $ref: './transaction_timeline.yaml'
+

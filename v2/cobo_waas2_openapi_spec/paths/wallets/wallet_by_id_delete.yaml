@@ -1,0 +1,20 @@
+parameters:
+  - $ref: "../../components/parameters/wallets/wallet_id_path.yaml"
+post:
+  tags:
+    - Wallets
+  operationId: delete_wallet_by_id
+  summary: Delete wallet
+  description: |
+      This operation deletes a specified wallet.
+    
+      <Note>This operation is applicable to Exchange Wallets only.</Note>
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../components/responses/wallets/delete_wallet.yaml"
+    '400':
+      $ref: "../../components/responses/errors/400_bad_request.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

@@ -1,0 +1,15 @@
+description: The request was successful.
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - submitted
+      properties:
+        submitted:
+          type: boolean
+          example: true
+          description: |
+            Whether the request to delete the wallet has been successfully submitted.
+            - `true`: The request to delete the wallet has been successfully submitted.
+            - `false`: The request to delete the wallet has not been submitted.

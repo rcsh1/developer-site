@@ -1,0 +1,16 @@
+parameters:
+  - $ref: "../../components/parameters/transactions/transaction_id_path.yaml" 
+get:
+  tags:
+    - Transactions
+  operationId: get_transaction_by_id
+  summary: Get transaction information
+  description: |
+    This operation retrieves detailed information about a specified transaction, such as the transaction status, source address, destination address, and timestamp.
+  security:
+    - CoboAuth: []
+  responses:
+    '200':
+      $ref: "../../components/responses/transactions/get_a_transaction.yaml"
+    '404':
+      $ref: "../../components/responses/errors/404_not_found.yaml"

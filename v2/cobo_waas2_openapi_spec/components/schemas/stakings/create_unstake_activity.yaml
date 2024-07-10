@@ -1,0 +1,14 @@
+type: object
+required:
+  - staking_id
+properties:
+  staking_id:
+    type: string
+    example: '0011039d-27fb-49ba-b172-6e0aa80e37ec'
+    description: The id of the related staking.
+  amount:
+    type: string
+    example: '100.00'
+    description: The amount to stake
+  fee:
+    $ref: '../../schemas/transactions/fees/transaction_fee.yaml'

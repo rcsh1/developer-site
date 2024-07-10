@@ -1,0 +1,16 @@
+type: object
+title: Custodial Wallets
+required:
+  - name
+  - wallet_type
+  - wallet_subtype
+description: The information of Custodial Wallets.
+properties:
+  name:
+    type: string
+    example: 'My WaaS 2.0 Wallet'
+    description: The wallet name.
+  wallet_type:
+    $ref: '../bases/wallet_type.yaml'
+  wallet_subtype:
+    $ref: '../bases/wallet_subtype.yaml'
