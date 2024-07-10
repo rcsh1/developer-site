@@ -21,7 +21,7 @@ A query parameter is a key-value pair appended to the end of a request URL after
 
 ## Sorting
 
-Some API operations support the sort_by and direction parameters, which enable you to sort the result based on a specified field in ascending or descending order.
+Some API operations support the `sort_by` and `direction` parameters, which enable you to sort the result based on a specified field in ascending or descending order.
 
 For example, if you want to sort the transactions by the status field in descending order, you can append the sorting parameters to the request URL as `https://api.dev.cobo.com/v2/transactions?sort_by=status&direction=DESC`.
 
@@ -31,10 +31,7 @@ Some endpoints support pagination which allows you to retrieve data in manageabl
 
 - `before`: This parameter specifies an object ID that acts as a starting point for retrieving data in reverse chronological order. 
 - `after`: This parameter specifies an object ID that acts as a starting point for retrieving data in chronological order.
-
 - `limit`: This parameter defines the maximum number of objects you want to receive in each response.
-
-**Note**: If both `before` and `after` are provided, only the setting of `before` will take effect.
 
 ## Webhook events
 

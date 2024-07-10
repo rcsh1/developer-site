@@ -1,6 +1,6 @@
 type: object
 description: |
-  The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). The gas units used must be smaller than the gas limit.
+  The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). If the gas units used exceeds the gas limit, the transaction will fail.
 required:
   - fee_type
   - token_id

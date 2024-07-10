@@ -1,6 +1,6 @@
 type: object
 description: |
-  The transaction fee is calculated by multiplying the sum of the base fee price and the maximum priority fee by the gas units used by the transaction. This can be expressed as: Transaction fee = (base fee price + maximum priority fee) * gas units used. The gas units used must be smaller than the gas limit.
+  The transaction fee is calculated by multiplying the sum of the base fee price and the maximum priority fee by the gas units used by the transaction. This can be expressed as: Transaction fee = (base fee price + maximum priority fee) * gas units used. If the gas units used exceeds the gas limit, the transaction will fail.
 title: EIP-1559
 required:
   - fee_type
