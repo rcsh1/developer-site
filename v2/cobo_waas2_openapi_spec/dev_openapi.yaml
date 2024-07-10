@@ -1286,7 +1286,7 @@ paths:
       description: |
         This operation drops a specified transaction. 
 
-        Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be dropped if its status is `Broadcasting` or `Confirming`.
+        Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For EVM chains, this RBF transaction has a transfer amount of `0` and the sending address is the same as the receiving address. It has a higher transaction fee to incentivize miners to prioritize its confirmation over the previous one. A transaction can be dropped if its status is `Broadcasting` or `Confirming`.
 
         A transaction request for tracking is returned upon successful operation.
       security:
@@ -1309,7 +1309,7 @@ paths:
       description: |
         This operation accelerates a specified transaction. 
 
-        Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction, which allows the you to replace your unconfirmed transaction with a new one with a higher transaction fee. A transaction can be accelerated if its status is either `Broadcasting` or `Confirming`.
+        Speeding up a transaction will trigger an RBF transaction which is a new version of the original transaction. It shares the same inputs but has a higher transaction fee to incentivize miners to prioritize its confirmation over the previous one. A transaction can be accelerated if its status is either `Broadcasting` or `Confirming`.
 
         A transaction request for tracking is returned upon successful operation.
       security:
@@ -2731,7 +2731,7 @@ components:
     EvmEip1559TransactionFee:
       type: object
       description: |
-        The transaction fee is calculated by multiplying the sum of the base fee price and the maximum priority fee by the gas units used by the transaction. This can be expressed as: Transaction fee = (base fee price + maximum priority fee) * gas units used. The gas units used must be smaller than the gas limit.
+        The transaction fee is calculated by multiplying the sum of the base fee price and the maximum priority fee by the gas units used by the transaction. This can be expressed as: Transaction fee = (base fee price + maximum priority fee) * gas units used. If the gas units used exceeds the gas limit, the transaction will fail.
       title: EIP-1559
       required:
         - fee_type
@@ -2750,7 +2750,7 @@ components:
     EvmLegacyTransactionFee:
       type: object
       description: |
-        The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). The gas units used must be smaller than the gas limit.
+        The transaction fee is calculated by multiplying the gas price (fee price) by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). If the gas units used exceeds the gas limit, the transaction will fail.
       required:
         - fee_type
         - token_id
