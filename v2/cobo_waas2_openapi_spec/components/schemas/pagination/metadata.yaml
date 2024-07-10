@@ -7,13 +7,13 @@ required:
 properties:
   before:
     type: string
-    example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
-    description: An object ID which serves as a cursor for pagination. For example, if the value of `before` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data ends before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.
+    example: 'RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1'
+    description: An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if the value of `before` is `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the returned data ends before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`.
   after:
     type: string
-    example: '8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f'
-    description: An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.
+    example: 'RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk'
+    description: An object ID that acts as a starting point for retrieving data in chronological order. For example, if the value of `after` is `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the returned data starts after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`.
   total_count:
     type: number
     example: 10000
-    description: The total count of the result set
+    description: The number of data objects returned.
