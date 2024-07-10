@@ -98,7 +98,7 @@ paths:
       description: |
         This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
 
-        It provides details such as the chain ID, chain symbol, and other relevant information. You can filter the result by chain ID. The chain metadata is publicly available without any permission restrictions.
+        It provides details such as the chain ID, chain symbol, and other relevant information. You can filter the result by chain IDs. The chain metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -137,7 +137,7 @@ paths:
       description: |
         This operation retrieves the metadata of all tokens supported by Cobo WaaS 2.0.
 
-        It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token ID.  The token metadata is publicly available without any permission restrictions.
+        It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token IDs. The token metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -195,7 +195,7 @@ paths:
       operationId: get_supported_tokens
       summary: List wallet supported tokens
       description: |
-        This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain ID list.
+        This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain IDs.
       security:
         - CoboAuth: []
       parameters:
@@ -242,7 +242,7 @@ paths:
       description: |
         This operation retrieves all the tokens that can be used by your organization. 
 
-        You can filter the result by wallet type, subtype, and chain ID list. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type.
+        You can filter the result by wallet type, subtype, and chain IDs. If you do not specify a wallet type, this operation returns a combination of tokens supported by each wallet type.
       security:
         - CoboAuth: []
       parameters:
@@ -1532,16 +1532,16 @@ components:
       properties:
         before:
           type: string
-          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `before` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data ends before the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
+          example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1
+          description: 'An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if the value of `before` is `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the returned data ends before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`.'
         after:
           type: string
-          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
-          description: 'An object ID which serves as a cursor for pagination. For example, if the value of `after` is `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`, the returned data starts after the object with the object ID `8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f`.'
+          example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk
+          description: 'An object ID that acts as a starting point for retrieving data in chronological order. For example, if the value of `after` is `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the returned data starts after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`.'
         total_count:
           type: number
           example: 10000
-          description: The total count of the result set
+          description: The number of data objects returned.
     ErrorResponse:
       type: object
       description: The response of a failed request.
@@ -2101,7 +2101,7 @@ components:
           properties:
             vault_id:
               type: string
-              description: The ID of the owning vault.
+              description: 'The ID of the owning vault. You can call [List all vaults](/v2/api-references/wallets--mpc-wallets/list-all-vaults) to retrieve all vault IDs under your organization.'
     CreateSmartContractWallet:
       title: Smart Contract Wallets
       oneOf:
@@ -2199,14 +2199,14 @@ components:
               example: sXASDKWKLLsWWEE
             memo:
               type: string
-              description: The API memo of your exchange account.
+              description: The memo you use when applying for the API key of your exchange account.
               example: xxx@cobo.com
             account_identify:
               type: string
               description: |
-                The account identifier of your exchange account.
-                - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
-                - For OKX, this is the user's account username.
+                The identifier of your exchange account.
+                - For Binance, this is email address of your exchange account.
+                - For OKX, this is the user name of your exchange account.
               example: xxx@cobo.com
             ga_code:
               type: string
@@ -5064,7 +5064,7 @@ components:
     limitParam:
       name: limit
       in: query
-      description: 'The maximum number of objects to return. The default value range is [1, 50] and can be set endpoint specified.'
+      description: 'The maximum number of objects to return. For most operations, the value range is [1, 50].'
       required: false
       schema:
         type: integer
@@ -5075,12 +5075,13 @@ components:
       name: before
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the specified ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
-        If you set both `after` or `before`, only the setting of `before` will take effect.
+        - If you set both `after` or `before`, only the setting of `before` will take effect.
 
-        If the `before` and `after` are both set to empty, the first slice is returned.
-        If the `before` is set to `infinity`, the last slice is returned.
+        - If you leave both `before` and `after` empty, the first page of data is returned.
+
+        - If you set `before` to `infinity`, the last page of data is returned.
       required: false
       schema:
         type: string
@@ -5089,9 +5090,11 @@ components:
       name: after
       in: query
       description: |
-        An object ID which serves as a cursor for pagination. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the specified ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID that acts as a starting point for retrieving data in chronological order. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
-        If you set both `after` or `before`, only the setting of `before` will take effect.
+        - If you set both `after` or `before`, only the setting of `before` will take effect.
+
+        - If you leave both `before` and `after` empty, the first page of data is returned.
       required: false
       schema:
         type: string
@@ -5376,7 +5379,7 @@ components:
     optionalProjectIdQueryParam:
       name: project_id
       in: query
-      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).'
+      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects). This parameter is applicable to MPC Wallets only.'
       schema:
         type: string
         format: uuid
@@ -5789,14 +5792,14 @@ components:
                 example: sXASDKWKLLsWWEE
               memo:
                 type: string
-                description: The API memo of your exchange account.
+                description: The memo you use when applying for the API key of your exchange account.
                 example: xxx@cobo.com
               account_identify:
                 type: string
                 description: |
-                  The account identifier of your exchange account.
-                  - For Binance, this is the user's email address (e.g., 'xxx@cobo.com').
-                  - For OKX, this is the user's account username.
+                  The identifier of your exchange account.
+                  - For Binance, this is email address of your exchange account.
+                  - For OKX, this is the user name of your exchange account.
                 example: xxx@cobo.com
               ga_code:
                 type: string
