@@ -1360,8 +1360,6 @@ paths:
         - $ref: '#/components/parameters/optionalProjectIdListQueryParam'
         - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
         - $ref: '#/components/parameters/optionalMaxCreatedTimestampParam'
-        - $ref: '#/components/parameters/sortByParam'
-        - $ref: '#/components/parameters/directionParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -3400,7 +3398,18 @@ components:
         replacement:
           type: object
           properties:
-            type:
+            replaced_by_type:
+              $ref: '#/components/schemas/Transaction/properties/replacement/properties/replaced_type'
+            replaced_by_transaction_id:
+              type: string
+              description: The ID of the replacement transaction that this transaction was replaced by.
+              format: uuid
+              example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
+            replaced_by_transaction_hash:
+              type: string
+              description: The hash of the replacement transaction that this transaction was replaced by.
+              example: 239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28
+            replaced_type:
               type: string
               enum:
                 - Cancel
@@ -3414,15 +3423,6 @@ components:
                   - `Drop`: To drop a transaction.
                   - `Resend`: To resend a transaction.
                   - `SpeedUp`: To speed up a transaction.
-            replaced_by_transaction_id:
-              type: string
-              description: The ID of the replacement transaction that this transaction was replaced by.
-              format: uuid
-              example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
-            replaced_by_transaction_hash:
-              type: string
-              description: The hash of the replacement transaction that this transaction was replaced by.
-              example: 239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28
             replaced_transaction_id:
               type: string
               description: The ID of the transaction that this transaction replaced.
@@ -3666,9 +3666,17 @@ components:
         - RejectedSpenderAuth
         - RejectedRiskControlCheck
         - RejectedApproverAuth
+        - RejectedbyMobileCosigner
         - PendingWaitSigner
         - FailedBySigner
         - FailedBroadcasting
+        - FailedOnChain
+        - Queue
+        - PendingBlockConfirmations
+        - ReplacedByNewTransaction
+        - CanceledBySpender
+        - CanceledByAPI
+        - OnchainRejection
       example: PendingDoubleCheck
       description: |
         The transaction sub-status. Possible values include: 
@@ -3725,7 +3733,9 @@ components:
         - TokenApproval
         - ContractCall
         - TransactionFeePayment
+        - TransactionFeeRefund
         - RawMessage
+        - Multi-Sig
       example: Deposit
       description: |
         The transaction type. Possible values include: 
@@ -3734,7 +3744,9 @@ components:
           - `TokenApproval`: A transaction that grants permission to access your tokens. 
           - `ContractCall`: A transaction that interacts with a smart contract.
           - `TransactionFeePayment`: A transaction that is initiated from Fee Station to pay your transaction fees.
+          - `TransactionFeeRefund`: A transaction that refunds transaction fees from Fee Station.
           - `RawMessage`: A transaction that signs a message. 
+          - `Multi-Sig`: A transaction that requires multiple signatures.
     MpcSigningGroup:
       type: object
       description: The information about the Signing Group of an MPC Wallet.
@@ -5879,12 +5891,10 @@ components:
       in: query
       description: The MPC project ID.
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
-      example:
-        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        description: 'A list of MPC project IDs, separated by comma.'
+        type: string
+        format: uuid
+      example: 'a3d8eae2-1740-4b5e-92f2-88c2b1e44c6b,b51f63a3-8a8e-4a34-ae9e-6f3e6b1fdf99'
     requiredTargetKeyGroupIdParam:
       name: target_key_group_id
       in: query
@@ -5926,12 +5936,10 @@ components:
       required: false
       description: The MPC vault ID.
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
-      example:
-        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        description: 'A list of MPC vault IDs, separated by comma.'
+        type: string
+        format: uuid
+      example: 'f5c3f9e8-1d8a-44b2-9284-94bf76b7b017,ab2e3f55-472e-4a98-86d1-446d2f9e839e'
     optionalVaultNameParam:
       name: vault_name
       in: query
@@ -6021,9 +6029,9 @@ components:
           - `TransactionFeePayment`: A transaction that is initiated by Fee Station to pay your transaction fee.
           - `RawMessage`: A transaction that signs a message. 
       schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/TransactionType'
+        description: 'A list of transaction types, separated by comma.'
+        $ref: '#/components/schemas/TransactionType'
+      example: 'Deposit,Withdrawal'
     optionalTransactionStatusParam:
       name: status
       in: query
@@ -6047,9 +6055,9 @@ components:
           - `Failed`: The transaction failed.
           - `Rejected`: The transaction is rejected.
       schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/TransactionStatus'
+        description: 'A list of transaction types, separated by comma.'
+        $ref: '#/components/schemas/TransactionStatus'
+      example: 'Completed,Failed'
     optionalMinCreatedTimestampParam:
       name: min_created_timestamp
       in: query
@@ -6079,30 +6087,27 @@ components:
           - `ExchangeWallet`: An Exchange Wallet.
           - `FeeStation`: A Fee Station.
       schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/TransactionSourceType'
+        description: 'A list of transaction sources, separated by comma.'
+        $ref: '#/components/schemas/TransactionSourceType'
+      example: 'Deposit,Withdrawal'
     optionalTransactionSourceAddressListParam:
       name: source_wallet_id
       in: query
       required: false
       description: The wallet ID of the transaction source.
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
-      example:
-        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        description: 'A list of wallet IDs, separated by comma.'
+        type: string
+        format: uuid
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3'
     optionalTransactionSourceWalletIdListParam:
       name: source_address
       in: query
       required: false
       description: The address of the transaction source.
       schema:
-        type: array
-        items:
-          type: string
+        description: 'A list of addresses, separated by comma.'
+        type: string
     optionalTransactionDestinationTypeListParam:
       name: destination_type
       in: query
@@ -6117,30 +6122,28 @@ components:
           - `SafeWallet`: A Smart Contract Wallets (Safe{Wallet}).
           - `ExchangeWallet`: An Exchange Wallet.
       schema:
-        type: array
-        items:
-          $ref: '#/components/schemas/TransactionDestinationType'
+        description: 'A list of destination types, separated by comma.'
+        $ref: '#/components/schemas/TransactionDestinationType'
+      example: 'ContractCall,MessageSign'
     optionalTransactionDestinationAddressListParam:
       name: destination_wallet_id
       in: query
       required: false
       description: The wallet ID of the transaction destination.
       schema:
-        type: array
-        items:
-          type: string
-          format: uuid
-      example:
-        - f47ac10b-58cc-4372-a567-0e02b2c3d479
+        description: 'A list of wallet IDs, separated by comma.'
+        type: string
+        format: uuid
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3'
     optionalTransactionDestinationWalletIdListParam:
       name: destination_address
       in: query
       required: false
-      description: The address of the transaction destination.
+      description: |
+        The address of the transaction destination. If the address includes a memo, the format should be `address|memo`.
       schema:
-        type: array
-        items:
-          type: string
+        description: 'A list of addresses, separated by comma.'
+        type: string
     transactionIdParam:
       name: transaction_id
       in: path
