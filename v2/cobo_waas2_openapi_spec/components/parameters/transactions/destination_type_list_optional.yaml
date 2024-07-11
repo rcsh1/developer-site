@@ -11,6 +11,6 @@ description: |
     - `SafeWallet`: A Smart Contract Wallets (Safe{Wallet}).
     - `ExchangeWallet`: An Exchange Wallet.
 schema:
-  type: array
-  items:
-    $ref: '../../schemas/transactions/transactions/destinations/destination_type.yaml'
+  description: A list of destination types, separated by comma.
+  $ref: '../../schemas/transactions/transactions/destinations/destination_type.yaml'
+example: 'ContractCall,MessageSign'

@@ -3,9 +3,7 @@ in: query
 required: false
 description: The MPC vault ID.
 schema:
-  type: array
-  items:
-    type: string
-    format: uuid
-example:
-  - 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  description: A list of MPC vault IDs, separated by comma.
+  type: string
+  format: uuid
+example: 'f5c3f9e8-1d8a-44b2-9284-94bf76b7b017,ab2e3f55-472e-4a98-86d1-446d2f9e839e'

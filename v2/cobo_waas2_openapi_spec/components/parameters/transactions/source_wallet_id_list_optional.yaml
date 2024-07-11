@@ -3,9 +3,7 @@ in: query
 required: false
 description: The wallet ID of the transaction source.
 schema:
-  type: array
-  items:
-    type: string
-    format: uuid
-example:
-  - 'f47ac10b-58cc-4372-a567-0e02b2c3d479'
+  description: A list of wallet IDs, separated by comma.
+  type: string
+  format: uuid
+example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3'

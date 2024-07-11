@@ -13,6 +13,6 @@ description: |
     - `Failed`: The transaction failed.
     - `Rejected`: The transaction is rejected.
 schema:
-  type: array
-  items:
-    $ref: '../../schemas/transactions/transactions/transaction_status.yaml'
+  description: A list of transaction types, separated by comma.
+  $ref: '../../schemas/transactions/transactions/transaction_status.yaml'
+example: 'Completed,Failed'

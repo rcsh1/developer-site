@@ -35,7 +35,7 @@ properties:
     example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
-    description: The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).
+    description: The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
@@ -85,7 +85,7 @@ properties:
   replacement: 
     type: object
     properties:
-      type:
+      replaced_by_type:
         $ref: './transaction_replacement_type.yaml'
       replaced_by_transaction_id:
         type: string
@@ -96,6 +96,8 @@ properties:
         type: string
         description: The hash of the replacement transaction that this transaction was replaced by.
         example: "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
+      replaced_type:
+        $ref: './transaction_replacement_type.yaml'
       replaced_transaction_id:
         type: string
         description: The ID of the transaction that this transaction replaced.
