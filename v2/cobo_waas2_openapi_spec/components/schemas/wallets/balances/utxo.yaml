@@ -13,10 +13,14 @@ properties:
     type: string
     description: The address of the UTXO.
     example: '2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE'
-  token_balances:
-    type: array
-    items:
-      $ref: './token_balance.yaml'
+  token_id:
+    type: string
+    description: The token ID, which is the unique identifier of a token.
+    example: 'BTC'
+  value:
+    type: string
+    description: The value of the UTXO.
+    example: '0.5'
   is_coinbase:
     type: boolean
     description: Whether the UTXO comes from a coinbase transaction.
@@ -27,5 +31,5 @@ properties:
     example: false
   confirmed_number:
     type: integer
-    description: The number of confirmations for the UTXO. 
+    description: The number of confirmations for the UTXO.
     example: 66716

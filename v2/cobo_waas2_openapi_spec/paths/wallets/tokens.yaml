@@ -2,14 +2,17 @@ get:
   tags:
     - Wallets
   operationId: get_tokens
-  summary: List all supported tokens
+  summary: List supported tokens
   description: |
-    This operation retrieves the metadata of all tokens supported by Cobo WaaS 2.0.
+    This operation retrieves all tokens supported by a specific wallet type or subtype. 
     
-    It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token IDs. The token metadata is publicly available without any permission restrictions.
+    It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token IDs or token IDS.. The token metadata is publicly available without any permission restrictions.
   security:
     - CoboAuth: []
   parameters:
+    - $ref: "../../components/parameters/wallets/wallet_type_optional.yaml"
+    - $ref: "../../components/parameters/wallets/wallet_subtype_optional.yaml"
+    - $ref: "../../components/parameters/wallets/chain_id_list_optional.yaml"
     - $ref: "../../components/parameters/wallets/token_id_list_optional.yaml"
     - $ref: "../../components/parameters/pagination/limit.yaml"
     - $ref: "../../components/parameters/pagination/before.yaml"
