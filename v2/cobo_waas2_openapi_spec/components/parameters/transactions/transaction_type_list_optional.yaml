@@ -10,6 +10,6 @@ description: |
     - `TransactionFeePayment`: A transaction that is initiated by Fee Station to pay your transaction fee.
     - `RawMessage`: A transaction that signs a message. 
 schema:
-  type: array
-  items:
-    $ref: '../../schemas/transactions/transactions/transaction_type.yaml'
+  description: A list of transaction types, separated by comma.
+  $ref: '../../schemas/transactions/transactions/transaction_type.yaml'
+example: 'Deposit,Withdrawal'
