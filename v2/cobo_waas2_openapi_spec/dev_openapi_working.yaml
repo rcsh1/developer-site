@@ -100,14 +100,16 @@ paths:
       tags:
         - Wallets
       operationId: get_chains
-      summary: List all supported chains
+      summary: List supported chains
       description: |
-        This operation retrieves the metadata of all chains supported by Cobo WaaS 2.0.
+        This operation retrieves all chains supported by a specific wallet type or subtype. 
 
         It provides details such as the chain ID, chain symbol, and other relevant information. You can filter the result by chain IDs. The chain metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
         - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
@@ -139,14 +141,17 @@ paths:
       tags:
         - Wallets
       operationId: get_tokens
-      summary: List all supported tokens
+      summary: List supported tokens
       description: |
-        This operation retrieves the metadata of all tokens supported by Cobo WaaS 2.0.
+        This operation retrieves all tokens supported by a specific wallet type or subtype. 
 
-        It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token IDs. The token metadata is publicly available without any permission restrictions.
+        It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token IDs or token IDS.. The token metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
+        - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
@@ -173,55 +178,12 @@ paths:
           $ref: '#/components/responses/getTokensResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
-  /wallets/supported_chains:
-    get:
-      tags:
-        - Wallets
-      operationId: get_supported_chains
-      summary: List wallet supported chains
-      description: |
-        This operation retrieves all chains supported by a specific wallet type or subtype.
-      security:
-        - CoboAuth: []
-      parameters:
-        - $ref: '#/components/parameters/optionalWalletTypeParam'
-        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/beforeParam'
-        - $ref: '#/components/parameters/afterParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/getChainsResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-  /wallets/supported_tokens:
-    get:
-      tags:
-        - Wallets
-      operationId: get_supported_tokens
-      summary: List wallet supported tokens
-      description: |
-        This operation retrieves all tokens supported by a specific wallet type or subtype. You can filter the result by chain IDs.
-      security:
-        - CoboAuth: []
-      parameters:
-        - $ref: '#/components/parameters/optionalWalletTypeParam'
-        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalChainIdListParam'
-        - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/beforeParam'
-        - $ref: '#/components/parameters/afterParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/getTokensResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
   /wallets/enabled_chains:
     get:
       tags:
         - Wallets
       operationId: get_enabled_chains
-      summary: List organization enabled chains
+      summary: List enabled chains
       description: |
         This operation retrieves all the chains that can be used by your organization. 
 
@@ -244,7 +206,7 @@ paths:
       tags:
         - Wallets
       operationId: get_enabled_tokens
-      summary: List organization enabled tokens
+      summary: List enabled tokens
       description: |
         This operation retrieves all the tokens that can be used by your organization. 
 
@@ -2053,11 +2015,13 @@ components:
         before:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1
-          description: 'An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if the value of `before` is `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the returned data ends before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`.'
+          description: ｜ An object ID that serves as a starting point for retrieving data in reverse chronological order for the next request. The `before` is empty if there is not any records before the first record returned.
         after:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk
-          description: 'An object ID that acts as a starting point for retrieving data in chronological order. For example, if the value of `after` is `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the returned data starts after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`.'
+          description: |
+            An object ID that acts as a starting point for retrieving data in chronological order for the next request.
+            The `after` is empty if there is not any records after the first record returned.
         total_count:
           type: number
           example: 10000
@@ -2516,10 +2480,14 @@ components:
           type: string
           description: The address of the UTXO.
           example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
-        token_balances:
-          type: array
-          items:
-            $ref: '#/components/schemas/TokenBalance'
+        token_id:
+          type: string
+          description: 'The token ID, which is the unique identifier of a token.'
+          example: BTC
+        value:
+          type: string
+          description: The value of the UTXO.
+          example: '0.5'
         is_coinbase:
           type: boolean
           description: Whether the UTXO comes from a coinbase transaction.
@@ -2550,15 +2518,9 @@ components:
       type: object
       description: The address information.
       required:
-        - address_id
         - address
         - token_id
       properties:
-        address_id:
-          type: string
-          format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-          description: The address ID.
         address:
           type: string
           description: The wallet address.
@@ -5603,9 +5565,9 @@ components:
       name: before
       in: query
       description: |
-        An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
-        - If you set both `after` or `before`, only the setting of `before` will take effect.
+        - If you set both `after` and `before`, a exception will triggerd.
 
         - If you leave both `before` and `after` empty, the first page of data is returned.
 
@@ -5618,9 +5580,9 @@ components:
       name: after
       in: query
       description: |
-        An object ID that acts as a starting point for retrieving data in chronological order. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        An object ID that acts as a starting point for retrieving data in chronological order. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
-        - If you set both `after` or `before`, only the setting of `before` will take effect.
+        - If you set both `after` and `before`, a exception will triggerd.
 
         - If you leave both `before` and `after` empty, the first page of data is returned.
       required: false
