@@ -139,7 +139,7 @@ paths:
       description: |
         This operation retrieves all tokens supported by a specific wallet type or subtype. 
 
-        It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token IDs or token IDS.. The token metadata is publicly available without any permission restrictions.
+        It provides details such as token ID, token symbol, and other relevant information. You can filter the result by token IDs or chain IDs. The token metadata is publicly available without any permission restrictions.
       security:
         - CoboAuth: []
       parameters:
@@ -1500,13 +1500,13 @@ components:
         before:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1
-          description: ｜ An object ID that serves as a starting point for retrieving data in reverse chronological order for the next request. The `before` is empty if there is not any records before the first record returned.
+          description: '｜ An object ID that serves as a starting point for retrieving data in reverse chronological order for the next request. If this property is empty, it indicates that there are no more data records after this request.'
         after:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk
           description: |
             An object ID that acts as a starting point for retrieving data in chronological order for the next request.
-            The `after` is empty if there is not any records after the first record returned.
+            If this property is empty, it indicates that there are no more data records after this request.
         total_count:
           type: number
           example: 10000
@@ -1560,7 +1560,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         chain_id:
           type: string
@@ -1637,7 +1637,7 @@ components:
       properties:
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         symbol:
           type: string
@@ -1736,7 +1736,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: BTC
         balance:
@@ -1991,7 +1991,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH
         max_transferable_value:
           type: string
@@ -2012,7 +2012,7 @@ components:
           example: '0x0000000000000000000000000000000000000000'
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         memo:
@@ -2803,7 +2803,7 @@ components:
           example: Rejected by signer Cobo TSS
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           pattern: '^[A-Z]+$'
           example: ETH
         source:
@@ -3009,7 +3009,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3465,7 +3465,7 @@ components:
           $ref: '#/components/schemas/TransactionDestinationType'
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3577,7 +3577,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3616,7 +3616,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3655,7 +3655,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3700,7 +3700,7 @@ components:
           example: Asset
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -4089,7 +4089,7 @@ components:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
@@ -4121,7 +4121,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           pattern: '^[A-Z]+$'
           example: ETH
         source:
@@ -4223,7 +4223,7 @@ components:
           $ref: '#/components/schemas/EstimateFeeTransfer/properties/request_type'
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -4336,7 +4336,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -5066,7 +5066,7 @@ components:
       description: |
         An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
 
-        - If you set both `after` and `before`, a exception will triggerd.
+        - If you set both `after` and `before`, an error will occur.
 
         - If you leave both `before` and `after` empty, the first page of data is returned.
 
@@ -5081,7 +5081,7 @@ components:
       description: |
         An object ID that acts as a starting point for retrieving data in chronological order. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 
-        - If you set both `after` and `before`, a exception will triggerd.
+        - If you set both `after` and `before`, an error will occur.
 
         - If you leave both `before` and `after` empty, the first page of data is returned.
       required: false
@@ -5117,7 +5117,7 @@ components:
       name: chain_id
       in: path
       required: true
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5125,7 +5125,7 @@ components:
       name: chain_id
       in: query
       required: true
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5133,7 +5133,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5141,7 +5141,7 @@ components:
       name: chain_ids
       in: query
       required: false
-      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List organization enabled chains](/v2/api-references/wallets/list-organization-enabled-chains).'
+      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
         description: 'A list of chain IDs, separated by comma.'
@@ -5150,7 +5150,7 @@ components:
       name: token_id
       in: path
       required: true
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5158,7 +5158,7 @@ components:
       name: token_id
       in: query
       required: false
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5166,7 +5166,7 @@ components:
       name: token_ids
       in: query
       required: false
-      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
         description: 'A list of token IDs, separated by comma.'
@@ -5175,7 +5175,7 @@ components:
       name: token_id
       in: query
       required: true
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5801,7 +5801,7 @@ components:
             properties:
               token_id:
                 type: string
-                description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+                description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
                 pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
                 example: ETH_USDT
               count:
@@ -5833,7 +5833,7 @@ components:
                   properties:
                     token_id:
                       type: string
-                      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List organization enabled tokens](/v2/api-references/wallets/list-organization-enabled-tokens).'
+                      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
                       example: BTC
                     tx_hash:
                       type: string
