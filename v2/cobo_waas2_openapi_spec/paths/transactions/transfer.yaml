@@ -9,6 +9,8 @@ post:
     You need to specify details such as the sender address and recipient address, token ID, and the amount to transfer. You can specify the fee-related properties to limit the transaction fee.
     
     A transaction request for tracking is returned upon successful operation.
+
+    <Note>Only MPC Wallets as the transaction source can transfer tokens to multiple addresses by using the <code>utxo_outputs</code> property.</Note>
   security:
     - CoboAuth: []
     - OAuth2:
