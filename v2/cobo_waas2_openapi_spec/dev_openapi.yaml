@@ -1500,13 +1500,17 @@ components:
         before:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1
-          description: '｜ An object ID that serves as a starting point for retrieving data in reverse chronological order for the next request. If this property is empty, it indicates that there are no more data records after this request.'
+          description: |
+            An object ID that serves as a starting point for retrieving data in reverse chronological order for the next request. 
+
+            If this property is empty, it means that you have reached the start of the data records.
         after:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk
           description: |
             An object ID that acts as a starting point for retrieving data in chronological order for the next request.
-            If this property is empty, it indicates that there are no more data records after this request.
+
+            If this property is empty, it means that you have reached the end of the data records.
         total_count:
           type: number
           example: 10000
