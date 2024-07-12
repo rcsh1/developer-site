@@ -1,17 +1,27 @@
 ---
-title: Babylon Get Staking Info
-api: GET /v1/custody/mpc/babylon/get_staking_info/
+title: Babylon List Transactions By Status
+api: GET /v1/custody/mpc/babylon/babylon_list_transactions_by_status/
 contentType: multipart/form-data
-description: "This endpoint is used to query the specified pre-signed staking transaction information based on the provided parameter `request_id`"
+description: "This endpoint is used to query all staking transactions based on the provided parameter `status` and `address`"
 ---
 
 #### Request
-<ParamField query="request_id" type="String" required>transaction request ID (unique identifier of a transaction request, which must correspond to a client's transaction; UUID should be used and the length should be equal to or less than 120 characters)</ParamField>
+<ParamField query="status" type="Int" required>
+| Status Type | Code |
+| ----------- | ----------- |
+| STAKING_TX_QUEUED| 1|
+| STAKING_TX_WAITING_BROADCASTING| 100|
+| STAKING_TX_BROADCASTED| 200|
+| STAKING_TX_PENDING| 300|
+| STAKING_ACTIVE| 400|
+| STAKING_FAILED| 499|
+</ParamField>
+<ParamField query="address" type="String">staking address</ParamField>
 
 
 #### Response
 <ResponseField name="success" type="bool">request successful or failed</ResponseField>
-<ResponseField name="result" type="object">
+<ResponseField name="result" type="object[]">
     <Expandable title="object">
         <ResponseField name="request_id" type="String" >Transaction request ID</ResponseField>
         <ResponseField name="cobo_id" type="String" >Unique transaction ID in Cobo</ResponseField>
@@ -39,16 +49,18 @@ description: "This endpoint is used to query the specified pre-signed staking tr
 ```python Python
 request(
     "GET",
-    "/v1/custody/mpc/babylon/get_staking_info/",
+    "/v1/custody/mpc/babylon/list_transactions_by_status/",
     {
-        "request_id": "1717059604245",
+        "status": 400,
+        "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
     },
     api_key, api_secret, host
 )
 ```
 ```javascript JavaScript
-coboFetch('GET', '/v1/custody/mpc/babylon/get_staking_info/', {
-    "request_id": "1717059604245"
+coboFetch('GET', '/v1/custody/mpc/babylon/list_transactions_by_status/', {
+    "status": 400,
+    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
 }, api_key, api_secret, host)
     .then(res => {
         res.json().then((data)=>{
@@ -59,8 +71,9 @@ coboFetch('GET', '/v1/custody/mpc/babylon/get_staking_info/', {
     });
 ```
 ```go Go
-Request("GET", "/v1/custody/mpc/babylon/get_staking_info/", map[string]string{
-    "request_id": "1717059604245"
+Request("GET", "/v1/custody/mpc/babylon/list_transactions_by_status/", map[string]string{
+    "status": 400,
+    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
 })
 ```
 </RequestExample>
@@ -69,17 +82,16 @@ Request("GET", "/v1/custody/mpc/babylon/get_staking_info/", map[string]string{
 ```json
 {
   "success": true,
-  "result": {
-    "request_id": "1717134063431",
-    "cobo_id": "20240531134105000300692000007801",
+  "result": [{
+    "request_id": "1718619454210",
+    "cobo_id": "20240617181735000387960000000502",
     "staking_info": "{\"asset_coin\": \"SIGNET_BTC\", \"stake_address\": \"tb1pufc6zv4wquhcshgr4lay4lqa6vua3m435hqmml9w74ycxxnv329qdl6cq2\", \"amount\": 50000, \"stake_block_time\": 64000, \"finality_provider\": \"88b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384\"}",
-    "status": 200,
-    "fee_rate": "100.00000000",
-    "max_staking_fee": 50000,
+    "status": 400,
+    "fee_rate": "10.00000000",
+    "max_staking_fee": null,
     "sign_result": "{\"raw_tx\": \"0200000000010197a8e32b25590962075bf8517aa117459abd26593731e3d58ecf3c8cfb1b9a750200000000000000000350c30000000000002251205e5882d46eadd557b170a4dc73970bb663c37b262da3b7eb75ff9627c51d695b0000000000000000496a476262743400b450b244d588ad9979855f1de3816987e2644035679feee1a72020e3fc0c4dc988b32b005d5b7e29e6f82998aff023bff7b600c6a1a74ffac984b3aa0579b384fa00125f0c0000000000225120b450b244d588ad9979855f1de3816987e2644035679feee1a72020e3fc0c4dc90140ca3ce98e6837b4404af7e1087072e7306d132ae1ccbf5377f75bd7f2ee7678c9e623e167deaca981269cc317b6c25359b6b399bfb577d5414c17002ca34e463809080300\"}",
     "tx_hash": "7311feeeb9278f487be3c84662210540d8ac2dc24972721d7978915ef649f8c8"
-  }
+  }]
 }
-
 ```
 </ResponseExample>
