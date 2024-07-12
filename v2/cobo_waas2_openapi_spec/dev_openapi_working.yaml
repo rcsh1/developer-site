@@ -175,7 +175,7 @@ paths:
         - CoboAuth: []
       responses:
         '200':
-          $ref: '#/components/responses/getTokensResponse'
+          $ref: '#/components/responses/getTokenByIdResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
   /wallets/enabled_chains:
@@ -361,6 +361,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/requiredTokenIdParam'
         - $ref: '#/components/parameters/optionalAddressParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
       responses:
         '200':
           $ref: '#/components/responses/spendableListResponse'
@@ -6032,8 +6035,8 @@ components:
           - `TransactionFeePayment`: A transaction that is initiated by Fee Station to pay your transaction fee.
           - `RawMessage`: A transaction that signs a message. 
       schema:
+        type: string
         description: 'A list of transaction types, separated by comma.'
-        $ref: '#/components/schemas/TransactionType'
       example: 'Deposit,Withdrawal'
     optionalTransactionStatusParam:
       name: status
@@ -6059,7 +6062,6 @@ components:
           - `Rejected`: The transaction is rejected.
       schema:
         description: 'A list of transaction types, separated by comma.'
-        $ref: '#/components/schemas/TransactionStatus'
       example: 'Completed,Failed'
     optionalMinCreatedTimestampParam:
       name: min_created_timestamp
@@ -6091,7 +6093,6 @@ components:
           - `FeeStation`: A Fee Station.
       schema:
         description: 'A list of transaction sources, separated by comma.'
-        $ref: '#/components/schemas/TransactionSourceType'
       example: 'Deposit,Withdrawal'
     optionalTransactionSourceAddressListParam:
       name: source_wallet_id
@@ -6126,7 +6127,6 @@ components:
           - `ExchangeWallet`: An Exchange Wallet.
       schema:
         description: 'A list of destination types, separated by comma.'
-        $ref: '#/components/schemas/TransactionDestinationType'
       example: 'ContractCall,MessageSign'
     optionalTransactionDestinationAddressListParam:
       name: destination_wallet_id
