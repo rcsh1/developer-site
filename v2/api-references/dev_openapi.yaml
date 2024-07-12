@@ -1559,7 +1559,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         chain_id:
           type: string
@@ -1636,7 +1636,7 @@ components:
       properties:
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         symbol:
           type: string
@@ -1735,7 +1735,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: BTC
         balance:
@@ -1990,7 +1990,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH
         max_transferable_value:
           type: string
@@ -2011,7 +2011,7 @@ components:
           example: '0x0000000000000000000000000000000000000000'
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
           example: ETH_USDT
         memo:
@@ -2067,7 +2067,7 @@ components:
           properties:
             vault_id:
               type: string
-              description: 'The ID of the owning vault. You can call [List all vaults](/v2/api-references/wallets--mpc-wallets/list-all-vaults) to retrieve all vault IDs under your organization.'
+              description: 'The ID of the owning vault. You can call [List all vaults](/developers/v2/api-references/wallets--mpc-wallets/list-all-vaults) to retrieve all vault IDs under your organization.'
     CreateSmartContractWallet:
       title: Smart Contract Wallets
       oneOf:
@@ -2437,9 +2437,9 @@ components:
       example: KeyGen
       description: |
         The TSS request type. Possible values include:
-        - `KeyGen`: This is a key generation request to create a [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key) and key shares for your [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created the Main Group with [Create key share group](/v2/api-references/wallets--mpc-wallets/create-key-share-group). You only need to do this once per [Organization](https://manuals.cobo.com/en/portal/organization/introduction).
+        - `KeyGen`: This is a key generation request to create a [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key) and key shares for your [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created the Main Group with [Create key share group](/developers/v2/api-references/wallets--mpc-wallets/create-key-share-group). You only need to do this once per [Organization](https://manuals.cobo.com/en/portal/organization/introduction).
 
-        - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create key shares for your [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) or [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created these key share groups with [Create key share group](/v2/api-references/wallets--mpc-wallets/create-key-share-group).
+        - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create key shares for your [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) or [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created these key share groups with [Create key share group](/developers/v2/api-references/wallets--mpc-wallets/create-key-share-group).
 
         - `Recovery`: This is a request to create key shares using the [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) for a key share holder in the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) if their key share has been lost (e.g. by losing their phone).
     FeeType:
@@ -2802,7 +2802,7 @@ components:
           example: Rejected by signer Cobo TSS
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
           pattern: '^[A-Z]+$'
           example: ETH
         source:
@@ -3008,7 +3008,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3464,7 +3464,7 @@ components:
           $ref: '#/components/schemas/TransactionDestinationType'
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3576,7 +3576,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3615,7 +3615,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3654,7 +3654,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3699,7 +3699,7 @@ components:
           example: Asset
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -4090,7 +4090,7 @@ components:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
@@ -4122,7 +4122,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
           pattern: '^[A-Z]+$'
           example: ETH
         source:
@@ -4224,7 +4224,7 @@ components:
           $ref: '#/components/schemas/EstimateFeeTransfer/properties/request_type'
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -4337,7 +4337,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -5118,7 +5118,7 @@ components:
       name: chain_id
       in: path
       required: true
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5126,7 +5126,7 @@ components:
       name: chain_id
       in: query
       required: true
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5134,7 +5134,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5142,7 +5142,7 @@ components:
       name: chain_ids
       in: query
       required: false
-      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
         description: 'A list of chain IDs, separated by comma.'
@@ -5151,7 +5151,7 @@ components:
       name: token_id
       in: path
       required: true
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5159,7 +5159,7 @@ components:
       name: token_id
       in: query
       required: false
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5167,7 +5167,7 @@ components:
       name: token_ids
       in: query
       required: false
-      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
         description: 'A list of token IDs, separated by comma.'
@@ -5176,7 +5176,7 @@ components:
       name: token_id
       in: query
       required: true
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5361,7 +5361,7 @@ components:
       name: project_id
       in: path
       required: true
-      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).'
+      description: 'The project ID, which you can retrieve by calling [List all projects](/developers/v2/api-references/wallets--mpc-wallets/list-all-projects).'
       schema:
         type: string
         format: uuid
@@ -5369,7 +5369,7 @@ components:
     optionalProjectIdQueryParam:
       name: project_id
       in: query
-      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects). This parameter is applicable to MPC Wallets only.'
+      description: 'The project ID, which you can retrieve by calling [List all projects](/developers/v2/api-references/wallets--mpc-wallets/list-all-projects). This parameter is applicable to MPC Wallets only.'
       schema:
         type: string
         format: uuid
@@ -5386,7 +5386,7 @@ components:
     requiredTargetKeyGroupIdParam:
       name: target_key_group_id
       in: query
-      description: 'The target key share group ID of the TSS request, which you can retrieve by calling [List all key share groups](/v2/api-references/wallets--mpc-wallets/list-all-key-share-groups).'
+      description: 'The target key share group ID of the TSS request, which you can retrieve by calling [List all key share groups](/developers/v2/api-references/wallets--mpc-wallets/list-all-key-share-groups).'
       required: true
       schema:
         type: string
@@ -5395,7 +5395,7 @@ components:
       name: tss_request_id
       in: path
       required: true
-      description: 'The TSS request ID, which you can retrieve by calling [List TSS requests](/v2/api-references/wallets--mpc-wallets/list-tss-requests).'
+      description: 'The TSS request ID, which you can retrieve by calling [List TSS requests](/developers/v2/api-references/wallets--mpc-wallets/list-tss-requests).'
       schema:
         type: string
         format: uuid
@@ -5404,7 +5404,7 @@ components:
       name: vault_id
       in: path
       required: true
-      description: 'The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).'
+      description: 'The vault ID, which you can retrieve by calling [List all vaults](/developers/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).'
       schema:
         type: string
         format: uuid
@@ -5645,7 +5645,7 @@ components:
       name: event_id
       in: path
       required: true
-      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/v2/api-references/developers--webhooks/list-all-events).'
+      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/developers/v2/api-references/developers--webhooks/list-all-events).'
       schema:
         type: string
         format: uuid
@@ -5654,7 +5654,7 @@ components:
       name: endpoint_id
       in: path
       required: true
-      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/v2/api-references/developers--webhooks/list-webhook-endpoints).'
+      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/developers/v2/api-references/developers--webhooks/list-webhook-endpoints).'
       schema:
         type: string
         format: uuid
@@ -5802,7 +5802,7 @@ components:
             properties:
               token_id:
                 type: string
-                description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+                description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
                 pattern: '^[A-Z]+(_[A-Z0-9]+)?$'
                 example: ETH_USDT
               count:
@@ -5834,7 +5834,7 @@ components:
                   properties:
                     token_id:
                       type: string
-                      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
+                      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).'
                       example: BTC
                     tx_hash:
                       type: string
@@ -5965,7 +5965,7 @@ components:
                     description: |
                       The TSS Node IDs participating in creating a new key share group when `type` is set to either `KeyGenFromKeyGroup` or `Recovery`. 
 
-                      **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), for `node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`. To obtain the Cobo TSS Node ID, run [List all Cobo key share holders](/v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders).
+                      **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), for `node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`. To obtain the Cobo TSS Node ID, run [List all Cobo key share holders](/developers/v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders).
     createMpcVaultBody:
       description: The request body to create a vault.
       content:
@@ -5980,7 +5980,7 @@ components:
                 type: string
                 example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
                 description: |
-                  The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
+                  The project ID, which you can retrieve by calling [List all projects](/developers/v2/api-references/wallets--mpc-wallets/list-all-projects).
 
                   **Notes:**
                   1. If you set `vault_type` to `OrgControlled`, the value of `project_id` will be ignored.
@@ -6109,7 +6109,7 @@ components:
                 example: 'https://example.com/webhook'
               subscribed_events:
                 description: |
-                  The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
+                  The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/developers/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -6125,7 +6125,7 @@ components:
             type: object
             properties:
               subscribed_events:
-                description: 'The new event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.'
+                description: 'The new event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/developers/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
