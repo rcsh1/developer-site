@@ -1248,12 +1248,7 @@ paths:
 
         A transaction request for tracking is returned upon successful operation.
 
-        <Note> 
-        There are some requirements towards the transfer source and destination:
-        Only Exchange source can transfer to Exchange destination.
-        Exchange Sub wallet source can only be transferred to Exchange destination.
-        Only MPC source support to transfer to multiple address by using 'utxo_outputs' property in BTC-like chains
-        </Note>
+        <Note>Only MPC Wallets as the transaction source can transfer tokens to multiple addresses by using the <code>utxo_outputs</code> property.</Note>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1904,7 +1899,7 @@ paths:
         - $ref: '#/components/parameters/stakingIdRequiredParam'
       responses:
         '200':
-          $ref: '#/components/responses/listStakingsResponse'
+          $ref: '#/components/responses/stakingsDetailsResponse'
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -4431,6 +4426,7 @@ components:
               $ref: '#/components/schemas/MpcSigningGroup'
     SafeTransferSource:
       title: Smart Contract Wallets
+      description: The information about the transaction source.
       allOf:
         - $ref: '#/components/schemas/AddressTransferSource'
         - type: object
@@ -4455,6 +4451,7 @@ components:
                   description: 'The wallet address of the Delegate. This is required when initiating a transfer from Smart Contract Wallets (Safe{Wallet}).'
     ExchangeTransferSource:
       title: Exchange Wallets
+      description: The information about the transaction source. An Exchange Wallet (Sub Account) as the transaction source can only transfer tokens to another Exchange Wallet.
       allOf:
         - $ref: '#/components/schemas/BaseTransferSource'
         - type: object
@@ -4483,7 +4480,7 @@ components:
     AddressTransferDestination:
       type: object
       description: |
-        The information about the transaction destination. Specify either the `account_output` property or the `utxo_outputs` property.
+        The information about the transaction destination. Specify either the `account_output` property or the `utxo_outputs` property. Only MPC Wallets as the transaction source can transfer tokens to multiple addresses by using the `utxo_outputs` property.
       title: Addresses
       required:
         - destination_type
@@ -4547,7 +4544,7 @@ components:
           example: false
     ExchangeTransferDestination:
       type: object
-      description: The information about the transaction destination.
+      description: The information about the transaction destination. An Exchange Wallet (Sub Account) as the transaction destination can only receives token transfers from another Exchange Wallet.
       title: Exchange Wallets
       required:
         - destination_type
@@ -4578,7 +4575,7 @@ components:
       example: Address
       description: |
         The transaction destination type. Possible values include:
-        - `Address`: An external address.
+        - `Address`: An address, including an address of Custodial Wallets, MPC Wallets, or Smart Contract Wallets (Safe{Wallet}) and an external address.
         - `ExchangeWallet`: An Exchange Wallet.
     TransferDestination:
       oneOf:
@@ -4677,8 +4674,8 @@ components:
                 {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
         description:
           type: string
-          description: The description of the message sign.
-          example: Sign message from wallet
+          description: The description of the message sign transaction.
+          example: Transaction to sign a message initiated from a wallet
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/EstimateFeeTransfer'
@@ -4880,8 +4877,8 @@ components:
               example: U3dhZ2dlciByb2Nrcw==
         description:
           type: string
-          description: The description of the contract call.
-          example: Call contract from wallet
+          description: The description of the contract call transaction.
+          example: Transaction to call a smart contract initiated from a wallet
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
     WebhookEvent:
