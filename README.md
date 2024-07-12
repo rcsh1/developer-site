@@ -6,7 +6,6 @@
 
 <div align="center">
   <h1>Cobo Developer Hub</h1>
-
   <br />
   <br />
   <a href="https://www.cobo.com/developers/v2/api-references/overview/changelog">Developer Hub</a>
@@ -17,23 +16,16 @@
   <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
   <a href="https://twitter.com/Cobo_Global">Twitter</a>
   <br />
-
 </div>
 
 <br />
 
-<div align="center">
-  <h2>About Cobo</h2>
-  <p align="left">
-  Cobo is a trusted leader in digital asset custody and wallet infrastructure solutions. Founded in 2017 by blockchain pioneers, Cobo is trusted by more than 500 organizations worldwide, safeguarding billions of dollars in assets with a zero-incident security track record.
+## About Cobo
+Cobo is a trusted leader in digital asset custody and wallet infrastructure solutions. Founded in 2017 by blockchain pioneers, Cobo is trusted by more than 500 organizations worldwide, safeguarding billions of dollars in assets with a zero-incident security track record.
 
-  Today, Cobo provides the industry’s only unified digital asset wallet platform that integrates all 4 wallet technologies in one place – Custodial Wallets, MPC Wallets, Smart Contract Wallets, and Exchange Wallets. By combining a comprehensive suite of wallet solutions with advanced risk controls and developer tools, Cobo empowers organizations and developers to innovate and scale with ease.
+Today, Cobo provides the industry’s only unified digital asset wallet platform that integrates all 4 wallet technologies in one place – Custodial Wallets, MPC Wallets, Smart Contract Wallets, and Exchange Wallets. By combining a comprehensive suite of wallet solutions with advanced risk controls and developer tools, Cobo empowers organizations and developers to innovate and scale with ease.
 
-  Visit [Cobo](https://www.cobo.com) for more information.
-  </p>
-</div>
-
-<br/>
+Visit [Cobo](https://www.cobo.com) for more information.
 
 ## Get started
 
@@ -43,7 +35,6 @@ The Developer Hub mainly includes the following resources.:
 - **[MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction)**. Cobo MPC Wallets leverages advanced Multi-Party Computation (MPC) technology to implement a Threshold Signature Scheme (TSS). Cobo Portal offers two types of MPC Wallets: Organization-Controlled Wallets and User-Controlled Wallets.
 - **[Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)**. Cobo Smart Contract Wallets support a myriad of smart contract wallets, prominently featuring Safe{Wallet} alongside other account abstraction wallets. 
 - **[Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction)**. Cobo Portal’s Exchange Wallets are your one-stop solution for managing multiple exchange accounts effortlessly.
-  <br />
 
 ## GitHub repository directory
 Currently we offer  The content for WaaS 1.0 and WaaS 2.0 on the Developer Hub at the same time. You could switch between the two version by selecting the **Version 1.0** and the **Version 2.0** buttons. 
@@ -56,7 +47,6 @@ Below is the repository directory structure for the two versions:
   - `guides`: (Coming soon) The content under the **Guides** tab, which contains instructions on implementing basic and advanced features.
   - `developer-tools`: (Coming soon) The content under the **Developer Tools** tab, which contains documentation for the WaaS SDKs.
   - `faqs`: (Coming soon) The content under the **FAQs** tab, which contains answers to frequently asked questions.
-
 
 
 - `v1`

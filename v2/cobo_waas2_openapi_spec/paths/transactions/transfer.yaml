@@ -9,13 +9,8 @@ post:
     You need to specify details such as the sender address and recipient address, token ID, and the amount to transfer. You can specify the fee-related properties to limit the transaction fee.
     
     A transaction request for tracking is returned upon successful operation.
-    
-    <Note> 
-    There are some requirements towards the transfer source and destination:
-    Only Exchange source can transfer to Exchange destination.
-    Exchange Sub wallet source can only be transferred to Exchange destination.
-    Only MPC source support to transfer to multiple address by using 'utxo_outputs' property in BTC-like chains
-    </Note>
+
+    <Note>Only MPC Wallets as the transaction source can transfer tokens to multiple addresses by using the <code>utxo_outputs</code> property.</Note>
   security:
     - CoboAuth: []
     - OAuth2:
