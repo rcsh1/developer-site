@@ -2,7 +2,7 @@
 title: Babylon List Transactions By Status
 api: GET /v1/custody/mpc/babylon/babylon_list_transactions_by_status/
 contentType: multipart/form-data
-description: "This endpoint is used to query all staking transactions based on the provided parameter `status` and `address`"
+description: "This endpoint is used to query all staking transactions based on the provided parameter `status`, `address`, `min_cobo_id` and `limit`."
 ---
 
 #### Request
@@ -17,6 +17,8 @@ description: "This endpoint is used to query all staking transactions based on t
 | STAKING_FAILED| 499|
 </ParamField>
 <ParamField query="address" type="String">staking address</ParamField>
+<ParamField query="min_cobo_id" type="String">> cobo_id; details of staking transactions whose cobo ID are greater than this value will be returned</ParamField>
+<ParamField query="limit" type="Int">entries per page; max: 50; default: 50</ParamField>
 
 
 #### Response
@@ -52,7 +54,8 @@ request(
     "/v1/custody/mpc/babylon/list_transactions_by_status/",
     {
         "status": 400,
-        "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
+        "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec",
+        "cobo_id": "20240617181735000387960000000501"
     },
     api_key, api_secret, host
 )
@@ -60,7 +63,8 @@ request(
 ```javascript JavaScript
 coboFetch('GET', '/v1/custody/mpc/babylon/list_transactions_by_status/', {
     "status": 400,
-    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
+    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec",
+    "cobo_id": "20240617181735000387960000000501"
 }, api_key, api_secret, host)
     .then(res => {
         res.json().then((data)=>{
@@ -73,7 +77,8 @@ coboFetch('GET', '/v1/custody/mpc/babylon/list_transactions_by_status/', {
 ```go Go
 Request("GET", "/v1/custody/mpc/babylon/list_transactions_by_status/", map[string]string{
     "status": 400,
-    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec"
+    "address": "tb1pk3gty3x43zkej7v9tuw78qtfsl3xgsp4v707acd8yqsw8lqvfhystl0rec",
+    "cobo_id": "20240617181735000387960000000501"
 })
 ```
 </RequestExample>
