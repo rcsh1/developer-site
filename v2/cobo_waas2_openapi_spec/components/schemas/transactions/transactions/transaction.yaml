@@ -35,7 +35,7 @@ properties:
     example: "Rejected by signer Cobo TSS"
   chain_id:
     type: string
-    description: The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).
+    description: The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/developers/v2/api-references/wallets/list-enabled-chains).
     pattern: ^[A-Z]+$
     example: 'ETH'
   source:
@@ -51,7 +51,7 @@ properties:
   initiator_type:
     $ref: './transaction_initiator_type.yaml'
   confirmed_num:
-    type: number
+    type: integer
     format: int32
     description: The number of confirmations this transaction has received.
     example: 12
@@ -139,12 +139,12 @@ properties:
       - `false`: The transaction is not a Loop transfer.
     example: false
   created_time:
-    type: number
+    type: integer
     format: int64
     description: The time when the transaction was created, in Unix timestamp format, measured in milliseconds.
     example: 1610445878970
   updated_time:
-    type: number
+    type: integer
     format: int64
     description: The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.
     example: 1610445878970
