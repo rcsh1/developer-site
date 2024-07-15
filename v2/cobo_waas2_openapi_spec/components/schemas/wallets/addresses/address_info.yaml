@@ -10,7 +10,7 @@ properties:
     example: "0x0000000000000000000000000000000000000000"
   token_id:
     type: string
-    description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).
+    description: The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/developers/v2/api-references/wallets/list-enabled-tokens).
     pattern: ^[A-Z]+(_[A-Z0-9]+)?$
     example: 'ETH_USDT'
   memo:
@@ -19,11 +19,11 @@ properties:
     example: "82840924"
   path:
     type: string
-    description: The derivation path of the address.
+    description: The derivation path of the address. This property applies to MPC Wallets only.
     example: "m/44'/60'/0'/0"
   encoding:
     $ref: './address_encoding.yaml'
   pubkey:
     type: string
-    description: The public key of the address.
+    description: The public key of the address. This property applies to MPC Wallets only.
     example: "xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq"
