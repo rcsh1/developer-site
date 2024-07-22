@@ -719,9 +719,11 @@ paths:
       operationId: list_mpc_vaults
       summary: List all vaults
       description: |
-        This operation retrieves a list of all vaults.
+        This operation retrieves a list of all vaults. By optionally specifying a project ID, you can retrieve a list of all vaults under a single project.
 
-        <Note>By optionally specifying a project ID, you can retrieve a list of all vaults under a single project.</Note>
+        **Notes for query parameters**:
+        1. `project_id` is required when `vault_type` is set to `User-Controlled`.
+        2. `project_id` must be left blank when `vault_type` is set to `Org-Controlled`.
       security:
         - CoboAuth: []
       parameters:
@@ -1161,10 +1163,6 @@ paths:
         - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/optionalAssetIdListParam'
-        - $ref: '#/components/parameters/optionalTransactionSourceTypeListParam'
-        - $ref: '#/components/parameters/optionalTransactionSourceWalletIdListParam'
-        - $ref: '#/components/parameters/optionalTransactionDestinationTypeListParam'
-        - $ref: '#/components/parameters/optionalTransactionDestinationWalletIdListParam'
         - $ref: '#/components/parameters/optionalVaultIdQueryParam'
         - $ref: '#/components/parameters/optionalProjectIdQueryParam'
         - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
@@ -1212,6 +1210,7 @@ paths:
         Resending a transaction initiates a new attempt to process the transaction that failed previously. A transaction can be resent if its status is `failed`.
 
         A transaction request for tracking is returned upon successful operation.
+        <Note>This operation only applies to transactions in the SOL token from MPC Wallets.</Note>
       security:
         - CoboAuth: []
       requestBody:
@@ -1239,6 +1238,7 @@ paths:
         - `PendingSignature` 
 
         A transaction request for tracking is returned upon successful operation.
+        <Note>This operation only applies to transactions from MPC Wallets.</Note>
       security:
         - CoboAuth: []
       responses:
@@ -1259,9 +1259,14 @@ paths:
       description: |
         This operation drops a specified transaction. 
 
-        Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For EVM chains, this RBF transaction has a transfer amount of `0` and the sending address is the same as the receiving address. It has a higher transaction fee to incentivize miners to prioritize its confirmation over the previous one. A transaction can be dropped if its status is `Broadcasting`.
+        Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. It has a higher transaction fee to incentivize miners to prioritize its confirmation over the original one. A transaction can be dropped if its status is `Broadcasting`.
 
+        <ul>
+        <li>For EVM chains, this RBF transaction has a transfer amount of `0` and the sending address is the same as the receiving address.</li>
+        <li>For UTXO chains, this RBF transaction has a transfer amount of `0` and the destination address is the same as the change address in the original transaction.</li>
+        </ul>
         A transaction request for tracking is returned upon successful operation.
+        <Note>This operation only applies to transactions from MPC Wallets, excluding transactions in the tokens VET, TRON, TVET, SOL, and TON.</Note>
       security:
         - CoboAuth: []
       requestBody:
@@ -1287,6 +1292,7 @@ paths:
         Speeding up a transaction will trigger an RBF transaction which is a new version of the original transaction. It shares the same inputs but has a higher transaction fee to incentivize miners to prioritize its confirmation over the previous one. A transaction can be accelerated if its status is either `Broadcasting`.
 
         A transaction request for tracking is returned upon successful operation.
+        <Note>This operation only applies to transactions from MPC Wallets, excluding transactions in the tokens VET, TRON, TVET, SOL, and TON.</Note>
       security:
         - CoboAuth: []
       requestBody:
@@ -1397,12 +1403,12 @@ paths:
     get:
       tags:
         - Developers - Webhooks
-      summary: List all events
+      summary: List all webhook events
       description: |
         This operation retrieves a list of webhook events that have occurred within the last 30 days.
 
         Note: The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Custodial Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.
-      operationId: list_events
+      operationId: list_webhook_events
       parameters:
         - $ref: '#/components/parameters/endpointIdParam'
         - in: query
@@ -1449,13 +1455,16 @@ paths:
     parameters:
       - $ref: '#/components/parameters/webhookEventIdParam'
       - $ref: '#/components/parameters/endpointIdParam'
+      - $ref: '#/components/parameters/limitParam'
+      - $ref: '#/components/parameters/beforeParam'
+      - $ref: '#/components/parameters/afterParam'
     get:
       tags:
         - Developers - Webhooks
-      summary: List event logs
+      summary: List webhook event logs
       description: |
         This operation retrieves a list of webhook event logs by event ID. Each retry will generate a separate event log.
-      operationId: get_webhook_event_logs_by_id
+      operationId: list_webhook_event_logs
       responses:
         '200':
           $ref: '#/components/responses/getWebhookEventLogsResponse'
@@ -2339,6 +2348,10 @@ components:
           type: string
           example: YPdbyVaVGqXXjkUsohHw
           description: The vault ID.
+        project_id:
+          type: string
+          example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
+          description: The project ID.
         name:
           type: string
           example: Vault name
@@ -2998,6 +3011,7 @@ components:
                     example: true
                   finished_time:
                     type: integer
+                    format: int64
                     description: 'The time when the transaction status is completed in Unix timestamp format, measured in milliseconds.'
                     example: 1610445878970
     TransactionApprover:
@@ -3220,6 +3234,7 @@ components:
           example: true
         finished_time:
           type: integer
+          format: int64
           description: Timeline status finished time
           example: 1610445878970
     TransactionTokeApproval:
@@ -3917,47 +3932,41 @@ components:
               example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
     MpcTransferSource:
       title: MPC Wallets
-      description: The information about the transaction source. Specify either the `account_input` or `utxo_inputs` property.
+      description: 'The information about the transaction source. If both the `address` or `included_utxos` are specified, the `included_utxos` should belong to the `address`.'
       allOf:
         - $ref: '#/components/schemas/BaseTransferSource'
         - type: object
           properties:
-            account_input:
-              type: object
-              properties:
-                address:
-                  type: string
-                  description: The wallet address.
-                  example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
-            utxo_inputs:
-              type: object
-              properties:
-                included_inputs:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      tx_hash:
-                        type: string
-                        description: The transaction hash of UTXO to be consumed in the transaction.
-                        example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
-                      vout_n:
-                        type: integer
-                        description: The output index of the UTXO.
-                        example: 0
-                excluded_inputs:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      tx_hash:
-                        type: string
-                        description: The transaction hash of UTXO not to be consumed in the transaction.
-                        example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
-                      vout_n:
-                        type: integer
-                        description: The output index of the UTXO.
-                        example: 0
+            address:
+              type: string
+              description: The wallet address.
+              example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+            included_utxos:
+              type: array
+              items:
+                type: object
+                properties:
+                  tx_hash:
+                    type: string
+                    description: The transaction hash of UTXO to be consumed in the transaction.
+                    example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+                  vout_n:
+                    type: integer
+                    description: The output index of the UTXO.
+                    example: 0
+            excluded_utxos:
+              type: array
+              items:
+                type: object
+                properties:
+                  tx_hash:
+                    type: string
+                    description: The transaction hash of UTXO not to be consumed in the transaction.
+                    example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+                  vout_n:
+                    type: integer
+                    description: The output index of the UTXO.
+                    example: 0
             mpc_used_key_share_holder_group:
               $ref: '#/components/schemas/MpcSigningGroup'
     SafeTransferSource:
@@ -4040,26 +4049,23 @@ components:
                 The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
               example: '1.5'
         utxo_outputs:
-          type: object
-          properties:
-            outputs:
-              type: array
-              items:
-                type: object
-                properties:
-                  address:
-                    type: string
-                    description: The destination address.
-                    example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
-                  amount:
-                    type: string
-                    description: |
-                      The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
-                    example: '1.5'
-                  script:
-                    type: string
-                    description: The script of the output. It is a programmable code fragment that defines the conditions under which the UTXO can be spent.
-                    example: 76a914fb37342f6275b13936799def06f2DEMO
+          type: array
+          items:
+            type: object
+            properties:
+              address:
+                type: string
+                description: The destination address.
+                example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
+              amount:
+                type: string
+                description: |
+                  The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
+                example: '1.5'
+              script:
+                type: string
+                description: The script of the output. It is a programmable code fragment that defines the conditions under which the UTXO can be spent.
+                example: 76a914fb37342f6275b13936799def06f2DEMO
         change_address:
           type: string
           description: The address used to receive the remaining funds or change from the transaction.
@@ -4157,60 +4163,6 @@ components:
           example: Transfer from wallet
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
-    SignMessage:
-      type: object
-      description: The information about a transaction that signs a message. You can provide the message either as raw data or as structured data.
-      required:
-        - request_id
-        - request_type
-        - chain_id
-        - source
-        - destination
-      properties:
-        request_id:
-          type: string
-          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-        chain_id:
-          type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
-          example: ETH
-        source:
-          description: The information about the transaction source.
-          type: object
-          required:
-            - wallet_id
-            - address
-          properties:
-            wallet_id:
-              type: string
-              description: The wallet ID.
-              format: uuid
-              example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            address:
-              type: string
-              description: The wallet address.
-              example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
-            mpc_used_key_share_holder_group:
-              $ref: '#/components/schemas/MpcSigningGroup'
-        destination:
-          type: object
-          description: The information about the transaction destination.
-          properties:
-            message:
-              type: string
-              description: 'The raw data of the message to be signed, encoded in Base64 format.'
-              example: YWFhYQ==
-            structured_data:
-              type: object
-              additionalProperties: true
-              description: 'The structured data of the message to be signed, encoded in JSON format.'
-              example: |
-                {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
-        description:
-          type: string
-          description: The description of the message sign transaction.
-          example: Transaction to sign a message initiated from a wallet
     EstimateFee:
       oneOf:
         - $ref: '#/components/schemas/EstimateFeeTransfer'
@@ -4240,13 +4192,11 @@ components:
           enum:
             - Transfer
             - ContractCall
-            - MessageSign
           example: Transfer
           description: |
             The request type. Possible values include:
               - `Transfer`: A request to transfer tokens.
               - `ContractCall`: A request to interact with a smart contract.
-              - `MessageSign`: A request to sign a message.
         source:
           $ref: '#/components/schemas/TransferSource'
         token_id:
@@ -4281,24 +4231,7 @@ components:
         source:
           $ref: '#/components/schemas/ContractCallSource'
         destination:
-          type: object
-          description: The information about the transaction destination.
-          properties:
-            address:
-              type: string
-              description: The destination address.
-              example: bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v
-            value:
-              type: string
-              description: |
-                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
-              example: '1.5'
-            calldata:
-              type: string
-              description: |
-                The data that is used to invoke a specific function or method within the specified contract at the destination address.
-              format: byte
-              example: U3dhZ2dlciByb2Nrcw==
+          $ref: '#/components/schemas/ContractCallDestination'
         fee_type:
           $ref: '#/components/schemas/FeeType'
     BaseContractCallSource:
@@ -4310,17 +4243,7 @@ components:
         - address
       properties:
         source_type:
-          type: string
-          enum:
-            - Org-Controlled
-            - User-Controlled
-            - 'Safe{Wallet}'
-          example: Org-Controlled
-          description: |
-            The type of the wallet. Possible values include:
-            - `Org-Controlled`: MPC Wallets (Organization-Controlled).
-            - `User-Controlled`: MPC Wallets (User-Controlled).
-            - `Safe{Wallet}`: Smart Contract Wallets (Safe{Wallet}).
+          $ref: '#/components/schemas/ContractCallSourceType'
         wallet_id:
           type: string
           description: The wallet ID.
@@ -4329,7 +4252,7 @@ components:
         address:
           type: string
           description: The wallet address.
-          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+          example: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
     MpcContractCallSource:
       title: MPC Wallets
       allOf:
@@ -4364,6 +4287,18 @@ components:
                   description: 'The wallet address of the Delegate. This is required for initiating a transfer from a Smart Contract Wallet (Safe{Wallet}).'
                 mpc_used_key_share_holder_group:
                   $ref: '#/components/schemas/MpcSigningGroup'
+    ContractCallSourceType:
+      type: string
+      enum:
+        - Org-Controlled
+        - User-Controlled
+        - 'Safe{Wallet}'
+      example: Org-Controlled
+      description: |
+        The type of the wallet. Possible values include:
+        - `Org-Controlled`: MPC Wallets (Organization-Controlled).
+        - `User-Controlled`: MPC Wallets (User-Controlled).
+        - `Safe{Wallet}`: Smart Contract Wallets (Safe{Wallet}).
     ContractCallSource:
       oneOf:
         - $ref: '#/components/schemas/MpcContractCallSource'
@@ -4374,6 +4309,47 @@ components:
           Org-Controlled: '#/components/schemas/MpcContractCallSource'
           User-Controlled: '#/components/schemas/MpcContractCallSource'
           'Safe{Wallet}': '#/components/schemas/SafeContractCallSource'
+    ContractCallDestinationType:
+      type: string
+      enum:
+        - EVM
+      example: EVM
+      description: |
+        The type of the contract format. Possible values include:
+        - `EVM`: EVM compatible contract.
+    EvmContractCallDestination:
+      title: EVM
+      type: object
+      description: The information about the EVM transaction destination.
+      required:
+        - destination_type
+        - address
+        - calldata
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/ContractCallDestinationType'
+        address:
+          type: string
+          description: The destination address.
+          example: '0x0406db8351aa6839169bb363f63c2c808fee8f99'
+        value:
+          type: string
+          description: |
+            The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`.
+          example: '1.5'
+        calldata:
+          type: string
+          description: |
+            The data that is used to invoke a specific function or method within the specified contract at the destination address.
+          format: byte
+          example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
+    ContractCallDestination:
+      oneOf:
+        - $ref: '#/components/schemas/EvmContractCallDestination'
+      discriminator:
+        propertyName: destination_type
+        mapping:
+          EVM: '#/components/schemas/EvmContractCallDestination'
     ContractCall:
       type: object
       description: The information about a transaction that interacts with a smart contract
@@ -4396,30 +4372,124 @@ components:
         source:
           $ref: '#/components/schemas/ContractCallSource'
         destination:
-          type: object
-          description: The information about the transaction destination.
-          properties:
-            address:
-              type: string
-              description: The destination address.
-              example: bc1q0qfzuge7vr5s2xkczrjkccmxemlyyn8mhx298v
-            value:
-              type: string
-              description: |
-                The quantity of the token in the transaction. For example, if you trade 1.5 ETH, then the value is `1.5`. 
-              example: '1.5'
-            calldata:
-              type: string
-              description: |
-                The data that is used to invoke a specific function or method within the specified contract at the destination address.
-              format: byte
-              example: U3dhZ2dlciByb2Nrcw==
+          $ref: '#/components/schemas/ContractCallDestination'
         description:
           type: string
           description: The description of the contract call transaction.
           example: Transaction to call a smart contract initiated from a wallet
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
+    MpcMessageSignSource:
+      title: MPC Wallets
+      type: object
+      required:
+        - wallet_id
+        - address
+      properties:
+        source_type:
+          $ref: '#/components/schemas/MessageSignSourceType'
+        wallet_id:
+          type: string
+          description: The wallet ID.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        address:
+          type: string
+          description: The wallet address.
+          example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+        mpc_used_key_share_holder_group:
+          $ref: '#/components/schemas/MpcSigningGroup'
+    MessageSignSourceType:
+      type: string
+      enum:
+        - Org-Controlled
+        - User-Controlled
+      example: Org-Controlled
+      description: |
+        The type of the wallet. Possible values include:
+        - `Org-Controlled`: MPC Wallets (Organization-Controlled).
+        - `User-Controlled`: MPC Wallets (User-Controlled).
+    MessageSignSource:
+      oneOf:
+        - $ref: '#/components/schemas/MpcMessageSignSource'
+      discriminator:
+        propertyName: source_type
+        mapping:
+          Org-Controlled: '#/components/schemas/MpcMessageSignSource'
+          User-Controlled: '#/components/schemas/MpcMessageSignSource'
+    EvmEIP191MessageSignDestination:
+      title: EVM EIP 191
+      type: object
+      required:
+        - destination_type
+        - message
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/MessageSignDestinationType'
+        message:
+          type: string
+          description: 'The raw data of the message to be signed, encoded in Base64 format.'
+          example: YWFhYQ==
+    EvmEIP712MessageSignDestination:
+      title: EVM EIP 712
+      type: object
+      required:
+        - destination_type
+        - structured_data
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/MessageSignDestinationType'
+        structured_data:
+          type: object
+          additionalProperties: true
+          description: 'The structured data of the message to be signed, encoded in JSON format.'
+          example: |
+            {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
+    MessageSignDestinationType:
+      type: string
+      enum:
+        - EVM_EIP_191
+        - EVM_EIP_712
+      example: EVM_EIP_191
+      description: |
+        The type of the signature format. Possible values include:
+        - `EVM_EIP_191`: Signed Data Standard (https://eips.ethereum.org/EIPS/eip-191).
+        - `EVM_EIP_712`: Typed structured data hashing and signing (https://eips.ethereum.org/EIPS/eip-712).
+    MessageSignDestination:
+      oneOf:
+        - $ref: '#/components/schemas/EvmEIP191MessageSignDestination'
+        - $ref: '#/components/schemas/EvmEIP712MessageSignDestination'
+      discriminator:
+        propertyName: destination_type
+        mapping:
+          EVM_EIP_191: '#/components/schemas/EvmEIP191MessageSignDestination'
+          EVM_EIP_712: '#/components/schemas/EvmEIP712MessageSignDestination'
+    SignMessage:
+      type: object
+      description: The information about a transaction that signs a message. You can provide the message either as raw data or as structured data.
+      required:
+        - request_id
+        - request_type
+        - chain_id
+        - source
+        - destination
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is used to track a withdrawal request. The request ID is provided by you and must be unique within your organization.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        chain_id:
+          type: string
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+          example: ETH
+        source:
+          $ref: '#/components/schemas/MessageSignSource'
+        destination:
+          $ref: '#/components/schemas/MessageSignDestination'
+        description:
+          type: string
+          description: The description of the message sign transaction.
+          example: Transaction to sign a message initiated from a wallet
     WebhookEvent:
       type: object
       description: The webhook event payload.
@@ -4444,6 +4514,7 @@ components:
         created_timestamp:
           description: 'The time when the event occurred, in Unix timestamp format, measured in milliseconds.'
           type: integer
+          format: int64
           example: 1701396866000
         type:
           $ref: '#/components/schemas/WebhookEventType'
@@ -4455,6 +4526,7 @@ components:
           description: |
             The timestamp indicating the next scheduled retry to deliver this event, in Unix timestamp format, measured in milliseconds. This field is only present if the event status is `Retrying`.
           type: integer
+          format: int64
           example: 1701396866000
         retries_left:
           description: The number of retries left. This field is only present if the event status is `Retrying`.
@@ -4528,6 +4600,7 @@ components:
         created_timestamp:
           description: 'The time when the log was created, in Unix timestamp format, measured in milliseconds.'
           type: integer
+          format: int64
           example: 1701396866000
         request_headers:
           type: object
@@ -4578,7 +4651,8 @@ components:
         created_timestamp:
           description: 'The time when the endpoint was registered, in Unix timestamp format, measured in seconds.'
           type: integer
-          example: 1701396866
+          format: int64
+          example: 1701396866000
         endpoint_id:
           description: The webhook endpoint ID.
           type: string
@@ -4608,6 +4682,16 @@ components:
         - `STATUS_PENDING_INACTIVE`: The request to revoke the endpoint is awaiting approval. After the approval,the endpoint will no longer receive webhook events.
         - `STATUS_PENDING_UPDATE`: The request to update the endpoint is awaiting approval. After the approval, the endpoint will be updated.
         - `STATUS_REJECT_ACTIVE`: The request to create the endpoint has been rejected.
+    StakingSource:
+      oneOf:
+        - $ref: '#/components/schemas/MpcContractCallSource'
+        - $ref: '#/components/schemas/SafeContractCallSource'
+      discriminator:
+        propertyName: source_type
+        mapping:
+          Org-Controlled: '#/components/schemas/MpcContractCallSource'
+          User-Controlled: '#/components/schemas/MpcContractCallSource'
+          'Safe{Wallet}': '#/components/schemas/SafeContractCallSource'
     BaseStakeExtra:
       type: object
       description: Base stake extra.
@@ -4704,12 +4788,17 @@ components:
           type: string
           example: '100.00'
           description: The amount of the activity.
-        tx_ids:
+        transaction_ids:
           type: array
           items:
             type: string
             example: 0011039d-27fb-49ba-b172-6e0aa80e37ec
           description: The related txs of the activity.
+        timeline:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityTimeline'
+          description: The timeline of the activity.
         fee:
           $ref: '#/components/schemas/TransactionTransferFee'
         status:
@@ -4724,6 +4813,33 @@ components:
           type: integer
           format: int64
           example: 1640995200000
+    ActivityAction:
+      type: string
+      enum:
+        - Submitted
+        - BTCConfirmation
+        - BabylonConfirmation
+      example: Submitted
+      description: The status of activity.
+    ActivityTimeline:
+      description: The timeline of the staking activity.
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          $ref: '#/components/schemas/ActivityAction'
+        status:
+          type: string
+          example: success
+        timestamp:
+          type: integer
+          format: int64
+          example: 1640995200000
+        transaction_id:
+          type: string
+          description: The transaction ID.
+          example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
     ActivityInitiator:
       type: object
       properties:
@@ -4741,14 +4857,8 @@ components:
         - pool_id
         - extra
       properties:
-        wallet_id:
-          type: string
-          example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
-          description: The id of the wallet to stake.
-        address:
-          type: string
-          example: '0x0000000000000000000000000000000000000000'
-          description: The staker wallet address.
+        source:
+          $ref: '#/components/schemas/StakingSource'
         pool_id:
           type: string
           example: babylon_btc
@@ -4953,6 +5063,16 @@ components:
               description: The maximum staking period in days.
               type: integer
               format: int32
+              example: 1000
+            min_stake_blocks:
+              description: The minimum staking blocks.
+              type: integer
+              format: int64
+              example: 100
+            max_stake_blocks:
+              description: The maximum staking blocks.
+              type: integer
+              format: int64
               example: 1000
             validators_info:
               description: The list of validators.
@@ -5475,7 +5595,8 @@ components:
     optionalProjectIdQueryParam:
       name: project_id
       in: query
-      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects). This parameter is applicable to [MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction) only.'
+      description: |
+        The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
       schema:
         type: string
         format: uuid
@@ -5657,7 +5778,8 @@ components:
       description: 'The time when the transaction was created, in Unix timestamp format, measured in milliseconds. You can use this parameter to filter transactions created on or after the specified time.'
       schema:
         type: integer
-      example: 1635744000
+        format: int64
+      example: 1635744000000
     optionalMaxCreatedTimestampParam:
       name: max_created_timestamp
       in: query
@@ -5665,7 +5787,8 @@ components:
       description: 'The time when the transaction was created, in Unix timestamp format, measured in milliseconds. You can use this parameter to filter transactions created on or before the specified time.'
       schema:
         type: integer
-      example: 1635744000
+        format: int64
+      example: 1635744000000
     optionalTransactionSourceTypeListParam:
       name: source_types
       in: query
@@ -6750,9 +6873,14 @@ components:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebhookEventLog'
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebhookEventLog'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
     listStakingPoolsResponse:
       description: A list of staking protocols has been successfully retrieved.
       content:

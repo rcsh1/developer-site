@@ -3,4 +3,172 @@ title: "Get started with WaaS 2.0"
 sidebarTitle: "Get started with WaaS 2.0"
 ---
 
-<Note>The content is coming soon.</Note>
+## Overview
+
+This guide explains how to get started with using the WaaS 2.0 API. By the end of this guide, you will be able to successfully call an API operation and receive a response.
+
+## Before you begin
+
+If you choose to use a WaaS SDK instead of manually writing the API requests, you need to first install the right version of the corresponding programming language. For example, if you want to use the [Python SDK](/v2/developer-tools/quickstart-python), you need to have Python 3.7 or a newer version installed.
+
+## Set up an account
+
+Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
+
+
+
+<Note>This guide uses the development environment in all of its examples. Please create your organization in the development environment at https://portal.dev.cobo.com/.</Note>
+
+## Generate an API key
+
+Use either OpenSSL or the Python library to generate an Ed25519 key pair. This guide uses OpenSSL as an example. To learn more about generating an API key, see [Generate an API key](/v2/guides/overview/cobo-auth#generate-an-api-key).
+
+1. In a terminal window, run the following OpenSSL commands:
+
+```
+# Generate a private key and save it in the `private.key.pem` file.
+openssl genpkey -algorithm ed25519 -out private_key.pem
+
+# Extract the public key from the private key and save it in the `public.key.pem` file.
+openssl pkey -in private_key.pem -pubout -out public_key.pem
+```
+
+
+The private key is saved in the `private.key.pem` file, and the public key is saved in the `public.key.pem` file. 
+
+
+
+2. You can print the keys by running the following commands:
+
+```
+# Export the private key in hexadecimal format.
+openssl pkey -in private_key.pem -text | grep 'priv:' -A 3 | tail -n +2 | tr -d ':\n '
+
+# Export the public key in hexadecimal format.
+openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | tr -d ':\n '
+```
+
+## Register the API key
+
+Register your API key and configure related permissions on Cobo Portal. To learn more about registering an API key, see [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key).
+
+1. Log in to [Cobo Portal](https://portal.dev.cobo.com/login) (development environment).
+2. On the left navigation menu, click **Developer** > **API Keys**.
+3. Click **Register API Key**.
+4. Enter the API key name (maximum 30 characters).
+5. Enter the public key you have generated in the previous step.
+6. Under **User Roles**, select **API_Viewer**. Each user role is permitted to call a specific set of operations.
+7. Under **Wallets**, select **Any Wallets**. This selection determines the wallets this API key has control over.
+8. Select **Temporary** as the key type.
+9. Click **Register**.
+10. Notify your organization admins to approve the request on Cobo Guard. By default, it requires the approval of at least half of the admins to successfully register an API key. You can only start using an API key after its status becomes **Active**.
+
+## Authenticate your requests
+
+Note: You can skip this step if you choose to [use a WaaS SDK](/v2/developer-tools/quickstart-python), which encapsulates the authentication mechanism.
+
+To authenticate your API request, you need to provide your API key, a nonce, and the API signature as request headers. For more information, see [Cobo Auth](/v2/guides/overview/cobo-auth).
+
+```
+headers = {
+"Biz-Api-Key": {YOUR_API_KEY}.hex(),
+"Biz-Api-Nonce": {Nonce},
+"Biz-Api-Signature": {YOUR_API_SIGNATURE}.hex(),
+}
+```
+
+- Biz-Api-Key: The public key you generate in [Generate an API key](/v2/guides/overview/cobo-auth#generate-an-api-key).
+- Biz-Api-Nonce: A nonce is the current time in Unix timestamp format, measured in milliseconds. 
+- Biz-Api-Signature: The API signature. To learn how to calculate an API signature, see [Calculate an API Signature](/v2/guides/overview/cobo-auth#calculate-the-api-signature).
+
+## Send a request
+
+Note: You can skip this step if you choose to [use a WaaS SDK](/v2/developer-tools/quickstart-python), which offers ready-to-use functions that handle the API integration using the programming language of your project.
+
+This guide uses the [List supported chains](/v2/api-references/wallets/list-supported-chains) operation as an example to demonstrate how to send an API request. This operation retrieves all chains supported by a specific wallet type or subtype. In the following example, we retrieve all chains supported by [Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction).
+
+```CURL
+curl --location --request GET 'https://api.dev.cobo.com/v2/wallets/chains?wallet_type=Custodial&wallet_subtype=&chain_ids=&limit=10&before=&after='
+  
+  # Replace the following with your own authentication information
+  --header 'BIZ-API-KEY: {YOUR_PUBLIC_KEY}' \
+  --header 'Biz-Api-Nonce: {NONCE}' \
+  --header 'Biz-Api-Signature: {YOUR_API_SIGNATURE}'
+```
+
+If the request is successful, you should receive the following response:
+
+```JSON
+{
+    "data": [
+        {
+            "chain_id": "ARBITRUM_ETH",
+            "symbol": "Arbitrum",
+            "icon_url": "https://d.cobo.com/public/logos/ARB.png",
+            "explorer_tx_url": "https://arbiscan.io/tx/{txn_id}",
+            "explorer_address_url": "https://arbiscan.io/address/{address}",
+            "require_memo": false
+        },
+        {
+            "chain_id": "AVAXC",
+            "symbol": "Avalanche C-Chain",
+            "icon_url": "https://d.cobo.com/public/logos/AVAXC-logo.png",
+            "explorer_tx_url": "https://avascan.info/blockchain/c/tx/{txn_id}",
+            "explorer_address_url": "https://avascan.info/blockchain/c/address/{address}",
+            "require_memo": false
+        },
+        ...
+    ],
+    "pagination": {
+        "before": "",
+        "after": "41KxruMakf",
+        "total_count": 19
+    }
+}
+```
+
+## Use a WaaS SDK
+
+This section introduces how to use the Python SDK to call an API operation instead of manually writing the request. 
+
+To learn how to install the Python SDK and complete the initial setup, refer to [Get started with Python SDK](/v2/developer-tools/quickstart-python).
+
+The following is the sample code for calling the [List supported chains](/v2/api-references/wallets/list-supported-chains) operation. When configuring the HTTP host, please use the URL of the development environment because you have registered the API key in the development environment in the previous step.
+
+```python
+import cobo_waas2
+from pprint import pprint
+
+configuration = cobo_waas2.Configuration(
+   # Replece `<YOUR_PRIVATE_KEY>` with your private key.
+   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Use the development environment 
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # List all supported chains
+       api_response = api_instance.get_chains()
+       print("The response of WalletsApi->get_chains:\n")
+       pprint(api_response)
+   except Exception as e:
+       print("Exception when calling WalletsApi->get_chains: %s\n" % e)
+```
+
+## What’s next
+
+You have successfully sent an API request and received a response. However, there are still a few things to do before you can create a wallet, make a transaction, or implement other features.
+
+- To start using a wallet, you must purchase a pricing plan or activate a trial plan if it’s available. To learn about pricing plans and bills and payments, refer to [Introduction to Bills & Payments](https://manuals.cobo.com/en/portal/bills-and-payments/introduction).
+- [Register a callback endpoint](https://manuals.cobo.com/en/portal/developer-console/callbacks-register) to subscribe to callback messages. When you use the API to withdraw funds, you will receive a callback message asking for your approval. The withdrawal will proceed only if you approve the transaction.
+- [Register a webhook endpoint](https://manuals.cobo.com/en/portal/developer-console/webhooks-create) to subscribe to webhook events. When the status of a transaction changes, you will receive a webhook event notification.
+
+## See also
+
+- To learn what Cobo Portal has to offer, including how to choose from the four wallet technologies, refer to [Introduction](https://manuals.cobo.com/en/portal/introduction).
+
+- To learn where to view API-related data and logs, see [Introduction to Developer Console](https://manuals.cobo.com/en/portal/developer-console/introduction).
