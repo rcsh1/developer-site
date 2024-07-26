@@ -42,7 +42,7 @@ action type,
 <ParamField body="extra_parameters" type="String" >
 UTXO Model:
     1. **input_selection:** inputs to be excluded and included in transactions associated with the UTXO model; inputs must be in correspondence with from_address (if specified); it must be a JSON string and has a structure that fits InputSelection
-    2. **inputs_to_spend:** UTXO you want as input
+    2. **inputs_to_spend:** UTXO you want as input. Please note that the length of the list of UTXOs should be less than or equal to 400.
         - tx_hash: Transaction tx_hash
         - vout_n: UTXO index
     3. **inputs_to_exclude:** UTXO you don't want as input
