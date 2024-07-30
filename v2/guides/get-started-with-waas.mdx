@@ -65,15 +65,15 @@ Register your API key and configure related permissions on Cobo Portal. To learn
 
 ## Authenticate your requests
 
-Note: You can skip this step if you choose to [use a WaaS SDK](/v2/developer-tools/quickstart-python), which encapsulates the authentication mechanism.
+<Note>You can skip this step if you choose to [use a WaaS SDK](/v2/developer-tools/quickstart-python), which encapsulates the authentication mechanism.</Note>
 
 To authenticate your API request, you need to provide your API key, a nonce, and the API signature as request headers. For more information, see [Cobo Auth](/v2/guides/overview/cobo-auth).
 
 ```
 headers = {
-"Biz-Api-Key": {YOUR_API_KEY}.hex(),
-"Biz-Api-Nonce": {Nonce},
-"Biz-Api-Signature": {YOUR_API_SIGNATURE}.hex(),
+  "Biz-Api-Key": {YOUR_API_KEY}.hex(),
+  "Biz-Api-Nonce": {Nonce},
+  "Biz-Api-Signature": {YOUR_API_SIGNATURE}.hex(),
 }
 ```
 
@@ -83,7 +83,7 @@ headers = {
 
 ## Send a request
 
-Note: You can skip this step if you choose to [use a WaaS SDK](/v2/developer-tools/quickstart-python), which offers ready-to-use functions that handle the API integration using the programming language of your project.
+<Note>You can skip this step if you choose to [use a WaaS SDK](/v2/developer-tools/quickstart-python), which offers ready-to-use functions that handle the API integration using the programming language of your project.</Note>
 
 This guide uses the [List supported chains](/v2/api-references/wallets/list-supported-chains) operation as an example to demonstrate how to send an API request. This operation retrieves all chains supported by a specific wallet type or subtype. In the following example, we retrieve all chains supported by [Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction).
 
