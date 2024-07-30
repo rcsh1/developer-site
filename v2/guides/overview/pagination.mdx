@@ -1,0 +1,9 @@
+---
+title: "Pagination"
+---
+
+Pagination in the WaaS 2.0 API allows you to retrieve data in manageable chunks. You can control the page size and navigate through the dataset using three query parameters:
+
+- `before`: This parameter specifies an object ID that acts as a starting point for retrieving data in reverse chronological order. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+- `after`: This parameter specifies an object ID that acts as a starting point for retrieving data in chronological order. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+- `limit`: This parameter defines the maximum number of objects you want to receive in each response.
