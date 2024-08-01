@@ -30,6 +30,7 @@ description: "This endpoint returns a JSON response with the currency rate and u
         <ResponseField name="minimum_deposit_threshold" type="String">Coin minimum deposit threshold</ResponseField>
         <ResponseField name="token_address" type="String">Smart contract address for token (null for main-chain token)</ResponseField>
         <ResponseField name="require_memo" type="String">Memo for specified coins(EOS,XLM,XRP,IOST)</ResponseField>
+        <ResponseField name="asset_model_type" type="String">Asset accounting method, 0: account model; 1: UTXO model</ResponseField>
     </Expandable>
 </ResponseField>
 
@@ -86,7 +87,8 @@ Request("GET", "/v1/custody/mpc/coin_info/", map[string]string{
         "abs_estimate_fee_usd": "37.03",
         "confirming_threshold": 4,
         "dust_threshold": 546,
-        "token_address": ""
+        "token_address": "",
+        "asset_model_type": 1
     }
 }
 
