@@ -5,7 +5,10 @@ contentType: multipart/form-data
 description: "This endpoint accepts parameters 'cobo_id' and 'request_id' as required fields, and 'fee', 'gas_price', 'gas_limit', and 'fee_amount' as optional fields. The endpoint returns a JSON response containing information about the transaction request."
 ---
 
-<Tip>Only transactions with the status 401, 402, and 403 are eligible to be replaced.</Tip>
+<Tip>
+Only transactions with the status 401, 402, and 403 are eligible to be replaced.<br/ >
+Once a transaction (the original transaction or the new transaction) on the chain reaches the required number of confirmations (transaction status changes to 900), other RBF-related transactions will be marked as replaced (transaction status changes to 901).
+</Tip>
 
 #### Request
 <ParamField body="cobo_id" type="String" required>Unique transaction ID</ParamField>

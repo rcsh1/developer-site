@@ -112,6 +112,21 @@
             <ResponseField name="tx_hash" type="String" >transaction hash</ResponseField>
         </Expandable>
     </ResponseField>
+    <ResponseField name="selected_utxos" type="object[]" >
+        <Expandable title="object">
+            <ResponseField name="address" type="String" >UTXO address</ResponseField>
+            <ResponseField name="tx_hash" type="String" >UTXO transaction hash</ResponseField>
+            <ResponseField name="vout_n" type="Int" >UTXO transaction index</ResponseField>
+            <ResponseField name="value" type="Int" >UTXO value</ResponseField>
+        </Expandable>
+    </ResponseField>
+    <ResponseField name="target_destinations" type="object[]" >
+        <Expandable title="object">
+            <ResponseField name="address" type="String" >target address</ResponseField>
+            <ResponseField name="value" type="Int" >target value</ResponseField>
+            <ResponseField name="is_change" type="Bool" >If is output for change</ResponseField>
+        </Expandable>
+    </ResponseField>
     <ResponseField name="extra_parameters" type="Json" >Extra parameters specified when constructing the transaction</ResponseField>
     <ResponseField name="created_time" type="Int" >Creation time of the transaction</ResponseField>
     <ResponseField name="updated_time" type="Int" >Last time the transaction is updated</ResponseField>

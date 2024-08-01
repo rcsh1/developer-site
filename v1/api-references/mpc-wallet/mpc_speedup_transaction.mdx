@@ -5,7 +5,10 @@ contentType: multipart/form-data
 description: "This endpoint allows users to speed up a previously submitted transaction by replacing it with a new transaction with higher transation fee. The endpoint accepts a POST request with parameters including cobo_id, request_id, fee, gas_price, gas_limit, and fee_amount. The response is a JSON object containing the updated transaction information."
 ---
 
-<Tip>Only transactions with the status 401, 402, and 403 are eligible to be replaced.</Tip>
+<Tip>
+Only transactions with the status 401, 402, and 403 are eligible to be replaced.<br/ >
+Once a transaction (the original transaction or the new transaction) on the chain reaches the required number of confirmations (transaction status changes to 900), other RBF-related transactions will be marked as replaced (transaction status changes to 901).
+</Tip>
 
 #### Request
 <ParamField body="cobo_id" type="String" required>Unique transaction ID</ParamField>
