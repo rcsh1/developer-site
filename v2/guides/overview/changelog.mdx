@@ -2,7 +2,40 @@
 title: "Changelog"
 ---
 
-#### **July 17, 2024**
+This changelog details all additions and changes to the WaaS 2.0 API.
+
+## v1.1.0
+
+This version was released on August 7, 2024.
+
+### New features
+
+Added OAuth operations for Cobo Portal App developers:
+
+- [Get access token](/v2/api-references/oauth/get-access-token)
+- [Refresh access token](/v2/api-references/oauth/refresh-access-token)
+
+### Improvements
+
+- The data type of `data.response_body` was updated from object to string in the response of [List webhook event logs](/v2/api-references/developers--webhooks/list-webhook-event-logs). 
+- Added the `signer` property to indicate whether the key share holder's TSS Node is a designated transaction signer. Affected schemas include:
+  - `CreateKeyShareHolder`
+  - `KeyShareHolder`
+- The `node_count` property was renamed as `participants` in:
+  - The request body of [Create project](/v2/api-references/wallets--mpc-wallets/create-project)
+  - The request body of [Create key share holder group](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group)
+  - The `KeyShareHolderGroup` schema
+  - The `MPCProject` schema
+- The `pubkey` property was renamed as `root_pubkey` in the `RootPubkey` schema.
+- Added the `root_pubkey` property to indicate the vault's root extended public key in the `TSSGroups` schema.
+- Several timestamp-related properties were renamed using the “_timestamp” suffix. Affected schemas include:
+  - `Transaction`
+  - `TransactionBlockInfo`
+  - `TransactionTimeline`
+  - `KeyShareHolderGroup`
+  - `MPCVault`
+
+## v1.0.0
 
 This is the first release of the Cobo WaaS 2.0 API.
 

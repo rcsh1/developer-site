@@ -1,0 +1,145 @@
+---
+title: "Get started with Java SDK"
+---
+
+## Overview
+
+This guide introduces how to get started with using the Cobo WaaS 2.0 Java SDK, which allows you to integrate the WaaS service into your existing application using the Java programming language.
+
+## Prerequisites
+
+- Install Java 1.8 or newer
+- Install Maven 3.8.3 or newer / Gradle 7.2 or newer
+
+- Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
+- You have [generated an API key](/v2/guides/overview/cobo-auth#generate-an-api-key), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
+
+## Add dependency
+
+For Maven users, add the dependency to your project's POM:
+
+<Note>It's recommended that you use the latest version of the WaaS SDK. See the [GitHub repository](https://github.com/CoboGlobal/cobo-waas2-java-sdk/tags) for the latest version.</Note>
+
+```
+<dependency>
+  <groupId>com.cobo</groupId>
+  <artifactId>cobo-waas2</artifactId>
+  <version>1.0.2</version>
+  <scope>compile</scope>
+</dependency>
+```
+
+For Gradle users, add the dependency to your project's build file:
+
+```
+  repositories {
+    mavenCentral()     // Fetch the dependency from Maven Central
+  }
+
+  dependencies {
+     implementation "com.cobo:cobo-waas2:1.0.2"
+  }
+```
+
+
+
+## Configure API key and HTTP host
+
+1. Set the private key.
+
+```java
+ApiClient defaultClient = Configuration.getDefaultApiClient();
+defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+```
+
+2. Select which [environment](/v2/guides/overview/environments) you want to use. The SDK uses the production environment by default. 
+
+```java
+// Select the development environment
+defaultClient.setEnv(Env.DEV);
+
+// Select the production environment
+defaultClient.setEnv(Env.PROD);
+```
+
+## Code samples
+
+For operation-specific documentation and sample code, see the [docs](https://github.com/CoboGlobal/cobo-waas2-java-sdk/tree/master/docs) folder in the WaaS SDK GitHub repository.
+
+### List supported chains
+
+```java
+// Import classes 
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.model.*;
+import com.cobo.waas2.api.WalletsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // Use the development environment 
+    defaultClient.setEnv(Env.DEV);
+    // Set the private key
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    WalletsApi apiInstance = new WalletsApi();
+    WalletType walletType = WalletType.fromValue("Custodial");
+    WalletSubtype walletSubtype = WalletSubtype.fromValue("Asset");
+    String chainIds = "BTC,ETH";
+    Integer limit = 10;
+    String before = "";
+    String after = "";
+    try {
+      ListSupportedChains200Response result = apiInstance.listSupportedChains(walletType, walletSubtype, chainIds, limit, before, after);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WalletsApi#listSupportedChains");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### Create a wallet
+
+```java
+// Import classes 
+
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.model.*;
+import com.cobo.waas2.api.WalletsApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment 
+        defaultClient.setEnv(Env.DEV);
+        // Set the private key
+        defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+        WalletsApi apiInstance = new WalletsApi();
+        CreateWalletParams createWalletParams = new CreateWalletParams(
+                new CreateCustodialWalletParams()
+                        .name("Example Wallet")
+                        .walletType(WalletType.CUSTODIAL)
+                        .walletSubtype(WalletSubtype.ASSET)
+        );
+        try {
+            CreatedWalletInfo result = apiInstance.createWallet(createWalletParams);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#createWallet");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
