@@ -1,0 +1,181 @@
+---
+title: "Get started with Go SDK"
+---
+
+## Overview
+
+This guide introduces how to get started with using the Cobo WaaS 2.0 Go SDK, which allows you to integrate the WaaS service into your existing application using the Go programming language.
+
+## Prerequisites
+
+- You have installed Go 1.18 or newer.
+- Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
+- You have [generated an API key](/v2/guides/overview/cobo-auth#generate-an-api-key), and [register the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
+
+## Install the SDK
+
+1. Create a Go project if you haven't.
+2. In the `go.mod` file of your project, add the following line:
+
+    ```go
+    require github.com/CoboGlobal/cobo-waas2-go-sdk v1.0.1
+    ```
+
+    <Note>It's recommended that you use the latest version of the WaaS SDK. See the tags in the <a href="https://github.com/CoboGlobal/cobo-waas2-go-sdk/tags">GitHub repository</a>.</Note>
+
+3. Run the `go mod tidy` command in a terminal or in your IDE to install the dependencies.
+4. In your `main.go` file, import the WaaS SDK as follows:
+
+    ```go
+    import (
+        ...
+        coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+        ...
+    )
+    ```
+
+## Configure API key and HTTP host
+
+In the main function in your `main.go` file, configure the HTTP host by selecting the environment type, and provide your private key.
+The following code snippet shows the configuration for the development environment.
+
+```go
+// Select the environment that you use and comment out the other line of code
+ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
+ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key.
+    Secret: "<YOUR_PRIVATE_KEY>",
+})
+```
+
+## Sample code
+
+For operation-specific documentation and sample code, see the [docs](https://github.com/CoboGlobal/cobo-waas2-go-api/tree/master/docs) folder in the WaaS SDK GitHub repository. 
+
+### List supported chains
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+)
+
+func main() {
+
+	// Specify the wallet type as Custodial Wallet.
+	walletType := coboWaas2.WalletType("Custodial")
+	// walletType, err := coboWaas2.NewWalletTypeFromValue("Custodial")
+
+	// Specify the wallet sub-type as Asset Wallet.
+	walletSubtype := coboWaas2.WalletSubtype("Asset")
+	// walletSubType, err := coboWaas2.NewWalletSubtypeFromValue("Asset")
+
+	// Use pagination parameters if needed
+	limit := int32(10)
+	before := ""
+	after := ""
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// Select the environment that you use and comment out the other line of code.
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		// Replace `<YOUR_PRIVATE_KEY>` with your own private key.
+		Secret: "<YOUR_PRIVATE_KEY>",
+	})
+	// Call the List supported chains operation.
+	req := apiClient.WalletsAPI.ListSupportedChains(ctx).WalletType(walletType).WalletSubtype(walletSubtype)
+	if limit > 0 {
+		req = req.Limit(limit)
+	}
+	if before != "" {
+		req = req.Before(before)
+	}
+	if after != "" {
+		req = req.After(after)
+	}
+	resp, r, err := req.Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.ListSupportedChains``: %v\n", err)
+		if apiErr, ok := err.(*coboWaas2.GenericOpenAPIError); ok {
+			fmt.Fprintf(os.Stderr, "Error response: %s\n", string(apiErr.Body()))
+		}
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// Handle response from `CreateWallet`.
+	respJson, _ := json.MarshalIndent(resp.GetActualInstance(), "", " ")
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.CreateWallet`: \n%s", string(respJson))
+}
+```
+
+### Create a wallet
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+)
+
+func main() {
+	// Specify the wallet type of the wallet to be created as Custodial Wallet.
+	walletType, err := coboWaas2.NewWalletTypeFromValue("Custodial")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when new `WalletType``: %v\n", err)
+		return
+	}
+      // Specify the wallet sub-type of the wallet to be created as Asset Wallet.
+	walletSubType, err := coboWaas2.NewWalletSubtypeFromValue("Asset")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when new `WalletSubType``: %v\n", err)
+		return
+	}
+	createWalletParams := coboWaas2.CreateWalletParams{
+		CreateCustodialWalletParams: coboWaas2.NewCreateCustodialWalletParams(
+            // Specify the name of the wallet to be created.
+			"My WaaS 2.0 Wallet for doc test",
+			*walletType,
+			*walletSubType,
+		)} 
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// Select the environment tha you use and comment out the other line of code.
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+             // Replace `<YOUR_PRIVATE_KEY>` with your own private key.
+		Secret: "<YOUR_PRIVATE_KEY>",
+	})
+	// Call the Create wallet operation.
+	resp, r, err := apiClient.WalletsAPI.CreateWallet(ctx).CreateWalletParams(createWalletParams).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.CreateWallet``: %v\n", err)
+		if apiErr, ok := err.(*coboWaas2.GenericOpenAPIError); ok {
+			fmt.Fprintf(os.Stderr, "Error response: %s\n", string(apiErr.Body()))
+		}
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+		return
+	}
+	// Handle response from `CreateWallet`.
+	respJson, _ := json.MarshalIndent(resp.GetActualInstance(), "", " ")
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.CreateWallet`: \n%s", string(respJson))
+}
+```

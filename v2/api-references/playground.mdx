@@ -1,0 +1,38 @@
+---
+title: "Understand API Playground"
+---
+
+The API Playground is a web-based tool designed for developers looking to explore and experiment with the Cobo WaaS 2.0 API directly from the Developer Hub, all within the browser.
+
+![API Playground overview](/v2/images/api-reference/playground-overview.png)
+
+## Overview
+
+The API Playground consists of two main parts:
+
+- Request composer located in the center. It allows easy modification of the authorization headers, path parameters, query parameters, and request body as needed.
+- Request viewer and response viewer located on the right. They display sample requests and responses in mainstream languages. The request viewer updates in real time as you make changes in the request composer.
+
+<Note>The sample requests are for your reference only and cannot be directly used for API calls. For actual API requests, you need to provide your API key (public key), a nonce, and an API signature as request headers. For more details, see <a href="/v2/guides/overview/cobo-auth">Authentication</a>. For API requests sent via the API Playground, you only need to provide your API secret (private key) in the request headers.</Note>
+
+## Prerequisites
+
+To use the API Playground, ensure the following:
+
+- Create and configure your Cobo Account for the development environment. For instructions on creating and setting up a Cobo Account, see [Set up Cobo Accounts](https://manuals.cobo.com/en/accounts/sign-up). For more details about development environments, see [Environment types](/v2/guides/overview/environments).
+- Generate an API key specifically for the development environment and configure it on Cobo Portal. For instructions on generating and setting up an API key, see [API Key](/v2/guides/overview/cobo-auth#api-key). The API secret (private key) will be used in the following steps.
+
+<Note><ul><li>The API Playground only supports API keys registered in the development environment.</li><li>For security reasons, avoid using the API key for API Playground testing in the production environment.</li></ul></Note>
+
+## Test an API operation
+
+1. Select the API operation you want to test.
+2. Modify the request as follows:
+
+   - Click **Authorization**, and then enter your private key into the `BIZ-API-KEY` field.
+   - Set the path parameters, query parameters, and request body as needed.
+
+3. Click the **Send** button to submit the request.
+
+Upon successful submission, you will find the response returned from the WaaS service under the request composer.
+![API Playground response](/v2/images/api-reference/playground-response.png)

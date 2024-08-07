@@ -8,7 +8,7 @@ info:
     - Support for 80+ chains and 3000+ tokens
     - A comprehensive selection of webhook events
     - Flexible usage models for MPC wallets, including [Organization-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction) and [User-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction)
-    - Programmatic control of smart contract wallets such as Safe\{Wallet\} with fine-grained access controls
+    - Programmatic control of smart contract wallets such as Safe{Wallet} with fine-grained access controls
     - Seamlessly transfer funds across multiple exchanges, including Binance, OKX, Bybit, Deribit, and more
 
     For more information about the WaaS 2.0 API, see [Introduction to WaaS 2.0](https://www.cobo.com/developers/v2/guides/overview/introduction).
@@ -35,6 +35,8 @@ tags:
     description: Operations related to all transactions.
   - name: Developers - Webhooks
     description: Operations related to webhooks.
+  - name: OAuth
+    description: Operations related to OAuth.
 paths:
   /wallets/chains:
     get:
@@ -552,7 +554,7 @@ paths:
       description: |
         This operation retrieves a list of all Cobo key share holders and their information. 
 
-        <Note>When using this operation, `type` will only return `Cobo` and will never return `Mobile` or `API`.</Note>
+        <Info>When using this operation, `type` will only return `Cobo` and will never return `Mobile` or `API`.</Info>
       security:
         - CoboAuth: []
       responses:
@@ -571,7 +573,7 @@ paths:
       description: |
         This operation creates a project.
 
-        <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
+        <Info>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -593,7 +595,7 @@ paths:
       description: |
         This operation retrieves a list of all projects.
 
-        <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
+        <Info>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Info>
       security:
         - CoboAuth: []
       parameters:
@@ -615,7 +617,7 @@ paths:
       summary: Get project information
       description: |
         This operation retrieves detailed information about a project.
-        <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
+        <Info>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Info>
       security:
         - CoboAuth: []
       parameters:
@@ -635,7 +637,7 @@ paths:
       description: |
         This operation updates a project's name.
 
-        <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
+        <Info>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1056,6 +1058,8 @@ paths:
 
         In some scenarios, you want to sign a message for identity authentication or transaction approval. You need to provide details such as the source address, destination address, and the message to be signed. A transaction request for tracking is returned upon successful operation.
 
+        You can get the signature result by calling [Get transaction information](/v2/api-references/transactions/get-transaction-information). 
+
         <Note>Currently, only MPC Wallets support this type of transaction to sign a message.</Note>
       security:
         - CoboAuth: []
@@ -1244,6 +1248,51 @@ paths:
           $ref: '#/components/responses/createTransactionRequestResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /oauth/token:
+    get:
+      tags:
+        - OAuth
+      operationId: get_token
+      summary: Get access token
+      description: |
+        <Note>This operation is only applicable to Cobo Portal App developers. To call this operation, you need to use the OAuth authentication method that requires an App Key.</Note>
+        This operation allows Cobo Portal Apps to get an access token and a refresh token with a specified App ID, Org ID, and grant type. 
+
+        Access tokens allow the app to signal to the WaaS service that it has received permission from the organization admin to access specific resources. Once the app has been granted permission by an organization admin, it can use this operation to obtain both an access token and a refresh token.
+
+        For security purposes, access tokens expire after a certain period. Once they expire, the app need to [Refresh token](/v2/api-references/oauth/refresh-access-token) to get a new access token and a new fresh token. 
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ClientIdRequiredParam'
+        - $ref: '#/components/parameters/OrgIdRequiredParam'
+        - $ref: '#/components/parameters/GrantTypeRequiredParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTokenResponse'
+        4XX:
+          $ref: '#/components/responses/oauthErrorResponse'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    post:
+      tags:
+        - OAuth
+      operationId: refresh_token
+      summary: Refresh access token
+      description: |
+        <Note>This operation is only applicable to Cobo Portal Apps developers. To call this operation, you need to use the OAuth authentication method that requires an App Key.</Note>
+        This operation allows Cobo Portal Apps to obtain a new access token with a specified App ID, grant type and a refresh token. For security purposes, access tokens expire after a certain period. Once they expire, the app need to use this operation to get a new access token and a new fresh token. 
+      security:
+        - CoboAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/tokenEndpointBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/refreshTokenResponse'
+        4XX:
+          $ref: '#/components/responses/oauthErrorResponse'
         5XX:
           $ref: '#/components/responses/internalServerError'
   /webhooks/endpoints:
@@ -1513,7 +1562,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         chain_id:
           type: string
@@ -1590,7 +1639,7 @@ components:
       properties:
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         symbol:
           type: string
@@ -1706,7 +1755,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: BTC
         balance:
           type: object
@@ -1735,11 +1784,28 @@ components:
               example: '3.0'
     AssetBalance:
       type: object
-      description: The data for token balance information.
+      description: The data for asset balance information.
       required:
         - asset_id
         - balance
       properties:
+        asset_id:
+          type: string
+          description: (This concept applies to Exchange Wallets only) The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account.
+          example: USDT
+        balance:
+          $ref: '#/components/schemas/TokenBalance/properties/balance'
+    SubWalletAssetBalance:
+      type: object
+      description: The data for sub wallet asset balance information.
+      required:
+        - asset_id
+        - balance
+      properties:
+        sub_wallet_id:
+          type: string
+          description: The exchange trading account or a sub-wallet ID.
+          example: Asset
         asset_id:
           type: string
           description: (This concept applies to Exchange Wallets only) The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account.
@@ -1856,28 +1922,11 @@ components:
               example: d8f062da-39f4-4a11-8b9d-12595854237f
             exchange_id:
               $ref: '#/components/schemas/ExchangeId'
-            parent_wallet_id:
+            main_wallet_id:
               type: string
               description: The wallet ID of the Main Account associated with the Sub Account. This property is returned only if you are creating or querying an Exchange Wallet (Sub Account).
               format: uuid
               example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-            sub_accounts:
-              type: array
-              items:
-                type: object
-                required:
-                  - wallet_id
-                  - account_id
-                properties:
-                  wallet_id:
-                    type: string
-                    format: uuid
-                    example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-                    description: The wallet ID of the Sub Account. This property is returned only if you are creating or querying an Exchange Wallet (Main Account).
-                  account_id:
-                    type: string
-                    description: 'The Sub Account ID. It can be an email address, a user name, or a custom account ID. This property is returned only if you are creating or querying an Exchange Wallet (Main Account).'
-                    example: sub01@xx.com
     WalletInfo:
       oneOf:
         - $ref: '#/components/schemas/CustodialWalletInfo'
@@ -1933,7 +1982,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH
         max_transferable_value:
           type: string
@@ -1954,7 +2003,7 @@ components:
           example: '0x0000000000000000000000000000000000000000'
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         memo:
           type: string
@@ -2009,7 +2058,7 @@ components:
           properties:
             vault_id:
               type: string
-              description: 'The ID of the owning vault. You can call [List all vaults](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-vaults) to retrieve all vault IDs under your organization.'
+              description: 'The ID of the owning vault. You can call [List all vaults](/v2/api-references/wallets--mpc-wallets/list-all-vaults) to retrieve all vault IDs under your organization.'
     CreateSmartContractWalletParams:
       title: Smart Contract Wallets
       oneOf:
@@ -2180,37 +2229,6 @@ components:
           type: string
           example: Example Wallet
           description: The wallet name.
-        apikey:
-          type: string
-          description: The API key of your exchange account. This property is required when updating the information of an Exchange Wallet.
-          example: d8f062da-39f4-4a11-8b9d-12595854237f
-        secret:
-          type: string
-          description: The API secret of your exchange account. This property is required when updating the information of an Exchange Wallet.
-          example: 75B4F636193162488A3728B4A5797708
-        passphrase:
-          type: string
-          description: The passphrase of your exchange account.
-          example: sXASDKWKLLsWWEE
-        memo:
-          type: string
-          description: The memo you use when applying for the API key of your exchange account.
-          example: xxx@cobo.com
-        account_identify:
-          type: string
-          description: |
-            The identifier of your exchange account.
-            - For Binance, this is email address of your exchange account.
-            - For OKX, this is the user name of your exchange account.
-          example: xxx@cobo.com
-        ga_code:
-          type: string
-          description: The GA code for the exchange.
-          example: sXASDKWKLLsWWEE75B4F636193162488A3728B4A5797708
-        main_wallet_id:
-          type: string
-          description: The ID of the Exchange Wallet (Main Account).
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     UpdateWalletParams:
       oneOf:
         - $ref: '#/components/schemas/UpdateCustodialWalletParams'
@@ -2229,7 +2247,7 @@ components:
       enum:
         - SECP256K1
         - ED25519
-      example: ED25519
+      example: SECP256K1
       description: |
         The elliptic curve type of the [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key). Possible values include:
 
@@ -2254,7 +2272,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/KeyShareHolder'
-        node_count:
+        participants:
           type: integer
           description: The number of key share holders in this key share holder group.
           example: 3
@@ -2264,7 +2282,7 @@ components:
           example: 2
         status:
           $ref: '#/components/schemas/KeyShareHolderGroupStatus'
-        create_timestamp:
+        created_timestamp:
           type: integer
           format: int64
           description: 'The key share holder group''s creation time in Unix timestamp format, measured in milliseconds.'
@@ -2312,8 +2330,16 @@ components:
           $ref: '#/components/schemas/KeyShareHolderType'
         tss_node_id:
           type: string
-          description: The TSS Node ID.
+          description: Key share holder's TSS Node ID.
           example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+        signer:
+          type: boolean
+          example: true
+          description: |
+            Whether the key share holder's TSS Node is a designated transaction signer.
+            - `true`: The TSS Node is a designated transaction signer.
+
+            - `false`: The TSS Node is not a designated transaction signer.
     KeyShareHolder:
       type: object
       description: The data for MPC Wallets' key share holder information.
@@ -2335,6 +2361,14 @@ components:
             - `true`: The TSS Node is online.
 
             - `false`: The TSS Node is offline.
+        signer:
+          type: boolean
+          example: true
+          description: |
+            Whether the key share holder's TSS Node is a designated transaction signer.
+            - `true`: The TSS Node is a designated transaction signer.
+
+            - `false`: The TSS Node is not a designated transaction signer.
         status:
           $ref: '#/components/schemas/KeyShareHolderStatus'
     KeyShareHolderStatus:
@@ -2360,7 +2394,7 @@ components:
         - Cobo
         - Mobile
         - API
-      example: Cobo
+      example: API
       description: |
         The key share holder's TSS Node type. Possible values include:
 
@@ -2391,7 +2425,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RootPubkey'
-        create_timestamp:
+        created_timestamp:
           type: integer
           format: int64
           description: 'The vault''s creation time in Unix timestamp format, measured in milliseconds.'
@@ -2423,7 +2457,7 @@ components:
           type: string
           example: Project name
           description: The project name.
-        node_count:
+        participants:
           type: integer
           example: 3
           description: The number of key share holders in the project.
@@ -2440,7 +2474,7 @@ components:
       type: object
       description: The data for MPC Root Extended Public Key information.
       properties:
-        pubkey:
+        root_pubkey:
           type: string
           description: 'The vault''s [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).'
           example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
@@ -2456,6 +2490,10 @@ components:
           example: mMedDioOKhTlhGyQRzMv
         curve:
           $ref: '#/components/schemas/CurveType'
+        root_pubkey:
+          type: string
+          description: 'The vault''s [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).'
+          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
     TSSRequest:
       type: object
       description: The data for the TSS request information.
@@ -2493,19 +2531,19 @@ components:
 
         - `KeyGeneratingFailed`: The key share generation process has failed for the action to be done to the TSS request.
 
-        - `Success`: The action done to the TSS request has been completed successfully. If you see this status while running [Cancel TSS request](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/cancel-tss-request), this mean the specified TSS request has been successfully canceled.
+        - `Success`: The action done to the TSS request has been completed successfully. If you see this status while running [Cancel TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/cancel-tss-request), this mean the specified TSS request has been successfully canceled.
     TSSRequestType:
       type: string
       enum:
         - KeyGen
         - KeyGenFromKeyGroup
         - Recovery
-      example: KeyGen
+      example: Recovery
       description: |
         The TSS request type. Possible values include:
-        - `KeyGen`: This is a key generation request to create a [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key) and key shares for your [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created the Main Group with [Create key share holder group](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group). You only need to do this once per [organization](https://manuals.cobo.com/en/portal/organization/introduction).
+        - `KeyGen`: This is a key generation request to create a [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key) and key shares for your [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created the Main Group with [Create key share holder group](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group). You only need to do this once per [organization](https://manuals.cobo.com/en/portal/organization/introduction).
 
-        - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create key shares for your [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) or [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created these key share holder groups with [Create key share holder group](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group).
+        - `KeyGenFromKeyGroup`: This is a request to use the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) to create key shares for your [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) or [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) after you've created these key share holder groups with [Create key share holder group](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group).
 
         - `Recovery`: This is a request to create key shares using the [Recovery Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) for a key share holder in the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups) if their key share has been lost (e.g. by losing their phone).
     UpdateGroupAction:
@@ -2527,7 +2565,7 @@ components:
       properties:
         key_share_holder_group_id:
           type: string
-          description: The ID of the Source Group.
+          description: The source key share holder group ID.
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         tss_node_ids:
           type: array
@@ -2537,7 +2575,7 @@ components:
           description: |
             The TSS Node IDs participating in creating a new key share holder group when `type` is set to either `KeyGenFromKeyGroup` or `Recovery`. 
 
-            **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), for `tss_node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`. To obtain the Cobo TSS Node ID, run [List all Cobo key share holders](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders).
+            **Note:** In any [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) such as the 2-2, 2-3, and 3-3 schemes (in the "threshold - participants" format), for `tss_node_ids`, you only need to fill in 1 Cobo TSS Node ID and enough non-Cobo TSS Node IDs to satisfy the number of approvers specified in `threshold`. To obtain the Cobo TSS Node ID, run [List all Cobo key share holders](/v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders).
     FeeType:
       type: string
       enum:
@@ -2730,7 +2768,7 @@ components:
           UTXO: '#/components/schemas/UtxoFeeRate:'
     EstimatedFixedFee:
       type: object
-      description: The transaction fee that you are willing to pay based on the fixed fee model for some blockchains. The fee can vary between different chains.
+      description: 'In the fixed fee model, the transaction fee is a fixed amount within a certain amount of period regardless of the transaction size or network congestion, which can vary between different chains.'
       title: Estimated Fixed
       required:
         - fee_type
@@ -2879,7 +2917,10 @@ components:
           UTXO: '#/components/schemas/EstimatedUtxoFee'
     TransactionRequestFixedFee:
       type: object
-      description: The transaction fee that you are willing to pay based on the fixed fee model for some blockchains. The fee can vary between different chains.
+      description: |
+        In the fixed fee model, the transaction fee is a fixed amount within a certain amount of period regardless of the transaction size or network congestion, which can vary between different chains.
+
+        You can specify the maximum fee amount to limit the transaction fee. The transaction will fail if the transaction fee exceeds the specified maximum fee amount.
       title: Fixed in Request
       required:
         - fee_type
@@ -2899,7 +2940,7 @@ components:
       description: |
         In the EIP-1559 fee model, the transaction fee is calculated by multiplying the gas price and the gas units used by the transaction. This can be expressed as: Transaction fee = gas price * gas units used. 
 
-        You can specify the maximum gas fee per gas unit and the maximum priority fee per gas unit to limit the transaction fee amount. You can also specify the gas limit. If the gas units used exceeds the gas limit, the transaction will fail.
+        You can specify the maximum gas fee per gas unit, maximum priority fee per gas unit, and the gas limit to limit the gas price, priority fee per gas unit, gas units used in the transaction. 
       title: EIP-1559 in Request
       required:
         - fee_type
@@ -2926,7 +2967,7 @@ components:
       description: |
         In the legacy fee model, the transaction fee is calculated by multiplying the gas price by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). 
 
-        You can specify the gas limit. If the gas units used exceed the gas limit, the transaction will fail.
+        You can specify the gas limit to limit the gas units used in the transaction.
       required:
         - fee_type
         - token_id
@@ -2950,7 +2991,9 @@ components:
     TransactionRequestUtxoFee:
       type: object
       description: |
-        In the UTXO fee model, the transaction fee is calculated by multiplying the fee rate by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. The transaction will fail if the transaction fee exceeds the maximum fee.
+        In the UTXO fee model, the transaction fee is calculated by multiplying the fee rate by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. 
+
+        You can specify the maximum fee amount to limit the transaction fee. The transaction will fail if the transaction fee exceeds the specified maximum fee amount.
       required:
         - fee_type
         - token_id
@@ -3026,11 +3069,11 @@ components:
           example: Rejected by signer Cobo TSS
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3146,12 +3189,12 @@ components:
             - `true`: The transaction is a Loop transfer.
             - `false`: The transaction is not a Loop transfer.
           example: false
-        created_time:
+        created_timestamp:
           type: integer
           format: int64
           description: 'The time when the transaction was created, in Unix timestamp format, measured in milliseconds.'
           example: 1610445878970
-        updated_time:
+        updated_timestamp:
           type: integer
           format: int64
           description: 'The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.'
@@ -3164,23 +3207,7 @@ components:
             timeline:
               type: array
               items:
-                type: object
-                description: 'The information about transaction timeline, which lists all statuses that the transaction passes through with timestamps indicating when each status is completed.'
-                properties:
-                  status:
-                    $ref: '#/components/schemas/TransactionStatus'
-                  finished:
-                    type: boolean
-                    description: |
-                      Whether the transaction status is completed:
-                        - `true`: The transaction status is completed.
-                        - `false`: The transaction is currently in the status.
-                    example: true
-                  finished_time:
-                    type: integer
-                    format: int64
-                    description: 'The time when the transaction status is completed in Unix timestamp format, measured in milliseconds.'
-                    example: 1610445878970
+                $ref: '#/components/schemas/TransactionTimeline'
     TransactionApprover:
       type: object
       description: The approver data for transaction.
@@ -3206,7 +3233,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         asset_id:
           type: string
@@ -3383,7 +3410,7 @@ components:
           - `FailedBySigner`: The transaction failed during the signing process.
           - `FailedBroadcasting`: The transaction failed to be broadcast to the blockchain network.
           - `CanceledBySpender`: The transaction is canceled by a Spender.
-          - `CanceledByAPI`: The transaction is canceled by a [Cancel transaction](https://www.cobo.com/developers/v2/api-references/transactions/cancel-transaction) operation.
+          - `CanceledByAPI`: The transaction is canceled by a [Cancel transaction](/v2/api-references/transactions/cancel-transaction) operation.
           - `Queue`: The transaction is queued to be processed by Cobo Portal.
           - `OnchainRejection`: The transaction is rejected from being added to the blockchain.
           - `FailedOnChain`: The transaction failed on the blockchain.
@@ -3391,7 +3418,7 @@ components:
           - `ReplacedByNewTransaction`: The transaction has been replaced by a new transaction.
     TransactionTimeline:
       type: object
-      description: The data for transaction timeline information.
+      description: 'The information about transaction timeline, which lists all statuses that the transaction passes through with timestamps indicating when each status is completed.'
       properties:
         status:
           $ref: '#/components/schemas/TransactionStatus'
@@ -3399,10 +3426,10 @@ components:
           type: boolean
           description: |
             Whether the transaction status is completed:
-            - `true`: The transaction status is completed.
-            - `false`: The transaction is currently in the status.
+              - `true`: The transaction status is completed.
+              - `false`: The transaction is currently in the status.
           example: true
-        finished_time:
+        finished_timestamp:
           type: integer
           format: int64
           description: 'The time when the transaction status is completed in Unix timestamp format, measured in milliseconds.'
@@ -3465,7 +3492,7 @@ components:
         - DepositFromAddress
         - DepositFromWallet
         - DepositFromLoop
-      example: ExternalAddress
+      example: DepositFromAddress
       description: |
         The transaction source. Possible values include:
           - `Asset`: A Custodial Wallet (Asset Wallet).
@@ -3477,14 +3504,16 @@ components:
           - `DepositFromAddress`: An address that can be a Cobo's wallet address or an external address.
           - `DepositFromWallet`: An Exchange Wallet.
           - `DepositFromLoop`: A transfer sender through the Loop transfer network.
+
+        For the same transaction, the transaction source varies depending on whether you are the initiator or the receiver of the transaction. 
+
+          - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
+          - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
     TransactionCustodialAssetWalletSource:
       type: object
       description: |
-        Information about the transaction source, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
-        - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
-      title: Custodial Asset Wallet
+        Information about the transaction source type `Asset`.
+      title: Custodial Wallet (Asset)
       required:
         - source_type
         - wallet_id
@@ -3499,10 +3528,7 @@ components:
     TransactionMPCWalletSource:
       type: object
       description: |
-        Information about the transaction source, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
-        - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
+        Information about the transaction source type `Org-Controlled` and `User-Controlled`.
       title: MPC Wallet
       required:
         - source_type
@@ -3530,10 +3556,7 @@ components:
     TransactionSmartContractSafeWalletSource:
       type: object
       description: |
-        Information about the transaction source, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
-        - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
+        Information about the transaction source type `Safe{Wallet}`.
       title: Smart Contract Wallet
       required:
         - source_type
@@ -3557,10 +3580,7 @@ components:
     TransactionExchangeWalletSource:
       type: object
       description: |
-        Information about the transaction source, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
-        - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
+        Information about the transaction source types `Main` and `Sub`.
       title: Exchange Wallet
       required:
         - source_type
@@ -3583,10 +3603,7 @@ components:
     TransactionDepositFromAddressSource:
       type: object
       description: |
-        Information about the transaction source, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
-        - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
+        Information about the transaction source type `DepositFromAddress`.
       title: Deposit from Address
       required:
         - source_type
@@ -3612,10 +3629,7 @@ components:
     TransactionDepositFromWalletSource:
       type: object
       description: |
-        Information about the transaction source, which varies depending on whether you are the initiator or the receiver of the transaction.
-
-        - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
-        - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
+        Information about the transaction source type `DepositFromWallet`.
       title: Deposit from Wallet
       required:
         - source_type
@@ -3641,10 +3655,7 @@ components:
     TransactionDepositFromLoopSource:
       type: object
       description: |
-        Information about the transaction source, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction source, and the `source` will be displayed as one of the following wallet sub-types: `Asset`, `Org-Controlled`, `User-Controlled`, `Safe{Wallet}`, `Main`, or `Sub`.
-        - As the receiver, you will see the `source` as either `DepositFromAddress`, `DepositFromWallet`, or `DepositFromLoop`. If the transaction is from the Loop transfer network, the source will be `DepositFromLoop`. Otherwise, it will be either `DepositFromWallet` (indicating an Exchange Wallet) or `DepositFromAddress` (indicating other wallet type than an Exchange Wallet or an external address).
+        Information about the transaction source type `DepositFromLoop`.
       title: Deposit from Loop
       required:
         - source_type
@@ -3686,13 +3697,15 @@ components:
           - `EVM_EIP_712_Signature`: An EVM EIP-712 signature. For more details, see [Typed structured data hashing and signing](https://eips.ethereum.org/EIPS/eip-712).
           - `DepositToAddress`: An address that can be a Cobo's wallet address or an external address.
           - `DepositToWallet`: An Exchange Wallet.
+
+        For the same transaction, the transaction destination varies depending on whether you are the initiator or the receiver of the transaction. 
+
+          - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
+          - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
     TransactionDepositToAddressDestination:
       type: object
       description: |
-        Information about the transaction destination, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
-        - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
+        Information about the transaction destination type `DepositToAddress`.
       title: Deposit To Address
       required:
         - destination_type
@@ -3728,10 +3741,7 @@ components:
     TransactionDepositToWalletDestination:
       type: object
       description: |
-        Information about the transaction destination, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
-        - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
+        Information about the transaction destination type `DepositToWallet`.
       title: Deposit To Wallet
       required:
         - destination_type
@@ -3766,10 +3776,7 @@ components:
       title: EVM Contract
       type: object
       description: |
-        Information about the transaction destination, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
-        - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
+        Information about the transaction destination type `EVM_Contract`.
       required:
         - destination_type
         - address
@@ -3795,10 +3802,7 @@ components:
     TransactionMessageSignEIP191Destination:
       title: EIP-191 Signature
       description: |
-        Information about the transaction destination, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
-        - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
+        Information about the transaction destination type `EVM_EIP_191_Signature`.
       type: object
       required:
         - destination_type
@@ -3813,10 +3817,7 @@ components:
     TransactionMessageSignEIP712Destination:
       title: EIP-712 Signature
       description: |
-        Information about the transaction destination, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
-        - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
+        Information about the transaction destination type `EVM_EIP_712_Signature`.
       type: object
       required:
         - destination_type
@@ -3833,10 +3834,7 @@ components:
     TransactionTransferToAddressDestination:
       type: object
       description: |
-        Information about the transaction destination, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
-        - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
+        Information about the transaction destination type `Address`.
       title: Address
       required:
         - destination_type
@@ -3898,10 +3896,7 @@ components:
     TransactionTransferToWalletDestination:
       type: object
       description: |
-        Information about the transaction destination, which varies depending on whether you are the initiator or the receiver of the transaction. 
-
-        - As the initiator, you will see detailed information about the transaction destination, and the `destination` will be displayed as one of the following types: `EVM_Contract`, `EVM_EIP_191_Signature`, `EVM_EIP_712_Signature`, `DepositToAddress`, or `DepositToWallet`. `DepositToWallet` indicates the destination is an Exchange Wallet, while `DepositToAddress` indicates the destination is a wallet of other wallet types or an external address.
-        - As the receiver, you will see the `destination` as the type `Address` or `ExchangeWallet`. `Address` indicates the destination is a wallet of other wallet types than Exchange Wallets or an external address.
+        Information about the transaction destination type `ExchangeWallet`.
       title: Exchange Wallet
       required:
         - destination_type
@@ -3963,7 +3958,7 @@ components:
           format: int64
           description: The block number.
           example: 123
-        block_time:
+        block_timestamp:
           type: integer
           format: int64
           description: 'The time when the block was created, in Unix timestamp format, measured in milliseconds.'
@@ -4174,7 +4169,7 @@ components:
           - `SpeedUp`: To speed up a transaction.
     CustodialTransferSource:
       type: object
-      description: The information about the transaction source.
+      description: The information about the transaction source types `Asset` and `Web3`.
       title: Transfer from Custodial Wallet
       required:
         - source_type
@@ -4189,7 +4184,10 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
     MpcTransferSource:
       type: object
-      description: 'The information about the transaction source. If you specify both the `address` or `included_utxos` properties, the specified included UTXOs must belong to the address.'
+      description: |
+        The information about the transaction source types `Org-Controlled` and `User-Controlled`. 
+
+        If you specify both the `address` or `included_utxos` properties, the specified included UTXOs must belong to the address.
       title: Transfer from MPC Wallet
       required:
         - source_type
@@ -4216,7 +4214,7 @@ components:
             $ref: '#/components/schemas/TransactionUtxo'
     SafeTransferSource:
       type: object
-      description: The information about the transaction source.
+      description: 'The information about the transaction source type `Safe{Wallet}`.'
       title: Transfer from Smart Contract Wallet
       required:
         - source_type
@@ -4278,7 +4276,10 @@ components:
           description: 'The wallet address of the Delegate. This is required when initiating a transfer from Smart Contract Wallets (Safe{Wallet}).'
     ExchangeTransferSource:
       type: object
-      description: The information about the transaction source. An Exchange Wallet (Sub Account) as the transaction source can only transfer tokens to another Exchange Wallet.
+      description: |
+        The information about the transaction source types `Main` and `Sub`. 
+
+        An Exchange Wallet (Sub Account) as the transaction source can only transfer tokens to another Exchange Wallet.
       title: Transfer from Exchange Wallet
       required:
         - source_type
@@ -4314,7 +4315,9 @@ components:
     AddressTransferDestination:
       type: object
       description: |
-        The information about the transaction destination. Specify either the `account_output` property or the `utxo_outputs` property. Only MPC Wallets as the transaction source can transfer tokens to multiple addresses by using the `utxo_outputs` property.
+        The information about the transaction destination type `Address`. 
+
+        Specify either the `account_output` property or the `utxo_outputs` property. Only MPC Wallets as the transaction source can transfer tokens to multiple addresses by using the `utxo_outputs` property.
       title: Transfer To Address
       required:
         - destination_type
@@ -4380,7 +4383,10 @@ components:
           example: false
     ExchangeTransferDestination:
       type: object
-      description: The information about the transaction destination. An Exchange Wallet (Sub Account) as the transaction destination can only receives token transfers from another Exchange Wallet.
+      description: |
+        The information about the transaction destination type `ExchangeWallet`. 
+
+        An Exchange Wallet (Sub Account) as the transaction destination can only receives token transfers from another Exchange Wallet.
       title: Transfer To Exchange Wallet
       required:
         - destination_type
@@ -4441,7 +4447,7 @@ components:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: 'The token ID of the transferred token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID of the transferred token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
@@ -4497,7 +4503,7 @@ components:
           $ref: '#/components/schemas/TransferSource'
         token_id:
           type: string
-          description: 'The token ID of the transferred token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID of the transferred token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         destination:
           $ref: '#/components/schemas/TransferDestination'
@@ -4522,7 +4528,7 @@ components:
           $ref: '#/components/schemas/EstimateFeeRequestType'
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -4532,7 +4538,7 @@ components:
           $ref: '#/components/schemas/FeeType'
     BaseContractCallSource:
       type: object
-      description: The information about the transaction source.
+      description: The information about the transaction source type `Org-Controlled` and `User-Controlled`.
       required:
         - source_type
         - wallet_id
@@ -4561,6 +4567,7 @@ components:
               example: 9
     SafeContractCallSource:
       title: Contract Call from Smart Contract Wallet
+      description: 'The information about the transaction source type `Safe{Wallet}`.'
       allOf:
         - $ref: '#/components/schemas/BaseContractCallSource'
         - type: object
@@ -4649,7 +4656,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/ContractCallSource'
@@ -4706,6 +4713,7 @@ components:
           User-Controlled: '#/components/schemas/MpcMessageSignSource'
     EvmEIP191MessageSignDestination:
       title: EIP-191 Signature
+      description: The information about the destination `EVM_EIP_191_Signature`.
       type: object
       required:
         - destination_type
@@ -4719,6 +4727,7 @@ components:
           example: YWFhYQ==
     EvmEIP712MessageSignDestination:
       title: EIP-712 Signature
+      description: The information about the destination `EVM_EIP_712_Signature`.
       type: object
       required:
         - destination_type
@@ -4767,7 +4776,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         source:
           $ref: '#/components/schemas/MessageSignSource'
@@ -4858,10 +4867,10 @@ components:
       example: wallets.transaction.created
       description: |-
         The event type.
-          - wallets.transaction.created: This event occurs when a transaction is created.
-          - wallets.transaction.updated: This event occurs when a transaction is created or when there is an update of the transaction status.
-          - wallets.transaction.failed: This event occurs when a transaction fails.
-          - wallets.transaction.succeeded: This event occurs when a transaction has been successfully completed.
+          - `wallets.transaction.created`: This event occurs when a transaction is created.
+          - `wallets.transaction.updated`: This event occurs when a transaction is created or when there is an update of the transaction status.
+          - `wallets.transaction.failed`: This event occurs when a transaction fails.
+          - `wallets.transaction.succeeded`: This event occurs when a transaction has been successfully completed.
     WebhookEventStatus:
       type: string
       enum:
@@ -4902,7 +4911,7 @@ components:
         request_body:
           $ref: '#/components/schemas/WebhookEvent'
         response_body:
-          type: object
+          type: string
           description: The response body of the webhook event.
         response_status_code:
           type: integer
@@ -5096,12 +5105,12 @@ components:
           $ref: '#/components/schemas/TransactionRequestFee'
         status:
           $ref: '#/components/schemas/ActivityStatus'
-        created_time:
+        created_timestamp:
           description: The time when the activity was created.
           type: integer
           format: int64
           example: 1640995200000
-        updated_time:
+        updated_timestamp:
           description: The time when the activity was last updated.
           type: integer
           format: int64
@@ -5443,8 +5452,8 @@ components:
         - amounts
         - status
         - validator_info
-        - created_time
-        - updated_time
+        - created_timestamp
+        - updated_timestamp
       properties:
         id:
           description: The unique id of the stake.
@@ -5464,7 +5473,7 @@ components:
           description: The initiator of the stake.
           type: string
           example: Vanya@cobo.com
-        unlock_time:
+        unlock_timestamp:
           description: The unlock time.
           type: integer
           format: int64
@@ -5490,12 +5499,12 @@ components:
           description: The rewards info of the stake.
           type: object
           example: {}
-        created_time:
+        created_timestamp:
           description: The time when the stake was created.
           type: integer
           format: int64
           example: 1640995200000
-        updated_time:
+        updated_timestamp:
           description: The time when the stake was last updated.
           type: integer
           format: int64
@@ -5641,7 +5650,7 @@ components:
       name: chain_id
       in: path
       required: true
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5649,7 +5658,7 @@ components:
       name: chain_id
       in: query
       required: true
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5657,7 +5666,7 @@ components:
       name: chain_id
       in: query
       required: false
-      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
       example: ETH
@@ -5665,7 +5674,7 @@ components:
       name: chain_ids
       in: query
       required: false
-      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+      description: 'A list of chain IDs, separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
       schema:
         type: string
         description: 'A list of chain IDs, separated by comma.'
@@ -5674,7 +5683,7 @@ components:
       name: token_id
       in: path
       required: true
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5682,7 +5691,7 @@ components:
       name: token_id
       in: query
       required: false
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5690,7 +5699,7 @@ components:
       name: token_ids
       in: query
       required: false
-      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'A list of token IDs, separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
         description: 'A list of token IDs, separated by comma.'
@@ -5699,7 +5708,7 @@ components:
       name: token_id
       in: query
       required: true
-      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
       schema:
         type: string
       example: ETH_USDT
@@ -5820,10 +5829,18 @@ components:
       name: sub_wallet_id
       in: query
       required: true
-      description: Unique id of the wallet
+      description: The exchange trading account or the sub-wallet ID
       schema:
         type: string
       example: SPOT
+    optionalSubWalletIdListParam:
+      name: sub_wallet_ids
+      in: query
+      required: false
+      description: 'A list of sub wallet IDs, separated by comma. The exchange trading account or the sub-wallet ID.'
+      schema:
+        type: string
+      example: 'Trading,Funding'
     optionalAddressParam:
       name: address
       in: query
@@ -5845,7 +5862,7 @@ components:
       name: from_address
       in: query
       required: false
-      description: The sender's address.
+      description: 'The sender''s address. For EVM addresses in MPC Wallets, this parameter is required.'
       schema:
         type: string
       example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
@@ -5884,7 +5901,7 @@ components:
       name: project_id
       in: path
       required: true
-      description: 'The project ID, which you can retrieve by calling [List all projects](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-projects).'
+      description: 'The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).'
       schema:
         type: string
         format: uuid
@@ -5893,7 +5910,7 @@ components:
       name: project_id
       in: query
       description: |
-        The project ID, which you can retrieve by calling [List all projects](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-projects).
+        The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
       schema:
         type: string
         format: uuid
@@ -5909,7 +5926,7 @@ components:
     requiredKeyShareHolderGroupIdParam:
       name: key_share_holder_group_id
       in: query
-      description: 'The key share holder group ID of the TSS request, which you can retrieve by calling [List all key share holder groups](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-key-share-holder-groups).'
+      description: 'The key share holder group ID of the TSS request, which you can retrieve by calling [List all key share holder groups](/v2/api-references/wallets--mpc-wallets/list-all-key-share-holder-groups).'
       required: true
       schema:
         type: string
@@ -5918,7 +5935,7 @@ components:
       name: tss_request_id
       in: path
       required: true
-      description: 'The TSS request ID, which you can retrieve by calling [List TSS requests](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-tss-requests).'
+      description: 'The TSS request ID, which you can retrieve by calling [List TSS requests](/v2/api-references/wallets--mpc-wallets/list-tss-requests).'
       schema:
         type: string
       example: '20240711114129000132315000003970'
@@ -5926,7 +5943,7 @@ components:
       name: vault_id
       in: path
       required: true
-      description: 'The vault ID, which you can retrieve by calling [List all vaults](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).'
+      description: 'The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).'
       schema:
         type: string
         format: uuid
@@ -5935,7 +5952,7 @@ components:
       name: vault_id
       in: query
       required: false
-      description: '(This parameter is applicable to MPC Wallets only) The vault ID, which you can retrieve by calling [List all vaults](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-vaults).'
+      description: '(This parameter is applicable to MPC Wallets only) The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallets/list-all-vaults).'
       schema:
         type: string
         format: uuid
@@ -6163,7 +6180,7 @@ components:
       name: event_id
       in: path
       required: true
-      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](https://www.cobo.com/developers/v2/api-references/developers--webhooks/list-all-events).'
+      description: 'The event ID. You can obtain a list of event IDs by calling [List all events](/v2/api-references/developers--webhooks/list-all-events).'
       schema:
         type: string
         format: uuid
@@ -6172,7 +6189,7 @@ components:
       name: endpoint_id
       in: path
       required: true
-      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](https://www.cobo.com/developers/v2/api-references/developers--webhooks/list-webhook-endpoints).'
+      description: 'The webhook endpoint ID. You can retrieve a list of webhook endpoint IDs by calling [List webhook endpoints](/v2/api-references/developers--webhooks/list-webhook-endpoints).'
       schema:
         type: string
         format: uuid
@@ -6259,6 +6276,30 @@ components:
         type: integer
         format: int64
       example: 1635744000000
+    ClientIdRequiredParam:
+      name: client_id
+      in: query
+      required: true
+      description: 'The App ID, a unique identifier to distinguish Cobo Portal Apps. You can get the App ID by retrieving the Manifest file after receiving the notification of app launch approval.'
+      schema:
+        type: string
+      example: pvSwS8iFrfK0oZrB0ugG54XPDOLEv0Ij
+    OrgIdRequiredParam:
+      name: org_id
+      in: query
+      required: true
+      description: 'Org ID, a unique identifier to distinguish different organizations. You can get the Org ID by retrieving the Manifest file after receiving the notification of app launch approval.'
+      schema:
+        type: string
+      example: e3986401-4aec-480a-973d-e775a4518413
+    GrantTypeRequiredParam:
+      name: grant_type
+      in: query
+      required: true
+      description: 'The type of the permission granting. To get an access token, you need to set the value as `org_implicit`.'
+      schema:
+        type: string
+      example: org_implicit
   requestBodies:
     createWalletBody:
       description: The request body to create a wallet
@@ -6284,7 +6325,7 @@ components:
             properties:
               chain_id:
                 type: string
-                description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+                description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
                 example: ETH
               count:
                 type: integer
@@ -6315,7 +6356,7 @@ components:
                   properties:
                     token_id:
                       type: string
-                      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+                      description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).'
                       example: BTC
                     tx_hash:
                       type: string
@@ -6333,21 +6374,21 @@ components:
             type: object
             required:
               - key_share_holder_group_type
-              - node_count
+              - participants
               - threshold
               - key_share_holders
             properties:
               key_share_holder_group_type:
                 $ref: '#/components/schemas/KeyShareHolderGroupType'
-              node_count:
+              participants:
                 type: integer
                 description: |
                   The number of key share holders in this key share holder group.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `node_count` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - participants" format), so you can only set `participants` to 2 or 3. 
 
-                  2. Threshold must be less than or equal to node count.
+                  2. `threshold` must be less than or equal to `participants`.
                 example: 3
               threshold:
                 type: integer
@@ -6355,9 +6396,9 @@ components:
                   The number of key share holders required to sign an operation.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `threshold` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - participants" format), so you can only set `threshold` to 2 or 3. 
 
-                  2. Threshold must be less than or equal to node count.
+                  2. `threshold` must be less than or equal to `participants`.
                 example: 2
               key_share_holders:
                 type: array
@@ -6371,22 +6412,22 @@ components:
             type: object
             required:
               - name
-              - node_count
+              - participants
               - threshold
             properties:
               name:
                 type: string
                 example: Project name
                 description: The project name.
-              node_count:
+              participants:
                 type: integer
                 description: |
                   The number of key share holders in the project.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `node_count` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - participants" format), so you can only set `participants` to 2 or 3. 
 
-                  2. Threshold must be less than or equal to node count.
+                  2. `threshold` must be less than or equal to `participants`.
                 example: 3
               threshold:
                 type: integer
@@ -6394,9 +6435,9 @@ components:
                   The number of key share holders required to sign an operation in the project.
 
                   **Notes:**
-                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - node count" format), so you can only set `threshold` to 2 or 3. 
+                  1. Currently, the available [Threshold Signature Schemes (TSS)](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) are 2-2, 2-3, and 3-3 schemes (in the "threshold - participants" format), so you can only set `threshold` to 2 or 3. 
 
-                  2. Threshold must be less than or equal to node count.
+                  2. `threshold` must be less than or equal to `participants`.
                 example: 2
     createTssRequestBody:
       description: The request body to create a TSS request.
@@ -6430,7 +6471,7 @@ components:
                 type: string
                 example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
                 description: |
-                  The project ID, which you can retrieve by calling [List all projects](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-projects).
+                  The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
 
                   **Notes:**
                   1. If you set `vault_type` to `OrgControlled`, the value of `project_id` will be ignored.
@@ -6569,7 +6610,7 @@ components:
                 example: 'https://example.com/webhook'
               subscribed_events:
                 description: |
-                  The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](https://www.cobo.com/developers/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
+                  The event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -6585,7 +6626,7 @@ components:
             type: object
             properties:
               subscribed_events:
-                description: 'The new event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](https://www.cobo.com/developers/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.'
+                description: 'The new event types you want to subscribe to for this webhook endpoint. You can call [Get webhook event types](/v2/api-references/developers--webhooks/get-webhook-event-types) to retrieve all available event types.'
                 items:
                   $ref: '#/components/schemas/WebhookEventType'
                 type: array
@@ -6599,6 +6640,26 @@ components:
                 description: The webhook endpoint description.
                 type: string
                 example: My webhook endpoint
+    tokenEndpointBody:
+      description: The request body for refreshing an access token.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              client_id:
+                type: string
+                description: 'The App ID, a unique identifier to distinguish Cobo Portal Apps. You can get the App ID by retrieving the Manifest file after receiving the notification of app launch approval.'
+                example: AnCEPEp5Q8qjAOA1Lb6kVd2OlkCyJnMTeMPdLbPOM8cz176Eb5y7EJoUjJJ0vkzz
+              grant_type:
+                type: string
+                description: 'The type of the permission granting. To refresh an access token, you need to set the value as `refresh_token`.'
+                example: refresh_token
+              refresh_token:
+                type: string
+                description: The refresh token of the expired or expiring access token.
+                example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
   responses:
     badRequestError:
       description: Bad request. Your request contains malformed syntax or invalid parameters.
@@ -6716,7 +6777,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AssetBalance'
+                  $ref: '#/components/schemas/SubWalletAssetBalance'
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getWalletsResponse:
@@ -6969,17 +7030,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MPCVault'
-    getSubAccountIdsResponse:
-      description: Successfully list of exchange sub account ids
-      content:
-        application/json:
-          schema:
-            type: array
-            description: Sub account id list
-            items:
-              type: string
-            example:
-              - f47ac10b-58cc-4372-a567-0e02b2c3d479
     getChainFeeResponse:
       description: The request was successful.
       content:
@@ -7224,6 +7274,77 @@ components:
                 type: string
                 description: The token ID of the transaction fee.
                 example: ETH
+    getTokenResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                description: 'The access token, used by Cobo Portal Apps to access specific resources of other organizations.'
+                example: AnCEPEp5Q8qjAOA1Lb6kVd2OlkCyJnMTeMPdLbPOM8cz176Eb5y7EJoUjJJ0vkzz
+              token_type:
+                type: string
+                description: The type of the tokens.
+                example: Bearer
+              scope:
+                type: string
+                description: The scope of the access token. This property value is empty by design.
+                example: ''
+              expires_in:
+                type: integer
+                description: The time in seconds in which the access token expires.
+                example: 43199
+              refresh_token:
+                type: string
+                description: 'The refresh token, used by Cobo Portal Apps to obtain new access tokens when the access token expires.'
+                example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
+    refreshTokenResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                description: 'The access token, used by Cobo Portal Apps to access specific resources of other organizations.'
+                example: AnCEPEp5Q8qjAOA1Lb6kVd2OlkCyJnMTeMPdLbPOM8cz176Eb5y7EJoUjJJ0vkzz
+              token_type:
+                type: string
+                description: The type of the tokens.
+                example: Bearer
+              scope:
+                type: string
+                description: The scope of the access token. This property value is empty by design.
+                example: ''
+              expires_in:
+                type: integer
+                description: The time in seconds in which the access token expires.
+                example: 43199
+              refresh_token:
+                type: string
+                description: 'The refresh token, used by Cobo Portal Apps to obtain new access tokens when the access token expires.'
+                example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
+    oauthErrorResponse:
+      description: Unauthorized. Please provide valid credentials.
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The response of a failed request.
+            required:
+              - error
+              - error_description
+            properties:
+              error:
+                type: string
+                description: The error name.
+              error_message:
+                type: string
+                description: The error description.
   securitySchemes:
     CoboAuth:
       type: apiKey

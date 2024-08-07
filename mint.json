@@ -463,18 +463,6 @@
             "v1/api-references/custody-wallet/transactions_by_time",
             "v1/api-references/custody-wallet/transactions_by_id"
           ]
-        },
-        {
-          "group": "Babylon Staking",
-          "pages": [
-            "v1/api-references/mpc-wallet/babylon_prepare_staking",
-            "v1/api-references/mpc-wallet/babylon_replace_staking_fee",
-            "v1/api-references/mpc-wallet/babylon_broadcast_staking_transaction",
-            "v1/api-references/mpc-wallet/babylon_batch_broadcast_staking_transaction",
-            "v1/api-references/mpc-wallet/babylon_get_staking_info",
-            "v1/api-references/mpc-wallet/babylon_list_transactions_by_status",
-            "v1/api-references/mpc-wallet/babylon_list_waiting_broadcast_transactions"
-          ]
         }
       ],
       "version": "Version 1.0"
@@ -511,6 +499,13 @@
       "version": "Version 2.0"
     },
     {
+      "group": "Webhooks and callbacks",
+      "pages": [
+        "v2/guides/webhooks-callbacks/verify-signature"
+      ],
+      "version": "Version 2.0"
+    },
+    {
       "group": "Troubleshoot",
       "pages": [
         "v2/guides/troubleshoot/error-codes"
@@ -518,52 +513,111 @@
       "version": "Version 2.0"
     },
     {
-      "group": "Wallets",
+      "group": "API Playground",
+      "pages": ["v2/api-references/playground"],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "General wallet operations",
       "pages": [
         {
-          "group": "General",
+          "group": "Chains and tokens",
           "pages": [
             "v2/api-references/wallets/list-supported-chains",
             "v2/api-references/wallets/get-chain-information",
             "v2/api-references/wallets/list-supported-tokens",
             "v2/api-references/wallets/get-token-information",
             "v2/api-references/wallets/list-enabled-chains",
-            "v2/api-references/wallets/list-enabled-tokens",
+            "v2/api-references/wallets/list-enabled-tokens"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Wallets",
+          "pages": [
             "v2/api-references/wallets/list-all-wallets",
             "v2/api-references/wallets/create-wallet",
             "v2/api-references/wallets/get-wallet-information",
             "v2/api-references/wallets/update-wallet",
-            "v2/api-references/wallets/delete-wallet",
+            "v2/api-references/wallets/delete-wallet"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "UTXOs",
+          "pages": [
             "v2/api-references/wallets/list-utxos",
             "v2/api-references/wallets/lock-utxos",
-            "v2/api-references/wallets/unlock-utxos",
-            "v2/api-references/wallets/get-maximum-transferable-value",
+            "v2/api-references/wallets/unlock-utxos"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Addresses",
+          "pages": [
             "v2/api-references/wallets/list-wallet-addresses",
             "v2/api-references/wallets/create-addresses-in-wallet",
             "v2/api-references/wallets/get-address-information",
-            "v2/api-references/wallets/list-token-balances-by-address",
-            "v2/api-references/wallets/list-token-balances-by-wallet",
             "v2/api-references/wallets/check-address-validity"
           ],
           "version": "Version 2.0"
         },
         {
-          "group": "MPC Wallets",
+          "group": "Balances",
           "pages": [
-            "v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders",
+            "v2/api-references/wallets/get-maximum-transferable-value",
+            "v2/api-references/wallets/list-token-balances-by-address",
+            "v2/api-references/wallets/list-token-balances-by-wallet"
+          ],
+          "version": "Version 2.0"
+        }
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "MPC Wallets-specific operations",
+      "pages": [
+        {
+          "group": "Projects",
+          "pages": [
             "v2/api-references/wallets--mpc-wallets/list-all-projects",
             "v2/api-references/wallets--mpc-wallets/create-project",
             "v2/api-references/wallets--mpc-wallets/get-project-information",
-            "v2/api-references/wallets--mpc-wallets/update-project-name",
+            "v2/api-references/wallets--mpc-wallets/update-project-name"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Vaults",
+          "pages": [
             "v2/api-references/wallets--mpc-wallets/list-all-vaults",
             "v2/api-references/wallets--mpc-wallets/create-vault",
             "v2/api-references/wallets--mpc-wallets/get-vault-information",
-            "v2/api-references/wallets--mpc-wallets/update-vault-name",
+            "v2/api-references/wallets--mpc-wallets/update-vault-name"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Key share holder groups",
+          "pages": [
             "v2/api-references/wallets--mpc-wallets/list-all-key-share-holder-groups",
             "v2/api-references/wallets--mpc-wallets/create-key-share-holder-group",
             "v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information",
             "v2/api-references/wallets--mpc-wallets/update-key-share-holder-group",
-            "v2/api-references/wallets--mpc-wallets/delete-key-share-holder-group",
+            "v2/api-references/wallets--mpc-wallets/delete-key-share-holder-group"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Key share holders",
+          "pages": [
+            "v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "TSS requests",
+          "pages": [
             "v2/api-references/wallets--mpc-wallets/list-tss-requests",
             "v2/api-references/wallets--mpc-wallets/create-tss-request",
             "v2/api-references/wallets--mpc-wallets/get-tss-request",
@@ -575,17 +629,35 @@
       "version": "Version 2.0"
     },
     {
-      "group": "Transactions",
+      "group": "Transaction operations",
       "pages": [
         {
-          "group": "Transaction operations",
+          "group": "Query fees",
           "pages": [
-            "v2/api-references/transactions/estimate-transaction-fee",
+            "v2/api-references/transactions/estimate-transaction-fee"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Make transactions",
+          "pages": [
             "v2/api-references/transactions/transfer-token",
             "v2/api-references/transactions/call-smart-contract",
-            "v2/api-references/transactions/sign-message",
+            "v2/api-references/transactions/sign-message"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Query transactions",
+          "pages": [
             "v2/api-references/transactions/list-all-transactions",
-            "v2/api-references/transactions/get-transaction-information",
+            "v2/api-references/transactions/get-transaction-information"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Manage transactions",
+          "pages": [
             "v2/api-references/transactions/resend-transaction",
             "v2/api-references/transactions/cancel-transaction",
             "v2/api-references/transactions/drop-transaction",
@@ -597,15 +669,29 @@
       "version": "Version 2.0"
     },
     {
-      "group": "Webhooks",
+      "group": "OAuth operations",
+      "pages": [
+        "v2/api-references/oauth/get-access-token",
+        "v2/api-references/oauth/refresh-access-token"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Webhook operations",
       "pages": [
         {
-          "group": "Webhook operations",
+          "group": "Webhook endpoints",
           "pages": [
             "v2/api-references/developers--webhooks/list-webhook-endpoints",
             "v2/api-references/developers--webhooks/register-webhook-endpoint",
             "v2/api-references/developers--webhooks/get-webhook-endpoint-information",
-            "v2/api-references/developers--webhooks/update-webhook-endpoint",
+            "v2/api-references/developers--webhooks/update-webhook-endpoint"
+          ],
+          "version": "Version 2.0"
+        },
+        {
+          "group": "Webhook events",
+          "pages": [
             "v2/api-references/developers--webhooks/get-webhook-event-types",
             "v2/api-references/developers--webhooks/list-all-webhook-events",
             "v2/api-references/developers--webhooks/retrieve-event-information",
@@ -620,7 +706,8 @@
     {
       "group": "WaaS SDKs",
       "pages": [
-        "v2/developer-tools/quickstart-python"
+        "v2/developer-tools/quickstart-python",
+        "v2/developer-tools/quickstart-go"
       ],
       "version": "Version 2.0"
     }
