@@ -1,0 +1,55 @@
+---
+title: "Webhook event type and data type"
+sidebarTitle: "Webhook event type and data type"
+---
+
+The available webhook event types are as follows:
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Event Type</th>
+      <th>Event Data Type</th>
+      <th>When It Occurs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>wallets.transaction.created</code></td>
+      <td rowspan="4"><code>Transaction</code></td>
+      <td>A transaction is initiated.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.transaction.updated</code></td>
+      <td>There are changes to a transaction's status or confirmation numbers.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.transaction.succeeded</code></td>
+      <td>A transaction has been successfully completed.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.transaction.failed</code></td>
+      <td>A transaction failed.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.created</code></td>
+      <td rowspan="4"><code>TSSRequest</code></td>
+      <td>A TSS request is created.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.updated</code></td>
+      <td>There are changes to the status of a TSS request.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.succeeded</code></td>
+      <td>The requested action has been successfully completed.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.failed</code></td>
+      <td>The requested action failed.</td>
+    </tr>
+  </tbody>
+</table>
+
+                        
+For a complete introduction of the webhook event data and its data structure, refer to the `data.data` property in the response of the [List all webhook events](/v2/api-references/developers--webhooks/list-all-webhook-events) operation. Additionally, you can view all webhook events in your organization on **Cobo Portal** > **Developer**> **Webhook Events**.

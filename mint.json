@@ -12,8 +12,8 @@
   },
   "logo": {
     "dark": "/logo/dark.png",
-    "light": "/logo/light-8px.svg",
-    "href": "https://www.cobo.com"
+    "light": "/logo/Cobo-Developers-final72px.svg",
+    "href": "https://www.cobo.com/developers/v2/guides/overview/introduction"
   },
   "modeToggle": {
     "default": "light",
@@ -31,13 +31,13 @@
   ],
   "topbarLinks": [
     {
-      "name": "Explore Cobo",
-      "url": "https://www.cobo.com"
+      "name": "Go to Product Manuals",
+      "url": "https://manuals.cobo.com/en/portal/introduction"
     }
   ],
   "topbarCtaButton": {
-    "name": "Log In",
-    "url": "https://home.custody.cobo.com/#/login"
+    "name": "Log In to Cobo Portal",
+    "url": "https://portal.cobo.com/login"
   },
   "primaryTab": {
     "name": "",
@@ -497,10 +497,10 @@
       "group": "Overview",
       "pages": [
         "v2/guides/overview/introduction",
-        "v2/guides/overview/changelog",
         "v2/guides/overview/environments",
         "v2/guides/overview/cobo-auth",
-        "v2/guides/overview/pagination"
+        "v2/guides/overview/pagination",
+        "v2/guides/overview/changelog"
       ],
       "version": "Version 2.0"
     },
@@ -512,9 +512,30 @@
       "version": "Version 2.0"
     },
     {
+      "group": "Manage your wallets",
+      "pages": [
+        {
+          "group": "Custodial Wallets",
+          "pages": [
+            "v2/guides/custodial-wallets/get-started-asset-wallets"
+          ]
+        },
+        {
+          "group": "MPC Wallets",
+          "pages": [
+            "v2/guides/mpc-wallets/get-started-ocw",
+            "v2/guides/mpc-wallets/get-started-ucw"
+          ]
+        }
+      ],
+      "version": "Version 2.0"
+    },
+    {
       "group": "Webhooks and callbacks",
       "pages": [
-        "v2/guides/webhooks-callbacks/verify-signature"
+        "v2/guides/webhooks-callbacks/introduction",
+        "v2/guides/webhooks-callbacks/set-up-endpoint",
+        "v2/guides/webhooks-callbacks/webhook-event-type"
       ],
       "version": "Version 2.0"
     },
@@ -722,7 +743,8 @@
       "group": "WaaS SDKs",
       "pages": [
         "v2/developer-tools/quickstart-python",
-        "v2/developer-tools/quickstart-go"
+        "v2/developer-tools/quickstart-go",
+        "v2/developer-tools/quickstart-javascript"
       ],
       "version": "Version 2.0"
     }

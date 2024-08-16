@@ -1,0 +1,38 @@
+---
+title: "Introduction to webhooks and callbacks"
+sidebarTitle: "Introduction"
+---
+
+Webhooks and callbacks are essential mechanisms for the WaaS service to communicate with your application. After you set up and register callback and webhook endpoints, the WaaS service sends push messages to the designated URL when an event occurs. They allow your application to receive real-time updates or notifications and to respond to events accordingly.
+
+## Webhooks vs callbacks
+
+Callbacks and webhooks serve distinct purposes within your business operations.   
+
+| Mechanism | Description                        | Trigger Condition                                        | Required Actions Upon Receiving the Message              |
+| ------------- | -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Callbacks     | Serve similarly to a 2FA verification. | Triggered when you initiate a withdrawal or contract call using the WaaS API. | Check if the transaction meets expectations, and respond with a success status code (`200` or `201`) and a response body of `ok` or `deny` to indicate transaction approval or rejection. |
+| Webhooks      | Serve as notifications.                 | Triggered when certain events occur such as transaction status or TSS request status changes, based on the event types to which you subscribe.              | Respond with a success status code (`200` or `201`).             |
+
+You can view the data of all webhook events and callback messages in your organization on **Cobo Portal** > **Developer**> **Webhook Events** / **Callback Messages**.
+
+## Handle webhook events and callback messages
+
+Follow the steps listed below to handle webhook events and callback messages sent from the WaaS service:
+
+1. Create a webhook or callback endpoint.
+    - Choose a server environment.
+    - Define an endpoint URL.
+2. Implement the handling logic on the server side.
+    - Parse the API request.
+    - Verify the signature.
+    - Respond to the API request.
+    - Add other handling logic (if applicable).
+3. Register the endpoint on Cobo Portal.
+    <Note>When registering a webhook endpoint, you need to specify the event types to which you want to subscribe.</Note>
+
+To create an endpoint and implement the handling logic, see [Set up a callback or webhook endpoint](set-up-endpoint).
+
+To register the endpoint, see [Register a webhook endpoint](https://manuals.cobo.com/en/portal/developer-console/webhooks-create) and [Register a callback endpoint](https://manuals.cobo.com/en/portal/developer-console/callbacks-register).
+
+To learn more about event types and event data types, see [Webhook event type and data type](webhook-event-type).

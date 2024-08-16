@@ -140,7 +140,7 @@ import cobo_waas2
 from pprint import pprint
 
 configuration = cobo_waas2.Configuration(
-   # Replece `<YOUR_PRIVATE_KEY>` with your private key.
+   # Replace `<YOUR_PRIVATE_KEY>` with your private key.
    api_private_key="<YOUR_PRIVATE_KEY>",
    # Use the development environment 
    host="https://api.dev.cobo.com/v2"
@@ -152,11 +152,11 @@ with cobo_waas2.ApiClient(configuration) as api_client:
    api_instance = cobo_waas2.WalletsApi(api_client)
    try:
        # List all supported chains
-       api_response = api_instance.get_chains()
-       print("The response of WalletsApi->get_chains:\n")
+       api_response = api_instance.list_supported_chains()
+       print("The response of WalletsApi->list_supported_chains:\n")
        pprint(api_response)
    except Exception as e:
-       print("Exception when calling WalletsApi->get_chains: %s\n" % e)
+       print("Exception when calling WalletsApi->list_supported_chains: %s\n" % e)
 ```
 
 ## What’s next

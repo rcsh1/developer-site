@@ -24,7 +24,7 @@ For Maven users, add the dependency to your project's POM:
 <dependency>
   <groupId>com.cobo</groupId>
   <artifactId>cobo-waas2</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -37,7 +37,7 @@ For Gradle users, add the dependency to your project's build file:
   }
 
   dependencies {
-     implementation "com.cobo:cobo-waas2:1.0.2"
+     implementation "com.cobo:cobo-waas2:1.1.0"
   }
 ```
 
@@ -91,6 +91,7 @@ public class Example {
     String before = "";
     String after = "";
     try {
+      // List supported chains
       ListSupportedChains200Response result = apiInstance.listSupportedChains(walletType, walletSubtype, chainIds, limit, before, after);
       System.out.println(result);
     } catch (ApiException e) {
@@ -130,6 +131,7 @@ public class Example {
                         .walletSubtype(WalletSubtype.ASSET)
         );
         try {
+            // Create a Custodial Wallet
             CreatedWalletInfo result = apiInstance.createWallet(createWalletParams);
             System.out.println(result);
         } catch (ApiException e) {

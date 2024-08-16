@@ -18,7 +18,7 @@ This guide introduces how to get started with using the Cobo WaaS 2.0 Go SDK, wh
 2. In the `go.mod` file of your project, add the following line:
 
     ```go
-    require github.com/CoboGlobal/cobo-waas2-go-sdk v1.0.1
+    require github.com/CoboGlobal/cobo-waas2-go-sdk v1.1.0
     ```
 
     <Note>It's recommended that you use the latest version of the WaaS SDK. See the tags in the <a href="https://github.com/CoboGlobal/cobo-waas2-go-sdk/tags">GitHub repository</a>.</Note>
@@ -112,9 +112,9 @@ func main() {
 		}
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// Handle response from `CreateWallet`.
-	respJson, _ := json.MarshalIndent(resp.GetActualInstance(), "", " ")
-	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.CreateWallet`: \n%s", string(respJson))
+	// Handle response from `ListSupportedChains`.
+	respJson, _ := json.MarshalIndent(resp, "", " ")
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.ListSupportedChains`: \n%s", string(respJson))
 }
 ```
 

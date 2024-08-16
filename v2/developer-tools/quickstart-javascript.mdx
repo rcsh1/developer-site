@@ -1,0 +1,106 @@
+---
+title: "Get started with JavaScript SDK"
+---
+
+## Overview
+
+This guide introduces how to get started with using the Cobo WaaS 2.0 JavaScript SDK, which allows you to integrate the WaaS service into your existing application using the JavaScript programming language.
+
+## Prerequisites
+
+- Install NPM.
+
+- Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
+- You have [generated an API key](/v2/guides/overview/cobo-auth#generate-an-api-key), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
+
+## Install the SDK
+
+Run the following command to install the SDK:
+
+```
+npm install @cobo/cobo-waas2 --save
+```
+
+## Configure API key and HTTP host
+
+1. Set the private key.
+
+```javascript
+// Initialize the default API client
+const apiClient = CoboWaas2.ApiClient.instance
+// Set the private key
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+```
+
+2. Select which [environment](/v2/guides/overview/environments) you want to use.
+
+```javascript
+// Select the development environment
+apiClient.setEnv(CoboWaas2.Env.DEV);
+
+// Select the production environment
+apiClient.setEnv(CoboWaas2.Env.PROD);
+```
+
+## Code sample
+
+For operation-specific documentation and sample code, see the [docs](https://github.com/CoboGlobal/cobo-waas2-js-sdk/tree/master/docs) folder in the WaaS SDK GitHub repository.
+
+### List supported chains
+
+```javascript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// Initial default API client
+const apiClient = CoboWaas2.ApiClient.instance
+// Use the development environment
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Set the private key
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// Call the API
+const apiInstance = new CoboWaas2.WalletsApi();
+const opts = {
+  'wallet_type': CoboWaas2.WalletType.Custodial,
+  'wallet_subtype': CoboWaas2.WalletSubtype.Asset,
+  'chain_ids': "BTC,ETH",
+  'limit': 10,
+  'before': "",
+  'after': ""
+};
+apiInstance.listSupportedChains(opts).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+
+### Create a wallet
+
+```javascript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// Initial default API client 
+const apiClient = CoboWaas2.ApiClient.instance
+// Use the development environment
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Set the private key
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// Call the API
+const apiInstance = new CoboWaas2.WalletsApi();
+const walletName = "My Wallet"
+const walletType = "Custodial"
+const walletSubtype = "Asset"
+const opts = {
+    'CreateWalletParams': new CoboWaas2.CreateWalletParams(
+        new CoboWaas2.CreateCustodialWalletParams(
+            walletName,
+            walletType,
+            walletSubtype
+        )
+    )
+};
+apiInstance.createWallet(opts).then((data) => {
+    console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+    console.error(error);
+});
+```
+

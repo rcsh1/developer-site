@@ -3,6 +3,7 @@ title: "Send Transactions"
 icon: 
 description: 
 ---
+<Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to <a href="/v2/guides/overview/introduction">WaaS 2.0</a>.</Note>
 
 
 `Delegate` can call either `execTransaction()` or `execTransactions()` to send transactions.&#x20;
@@ -30,7 +31,7 @@ Each field in the struct is defined as follows: &#x20;
 
 To generate a `hint`, you can execute an `eth_call` to the `execTransaction()` function with the `hint` field left unset. The `TransactionResult` returned from the call will contain the correct `hint` value.
 
-The above process can be achieved using [Cobo Safe SDKs](/smart-contract-wallet/sdk/js). The following uses Cobo Safe SDKs in Javascript as an example.
+The above process can be achieved using [Cobo Safe SDKs](/v1/sdks-and-tools/sdks/cobo-safe/js). The following uses Cobo Safe SDKs in Javascript as an example.
 
 ```js
 const {CoboSafeAccount} = require("jscobosafe");

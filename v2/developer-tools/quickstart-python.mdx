@@ -18,7 +18,7 @@ This guide introduces how to get started with using the Cobo WaaS 2.0 Python SDK
    Open a terminal window and run the following command:
 
    ```shell
-   pip install cobo-waas2==1.0.0
+   pip install cobo-waas2==1.1.0
    ```
 
 <Note>It's recommended that you use the latest version of the WaaS SDK. See the [GitHub repository](https://github.com/CoboGlobal/cobo-waas2-python-sdk/tags) for the latest version.</Note>
@@ -36,12 +36,12 @@ You can refer to the [configuration.py file](https://github.com/CoboGlobal/cobo-
 ```python
 configuration = cobo_waas2.Configuration(
 
-  # Replece `<YOUR_PRIVATE_KEY>` with your private key.
+  # Replace `<YOUR_PRIVATE_KEY>` with your private key.
   api_private_key="<YOUR_PRIVATE_KEY>",
 
   # To use the development environment, set the host to `https://api.dev.cobo.com/v2`.
-  # To use the production environment, use the default host `https://api.cobo.com/v2`.
-  host="https://api.cobo.com/v2"
+  # To use the production environment, set the host to `https://api.cobo.com/v2`.
+  host="https://api.dev.cobo.com/v2"
 
 )
 ```
@@ -58,10 +58,10 @@ import cobo_waas2
 from pprint import pprint
 
 configuration = cobo_waas2.Configuration(
-   # Replece `<YOUR_PRIVATE_KEY>` with your private key.
+   # Replace `<YOUR_PRIVATE_KEY>` with your private key
    api_private_key="<YOUR_PRIVATE_KEY>",
-   # If you do not configure the host, the default host `https://api.cobo.com/v2` will be used.
-   host="https://api.cobo.com/v2"
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
 )
 
 # Enter a context with an instance of the API client
@@ -70,40 +70,41 @@ with cobo_waas2.ApiClient(configuration) as api_client:
    api_instance = cobo_waas2.WalletsApi(api_client)
    try:
        # List all supported chains
-       api_response = api_instance.get_chains()
-       print("The response of WalletsApi->get_chains:\n")
+       api_response = api_instance.list_supported_chains()
+       print("The response of WalletsApi->list_supported_chains:\n")
        pprint(api_response)
    except Exception as e:
-       print("Exception when calling WalletsApi->get_chains: %s\n" % e)
+       print("Exception when calling WalletsApi->list_supported_chains: %s\n" % e)
 ```
 
 ### Create a wallet
 
 ```python
-from pprint import pprint
 import cobo_waas2
-from cobo_waas2 import CreateCustodialWallet, WalletType, WalletSubtype
+from pprint import pprint
+
+from cobo_waas2 import CreateCustodialWalletParams, WalletType, WalletSubtype
 
 configuration = cobo_waas2.Configuration(
-    # Replece `<YOUR_PRIVATE_KEY>` with your private key.
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
     api_private_key="<YOUR_PRIVATE_KEY>",
-    # If you do not configure the host, the default host `https://api.cobo.com/v2` will be used.
-    host="https://api.cobo.com/v2"
+    # Use the development environment
+    host="https://api.dev.cobo.com/v2"
 )
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsApi(api_client)
-    created_wallet = cobo_waas2.CreatedWallet(
-        actual_instance=CreateCustodialWallet(
+    create_wallet_params = cobo_waas2.CreateWalletParams(
+        actual_instance=CreateCustodialWalletParams(
             name="New Custodial Wallet",
             wallet_type=WalletType.CUSTODIAL,
             wallet_subtype=WalletSubtype.ASSET,
         ),
     )
     try:
-        # Create wallet
-        api_response = api_instance.create_wallet(created_wallet=created_wallet)
+        # Create a Custodial Wallet
+        api_response = api_instance.create_wallet(create_wallet_params=create_wallet_params)
         print("The response of WalletsApi->create_wallet:\n")
         pprint(api_response)
     except Exception as e:
