@@ -1,0 +1,89 @@
+---
+title: "Set up a callback or webhook endpoint"
+sidebarTitle: "Set up a callback or webhook endpoint"
+---
+
+Webhook events and callback messages are crucial for ensuring seamless data integration and communication between the WaaS service and your application. This guide provides an overview of how to create and manage an endpoint for receiving and processing webhook events and callback messages.
+
+## Create an endpoint
+
+First, choose a server environment, such as a cloud service like AWS, Google Cloud, or a self-hosted server, that supports receiving and processing webhook events or callback messages. Then, define an endpoint URL on your server where the webhook events and callback messages will be sent.
+
+## Implement handling logic
+
+After you create the endpoint, you need to implement the logic on the server to handle the webhook events or callback messages, including parsing the API request, verifying the signature, responding to the request and adding other handling logic if necessary.
+
+### Verify the signature
+
+To prevent unauthorized access, when you receive a webhook event or a callback message, you need to validate the authenticity of the API request by verifying the signature.
+
+The verification steps are as follows:
+
+1. Retrieve raw body and timestamp. 
+
+    Extract the original body string from the request payload and the timestamp from the request headers.
+
+    ```python
+    raw_body = request.body().decode('utf8')
+    timestamp = request.headers.get("BIZ_TIMESTAMP")
+    ```
+
+2. Retrieve the signature. 
+
+    Fetch the signature value from the request header.
+
+    ```python
+    signature = request.headers.get('BIZ_RESP_SIGNATURE')
+    ```
+
+3. Concatenate and hash the message.
+
+    ```python
+    import hashlib
+
+    # Concatenate raw body and timestamp to form the message.
+    message = "raw_body|timestamp"
+
+    # Compute double SHA-256 hash.
+    sha256_hash = hashlib.sha256(hashlib.sha256(message.encode()).digest()).digest()
+    ```
+
+4. Select Cobo's Public Key. 
+
+    Depending on the environment that you use, select the corresponding public key for verification:
+    - Development environment: `a04ea1d5fa8da71f1dcfccf972b9c4eba0a2d8aba1f6da26f49977b08a0d2718`
+    - Production environment: `8d4a482641adb2a34b726f05827dba9a9653e5857469b8749052bf4458a86729`
+
+5. Verify the signature using the Ed25519 algorithm.
+
+    ```python
+    import ed25519
+
+    # Obtain the verifying key from Cobo's public key.
+    vk = ed25519.VerifyingKey(bytes.fromhex(public_key)) 
+
+    # Verify the signature against the computed message hash.
+    vk.verify(bytes.fromhex(signature), sha256_hash)
+    ```
+
+### Respond to the API request
+
+Properly responding to webhook events and callback messages is crucial for ensuring that webhooks and callbacks are processed as expected. This section describes the expected response from both webhook and callback endpoints. 
+
+#### Webhook events
+
+When your webhook endpoint receives a webhook event, it should respond with a status code of `200` or `201` to indicate that the event has been successfully received and processed. Once this response is sent, the WaaS service will stop retrying to send the event and the event status will become `Delivered` on Cobo Portal.
+
+If the webhook endpoint does not respond or responds with a status code other than `200` or `201`, the WaaS service will continue to retry sending the event. If the number of retry attempts reaches 10 , the WaaS service will stop sending the event and the event status will become `Failed`· You can resend the event by clicking **Retry** on **Cobo Portal** > **Developer** > **Webhook Events**.
+
+#### Callback messages
+
+When your callback endpoint receives a callback message, it should respond with a status code of `200` or `201` and a response body of `ok` or `deny` to indicate transaction approval or rejection. Once this response is sent, the WaaS service will stop retrying to send the message and the callback message status will become `Delivered`on Cobo Portal.
+
+If the callback endpoint does not respond, responds with a status code other than `200` or `201`,  or the response body does not contain `ok` or `deny`, the WaaS service will continue to retry sending the message.  If the number of retry attempts reaches 30, the WaaS service will stop sending the message and the callback message status will become `Failed`. You can resend the message by clicking **Retry** on **Cobo Portal** > **Developer** > **Callback Messages**.
+
+### Code samples
+
+To see examples of how to implement the handling logic, refer to the following files in the WaaS SDK GitHub repository:
+- Python: [server_demo.py](https://github.com/CoboGlobal/cobo-waas2-python-sdk/blob/master/cobo_waas2/server_demo.py) (implemented based on the FastAPI framework)
+- Java: [DemoController.java](https://github.com/CoboGlobal/cobo-waas2-java-sdk/blob/master/src/main/java/com/cobo/waas2/demo/DemoController.java) (implemented based on the SpringBoot framework)

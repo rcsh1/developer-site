@@ -2,6 +2,7 @@
 title: "Build your first wallet application with Cobo in 10 minutes"
 sidebarTitle: "First Wallet Tutorial"
 ---
+<Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to <a href="/v2/guides/overview/introduction">WaaS 2.0</a>.</Note>
 
 This article provides an end-to-end demonstration of creating a crypto wallet application for your platform or exchange. Throughout the article, you will learn::
 1. How to initialize RestClients with Cobo SDKs.
@@ -353,7 +354,7 @@ ApiResponse<MPCPostTransaction> createTransactionResponse = mpcClient.createTran
 Then you may use the `request_id` to query the transaction status. Please note that the transaction will only be confirmed once the on-chain confirmation blocks reach `confirming_threshold`.
 Before that, you may use the [GET /v1/custody/pending_transactions/](/v1/api-references/custody-wallet/pending_transactions)
         endpoint to query the details of a pending transaction under a Custodial Wallet. For an MPC Wallet, you may refer to the `status` field with code 501 PENDING_CONFIRMATION in [any transactional APIs](/v1/api-references/mpc-wallet/mpc_list_transactions) to retrieve the details of a pending transaction.
-        Prior to using any endpoints, however, you need to first head to Cobo Custody Web and enable the ["Transaction Notification - Includes Block Confirmation Number"]( /api-references/development/transaction-notification) Status feature.
+        Prior to using any endpoints, however, you need to first head to Cobo Custody Web and enable the ["Transaction Notification - Includes Block Confirmation Number"](/v1/api-references/development/transaction-notification) Status feature.
         Failure to enable this feature will result in the inability to fetch transaction information. Do note that some transactions cannot be retrieved due to fast on-chain confirmations (e.g., TRON).
 
 **Cusotidal Wallet**
