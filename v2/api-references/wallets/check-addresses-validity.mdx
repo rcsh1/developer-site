@@ -1,14 +1,13 @@
 ---
-openapi: post /transactions/message_sign
+openapi: get /wallets/check_addresses_validity
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.create_transfer_transaction201_response import (
-    CreateTransferTransaction201Response,
+from cobo_waas2.models.check_addresses_validity200_response_inner import (
+    CheckAddressesValidity200ResponseInner,
 )
-from cobo_waas2.models.message_sign_params import MessageSignParams
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -20,21 +19,17 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.TransactionsApi(api_client)
-    message_sign_params = cobo_waas2.MessageSignParams()
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    chain_id = "ETH"
+    addresses = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97"
 
     try:
-        # Sign message
-        api_response = api_instance.create_message_sign_transaction(
-            message_sign_params=message_sign_params
-        )
-        print("The response of TransactionsApi->create_message_sign_transaction:\n")
+        # Check addresses validity
+        api_response = api_instance.check_addresses_validity(chain_id, addresses)
+        print("The response of WalletsApi->check_addresses_validity:\n")
         pprint(api_response)
     except Exception as e:
-        print(
-            "Exception when calling TransactionsApi->create_message_sign_transaction: %s\n"
-            % e
-        )
+        print("Exception when calling WalletsApi->check_addresses_validity: %s\n" % e)
 
 ```
 ```java Java
@@ -42,7 +37,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
 import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
-import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.api.WalletsApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -53,14 +48,16 @@ public class Example {
     // for production environment
     // defaultClient.setEnv(Env.PROD);
     defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
-    TransactionsApi apiInstance = new TransactionsApi();
-    MessageSignParams messageSignParams = new MessageSignParams();
+    WalletsApi apiInstance = new WalletsApi();
+    String chainId = "ETH";
+    String addresses =
+        "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97";
     try {
-      CreateTransferTransaction201Response result =
-          apiInstance.createMessageSignTransaction(messageSignParams);
+      List<CheckAddressesValidity200ResponseInner> result =
+          apiInstance.checkAddressesValidity(chainId, addresses);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling TransactionsApi#createMessageSignTransaction");
+      System.err.println("Exception when calling WalletsApi#checkAddressesValidity");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -82,7 +79,8 @@ import (
 )
 
 func main() {
-	messageSignParams := *coboWaas2.NewMessageSignParams("f47ac10b-58cc-4372-a567-0e02b2c3d479", "ETH", coboWaas2.MessageSignSource{MpcMessageSignSource: coboWaas2.NewMpcMessageSignSource(coboWaas2.MessageSignSourceType("Org-Controlled"), "f47ac10b-58cc-4372-a567-0e02b2c3d479", "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku")}, coboWaas2.MessageSignDestination{EvmEIP191MessageSignDestination: coboWaas2.NewEvmEIP191MessageSignDestination(coboWaas2.MessageSignDestinationType("EVM_EIP_191_Signature"), "YWFhYQ==")}) // MessageSignParams | The request body to create a message sign transaction (optional)
+	chainId := "ETH"                                                                                     // string | The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).
+	addresses := "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97" // string | A list of wallet addresses, separated by comma. You can specify a maximum of 100 addresses.
 
 	configuration := coboWaas2.NewConfiguration()
 	apiClient := coboWaas2.NewAPIClient(configuration)
@@ -92,13 +90,13 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.CreateMessageSignTransaction(ctx).MessageSignParams(messageSignParams).Execute()
+	resp, r, err := apiClient.WalletsAPI.CheckAddressesValidity(ctx).ChainId(chainId).Addresses(addresses).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.CreateMessageSignTransaction``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.CheckAddressesValidity``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateMessageSignTransaction`: CreateTransferTransaction201Response
-	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.CreateMessageSignTransaction`: %v\n", resp)
+	// response from `CheckAddressesValidity`: []CheckAddressesValidity200ResponseInner
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.CheckAddressesValidity`: %v\n", resp)
 }
 
 ```
@@ -110,11 +108,10 @@ const apiClient = CoboWaas2.ApiClient.instance
 // apiClient.setEnv(CoboWaas2.Env.DEV);
 apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
 // call api
-const apiInstance = new CoboWaas2.TransactionsApi();
-const opts = {
-  'MessageSignParams': new CoboWaas2.MessageSignParams() // MessageSignParams | The request body to create a message sign transaction
-};
-apiInstance.createMessageSignTransaction(opts).then((data) => {
+const apiInstance = new CoboWaas2.WalletsApi();
+const chain_id = "ETH"; // String | The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).
+const addresses = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97"; // String | A list of wallet addresses, separated by comma. You can specify a maximum of 100 addresses.
+apiInstance.checkAddressesValidity(chain_id, addresses).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

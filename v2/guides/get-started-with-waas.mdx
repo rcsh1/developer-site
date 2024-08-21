@@ -1,11 +1,11 @@
 ---
-title: "Get started with WaaS 2.0"
+title: "Get started with Wallet-as-a-Service (WaaS) 2.0"
 sidebarTitle: "Get started with WaaS 2.0"
 ---
 
 ## Overview
 
-This guide explains how to get started with using the WaaS 2.0 API. By the end of this guide, you will be able to successfully call an API operation and receive a response.
+This guide explains how to get started with using the Wallet-as-a-Service (WaaS) 2.0 API. By the end of this guide, you will be able to successfully call an API operation and receive a response.
 
 ## Before you begin
 
@@ -59,7 +59,7 @@ Register your API key and configure related permissions on Cobo Portal. To learn
 5. Enter the public key you have generated in the previous step.
 6. Under **User Roles**, select **API_Viewer**. Each user role is permitted to call a specific set of operations.
 7. Under **Wallets**, select **Any Wallets**. This selection determines the wallets this API key has control over.
-8. Select **Temporary** as the key type.
+8. Select **Temporary** as the key type. <Note>If you already have a static IP address, you can select **Permanent** as the key type instead and enter your IP address in the textbox.</Note>
 9. Click **Register**.
 10. Notify your organization admins to approve the request on Cobo Guard. By default, it requires the approval of at least half of the admins to successfully register an API key. You can only start using an API key after its status becomes **Active**.
 
@@ -163,12 +163,13 @@ with cobo_waas2.ApiClient(configuration) as api_client:
 
 You have successfully sent an API request and received a response. However, there are still a few things to do before you can create a wallet, make a transaction, or implement other features.
 
-- To start using a wallet, you must purchase a pricing plan or activate a trial plan if it’s available. To learn about pricing plans and bills and payments, refer to [Introduction to Bills & Payments](https://manuals.cobo.com/en/portal/bills-and-payments/introduction).
-- [Register a callback endpoint](https://manuals.cobo.com/en/portal/developer-console/callbacks-register) to subscribe to callback messages. When you use the API to withdraw funds, you will receive a callback message asking for your approval. The withdrawal will proceed only if you approve the transaction.
-- [Register a webhook endpoint](https://manuals.cobo.com/en/portal/developer-console/webhooks-create) to subscribe to webhook events. When the status of a transaction changes, you will receive a webhook event notification.
+- To start using a wallet, you must purchase a pricing plan or activate a trial plan if it is available. To learn about pricing plans and bills and payments, refer to [Introduction to Bills & Payments](https://manuals.cobo.com/en/portal/bills-and-payments/introduction).
+- To withdraw tokens from your wallet, you must first set up a callback endpoint to receive and approve withdrawal requests. It is highly recommended that you also set up a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
+
 
 ## See also
-
 - To learn what Cobo Portal has to offer, including how to choose from the four wallet technologies, refer to [Introduction](https://manuals.cobo.com/en/portal/introduction).
+
+- To learn the complete process of creating and interacting with Custodial Wallets (Asset Wallets), see [Get started with Custodial Wallets (Asset Wallets)](/v2/guides/custodial-wallets/get-started-asset-wallets).
 
 - To learn where to view API-related data and logs, see [Introduction to Developer Console](https://manuals.cobo.com/en/portal/developer-console/introduction).

@@ -1,0 +1,125 @@
+---
+openapi: get /wallets/exchanges/{exchange_id}/assets/{asset_id}/chains
+---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.chain_info import ChainInfo
+from cobo_waas2.models.exchange_id import ExchangeId
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsExchangeWalletApi(api_client)
+    exchange_id = cobo_waas2.ExchangeId()
+    asset_id = "USDT"
+
+    try:
+        # List supported chains
+        api_response = api_instance.list_supported_chains_for_exchange(
+            exchange_id, asset_id
+        )
+        print(
+            "The response of WalletsExchangeWalletApi->list_supported_chains_for_exchange:\n"
+        )
+        pprint(api_response)
+    except Exception as e:
+        print(
+            "Exception when calling WalletsExchangeWalletApi->list_supported_chains_for_exchange: %s\n"
+            % e
+        )
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.WalletsExchangeWalletApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // for dev environment
+    // defaultClient.setEnv(Env.DEV);
+    // for production environment
+    // defaultClient.setEnv(Env.PROD);
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    WalletsExchangeWalletApi apiInstance = new WalletsExchangeWalletApi();
+    ExchangeId exchangeId = ExchangeId.fromValue("binance");
+    String assetId = "USDT";
+    try {
+      List<ChainInfo> result = apiInstance.listSupportedChainsForExchange(exchangeId, assetId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println(
+          "Exception when calling WalletsExchangeWalletApi#listSupportedChainsForExchange");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	exchangeId := coboWaas2.ExchangeId("binance") // ExchangeId | The ID of the exchange. Possible values include:   - `binance`: Binance.   - `okx`: OKX.   - `deribit`: Deribit.   - `bybit`: Bybit.   - `gate`: Gate.io   - `bitget'`: Bitget
+	assetId := "USDT"                             // string | (This concept applies to Exchange Wallets only) The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account. You can get the ID of the assets supported by an exchanges by calling [List supported assets](/v2/api-references/wallets--exchange-wallet/list-supported-assets).
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+	})
+	resp, r, err := apiClient.WalletsExchangeWalletAPI.ListSupportedChainsForExchange(ctx, exchangeId, assetId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsExchangeWalletAPI.ListSupportedChainsForExchange``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListSupportedChainsForExchange`: []ChainInfo
+	fmt.Fprintf(os.Stdout, "Response from `WalletsExchangeWalletAPI.ListSupportedChainsForExchange`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// initial default api client
+const apiClient = CoboWaas2.ApiClient.instance
+// for dev env
+// apiClient.setEnv(CoboWaas2.Env.DEV);
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// call api
+const apiInstance = new CoboWaas2.WalletsExchangeWalletApi();
+const exchange_id = new CoboWaas2.ExchangeId(); // ExchangeId | The ID of the exchange. Possible values include:   - `binance`: Binance.   - `okx`: OKX.   - `deribit`: Deribit.   - `bybit`: Bybit.   - `gate`: Gate.io   - `bitget'`: Bitget 
+const asset_id = "USDT"; // String | (This concept applies to Exchange Wallets only) The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account. You can get the ID of the assets supported by an exchanges by calling [List supported assets](/v2/api-references/wallets--exchange-wallet/list-supported-assets).
+apiInstance.listSupportedChainsForExchange(exchange_id, asset_id).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>

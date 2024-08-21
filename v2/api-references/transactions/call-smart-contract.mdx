@@ -1,3 +1,123 @@
 ---
 openapi: post /transactions/contract_call
 ---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.contract_call_params import ContractCallParams
+from cobo_waas2.models.create_transfer_transaction201_response import (
+    CreateTransferTransaction201Response,
+)
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.TransactionsApi(api_client)
+    contract_call_params = cobo_waas2.ContractCallParams()
+
+    try:
+        # Call smart contract
+        api_response = api_instance.create_contract_call_transaction(
+            contract_call_params=contract_call_params
+        )
+        print("The response of TransactionsApi->create_contract_call_transaction:\n")
+        pprint(api_response)
+    except Exception as e:
+        print(
+            "Exception when calling TransactionsApi->create_contract_call_transaction: %s\n"
+            % e
+        )
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // for dev environment
+    // defaultClient.setEnv(Env.DEV);
+    // for production environment
+    // defaultClient.setEnv(Env.PROD);
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    TransactionsApi apiInstance = new TransactionsApi();
+    ContractCallParams contractCallParams = new ContractCallParams();
+    try {
+      CreateTransferTransaction201Response result =
+          apiInstance.createContractCallTransaction(contractCallParams);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling TransactionsApi#createContractCallTransaction");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	contractCallParams := *coboWaas2.NewContractCallParams("f47ac10b-58cc-4372-a567-0e02b2c3d479", "ETH", coboWaas2.ContractCallSource{MpcContractCallSource: coboWaas2.NewMpcContractCallSource(coboWaas2.ContractCallSourceType("Org-Controlled"), "f47ac10b-58cc-4372-a567-0e02b2c3d479", "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")}, coboWaas2.ContractCallDestination{EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(coboWaas2.ContractCallDestinationType("EVM_Contract"), "0x0406db8351aa6839169bb363f63c2c808fee8f99", 0x6057361d00000000000000000000000000000000000000000000000000000000000000fa)}) // ContractCallParams | The request body for making a contract call. (optional)
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+	})
+	resp, r, err := apiClient.TransactionsAPI.CreateContractCallTransaction(ctx).ContractCallParams(contractCallParams).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.CreateContractCallTransaction``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateContractCallTransaction`: CreateTransferTransaction201Response
+	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.CreateContractCallTransaction`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// initial default api client
+const apiClient = CoboWaas2.ApiClient.instance
+// for dev env
+// apiClient.setEnv(CoboWaas2.Env.DEV);
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// call api
+const apiInstance = new CoboWaas2.TransactionsApi();
+const opts = {
+  'ContractCallParams': new CoboWaas2.ContractCallParams() // ContractCallParams | The request body for making a contract call.
+};
+apiInstance.createContractCallTransaction(opts).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>

@@ -1,11 +1,13 @@
 ---
-openapi: get /wallets/tokens/{token_id}
+openapi: get /wallets/check_loop_transfers
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.extended_token_info import ExtendedTokenInfo
+from cobo_waas2.models.check_loop_transfers200_response_inner import (
+    CheckLoopTransfers200ResponseInner,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -19,14 +21,18 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsApi(api_client)
     token_id = "ETH_USDT"
+    source_wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    destination_addresses = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97"
 
     try:
-        # Get token information
-        api_response = api_instance.get_token_by_id(token_id)
-        print("The response of WalletsApi->get_token_by_id:\n")
+        # Check Loop transfers
+        api_response = api_instance.check_loop_transfers(
+            token_id, source_wallet_id, destination_addresses
+        )
+        print("The response of WalletsApi->check_loop_transfers:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling WalletsApi->get_token_by_id: %s\n" % e)
+        print("Exception when calling WalletsApi->check_loop_transfers: %s\n" % e)
 
 ```
 ```java Java
@@ -47,11 +53,15 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
     WalletsApi apiInstance = new WalletsApi();
     String tokenId = "ETH_USDT";
+    UUID sourceWalletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    String destinationAddresses =
+        "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97";
     try {
-      ExtendedTokenInfo result = apiInstance.getTokenById(tokenId);
+      List<CheckLoopTransfers200ResponseInner> result =
+          apiInstance.checkLoopTransfers(tokenId, sourceWalletId, destinationAddresses);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WalletsApi#getTokenById");
+      System.err.println("Exception when calling WalletsApi#checkLoopTransfers");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -73,7 +83,9 @@ import (
 )
 
 func main() {
-	tokenId := "ETH_USDT" // string | The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).
+	tokenId := "ETH_USDT"                                                                                           // string | The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).
+	sourceWalletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"                                                        // string | The source wallet ID.
+	destinationAddresses := "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97" // string | A list of destination wallet addresses, separated by comma.
 
 	configuration := coboWaas2.NewConfiguration()
 	apiClient := coboWaas2.NewAPIClient(configuration)
@@ -83,13 +95,13 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
 	})
-	resp, r, err := apiClient.WalletsAPI.GetTokenById(ctx, tokenId).Execute()
+	resp, r, err := apiClient.WalletsAPI.CheckLoopTransfers(ctx).TokenId(tokenId).SourceWalletId(sourceWalletId).DestinationAddresses(destinationAddresses).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.GetTokenById``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.CheckLoopTransfers``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetTokenById`: ExtendedTokenInfo
-	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.GetTokenById`: %v\n", resp)
+	// response from `CheckLoopTransfers`: []CheckLoopTransfers200ResponseInner
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.CheckLoopTransfers`: %v\n", resp)
 }
 
 ```
@@ -103,7 +115,9 @@ apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
 // call api
 const apiInstance = new CoboWaas2.WalletsApi();
 const token_id = "ETH_USDT"; // String | The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens).
-apiInstance.getTokenById(token_id).then((data) => {
+const source_wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // String | The source wallet ID.
+const destination_addresses = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97"; // String | A list of destination wallet addresses, separated by comma.
+apiInstance.checkLoopTransfers(token_id, source_wallet_id, destination_addresses).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

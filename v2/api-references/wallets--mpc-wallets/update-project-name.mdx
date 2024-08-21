@@ -1,3 +1,127 @@
 ---
 openapi: put /wallets/mpc/projects/{project_id}
 ---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.mpc_project import MPCProject
+from cobo_waas2.models.update_mpc_project_by_id_request import (
+    UpdateMpcProjectByIdRequest,
+)
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
+    project_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    update_mpc_project_by_id_request = cobo_waas2.UpdateMpcProjectByIdRequest()
+
+    try:
+        # Update project name
+        api_response = api_instance.update_mpc_project_by_id(
+            project_id,
+            update_mpc_project_by_id_request=update_mpc_project_by_id_request,
+        )
+        print("The response of WalletsMPCWalletsApi->update_mpc_project_by_id:\n")
+        pprint(api_response)
+    except Exception as e:
+        print(
+            "Exception when calling WalletsMPCWalletsApi->update_mpc_project_by_id: %s\n"
+            % e
+        )
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.WalletsMpcWalletsApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // for dev environment
+    // defaultClient.setEnv(Env.DEV);
+    // for production environment
+    // defaultClient.setEnv(Env.PROD);
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
+    UUID projectId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    UpdateMpcProjectByIdRequest updateMpcProjectByIdRequest = new UpdateMpcProjectByIdRequest();
+    try {
+      MPCProject result = apiInstance.updateMpcProjectById(projectId, updateMpcProjectByIdRequest);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WalletsMpcWalletsApi#updateMpcProjectById");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	projectId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"                                          // string | The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
+	updateMpcProjectByIdRequest := *coboWaas2.NewUpdateMpcProjectByIdRequest("New project name") // UpdateMpcProjectByIdRequest | The request body to update a project's name. (optional)
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+	})
+	resp, r, err := apiClient.WalletsMPCWalletsAPI.UpdateMpcProjectById(ctx, projectId).UpdateMpcProjectByIdRequest(updateMpcProjectByIdRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsMPCWalletsAPI.UpdateMpcProjectById``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateMpcProjectById`: MPCProject
+	fmt.Fprintf(os.Stdout, "Response from `WalletsMPCWalletsAPI.UpdateMpcProjectById`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// initial default api client
+const apiClient = CoboWaas2.ApiClient.instance
+// for dev env
+// apiClient.setEnv(CoboWaas2.Env.DEV);
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// call api
+const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
+const project_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // String | The project ID, which you can retrieve by calling [List all projects](/v2/api-references/wallets--mpc-wallets/list-all-projects).
+const opts = {
+  'UpdateMpcProjectByIdRequest': new CoboWaas2.UpdateMpcProjectByIdRequest() // UpdateMpcProjectByIdRequest | The request body to update a project's name.
+};
+apiInstance.updateMpcProjectById(project_id, opts).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>
