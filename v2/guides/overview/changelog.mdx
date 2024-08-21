@@ -4,6 +4,38 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API.
 
+## v1.2.0
+
+This version was released on August 21, 2024.
+
+### New features
+
+- Added support for [Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction) and [Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction). Added the following operations for Exchange Wallets:
+  - [List supported exchanges](/v2/api-references/wallets--exchange-wallet/list-supported-exchanges)
+  - [List supported assets](/v2/api-references/wallets--exchange-wallet/list-supported-assets)
+  - [List supported chains](/v2/api-references/wallets--exchange-wallet/list-supported-chains)
+  - [List asset balances](/v2/api-references/wallets--exchange-wallet/list-asset-balances)
+- Added the following operations for batch payment:
+  - [Check addresses validity](/v2/api-references/wallets/check-addresses-validity)
+  - [Check Loop transfers](/v2/api-references/wallets/check-loop-transfers)
+- You can now subscribe to TSS request-related event types for your webhook endpoints. For more information about TSS request-related event types, refer to [Webhook event types and data types](/v2/guides/webhooks-callbacks/webhook-event-type).
+
+### Improvements
+
+- The `sub_wallet_id` property was renamed as `trading_account_type`. Affected schemas include:
+  - `ExchangeTransferSource`
+  - `ExchangeTransferDestination`
+  - `TransactionTransferToWalletDestination`
+  - `TransactionExchangeWalletSource`
+  - `TransactionDepositFromWalletSource`
+  - `TransactionDepositToWalletDestination`
+- Added the `PendingApprovalStart` enum value in the `TransactionSubStatus` enum to indicate a status that requires specific action from users for proceeding with the transaction.
+- Added the `project_name` and `vault_name` properties in the `MPCWalletInfo` schema to indicate the project name and vault name.
+- Added the `description` and `created_timestamp` properties in the `TSSRequest` schema to indicate the description and creation time of the TSS request.
+- Added the `account_id` property in the `KeyShareHolder` schema to indicate the key share holder’s account ID on Cobo Portal.
+- Added the `signer_key_share_holder_group_id` property in the `TransactionMPCWalletSource` schema to indicate the ID of the key share holder group as the transaction signer.
+- Added the `description` property in the request body of [Create TSS request](/v2/api-references/wallets--mpc-wallets/create-tss-request) to indicate the description of the TSS request.
+
 ## v1.1.0
 
 This version was released on August 7, 2024.

@@ -1,3 +1,117 @@
 ---
 openapi: post /transactions/estimate_fee
 ---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.estimate_fee_params import EstimateFeeParams
+from cobo_waas2.models.estimated_fee import EstimatedFee
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.TransactionsApi(api_client)
+    estimate_fee_params = cobo_waas2.EstimateFeeParams()
+
+    try:
+        # Estimate transaction fee
+        api_response = api_instance.estimate_fee(
+            estimate_fee_params=estimate_fee_params
+        )
+        print("The response of TransactionsApi->estimate_fee:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling TransactionsApi->estimate_fee: %s\n" % e)
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // for dev environment
+    // defaultClient.setEnv(Env.DEV);
+    // for production environment
+    // defaultClient.setEnv(Env.PROD);
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    TransactionsApi apiInstance = new TransactionsApi();
+    EstimateFeeParams estimateFeeParams = new EstimateFeeParams();
+    try {
+      EstimatedFee result = apiInstance.estimateFee(estimateFeeParams);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling TransactionsApi#estimateFee");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	estimateFeeParams := coboWaas2.EstimateFeeParams{EstimateContractCallFeeParams: coboWaas2.NewEstimateContractCallFeeParams("f47ac10b-58cc-4372-a567-0e02b2c3d479", coboWaas2.EstimateFeeRequestType("Transfer"), "ETH", coboWaas2.ContractCallSource{MpcContractCallSource: coboWaas2.NewMpcContractCallSource(coboWaas2.ContractCallSourceType("Org-Controlled"), "f47ac10b-58cc-4372-a567-0e02b2c3d479", "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")}, coboWaas2.ContractCallDestination{EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(coboWaas2.ContractCallDestinationType("EVM_Contract"), "0x0406db8351aa6839169bb363f63c2c808fee8f99", 0x6057361d00000000000000000000000000000000000000000000000000000000000000fa)})} // EstimateFeeParams | The request body to estimate the transaction fee of a token transfer or a contract call. (optional)
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+	})
+	resp, r, err := apiClient.TransactionsAPI.EstimateFee(ctx).EstimateFeeParams(estimateFeeParams).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.EstimateFee``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `EstimateFee`: EstimatedFee
+	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.EstimateFee`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// initial default api client
+const apiClient = CoboWaas2.ApiClient.instance
+// for dev env
+// apiClient.setEnv(CoboWaas2.Env.DEV);
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// call api
+const apiInstance = new CoboWaas2.TransactionsApi();
+const opts = {
+  'EstimateFeeParams': new CoboWaas2.EstimateFeeParams() // EstimateFeeParams | The request body to estimate the transaction fee of a token transfer or a contract call.
+};
+apiInstance.estimateFee(opts).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>

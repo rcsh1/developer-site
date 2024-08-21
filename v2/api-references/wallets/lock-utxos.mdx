@@ -1,3 +1,121 @@
 ---
 openapi: post /wallets/{wallet_id}/utxos/lock
 ---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.lock_utxos201_response import LockUtxos201Response
+from cobo_waas2.models.lock_utxos_request import LockUtxosRequest
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    lock_utxos_request = cobo_waas2.LockUtxosRequest()
+
+    try:
+        # Lock UTXOs
+        api_response = api_instance.lock_utxos(
+            wallet_id, lock_utxos_request=lock_utxos_request
+        )
+        print("The response of WalletsApi->lock_utxos:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling WalletsApi->lock_utxos: %s\n" % e)
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // for dev environment
+    // defaultClient.setEnv(Env.DEV);
+    // for production environment
+    // defaultClient.setEnv(Env.PROD);
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    WalletsApi apiInstance = new WalletsApi();
+    UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    LockUtxosRequest lockUtxosRequest = new LockUtxosRequest();
+    try {
+      LockUtxos201Response result = apiInstance.lockUtxos(walletId, lockUtxosRequest);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WalletsApi#lockUtxos");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"                                                                                                                                                                        // string | The wallet ID.
+	lockUtxosRequest := *coboWaas2.NewLockUtxosRequest([]coboWaas2.LockUtxosRequestUtxosInner{*coboWaas2.NewLockUtxosRequestUtxosInner("BTC", "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb", int32(0))}) // LockUtxosRequest | The request body of the Lock/Unlock UTXOs operation. (optional)
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+	})
+	resp, r, err := apiClient.WalletsAPI.LockUtxos(ctx, walletId).LockUtxosRequest(lockUtxosRequest).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.LockUtxos``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `LockUtxos`: LockUtxos201Response
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.LockUtxos`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// initial default api client
+const apiClient = CoboWaas2.ApiClient.instance
+// for dev env
+// apiClient.setEnv(CoboWaas2.Env.DEV);
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// call api
+const apiInstance = new CoboWaas2.WalletsApi();
+const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // String | The wallet ID.
+const opts = {
+  'LockUtxosRequest': new CoboWaas2.LockUtxosRequest() // LockUtxosRequest | The request body of the Lock/Unlock UTXOs operation.
+};
+apiInstance.lockUtxos(wallet_id, opts).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>

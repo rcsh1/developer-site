@@ -1,3 +1,121 @@
 ---
 openapi: put /wallets/{wallet_id}
 ---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.update_wallet_params import UpdateWalletParams
+from cobo_waas2.models.wallet_info import WalletInfo
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    update_wallet_params = cobo_waas2.UpdateWalletParams()
+
+    try:
+        # Update wallet
+        api_response = api_instance.update_wallet_by_id(
+            wallet_id, update_wallet_params=update_wallet_params
+        )
+        print("The response of WalletsApi->update_wallet_by_id:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling WalletsApi->update_wallet_by_id: %s\n" % e)
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // for dev environment
+    // defaultClient.setEnv(Env.DEV);
+    // for production environment
+    // defaultClient.setEnv(Env.PROD);
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    WalletsApi apiInstance = new WalletsApi();
+    UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    UpdateWalletParams updateWalletParams = new UpdateWalletParams();
+    try {
+      WalletInfo result = apiInstance.updateWalletById(walletId, updateWalletParams);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WalletsApi#updateWalletById");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"                                                                                                           // string | The wallet ID.
+	updateWalletParams := coboWaas2.UpdateWalletParams{UpdateCustodialWalletParams: coboWaas2.NewUpdateCustodialWalletParams(coboWaas2.WalletType("Custodial"))} // UpdateWalletParams | The request body. (optional)
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+	})
+	resp, r, err := apiClient.WalletsAPI.UpdateWalletById(ctx, walletId).UpdateWalletParams(updateWalletParams).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.UpdateWalletById``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateWalletById`: WalletInfo
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.UpdateWalletById`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// initial default api client
+const apiClient = CoboWaas2.ApiClient.instance
+// for dev env
+// apiClient.setEnv(CoboWaas2.Env.DEV);
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// call api
+const apiInstance = new CoboWaas2.WalletsApi();
+const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // String | The wallet ID.
+const opts = {
+  'UpdateWalletParams': new CoboWaas2.UpdateWalletParams() // UpdateWalletParams | The request body.
+};
+apiInstance.updateWalletById(wallet_id, opts).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>

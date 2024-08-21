@@ -1,3 +1,119 @@
 ---
 openapi: get /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}
 ---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.tss_request import TSSRequest
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
+    vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    tss_request_id = "20240711114129000132315000003970"
+
+    try:
+        # Get TSS request
+        api_response = api_instance.get_tss_request_by_id(vault_id, tss_request_id)
+        print("The response of WalletsMPCWalletsApi->get_tss_request_by_id:\n")
+        pprint(api_response)
+    except Exception as e:
+        print(
+            "Exception when calling WalletsMPCWalletsApi->get_tss_request_by_id: %s\n"
+            % e
+        )
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.WalletsMpcWalletsApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // for dev environment
+    // defaultClient.setEnv(Env.DEV);
+    // for production environment
+    // defaultClient.setEnv(Env.PROD);
+    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
+    UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    String tssRequestId = "20240711114129000132315000003970";
+    try {
+      TSSRequest result = apiInstance.getTssRequestById(vaultId, tssRequestId);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WalletsMpcWalletsApi#getTssRequestById");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	vaultId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"  // string | The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
+	tssRequestId := "20240711114129000132315000003970" // string | The TSS request ID, which you can retrieve by calling [List TSS requests](/v2/api-references/wallets--mpc-wallets/list-tss-requests).
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+	})
+	resp, r, err := apiClient.WalletsMPCWalletsAPI.GetTssRequestById(ctx, vaultId, tssRequestId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsMPCWalletsAPI.GetTssRequestById``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetTssRequestById`: TSSRequest
+	fmt.Fprintf(os.Stdout, "Response from `WalletsMPCWalletsAPI.GetTssRequestById`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// initial default api client
+const apiClient = CoboWaas2.ApiClient.instance
+// for dev env
+// apiClient.setEnv(CoboWaas2.Env.DEV);
+apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// call api
+const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
+const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // String | The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
+const tss_request_id = "20240711114129000132315000003970"; // String | The TSS request ID, which you can retrieve by calling [List TSS requests](/v2/api-references/wallets--mpc-wallets/list-tss-requests).
+apiInstance.getTssRequestById(vault_id, tss_request_id).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>

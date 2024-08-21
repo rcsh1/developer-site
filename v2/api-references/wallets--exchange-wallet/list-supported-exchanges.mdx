@@ -1,14 +1,13 @@
 ---
-openapi: post /transactions/message_sign
+openapi: get /wallets/exchanges
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.create_transfer_transaction201_response import (
-    CreateTransferTransaction201Response,
+from cobo_waas2.models.list_exchanges200_response_inner import (
+    ListExchanges200ResponseInner,
 )
-from cobo_waas2.models.message_sign_params import MessageSignParams
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -20,20 +19,16 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.TransactionsApi(api_client)
-    message_sign_params = cobo_waas2.MessageSignParams()
+    api_instance = cobo_waas2.WalletsExchangeWalletApi(api_client)
 
     try:
-        # Sign message
-        api_response = api_instance.create_message_sign_transaction(
-            message_sign_params=message_sign_params
-        )
-        print("The response of TransactionsApi->create_message_sign_transaction:\n")
+        # List supported exchanges
+        api_response = api_instance.list_exchanges()
+        print("The response of WalletsExchangeWalletApi->list_exchanges:\n")
         pprint(api_response)
     except Exception as e:
         print(
-            "Exception when calling TransactionsApi->create_message_sign_transaction: %s\n"
-            % e
+            "Exception when calling WalletsExchangeWalletApi->list_exchanges: %s\n" % e
         )
 
 ```
@@ -42,7 +37,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
 import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
-import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.api.WalletsExchangeWalletApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -53,14 +48,12 @@ public class Example {
     // for production environment
     // defaultClient.setEnv(Env.PROD);
     defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
-    TransactionsApi apiInstance = new TransactionsApi();
-    MessageSignParams messageSignParams = new MessageSignParams();
+    WalletsExchangeWalletApi apiInstance = new WalletsExchangeWalletApi();
     try {
-      CreateTransferTransaction201Response result =
-          apiInstance.createMessageSignTransaction(messageSignParams);
+      List<ListExchanges200ResponseInner> result = apiInstance.listExchanges();
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling TransactionsApi#createMessageSignTransaction");
+      System.err.println("Exception when calling WalletsExchangeWalletApi#listExchanges");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -82,7 +75,6 @@ import (
 )
 
 func main() {
-	messageSignParams := *coboWaas2.NewMessageSignParams("f47ac10b-58cc-4372-a567-0e02b2c3d479", "ETH", coboWaas2.MessageSignSource{MpcMessageSignSource: coboWaas2.NewMpcMessageSignSource(coboWaas2.MessageSignSourceType("Org-Controlled"), "f47ac10b-58cc-4372-a567-0e02b2c3d479", "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku")}, coboWaas2.MessageSignDestination{EvmEIP191MessageSignDestination: coboWaas2.NewEvmEIP191MessageSignDestination(coboWaas2.MessageSignDestinationType("EVM_EIP_191_Signature"), "YWFhYQ==")}) // MessageSignParams | The request body to create a message sign transaction (optional)
 
 	configuration := coboWaas2.NewConfiguration()
 	apiClient := coboWaas2.NewAPIClient(configuration)
@@ -92,13 +84,13 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.CreateMessageSignTransaction(ctx).MessageSignParams(messageSignParams).Execute()
+	resp, r, err := apiClient.WalletsExchangeWalletAPI.ListExchanges(ctx).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.CreateMessageSignTransaction``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsExchangeWalletAPI.ListExchanges``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateMessageSignTransaction`: CreateTransferTransaction201Response
-	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.CreateMessageSignTransaction`: %v\n", resp)
+	// response from `ListExchanges`: []ListExchanges200ResponseInner
+	fmt.Fprintf(os.Stdout, "Response from `WalletsExchangeWalletAPI.ListExchanges`: %v\n", resp)
 }
 
 ```
@@ -110,11 +102,8 @@ const apiClient = CoboWaas2.ApiClient.instance
 // apiClient.setEnv(CoboWaas2.Env.DEV);
 apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
 // call api
-const apiInstance = new CoboWaas2.TransactionsApi();
-const opts = {
-  'MessageSignParams': new CoboWaas2.MessageSignParams() // MessageSignParams | The request body to create a message sign transaction
-};
-apiInstance.createMessageSignTransaction(opts).then((data) => {
+const apiInstance = new CoboWaas2.WalletsExchangeWalletApi();
+apiInstance.listExchanges().then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);
