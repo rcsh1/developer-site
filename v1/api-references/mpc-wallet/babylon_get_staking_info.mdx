@@ -19,14 +19,22 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
         <ResponseField name="status" type="Int" >
         | Status Type | Code |
         | ----------- | ----------- |
-        | STAKING_TX_QUEUED| 1|
+        | STAKING_TX_INIT| 1|
         | STAKING_TX_WAITING_BROADCASTING| 100|
         | STAKING_TX_BROADCASTED| 200|
         | STAKING_TX_PENDING| 300|
         | STAKING_ACTIVE| 400|
+        | STAKING_OVERFLOW| 490|
         | STAKING_FAILED| 499|
+        | STAKING_UNBONDINGREQUESTED| 500|
+        | STAKING_UNBONDING| 510|
+        | STAKING_UNBONDED| 520|
+        | STAKING_WITHDRAWN| 600|
 
         <Tip>The 300 status indicates that the transaction has been confirmed on the BTC chain but not yet indexed by Babylon, while the 400 status indicates that the transaction has been successfully confirmed by the Babylon indexer.</Tip>
+        <Tip>The 490 status indicates that the transaction has been successfully confirmed by the Babylon indexer, but because it exceeds Babylon's staking cap, it will not be included in the earnings calculation.</Tip>
+        <Tip>The 500 status indicates that the unbonding request for the staking transaction has been sent to Babylon. The 510 status means that the unbonding transaction is waiting for Babylon to reach the required number of locked blocks. The 520 status indicates that the staking transaction has been successfully unbonded (either due to natural expiration or successful unbonding). Once this status is reached, the staking transaction can be withdrawn.</Tip>
+        <Tip>The 600 status indicates that the staking transaction has been fully withdrawn and the staking transaction is closed.</Tip>
         </ResponseField>
         <ResponseField name="fee_rate" type="String" >transaction fees per byte</ResponseField>
         <ResponseField name="max_staking_fee" type="Int" >maximum fee for the staking transaction</ResponseField>

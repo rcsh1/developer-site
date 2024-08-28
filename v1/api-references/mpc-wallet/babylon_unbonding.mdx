@@ -1,0 +1,58 @@
+---
+title: Babylon Unbonding
+api: POST /v1/custody/mpc/babylon/unbonding/
+contentType: multipart/form-data
+description: <Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to <a href="/v2/guides/overview/introduction">WaaS 2.0</a>.</Note> This endpoint performs the unbond operation for a given staking transaction.
+---
+
+#### Request
+<ParamField body="request_id" type="String" required>transaction ID (unique identifier of a transaction request, which must correspond to a client's transaction; UUID should be used and the length should be equal to or less than 120 characters)</ParamField>
+<ParamField body="staking_request_id" type="String" required>request ID of the staking transaction to be unbonded</ParamField>
+<Tip>Please note that only staking transactions with status 400 or 490 are eligible to be unbonded.</Tip>
+
+#### Response
+<ResponseField name="success" type="bool">request successful or failed</ResponseField>
+<ResponseField name="result" type="String">""</ResponseField>
+
+<RequestExample>
+```python Python
+request(
+    "POST",
+    "/v1/custody/mpc/babylon/unbonding/",
+    {
+        "request_id": "1717059604245",
+        "staking_request_id": "1717059601673"
+    },
+    api_key, api_secret, host
+)
+```
+```javascript JavaScript
+coboFetch('POST', '/v1/custody/mpc/babylon/unbonding/', {
+    "request_id": "1717059604245",
+    "staking_request_id": "1717059601673"
+}, api_key, api_secret, host)
+    .then(res => {
+        res.json().then((data)=>{
+            console.log(JSON.stringify(data, null, 4));
+        })
+    }).catch(err => {
+        console.log(err)
+    });
+```
+```go Go
+Request("POST", "/v1/custody/mpc/babylon/unbonding/", map[string]string{
+    "request_id": "1717059604245",
+    "staking_request_id": "1717059601673"
+})
+```
+</RequestExample>
+
+<ResponseExample>
+```json
+{
+  "success": true,
+  "result": ""
+}
+
+```
+</ResponseExample>
