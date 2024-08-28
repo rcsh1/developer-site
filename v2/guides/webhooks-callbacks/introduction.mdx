@@ -11,8 +11,8 @@ Callbacks and webhooks serve distinct purposes within your business operations.
 
 | Mechanism | Description                        | Trigger Condition                                        | Required Actions Upon Receiving the Message              |
 | ------------- | -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Callbacks     | Serve similarly to a 2FA verification. | Triggered when you initiate a withdrawal or contract call using the WaaS API. | Check if the transaction meets expectations, and respond with a success status code (`200` or `201`) and a response body of `ok` or `deny` to indicate transaction approval or rejection. |
-| Webhooks      | Serve as notifications.                 | Triggered when certain events occur such as transaction status or TSS request status changes, based on the event types to which you subscribe.              | Respond with a success status code (`200` or `201`).             |
+| Callbacks     | Serve similarly to a 2FA verification. You must register a callback endpoint in order to approve and complete a token withdrawal. | Triggered when you initiate a withdrawal or contract call using the WaaS API. | Check if the transaction meets expectations, and respond with a success status code (`200` or `201`) and a response body of `ok` or `deny` to indicate transaction approval or rejection. |
+| Webhooks      | Serve as real-time notifications for events such as transaction status updates.  | Triggered when certain events occur such as transaction status or TSS request status changes, based on the event types to which you subscribe.              | Respond with a success status code (`200` or `201`).             |
 
 You can view the data of all webhook events and callback messages in your organization on **Cobo Portal** > **Developer**> **Webhook Events** / **Callback Messages**.
 
@@ -36,3 +36,27 @@ To create an endpoint and implement the handling logic, see [Set up a callback o
 To register the endpoint, see [Register a webhook endpoint](https://manuals.cobo.com/en/portal/developer-console/webhooks-create) and [Register a callback endpoint](https://manuals.cobo.com/en/portal/developer-console/callbacks-register).
 
 To learn more about event types and event data types, see [Webhook event type and data type](webhook-event-type).
+
+## Notes on upgrading from WaaS 1.0 to Waas 2.0
+
+The WaaS 1.0 service uses API callbacks for transaction notifications and withdrawal confirmations, similar to the webhooks and callbacks introduced in WaaS 2.0. The following table provides a comparison between the two versions based on the event notification mechanisms:
+
+|  | Mechanism to Notify Transaction Status Changes | Mechanism to Confirm Withdrawals | Where to Register the Endpoint |
+| --- | --- | --- | --- |
+| WaaS 1.0 | Callbacks - Transaction notifications | Callbacks - Withdrawal confirmations | Cobo Custody |
+| WaaS 2.0 | Webhook events | Callback messages | Cobo Portal |
+
+For more details about the WaaS 1.0 callbacks, refer to [How to Configure API Callback](/v1/guides/howtos/configure-api-callback).
+
+### Continued use of the WaaS 1.0 API
+If you choose to continue using the WaaS 1.0 API, no additional configuration is required. The existing API callbacks will function as expected.
+
+### Upgrade to the WaaS 2.0 API
+When upgrading to WaaS 2.0, you need to do the following:
+- Set up your webhook or callback endpoint by following the instructions in [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).
+- Register the endpoint on the Cobo Portal by following the instructions in [Register a webhook endpoint](https://manuals.cobo.com/en/portal/developer-console/webhooks-create) or [Register a callback endpoint](https://manuals.cobo.com/en/portal/developer-console/callbacks-register).
+
+<Note>The WaaS 1.0 API callbacks use a different signature algorithm compared to the WaaS 2.0 webhooks and callbacks. Do not directly register your WaaS 1.0 endpoint on Cobo Portal. Otherwise, your endpoint will receive errors due to the differences in the signature algorithm and webhook/callback data structure between WaaS 1.0 and WaaS 2.0. Ensure you refer to the <a href="/v2/guides/webhooks-callbacks/set-up-endpoint#code-samples">sample code</a> provided to correctly configure your endpoint for WaaS 2.0.</Note>
+
+<Info>If you configure both WaaS 1.0 API callbacks for transaction notifications and WaaS 2.0 webhooks, while continuing to use the WaaS 1.0 API, your endpoint will receive:<ul><li>From WaaS 1.0: Transaction notifications.</li><li>From WaaS 2.0: Webhook events.</li></ul></Info>
+
