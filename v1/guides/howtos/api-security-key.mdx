@@ -2,7 +2,7 @@
 title: "Safeguarding API Security Key"
 sidebarTitle: "Safeguarding API Security Key"
 ---
-<Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to <a href="/v2/guides/overview/introduction">WaaS 2.0</a>.</Note>
+<Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to [WaaS 2.0](/v2/guides/overview/introduction).</Note>
 
 
 Currently, Cobo uses the asymmetric Elliptic Curve Digital Signature Algorithm (ECDSA). Clients will need to first generate a local key-pair (i.e., public and private keys) and then inform Cobo about the public key. Cobo will use this public key to verify whether a request from the client has a corresponding private key signature. We strongly recommend using Cobo's SDKs, which come with built-in signature verification logic. [Click here](https://www.cobo.com/developers/sdks-and-tools/sdks/waas/python) to download Cobo’s SDKs.
