@@ -74,6 +74,7 @@ For operation-specific documentation and sample code, see the [docs](https://git
 import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
 import com.cobo.waas2.model.*;
 import com.cobo.waas2.api.WalletsApi;
 
@@ -87,7 +88,7 @@ public class Example {
     WalletsApi apiInstance = new WalletsApi();
     WalletType walletType = WalletType.fromValue("Custodial");
     WalletSubtype walletSubtype = WalletSubtype.fromValue("Asset");
-    String chainIds = "BTC,ETH";
+    String chainIds = "";
     Integer limit = 10;
     String before = "";
     String after = "";
@@ -114,6 +115,7 @@ public class Example {
 import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
 import com.cobo.waas2.model.*;
 import com.cobo.waas2.api.WalletsApi;
 

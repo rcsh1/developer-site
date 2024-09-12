@@ -9,10 +9,12 @@ from cobo_waas2.models.get_token200_response import GetToken200Response
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
-# See configuration.py for a list of all supported configuration parameters.
+# See configuration.py for a list of all supported configurations.
 configuration = cobo_waas2.Configuration(
-    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
+    api_private_key="<YOUR_PRIVATE_KEY>",
+    # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+    host="https://api.dev.cobo.com/v2",
 )
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
@@ -42,11 +44,12 @@ import com.cobo.waas2.model.*;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    // for dev environment
-    // defaultClient.setEnv(Env.DEV);
-    // for production environment
-    // defaultClient.setEnv(Env.PROD);
-    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    // Select the development environment. To use the production environment, replace `Env.DEV` with
+    // `Env.PROD
+    defaultClient.setEnv(Env.DEV);
+
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key
+    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     OAuthApi apiInstance = new OAuthApi();
     String clientId = "pvSwS8iFrfK0oZrB0ugG54XPDOLEv0Ij";
     String orgId = "e3986401-4aec-480a-973d-e775a4518413";
@@ -77,19 +80,26 @@ import (
 )
 
 func main() {
-	clientId := "pvSwS8iFrfK0oZrB0ugG54XPDOLEv0Ij"  // string | The App ID, a unique identifier to distinguish Cobo Portal Apps. You can get the App ID by retrieving the Manifest file after receiving the notification of app launch approval.
-	orgId := "e3986401-4aec-480a-973d-e775a4518413" // string | Organization ID, a unique identifier to distinguish different organizations. You can get the Organization ID by retrieving the Manifest file after receiving the notification of app launch approval.
-	grantType := "org_implicit"                     // string | The OAuth grant type. Set the value as `org_implicit`.
+	clientId := "pvSwS8iFrfK0oZrB0ugG54XPDOLEv0Ij"
+	orgId := "e3986401-4aec-480a-973d-e775a4518413"
+	grantType := "org_implicit"
 
 	configuration := coboWaas2.NewConfiguration()
+	// Initialize the API client
 	apiClient := coboWaas2.NewAPIClient(configuration)
 	ctx := context.Background()
-	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
-	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+
+	// Select the development environment. To use the production environment, replace coboWaas2.DevEnv with coboWaas2.ProdEnv
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// Replace `<YOUR_PRIVATE_KEY>` with your private key
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.OAuthAPI.GetToken(ctx).ClientId(clientId).OrgId(orgId).GrantType(grantType).Execute()
+	resp, r, err := apiClient.OAuthAPI.GetToken(ctx).
+		ClientId(clientId).
+		OrgId(orgId).
+		GrantType(grantType).
+		Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `OAuthAPI.GetToken``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -101,16 +111,17 @@ func main() {
 ```
 ```javascript JavaScript
 const CoboWaas2 = require('@cobo/cobo-waas2');
-// initial default api client
+// Initialize the API client
 const apiClient = CoboWaas2.ApiClient.instance
-// for dev env
-// apiClient.setEnv(CoboWaas2.Env.DEV);
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
-// call api
+// Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Replace `<YOUR_PRIVATE_KEY>` with your private key
+apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
+// Call the API
 const apiInstance = new CoboWaas2.OAuthApi();
-const client_id = "pvSwS8iFrfK0oZrB0ugG54XPDOLEv0Ij"; // String | The App ID, a unique identifier to distinguish Cobo Portal Apps. You can get the App ID by retrieving the Manifest file after receiving the notification of app launch approval.
-const org_id = "e3986401-4aec-480a-973d-e775a4518413"; // String | Organization ID, a unique identifier to distinguish different organizations. You can get the Organization ID by retrieving the Manifest file after receiving the notification of app launch approval.
-const grant_type = "org_implicit"; // String | The OAuth grant type. Set the value as `org_implicit`.
+const client_id = "pvSwS8iFrfK0oZrB0ugG54XPDOLEv0Ij";
+const org_id = "e3986401-4aec-480a-973d-e775a4518413";
+const grant_type = "org_implicit";
 apiInstance.getToken(client_id, org_id, grant_type).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {

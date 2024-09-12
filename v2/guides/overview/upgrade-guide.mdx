@@ -1,0 +1,81 @@
+---
+title: "Upgrade from WaaS 1.0 to 2.0"
+sidebarTitle: "Upgrade from WaaS 1.0 to 2.0"
+---
+
+
+This article is targeted at WaaS 1.0 users who are considering upgrading to WaaS 2.0. It introduces the benefits of the upgrade and provides step-by-step instructions to successfully complete the upgrade process.
+
+## Benefits of the upgrade
+
+WaaS 2.0 is a complete upgrade from Cobo’s initial WaaS offering. By upgrading to 2.0, you can benefit from the following key features:
+
+- A more holistic approach to accessing Cobo’s wallet technologies through a unified API for all four of Cobo’s [wallet types](https://manuals.cobo.com/en/portal/introduction#an-all-in-one-wallet-platform).
+- More webhook event types, including transaction and TSS request-related events, and more to come.
+- Flexible usage models for MPC Wallets, including Organization-Controlled Wallets and User-Controlled Wallets.
+- Programmatic control of smart contract wallets such as Safe{Wallet} with fine-grained access controls.
+- Seamlessly transfer funds across multiple exchanges, including Binance, OKX, Bybit, Deribit, and more.
+
+By upgrading to 2.0, you can also enjoy the full features of [Cobo Portal](https://manuals.cobo.com/en/portal/introduction), including a powerful developer console where you can monitor API activities, view logs, and oversee webhook events and callback messages.
+
+With the WaaS 2.0 API, you not only can integrate Cobo’s powerful wallet capabilities directly into your applications, but also build [Cobo Portal Apps](https://manuals.cobo.com/en/portal/portal-apps/introduction) to significantly expand the capabilities of Cobo Portal, whether for all Cobo Portal users or specifically for your own use.
+
+For a complete introduction to WaaS 2.0, see [Introduction to WaaS 2.0](https://www.cobo.com/developers/v2/guides/overview/introduction).
+
+## Differences between 1.0 and 2.0
+
+The following table lists the major differences between the 1.0 and 2.0 versions:
+
+|                            | WaaS 1.0                                                     | WaaS 2.0                                                     |
+| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| API design                 | HTTP endpoints supporting the GET and POST methods.          | RESTful API structured into distinct domains, such as wallets, transactions, and webhooks. The API follows resource-oriented design principles for endpoint definition and supports standard HTTP methods including GET, POST, PUT, and DELETE. |
+| API key and authentication | <ul><li>The API key is wallet-specific, meaning it can only be used to access the associated wallet.</li><li>An SECP256k1 signature is used for authenticating an API request.</li></ul> | <ul><li>The API key is organization-specific and can be used to access multiple wallets. For more information, refer to [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key).</li><li>An ED25519 signature is used for authenticating an API request.</li></ul> |
+| Transaction notification   | Supports transaction status-related events only.             | <ul><li>This feature is called “Webhook” in 2.0.</li><li>Supports [transaction status and TSS request-related events](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type), and the list is still growing.</li><li>The data structure of the webhook event differs from 1.0.</li></ul> |
+| Withdrawal confirmation    | A mechanism used for confirming withdrawals initiated through WaaS API. | <ul><li>This feature is called “Callback” in 2.0.</li><li>The data structure of the callback message differs from 1.0.</li></ul> |
+| Supported wallet types     | <ul><li>Custodial Wallets</li><li>MPC Wallets </li></ul>                   | <ul><li>[Custodial Wallets](https://manuals.cobo.com/en/portal/custodial-wallets/introduction)</li><li>[MPC Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/introduction)</li><li>[Smart Contract Wallets](https://manuals.cobo.com/en/portal/smart-contract-wallets/introduction)</li><li>[Exchange Wallets](https://manuals.cobo.com/en/portal/exchange-wallets/introduction) </li></ul>|
+| Asset model                | <ul><li>A coin is considered a unique asset type.</li><li>A coin represents a specific pairing of a chain and a cryptocurrency, such as ETH_USDT.</li></ul> | <ul><li>A token is considered a unique asset type, except for Exchange Wallets, which consider an “asset” to be a unique asset type. </li><li>A token represents a specific pairing of a chain and a cryptocurrency, such as ETH_USDT.</li><li>An asset represents a cryptocurrency stored in your linked exchange account, such as USDT.</li></ul>|
+| Balance model              | <ul><li>**[Custodial Wallets]** Coin balances can be calculated for an entire wallet but not for each address.</li><li>**[MPC Wallets]** Coin balances can be calculated for each address within the wallet, but not for an entire wallet.</li></ul> | <ul><li>**[Custodial Wallets]** Token balances can be calculated for the entire wallet but not for each address.</li><li>**[MPC Wallets]** Token balances can be calculated for the entire wallet or each address.</li></ul> |
+| Balances and amounts       | <ul><li>Balances and amounts are denominated in the smallest units of the cryptocurrency. For example, Bitcoin balances and amounts are denominated in Satoshis.</li><li>The parameters `abs_balance` and `abs_amount` are denominated in the primary unit of the cryptocurrency, such as BTC for Bitcoin. </li></ul>| <ul><li>Balances and amounts are denominated in the primary unit of the cryptocurrency, such as BTC for Bitcoin.</li><li>As an example, for a deposit of 1.2 BTC, the deposit amount is recorded as `120,000,000` in 1.0 and `1.2` in 2.0. </li></ul>|
+| Address generation         | <ul><li>**[Custodial Wallets]** Addresses are generated based on a specified coin, such as ETH_USDT, and can then be used by all coins on the same chain.</li><li>**[MPC Wallets]** Addresses are generated based on a specified chain, such as ETH, and can then be used by all coins on the same chain. </li></ul>| **[Custodial Wallets / MPC Wallets]** Addresses are generated based on a specified chain, such as ETH, and can then be used by all tokens on the same chain. |
+| Transaction ID             | The unique ID of a transaction.                              | <ul><li>The transaction ID in 2.0 follows the UUID format which differs from the format used in 1.0.</li><li>The transaction ID in 1.0 is termed as “Cobo ID” in 2.0. You can continue to use Cobo ID to query a transaction.</li></ul> |
+
+## Upgrade to 2.0
+
+This section introduces the detailed steps to upgrade from WaaS 1.0 to 2.0.
+
+### Prerequisites
+
+Reach out to our support team at[ help@cobo.com](mailto:help@cobo.com) to migrate from Cobo Custody to Cobo Portal.
+
+### Get started with WaaS 2.0
+
+Follow the instructions in [Get started with WaaS 2.0](https://www.cobo.com/developers/v2/guides/get-started-with-waas) to set up your account, create and register your API key, integrate a WaaS SDK if necessary, and send your first API request to the WaaS 2.0 service.
+
+### Rewrite your code
+
+Once you complete the initial setup, it is time to rewrite your code by replacing the 1.0 API operations with 2.0 operations. Refer to[ API operation comparison](#api-operation-comparison) for a detailed comparison between 1.0 and 2.0 API operations.
+
+You can also refer to [Get started with Custodial Wallets (Asset Wallets)](https://www.cobo.com/developers/v2/guides/custodial-wallets/get-started-asset-wallets) for a step-by-step guide on how to create a Custodial Wallet (Asset Wallet), generate wallet addresses, and receive and withdraw tokens. Guides for other wallet types will be available in the future.
+
+### Set up webhook and callback endpoints
+
+Set up the webhook and callback endpoints and register them in Cobo Portal. To learn the detailed steps of the setup, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint). To register the endpoint, see [Register a webhook endpoint](https://manuals.cobo.com/en/portal/developer-console/webhooks-create) and [Register a callback endpoint](https://manuals.cobo.com/en/portal/developer-console/callbacks-register).
+
+<Note>The endpoints you set up for WaaS 1.0 will not receive any messages from the WaaS 2.0 service.</Note>
+
+## API operation comparison
+
+The following table lists the API operations needed for common wallet operations in WaaS 1.0 and 2.0 respectively. You can refer to this table when migrating your code from 1.0 to 2.0.
+
+|                            | WaaS 1.0                                                     | WaaS 2.0                                                     |
+| -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Create a wallet            | Not supported since the API key is wallet-specific           | [Create wallet](https://www.cobo.com/developers/v2/api-references/wallets/create-wallet) |
+| Create an address          |  <ul><li>**[Custodial Wallets]** [Get New Deposit Address](https://www.cobo.com/developers/v1/api-references/custody-wallet/new_address)</li><li>**[MPC Wallets]** [Generate Addresses](https://www.cobo.com/developers/v1/api-references/mpc-wallet/mpc_generate_addresses) and [Generate Address Memos](https://www.cobo.com/developers/v1/api-references/mpc-wallet/mpc_generate_address_memo)</li></ul> | [Create addresses in wallet](https://www.cobo.com/developers/v2/api-references/wallets/create-addresses-in-wallet) |
+| Withdraw tokens            | <ul><li>**[Custodial Wallets]** [New withdraw request](https://www.cobo.com/developers/v1/api-references/custody-wallet/new_withdraw_request)</li><li>**[MPC Wallets]** [Create Transaction](https://www.cobo.com/developers/v1/api-references/mpc-wallet/mpc_create_transaction)</li></ul> | [Transfer token](https://www.cobo.com/developers/v2/api-references/transactions/transfer-token) |
+| RBF transaction (Speed up) | **[MPC Wallets]** [Speedup Transaction](https://www.cobo.com/developers/v1/api-references/mpc-wallet/mpc_speedup_transaction) | [Speed up transaction](https://www.cobo.com/developers/v2/api-references/transactions/speed-up-transaction) |
+| RBF transaction (Drop)     | **[MPC Wallets]** [Drop Transaction](https://www.cobo.com/developers/v1/api-references/mpc-wallet/mpc_drop_transaction) | [Drop transaction](https://www.cobo.com/developers/v2/api-references/transactions/drop-transaction) |
+| RBF transaction (Resend)   | Not supported                                                | [Resend transaction](https://www.cobo.com/developers/v2/api-references/transactions/resend-transaction) |
+| RBF transaction (Cancel)   | Not supported                                                | [Cancel transaction](https://www.cobo.com/developers/v2/api-references/transactions/cancel-transaction) |
+| Call a contract            | Not supported                                                | [Call smart contract](https://www.cobo.com/developers/v2/api-references/transactions/call-smart-contract) |
+| Sign a message             | Not supported                                                | [Sign message](https://www.cobo.com/developers/v2/api-references/transactions/sign-message) |
+| Query a transaction        | <ul><li>**[Custodial Wallets]** [Transaction history](https://www.cobo.com/developers/v1/api-references/custody-wallet/transaction_history)</li><li>**[MPC Wallets]** [Get Transactions List](https://www.cobo.com/developers/v1/api-references/mpc-wallet/mpc_list_transactions)</li></ul> | <ul><li>[List all transactions](https://www.cobo.com/developers/v2/api-references/transactions/list-all-transactions)</li><li>[Get transaction information](https://www.cobo.com/developers/v2/api-references/transactions/get-transaction-information)</li></ul>|

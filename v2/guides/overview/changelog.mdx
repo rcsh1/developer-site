@@ -4,6 +4,35 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.3.0
+
+This version was released on September 12, 2024.
+
+### New features
+
+- You can now stake your tokens with the WaaS 2.0 API. Staking operations include:
+  - [List staking positions](/v2/api-references/stakings/list-all-stakings)
+  - [Get staking position details](/v2/api-references/stakings/get-staking-by-id)
+  - [List staking activities](/v2/api-references/stakings/list-staking-activities)
+  - [Estimate staking fees](/v2/api-references/stakings/estimate-staking-transaction-fee)
+  - [Create stake activity](/v2/api-references/stakings/create-staking-activity)
+  - [Create unstake activity](/v2/api-references/stakings/create-unstake-activity)
+  - [Create withdraw activity](/v2/api-references/stakings/create-withdraw-activity)
+  - [Get staking activity details](/v2/api-references/stakings/get-staking-activity-details)
+  - [List staking pools](/v2/api-references/stakings/list-staking-pools)
+  - [Get staking pool details](/v2/api-references/stakings/get-staking-pool-details)
+- Added the [Broadcast signed transactions](/v2/api-references/transactions/broadcast-signed-transactions) operation to broadcast signed transactions.
+
+### Improvements
+
+- Changed the path of the [Check loop transfers](/v2/api-references/transactions/check-loop-transfers) operation from `/wallets/check_loop_transfers` to `/transactions/check_loop_transfers`.
+- Added the `dust_threshold` and `custodial_minimum_deposit_threshold` properties in the `TokenInfo` schema to indicate the minimum withdrawal and deposit amounts for Custodial Wallets.
+- Added the `confirming_threshold` property in the `ChainInfo` schema to indicate the number of confirmations required for a transaction on each chain.
+
+### Bug fixes
+
+- Fixed an issue with using WaaS SDKs to perform operations relating to contract call or message signing.
+
 ## v1.2.0
 
 This version was released on August 21, 2024.

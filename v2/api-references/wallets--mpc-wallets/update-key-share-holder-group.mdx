@@ -12,10 +12,12 @@ from cobo_waas2.models.update_key_share_holder_group_by_id_request import (
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
-# See configuration.py for a list of all supported configuration parameters.
+# See configuration.py for a list of all supported configurations.
 configuration = cobo_waas2.Configuration(
-    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
+    api_private_key="<YOUR_PRIVATE_KEY>",
+    # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+    host="https://api.dev.cobo.com/v2",
 )
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
@@ -56,11 +58,12 @@ import com.cobo.waas2.model.*;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    // for dev environment
-    // defaultClient.setEnv(Env.DEV);
-    // for production environment
-    // defaultClient.setEnv(Env.PROD);
-    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    // Select the development environment. To use the production environment, replace `Env.DEV` with
+    // `Env.PROD
+    defaultClient.setEnv(Env.DEV);
+
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key
+    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
     UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     String keyShareHolderGroupId = "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce";
@@ -95,41 +98,55 @@ import (
 )
 
 func main() {
-	vaultId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"                                                                                             // string | The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
-	keyShareHolderGroupId := "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce"                                                                               // string | The key share holder group ID.
-	updateKeyShareHolderGroupByIdRequest := *coboWaas2.NewUpdateKeyShareHolderGroupByIdRequest(coboWaas2.UpdateGroupAction("UpgradeToMainGroup")) // UpdateKeyShareHolderGroupByIdRequest |  (optional)
+	vaultId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	keyShareHolderGroupId := "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce"
+	updateKeyShareHolderGroupByIdRequest := *coboWaas2.NewUpdateKeyShareHolderGroupByIdRequest(coboWaas2.UpdateGroupAction("UpgradeToMainGroup"))
 
 	configuration := coboWaas2.NewConfiguration()
+	// Initialize the API client
 	apiClient := coboWaas2.NewAPIClient(configuration)
 	ctx := context.Background()
-	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
-	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+
+	// Select the development environment. To use the production environment, replace coboWaas2.DevEnv with coboWaas2.ProdEnv
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// Replace `<YOUR_PRIVATE_KEY>` with your private key
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.WalletsMPCWalletsAPI.UpdateKeyShareHolderGroupById(ctx, vaultId, keyShareHolderGroupId).UpdateKeyShareHolderGroupByIdRequest(updateKeyShareHolderGroupByIdRequest).Execute()
+	resp, r, err := apiClient.WalletsMPCWalletsAPI.UpdateKeyShareHolderGroupById(ctx, vaultId, keyShareHolderGroupId).
+		UpdateKeyShareHolderGroupByIdRequest(updateKeyShareHolderGroupByIdRequest).
+		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WalletsMPCWalletsAPI.UpdateKeyShareHolderGroupById``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `WalletsMPCWalletsAPI.UpdateKeyShareHolderGroupById``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 	// response from `UpdateKeyShareHolderGroupById`: KeyShareHolderGroup
-	fmt.Fprintf(os.Stdout, "Response from `WalletsMPCWalletsAPI.UpdateKeyShareHolderGroupById`: %v\n", resp)
+	fmt.Fprintf(
+		os.Stdout,
+		"Response from `WalletsMPCWalletsAPI.UpdateKeyShareHolderGroupById`: %v\n",
+		resp,
+	)
 }
 
 ```
 ```javascript JavaScript
 const CoboWaas2 = require('@cobo/cobo-waas2');
-// initial default api client
+// Initialize the API client
 const apiClient = CoboWaas2.ApiClient.instance
-// for dev env
-// apiClient.setEnv(CoboWaas2.Env.DEV);
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
-// call api
+// Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Replace `<YOUR_PRIVATE_KEY>` with your private key
+apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
+// Call the API
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
-const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // String | The vault ID, which you can retrieve by calling [List all vaults](/v2/api-references/wallets--mpc-wallet/list-all-mpc-vaults).
-const key_share_holder_group_id = "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce"; // String | The key share holder group ID.
+const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+const key_share_holder_group_id = "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce";
 const opts = {
-  'UpdateKeyShareHolderGroupByIdRequest': new CoboWaas2.UpdateKeyShareHolderGroupByIdRequest() // UpdateKeyShareHolderGroupByIdRequest | 
+  'UpdateKeyShareHolderGroupByIdRequest': new CoboWaas2.UpdateKeyShareHolderGroupByIdRequest()
 };
 apiInstance.updateKeyShareHolderGroupById(vault_id, key_share_holder_group_id, opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);

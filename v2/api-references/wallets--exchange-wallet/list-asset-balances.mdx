@@ -11,10 +11,12 @@ from cobo_waas2.models.list_asset_balances_for_exchange_wallet200_response impor
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
-# See configuration.py for a list of all supported configuration parameters.
+# See configuration.py for a list of all supported configurations.
 configuration = cobo_waas2.Configuration(
-    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
+    api_private_key="<YOUR_PRIVATE_KEY>",
+    # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+    host="https://api.dev.cobo.com/v2",
 )
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
@@ -59,11 +61,12 @@ import com.cobo.waas2.model.*;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    // for dev environment
-    // defaultClient.setEnv(Env.DEV);
-    // for production environment
-    // defaultClient.setEnv(Env.PROD);
-    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    // Select the development environment. To use the production environment, replace `Env.DEV` with
+    // `Env.PROD
+    defaultClient.setEnv(Env.DEV);
+
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key
+    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsExchangeWalletApi apiInstance = new WalletsExchangeWalletApi();
     UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     String tradingAccountTypes = "Trading,Funding";
@@ -100,47 +103,65 @@ import (
 )
 
 func main() {
-	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"            // string | The wallet ID.
-	tradingAccountTypes := "Trading,Funding"                      // string | A list of trading account types, separated by comma. You can get the the supported trading account types of an exchange by calling [List supported exchanges](/v2/api-references/wallets--exchange-wallet/list-supported-exchanges). (optional)
-	assetIds := "USDT,USDC"                                       // string | (This concept applies to Exchange Wallets only) A list of asset IDs, separated by comma. An asset ID is the unique identifier of the asset held within your linked exchange account. (optional)
-	limit := int32(10)                                            // int32 | The maximum number of objects to return. For most operations, the value range is [1, 50]. (optional) (default to 10)
-	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1" // string | An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.before` in the response of the previous request.  - If you set both `after` and `before`, an error will occur.  - If you leave both `before` and `after` empty, the first page of data is returned.  - If you set `before` to `infinity`, the last page of data is returned.  (optional)
-	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"  // string | An object ID that acts as a starting point for retrieving data in chronological order. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.after` in the response of the previous request.  - If you set both `after` and `before`, an error will occur.  - If you leave both `before` and `after` empty, the first page of data is returned.  (optional)
+	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	tradingAccountTypes := "Trading,Funding"
+	assetIds := "USDT,USDC"
+	limit := int32(10)
+	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
+	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 
 	configuration := coboWaas2.NewConfiguration()
+	// Initialize the API client
 	apiClient := coboWaas2.NewAPIClient(configuration)
 	ctx := context.Background()
-	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
-	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+
+	// Select the development environment. To use the production environment, replace coboWaas2.DevEnv with coboWaas2.ProdEnv
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// Replace `<YOUR_PRIVATE_KEY>` with your private key
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.WalletsExchangeWalletAPI.ListAssetBalancesForExchangeWallet(ctx, walletId).TradingAccountTypes(tradingAccountTypes).AssetIds(assetIds).Limit(limit).Before(before).After(after).Execute()
+	resp, r, err := apiClient.WalletsExchangeWalletAPI.ListAssetBalancesForExchangeWallet(ctx, walletId).
+		TradingAccountTypes(tradingAccountTypes).
+		AssetIds(assetIds).
+		Limit(limit).
+		Before(before).
+		After(after).
+		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WalletsExchangeWalletAPI.ListAssetBalancesForExchangeWallet``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `WalletsExchangeWalletAPI.ListAssetBalancesForExchangeWallet``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
 	// response from `ListAssetBalancesForExchangeWallet`: ListAssetBalancesForExchangeWallet200Response
-	fmt.Fprintf(os.Stdout, "Response from `WalletsExchangeWalletAPI.ListAssetBalancesForExchangeWallet`: %v\n", resp)
+	fmt.Fprintf(
+		os.Stdout,
+		"Response from `WalletsExchangeWalletAPI.ListAssetBalancesForExchangeWallet`: %v\n",
+		resp,
+	)
 }
 
 ```
 ```javascript JavaScript
 const CoboWaas2 = require('@cobo/cobo-waas2');
-// initial default api client
+// Initialize the API client
 const apiClient = CoboWaas2.ApiClient.instance
-// for dev env
-// apiClient.setEnv(CoboWaas2.Env.DEV);
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
-// call api
+// Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Replace `<YOUR_PRIVATE_KEY>` with your private key
+apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
+// Call the API
 const apiInstance = new CoboWaas2.WalletsExchangeWalletApi();
-const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"; // String | The wallet ID.
+const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  'trading_account_types': "Trading,Funding", // String | A list of trading account types, separated by comma. You can get the the supported trading account types of an exchange by calling [List supported exchanges](/v2/api-references/wallets--exchange-wallet/list-supported-exchanges).
-  'asset_ids': "USDT,USDC", // String | (This concept applies to Exchange Wallets only) A list of asset IDs, separated by comma. An asset ID is the unique identifier of the asset held within your linked exchange account.
-  'limit': 10, // Number | The maximum number of objects to return. For most operations, the value range is [1, 50].
-  'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1", // String | An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.before` in the response of the previous request.  - If you set both `after` and `before`, an error will occur.  - If you leave both `before` and `after` empty, the first page of data is returned.  - If you set `before` to `infinity`, the last page of data is returned. 
-  'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk" // String | An object ID that acts as a starting point for retrieving data in chronological order. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.after` in the response of the previous request.  - If you set both `after` and `before`, an error will occur.  - If you leave both `before` and `after` empty, the first page of data is returned. 
+  'trading_account_types': "Trading,Funding",
+  'asset_ids': "USDT,USDC",
+  'limit': 10,
+  'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
+  'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 };
 apiInstance.listAssetBalancesForExchangeWallet(wallet_id, opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
