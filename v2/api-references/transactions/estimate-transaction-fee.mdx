@@ -10,10 +10,12 @@ from cobo_waas2.models.estimated_fee import EstimatedFee
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
-# See configuration.py for a list of all supported configuration parameters.
+# See configuration.py for a list of all supported configurations.
 configuration = cobo_waas2.Configuration(
-    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
+    api_private_key="<YOUR_PRIVATE_KEY>",
+    # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+    host="https://api.dev.cobo.com/v2",
 )
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
@@ -43,11 +45,12 @@ import com.cobo.waas2.model.*;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    // for dev environment
-    // defaultClient.setEnv(Env.DEV);
-    // for production environment
-    // defaultClient.setEnv(Env.PROD);
-    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    // Select the development environment. To use the production environment, replace `Env.DEV` with
+    // `Env.PROD
+    defaultClient.setEnv(Env.DEV);
+
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key
+    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
     EstimateFeeParams estimateFeeParams = new EstimateFeeParams();
     try {
@@ -76,17 +79,42 @@ import (
 )
 
 func main() {
-	estimateFeeParams := coboWaas2.EstimateFeeParams{EstimateContractCallFeeParams: coboWaas2.NewEstimateContractCallFeeParams("f47ac10b-58cc-4372-a567-0e02b2c3d479", coboWaas2.EstimateFeeRequestType("Transfer"), "ETH", coboWaas2.ContractCallSource{MpcContractCallSource: coboWaas2.NewMpcContractCallSource(coboWaas2.ContractCallSourceType("Org-Controlled"), "f47ac10b-58cc-4372-a567-0e02b2c3d479", "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")}, coboWaas2.ContractCallDestination{EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(coboWaas2.ContractCallDestinationType("EVM_Contract"), "0x0406db8351aa6839169bb363f63c2c808fee8f99", 0x6057361d00000000000000000000000000000000000000000000000000000000000000fa)})} // EstimateFeeParams | The request body to estimate the transaction fee of a token transfer or a contract call. (optional)
+	estimateFeeParams := coboWaas2.EstimateFeeParams{
+		EstimateContractCallFeeParams: coboWaas2.NewEstimateContractCallFeeParams(
+			"f47ac10b-58cc-4372-a567-0e02b2c3d479",
+			coboWaas2.EstimateFeeRequestType("Transfer"),
+			"ETH",
+			coboWaas2.ContractCallSource{
+				MpcContractCallSource: coboWaas2.NewMpcContractCallSource(
+					coboWaas2.ContractCallSourceType("Org-Controlled"),
+					"f47ac10b-58cc-4372-a567-0e02b2c3d479",
+					"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+				),
+			},
+			coboWaas2.ContractCallDestination{
+				EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(
+					coboWaas2.ContractCallDestinationType("EVM_Contract"),
+					"0x0406db8351aa6839169bb363f63c2c808fee8f99",
+					"0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO",
+				),
+			},
+		),
+	}
 
 	configuration := coboWaas2.NewConfiguration()
+	// Initialize the API client
 	apiClient := coboWaas2.NewAPIClient(configuration)
 	ctx := context.Background()
-	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
-	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+
+	// Select the development environment. To use the production environment, replace coboWaas2.DevEnv with coboWaas2.ProdEnv
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// Replace `<YOUR_PRIVATE_KEY>` with your private key
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.EstimateFee(ctx).EstimateFeeParams(estimateFeeParams).Execute()
+	resp, r, err := apiClient.TransactionsAPI.EstimateFee(ctx).
+		EstimateFeeParams(estimateFeeParams).
+		Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.EstimateFee``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -98,15 +126,16 @@ func main() {
 ```
 ```javascript JavaScript
 const CoboWaas2 = require('@cobo/cobo-waas2');
-// initial default api client
+// Initialize the API client
 const apiClient = CoboWaas2.ApiClient.instance
-// for dev env
-// apiClient.setEnv(CoboWaas2.Env.DEV);
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
-// call api
+// Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Replace `<YOUR_PRIVATE_KEY>` with your private key
+apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
+// Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  'EstimateFeeParams': new CoboWaas2.EstimateFeeParams() // EstimateFeeParams | The request body to estimate the transaction fee of a token transfer or a contract call.
+  'EstimateFeeParams': new CoboWaas2.EstimateFeeParams()
 };
 apiInstance.estimateFee(opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);

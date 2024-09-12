@@ -1,0 +1,49 @@
+---
+title: "Transaction sources and destinations"
+---
+
+In WaaS 2.0, every transaction involves a source and a destination. The source indicates where the transaction originates, while the destination represents where the transaction is going, such as a wallet address, a signature, a contract, and more. Each transaction type corresponds to a specific set of source and destination types. For example, in a withdrawal transaction, the source will be a wallet created on Cobo Portal, and the destination will be either a wallet address or an Exchange Wallet. 
+
+## Source and destination for each transaction type
+
+Refer to the following table for the source and destination types corresponding to each transaction type. Detailed definitions for each source type and destination type can be found below the table.
+
+<Note>If you transfer tokens between two wallets created on Cobo Portal, two transactions will be recorded: a deposit into the destination wallet and a withdrawal from the source wallet.</Note>
+
+| Transaction type                                   | Source                                                                                         | Destination               |
+|----------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------------------|
+| Deposit - [Loop](https://loop.top/) transfer       | DepositFromLoop                                                                                | DepositToAddress         |
+| Deposit - Transfers between Exchange Wallets       | DepositFromWallet                                                                              | DepositToWallet          |
+| Deposit - Other deposit transactions               | DepositFromAddress                                                                            | DepositToAddress         |
+| Withdrawal - Transfers between Exchange Wallets    | Main<br />Sub                                                                                    | ExchangeWallet           |
+| Withdrawal - Other withdrawal transactions         | Asset<br />Org-Controlled<br />User-Controlled<br />Safe{Wallet}<br />Main<br />Sub                      | Address                  |
+| ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe{Wallet}                                               | EVM_Contract             |
+| MessageSign                                       | Org-Controlled<br />User-Controlled                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature |
+| ExternalSafeTx                                    | Safe{Wallet}                                                                                   | EVM_Contract             |
+
+
+
+## Transaction source types
+
+The transaction source types are as follows:
+- `Asset`: A Custodial Wallet (Asset Wallet).
+- `Org-Controlled`: An MPC Wallet (Organization-Controlled Wallet).
+- `User-Controlled`: An MPC Wallet (User-Controlled Wallet).
+- `Safe{Wallet}`: A Smart Contract Wallet (Safe{Wallet}).
+- `Main`: An Exchange Wallet (Main Account).
+- `Sub`: An Exchange Wallet (Sub Account).
+- `DepositFromAddress`: A wallet address.
+- `DepositFromWallet`: An Exchange Wallet.
+- `DepositFromLoop`: A transfer sent through the [Loop](https://loop.top/) transfer network. 
+
+## Transaction destination types
+
+The transaction destination types are as follows:
+- `Address`: A wallet address.
+- `ExchangeWallet`: An Exchange Wallet.
+- `EVM_Contract`: An EVM-compatible contract.
+- `EVM_EIP_191_Signature`: An EVM EIP-191 signature. For more details, see [Signed Data Standard](https://eips.ethereum.org/EIPS/eip-191).
+- `EVM_EIP_712_Signature`: An EVM EIP-712 signature. For more details, see [Typed structured data hashing and signing](https://eips.ethereum.org/EIPS/eip-712).
+- `DepositToAddress`: A wallet address.
+- `DepositToWallet`: An Exchange Wallet.
+

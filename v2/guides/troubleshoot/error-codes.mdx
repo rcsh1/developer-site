@@ -16,7 +16,7 @@ This article explains the common error codes and HTTP status codes you may encou
 | 2021           | Missing request handler.                                  | Provide required handlers.                                   |
 | 2022           | Missing required request headers.                         | Provide required headers.                                    |
 | 2023           | API signature validation failed.                          | Use a valid API signature.                                   |
-| 2024           | API key authentication failed.                            | Use a valid API key.                                         |
+| 2024           | API key authentication failed.                            | Use a valid API key. If your API key is permanent, you also need to send the API request from a whitelisted IP address. See [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) for details.                                   |
 | 2025           | Forbidden access to resources.                            | Check the permission of your API key.                        |
 | 2026           | Too many requests.                                        | Try again later.                                             |
 | 2028           | Resource not found.                                       | Check the request URL.                                       |

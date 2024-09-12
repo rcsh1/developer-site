@@ -1,0 +1,194 @@
+---
+openapi: get /stakings/activities
+---
+
+<RequestExample>
+```python Python
+import cobo_waas2
+from cobo_waas2.models.activity_status import ActivityStatus
+from cobo_waas2.models.activity_type import ActivityType
+from cobo_waas2.models.list_staking_activities200_response import (
+    ListStakingActivities200Response,
+)
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# See configuration.py for a list of all supported configurations.
+configuration = cobo_waas2.Configuration(
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
+    api_private_key="<YOUR_PRIVATE_KEY>",
+    # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+    host="https://api.dev.cobo.com/v2",
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.StakingsApi(api_client)
+    pool_id = "babylon_btc"
+    staking_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    activity_type = cobo_waas2.ActivityType()
+    activity_status = cobo_waas2.ActivityStatus()
+    min_modified_timestamp = 1635744000000
+    max_modified_timestamp = 1635744000000
+    initiator = "steve@example.com"
+    limit = 10
+    before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
+    after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
+
+    try:
+        # List staking activities
+        api_response = api_instance.list_staking_activities(
+            pool_id=pool_id,
+            staking_id=staking_id,
+            activity_type=activity_type,
+            activity_status=activity_status,
+            min_modified_timestamp=min_modified_timestamp,
+            max_modified_timestamp=max_modified_timestamp,
+            initiator=initiator,
+            limit=limit,
+            before=before,
+            after=after,
+        )
+        print("The response of StakingsApi->list_staking_activities:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling StakingsApi->list_staking_activities: %s\n" % e)
+
+```
+```java Java
+// Import classes:
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.api.StakingsApi;
+import com.cobo.waas2.model.*;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // Select the development environment. To use the production environment, replace `Env.DEV` with
+    // `Env.PROD
+    defaultClient.setEnv(Env.DEV);
+
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key
+    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+    StakingsApi apiInstance = new StakingsApi();
+    String poolId = "babylon_btc";
+    String stakingId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+    ActivityType activityType = ActivityType.fromValue("Stake");
+    ActivityStatus activityStatus = ActivityStatus.fromValue("Success");
+    Long minModifiedTimestamp = 1635744000000L;
+    Long maxModifiedTimestamp = 1635744000000L;
+    String initiator = "steve@example.com";
+    Integer limit = 10;
+    String before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1";
+    String after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk";
+    try {
+      ListStakingActivities200Response result =
+          apiInstance.listStakingActivities(
+              poolId,
+              stakingId,
+              activityType,
+              activityStatus,
+              minModifiedTimestamp,
+              maxModifiedTimestamp,
+              initiator,
+              limit,
+              before,
+              after);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling StakingsApi#listStakingActivities");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+```go Go
+package main
+
+import (
+	"context"
+	"fmt"
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+	"os"
+)
+
+func main() {
+	poolId := "babylon_btc"
+	stakingId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	activityType := coboWaas2.ActivityType("Stake")
+	activityStatus := coboWaas2.ActivityStatus("Success")
+	minModifiedTimestamp := int64(1635744000000)
+	maxModifiedTimestamp := int64(1635744000000)
+	initiator := "steve@example.com"
+	limit := int32(10)
+	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
+	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
+
+	configuration := coboWaas2.NewConfiguration()
+	// Initialize the API client
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+
+	// Select the development environment. To use the production environment, replace coboWaas2.DevEnv with coboWaas2.ProdEnv
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// Replace `<YOUR_PRIVATE_KEY>` with your private key
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		Secret: "<YOUR_PRIVATE_KEY>",
+	})
+	resp, r, err := apiClient.StakingsAPI.ListStakingActivities(ctx).
+		PoolId(poolId).
+		StakingId(stakingId).
+		ActivityType(activityType).
+		ActivityStatus(activityStatus).
+		MinModifiedTimestamp(minModifiedTimestamp).
+		MaxModifiedTimestamp(maxModifiedTimestamp).
+		Initiator(initiator).
+		Limit(limit).
+		Before(before).
+		After(after).
+		Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `StakingsAPI.ListStakingActivities``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListStakingActivities`: ListStakingActivities200Response
+	fmt.Fprintf(os.Stdout, "Response from `StakingsAPI.ListStakingActivities`: %v\n", resp)
+}
+
+```
+```javascript JavaScript
+const CoboWaas2 = require('@cobo/cobo-waas2');
+// Initialize the API client
+const apiClient = CoboWaas2.ApiClient.instance
+// Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Replace `<YOUR_PRIVATE_KEY>` with your private key
+apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
+// Call the API
+const apiInstance = new CoboWaas2.StakingsApi();
+const opts = {
+  'pool_id': "babylon_btc",
+  'staking_id': "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  'activity_type': new CoboWaas2.ActivityType(),
+  'activity_status': new CoboWaas2.ActivityStatus(),
+  'min_modified_timestamp': 1635744000000,
+  'max_modified_timestamp': 1635744000000,
+  'initiator': "steve@example.com",
+  'limit': 10,
+  'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
+  'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
+};
+apiInstance.listStakingActivities(opts).then((data) => {
+  console.log('API called successfully. Returned data: ' + data);
+}, (error) => {
+  console.error(error);
+});
+```
+</RequestExample>

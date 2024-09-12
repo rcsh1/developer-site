@@ -103,7 +103,8 @@
         "v2/guides/overview/environments",
         "v2/guides/overview/cobo-auth",
         "v2/guides/overview/pagination",
-        "v2/guides/overview/changelog"
+        "v2/guides/overview/changelog",
+        "v2/guides/overview/upgrade-guide"
       ],
       "version": "Version 2.0"
     },
@@ -131,6 +132,13 @@
             "v2/guides/mpc-wallets/get-started-ucw"
           ]
         }
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Transactions",
+      "pages": [
+        "v2/guides/transactions/sources-and-destinations"
       ],
       "version": "Version 2.0"
     },
@@ -200,13 +208,6 @@
             "v2/api-references/wallets/get-maximum-transferable-value",
             "v2/api-references/wallets/list-token-balances-by-address",
             "v2/api-references/wallets/list-token-balances-by-wallet"
-          ],
-          "version": "Version 2.0"
-        },
-        {
-          "group": "Transactions",
-          "pages": [
-            "v2/api-references/wallets/check-loop-transfers"
           ],
           "version": "Version 2.0"
         },
@@ -314,7 +315,8 @@
           "group": "Query transactions",
           "pages": [
             "v2/api-references/transactions/list-all-transactions",
-            "v2/api-references/transactions/get-transaction-information"
+            "v2/api-references/transactions/get-transaction-information",
+            "v2/api-references/transactions/check-loop-transfers"
           ],
           "version": "Version 2.0"
         },
@@ -324,7 +326,8 @@
             "v2/api-references/transactions/resend-transaction",
             "v2/api-references/transactions/cancel-transaction",
             "v2/api-references/transactions/drop-transaction",
-            "v2/api-references/transactions/speed-up-transaction"
+            "v2/api-references/transactions/speed-up-transaction",
+            "v2/api-references/transactions/broadcast-signed-transactions"
           ],
           "version": "Version 2.0"
         }
@@ -372,9 +375,46 @@
       "version": "Version 2.0"
     },
     {
+      "group": "Staking operations",
+      "pages": [
+        {
+          "group": "Transaction fees",
+          "pages": [
+            "v2/api-references/stakings/estimate-staking-fees"
+          ]
+        },
+        {
+          "group": "Staking activities",
+          "pages": [
+            "v2/api-references/stakings/list-staking-activities",
+            "v2/api-references/stakings/create-stake-activity",
+            "v2/api-references/stakings/create-unstake-activity",
+            "v2/api-references/stakings/create-withdraw-activity",
+            "v2/api-references/stakings/get-staking-activity-details"
+          ]
+        },
+        {
+          "group": "Staking positions",
+          "pages": [
+            "v2/api-references/stakings/list-staking-positions",
+            "v2/api-references/stakings/get-staking-position-details"
+          ]
+        },
+        {
+          "group": "Staking pools",
+          "pages": [
+            "v2/api-references/stakings/list-staking-pools",
+            "v2/api-references/stakings/get-staking-pool-details"
+          ]
+        }
+      ],
+      "version": "Version 2.0"
+    },
+    {
       "group": "WaaS SDKs",
       "pages": [
         "v2/developer-tools/quickstart-python",
+        "v2/developer-tools/quickstart-java",
         "v2/developer-tools/quickstart-go",
         "v2/developer-tools/quickstart-javascript"
       ],

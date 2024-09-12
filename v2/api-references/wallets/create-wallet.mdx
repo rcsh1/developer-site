@@ -10,10 +10,12 @@ from cobo_waas2.models.created_wallet_info import CreatedWalletInfo
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
-# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
-# See configuration.py for a list of all supported configuration parameters.
+# See configuration.py for a list of all supported configurations.
 configuration = cobo_waas2.Configuration(
-    api_private_key="<YOUR_PRIVATE_KEY>", host="https://api.dev.cobo.com/v2"
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
+    api_private_key="<YOUR_PRIVATE_KEY>",
+    # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+    host="https://api.dev.cobo.com/v2",
 )
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
@@ -43,11 +45,12 @@ import com.cobo.waas2.model.*;
 public class Example {
   public static void main(String[] args) {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
-    // for dev environment
-    // defaultClient.setEnv(Env.DEV);
-    // for production environment
-    // defaultClient.setEnv(Env.PROD);
-    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    // Select the development environment. To use the production environment, replace `Env.DEV` with
+    // `Env.PROD
+    defaultClient.setEnv(Env.DEV);
+
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key
+    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsApi apiInstance = new WalletsApi();
     CreateWalletParams createWalletParams = new CreateWalletParams();
     try {
@@ -76,17 +79,28 @@ import (
 )
 
 func main() {
-	createWalletParams := coboWaas2.CreateWalletParams{CreateCustodialWalletParams: coboWaas2.NewCreateCustodialWalletParams("My WaaS 2.0 Wallet", coboWaas2.WalletType("Custodial"), coboWaas2.WalletSubtype("Asset"))} // CreateWalletParams | The request body to create a wallet (optional)
+	createWalletParams := coboWaas2.CreateWalletParams{
+		CreateCustodialWalletParams: coboWaas2.NewCreateCustodialWalletParams(
+			"My WaaS 2.0 Wallet",
+			coboWaas2.WalletType("Custodial"),
+			coboWaas2.WalletSubtype("Asset"),
+		),
+	}
 
 	configuration := coboWaas2.NewConfiguration()
+	// Initialize the API client
 	apiClient := coboWaas2.NewAPIClient(configuration)
 	ctx := context.Background()
-	// ctx = context.WithValue(ctx, coboWaas2.ContextServerHost, "https://api[.xxx].cobo.com/v2")
-	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+
+	// Select the development environment. To use the production environment, replace coboWaas2.DevEnv with coboWaas2.ProdEnv
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// Replace `<YOUR_PRIVATE_KEY>` with your private key
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-		Secret: "<YOUR_API_PRIV_KEY_IN_HEX>",
+		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.WalletsAPI.CreateWallet(ctx).CreateWalletParams(createWalletParams).Execute()
+	resp, r, err := apiClient.WalletsAPI.CreateWallet(ctx).
+		CreateWalletParams(createWalletParams).
+		Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.CreateWallet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -98,15 +112,16 @@ func main() {
 ```
 ```javascript JavaScript
 const CoboWaas2 = require('@cobo/cobo-waas2');
-// initial default api client
+// Initialize the API client
 const apiClient = CoboWaas2.ApiClient.instance
-// for dev env
-// apiClient.setEnv(CoboWaas2.Env.DEV);
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
-// call api
+// Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
+apiClient.setEnv(CoboWaas2.Env.DEV);
+// Replace `<YOUR_PRIVATE_KEY>` with your private key
+apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
+// Call the API
 const apiInstance = new CoboWaas2.WalletsApi();
 const opts = {
-  'CreateWalletParams': new CoboWaas2.CreateWalletParams() // CreateWalletParams | The request body to create a wallet
+  'CreateWalletParams': new CoboWaas2.CreateWalletParams()
 };
 apiInstance.createWallet(opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
