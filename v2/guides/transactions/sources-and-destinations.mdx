@@ -10,16 +10,16 @@ Refer to the following table for the source and destination types corresponding 
 
 <Note>If you transfer tokens between two wallets created on Cobo Portal, two transactions will be recorded: a deposit into the destination wallet and a withdrawal from the source wallet.</Note>
 
-| Transaction type                                   | Source                                                                                         | Destination               |
+| Transaction type                                   | Source Type                                                                                     | Destination Type              |
 |----------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------------------|
-| Deposit - [Loop](https://loop.top/) transfer       | DepositFromLoop                                                                                | DepositToAddress         |
+| Deposit - [Loop](https://loop.top/) transfers       | DepositFromLoop                                                                                | DepositToAddress         |
 | Deposit - Transfers between Exchange Wallets       | DepositFromWallet                                                                              | DepositToWallet          |
 | Deposit - Other deposit transactions               | DepositFromAddress                                                                            | DepositToAddress         |
 | Withdrawal - Transfers between Exchange Wallets    | Main<br />Sub                                                                                    | ExchangeWallet           |
-| Withdrawal - Other withdrawal transactions         | Asset<br />Org-Controlled<br />User-Controlled<br />Safe{Wallet}<br />Main<br />Sub                      | Address                  |
-| ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe{Wallet}                                               | EVM_Contract             |
+| Withdrawal - Other withdrawal transactions         | Asset<br />Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Main<br />Sub                      | Address                  |
+| ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}                                               | EVM_Contract             |
 | MessageSign                                       | Org-Controlled<br />User-Controlled                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature |
-| ExternalSafeTx                                    | Safe{Wallet}                                                                                   | EVM_Contract             |
+| ExternalSafeTx                                    | Safe\{Wallet\}                                                                                   | EVM_Contract             |
 
 
 

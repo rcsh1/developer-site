@@ -4,6 +4,16 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.4.0
+
+This version was released on September 25, 2024.
+
+### Improvements
+
+- Improved the tracking of transactions by adding and removing certain statuses and sub-statuses in the `TransactionStatus` and `TransactionSubStatus` schemas.
+- Added the `MPCProcessing` status in the `TSSRequestStatus` schema to indicate that the TSS request approval is waiting to be started.
+- Removed the `nonce` property in the `MpcContractCallSource` schema.
+
 ## v1.3.0
 
 This version was released on September 12, 2024.
@@ -46,7 +56,7 @@ This version was released on August 21, 2024.
   - [List asset balances](/v2/api-references/wallets--exchange-wallet/list-asset-balances)
 - Added the following operations for batch payment:
   - [Check addresses validity](/v2/api-references/wallets/check-addresses-validity)
-  - [Check Loop transfers](/v2/api-references/wallets/check-loop-transfers)
+  - [Check Loop transfers](/v2/api-references/transactions/check-loop-transfers)
 - You can now subscribe to TSS request-related event types for your webhook endpoints. For more information about TSS request-related event types, refer to [Webhook event types and data types](/v2/guides/webhooks-callbacks/webhook-event-type).
 
 ### Improvements

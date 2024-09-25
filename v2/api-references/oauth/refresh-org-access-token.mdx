@@ -24,7 +24,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     refresh_token_request = cobo_waas2.RefreshTokenRequest()
 
     try:
-        # Refresh access token
+        # Refresh Org Access Token
         api_response = api_instance.refresh_token(refresh_token_request)
         print("The response of OAuthApi->refresh_token:\n")
         pprint(api_response)
@@ -37,6 +37,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
 import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
 import com.cobo.waas2.api.OAuthApi;
 import com.cobo.waas2.model.*;
 

@@ -1,0 +1,145 @@
+---
+title: "Authentication with Cobo OAuth"
+sidebarTitle: "Cobo OAuth"
+---
+
+This section explains how to authenticate your API requests to the WaaS service in Cobo Portal Apps using Cobo OAuth.
+
+## Cobo OAuth vs Cobo Auth
+
+Cobo Auth and Cobo OAuth are two authentication mechanisms. Cobo Auth identifies clients using an API key, while Cobo OAuth identifies clients using an app key and controls access to resources in other organizations through an Org Access Token, along with its permissions and scopes.
+
+- If you are developing Cobo Portal Apps for installation and use across different organizations, use Cobo OAuth to authenticate your API requests.
+- If you are developing other types of apps to access data and resources within your own organization, use Cobo Auth instead. For more details about Cobo Auth, refer to [Authentication with Cobo Auth](/v2/guides/overview/cobo-auth).
+
+## With the WaaS SDK
+
+If you are using the [WaaS SDK](/v2/developer-tools/quickstart-python), you only need to provide the private key of the app key and Org Access Token in the API request as follows:
+
+```python
+from cobo_waas2 import Configuration, ApiClient, WalletsApi
+
+configuration = Configuration(
+    # Use `https://api.dev.cobo.com/v2` for the development environment, or `https://api.cobo.com/v2` for the production environment.
+    host="https://api.dev.cobo.com/v2",
+    # Replace `<APP_PRIVATE_KEY>` with the private key of your app key.
+    api_private_key="<APP_PRIVATE_KEY>",
+)
+
+client = ApiClient(configuration=configuration)
+# Replace `{ORG_ACCESS_TOKEN}` with the Org Access Token.
+client.set_default_header("AUTHORIZATION", f"Bearer {ORG_ACCESS_TOKEN}")
+```
+
+- To learn how to generate an app key, see [Generate an app key](#generate-an-app-key).
+- To learn how to get and use Org Access Tokens, refer to [Org Access Tokens](/v2/apps/org-access-tokens).
+
+## Without the WaaS SDK
+
+If you don’t use the WaaS SDK, you need to provide all the required authentication information in the request header as follows:
+
+```javascript
+headers = {
+    // Replace `{ORG_ACCESS_TOKEN}` with the Org Access Token.
+    "Authorization": Bearer {ORG_ACCESS_TOKEN},
+    // Replace `<APP_PRIVATE_KEY>` with the private key of your app key.
+    "Biz-Api-Key": {APP_PRIVATE_KEY}.hex(),
+    // Replace `{Nonce}` with the current time in Unix timestamp format, measured in milliseconds.
+    // This value must be the same as the value of the `TIMESTAMP` field in the API signature.
+    "Biz-Api-Nonce": {Nonce},
+    // Replace `{YOUR_API_SIGNATURE}` with the calculated API signature.
+    "Biz-Api-Signature": {YOUR_API_SIGNATURE}.hex(),
+}
+```
+
+- To learn how to generate an app key, see [Generate an app key](#generate-an-app-key).
+- To learn how to get and use Org Access Tokens, refer to [Org Access Tokens](/v2/apps/org-access-tokens).
+- To learn how to calculate the API signature using your app key, refer to [Calculate an API signature](#calculate-an-api-signature).
+
+## Generate an app key
+
+An app key is used to authenticate the Cobo Portal App when it makes an API request to the WaaS service. This section introduces three ways to generate an app key. You can also generate app keys using other tools that use the Ed25519 algorithm. 
+
+- The public key will be used in the manifest file. For more information, refer to [Configure the manifest file](/v2/apps/build-app#configure-the-manifest-file).
+- The private key will be used to authenticate API requests to the WaaS service.
+
+### Use Cobo CLI
+
+1. Install Cobo CLI if you haven’t. For more information, refer to [Install Cobo CLI](/v2/apps/build-app#install-cobo-cli).
+
+2. In a terminal window, run the following command to generate a key pair.
+    ```shell
+    cobo keys generate
+    ```
+You will see the public key displayed in the terminal window, and the private key is saved in the `~/.cobo/.env` file by default.
+
+### Use OpenSSL
+
+In a terminal window, run the following OpenSSL commands:
+
+```shell
+# Generate a private key and save it in the `private.key.pem` file.
+openssl genpkey -algorithm ed25519 -out private_key.pem
+# Extract the public key from the private key and save it in the `public.key.pem` file.
+openssl pkey -in private_key.pem -pubout -out public_key.pem
+# Export the private key in hexadecimal format.
+openssl pkey -in private_key.pem -text | grep 'priv:' -A 3 | tail -n +2 | tr -d ':\n '
+# Export the public key in hexadecimal format.
+openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | tr -d ':\n '
+```
+
+The private key is saved in the `private.key.pem` file, and the public key is saved in the `public.key.pem` file.
+
+### Use a Python library
+
+1. Install the ed25519 Python library.
+   In a terminal window, run the following command:
+    ```shell
+    pip install ed25519
+    ```
+
+2. Generate a key pair.
+   Import the function from the Python library to generate a key pair as follows:
+
+    ```shell
+    from ed25519.keys import create_keypair
+
+    # Create a key pair.
+    sk, vk = create_keypair()
+    # Print the private key in hexadecimal format.
+    print("private key:", sk.to_seed().hex())
+    # Print the public key in hexadecimal format.
+    print("public key:", vk.to_bytes().hex())
+    ```
+
+## Calculate an API signature
+
+The following steps introduce how to calculate an API signature.
+
+1. First, concatenate a string based on your request as follows:
+    `str_to_sign = {METHOD}|{PATH}|{TIMESTAMP}|{PARAMS}|{BODY}`
+
+    | Field | Description                                              | Example                                                  |
+    | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+    | `METHOD`    | The HTTP method.                                             | `GET`                                                          |
+    | `PATH`      | The API endpoint.                                            | `/v2/transactions/transfer`                                    |
+    | `TIMESTAMP` | The current time in Unix timestamp format, measured in milliseconds. This value must be the same as the nonce in the request header. | `1718587017026`                                                |
+    | `PARAMS`    | (If applicable) The query parameters.                        | `chain_id=ETH&limit=10`                                        |
+    | `BODY`      | (If applicable) The raw request body in string format.       | `{"name":"Default","wallet_subtype":"Asset","wallet_type":"Custodial"}` |
+
+2. Use the hashlib library to perform SHA-256 hashing twice on the string as follows:
+    ```python
+    import hashlib
+
+    content_hash = hashlib.sha256(hashlib.sha256(str_to_sign.encode()).digest()).digest()
+    ```
+
+3. Use the private key of your app key to sign the string as follows:
+    ```python
+    # Replace `api_secret` with your private key.
+    sk = ed25519.SigningKey(sk_s=bytes.fromhex(api_secret))
+    # Sign the hashed message
+    signature = sk.sign(content_hash)
+    ```
+
+Now you've calculated an API signature.

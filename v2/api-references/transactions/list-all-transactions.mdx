@@ -76,6 +76,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
 import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
 import com.cobo.waas2.api.TransactionsApi;
 import com.cobo.waas2.model.*;
 
@@ -91,9 +92,8 @@ public class Example {
     TransactionsApi apiInstance = new TransactionsApi();
     String requestId = "web_send_by_user_327_1610444045047";
     String coboIds = "20231213122855000000000000000000,20231213122955000000000000000000";
-    UUID transactionIds =
-        UUID.fromString(
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3");
+    String transactionIds =
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3";
     String transactionHashes = "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28";
     String types = "Deposit,Withdrawal";
     String statuses = "Completed,Failed";

@@ -1,0 +1,138 @@
+---
+title: "Build a Cobo Portal App"
+---
+
+This article walks you through the detailed steps required to build a Cobo Portal App from scratch.
+
+For an overview of developing Cobo Portal Apps, refer to [Introduction to Cobo Portal Apps Development](/v2/apps/introduction).
+
+## Sample project
+
+Cobo offers a sample project Hello World that allows you to quickly build a Cobo Portal App and preview it on your local machine. Refer to [Build a Hello World app](/v2/apps/get-started) for details.
+
+## Prerequisites
+
+- To build and manage a Cobo Portal App, you need to first create an organization in Cobo Portal in the [development environment](https://portal.dev.cobo.com/). Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
+- Choose and install either FastAPI or Next.js as your development framework.
+
+## Develop the app
+
+### Install Cobo CLI
+
+Cobo CLI is a developer tool that allows you to build, test, and manage Cobo Portal Apps directly from the command line. This section introduces how to install Cobo CLI and connect it to your Cobo Portal account.
+
+1. Install Cobo CLI.
+
+   ```shell
+   $ pip install cobo-cli
+   $ cobo
+   ```
+
+2. Log in to Cobo Portal and connect Cobo CLI to your Cobo Portal account. Follow the instructions on the screen to complete the authorization process. 
+
+   ```shell
+   $ cobo login
+   ```
+
+3. Create a Hello World app project. This can serve as the starting point for your app development. Alternatively, if you already have an app project, you can add the [manifest file to the root directory of your project](#configure-the-manifest-file).
+
+   ```shell
+   # To develop with Next.js, use `-f nextjs` instead
+   $ cobo apps create -d helloworld -f fastapi
+   ```
+
+### Acquire authentication information
+
+To authenticate your API requests to the WaaS service in Cobo Portal Apps, you need to provide your app key and Org Access Token. You also need to calculate an API signature if you are not using the [WaaS SDK](/v2/developer-tools/quickstart-python). Refer to [Cobo OAuth](/v2/apps/authentication) for how to acquire all the necessary information for authentication.
+
+### Verify app users
+
+User Info Tokens are JSON Web Tokens (JWTs) signed by Cobo Portal. These tokens allow Cobo Portal Apps to retrieve information about users, including their user ID, email address, and permissions. A Cobo Portal App can use the information to verify a user’s identity and control their access to the organization’s resources based on the permissions. It is recommended that you verify a user’s identity before they can get started using the app. For more information, refer to [User Info Tokens](/v2/apps/verify-users).
+
+### Call the WaaS API
+
+You can now call the WaaS 2.0 API to build features for your app. When calling an API operation, you need to provide the required authentication information in the request header. 
+
+The following code snippets show how to list all the wallets in an organization using the [WaaS Python SDK](/v2/developer-tools/quickstart-python).
+
+```python
+from cobo_waas2 import Configuration, ApiClient, WalletsApi
+
+configuration = Configuration(
+    # Use `https://api.dev.cobo.com/v2` for the development environment, or `https://api.cobo.com/v2` for the production environment.
+    host="https://api.dev.cobo.com/v2",
+    # Replace `<APP_PRIVATE_KEY>` with the private key of your app key.
+    api_private_key=<APP_PRIVATE_KEY>,
+)
+client = ApiClient(configuration=configuration)
+# Replace `{ORG_ACCESS_TOKEN}` with the Org Access Token.
+client.set_default_header("AUTHORIZATION", f"Bearer {ORG_ACCESS_TOKEN}")
+api_instance = WalletsApi(client)
+wallets = api_instance.list_wallets(wallet_type=WalletType.CUSTODIAL).data
+```
+
+For details about each API operation, refer to [the API reference](/v2/api-references).
+
+### Configure the manifest file
+
+Before you publish the app, you need to fill out the manifest file, which contains the app's configuration information. Refer to the following table for field descriptions and examples.
+
+
+
+| Field                  | Description                                                  | Example                                                      |
+| ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `app_name`             | The app name.                                                | `SuperLoop`                                                  |
+| `app_desc`             | A brief description of the app, with a maximum length of 80 characters. | `SuperLoop is an off-exchange settlement network that allows institutions to trade on exchanges without worrying about counterparty risks.` |
+| `app_desc_long`        | A detailed description of the app, including use cases and key features. The description must be under 1000 characters and formatted in Markdown. | `<br/>SuperLoop is an off-exchange settlement network that allows institutions to trade on exchanges without worrying about counterparty risks.<br/> <br/>For asset managers, trading on exchanges can be conducted with greater confidence and efficiency. The need to pre-fund on exchanges before trading is eliminated, minimizing counterparty risks. Additionally, asset managers can deploy funds for trading without the delays and risks associated with on-chain transfers, thereby maximizing capital efficiency.<br/> <br/>For exchanges, SuperLoop helps attract more asset managers and larger volumes by removing pre-funding requirements. Exchanges can rest assured knowing that asset managers can meet their obligations before executing trades, providing an extra layer of security and ensuring compliance with regulatory requirements.<br/>` |
+| `app_icon_url`         | The URL of the app icon. Please contact our Operation team at [help@cobo.com](mailto:help@cobo.com) to help you upload the app icon. | `https://d.cobo.com/public/logos/Logo.png`                   |
+| `screen_shots`         | The URLs of at least three screenshots showcasing key features. Please contact our Operation team at [help@cobo.com](mailto:help@cobo.com) to help you upload the screenshots. | `"https://d.cobo.com/apk/android/SuperLoop.png",    "https://d.cobo.com/apk/android/Loop.png",    "https://d.cobo.com/apk/android/MirrorModal.png"` |
+| `required_permissions` | A list of the permissions required for the app to access resources within users' organizations. A permission consists of a resource type and an operation, separated by a comma. For example, `mpc_organization_controlled_wallet,stake` represents the permission to stake assets from MPC Wallets (Organization-Controlled). <Note>Please contact our Operation team at [help@cobo.com](mailto:help@cobo.com) for the full list of supported permissions.</Note> | `"mpc_organization_controlled_wallet,stake",    "custodial_asset_wallet,withdraw"` |
+| `optional_permissions` | A list of permissions that the app can request to access additional resources within users' organizations. These are not mandatory but may enhance app functionality. A permission consists of a resource type and an operation, separated by a comma. For example, `mpc_organization_controlled_wallet,stake` represents the permission to stake assets from MPC Wallets (Organization-Controlled). <Note>Please contact our Operation team at [help@cobo.com](mailto:help@cobo.com) for the full list of supported permissions.</Note> | `custodial_asset_wallet,withdraw`                            |
+| `homepage_url`         | The host URL of the app homepage, used to embed the app into Cobo Portal via an iframe. | `https://example.com`                                        |
+| `callback_urls`        | The URL of the endpoint used to receive the callback after the organization admin approves the app's request for permissions. | `https://example.com/webhooks/organization/authorization`    |
+| `client_key`           | The public key of the app key. For instructions on how to generate an app key, refer to[ Generate an app key](/v2/apps/authentication#generate-an-app-key). | `AbCdEfGhIjKlMnOpQrStUvWxYz1234567890`                       |
+| `creator_name`         | The developer's name.                                        | `Cobo`                                                       |
+| `contact_email`        | The developer's contact email.                               | `sample@email.com`                                           |
+
+Refer to the following screenshots for where these fields will display on the app UI.
+
+**The Apps page**
+<img src="/v2/images/apps/app_list.png" className="screenshot_full_screen" alt="The Apps page" />
+
+**The Overview tab of the App Details page**
+<img src="/v2/images/apps/app_overview.png" className="screenshot_full_screen" alt="The Overview tab of the App Details page" />
+
+**The Permissions tab of the App Details page**
+<img src="/v2/images/apps/app_permissions.png" className="screenshot_full_screen" alt="The Permissions tab of the App Details page" />
+
+## Publish the app
+
+When you have completed developing your app and configuring the manifest file, use the following Cobo CLI commands to publish the app to the production environment or development environment.
+
+```shell
+// Publish your app to the production environment.
+$ cobo -e prod apps publish
+// Publish your app to the development environment.
+$ cobo -e dev apps publish
+```
+
+- If you publish your app to the production environment, the publish command will automatically trigger a workflow that requires approval from Cobo. The approval result will be sent as an email to the `contact_email` configured in the manifest file. Once approved, your app will be available to all users on Cobo Portal. 
+
+- If you publish your app to the development environment, no approval is required and your app will be available only to the users in your organization.
+
+The publish command will generate a client ID for your app in the manifest file. A client ID is a unique identifier for a Cobo Portal App and cannot be modified after being generated. It is required for getting the Org Access Token. For more details, refer to [Org Access Tokens](/v2/apps/org-access-tokens). 
+
+An app can be published only once, otherwise an error will occur. For subsequent updates, you need to follow the process of [updating the app](#update-the-app).
+
+## Update the app
+
+If you want to update your app after it’s published, implement the changes and then use the following Cobo CLI commands:
+
+```shell
+// Update your app in the production environment.
+$ cobo -e prod apps update
+// Update your app in the developement environment.
+$ cobo -e dev apps update
+```
+
+Similar to publishing an app, if you update an app in the production environment, the update command will automatically trigger a workflow that requires approval from Cobo. Otherwise, if you update an app in the development environment, no approval is required.

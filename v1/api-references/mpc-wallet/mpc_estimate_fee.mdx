@@ -1,33 +1,33 @@
 ---
 title: Get Estimate Fee
-api: GET /v1/custody/mpc/estimate_fee/ 
+api: POST /v1/custody/mpc/estimate_fee/
 description: <Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to [WaaS 2.0](https://www.cobo.com/developers/v2/guides/overview/introduction).</Note> This endpoint will simulate a transaction based on the parameters, and obtain the transaction fee from the blockchain. It takes in various parameters such as the coin code, amount, address, gas price, gas limit, fee, and extra parameters. The response includes the fee amount in different levels such as slow, average, fast, and custom. The custom fee corresponds to the fee or gas_price parameter.
 ---
 
 <Tip> FAQ：[How do I query the withdraw fees?](/v1/faqs/coin-management#how-do-i-query-the-withdrawal-fees)</Tip>
 
 #### Request
-<ParamField query="coin" type="String" required>coin code</ParamField>
-<ParamField query="amount" type="Int" >transaction amount in decimal places (e.g. one bitcoin is divisible to eight decimal places, and 100000000 represents 1 BTC)</ParamField>
-<ParamField query="address" type="String" >deposit address</ParamField>
-<ParamField query="replace_cobo_id" type="String" >Cobo ID of a transaction designated as RBF, this parameter is used when attempting to speed up or drop a previous transaction</ParamField>
-<ParamField query="from_address" type="String" >from address</ParamField>
+<ParamField body="coin" type="String" required>coin code</ParamField>
+<ParamField body="amount" type="Int" >transaction amount in decimal places (e.g. one bitcoin is divisible to eight decimal places, and 100000000 represents 1 BTC)</ParamField>
+<ParamField body="address" type="String" >deposit address</ParamField>
+<ParamField body="replace_cobo_id" type="String" >Cobo ID of a transaction designated as RBF, this parameter is used when attempting to speed up or drop a previous transaction</ParamField>
+<ParamField body="from_address" type="String" >from address</ParamField>
 <Tip>For UTXO model, the inputs in the transaction will be selected from the `from_address` based on either the `amount` or `to_address_details`. If this parameter is not provided, the inputs will be selected from the addresses in the current wallet. If the sending amount is greater than the balance, this endpoint will return error code 12007.<br /><br />
 For Account model, if the sum of sending amount and transaction fee (`gas_price` * `gas_limit`) is greater than the balance of the `from_address`, the blockchain may return insufficient funds error, and this endpoint will return default transaction fee, please note that the default transaction fee might not be very accurate compared to the fee obtained directly from the blockchain.</Tip>
-<ParamField query="to_address_details" type="Json" >list of addresses used for receiving coins associated with the UTXO model; this value must be a JSON string and has a parameter type that fits. Please note that the `to_address_details` parameter and `amount` parameter are alternative.</ParamField>
+<ParamField body="to_address_details" type="Json" >list of addresses used for receiving coins associated with the UTXO model; this value must be a JSON string and has a parameter type that fits. Please note that the `to_address_details` parameter and `amount` parameter are alternative.</ParamField>
 ```python Sample
 to_address_details: '[{"to_address": "2N4J1WajwKZKpRtzzUmaW9B5GEqkppqdVY9","amount": "547"},
                       {"to_address": "tb1qycxy8d8jgff8hql09y62smw5s5mrf3ryn2j9lk","amount": "548"}]'
 ```
 <Tip>For UTXO model, the parameters `from_address`, `amount`, `to_address_details`, and `input_selection` will determine the number of bytes in the transaction, and the `fee_amount` is determined by the fee_per_byte and the number of bytes.</Tip>
-<ParamField query="fee" type="Float" >transaction fees per byte; applicable to UTXO model</ParamField>
+<ParamField body="fee" type="Float" >transaction fees per byte; applicable to UTXO model</ParamField>
 <Tip>If specified, the `fee_amount` in the `custom` field of the response will be based on the `fee` parameter and the number of bytes in the transaction.</Tip>
-<ParamField query="gas_price" type="Int" >gas price; applicable to account model; unit: wei</ParamField>
-<ParamField query="gas_limit" type="Int" >gas limit, applicable to account model</ParamField>
-<ParamField query="extra_parameters" type="Json" >
+<ParamField body="gas_price" type="Int" >gas price; applicable to account model; unit: wei</ParamField>
+<ParamField body="gas_limit" type="Int" >gas limit, applicable to account model</ParamField>
+<ParamField body="extra_parameters" type="Json" >
 UTXO Model:
     1. **input_selection:** inputs to be excluded and included in transactions associated with the UTXO model; inputs must be in correspondence with from_address (if specified); it must be a JSON string and has a structure that fits InputSelection
-    2. **inputs_to_spend:** UTXO you want as input
+    2. **inputs_to_spend:** UTXO you want as input. Please note that the length of the list of UTXOs should be less than or equal to 100.
         - tx_hash: Transaction tx_hash
         - vout_n: UTXO index
     3. **inputs_to_exclude:** UTXO you don't want as input
@@ -102,7 +102,7 @@ extra_parameters: '{"calldata": "0xa8059cbb000000000000000000000000971948873f869
 ```python Python
 # EVM example:
 request(
-    "GET",
+    "POST",
     "/v1/custody/mpc/estimate_fee/",
     {
         "coin": "ETH",
@@ -114,7 +114,7 @@ request(
 
 # UTXO example:
 request(
-    "GET",
+    "POST",
     "/v1/custody/mpc/estimate_fee/",
     {
         "coin": "XTN",
@@ -128,7 +128,7 @@ request(
 ```
 ```javascript JavaScript
 // EVM example:
-coboFetch('GET', '/v1/custody/mpc/estimate_fee/', {
+coboFetch('POST', '/v1/custody/mpc/estimate_fee/', {
     "coin": "ETH",
     "amount": 1,
     "address": "0x8a73abedb3053b17204b887af6231a8ac35fc2cc",
@@ -142,7 +142,7 @@ coboFetch('GET', '/v1/custody/mpc/estimate_fee/', {
     });
 
 // UTXO example:
-coboFetch('GET', '/v1/custody/mpc/estimate_fee/', {
+coboFetch('POST', '/v1/custody/mpc/estimate_fee/', {
     "coin": "XTN",
     "amount": 100000,
     "from_address": "2NB8rYHkrLc54JSpjMM4VMA4GFP8n2eWZdS",
@@ -159,14 +159,14 @@ coboFetch('GET', '/v1/custody/mpc/estimate_fee/', {
 ```
 ```go Go
 // EVM example:
-Request("GET", "/v1/custody/mpc/estimate_fee/", map[string]string{
+Request("POST", "/v1/custody/mpc/estimate_fee/", map[string]string{
     "coin": "ETH",
     "amount": 1,
     "address": "0x8a73abedb3053b17204b887af6231a8ac35fc2cc"
 })
 
 // UTXO example:
-Request("GET", "/v1/custody/mpc/estimate_fee/", map[string]string{
+Request("POST", "/v1/custody/mpc/estimate_fee/", map[string]string{
     "coin": "XTN",
     "amount": 100000,
     "from_address": "2NB8rYHkrLc54JSpjMM4VMA4GFP8n2eWZdS",
