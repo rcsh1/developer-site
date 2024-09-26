@@ -1431,7 +1431,7 @@ paths:
 
         Access tokens allow the app to signal to the WaaS service that it has received permission to access specific resources of the app user's [organization](https://manuals.cobo.com/en/portal/organization/introduction). Once the app has been granted permission by the organization's admin, it can use this operation to obtain both an Org Access Token and a Refresh Token.
 
-        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-access-token) to get a new Org Access Token and a new Refresh Token. 
+        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token. 
       security:
         - CoboAuth: []
       parameters:
@@ -4010,11 +4010,11 @@ components:
         - DepositFromLoop
       example: DepositFromAddress
       description: |
-        The transaction source. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The transaction source. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     TransactionCustodialAssetWalletSource:
       type: object
       description: |
-        Information about the transaction source type `Asset`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `Asset`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Custodial Wallet (Asset)
@@ -4032,7 +4032,7 @@ components:
     TransactionMPCWalletSource:
       type: object
       description: |
-        Information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: MPC Wallet
@@ -4066,7 +4066,7 @@ components:
     TransactionSmartContractSafeWalletSource:
       type: object
       description: |
-        Information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Smart Contract Wallet
@@ -4092,7 +4092,7 @@ components:
     TransactionExchangeWalletSource:
       type: object
       description: |
-        Information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Exchange Wallet
@@ -4117,7 +4117,7 @@ components:
     TransactionDepositFromAddressSource:
       type: object
       description: |
-        Information about the transaction source type `DepositFromAddress`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `DepositFromAddress`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Deposit from Address
@@ -4145,7 +4145,7 @@ components:
     TransactionDepositFromWalletSource:
       type: object
       description: |
-        Information about the transaction source type `DepositFromWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `DepositFromWallet`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Deposit from Wallet
@@ -4173,7 +4173,7 @@ components:
     TransactionDepositFromLoopSource:
       type: object
       description: |
-        Information about the transaction source type `DepositFromLoop`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `DepositFromLoop`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Deposit from Loop
@@ -4209,11 +4209,11 @@ components:
         - DepositToWallet
       example: Address
       description: |
-        The transaction destination type. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The transaction destination type. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     TransactionDepositToAddressDestination:
       type: object
       description: |
-        Information about the transaction destination type `DepositToAddress`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `DepositToAddress`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Deposit to Address
@@ -4251,7 +4251,7 @@ components:
     TransactionDepositToWalletDestination:
       type: object
       description: |
-        Information about the transaction destination type `DepositToWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `DepositToWallet`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Deposit to Wallet
@@ -4288,7 +4288,7 @@ components:
       title: EVM Contract
       type: object
       description: |
-        Information about the transaction destination type `EVM_Contract`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `EVM_Contract`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       required:
@@ -4315,7 +4315,7 @@ components:
     TransactionMessageSignEIP191Destination:
       title: EIP-191 Signature
       description: |
-        Information about the transaction destination type `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       type: object
@@ -4332,7 +4332,7 @@ components:
     TransactionMessageSignEIP712Destination:
       title: EIP-712 Signature
       description: |
-        Information about the transaction destination type `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       type: object
@@ -4351,7 +4351,7 @@ components:
     TransactionTransferToAddressDestination:
       type: object
       description: |
-        Information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Address
@@ -4415,7 +4415,7 @@ components:
     TransactionTransferToWalletDestination:
       type: object
       description: |
-        Information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Exchange Wallet
@@ -4703,7 +4703,7 @@ components:
     CustodialTransferSource:
       type: object
       description: |
-        The information about the transaction source types `Asset` and `Web3`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source types `Asset` and `Web3`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Transfer from Custodial Wallet
@@ -4721,7 +4721,7 @@ components:
     MpcTransferSource:
       type: object
       description: |
-        The information about the transaction source types `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source types `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         If you specify both the `address` or `included_utxos` properties, the specified included UTXOs must belong to the address.
 
@@ -4753,7 +4753,7 @@ components:
     SafeTransferSource:
       type: object
       description: |
-        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Transfer from Smart Contract Wallet
@@ -4818,7 +4818,7 @@ components:
     ExchangeTransferSource:
       type: object
       description: |
-        The information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Assets in an Exchange Wallet (Sub Account) can only be transferred to another Exchange Wallet.
 
@@ -4858,7 +4858,7 @@ components:
     AddressTransferDestination:
       type: object
       description: |
-        The information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Specify either the `account_output` property or the `utxo_outputs` property. You can transfer tokens to multiple addresses only if you use MPC Wallets as the transaction source. You should use the `utxo_outputs` property to specify the destination addresses.
 
@@ -4933,7 +4933,7 @@ components:
     ExchangeTransferDestination:
       type: object
       description: |
-        The information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         An Exchange Wallet (Sub Account) can only receive asset transfers from another Exchange Wallet.
 
@@ -4968,7 +4968,7 @@ components:
         - ExchangeWallet
       example: Address
       description: |
-        The transaction destination type. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The transaction destination type. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     TransferDestination:
       oneOf:
         - $ref: '#/components/schemas/AddressTransferDestination'
@@ -5088,7 +5088,7 @@ components:
     BaseContractCallSource:
       type: object
       description: |
-        The information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       required:
@@ -5114,7 +5114,7 @@ components:
     SafeContractCallSource:
       title: Contract Call from Smart Contract Wallet
       description: |
-        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       allOf:
@@ -5133,7 +5133,7 @@ components:
         - 'Safe{Wallet}'
       example: Org-Controlled
       description: |
-        The type of the source. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The type of the source. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     ContractCallSource:
       oneOf:
         - $ref: '#/components/schemas/MpcContractCallSource'
@@ -5150,11 +5150,11 @@ components:
         - EVM_Contract
       example: EVM_Contract
       description: |
-        The type of the contract format. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The type of the contract format. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     EvmContractCallDestination:
       title: EVM Contract
       type: object
-      description: 'The information about the transaction destination. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the transaction destination. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       required:
         - destination_type
         - address
@@ -5244,7 +5244,7 @@ components:
         - User-Controlled
       example: Org-Controlled
       description: |
-        The wallet subtype of the transaction source. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The wallet subtype of the transaction source. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     MessageSignSource:
       oneOf:
         - $ref: '#/components/schemas/MpcMessageSignSource'
@@ -5255,7 +5255,7 @@ components:
           User-Controlled: '#/components/schemas/MpcMessageSignSource'
     EvmEIP191MessageSignDestination:
       title: EIP-191 Signature
-      description: 'The information about the destination `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the destination `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
         - destination_type
@@ -5269,7 +5269,7 @@ components:
           example: YWFhYQ==
     EvmEIP712MessageSignDestination:
       title: EIP-712 Signature
-      description: 'The information about the destination `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the destination `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
         - destination_type
@@ -5285,7 +5285,7 @@ components:
             {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
     RawMessageSignDestination:
       title: Raw Message Signature
-      description: 'The information about the destination `Raw_Message_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the destination `Raw_Message_Signature`. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
         - destination_type
@@ -5303,7 +5303,7 @@ components:
         - EVM_EIP_712_Signature
       example: EVM_EIP_191_Signature
       description: |
-        The type of the signature format. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The type of the signature format. Refer to [Transaction sources and destinations](http://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     MessageSignDestination:
       oneOf:
         - $ref: '#/components/schemas/EvmEIP191MessageSignDestination'
@@ -5435,7 +5435,7 @@ components:
         - wallets.mpc.tss_request.failed
         - wallets.mpc.tss_request.succeeded
       example: wallets.transaction.created
-      description: 'The event type. To learn the trigger condition of each event type, refer to [Webhook event types and event data](/v2/guides/webhooks-callbacks/webhook-event-type).'
+      description: 'The event type. To learn the trigger condition of each event type, refer to [Webhook event types and event data](http://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type).'
     WebhookEventStatus:
       type: string
       enum:

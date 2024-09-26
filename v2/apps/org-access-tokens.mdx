@@ -35,9 +35,9 @@ sequenceDiagram
 2. Cobo Portal sends an approval request to the organization admin, asking for permissions and access to wallets selected by the user. 
 3. The organization admin approves the request on Cobo Guard.
 4. Cobo Portal sends a callback message that contains the organization ID and approval result to the callback URL that you provide in the manifest file.
-5. Your app acquires an Org Access Token from the WaaS service by calling the [Get Org Access Token](/v2/api-references/oauth/get-access-token) operation. 
+5. Your app acquires an Org Access Token from the WaaS service by calling the [Get Org Access Token](/v2/api-references/oauth/get-org-access-token) operation. 
 6. Your app accesses the WaaS 2.0 service with the Org Access Token. 
-7. When the Org Access Token expires, your app calls the [Refresh Org Access Token](/v2/api-references/oauth/refresh-access-token) operation to get a new Org Access Token with the Refresh Token.
+7. When the Org Access Token expires, your app calls the [Refresh Org Access Token](/v2/api-references/oauth/refresh-org-access-token) operation to get a new Org Access Token with the Refresh Token.
     <Note>The expiration time for Refresh Tokens is currently set to 30 days and is subject to change. If the Refresh Token expires, users will need to reinstall the app, following the same process as when installing a new app.</Note>
 8. Users use your app to interact with the selected wallets using the permissions granted.
 
@@ -45,7 +45,7 @@ The Org Access Token is associated with the permissions granted by the organizat
 
 ## Acquire Org Access Tokens
 
-Your app will need to call [Get access token](/v2/api-references/oauth/get-access-token) to get Org Access Tokens and call [Refresh access token ](/v2/api-references/oauth/refresh-access-token)to refresh Org Access Tokens when they expire. When calling these two operations, your app must provide the app key, client ID, and organization ID as inputs.
+Your app will need to call [Get access token](/v2/api-references/oauth/get-org-access-token) to get Org Access Tokens and call [Refresh access token ](/v2/api-references/oauth/refresh-org-access-token)to refresh Org Access Tokens when they expire. When calling these two operations, your app must provide the app key, client ID, and organization ID as inputs.
 
 ### 1. Generate an app key
 
