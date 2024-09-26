@@ -23,7 +23,7 @@ The available webhook event types are as follows:
     </tr>
     <tr>
       <td><code>wallets.transaction.updated</code></td>
-      <td>There are changes to a transaction's status or confirmation numbers.</td>
+      <td>There are changes to a transaction's status or confirmation numbers.<Note>The `wallets.transaction.updated` event covers the entire lifecycle of a transaction, including creation, completion, and failure. If you want to track every status change, you can subscribe to this event.</Note></td>
     </tr>
     <tr>
       <td><code>wallets.transaction.succeeded</code></td>

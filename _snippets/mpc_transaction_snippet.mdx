@@ -13,11 +13,13 @@
     | BROADCAST_FAILED| 402|
     | PENDING_CONFIRMATION| 403|
     | CONFIRMATION| 501|
+    | REVERTING| 502|
     | SUCCESS| 900|
     | FAILED| 901|
 
     <Tip>The 402 status is not the final status of the transaction and will be rebroadcast, but there will still be broadcast failures.</Tip>
     <Tip>The 403 status indicates that the transaction has been successfully broadcast but not yet confirmed, while the 501 status indicates that the transaction has been successfully confirmed on the blockchain and is awaiting further confirmations.</Tip>
+    <Tip>The 502 status indicates that during the confirmation process on the blockchain, the transaction execution has failed. Once the required number of confirmations is reached, the transaction status will change to 901.</Tip>
     </ResponseField>
     <ResponseField name="coin_detail" type="object" >
         <Expandable title="object">

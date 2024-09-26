@@ -76,6 +76,14 @@ When your webhook endpoint receives a webhook event, it should respond with a st
 
 If the webhook endpoint does not respond or responds with a status code other than `200` or `201`, the WaaS service will continue to retry sending the event. If the number of retry attempts reaches 10 , the WaaS service will stop sending the event and the event status will become `Failed`· You can resend the event by clicking **Retry** on **Cobo Portal** > **Developer** > **Webhook Events**.
 
+Cobo does not guarantee that events will be delivered in the order they are generated. For example, creating a transfer will generate the following events:
+
+- `wallets.transaction.created`
+- `wallets.transaction.updated`
+- `wallets.transaction.succeeded`
+
+Your endpoint should not assume that events will arrive in this sequence and must handle delivery appropriately.
+
 #### Callback messages
 
 When your callback endpoint receives a callback message, it should respond with a status code of `200` or `201` and a response body of `ok` or `deny` to indicate transaction approval or rejection. Once this response is sent, the WaaS service will stop retrying to send the message and the callback message status will become `Delivered`on Cobo Portal.
@@ -87,3 +95,9 @@ If the callback endpoint does not respond, responds with a status code other tha
 To see examples of how to implement the handling logic, refer to the following files in the WaaS SDK GitHub repository:
 - Python: [server_demo.py](https://github.com/CoboGlobal/cobo-waas2-python-sdk/blob/master/cobo_waas2/server_demo.py) (implemented based on the FastAPI framework)
 - Java: [DemoController.java](https://github.com/CoboGlobal/cobo-waas2-java-sdk/blob/master/src/main/java/com/cobo/waas2/demo/DemoController.java) (implemented based on the SpringBoot framework)
+
+## Best practices
+
+- When receiving the webhook events, your endpoint should first return the correct status code promptly and then handle any subsequent processing asynchronously to prevent timeouts.
+
+- Webhook endpoints may sometimes receive the same event multiple times. To protect against duplicate event processing, you can log the event IDs you've already processed and refrain from processing those that are already logged.

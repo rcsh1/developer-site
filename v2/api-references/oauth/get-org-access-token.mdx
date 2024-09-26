@@ -25,7 +25,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     grant_type = "org_implicit"
 
     try:
-        # Get access token
+        # Get Org Access Token
         api_response = api_instance.get_token(client_id, org_id, grant_type)
         print("The response of OAuthApi->get_token:\n")
         pprint(api_response)
@@ -38,6 +38,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
 import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
 import com.cobo.waas2.api.OAuthApi;
 import com.cobo.waas2.model.*;
 

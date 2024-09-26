@@ -20,9 +20,22 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
                 <ResponseField name="cobo_id" type="String" >Unique ID in Cobo</ResponseField>
                 <ResponseField name="signature" type="String" >Signature</ResponseField>
                 <ResponseField name="chain_code" type="String" >Chain code</ResponseField>
+                <ResponseField name="coin_detail" type="object" >
+                    <Expandable title="object">
+                        <ResponseField name="coin" type="String" >Coin code</ResponseField>
+                        <ResponseField name="chain_code" type="String" >Chain code</ResponseField>
+                        <ResponseField name="display_code" type="String" >Abbreviation (reference only, subject to change)</ResponseField>
+                        <ResponseField name="description" type="String" >Full name (reference only, subject to change)</ResponseField>
+                        <ResponseField name="decimal" type="Int" >Decimal precision</ResponseField>
+                        <ResponseField name="can_deposit" type="Bool" >Whether deposit is supported</ResponseField>
+                        <ResponseField name="can_withdraw" type="Bool" >Whether withdraw is supported</ResponseField>
+                        <ResponseField name="confirming_threshold" type="Int" >Number of confirmations required (may fluctuate)</ResponseField>
+                    </Expandable>
+                </ResponseField>
                 <ResponseField name="sign_version" type="Int" >Sign version, EIP-191: 1, EIP-712: 2</ResponseField>
                 <ResponseField name="from_address" type="String" >From address</ResponseField>
                 <ResponseField name="extra_parameters" type="Json" >raw info of the message to be sign</ResponseField>
+                <ResponseField name="created_time" type="Int" >Creation time of the transaction</ResponseField>
             </Expandable>
         </ResponseField>
 
@@ -71,9 +84,11 @@ Request("GET", "/v1/custody/mpc/sign_messages_by_cobo_ids/", map[string]string{
         "cobo_id": "20230726132723000341052000008222",
         "signature": "0x59328f02d00660d6c44d81e5bae985d2651614b5ee1e16764fd685530791748561b1f941a147f4e4ade4320b1c1d95179f9e058e622e632c020efbc476b2f9981c",
         "chain_code": "ETH",
+        "coin_detail": {"coin": "ETH", "chain_code": "ETH", "display_code": "ETH", "description": "Ethereum Sepolia Testnet", "decimal": 18, "can_deposit": true, "can_withdraw": true, "confirming_threshold": 64},
         "from_address": "0xeea5e4a7c69e4d747a693b6fbd4211ae4843da39",
         "sign_version": 1,
-        "extra_parameters": "{\"message\": \"YWFhYQ==\"}"
+        "extra_parameters": "{\"message\": \"YWFhYQ==\"}",
+        "created_time": 1726026713801
       }
     ]
   }
