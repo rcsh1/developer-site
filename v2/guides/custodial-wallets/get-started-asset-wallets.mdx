@@ -18,7 +18,7 @@ This guide gets you started with using [Custodial Wallets (Asset Wallets)](https
 - Follow the instructions in [Get started with WaaS 2.0](/v2/guides/get-started/get-started-with-waas) to set up your account and send your first API request to the WaaS 2.0 service.
 - If you choose to use a WaaS SDK instead of manually writing the API requests, refer to the SDK guide corresponding to the programming language of your choice ([Python](/v2/developer-tools/quickstart-python), [Java](/v2/developer-tools/quickstart-java), [Go](/v2/developer-tools/quickstart-go), [JavaScript](/v2/developer-tools/quickstart-javascript)) to integrate the SDK into your project.
 - Prepare some test tokens as you will need them when testing the deposit feature. To know which test tokens you can use, refer to [Query chain and token information](#1-query-chain-and-token-information). In most cases, you can use XTN as the test token.
-- To withdraw tokens from your wallet, you must first set up a callback endpoint to receive and approve withdrawal requests. It is highly recommended that you also set up a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
+- It is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests and a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
 ## 1. Query chain and token information
 
@@ -82,7 +82,6 @@ public class ListEnabledChainsExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Use the development environment
         defaultClient.setEnv(Env.DEV);
-        defaultClient.setVerifyingSsl(false);
         // Replace `<YOUR_PRIVATE_KEY>` with your private key
         defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
         WalletsApi apiInstance = new WalletsApi();
@@ -173,7 +172,6 @@ public class ListEnabledTokensExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Use the development environment
         defaultClient.setEnv(Env.DEV);
-        defaultClient.setVerifyingSsl(false);
         // Replace `<YOUR_PRIVATE_KEY>` with your private key
         defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
         WalletsApi apiInstance = new WalletsApi();
@@ -384,7 +382,7 @@ After depositing tokens to the addresses you have generated, you can track the s
 
 ### Option 1: Use webhooks for real-time notifications 
 
-Webhook is an essential mechanism for the WaaS service to communicate with your application. After you register a callback endpoint on Cobo Portal, the WaaS service sends push messages to the designated URL when an event occurs.
+Webhook is an essential mechanism for the WaaS service to communicate with your application. After you register a webhook endpoint on Cobo Portal, the WaaS service sends push messages to the designated URL when an event occurs.
 
 To learn how to set up a webhook endpoint and register it on Cobo Portal, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
@@ -468,7 +466,7 @@ public class ListTransactionsExample {
        try {
            String requestId = null;
            String coboIds = null;
-           UUID transactionIds = null;
+           String transactionIds = null;
            String transactionHashes = "";
            String types = "Deposit";
            String statuses = "Confirming,Completed";
@@ -503,7 +501,10 @@ public class ListTransactionsExample {
 
 ## 5. Withdraw tokens
 
-Now that you have tokens in your wallet, it's time to try withdrawing them. To withdraw tokens from your wallet, you must first set up a callback endpoint and register it on Cobo Portal. Once you initiate a withdrawal using the WaaS 2.0 API, the callback endpoint will receive a callback message containing the transaction details. The transaction will proceed only if you approve the withdrawal request.
+Now that you have tokens in your wallet, it's time to try withdrawing them. 
+
+### Set up a callback endpoint
+To enhance the security of your transactions, it is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests. Once you initiate a withdrawal using the WaaS 2.0 API, the callback endpoint will receive a callback message containing the transaction details. The transaction will proceed only if you approve the withdrawal request.
 
 To learn how to set up a callback endpoint and register it on Cobo Portal, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
@@ -647,7 +648,7 @@ The response of the withdrawal request is as follows. Record the transaction ID 
 ```
 ### Confirm the withdrawal
 
-After you initiate the withdrawal transaction, your callback endpoint will receive a callback message containing the transaction details. Check if the transaction meets expectations, and respond with a success status code (200 or 201) and a response body of `ok` to approve the transaction. To learn more about handling a callback message, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).
+If you have set up a callback endpoint, after you initiate the withdrawal transaction, your callback endpoint will receive a message containing the transaction details. Check if the transaction meets expectations, and respond with a success status code (200 or 201) and a response body of `ok` to approve the transaction. To learn more about handling a callback message, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).
 
 ### Monitor the withdrawal status
 
@@ -708,7 +709,6 @@ public class GetTransactionExample {
        ApiClient defaultClient = Configuration.getDefaultApiClient();
        // Use the development environment
        defaultClient.setEnv(Env.DEV);
-       defaultClient.setVerifyingSsl(false);
        // Replace `<YOUR_PRIVATE_KEY>` with your private key
        defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
        TransactionsApi apiInstance = new TransactionsApi();
@@ -786,7 +786,6 @@ public class ListTokenBalancesExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Use the development environment
         defaultClient.setEnv(Env.DEV);
-        defaultClient.setVerifyingSsl(false);
         // Replace `<YOUR_PRIVATE_KEY>` with your private key
         defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
         WalletsApi apiInstance = new WalletsApi();
