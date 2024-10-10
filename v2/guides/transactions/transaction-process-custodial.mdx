@@ -1,0 +1,23 @@
+---
+title: "Deposit and withdrawal processes for Custodial Wallets"
+---
+
+This article explains how deposit and withdrawal transactions are processed for Custodial Wallets. It outlines the steps taken by you and Cobo, along with the various transaction statuses and sub-statuses your transaction might go through. You can call [Get transaction information](/v2/api-references/transactions/get-transaction-information) to query the current status and sub-status of your transaction.
+
+## Deposit process
+
+The following diagram illustrates how a deposit into your Custodial Wallet is processed:
+
+<img src="/v2/images/guides/custodial-deposit.svg" className="diagram" alt="Deposit process" />
+
+- Cobo reserves the right to reject a deposit transaction if it violates compliance regulations. If rejected, the deposit will not appear on Cobo Portal or trigger any webhook events.
+- If the transaction amount is below the minimum deposit threshold, the transaction will not be processed and no record will be created. You can call the [Get token information](/v2/api-references/wallets/get-token-information) operation to retrieve the minimum deposit amount for each token type.
+
+## Withdrawal process
+
+The following diagram illustrates how a withdrawal from your Custodial Wallet is processed:
+
+<img src="/v2/images/guides/custodial-withdrawal.svg" className="diagram" alt="Withdrawal process" />
+
+- If a withdrawal is rejected or unsuccessful, the tokens will be returned to your wallet, and your balance will remain unchanged.
+- If your withdrawal amount is smaller than the minimum withdrawal threshold, the withdrawal request will receive an error. You can call the [Get token information](/v2/api-references/wallets/get-token-information) operation to retrieve the minimum withdrawal amount for each token type.
