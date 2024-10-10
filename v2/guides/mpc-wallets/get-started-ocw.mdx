@@ -26,7 +26,7 @@ The following diagram illustrates the components within a fully-functioning MPC 
 
 - Follow the instructions in [Get started with WaaS 2.0](/v2/guides/get-started/get-started-with-waas) to set up your account and send your first API request to the WaaS 2.0 service.
 - If you choose to use a WaaS SDK instead of manually writing the API requests, refer to the SDK guide corresponding to the programming language of your choice ([Python](/v2/developer-tools/quickstart-python), [Java](https://github.com/CoboGlobal/cobo-waas2-java-sdk), [Go](/v2/developer-tools/quickstart-go), [JavaScript](https://github.com/CoboGlobal/cobo-waas2-js-sdk)) to integrate the SDK into your project.
-- Prepare some test tokens as you will need them when testing the deposit feature. To know which test tokens you can use, refer to [Query chain and token information](https://docs.google.com/document/d/14fjeIBG_luQJb6mU4BYqMIzCMacCXKG3foZfMald9zc/edit?pli=1#heading=h.eyriyqbnqjcs). In most cases, you can use XTN as the test token.
+- Prepare some test tokens as you will need them when testing the deposit feature. To know which test tokens you can use, refer to [Query chain and token information](#1-query-chain-and-token-information). In most cases, you can use XTN as the test token.
 - It is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests and a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
 ## 1. Query chain and token information
@@ -750,7 +750,7 @@ To track the status of your deposit, you can subscribe to the following webhook 
 - wallets.transaction.succeeded
 - wallets.transaction.failed
 
-To learn the trigger condition and data structure of each event type, refer to [Webhook event types and event data](https://docs.google.com/document/d/1QmCORRuEHEta-ZMCsxHsP3TUUQA1VaikldBeOg6YyTc/edit#heading=h.7wwsxl3ftnln).
+To learn the trigger condition and data structure of each event type, refer to [Webhook event types and data types](/v2/guides/webhooks-callbacks/webhook-event-type).
 
 #### Option 2: Get transaction status by API call
 

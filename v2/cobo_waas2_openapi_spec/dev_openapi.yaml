@@ -390,6 +390,8 @@ paths:
         This operation retrieves the maximum amount that you can transfer from a wallet or a specified wallet address, along with the corresponding transaction fee.
 
         You must specify `to_address` in your query because it affects the transaction fee.
+
+        <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
         - CoboAuth: []
       parameters:
@@ -3907,11 +3909,9 @@ components:
           - `PendingTravelRuleCheck`: The transaction is undergoing a Travel Rule check.
           - `PendingTravelRuleInfo`: The transaction is awaiting users to provide information related to the Travel Rule.
           - `RejectedTravelRule`: The transaction is rejected because it failed to comply with the Travel Rule.
-          - `RejectedTravelRuleDueToCompliance`: The transaction is rejected because it did not meet the compliance requirements of the Travel Rule.
+          - `RejectedTravelRuleDueToCompliance`: The transaction is rejected because it failed the cross-check of the Travel Rule. 
           - `RejectedTravelRuleDueToUnsupportedToken`: The transaction is rejected because the token is not supported by the Travel Rule.
-          - `RejectedKYT`: The transaction is rejected because it did not pass the Know Your Transaction (KYT) compliance checks.
           - `PendingRiskControlCheck`: The transaction is pending for a Risk Control check.
-          - `RejectedRiskControlCheck`: The transaction is rejected because it failed the Risk Control check.
           - `PendingApproverCheck`: The transaction is pending approval from the approver.
           - `RejectedApproverAuth`: The transaction is rejected by the approver.
           - `RejectedbyMobileCosigner`: The transaction is rejected by a mobile cosigner.
