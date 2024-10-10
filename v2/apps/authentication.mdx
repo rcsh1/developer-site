@@ -36,14 +36,14 @@ client.set_default_header("AUTHORIZATION", f"Bearer {ORG_ACCESS_TOKEN}")
 
 ## Without the WaaS SDK
 
-If you don’t use the WaaS SDK, you need to provide all the required authentication information in the request header as follows:
+If you don't use the WaaS SDK, you need to provide all the required authentication information in the request header as follows:
 
 ```javascript
 headers = {
     // Replace `{ORG_ACCESS_TOKEN}` with the Org Access Token.
     "Authorization": Bearer {ORG_ACCESS_TOKEN},
-    // Replace `<APP_PRIVATE_KEY>` with the private key of your app key.
-    "Biz-Api-Key": {APP_PRIVATE_KEY}.hex(),
+    // Replace `<APP_PUBLIC_KEY>` with the public key of your app key.
+    "Biz-Api-Key": {APP_PUBLIC_KEY}.hex(),
     // Replace `{Nonce}` with the current time in Unix timestamp format, measured in milliseconds.
     // This value must be the same as the value of the `TIMESTAMP` field in the API signature.
     "Biz-Api-Nonce": {Nonce},
