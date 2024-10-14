@@ -684,6 +684,8 @@ paths:
       summary: Create vault
       description: |
         This operation creates a vault.
+
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -709,6 +711,8 @@ paths:
         **Notes for query parameters**:
         1. `project_id` is required when `vault_type` is set to `User-Controlled`.
         2. `project_id` must be left blank when `vault_type` is set to `Org-Controlled`.
+
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
       parameters:
@@ -741,6 +745,8 @@ paths:
       summary: Get vault information
       description: |
         This operation retrieves detailed information about a vault.
+
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
       parameters:
@@ -759,6 +765,8 @@ paths:
       summary: Update vault name
       description: |
         This operation updates a vault's name.
+
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1950,7 +1958,7 @@ components:
       properties:
         error_code:
           type: integer
-          description: The error code.
+          description: 'The error code. Refer to [Error codes and status codes](https://www.cobo.com/developers/v2/guides/troubleshoot/error-codes) for more details.'
         error_message:
           type: string
           description: The error description.
@@ -2137,13 +2145,15 @@ components:
         - Sub
       example: Asset
       description: |
-        The wallet subtype. Possible values include:
+        The wallet sub-type. Possible values include:
         - `Asset`: Custodial Wallets (Asset Wallets).
         - `Org-Controlled`: MPC Wallets (Organization-Controlled Wallets).
         - `User-Controlled`: MPC Wallets (User-Controlled Wallets).
         - `Safe{Wallet}`: Smart Contract Wallets (Safe).
         - `Main`: Exchange Wallets (Main Account).
         - `Sub`: Exchange Wallets (Sub Account).
+
+        Each wallet sub-type requires a different set of properties. Switch between the above tabs for details.
     SmartContractWalletType:
       type: string
       enum:
@@ -3078,6 +3088,8 @@ components:
         - `EVM_EIP_1559`: The EIP-1559 fee model.
         - `EVM_Legacy`: The legacy fee model.
         - `UTXO`: The fee model used in UTXO-based blockchains, such as Bitcoin.
+
+        Each fee model requires a different set of properties. Switch between the above tabs for details.
     FeeAmount:
       type: object
       description: The transaction fee.
@@ -4976,6 +4988,8 @@ components:
       example: Address
       description: |
         The transaction destination type. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+
+        Each destination type requires a different set of properties. Switch between the above tabs for details.
     TransferDestination:
       oneOf:
         - $ref: '#/components/schemas/AddressTransferDestination'
@@ -5141,6 +5155,8 @@ components:
       example: Org-Controlled
       description: |
         The type of the source. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+
+        Each source type requires a different set of properties. Switch between the above tabs for details.
     ContractCallSource:
       oneOf:
         - $ref: '#/components/schemas/MpcContractCallSource'
@@ -5311,6 +5327,8 @@ components:
       example: EVM_EIP_191_Signature
       description: |
         The type of the signature format. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+
+        Each signature format type requires a different set of properties. Switch between the above tabs for details.
     MessageSignDestination:
       oneOf:
         - $ref: '#/components/schemas/EvmEIP191MessageSignDestination'
@@ -8444,7 +8462,10 @@ components:
       type: apiKey
       in: header
       name: BIZ-API-KEY
-      description: The API key.
+      description: |
+        - If you are using the API Playground to send a request, provide your private key.
+        - If you are using a WaaS SDK to send a request, you do not need to specify this field .
+        - If neither of the above scenarios applies, provide your public key.
     OAuth2:
       type: oauth2
       flows:
