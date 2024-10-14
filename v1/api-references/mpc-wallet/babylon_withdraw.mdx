@@ -8,7 +8,7 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
 #### Request
 <ParamField body="request_id" type="String" required>transaction ID (unique identifier of a transaction request, which must correspond to a client's transaction; UUID should be used and the length should be equal to or less than 120 characters)</ParamField>
 <ParamField body="fee_rate" type="Float" required>transaction fees per byte</ParamField>
-<ParamField body="max_staking_fee" type="Int" >maximum fee for constructing the transaction. If the actual fee exceeds this limit, the creation will fail. The default is None.</ParamField>
+<ParamField body="max_fee_amount" type="Int" >maximum fee for constructing the transaction. If the actual fee exceeds this limit, the creation will fail. The default is None.</ParamField>
 <ParamField body="staking_request_id" type="String">request ID of the staking transaction to be withdrawn</ParamField>
 <Tip>Please note that only staking transactions with status 520 are eligible to be withdrawn.</Tip>
 <ParamField body="unbonding_request_id" type="String">request ID of the unbonding transaction</ParamField>
@@ -26,7 +26,7 @@ request(
     {
         "request_id": "1717059604245",
         "fee_rate": 9.5,
-        "max_staking_fee": 2000,
+        "max_fee_amount": 2000,
         "unbonding_request_id": "1717059601673",
     },
     api_key, api_secret, host
@@ -36,7 +36,7 @@ request(
 coboFetch('POST', '/v1/custody/mpc/babylon/withdraw/', {
     "request_id": "1717059604245",
     "fee_rate": 9.5,
-    "max_staking_fee": 2000,
+    "max_fee_amount": 2000,
     "unbonding_request_id": "1717059601673",
 }, api_key, api_secret, host)
     .then(res => {
@@ -51,7 +51,7 @@ coboFetch('POST', '/v1/custody/mpc/babylon/withdraw/', {
 Request("POST", "/v1/custody/mpc/babylon/withdraw/", map[string]string{
     "request_id": "1717059604245",
     "fee_rate": 9.5,
-    "max_staking_fee": 2000,
+    "max_fee_amount": 2000,
     "unbonding_request_id": "1717059601673",
 })
 ```
@@ -66,3 +66,5 @@ Request("POST", "/v1/custody/mpc/babylon/withdraw/", map[string]string{
 
 ```
 </ResponseExample>
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
