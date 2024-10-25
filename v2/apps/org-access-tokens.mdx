@@ -37,7 +37,7 @@ sequenceDiagram
 4. Cobo Portal sends a callback message that contains the organization ID and approval result to the callback URL that you provide in the manifest file.
 5. Your app acquires an Org Access Token from the WaaS service by calling the [Get Org Access Token](/v2/api-references/oauth/get-org-access-token) operation. 
 6. Your app accesses the WaaS 2.0 service with the Org Access Token. 
-7. When the Org Access Token expires, your app calls the [Refresh Org Access Token](/v2/api-references/oauth/refresh-org-access-token) operation to get a new Org Access Token with the Refresh Token.
+7. When the Org Access Token expires, your app calls the [Refresh Org Access Token](/v2/api-references/oauth/refresh-org-access-token) operation to get a new Org Access Token with the Refresh Token. Otherwise API requests will return a `500` error.
     <Note>The expiration time for Refresh Tokens is currently set to 30 days and is subject to change. If the Refresh Token expires, users will need to reinstall the app, following the same process as when installing a new app.</Note>
 8. Users use your app to interact with the selected wallets using the permissions granted.
 
@@ -106,4 +106,5 @@ A sample Org Access Token is as follows:
  "refresh_token": "AMLABEIz4GgFknxniMEj2TTILXCqc6bXYKmrHg4Ms6TSjGGbPX4ipz5xFrcErmGg"
 }
 ```
+
 <Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

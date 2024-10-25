@@ -4,6 +4,37 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.5.0
+
+This version was released on October 24, 2024.
+
+### Breaking Changes
+
+In this release, the following parameter names in the [Python SDK](https://github.com/CoboGlobal/cobo-waas2-python-sdk/) have been updated:
+
+- `ORG_MINUS_CONTROLLED` → `ORG_CONTROLLED`
+- `USER_MINUS_CONTROLLED` → `USER_CONTROLLED`
+- `SAFE_LEFT_CURLY_BRACKET_WALLET_RIGHT_CURLY_BRACKET` → `SAFE_WALLET`
+
+Please update your code to reflect these changes, as previous parameter names are no longer supported.
+
+
+### New features
+
+* Added the [List Delegates](/v2/api-references/wallets--smart-contract-wallets/list-delegates) operation for Smart Contract Wallets.  
+* Added the [List address book entries](/v2/api-references/addressbooks/list-address-book-entries) operation to retrieve addresses from your address book.  
+* Added the [Trigger test event](/v2/api-references/developers--webhooks/trigger-test-event) operation to test the functionality of your webhook endpoint.
+
+
+### Improvements
+
+* Added the `asset_model_type` property in the response of the [Get token information](/v2/api-references/wallets/get-token-information) operation to indicate whether a token uses the account model or the UTXO model.  
+* Added the `calldata_info` property to the `TransactionEvmContractDestination` schema to provide a more detailed representation of smart contract calldata.  
+* Added the `TransactionRawMessageSignDestination` schema and added the `Raw_Message_Signature` value to the `destination_type` enum to represent the transaction destination for raw message signatures.  
+* Added `Stake` and `Unstake` as new possible values for the `types` query parameter in the [List all transactions](/v2/api-references/transactions/list-all-transactions) operation.  
+* Added `bitmart` and `bitfinex` as new possible values to the `exchange_id` enum.  
+* The `delegate` property was no longer a required property in the `TransactionSmartContractSafeWalletSource` schema.
+
 ## v1.4.0
 
 This version was released on September 25, 2024.
