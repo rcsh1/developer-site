@@ -1,5 +1,6 @@
 ---
 title: "Get started with MPC Wallets (Organization-Controlled Wallets)"
+sidebarTitle: "Get started with Organization-Controlled Wallets"
 ---
 
 This guide gets you started with using [MPC Wallets (Organization-Controlled Wallets)](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction). By following this guide, you will be able to use the WaaS 2.0 API to:
@@ -12,15 +13,16 @@ This guide gets you started with using [MPC Wallets (Organization-Controlled Wal
 <Note>This guide uses the [development environment](/v2/guides/overview/environments) in all its code samples. It is recommended that you use the development environment to test your new features first before deploying them to the production environment. </Note>
 
 ## Technical architecture
+This section explains the relationship between vaults, wallets, addresses, and other key concepts surrounding an Organization-Controlled Wallet.
 
 The following diagram illustrates the components within a fully-functioning MPC vault:
 
 <img src="/v2/images/guides/final.svg" className="diagram" alt="The components within a fully-functioning MPC vault"></img>
 
-- Each vault has two root extended public keys, one derived from the Secp256k1 curve and the other derived from the EdDSA curve.
-- Each root extended public key can be used to derive multiple addresses.
-- Each vault can have multiple key share holder groups. Each holder group has a set of TSS Nodes storing the private key shares that can collectively sign a transaction or recover the root private key. For Main Groups and Signing Groups, one key share holder will always be Cobo. To learn more about key share holder groups, see [Create holder groups](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
-- Each TSS key share group consists of two or three private key shares, depending on the number of holders. Each key share group can form a key pair with the root extended public key derived from the same curve. Each key share is unique.
+- An Organization-Controlled Wallet is always associated with a vault. A vault is a collection of Organization-Controlled Wallets that share the same root extended public/private key pairs.
+- Root extended public keys: A root extended public key is used in hierarchical deterministic (HD) wallets to derive multiple child public keys and addresses. Each vault has two root extended public keys, one derived from the Secp256k1 curve (used by chains such as Bitcoin and Ethereum) and the other derived from the EdDSA curve (used by chains such as Solona and TON). To learn more about root extended public keys, see [Key derivation](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#specification-key-derivation).
+- Key share holder groups: Each vault can have multiple key share holder groups. Each holder group has a set of TSS Nodes storing the private key shares that can collectively sign a transaction or recover the root extended private key. For Main Groups and Signing Groups, one key share holder will always be Cobo. To learn more about key share holder groups, see [Create holder groups](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
+- TSS key share groups: Each TSS key share group consists of two or three private key shares, depending on the number of holders. Each key share group can form a key pair with the root extended public key derived from the same curve. Each key share is unique.
 
 ## Prerequisites
 
@@ -302,7 +304,7 @@ public class CreateVaultExample {
 
 ### Create a key share holder group
 
-A key share holder group has a set of TSS Nodes storing the private key shares that can collectively sign a transaction or recover the root private key. In this step, you will set up to be a key share holder, get the TSS Node ID, and call the WaaS API to create a holder group.
+A key share holder group has a set of TSS Nodes storing the private key shares that can collectively sign a transaction or recover the root extended private key. In this step, you will set up to be a key share holder, get the TSS Node ID, and call the WaaS API to create a holder group.
 
 <img src="/v2/images/guides/before_keygen.svg" className="diagram" alt="A vault with a key share holder group"></img>
 

@@ -1,0 +1,73 @@
+---
+title: "Balances and transaction amounts for MPC Wallets"
+---
+The [List token balances by address](/v2/api-references/wallets/list-token-balances-by-address) operation returns four types of balances and transaction amounts in the `data.balance` property. This article explains the definitions of these values and when they are updated during a transaction in MPC Wallets.
+
+## Definitions
+
+| Property                 | Type              | Definition                                                   |
+| ------------------------ | ----------------- | ------------------------------------------------------------ |
+| `data.balance.total`     | Current balance   | The current amount of tokens in an address, which is retrieved directly from the network. |
+| `data.balance.pending`   | Pending amount    | The total amount being sent in a transaction, which is calculated as the withdrawal amount plus the transaction fee. |
+| `data.balance.locked`    | Locked amount     | For UTXO chains, this is the combined value of the selected UTXOs for the transaction, which might exceed the pending amount. For other chains, it is equal to the pending amount. |
+| `data.balance.available` | Available balance | The amount of tokens ready to be spent, which is calculated as the current balance minus the pending amount. |
+
+
+This diagram illustrates the relationship between these values:
+
+<img src="/v2/images/guides/balances_amount.svg" className="diagram" alt="Definitions of several types of balances and amounts"></img>
+
+## Update time
+
+These values are updated at different times during a deposit and withdrawal transaction.
+
+### Deposits
+
+1. The current balance is updated when the transaction receives the first block confirmation.
+2. If a reorganization occurs, the current balance will be updated to reflect the latest balance on the blockchain.
+
+### Withdrawals
+
+1. When a withdrawal request is submitted:
+   - Current balance: Not updated
+   - Pending amount: Equal to 0
+   - Locked amount: Equal to 0
+   - Available balance: Equal to the current balance
+2. When the transaction is in the `PendingSignature` sub-status:
+   - Current balance: Not updated.
+   - Pending amount: The withdrawal amount plus the transaction fee.
+   - Locked amount: For UTXO chains, this is the combined value of the selected UTXOs for the transaction. For other chains, it is equal to the Pending amount.
+   - Available balance: The current balance minus the pending amount.
+3. When the transaction receives the first block confirmation:
+   - Current balance: Updated
+   - Pending amount: Equal to 0
+   - Locked amount: Equal to 0
+   - Available balance: Equals to the current balance
+4. When a reorganization occurs, all values are reverted back to the point when the transaction is in the `PendingSignature` sub-status:
+   - Current balance: Reverted back to the original balance.
+   - Pending amount: The withdrawal amount plus the transaction fee.
+   - Locked amount: For UTXO chains, this is the combined value of the selected UTXOs for the transaction. For other chains, it is equal to the pending amount.
+   - Available balance: The current balance minus the pending amount.
+5. If the transaction fails:
+   - Current balance: Reverted back to the original balance.
+   - Pending amount: Equal to 0
+   - Locked amount: Equal to 0
+   - Available balance: Equal to the current balance
+
+## Replace-By-Fee (RBF) transactions
+
+If you speed up a transaction with an RBF transaction, the RBF transaction will be used in calculating the pending amount and locked amount.
+
+If you cancel a transaction with an RBF transaction, the original transaction will be used in calculating the pending amount and locked amount.
+
+## Maximum transferable amount
+
+The maximum amount you can withdraw is affected by the transaction fee, available balance, and locked amount:
+
+- (Withdrawal amount + transaction fee) > Available balance: The withdrawal request cannot be submitted.
+- (Withdrawal amount + transaction fee) ≤ (Current balance - locked amount): Your withdrawal request will be handled immediately.
+- (Current balance - locked amount) < (Withdrawal amount + transaction fee) ≤ Available balance: You can successfully submit your withdrawal request, but your transaction will be queued.
+
+
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

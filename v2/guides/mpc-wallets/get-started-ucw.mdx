@@ -31,7 +31,7 @@ This guide gets you started with using MPC Wallets (User-Controlled Wallets). Fo
 
 <Note>You can choose between the 2-2, 2-3, or 3-3 [signature scheme](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) for your User-Controlled Wallets. For the purposes of this documentation, we will use the 2-2 signature scheme.</Note>
 
-<Note>This guide uses the [development environment](https://www.cobo.com/developers/v2/guides/overview/environments) in all its code samples. It is recommended that you use the development environment to test your new features first before deploying them to the production environment.</Note>
+<Note>This guide uses the [development environment](/v2/guides/overview/environments) in all its code samples. It is recommended that you use the development environment to test your new features first before deploying them to the production environment.</Note>
 
 ## Technical architecture
 
@@ -187,7 +187,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
   </Accordion>
   <Accordion title="TSS Request">
     #### Attributes:
-    - `cobo_tss_request_id`: Unique identifier for the [TSS request](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-tss-request).
+    - `cobo_tss_request_id`: Unique identifier for the [TSS request](/v2/api-references/wallets--mpc-wallets/create-tss-request).
     - `cobo_target_key_holder_group_id`: The target key share holder group involved in the TSS request.
 
     #### Relationships:
@@ -195,7 +195,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
   </Accordion>
   <Accordion title="Group">
     #### Attributes:
-    - `cobo_key_share_holder_group_id`: Unique identifier for the [key share holder group](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#create-a-key-share-holder-group).
+    - `cobo_key_share_holder_group_id`: Unique identifier for the [key share holder group](/v2/guides/mpc-wallets/get-started-ocw#create-a-key-share-holder-group).
     - `cobo_vault_id`: Unique identifier for the vault that owns this key share holder group.
     - `group_type`: Type of key share holder group (i.e. Main Group or Recovery Group).
 
@@ -217,17 +217,17 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
 ## Prerequisites
 
-- Follow the instructions in [Get started with WaaS 2.0](https://www.cobo.com/developers/v2/guides/get-started-with-waas) to set up your account and send your first API request to the WaaS 2.0 service.
-- If you choose to use a WaaS SDK instead of manually writing the API requests, refer to the SDK guide corresponding to the programming language of your choice ([Python](https://www.cobo.com/developers/v2/developer-tools/quickstart-python), [Java](https://github.com/CoboGlobal/cobo-waas2-java-sdk), [Go](https://www.cobo.com/developers/v2/developer-tools/quickstart-go), [JavaScript](https://github.com/CoboGlobal/cobo-waas2-js-sdk)) to integrate the SDK into your Client Backend.
+- Follow the instructions in [Get started with WaaS 2.0](/v2/guides/get-started-with-waas) to set up your account and send your first API request to the WaaS 2.0 service.
+- If you choose to use a WaaS SDK instead of manually writing the API requests, refer to the SDK guide corresponding to the programming language of your choice ([Python](/v2/developer-tools/quickstart-python), [Java](https://github.com/CoboGlobal/cobo-waas2-java-sdk), [Go](/v2/developer-tools/quickstart-go), [JavaScript](https://github.com/CoboGlobal/cobo-waas2-js-sdk)) to integrate the SDK into your Client Backend.
 - Prepare some test tokens as you will need them when testing the deposit feature. To know which test tokens you can use, refer to [Query chain and token information](https://docs.google.com/document/d/14fjeIBG_luQJb6mU4BYqMIzCMacCXKG3foZfMald9zc/edit#heading=h.eyriyqbnqjcs). In most cases, you can use XTN as the test token.
-- It is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests and a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/introduction).
+- It is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests and a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
 ## 1. Complete the initial setup
 
 <Steps>
   <Step title="Create projects with the Client Backend or Cobo Portal.">
     You can create projects with either the Client Backend or directly on Cobo Portal.
-    - To create projects with the Client Backend, call the [Create project](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-project) operation.
+    - To create projects with the Client Backend, call the [Create project](/v2/api-references/wallets--mpc-wallets/create-project) operation.
     - To create projects with Cobo Portal, see our [upcoming Product Manuals for User-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction).
   </Step>
   <Step title="Install UCW SDK">
@@ -468,9 +468,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                     16. Cobo Backend sends a webhook to the Client Backend with the current status of the TSS request.
 
-                        <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                        <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                        <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                        <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
                 - **Polling option**
 
@@ -550,9 +550,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                 34. Cobo Backend sends the key generation result via a webhook event to the Client Backend.
 
-                    <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                    <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                    <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                    <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
             - **Polling Option**
 
@@ -763,9 +763,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
               Cobo Backend sends transaction updates to the Client Backend using webhooks.
 
-                <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
             - **Polling option**
 
@@ -847,9 +847,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
               Cobo Backend sends the final transaction information via webhook to the Client Backend.
 
-                <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
             - **Polling option**
 
@@ -1088,9 +1088,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
             - **Webhook option**
 
               Cobo Backend sends updates to the Client Backend using webhooks.
-                <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
             - **Polling option**
 
@@ -1203,9 +1203,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                        Cobo Backend sends the final key generation result via webhook to the Client Backend.
 
-                         <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                         <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                         <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                         <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
                      - **Polling option**
 
@@ -1379,9 +1379,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                   Cobo Backend sends a webhook to notify the Client Backend of the TSS request status.
 
-                    <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                    <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                    <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                    <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
 
                 - **Polling option**
@@ -1488,9 +1488,9 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                            Cobo Backend sends the final key generation result via webhooks.
 
-                             <Info>To see the available webhook event types, see [Webhook event types](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                             <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                             <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                             <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
 
                          - **Polling option**
