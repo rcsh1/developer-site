@@ -1,0 +1,358 @@
+---
+title: "UI Toolkit API reference"
+---
+
+## Types
+
+### AuthInfo
+
+The authentication information of a user.
+
+#### Properties
+
+| Name              | Type   | Description                                                  |
+| ----------------- | ------ | ------------------------------------------------------------ |
+| token             | string | The [User Info Token](/v2/apps/verify-users). |
+| orgID             | string | The user's organization ID.                                  |
+| userID            | string | The user ID.                                                 |
+| (Optional) action | string | The current operation type. You can ignore this parameter.   |
+
+### MfaListItem
+
+The information about a multi-factor authentication (MFA) method that will be displayed in the UI.
+
+#### Properties
+
+| Name      | Type   | Description                                                  |
+| --------- | ------ | ------------------------------------------------------------ |
+| mfaMethod | string | The MFA method type. The possible values are as follows:<ul><li>`google_auth`: Google Authenticator.</li><li>`cobo_guard`: Cobo Guard.</li><li>`security_key`: Security keys.</li></ul> For more details, refer to [Set up multi-factor authentication (MFA) methods](https://manuals.cobo.com/en/accounts/set-up-mfa). |
+| mfaStatus | string | The active status of the MFA method. The possible values are as follows:<ul><li>`Active`: The MFA method will be displayed as enabled in the UI.</li><li>`Inactive`(default): The MFA method will be displayed as disabled in the UI.</li></ul>Any other values will be treated as `Inactive`. |
+
+## Enums
+
+### locale
+
+The language setting.
+
+- `en-US`: English.
+- `zh-CN`: Chinese.
+
+## Hooks
+
+### useMFA
+
+```typescript
+const useMFA: () => (mfaMethods: MfaListItem[]) => Promise<string>;
+```
+
+This hook manages multi-factor authentication (MFA) methods within your application. It provides a function to send MFA method data to Cobo for processing. 
+
+#### Returns
+
+This hook returns a function `sendMfaMethods` that sends an array of MFA methods to Cobo's backend.
+
+The `sendMfaMethods`function has the following parameter:
+
+| Name           | Type           | Description                                                  |
+| -------------- | -------------- | ------------------------------------------------------------ |
+| mfaMethods     | MfaListItem [] | An array of [MfaListItem](#mfalistitem) objects. Each object represents an MFA method that will be displayed in the UI. |
+
+The `sendMfaMethods` function returns a Promise that resolves to a request ID of string type, which should be sent to Cobo Portal for processing.
+
+#### Sample code
+
+The following example defines an array of MFA methods, sends them using `sendMfaMethods`, and handles the response or any errors.
+
+```typescript
+import React, { useEffect } from 'react';
+import { useMFA } from '@cobo/cobo-ui-toolkit';
+
+const MyComponent = () => {
+ const { sendMfaMethods } = useMFA();
+ const testMFA = async () => {
+  const mfaMethods = [
+   { mfaMethod: "google_auth", mfaStatus: "Active" },
+   { mfaMethod: "cobo_guard", mfaStatus: "Active" },
+   { mfaMethod: "security_key", mfaStatus: "Active" },
+  ];
+  try {
+   const requestId = await sendMfaMethods(mfaMethods);
+   console.log('Request ID:', requestId);
+  } catch (error) {
+   console.error('Error sending MFA methods:', error);
+  }
+ };
+
+ useEffect(() => {
+  testMFA();
+ }, []);
+ return <div>Check console for request ID.</div>;
+};
+
+export default MyComponent;
+```
+
+### useTrackingScript
+
+```typescript
+const useTrackingScript: (env: "production") => void;
+```
+
+This hook injects a tracking script into the DOM, which collects data for app analytics, and ensures proper cleanup when the component unmounts. This data will be accessible on Developer Console in the future.
+
+#### Parameters
+
+| Name | Type | Description                                              |
+| -------- | -------- | ------------------------------------------------------------ |
+| env      | string   | The type of environment in which your app runs. For more details, refer to [environments](/v2/guides/overview/environments).<br />Currently, this parameter value must be `production`, regardless of whether your app runs in the production environment or development environment. |
+
+#### Sample code
+
+The following example loads a tracking script in both the production and development environments.
+
+```typescript
+import React from 'react';
+import { useTrackingScript } from '@cobo/cobo-ui-toolkit';
+
+const MyApp = () => {
+  useTrackingScript('production');
+  return <h1>Hello world</h1>;
+};
+
+export default MyApp;
+```
+
+### useAddUidToBody
+
+```typescript
+const useAddUidToBody: (userId: string) => void;
+```
+
+This hook converts a specified user ID from string to Base64 format and adds it as a `uid` attribute to the `<body>` tag of the HTML document. It is useful in scenarios where a user ID needs to be incorporated into the document structure for global tracking or analytics.
+
+#### Parameters
+
+| Name | Type | Description                              |
+| -------- | -------- | -------------------------------------------- |
+| userId   | string   | The user ID to be added to the `<body>` tag. |
+
+#### Sample code
+
+The following example uses the `useAddUidToBody` function to add a `uid` attribute to the `<body>` tag with the user ID. When the user ID changes, the value of the `uid` attribute is updated accordingly.
+
+```typescript
+import React from 'react';
+import { useAddUidToBody } from '@cobo/cobo-ui-toolkit';
+
+const UserProfile = () => {
+  const userId = 'user123';
+
+  useAddUidToBody(userId);
+
+  return (
+    <div>
+      <h1>Hello,user {userId}</h1>
+    </div>
+  );
+};
+
+export default UserProfile;
+```
+
+## Functions
+
+### getAuthInfo
+
+```typescript
+type AuthInfo = {
+    token: string;
+    orgID: string;
+    userID?: string;
+};
+const getAuthInfo: () => Promise<AuthInfo | undefined>;
+```
+
+This asynchronous function retrieves user authentication information from [Cobo Portal](https://manuals.cobo.com/en/portal/introduction).
+
+#### Returns
+
+- `Promise<[AuthInfo]>`: For more details, refer to [AuthInfo](#authinfo).
+- `undefined`: The authentication information is unavailable or the request fails.
+
+#### Sample code
+
+The following example retrieves user authentication information using the `getAuthInfo` function when the component mounts and displays that information.
+
+```typescript
+import React, { useEffect, useState } from 'react';
+import { getAuthInfo } from '@cobo/cobo-ui-toolkit';
+
+const UserProfile = () => {
+  const [authInfo, setAuthInfo] = useState<AuthInfo | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchAuthInfo = async () => {
+      const info = await getAuthInfo();
+      setAuthInfo(info);
+    };
+
+    fetchAuthInfo();
+  }, []);
+
+  if (!authInfo) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <h1>User Information</h1>
+      <p>Token: {authInfo.token}</p>
+      <p>Organization ID: {authInfo.orgID}</p>
+      {authInfo.userID && <p>User ID: {authInfo.userID}</p>}
+    </div>
+  );
+};
+
+export default UserProfile;
+```
+
+### parseJwtToken
+
+```typescript
+const parseJwtToken: (token: string) => any;
+```
+
+This function parses a JSON Web Token (JWT) and returns the payload as a JSON object. Use this function to extract user information, permissions, and other related information in a JWT.
+
+You can use this function to parse the [User Info Token](/v2/apps/verify-users), which contains the information of a Cobo Portal App user.
+
+#### Parameters
+
+| Name  | Type   | Description                                                  |
+| ----- | ------ | ------------------------------------------------------------ |
+| token | string | The JWT string to be parsed. It must be in the `header.payload.signature` format. |
+
+#### Returns
+
+If the token is a valid JWT, the function returns the payload as a JSON object.
+
+#### Errors
+
+If the token format is incorrect or cannot be parsed, the function throws an error with messages such as:
+
+- `Invalid Base64 encoding`: The payload part of the token is not properly Base64 encoded.
+- `Invalid token format`: There is an issue parsing the token, for example, incorrect structure or failure to decode.
+
+#### Sample code
+
+The following example uses the `parseJwtToken` function to parse a User Info Token and logs the decoded payload to the console.
+
+```typescript
+import { parseJwtToken } from '@cobo/cobo-ui-toolkit';
+
+const token =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+
+try {
+  const payload = parseJwtToken(token);
+  console.log(payload);
+} catch (error) {
+  console.error(error.message);
+}
+```
+
+### verifyJwtToken
+
+```typescript
+const verifyJwtToken: (token: string, publicKeySet: any) => Promise<boolean>;
+```
+
+This function verifies a JSON Web Token (JWT) using the specified public keys, ensuring that the token has not been tampered with and is valid.
+
+You can use this function to verify a Cobo Portal App user's identity. Refer to [User Info Tokens](/v2/apps/verify-users) for more information.
+
+#### Parameters
+
+| Name         | Type   | Description                                                  |
+| ------------ | ------ | ------------------------------------------------------------ |
+| token        | string | The JWT to be verified. It must be in the `header.payload.signature format`. |
+| publicKeySet | any    | A set of public keys used to verify the JWT signature. Each public key should have a `kid` attribute, which matches the `kid` attribute in the JWT header. |
+
+#### Returns
+
+- `true`: The JWT is valid.
+- `false`: The JWT is invalid.
+
+#### Sample code
+
+The following example verifies a User Info Token with the public key set retrieved from the specified URL. If the verification is successful, it extracts the information from the User Info Token and sets the information as the user's information.
+
+```typescript
+import { parseJwtToken, verifyJwtToken } from '@cobo/cobo-ui-toolkit';
+
+get('https://api.dev.cobo.com/v2/oauth/authorize/jwks.json').then(async (res) => {
+  const verified = await verifyJwtToken(token, res);
+  if (!verified) return;
+  const jwtInfo = parseJwtToken(token);
+  setUserInfo({
+    email: jwtInfo.email,
+    roleNames: jwtInfo.role_names,
+    roles: jwtInfo.roles,
+    sub: jwtInfo.sub,
+  });
+});
+```
+
+### getPortalLocale
+
+```typescript
+type Locale = {
+
+  locale: 'en-US' | 'zh-CN';
+
+};
+const getPortalLocale: (callback: (data: Locale) => void) => void;
+```
+
+This function listens for the current locale data of [Cobo Portal](https://manuals.cobo.com/en/portal/introduction) and executes a callback when the locale data updates.
+
+<Note>Call [removeGetLocaleListener](#removegetlocalelistener) to clean up the listener when it is no longer needed, especially in components that may unmount.</Note>
+
+#### Parameters
+
+| Name     | Type     | Description                                                  |
+| -------- | -------- | ------------------------------------------------------------ |
+| callback | function | A function that takes a [locale](#locale) object as an argument. |
+
+#### Returns
+
+`void`
+
+#### Errors
+
+`Failed to get locale`: The locale data is undefined.
+
+#### Sample code
+
+The following example listens for the locale data of Cobo Portal and logs it to the console when the data updates.
+
+```typescript
+import { getPortalLocale } from '@cobo/cobo-ui-toolkit';
+
+useEffect(() => {
+  getPortalLocale((locale) => {
+    console.log("locale", locale);
+  });
+}, []);
+```
+
+### removeGetLocaleListener
+
+```typescript
+const removeGetLocaleListener: () => void;
+```
+
+This function removes the listener for the current locale data of [Cobo Portal](https://manuals.cobo.com/en/portal/introduction).
+
+After you call [getPortalLocale](#getportallocale) to listen to the locale data, use this function to clean up the listener when it is no longer needed, especially in components that may unmount.
+
