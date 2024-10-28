@@ -2,7 +2,7 @@
 title: "Withdrawal Confirmation"
 description: ""
 ---
-<Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to [WaaS 2.0](https://www.cobo.com/developers/v2/guides/overview/introduction).</Note>
+<Note>This content applies to WaaS 1.0 only. We highly recommend that you upgrade to [WaaS 2.0](/v2/guides/overview/introduction).</Note>
 Upon receiving a withdraw request, Cobo will initiate the verification process by sending a push message to a client-specified URL via HTTP(S) using the POST request method. The push message contains withdraw data in JSON format within the HTTP message body.
 
 Upon completing the verification of the withdraw request and associated data, the client is required to respond promptly with an HTTP status of 200. The response should include an HTTP body containing either 'ok' to indicate approval or 'deny' to signify rejection. Failure to provide this response will result in continued pushes of the same message to the designated URL. Kindly note that your timely response is crucial for the efficient processing of a withdraw request.

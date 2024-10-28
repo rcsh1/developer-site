@@ -36,7 +36,7 @@ This article explains the common error codes and HTTP status codes you may encou
 | 405             | Method Not Allowed.    | Use a supported HTTP method.                    |
 | 406             | Not Acceptable.        | Ensure the request content format is JSON.      |
 | 429             | Too Many Requests.     | Reduce request frequency and try again later.   |
-| 500             | Internal Server Error. | Try again later.                                |
+| 500             | Internal Server Error. This error can be caused by several issues including expired [Org Access Tokens](/v2/apps/org-access-tokens). | Check your server configuration settings, including whether your Org Access Token has expired, and try again later.                              |
 | 502             | Bad Gateway.           | Check the connectivity and try again later.     |
 | 503             | Service Unavailable.   | Try again later.                                |
 
