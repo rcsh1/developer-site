@@ -1,0 +1,178 @@
+---
+title: "Get started with UCW SDK (iOS)"
+---
+
+<Tip>Some links in this document may not be functional until all relevant documentation for MPC Wallets (User-Controlled Wallets) has been published.</Tip>
+
+## Overview
+
+This guide introduces how to get started with using the [UCW SDK (iOS)](/v2/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets), which is required to [implement your own MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw), and allows you to integrate the UCW SDK into your [Client App](/v2/guides/mpc-wallets/get-started-ucw#technical-architecture) to interact with the [Cobo TSS Relay](/v2/guides/mpc-wallets/get-started-ucw#technical-architecture).
+
+You can go to [GitHub](https://github.com/CoboGlobal/cobo-ucw-sdk-ios) to access the source code of the [UCW SDK](/v2/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets).
+
+
+## Install the UCW SDK
+
+You can install the UCW SDK as a dependency in a [Swift package](https://developer.apple.com/documentation/xcode/swift-packages) or an Xcode project.
+
+<Tabs>
+  <Tab title="Swift package">
+      To install UCW SDK as a dependency in a Swift package, follow these instructions:
+      1. Create a Swift package with Xcode, see [Creating a standalone Swift package with Xcode](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode).
+      2. Add UCW SDK to the `dependencies` in your `Package.swift` file:
+
+            ```swift
+            dependencies: [
+                .package(url: "https://github.com/CoboGlobal/cobo-ucw-sdk-ios")
+            ]
+
+            ```
+
+3. Add the following to the `target`:
+    ```swift
+    targets: [
+        .target(
+            name: "<project_name>",
+            dependencies: ["UCWSDK"]
+        )
+    ]
+
+    ```
+
+4. In the source file where you want to use UCW SDK, add the following:
+
+    ```swift
+    import UCWSDK
+    ```
+
+  </Tab>
+  <Tab title="Xcode project">
+    To install UCW SDK as a dependency in an Xcode project, follow these instructions:
+    1. Set up your [Client App](/v2/guides/mpc-wallets/get-started-ucw#technical-architecture)'s application development environment with Xcode, see [Creating an Xcode project for an app](https://developer.apple.com/documentation/xcode/creating-an-xcode-project-for-an-app).
+    2. Once your Xcode project is set up, click **File** > **Add Package Dependency** in Xcode and enter the repository URL: `https://github.com/CoboGlobal/cobo-ucw-sdk-ios`. For more details, see [Adding package dependencies to your app](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app).
+    3. In the source file where you want to use UCW SDK, add the following:
+
+        ```swift
+        import UCWSDK
+        ```
+  </Tab>
+</Tabs>
+
+## Code samples
+
+This section demonstrates the implementation of steps directly involving the UCW SDK when creating a Main Group. For a complete guide on creating a Main Group or implementing your own MPC Wallets (User-Controlled Wallets), see [Get started with MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw).
+
+For operation-specific documentation and sample code, see [UCW SDK operations on Developer Hub](/v2/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets).
+
+<Steps>
+    <Step title="Initialize Secrets">
+        This step corresponds to Step 1 under **Complete the initial setup** > **Initialize UCW SDK** in [Get started with MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw). See [Initialize Secrets](/v2/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets) for the documentation of this operation.
+
+        ```swift
+        let secrets = "secrets.db"
+        let passphrase = "d3hxNyoiAP@Lm!D7Qpo_hghdpgyc_r39"
+
+        Task {
+           do {
+               let nodeID = try await initializeSecrets(secretsFile: secrets, passphrase: passphrase)
+               print(" TSS Node ID: \(nodeID)")
+           } catch {
+               print("Error: \(error)")
+           }
+        }
+
+        ```
+    </Step>
+    <Step title="Create UCW SDK">
+        This step corresponds to Step 1 under **Complete the initial setup** > **Create a Main Group** in [Get started with MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw). See [Create UCW](/v2/developer-tools/ucw-sdk/ucw-class/create-ucw) for the documentation of this operation.
+
+        ```swift
+        let secrets = "secrets.db"
+        let passphrase = "d3hxNyoiAP@Lm!D7Qpo_hghdpgyc_r39"
+        let sdkConfig = SDKConfig(env: Env.development, timeout: 30, debug: true)
+        var sdkInstance: UCW?
+        var connCode: ConnCode = .CodeUnknown
+        var connMessage: String? = ""
+
+        do {
+            sdkInstance = try UCW(config: sdkConfig, secretsFile: secrets, passphrase: passphrase) { code, message in
+                connCode = code
+                connMessage = message
+                print("Connection Code: \(connCode), Message: \(connMessage ?? "No message")")
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+
+        ```
+    </Step>
+    <Step title="Get TSS Node ID">
+        This step corresponds to Step 3 under **Complete the initial setup** > **Create a Main Group** in [Get started with MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw). See [Get TSS Node ID](/v2/developer-tools/ucw-sdk/ucwpublic-class/get-tss-node-id) for the documentation of this operation.
+        ```swift
+        do {
+            if let nodeID = try sdkInstance?.getTSSNodeID() {
+                print("TSS Node ID: \(nodeID)")
+            } else {
+                print("Failed to get TSS Node ID")
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+
+        ```
+    </Step>
+    <Step title="Get TSS requests">
+        This step corresponds to Step 22 under **Complete the initial setup** > **Create a Main Group** in [Get started with MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw). See [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) for the documentation of this operation.
+        ```swift
+        let tssRequestIDs = ["tss_request_id_01"]
+        Task {
+            do {
+                if let requests = try await sdkInstance?.getTSSRequests(tssRequestIDs: tssRequestIDs) {
+                    for request in requests {
+                        print("\(request)\n")
+                    }
+                } else {
+                    print("Get no TSS request")
+                }
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+
+        ```
+    </Step>
+    <Step title="Approve TSS requests">
+        This step corresponds to Step 27 under **Complete the initial setup** > **Create a Main Group** in [Get started with MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw). See [Approve TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/approve-tss-requests) for the documentation of this operation.
+        ```swift
+        let tssRequestIDs = ["tss_request_id_01"]
+        do {
+            try sdkInstance?.approveTSSRequests(tssRequestIDs: tssRequestIDs)
+        } catch {
+            print("Error: \(error)")
+        }
+
+        ```
+    </Step>
+    <Step title="Get TSS requests">
+        This step corresponds to Step 30 under **Complete the initial setup** > **Create a Main Group** in [Get started with MPC Wallets (User-Controlled Wallets)](/v2/guides/mpc-wallets/get-started-ucw). See [Get TSS Requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) for the documentation of this operation.
+        ```swift
+        let tssRequestIDs = ["tss_request_id_01"]
+        Task {
+            do {
+                if let requests = try await sdkInstance?.getTSSRequests(tssRequestIDs: tssRequestIDs) {
+                    for request in requests {
+                        print("\(request)\n")
+                    }
+                } else {
+                    print("Get no TSS request")
+                }
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+
+        ```
+    </Step>
+</Steps>
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
