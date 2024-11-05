@@ -69,7 +69,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
        # Query enabled chains
        api_response = wallet_api_instance.list_enabled_chains(
            wallet_type=WalletType.MPC,
-           wallet_subtype=WalletSubtype.ORG_MINUS_CONTROLLED
+           wallet_subtype=WalletSubtype.ORG_CONTROLLED
        )
        print(f"The response of WalletsApi->list_enabled_chains:")
        print(json.dumps(api_response.to_dict(), indent=2))
@@ -158,7 +158,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
        # Query enabled tokens
        api_response = wallet_api_instance.list_enabled_tokens(
            wallet_type=WalletType.MPC,
-           wallet_subtype=WalletSubtype.ORG_MINUS_CONTROLLED
+           wallet_subtype=WalletSubtype.ORG_CONTROLLED
        )
        print(f"The response of WalletsApi->list_enabled_tokens:")
        print(json.dumps(api_response.to_dict(), indent=2))
@@ -252,7 +252,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
     create_mpc_vault_request = cobo_waas2.CreateMpcVaultRequest(
         name="<YOUR_VAULT_NAME>",
-        vault_type=MPCVaultType.ORG_MINUS_CONTROLLED
+        vault_type=MPCVaultType.ORG_CONTROLLED
     )
 
     try:
@@ -578,7 +578,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
         actual_instance=cobo_waas2.CreateMpcWalletParams(
             name="<YOUR_WALLET_NAME>",
             wallet_type=WalletType.MPC,
-            wallet_subtype=WalletSubtype.ORG_MINUS_CONTROLLED,
+            wallet_subtype=WalletSubtype.ORG_CONTROLLED,
             vault_id="<YOUR_VAULT_ID>"
         )
     )
@@ -929,7 +929,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
                source=TransferSource(
                    actual_instance=MpcTransferSource
                    (
-                       source_type=WalletSubtype.ORG_MINUS_CONTROLLED,
+                       source_type=WalletSubtype.ORG_CONTROLLED,
                        wallet_id="<YOUR_WALLET ID>",
                    )
                ),
