@@ -122,6 +122,30 @@ const MyApp = () => {
 export default MyApp;
 ```
 
+#### Notes
+
+To enable effective tracking, each clickable element in your app needs a unique tracking attribute named `data-track-id` or `dtid`. This attribute serves as the primary identifier for tracking interactions on specific buttons or elements, enabling consistent and accurate analytics collection.
+
+Each `data-track-id` or `dtid` attribute value must be lowercase words separated by underscores in the format `{PAGE_IDENTIFIER}_{COMPONENT_IDENTIFIER}_{ELEMENT_IDENTIFIER}` that follow the following rules:
+
+- Page identifier: Identifying the page or module's feature, such as ` home`, `login`, or `profile`.
+- Component identifier: Identifies the specific UI component within the page, such as `form`, `navbar`, or `modal`.
+- Element identifier: Identifies the button or interactive element, such as `submit`, `register`, or `next_step`.
+
+For example, the attribute value for a submit button on the home page can be `home_form_submit`.
+
+When an element contains child elements, avoid using event-blocking methods such as `stopPropagation()` and `preventDefault()` because they can interfere with effective click tracking. In typical cases, you only need to apply the `data-track-id` or `dtid` attribute to the parent element, as child elements will automatically inherit it for tracking purposes. 
+
+The following example shows how to implement this:
+
+```html
+<button data-track-id="home_form_submit">
+  <span>Child Element 1</span>
+</button>
+```
+
+However, if using the event-blocking methods is necessary, ensure that each child element within the parent has the same tracking attribute to maintain accurate tracking.
+
 ### useAddUidToBody
 
 ```typescript
