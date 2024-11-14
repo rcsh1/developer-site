@@ -5,7 +5,7 @@ openapi: get /oauth/token
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.get_token200_response import GetToken200Response
+from cobo_waas2.models.get_token2_xx_response import GetToken2XXResponse
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -56,7 +56,7 @@ public class Example {
     String orgId = "e3986401-4aec-480a-973d-e775a4518413";
     String grantType = "org_implicit";
     try {
-      GetToken200Response result = apiInstance.getToken(clientId, orgId, grantType);
+      GetToken2XXResponse result = apiInstance.getToken(clientId, orgId, grantType);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling OAuthApi#getToken");
@@ -105,7 +105,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `OAuthAPI.GetToken``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `GetToken`: GetToken200Response
+	// response from `GetToken`: GetToken2XXResponse
 	fmt.Fprintf(os.Stdout, "Response from `OAuthAPI.GetToken`: %v\n", resp)
 }
 

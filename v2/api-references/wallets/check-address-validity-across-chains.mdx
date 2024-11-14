@@ -1,12 +1,13 @@
 ---
-openapi: post /transactions/estimate_fee
+openapi: get /wallets/check_address_chains_validity
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.estimate_fee_params import EstimateFeeParams
-from cobo_waas2.models.estimated_fee import EstimatedFee
+from cobo_waas2.models.check_address_chains_validity200_response_inner import (
+    CheckAddressChainsValidity200ResponseInner,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -20,18 +21,19 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.TransactionsApi(api_client)
-    estimate_fee_params = cobo_waas2.EstimateFeeParams()
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+    chain_ids = "BTC,ETH"
 
     try:
-        # Estimate transaction fee
-        api_response = api_instance.estimate_fee(
-            estimate_fee_params=estimate_fee_params
-        )
-        print("The response of TransactionsApi->estimate_fee:\n")
+        # Check address validity across chains
+        api_response = api_instance.check_address_chains_validity(address, chain_ids)
+        print("The response of WalletsApi->check_address_chains_validity:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling TransactionsApi->estimate_fee: %s\n" % e)
+        print(
+            "Exception when calling WalletsApi->check_address_chains_validity: %s\n" % e
+        )
 
 ```
 ```java Java
@@ -40,7 +42,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.api.WalletsApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -52,13 +54,15 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    TransactionsApi apiInstance = new TransactionsApi();
-    EstimateFeeParams estimateFeeParams = new EstimateFeeParams();
+    WalletsApi apiInstance = new WalletsApi();
+    String address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+    String chainIds = "BTC,ETH";
     try {
-      EstimatedFee result = apiInstance.estimateFee(estimateFeeParams);
+      List<CheckAddressChainsValidity200ResponseInner> result =
+          apiInstance.checkAddressChainsValidity(address, chainIds);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling TransactionsApi#estimateFee");
+      System.err.println("Exception when calling WalletsApi#checkAddressChainsValidity");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -80,26 +84,8 @@ import (
 )
 
 func main() {
-	estimateFeeParams := coboWaas2.EstimateFeeParams{
-		EstimateContractCallFeeParams: coboWaas2.NewEstimateContractCallFeeParams(
-			coboWaas2.EstimateFeeRequestType("Transfer"),
-			"ETH",
-			coboWaas2.ContractCallSource{
-				MpcContractCallSource: coboWaas2.NewMpcContractCallSource(
-					coboWaas2.ContractCallSourceType("Org-Controlled"),
-					"f47ac10b-58cc-4372-a567-0e02b2c3d479",
-					"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-				),
-			},
-			coboWaas2.ContractCallDestination{
-				EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(
-					coboWaas2.ContractCallDestinationType("EVM_Contract"),
-					"0x0406db8351aa6839169bb363f63c2c808fee8f99",
-					"0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO",
-				),
-			},
-		),
-	}
+	address := "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
+	chainIds := "BTC,ETH"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -112,15 +98,20 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.EstimateFee(ctx).
-		EstimateFeeParams(estimateFeeParams).
+	resp, r, err := apiClient.WalletsAPI.CheckAddressChainsValidity(ctx).
+		Address(address).
+		ChainIds(chainIds).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.EstimateFee``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `WalletsAPI.CheckAddressChainsValidity``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `EstimateFee`: EstimatedFee
-	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.EstimateFee`: %v\n", resp)
+	// response from `CheckAddressChainsValidity`: []CheckAddressChainsValidity200ResponseInner
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.CheckAddressChainsValidity`: %v\n", resp)
 }
 
 ```
@@ -133,11 +124,10 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.TransactionsApi();
-const opts = {
-  'EstimateFeeParams': new CoboWaas2.EstimateFeeParams()
-};
-apiInstance.estimateFee(opts).then((data) => {
+const apiInstance = new CoboWaas2.WalletsApi();
+const address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
+const chain_ids = "BTC,ETH";
+apiInstance.checkAddressChainsValidity(address, chain_ids).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

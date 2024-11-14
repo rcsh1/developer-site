@@ -1,0 +1,518 @@
+---
+title: "Permission list"
+---
+
+<table>
+  <thead>
+    <tr>
+      <th>Resources</th>
+      <th>Operations</th>
+      <th>Permission description</th>
+      <th>API operations that require this permission</th>
+    </tr>
+  </thead>
+<tbody>
+<tr>
+<td colspan="1" rowspan="2">
+<div>organization_profile</div>
+</td>
+<td>update</td>
+<td>
+<div>
+<div>Edit Organization Profile</div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>freeze</td>
+<td>
+<div>
+<div>Freeze Organization</div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>kyc_profile</div>
+</td>
+<td>read</td>
+<td>
+<div>
+<div>View KYC Profile</div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit KYC Profile</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="6">
+<div>team_member</div>
+</td>
+<td>create</td>
+<td>Invite Members</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Members</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Member User Roles</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>Delete Members</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>freeze</td>
+<td>Freeze Members</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>unfreeze</td>
+<td>Unfreeze Members</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>fee_station</div>
+</td>
+<td>read</td>
+<td>View Fee Station</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Fee Station Settings</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>roles</div>
+</td>
+<td>read</td>
+<td>View Roles</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>create</td>
+<td>Create Customized User Roles</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Customized User Roles</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>activity_logs</td>
+<td>read</td>
+<td>View Activities</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>governance_policy</div>
+</td>
+<td>create</td>
+<td>Create Governance Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Governance Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Governance Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>Delete Governance Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>transaction_category</div>
+</td>
+<td>create</td>
+<td>Create Transaction Categories</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Transaction Categories</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>bills</div>
+</td>
+<td>read</td>
+<td>View Bill Details</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update_billing_emails</td>
+<td>Edit Billing Emails</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>pricing_plan</div>
+</td>
+<td>read</td>
+<td>View Pricing Plan Details</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Pricing Plan</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update_supported_chains</td>
+<td>Edit Supported Chains</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="8">
+<div>wallet</div>
+</td>
+<td>create</td>
+<td>Create Wallets</td>
+<td>/v2/wallets</td>
+</tr>
+<tr>
+<td>connect</td>
+<td>Cobo Connect</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>import</td>
+<td>Import Wallets</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Wallets</td>
+<td>/v2/wallets<br />/v2/wallets/&lt;slug:wallet_id&gt;<br />/v2/wallets/&lt;slug:wallet_id&gt;/addresses<br />/v2/wallets/&lt;slug:wallet_id&gt;/addresses/&lt;slug:address&gt;<br />/v2/wallets/&lt;slug:wallet_id&gt;/addresses/&lt;slug:address&gt;/tokens<br />/v2/wallets/&lt;slug:wallet_id&gt;/tokens<br />/v2/wallets/&lt;slug:wallet_id&gt;/max_transferable_value<br />/v2/wallets/&lt;slug:wallet_id&gt;/exchanges/assets<br />/v2/wallets/{wallet_id}/utxos</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Wallets</td>
+<td>/v2/wallets/&lt;slug:wallet_id&gt;</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>Delete Wallets</td>
+<td>/v2/wallets/&lt;slug:wallet_id&gt;/delete</td>
+</tr>
+<tr>
+<td>create_address</td>
+<td>Create Addresses</td>
+<td>/v2/wallets/&lt;slug:wallet_id&gt;/addresses</td>
+</tr>
+<tr>
+<td>manage_utxo</td>
+<td>Manage UTXOs</td>
+<td>/v2/wallets/{wallet_id}/utxos/lock<br />/v2/wallets/{wallet_id}/utxos/unlock</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="11">
+<div>transaction</div>
+</td>
+<td>read</td>
+<td>View Transactions</td>
+<td>/v2/transactions/&lt;slug:transaction_id&gt;</td>
+</tr>
+<tr>
+<td>export</td>
+<td>Export Transactions</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>withdraw</td>
+<td>Make Withdrawals</td>
+<td>/v2/transactions/transfer</td>
+</tr>
+<tr>
+<td>estimate_fee</td>
+<td>Estimate Transaction Fee</td>
+<td>
+<div>
+<div>/v2/transactions/check_loop_transfers<br />/v2/transactions/estimate_fee<br />/v2/stakings/estimate_fee</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>contract_call</td>
+<td>Initiate Contract Calls</td>
+<td>/v2/transactions/contract_call</td>
+</tr>
+<tr>
+<td>message_sign</td>
+<td>Initiate Message Signings</td>
+<td>/v2/transactions/message_sign</td>
+</tr>
+<tr>
+<td>stake</td>
+<td>Stake Assets</td>
+<td>/v2/stakings/activities/stake</td>
+</tr>
+<tr>
+<td>manage</td>
+<td>Manage Ongoing Transactions</td>
+<td>/v2/transactions/&lt;slug:transaction_id&gt;/resend<br />/v2/transactions/&lt;slug:transaction_id&gt;/cancel<br />/v2/transactions/&lt;slug:transaction_id&gt;/drop<br />/v2/transactions/&lt;slug:transaction_id&gt;/speedup</td>
+</tr>
+<tr>
+<td>update</td>
+<td><br />Edit Transaction Notes</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>unstake</td>
+<td>Unstake Assets</td>
+<td>/v2/stakings/activities/unstake</td>
+</tr>
+<tr>
+<td>unstake_withdraw</td>
+<td>Withdraw Unstaked Assets</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="6">
+<div>travel_rule</div>
+</td>
+<td colspan="1" rowspan="4">
+<div>read</div>
+</td>
+<td colspan="1" rowspan="4">
+<div>View Travel Rule</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>edit</div>
+</td>
+<td colspan="1" rowspan="2">
+<div>Edit Travel Rule</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>mpc_project</div>
+</td>
+<td>create</td>
+<td>Create Projects</td>
+<td>/v2/wallets/mpc/projects</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Projects</td>
+<td>/v2/wallets/mpc/projects<br />/v2/wallets/mpc/projects/&lt;slug:project_id&gt;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Projects of MPC Wallets</td>
+<td>/v2/wallets/mpc/projects/&lt;slug:project_id&gt;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>mpc_vault</div>
+</td>
+<td>create</td>
+<td>Create Vaults for MPC Wallets</td>
+<td>/v2/wallets/mpc/vaults</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Vaults</td>
+<td>/v2/wallets/mpc/vaults<br />/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Vaults of MPC Wallets</td>
+<td>/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>mpc_key_group</div>
+</td>
+<td>create</td>
+<td>Create Key Share Holder Groups</td>
+<td>/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/key_share_holder_groups<br />/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/tss_requests</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Key Share Holder Groups</td>
+<td>/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/key_share_holder_groups<br />/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/key_share_holder_groups/&lt;slug:key_share_holder_group_id&gt;<br />/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/tss_requests<br />/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/tss_requests/&lt;slug:tss_request_id&gt;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Key Share Holder Groups</td>
+<td>/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/key_share_holder_groups/&lt;slug:key_share_holder_group_id&gt;<br />/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/tss_requests/&lt;slug:tss_request_id&gt;</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>Delete Key Share Holder Groups</td>
+<td>/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/key_share_holder_groups/&lt;slug:key_share_holder_group_id&gt;/delete<br />/v2/wallets/mpc/vaults/&lt;slug:vault_id&gt;/tss_requests/&lt;slug:tss_request_id&gt;/cancel</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>address_book</div>
+</td>
+<td>create</td>
+<td>Add Addresses to Address Books</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Addresses in Address Books</td>
+<td>/v2/address_books</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Addresses in Address Books</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>Delete Addresses From Address Books</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>transaction_policy</div>
+</td>
+<td>create</td>
+<td>Create Transaction Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Transaction Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>update</td>
+<td>Edit Transaction Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>Delete Transaction Policies</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>api_key</div>
+</td>
+<td>edit</td>
+<td>Edit API Keys</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View API Keys</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>api_log</div>
+</td>
+<td>read</td>
+<td>View API Logs</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>export</td>
+<td>Export API Logs</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>developer_dashboard</td>
+<td>view</td>
+<td>
+<div>
+<div>View Developer Console Dashboard</div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>webhook</div>
+</td>
+<td>edit</td>
+<td>Edit Webhook URLs</td>
+<td>/v2/webhooks/endpoints<br />/v2/webhooks/endpoints/&lt;str:endpoint_id&gt;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>View Webhook URLs/Events</td>
+<td>/v2/webhooks/endpoints<br />/v2/webhooks/endpoints/&lt;str:endpoint_id&gt;<br />/v2/webhooks/endpoints/&lt;str:endpoint_id&gt;/events<br />/v2/webhooks/endpoints/&lt;str:endpoint_id&gt;/events/&lt;str:event_id&gt;<br />/v2/webhooks/endpoints/&lt;str:endpoint_id&gt;/events/&lt;str:event_id&gt;/logs</td>
+</tr>
+<tr>
+<td>resend</td>
+<td>Resend Webhook Events</td>
+<td>/v2/webhooks/endpoints/&lt;str:endpoint_id&gt;/events/&lt;str:event_id&gt;/retry</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>callback</div>
+</td>
+<td>edit</td>
+<td>
+<div>
+<div>Edit Callback URLs</div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>read</td>
+<td>
+<div>
+<div>View Callback URLs/Messages</div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>resend</td>
+<td>
+<div>
+<div>Resend Callback Messages</div>
+</div>
+</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
