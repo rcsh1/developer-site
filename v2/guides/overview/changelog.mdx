@@ -4,6 +4,31 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.6.0
+
+This version was released on November 13, 2024.
+
+### Breaking changes
+
+- Removed the "Get address information" operation.
+- Made `amount` a required property in the `AddressTransferDestination` schema.
+
+### New features
+
+- Added the following new operations:
+  - [Get API key information](/v2/api-references/developers/get-api-key-information): Retrieve details of your API key.
+  - [Check address validity across chains](/v2/api-references/wallets/check-address-validity-across-chains): Validate addresses across multiple chains.
+- Added support for Ethereum staking. 
+
+### Improvements
+
+- Made the following properties optional:
+  - `request_id` and `destination` in `EstimateTransferFeeParams`
+  - `request_id` in `EstimateContractCallFeeParams`
+- Removed the `script` property from:
+  - `TransactionTransferToAddressDestination`
+  - `AddressTransferDestination`
+
 ## v1.5.0
 
 This version was released on October 24, 2024.
