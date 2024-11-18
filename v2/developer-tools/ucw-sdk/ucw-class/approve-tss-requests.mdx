@@ -1,0 +1,35 @@
+---
+title: "Approve TSS requests"
+icon: ""
+description: "This operation approves the specified TSS requests."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func approveTSSRequests(tssRequestIDs: [String]) throws
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let tssRequestIDs = ["tss_request_id_01"]
+
+do {
+    try sdkInstance?.approveTSSRequests(tssRequestIDs: tssRequestIDs)
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="tssRequestIDs" type="string[]">
+The list containing the IDs of the TSS requests to be approved.
+</ParamField>

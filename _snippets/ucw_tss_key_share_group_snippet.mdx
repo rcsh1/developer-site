@@ -1,0 +1,61 @@
+<ResponseField name="tssKeyShareGroupID" type="string">
+The unique ID of the TSS key share group.
+For example: `gjRIvhmnDfpcGrzjOABE`
+</ResponseField>
+
+<ResponseField name="createdTimestamp" type="int64">
+The creation time of the TSS key share group in Unix timestamp format, measured in milliseconds.
+</ResponseField>
+
+<ResponseField name="type" type="enum<int32>">
+The type of the TSS key share group. Possible values include:
+- `1`: The type of the TSS key share group is ECDSA.
+- `2`: The type of the TSS key share group is EdDSA.
+
+</ResponseField>
+
+<ResponseField name="rootPubKey" type="string">
+The root extended public key of the TSS key share group.
+For example: `xpub661MyMwAqRbcGqCytYJh7eqzqhoEDYVH7Hm1T4B4F4x6ZQ42dv1zhYptDVm5aiPWgWqsU9mtRcY3fQFb9HBZQT2qqMCdLNXHxcjTgCubGbC`
+</ResponseField>
+
+<ResponseField name="chainCode" type="string">
+The chain code of the TSS key share group.
+For example: `0xe5ee24523b97e508f6f665da4212e0e3e2382d765282e4eea6e3ac4fce759e87`
+</ResponseField>
+
+<ResponseField name="curve" type="string">
+The supported signature curve of the TSS key share group.  Possible values include:
+
+- `secp256k1`: The supported signature curve of the TSS key share group is secp256k1.
+- `ed25519`: The supported signature curve of the TSS key share group is Ed25519.
+
+</ResponseField>
+
+<ResponseField name="threshold" type="int32">
+The threshold of the TSS key share group.
+</ResponseField>
+
+<ResponseField name="participants" type="object[]">
+The list of participants in the TSS key share group.
+
+  <Expandable title="child attributes">
+
+    <ResponseField name="tssNodeID" type="string">
+    The TSS Node ID of the participant.
+    For example, `coboJTKRVEWHgmigeE8FB2FDpN6nadUwXkUdsRZbhyFAq8bDV`.
+    </ResponseField>
+    
+    <ResponseField name="shareID" type="string">
+    The ID of the private key share.
+    For example, `137335649290518903947478804490993569412`.
+    </ResponseField>
+
+    <ResponseField name="sharePubKey" type="string">
+    The public key associated with the private key share.
+    For example, `0x032d1bb15ea11958cbbcf2be4a08909a6d600fa829abbbb140e4eeb9b58bbe2b37`.
+    </ResponseField>
+
+  </Expandable>
+
+</ResponseField>

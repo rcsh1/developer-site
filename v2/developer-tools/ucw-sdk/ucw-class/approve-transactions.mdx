@@ -1,0 +1,35 @@
+---
+title: "Approve transactions"
+icon: ""
+description: "This operation approves the specified transactions."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func approveTransactions(transactionIDs: [String]) throws
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let transactionIDs = ["transaction_id_01"]
+
+do {
+    try sdkInstance?.approveTransactions(transactionIDs: transactionIDs)
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="transactionIDs" type="string[]">
+The list containing the IDs of the transactions to be approved.
+</ParamField>

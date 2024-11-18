@@ -1,0 +1,128 @@
+<ResponseField name="transactionID" type="string">
+The transaction ID.
+</ResponseField>
+
+<ResponseField name="status" type="enum<int32>">
+
+The status of the transactions. Possible values include:
+
+- `100`: Unknown.
+- `110`: Scheduling.
+- `120`: Initializing.
+- `130`: Approving.
+- `140`: Processing.
+- `160`: Declined.
+- `170`: Failed.
+- `180`: Canceled.
+- `190`: Completed.
+
+</ResponseField>
+
+<ResponseField name="signDetails" type="object[]">
+The information about the content that needs to be signed.
+
+  <Expandable title="child attributes">
+
+    <ResponseField name="signatureType" type="int32">
+    
+    The signature type. Possible values include:
+
+    - `1`: The signature type is ECDSA.
+    - `2`: The signature type is EdDSA.
+    - `3`: The signature type is Schnorr.
+
+    </ResponseField>
+    
+    <ResponseField name="tssProtocol" type="int32">
+    
+    The TSS Node protocol. Possible values include:
+
+    - `1`: GG18.
+    - `2`: Lindell.
+    - `3`: EddsaTSS.
+
+    </ResponseField>
+
+    <ResponseField name="bip32PathList" type="string[]">
+    The list of BIP32 paths.
+    </ResponseField>
+
+    <ResponseField name="msgHashList" type="string[]">
+    The list of message hashes.
+    </ResponseField>
+
+    <ResponseField name="tweakList" type="string[]">
+    The list of tweaks when `signatureType` is `3` (Schnorr).
+    </ResponseField>
+
+  </Expandable>
+
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+The result of completing a transaction is a new list of signatures.
+
+  <Expandable title="child attributes">
+
+    <ResponseField name="signatures" type="object[]">
+    The list of signatures.
+
+      <Expandable title="child attributes">
+
+        <ResponseField name="bip32Path" type="string">
+        The BIP32 path.
+        </ResponseField>
+
+        <ResponseField name="msgHash" type="string">
+        The message hash.
+        </ResponseField>
+
+        <ResponseField name="tweak" type="string">
+        The tweak.
+        </ResponseField>
+
+        <ResponseField name="signature" type="string">
+        The signature.
+        </ResponseField>
+
+        <ResponseField name="signatureRecovery" type="string">
+        The recovery ID of the signature.
+        </ResponseField>
+
+      </Expandable>
+    
+    </ResponseField>
+
+
+    <ResponseField name="signatureType" type="int32">
+    
+    The signature type. Possible values include:
+
+    - `1`: ECDSA.
+    - `2`: EdDSA.
+    - `3`: Schnorr.
+
+    </ResponseField>
+    
+    <ResponseField name="tssProtocol" type="int32">
+    
+    The TSS Node protocol. Possible values include:
+
+    - `1`: GG18.
+    - `2`: Lindell.
+    - `3`: EddsaTSS.
+
+    </ResponseField>
+
+  </Expandable>
+
+</ResponseField>
+
+<ResponseField name="failedReasons" type="string[]">
+The reasons for unsuccessful completion of the transaction. Possible values of `status` include:
+
+- `failed`: The transaction has failed.
+- `canceled`: The transaction has been canceled.
+- `declined`: The transaction has been declined.
+
+</ResponseField>

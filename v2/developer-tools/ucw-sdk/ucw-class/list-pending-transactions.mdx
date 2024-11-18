@@ -1,0 +1,48 @@
+---
+title: "List pending transactions"
+icon: ""
+description: "This operation retrieves a list of all pending transactions."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func listPendingTransactions() async throws -> [Transaction]
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+Task {
+    do {
+        if let transactions = try await sdkInstance?.listPendingTransactions() {
+            for transaction in transactions {
+                print("\(transaction)\n")
+            }
+        } else {
+            print("No pending transactions found")
+        }
+    } catch {
+        print("Error: \(error)")
+    }
+}
+```
+
+</RequestExample>
+
+
+## Response
+
+<ResponseField name="transactions" type="object[]">
+The list of pending transactions.
+
+  <Expandable title="child attributes">
+    
+    <Snippet file="ucw_transaction_snippet.mdx"/>
+
+  </Expandable>
+
+</ResponseField>

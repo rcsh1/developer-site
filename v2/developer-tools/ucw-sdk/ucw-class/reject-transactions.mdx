@@ -1,0 +1,40 @@
+---
+title: "Reject transactions"
+icon: ""
+description: "This operation rejects the specified transactions and provides reason for the rejection."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func rejectTransactions(transactionIDs: [String], reason: String) throws
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let transactionIDs = ["transaction_id_01"]
+let reason = "Insufficient funds"
+
+do {
+    try sdkInstance?.rejectTransactions(transactionIDs: transactionIDs, reason: reason)
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="transactionIDs" type="string[]">
+The list containing the IDs of the transactions to be rejected.
+</ParamField>
+
+<ParamField path="reason" type="string">
+The detailed explanation for why the transactions are being rejected.
+</ParamField>

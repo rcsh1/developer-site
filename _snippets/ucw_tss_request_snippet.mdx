@@ -1,0 +1,39 @@
+<ResponseField name="tssRequestID" type="string">
+The TSS request ID.
+</ResponseField>
+
+<ResponseField name="status" type="enum<int32>">
+
+The status of the TSS request. Possible values include:
+
+- `100`: Unknown.
+- `110`: Scheduling.
+- `120`: Initializing.
+- `130`: Approving.
+- `140`: Processing.
+- `160`: Declined.
+- `170`: Failed.
+- `180`: Canceled.
+- `190`: Completed.
+
+</ResponseField>
+
+<ResponseField name="results" type="object[]">
+Upon completion of a TSS request, a new list of TSS key share groups is generated.
+
+  <Expandable title="child attributes">
+
+    <Snippet file="ucw_tss_key_share_group_snippet.mdx"/>
+    
+  </Expandable>
+
+</ResponseField>
+
+<ResponseField name="failedReasons" type="string[]">
+The reasons for unsuccessful completion of the TSS request. Possible values of `status` include:
+
+- `failed`: The TSS request has failed.
+- `canceled`: The TSS request has been canceled.
+- `declined`: The TSS request has been declined.
+
+</ResponseField>
