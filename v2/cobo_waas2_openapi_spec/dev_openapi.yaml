@@ -796,7 +796,7 @@ paths:
       operationId: create_key_share_holder_group
       summary: Create key share holder group
       description: |
-        This operation creates a key share holder group for a specified vault. <Note>This operation will not return the `tss_key_share_groups` property until key shares have been created using the [Create TSS request](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-tss-request) operation. Creating a wallet with the [Create wallet](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets/create-wallet) operation is only possible after you've completed the previous actions.</Note>
+        This operation creates a key share holder group for a specified vault. <Note>This operation will not return the `tss_key_share_groups` property until key shares have been created using the [Create TSS request](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-tss-request) operation. Creating a wallet with the [Create wallet](https://www.cobo.com/developers/v2/api-references/wallets/create-wallet) operation is only possible after you've completed the previous actions.</Note>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1052,7 +1052,7 @@ paths:
       - name: asset_id
         in: path
         required: true
-        description: '(This concept applies to Exchange Wallets only) The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account. You can get the ID of the assets supported by an exchanges by calling [List supported assets](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets--exchange-wallet/list-supported-assets).'
+        description: '(This concept applies to Exchange Wallets only) The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account. You can get the ID of the assets supported by an exchanges by calling [List supported assets](https://www.cobo.com/developers/v2/api-references/wallets--exchange-wallet/list-supported-assets).'
         schema:
           type: string
         example: USDT
@@ -1236,7 +1236,7 @@ paths:
 
         In some scenarios, you want to sign a message for identity authentication or transaction approval. You need to provide details such as the source address, destination address, and the message to be signed. A transaction request for tracking is returned upon successful operation.
 
-        You can get the signature result by calling [Get transaction information](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/transactions/get-transaction-information). 
+        You can get the signature result by calling [Get transaction information](https://www.cobo.com/developers/v2/api-references/transactions/get-transaction-information). 
 
         <Note>This operation only applies to transactions from MPC Wallets.</Note>
       security:
@@ -1381,7 +1381,7 @@ paths:
         <Note>This operation is only applicable to the staking scenarios.</Note>
         This operation broadcasts a list of signed transactions. 
 
-        If you set `auto_broadcast` to `false` when [creating a staking activity](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/staking/create-stake-activity), the transaction will not be submitted to the blockchain automatically after being signed. In such cases, you can call this operation to broadcast the transaction to the blockchain.
+        If you set `auto_broadcast` to `false` when [creating a staking activity](https://www.cobo.com/developers/v2/api-references/staking/create-stake-activity), the transaction will not be submitted to the blockchain automatically after being signed. In such cases, you can call this operation to broadcast the transaction to the blockchain.
 
         A transaction can only be broadcast if its status is `Broadcasting`.
       security:
@@ -1476,7 +1476,7 @@ paths:
 
         Access tokens allow the app to signal to the WaaS service that it has received permission to access specific resources of the app user's [organization](https://manuals.cobo.com/en/portal/organization/introduction). Once the app has been granted permission by the organization's admin, it can use this operation to obtain both an Org Access Token and a Refresh Token.
 
-        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token.
+        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token.
       security:
         - CoboAuth: []
       parameters:
@@ -2042,7 +2042,7 @@ components:
       properties:
         error_code:
           type: integer
-          description: 'The error code. Refer to [Error codes and status codes](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/error-codes) for more details.'
+          description: 'The error code. Refer to [Error codes and status codes](https://www.cobo.com/developers/v2/api-references/error-codes) for more details.'
         error_message:
           type: string
           description: The error description.
@@ -2093,7 +2093,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH_USDT
         chain_id:
           type: string
@@ -2186,7 +2186,7 @@ components:
       properties:
         chain_id:
           type: string
-          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+          description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
           example: ETH
         symbol:
           type: string
@@ -2314,7 +2314,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: BTC
         balance:
           type: object
@@ -2549,7 +2549,7 @@ components:
       properties:
         token_id:
           type: string
-          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+          description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: ETH
         max_transferable_value:
           type: string
@@ -5054,7 +5054,7 @@ components:
           User-Controlled: '#/components/schemas/MPCDelegate'
     MPCDelegate:
       title: MPC Wallet Delegate
-      description: 'The information about the MPC Wallet as the Delegate. You can call the [List Delegates](https://www.cobo.com/developershttps://www.cobo.com/developers/v2/api-references/wallets--smart-contract-wallets/list-delegates) operation to retrieve the applicable Delegates.'
+      description: 'The information about the MPC Wallet as the Delegate. You can call the [List Delegates](https://www.cobo.com/developers/v2/api-references/wallets--smart-contract-wallets/list-delegates) operation to retrieve the applicable Delegates.'
       type: object
       required:
         - delegate_type
