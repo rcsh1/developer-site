@@ -1,0 +1,97 @@
+---
+title: "Recover private keys"
+icon: ""
+description: "This operation recovers the full private keys for the specified addresses using recovery key shares imported via the [Import recovery key share](/v2/developer-tools/ucw-sdk/ucwrecoverkey-class/import-recovery-key-share) operation."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func recoverPrivateKeys(addressInfos: [AddressInfo]) throws -> [PrivateKeyInfo]
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let addressInfos: [AddressInfo] = [
+    AddressInfo(bip32Path: "m/44/1/1/0/0", pubKey: "xpub6FRrW2AzsDQcVQPNCCQgiB7xSQ9UseQfrRCJdD9qjWswrNBmY1MysLdMYxpWbB1mnGJTwLCZWCfA4ko2kQNN37CPSzidD1c9aZCBXjTzfQn")
+    AddressInfo(bip32Path: "m/44/1/1/0/1", pubKey: "xpub6FRrW2AzsDQcZahYm2GgsDz7VtqgkvNwR58boDejvwSuCYZ2ZRVvqP6Gaqef6hMGxKtkvj3PfcRxagKSycuh6XX7kJ3Bzc2vUrEAA4at5Jc")
+]
+
+do {
+    let privateKeyInfos = try sdkInstance?.recoverPrivateKeys(addressInfos: addressInfos)
+    if let privateKeyInfos = privateKeyInfos {
+        for privateKeyInfo in privateKeyInfos {
+            print("Private Key Info: \(privateKeyInfo)")
+        }
+    } else {
+        print("Failed to recover private keys.")
+    }
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="addressInfos" type="object[]">
+A list of address information objects, each containing the BIP32 path and the optional root extended public key, required to recover the corresponding private keys.
+
+  <Expandable title="child attributes">
+
+    <ParamField path="bip32Path" type="string">
+    The BIP32 path of the address.
+    </ParamField>
+
+    <ParamField path="pubKey" type="string">
+    The root extended public key of the address. This parameter is optional and can be left empty. If provided, the derived public key will be compared against this value during the key derivation process. A mismatch will result in an error.
+    </ParamField>
+
+  </Expandable>
+
+</ParamField>
+
+
+## Response
+
+<ResponseField name="privateKeyInfos" type="object[]">
+The list of objects containing the recovered private keys and their corresponding addresses.
+
+  <Expandable title="child attributes">
+
+    <ResponseField name="bip32Path" type="string">
+    The BIP32 path for the address.
+    For example: `m/44/1/1/0/0`.
+    </ResponseField>
+
+    <ResponseField name="pubKey" type="string">
+    The root extended public key for the address.
+    For example: `xpub6FRrW2AzsDQcVQPNCCQgiB7xSQ9UseQfrRCJdD9qjWswrNBmY1MysLdMYxpWbB1mnGJTwLCZWCfA4ko2kQNN37CPSzidD1c9aZCBXjTzfQn`.
+    </ResponseField>
+
+    <ResponseField name="privateKey" type="object">
+    Different formats of private keys corresponding to the address.
+
+        <Expandable title="child attributes">
+
+            <ResponseField name="extPrivateKey" type="string">
+            The root extended private key.
+            </ResponseField>
+
+            <ResponseField name="hexPrivateKey" type="string">
+            The private key in hexadecimal format.
+            </ResponseField>
+
+        </Expandable>
+
+    </ResponseField>
+
+  </Expandable>
+
+</ResponseField>

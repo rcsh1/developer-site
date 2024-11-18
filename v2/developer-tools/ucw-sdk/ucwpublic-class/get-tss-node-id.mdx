@@ -1,0 +1,39 @@
+---
+title: "Get TSS Node ID"
+icon: ""
+description: "This operation retrieves the TSS Node ID."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func getTSSNodeID() throws -> String
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+do {
+    if let nodeID = try sdkInstance?.getTSSNodeID() {
+        print("TSS Node ID: \(nodeID)")
+    } else {
+        print("Failed to retrieve the TSS Node ID")
+    }
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+
+## Response
+
+<ResponseField name="tssNodeID" type="string">
+The retrieved TSS Node ID.
+For example, `coboJTKRVEWHgmigeE8FB2FDpN6nadUwXkUdsRZbhyFAq8bDV`.
+</ResponseField>

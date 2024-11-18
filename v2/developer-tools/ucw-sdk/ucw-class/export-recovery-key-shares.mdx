@@ -1,0 +1,51 @@
+---
+title: "Export recovery key shares"
+icon: ""
+description: "This operation exports the specified key shares as a passphrase-encrypted JSON data, which can later be used with the [Import recovery key share](/v2/developer-tools/ucw-sdk/ucwrecoverkey-class/import-recovery-key-share) and [Recover private keys](/v2/developer-tools/ucw-sdk/ucwrecoverkey-class/recover-private-keys) operations to recover the private keys."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func exportRecoveryKeyShares(tssKeyShareGroupIDs: [String], exportPassphrase: String) throws -> String
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let tssKeyShareGroupIDs = ["gjRIvhmnDfpcGrzjOABE"]
+let exportPassphrase = "wZdcycVuexvmgt7aMkaeA_2_ioCKrw!B"
+
+do {
+    if let jsonRecoverySecrets = try sdkInstance?.exportRecoveryKeyShares(tssKeyShareGroupIDs: tssKeyShareGroupIDs, exportPassphrase: exportPassphrase) {
+        print("\(jsonRecoverySecrets)\n")
+    } else {
+        print("Failed to export recovery key shares")
+    }
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="tssKeyShareGroupIDs" type="string[]">
+The list of TSS key share group IDs.
+</ParamField>
+
+<ParamField path="exportPassphrase" type="string">
+The passphrase used to encrypt the exported JSON data of recovery key shares. Must be at least 16 characters long.
+</ParamField>
+
+
+## Response
+
+<ResponseField name="jsonRecoverySecrets" type="string">
+The exported passphrase-encrypted JSON data of the specified recovery key shares.
+</ResponseField>

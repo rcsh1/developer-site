@@ -1,0 +1,52 @@
+---
+title: "Set logger"
+icon: ""
+description: "This operation enables activity logging for the UCW SDK."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func setLogger(completion: @escaping (String?, String?) -> Void)
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+setLogger { level, message in
+    print("Log Level: \(level), Log Message: \(message)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="logger" type="function">
+A callback function that receives log level and log message parameters to monitor the logger activity.
+
+  <Expandable title="child attributes">
+
+    <ParamField path="level" type="string">
+
+    The log level. Possible values include:
+
+	- `panic`: The log level is Panic.
+	- `fatal`: The log level is Fatal.
+	- `error`: The log level is Error.
+	- `warn`: The log level is Warning.
+	- `info`: The log level is Info.
+	- `debug`: The log level is Debug.
+
+    </ParamField>
+
+    <ParamField path="message" type="string">
+    The log message.
+    </ParamField>
+
+  </Expandable>
+</ParamField>

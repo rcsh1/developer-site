@@ -1,0 +1,48 @@
+---
+title: "List pending TSS requests"
+icon: ""
+description: "This operation retrieves a list of pending TSS requests."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func listPendingTSSRequests() async throws -> [TSSRequest]
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+Task {
+    do {
+        if let requests = try await sdkInstance?.listPendingTSSRequests() {
+            for request in requests {
+                print("\(request)\n")
+            }
+        } else {
+            print("No pending TSS requests found")
+        }
+    } catch {
+        print("Error: \(error)")
+    }
+}
+```
+
+</RequestExample>
+
+
+## Response
+
+<ResponseField name="tssRequests" type="object[]">
+The list of pending TSS requests.
+
+  <Expandable title="child attributes">
+
+    <Snippet file="ucw_tss_request_snippet.mdx"/>
+
+  </Expandable>
+
+</ResponseField>

@@ -1,0 +1,37 @@
+---
+title: "Create UCWRecoverKey class"
+icon: ""
+description: "This operation creates an instance of the UCWRecoverKey class."
+---
+<Info>The UCWRecoverKey class allows you to import multiple recovery key shares to recover the private keys.</Info>
+
+<CodeGroup>
+
+```Swift iOS
+public init(tssKeyShareGroupID: String)
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let tssKeyShareGroupID = "gjRIvhmnDfpcGrzjOABE"
+var sdkInstance: UCWRecoverKey?
+
+do {
+    sdkInstance = try UCWRecoverKey(tssKeyShareGroupID: tssKeyShareGroupID)
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="tssKeyShareGroupID" type="string">
+The ID of the TSS key share group used to recover the private key.
+</ParamField>

@@ -1,0 +1,43 @@
+---
+title: "Get UCW SDK information"
+icon: ""
+description: "This operation retrieves detailed information about the UCW SDK."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func getSDKInfo() throws -> SDKInfo
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+do {
+    let sdkInfo = try getSDKInfo()
+    print("\(sdkInfo)")
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Response
+
+<ResponseField name="sdkInfo" type="object">
+Detailed information about the UCW SDK.
+
+ <Expandable title="child attributes">
+
+    <ResponseField name="version" type="string">
+    The version of the UCW SDK.
+    </ResponseField>
+
+  </Expandable>
+
+</ResponseField>

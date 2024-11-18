@@ -1,0 +1,41 @@
+---
+title: "Import recovery key share"
+icon: ""
+description: "This operation imports and decrypts the JSON data of recovery key shares, created by the [Export recovery key shares](/v2/developer-tools/ucw-sdk/ucw-class/export-recovery-key-shares) or [Export Secrets](/v2/developer-tools/ucw-sdk/ucw-class/export-secrets) operations.
+To meet the threshold requirement of [the Threshold Signature Scheme (TSS) specified in your User-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ucw/project-management#overview), you must call this operation the required number of times to import enough recovery key shares."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func importRecoveryKeyShare(jsonRecoverySecrets: String, exportPassphrase: String) throws
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let jsonRecoverySecrets = "{}" // exported jsonRecoverySecrets
+let exportPassphrase = "wZdcycVuexvmgt7aMkaeA_2_ioCKrw!B"
+
+do {
+    try sdkInstance?.importRecoveryKeyShare(jsonRecoverySecrets: jsonRecoverySecrets, exportPassphrase: exportPassphrase)
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="jsonRecoverySecrets" type="string">
+The passphrase-encrypted JSON data containing recovery key shares, created by the [Export recovery key shares](/v2/developer-tools/ucw-sdk/ucw-class/export-recovery-key-shares) or [Export Secrets](/v2/developer-tools/ucw-sdk/ucw-class/export-secrets) operations.
+</ParamField>
+
+<ParamField path="exportPassphrase" type="string">
+The passphrase used to decrypt the JSON data of recovery key shares.
+</ParamField>
