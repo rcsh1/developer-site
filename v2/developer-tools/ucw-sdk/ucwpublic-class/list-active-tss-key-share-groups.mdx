@@ -1,0 +1,49 @@
+---
+title: "List active TSS key share groups"
+icon: ""
+description: "This operation retrieves a list of all active TSS key share groups."
+---
+<Info>An active TSS key share group is one that has been created and has already completed its associated [TSS request](/v2/api-references/wallets--mpc-wallets/create-tss-request).</Info>
+
+
+<CodeGroup>
+
+```Swift iOS
+public func listTSSKeyShareGroups()  throws -> [TSSKeyShareGroup]
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+do {
+    if let groups = try sdkInstance?.listTSSKeyShareGroups() {
+        for group in groups {
+            print("\(group)\n")
+        }
+    } else {
+        print("Get no TSS key share group")
+    }
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Response
+
+<ResponseField name="tssKeyShareGroups" type="object[]">
+The list of active TSS key share groups.
+
+  <Expandable title="child attributes">
+
+    <Snippet file="ucw_tss_key_share_group_snippet.mdx"/>
+    
+  </Expandable>
+  
+</ResponseField>
+

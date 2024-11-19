@@ -1,0 +1,58 @@
+---
+title: "Get TSS requests"
+icon: ""
+description: "This operation retrieves the specified TSS requests."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func getTSSRequests(tssRequestIDs: [String]) async throws -> [TSSRequest]
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let tssRequestIDs = ["tss_request_id_01"]
+
+Task {
+    do {
+        if let requests = try await sdkInstance?.getTSSRequests(tssRequestIDs: tssRequestIDs) {
+            for request in requests {
+                print("\(request)\n")
+            }
+        } else {
+            print("No TSS requests found")
+        }
+    } catch {
+        print("Error: \(error)")
+    }
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="tssRequestIDs" type="string[]">
+The list of IDs for the TSS requests you want to retrieve.
+</ParamField>
+
+
+## Response
+
+<ResponseField name="tssRequests" type="object[]">
+The list of retrieved TSS requests.
+
+  <Expandable title="child attributes">
+
+    <Snippet file="ucw_tss_request_snippet.mdx"/>
+
+  </Expandable>
+
+</ResponseField>
+

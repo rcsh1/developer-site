@@ -1,0 +1,103 @@
+---
+title: "Create UCW class"
+icon: ""
+description: "This operation creates an instance of the UCW class, decrypts the Secrets file, establishes a connection with the Cobo server, and optionally registers a callback endpoint to monitor the connection status."
+---
+<Info>The UCW class enables you to receive and approve TSS requests and transactions. Additionally, it allows you to export key shares for backing up or restoring the private keys.</Info>
+
+<Info>The UCW class inherits from the UCWPublic class.</Info>
+
+<CodeGroup>
+
+```Swift iOS
+public init(config: SDKConfig, secretsFile: String, passphrase: String, connCallback: @escaping(ConnCode, String?) -> Void = { _, _ in }) throws
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let secrets = "secrets.db"
+let passphrase = "d3hxNyoiAP@Lm!D7Qpo_hghdpgyc_r39"
+let sdkConfig = SDKConfig(env: Env.development, timeout: 30, debug: true)
+var sdkInstance: UCW?
+var connCode: ConnCode = .CodeUnknown
+var connMessage: String? = ""
+
+do {
+    sdkInstance = try UCW(config: sdkConfig, secretsFile: secrets, passphrase: passphrase) { code, message in
+        connCode = code
+        connMessage = message
+        print("Connection Code: \(connCode), Message: \(connMessage ?? "No message")")
+    }
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="config" type="object">
+The configuration settings for the UCW SDK.
+
+  <Expandable title="child attributes">
+
+    <ParamField path="env" type="enum<string>">
+    The environment type. Possible values include:
+    - `development`: The operation establishes a connection with the Cobo server's development environment.
+    - `production`: The operation establishes a connection with the Cobo server's production environment.
+    </ParamField>
+
+    <ParamField path="timeout" type="int32" default="30">
+    The timeout duration for obtaining TSS requests and transactions, in seconds.
+    </ParamField>
+
+    <ParamField path="debug" type="boolean">
+    Whether the debug mode is enabled, which includes outputting debug-level logs.
+
+      - `true`: The debug mode is enabled.
+
+      - `false`: The debug mode is disabled.
+
+    </ParamField>
+
+  </Expandable>
+</ParamField>
+
+<ParamField path="secretsFile" type="string">
+The complete file name, including its extension, for the Secrets file that needs decryption.
+</ParamField>
+
+<ParamField path="passphrase" type="string">
+The passphrase for decrypting the Secrets file.
+</ParamField>
+
+<ParamField path="connCallback" type="function">
+An optional callback function to monitor connection status.
+
+  <Expandable title="child attributes">
+
+    <ParamField path="connCode" type="enum<int32>">
+    The connection status code. Possible values include:
+    - `1300`: Connected.
+    - `1301`: Disconnected.
+    - `1302`: Connection closed.
+    - `1310`: Connection error.
+    - `1311`: URL parse error.
+    - `1320`: Connection refused.
+    - `1321`: Connection failed.
+    - `1350`: Proxy error.
+    - `1351`: Proxy parse error.
+    </ParamField>
+
+    <ParamField path="connMessage" type="string">
+    The message associated with the `connCode`.
+    </ParamField>
+
+  </Expandable>
+</ParamField>

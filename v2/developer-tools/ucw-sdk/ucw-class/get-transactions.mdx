@@ -1,0 +1,57 @@
+---
+title: "Get transactions"
+icon: ""
+description: "This operation retrieves the specified transactions."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func getTransactions(transactionIDs: [String]) async throws -> [Transaction]
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let transactionIDs = ["transaction_id_01"]
+
+Task {
+    do {
+        if let transactions = try await sdkInstance?.getTransactions(transactionIDs: transactionIDs) {
+            for transaction in transactions {
+                print("\(transaction)\n")
+            }
+        } else {
+            print("No transactions found")
+        }
+    } catch {
+        print("Error: \(error)")
+    }
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="transactionIDs" type="string[]">
+The list containing the IDs of the transactions to be retrieved.
+</ParamField>
+
+
+## Response
+
+<ResponseField name="transactions" type="object[]">
+The list of retrieved transactions.
+
+  <Expandable title="child attributes">
+
+    <Snippet file="ucw_transaction_snippet.mdx"/>
+    
+  </Expandable>
+
+</ResponseField>

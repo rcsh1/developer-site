@@ -1,0 +1,55 @@
+---
+title: "Get TSS key share groups"
+icon: ""
+description: "This operation retrieves detailed information about the specified TSS key share groups."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func getTSSKeyShareGroups(tssKeyShareGroupIDs: [String]) throws -> [TSSKeyShareGroup]
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+let tssKeyShareGroupIDs = ["gjRIvhmnDfpcGrzjOABE"]
+
+do {
+    if let groups = try sdkInstance?.getTSSKeyShareGroups(tssKeyShareGroupIDs: tssKeyShareGroupIDs) {
+        for group in groups {
+            print("\(group)\n")
+        }
+    } else {
+        print("No TSS key share groups found")
+    }
+} catch {
+    print("Error: \(error)")
+}
+```
+
+</RequestExample>
+
+
+## Parameters
+
+<ParamField path="tssKeyShareGroupIDs" type="string[]">
+The list of IDs for the TSS key share groups to be retrieved.
+</ParamField>
+
+
+## Response
+
+<ResponseField name="tssKeyShareGroups" type="object[]">
+The list of retrieved TSS key share groups.
+
+  <Expandable title="child attributes">
+
+    <Snippet file="ucw_tss_key_share_group_snippet.mdx"/>
+    
+  </Expandable>
+
+</ResponseField>

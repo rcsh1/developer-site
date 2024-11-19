@@ -1,0 +1,48 @@
+---
+title: "Get connection status"
+icon: ""
+description: "This operation retrieves the connection status with the Cobo server."
+---
+
+<CodeGroup>
+
+```Swift iOS
+public func getConnStatus() -> (ConnCode, String?)
+```
+
+</CodeGroup>
+
+
+<RequestExample>
+
+```Swift iOS
+if let (connCode, connMessage) = sdkInstance?.getConnStatus() {
+    print("Connection Code: \(connCode), Message: \(connMessage ?? "No message")")
+} else {
+    print("Failed to get connection status")
+}
+```
+
+</RequestExample>
+
+
+## Response
+
+<ResponseField name="connCode" type="enum<int32>">
+
+The connection status code. Possible values include:
+
+- `1300`: Connected.
+- `1301`: Disconnected.
+- `1302`: Connection closed.
+- `1310`: Connection error.
+- `1311`: URL parse error.
+- `1320`: Connection refused.
+- `1321`: Connection failed.
+- `1350`: Proxy error.
+- `1351`: Proxy parse error.
+</ResponseField>
+
+<ResponseField name="connMessage" type="string">
+The message associated with the `connCode`.
+</ResponseField>
