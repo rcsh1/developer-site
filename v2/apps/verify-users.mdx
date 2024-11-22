@@ -28,6 +28,7 @@ sequenceDiagram
 5. The app requests JSON Web Key Set (JWKS) from Cobo Portal.
 6. Cobo Portal provides the JWKS.
 7. The app decodes and verifies the User Info Token using the JWKS.
+    <Note>Please use the algorithm specified in the `alg` field of the JWT header to perform the verification.</Note>
 
 ## Request a User Info Token
 

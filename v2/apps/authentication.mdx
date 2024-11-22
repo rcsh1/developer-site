@@ -65,13 +65,27 @@ An app key is used to authenticate the Cobo Portal App when it makes an API requ
 
 ### Use Cobo CLI
 
-1. Install Cobo CLI if you haven’t. For more information, refer to [Install Cobo CLI](/v2/apps/build-app#install-cobo-cli).
+Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with Cobo Wallet-as-a-Service (WaaS) 2.0 directly from the command line.
 
-2. In a terminal window, run the following command to generate a key pair.
+1. Install Cobo CLI using the following command:
+
     ```shell
-    cobo keys generate
+    # Install Cobo CLI
+    pip install cobo-cli
+    # Test if the installation is successful
+    cobo version
     ```
-You will see the public key displayed in the terminal window, and the private key is saved in the `~/.cobo/.env` file by default.
+
+    For more details about the system requirements for Cobo CLI, please refer to [Install Cobo CLI](/v2/developer-tools/cobo-cli/quick-start-guide#system-requirements).
+
+2. Use the `keys generate` command to generate an app key as follows:
+
+    ```shell
+    # Generate an app key
+    cobo keys generate --key-type APP
+    ```
+
+    Generated keys are securely stored in your configuration file (default: `~/.cobo/config.toml`). For more information about this command, refer to [Key management](/v2/developer-tools/cobo-cli/key-management).
 
 ### Use OpenSSL
 

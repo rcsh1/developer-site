@@ -1,0 +1,106 @@
+---
+title: 'Global options'
+---
+
+Cobo CLI provides several global options that can be used with any command to customize its behavior. These options allow you to control the environment, authentication method, and other settings for your CLI operations.
+
+<Note>
+Global options should be placed before the specific command you want to run. For example, `-e prod` should come before `get /wallets`.
+</Note>
+
+## Available global options
+
+### Environment selection (-e, --env)
+
+The `-e` or `--env` option allows you to override the default environment for a specific command.
+
+
+```shell
+cobo -e dev get /wallets
+```
+
+Possible values include:
+- `dev`: Development environment
+- `prod`: Production environment
+
+If not specified, Cobo CLI will use the environment set in your configuration or default to the development environment.
+
+### Authentication method (-a, --auth)
+
+The `-a` or `--auth` option allows you to override the default [authentication method](/v2/developer-tools/cobo-cli/login-and-authentication#manage-authentication-methods) for a specific command.
+
+
+```shell
+cobo -a user get /wallets
+```
+
+Possible values include:
+- `apikey`: API key
+- `user`: Cobo Portal account
+- `org`: Org Access Token
+
+If not specified, Cobo CLI will use the authentication method set in your configuration or default to API key authentication.
+
+### Debug mode (--enable-debug)
+
+The `--enable-debug` flag enables debug mode, which provides verbose logging for troubleshooting purposes.
+
+
+```shell
+cobo --enable-debug get /wallets
+```
+
+### Custom configuration file (--config-file)
+
+The `--config-file` option allows you to specify a custom configuration file instead of the default one.
+
+
+
+```shell
+cobo --config-file /path/to/config.toml get /wallets 
+```
+
+If not specified, Cobo CLI will use the default configuration file located in your home directory (`~/.cobo/config.toml`).
+
+### Custom API specification file (--spec)
+
+If you have a custom OpenAPI specification file, you can use it with Cobo CLI. This is useful for testing or working with different versions of the API.
+
+To use a custom specification file:
+
+```bash
+$ cobo --spec /path/to/custom_spec.yaml get /wallets -d
+```
+
+Replace /path/to/custom_spec.yaml with the actual path to your custom specification file.
+
+<Note>Using a custom specification file will override the default OpenAPI specification for that command only. It won’t affect other commands or future uses of Cobo CLI.</Note>
+
+
+## Combining global options
+
+You can combine multiple global options in a single command:
+
+```shell
+cobo -e prod -a user --enable-debug get /wallets
+```
+
+This command will:
+1. Use the production environment.
+2. Authenticate using your Cobo Portal account.
+3. Enable debug mode for verbose logging.
+4. Execute the GET request to retrieve wallet information.
+
+## Configuration precedence
+
+The Cobo CLI follows the following order of precedence when determining which settings to use:
+
+1. Command line options (highest priority)
+2. Configuration file settings
+3. Default values (lowest priority)
+
+This allows you to easily override settings on a per-command basis without modifying your configuration files.
+
+
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

@@ -1,0 +1,31 @@
+---
+title: 'View real-time logs'
+---
+
+Use this command to stream real-time logs of your API requests to the WaaS 2.0 service directly in your terminal. 
+
+The command provides detailed information about each API request, including the request method, endpoint, status code, and more, enabling you to monitor and troubleshoot interactions with the WaaS 2.0 service in real time.
+
+<Note>The `cobo logs tail` command requires proper authentication and permissions. Ensure that you are logged in and have the necessary access permissions to view the API logs.</Note>
+
+## Usage
+
+```shell
+cobo logs tail [options]
+```
+
+## Options
+- `--http-method`: Filter API logs by the HTTP method, such as `POST`.
+- `--request-path`: Filter API logs by the endpoint path, such as `/v2/wallets/{wallet_id}`.
+- `--status-code`: Filter API logs by the HTTP status code, such as `200`.
+- `--api-key`: Filter API logs by a specific API key used in requests.
+- `--ip-address`: Filter API logs by the IP address from which requests were made.
+
+## Example
+
+```shell
+cobo logs tail --http-method POST --status-code 404 --request-path /v2/wallets --ip-address 192.168.1.1
+```
+
+This command fetches the API logs with HTTP method `POST`, status code `404`, and requests to `/v2/wallets` endpoint from a specific IP `192.168.1.1` .
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

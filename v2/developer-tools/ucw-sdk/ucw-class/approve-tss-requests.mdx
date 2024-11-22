@@ -10,6 +10,10 @@ description: "This operation approves the specified TSS requests."
 public func approveTSSRequests(tssRequestIDs: [String]) throws
 ```
 
+```Dart Flutter
+Future<void> approveTSSRequests(List<String> tssRequestIDs) async
+```
+
 </CodeGroup>
 
 
@@ -22,6 +26,16 @@ do {
     try sdkInstance?.approveTSSRequests(tssRequestIDs: tssRequestIDs)
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+final List<String> tssRequestIDs = ["tss_request_id_01"];
+
+try {
+    await sdkInstance?.approveTSSRequests(tssRequestIDs: tssRequestIDs);
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

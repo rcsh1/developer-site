@@ -13,6 +13,10 @@ description: "This operation creates an instance of the UCW class, decrypts the 
 public init(config: SDKConfig, secretsFile: String, passphrase: String, connCallback: @escaping(ConnCode, String?) -> Void = { _, _ in }) throws
 ```
 
+```Dart Flutter
+static Future<UCW> create({required SDKConfig config, required String secretsFile, required String passphrase, Function(ConnCode connCode, String connMessage)? connCallback}) async
+```
+
 </CodeGroup>
 
 
@@ -23,7 +27,7 @@ let secrets = "secrets.db"
 let passphrase = "d3hxNyoiAP@Lm!D7Qpo_hghdpgyc_r39"
 let sdkConfig = SDKConfig(env: Env.development, timeout: 30, debug: true)
 var sdkInstance: UCW?
-var connCode: ConnCode = .CodeUnknown
+var connCode: ConnCode = .unknown
 var connMessage: String? = ""
 
 do {
@@ -34,6 +38,36 @@ do {
     }
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+const String secrets = "secrets.db";
+const String passphrase = "d3hxNyoiAP@Lm!D7Qpo_hghdpgyc_r39";
+
+final sdkConfig = SDKConfig(
+    env: Env.development,
+    timeout: 30,
+    debug: true
+);
+
+UCW? sdkInstance;
+ConnCode connCode = ConnCode.unknown;
+String? connMessage = "";
+
+try {
+    sdkInstance = await UCW.create(
+        config: sdkConfig, 
+        secretsFile: secrets, 
+        passphrase: passphrase,
+        connCallback: (code, message) async {
+            connCode = code;
+            connMessage = message;
+            print("Connection Code: $connCode, Message: ${connMessage ?? 'No message'}");
+        }
+    );
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

@@ -1,0 +1,86 @@
+---
+title: "Configuring Cobo CLI"
+---
+
+This guide introduces how to inspect and modify the configurations of Cobo CLI. The configurations are used by various Cobo CLI commands, including `cobo env`, `cobo auth`, and `cobo keys`.
+
+By default, Cobo CLI stores its configurations in your home directory (`~/.cobo/config.toml`). You can override this location by using the `--config-file <path>` option. For more information about this option, see [Global options](/v2/developer-tools/cobo-cli/global-options#custom-configuration-file-config-file).
+
+## Configuration commands
+
+### Set configuration values
+
+To set a configuration value, use the following command:
+
+```shell
+cobo config set <key> <value>
+```
+
+### Retrieve configuration values
+
+To retrieve a configuration value, use the following command:
+
+```shell
+cobo config get <key>
+```
+
+If the configuration key exists, it will display the value. Otherwise, it will inform you that the configuration was not found.
+
+### List all configurations
+
+To see all your current configuration settings, use the `list` subcommand:
+
+```shell
+cobo config list
+```
+
+This will display all key-value pairs in your configuration.
+
+### Delete configuration Values
+
+To remove a configuration value, use the `delete` subcommand:
+
+```shell
+cobo config delete <key>
+```
+
+## Important configurations
+
+While you can store any custom configuration values, there are some key settings that Cobo CLI uses:
+
+### Environment
+
+You can set the environment using the `cobo config set environment <environment>` command:
+
+```shell
+cobo config set environment dev
+```
+
+Cobo CLI supports two environments:
+- `dev`: For development purposes
+- `prod`: For production use
+
+
+<Note>
+This command has the same effect as running `cobo env dev`.
+</Note>
+
+### Authentication method
+
+You can set the authentication method using the `cobo config set auth_method <method>` command:
+
+```shell
+cobo config set auth_method apikey
+```
+
+Cobo CLI supports three authentication methods:
+- `apikey`: Authenticate with an API key.
+- `user`: Authenticate with your Cobo Portal account.
+- `org`: Authenticate with an Org Access Token.
+
+
+<Note>
+This command has the same effect as running `cobo auth apikey`.
+</Note>
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

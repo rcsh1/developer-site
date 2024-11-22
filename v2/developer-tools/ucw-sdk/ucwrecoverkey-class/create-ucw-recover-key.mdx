@@ -11,6 +11,10 @@ description: "This operation creates an instance of the UCWRecoverKey class."
 public init(tssKeyShareGroupID: String)
 ```
 
+```Dart Flutter
+UCWRecoverKey({required this.tssKeyShareGroupID});
+```
+
 </CodeGroup>
 
 
@@ -18,12 +22,23 @@ public init(tssKeyShareGroupID: String)
 
 ```Swift iOS
 let tssKeyShareGroupID = "gjRIvhmnDfpcGrzjOABE"
-var sdkInstance: UCWRecoverKey?
+var recoverKey: UCWRecoverKey?
 
 do {
-    sdkInstance = try UCWRecoverKey(tssKeyShareGroupID: tssKeyShareGroupID)
+    recoverKey = try UCWRecoverKey(tssKeyShareGroupID: tssKeyShareGroupID)
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+const String tssKeyShareGroupID = "gjRIvhmnDfpcGrzjOABE";
+UCWRecoverKey? recoverKey;
+
+try {
+    recoverKey = UCWRecoverKey(tssKeyShareGroupID: tssKeyShareGroupID);
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

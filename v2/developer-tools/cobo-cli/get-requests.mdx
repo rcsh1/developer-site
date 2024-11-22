@@ -1,0 +1,61 @@
+---
+title: "GET requests"
+---
+
+Use the `get` command to perform GET HTTP requests to a specified endpoint of the WaaS 2.0 service. 
+
+If the `path` argument is provided, the command initiates a GET request to that endpoint. Otherwise, it retrieves a list of all available GET operations or displays the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+## Usage
+
+```shell
+cobo get <path> [options]
+```
+
+## Arguments
+`<path>`: The URL of the endpoint to which the GET request will be sent.
+
+## Options
+- `-d, --describe`: Display the description of the specified GET operation, including its expected responses and error information (if any). You can use this option with parameter names to retrieve specific descriptions, for example:
+
+    ```shell
+    cobo get -d /wallets/mpc/vaults --name --vault_type
+    ```
+
+    This command displays the information about both the `name` and `vault_type` parameters for the API operation of getting the vault information.
+
+- `-l, --list`: List all available GET operations of the WaaS 2.0 service. 
+
+## Example
+
+### Retrieve wallet information
+
+```shell
+cobo get /wallets/11223344
+```
+
+This command retrieves information about a specific wallet whose wallet ID is `11223344`.
+
+### Get operation description
+
+```shell
+cobo get /wallets -d
+```
+
+This command retrieves the description of the [Get wallet information](/v2/api-references/wallets/get-wallet-information) operation.
+
+### List all GET operations
+
+```shell
+cobo get -l
+```
+
+This command lists all available GET operations of the WaaS 2.0 service.
+
+
+## API Reference
+
+For a complete list of available GET endpoints and their parameters, refer to the [API reference](/v2/api-references).
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

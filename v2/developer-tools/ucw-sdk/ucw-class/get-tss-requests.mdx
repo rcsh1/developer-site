@@ -10,6 +10,10 @@ description: "This operation retrieves the specified TSS requests."
 public func getTSSRequests(tssRequestIDs: [String]) async throws -> [TSSRequest]
 ```
 
+```Dart Flutter
+Future<List<TSSRequest>> getTSSRequests(List<String> tssRequestIDs) async
+```
+
 </CodeGroup>
 
 
@@ -32,6 +36,20 @@ Task {
     }
 }
 ```
+
+```Dart Flutter
+final List<String> tssRequestIDs = ["tss_request_id_01"];
+
+try {
+    final requests = await sdkInstance?.getTSSRequests(tssRequestIDs: tssRequestIDs);
+    for (final request in requests) {
+        print("$request\n");
+    }
+} catch (error) {
+    print("Error: $error");
+}
+```
+
 
 </RequestExample>
 

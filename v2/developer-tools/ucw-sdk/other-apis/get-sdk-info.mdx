@@ -10,6 +10,10 @@ description: "This operation retrieves detailed information about the UCW SDK."
 public func getSDKInfo() throws -> SDKInfo
 ```
 
+```Dart Flutter
+Future<SDKInfo> getSDKInfo() async
+```
+
 </CodeGroup>
 
 
@@ -21,6 +25,15 @@ do {
     print("\(sdkInfo)")
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+try {
+    final sdkInfo = await getSDKInfo();
+    print("$sdkInfo");
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

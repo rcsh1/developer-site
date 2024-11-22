@@ -12,6 +12,10 @@ description: "This operation retrieves a list of all active TSS key share groups
 public func listTSSKeyShareGroups()  throws -> [TSSKeyShareGroup]
 ```
 
+```Dart Flutter
+Future<List<TSSKeyShareGroup>> listTSSKeyShareGroups() async
+```
+
 </CodeGroup>
 
 
@@ -28,6 +32,17 @@ do {
     }
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+try {
+    final groups = await sdkInstance?.listTSSKeyShareGroups();
+    for (final group in groups) {
+        print("$group\n");
+    }
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

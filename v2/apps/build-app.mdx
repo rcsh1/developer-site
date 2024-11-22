@@ -8,7 +8,7 @@ For an overview of developing Cobo Portal Apps, refer to [Introduction to Cobo P
 
 ## Sample project
 
-Cobo offers a sample project Hello World that allows you to quickly build a Cobo Portal App and preview it on your local machine. Refer to [Build a Hello World app](/v2/apps/get-started) for details.
+Cobo offers a sample project Hello World that allows you to quickly build a Cobo Portal App and preview it on your local machine. Refer to [Create a sample app](/v2/apps/get-started) for details.
 
 ## Prerequisites
 
@@ -17,28 +17,38 @@ Cobo offers a sample project Hello World that allows you to quickly build a Cobo
 
 ## Develop the app
 
-### Install Cobo CLI
+### Create an app using Cobo CLI
 
-Cobo CLI is a developer tool that allows you to build, test, and manage Cobo Portal Apps directly from the command line. This section introduces how to install Cobo CLI and connect it to your Cobo Portal account.
+Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with Cobo Wallet-as-a-Service (WaaS) 2.0 directly from the command line.
 
-1. Install Cobo CLI.
+1. Install Cobo CLI using the following command:
+
+    ```shell
+    # Install Cobo CLI
+    pip install cobo-cli
+    # Test if the installation is successful
+    cobo version
+    ```
+
+    For more details about the system requirements for Cobo CLI, please refer to [Install Cobo CLI](/v2/developer-tools/cobo-cli/quick-start-guide#system-requirements).
+
+2. Log in to Cobo Portal and connect Cobo CLI to your Cobo Portal account. You can choose one of the [three authentication methods](/v2/developer-tools/cobo-cli/login-and-authentication) to authenticate. As an example, this step will show you how to authenticate with your Cobo Portal account:
 
    ```shell
-   $ pip install cobo-cli
-   $ cobo
+   # Use your Cobo Portal account to authenticate.
+   cobo auth user
+   # Initiate the user login process.
+   cobo login
    ```
 
-2. Log in to Cobo Portal and connect Cobo CLI to your Cobo Portal account. Follow the instructions on the screen to complete the authorization process. 
+   You'll be prompted to open a browser to continue the authorization process. Complete the authorization process in your browser, granting the necessary permissions for Cobo CLI to access your crypto wallets. For more details about authentication methods, see [Login and authentication](/v2/developer-tools/cobo-cli/login-and-authentication).
+
+3. Use the [app init](/v2/developer-tools/cobo-cli/app-init) command to create a Hello World app project. You can specify the details of the WaaS application you want to create through options, or choose these parameters step by step and create the project using the prompts of Cobo CLI. 
+
+   The following command creates a Cobo Portal App project, using Org Access Tokens for authentication, and creates it in the directory named `hello_world`:
 
    ```shell
-   $ cobo login
-   ```
-
-3. Create a Hello World app project. This can serve as the starting point for your app development. Alternatively, if you already have an app project, you can add the [manifest file to the root directory of your project](#configure-the-manifest-file).
-
-   ```shell
-   # To develop with Next.js, use `-f nextjs` instead
-   $ cobo apps create -d helloworld -f fastapi
+   cobo app init --app-type portal --auth org --directory hello_world
    ```
 
 ### Acquire authentication information
@@ -47,7 +57,7 @@ To authenticate your API requests to the WaaS service in Cobo Portal Apps, you n
 
 ### Verify app users
 
-User Info Tokens are JSON Web Tokens (JWTs) signed by Cobo Portal. These tokens allow Cobo Portal Apps to retrieve information about users, including their user ID, email address, and permissions. A Cobo Portal App can use the information to verify a user’s identity and control their access to the organization’s resources based on the permissions. It is recommended that you verify a user’s identity before they can get started using the app. For more information, refer to [User Info Tokens](/v2/apps/verify-users).
+User Info Tokens are JSON Web Tokens (JWTs) signed by Cobo Portal. These tokens allow Cobo Portal Apps to retrieve information about users, including their user ID, email address, and permissions. A Cobo Portal App can use the information to verify a user's identity and control their access to the organization's resources based on the permissions. It is recommended that you verify a user's identity before they can get started using the app. For more information, refer to [User Info Tokens](/v2/apps/verify-users).
 
 ### Call the WaaS API
 
@@ -107,33 +117,41 @@ Refer to the following screenshots for where these fields will display on the ap
 
 ## Publish the app
 
-When you have completed developing your app and configuring the manifest file, use the following Cobo CLI commands to publish the app to the production environment or development environment.
+When you have completed developing your app, you can use the [app upload](/v2/developer-tools/cobo-cli/app-upload) Cobo CLI command to publish the app to the production environment or development environment:
 
 ```shell
-// Publish your app to the production environment.
-$ cobo -e prod apps publish
-// Publish your app to the development environment.
-$ cobo -e dev apps publish
+cobo app upload
 ```
 
-- If you publish your app to the production environment, the publish command will automatically trigger a workflow that requires approval from Cobo. The approval result will be sent as an email to the `contact_email` configured in the manifest file. Once approved, your app will be available to all users on Cobo Portal. 
+<Info>For more information about how to switch between development and production environments, refer to [Environment management](/v2/developer-tools/cobo-cli/environment-management).</Info>
 
-- If you publish your app to the development environment, no approval is required and your app will be available only to the users in your organization.
+Before publishing your Cobo Portal Apps, ensure the following:
+- Verify the [app manifest file](/v2/apps/build-app#configure-the-manifest-file) is configured correctly.
+- Log into Cobo CLI with your Cobo Portal account.
+- Generate an app key if you haven't done so. For more details, refer to [Generate keys](/v2/developer-tools/cobo-cli/key-management#generate-keys).
+- Run the command from the project directory where the manifest file is located.
 
-The publish command will generate a client ID for your app in the manifest file. A client ID is a unique identifier for a Cobo Portal App and cannot be modified after being generated. It is required for getting the Org Access Token. For more details, refer to [Org Access Tokens](/v2/apps/org-access-tokens). 
+
+If you publish your app to the production environment, the command will automatically trigger a workflow that requires approval from Cobo. The approval result will be sent as an email to the `contact_email` configured in the manifest file. Once approved, your app will be available to all users on Cobo Portal. 
+
+If you publish your app to the development environment, no approval is required and your app will be available only to the users in your organization.
+
+The `app upload` command will generate a client ID for your app in the manifest file. A client ID is a unique identifier for a Cobo Portal App and cannot be modified after being generated. It is required for getting the Org Access Token. For more details, refer to [Org Access Tokens](/v2/apps/org-access-tokens). 
 
 An app can be published only once, otherwise an error will occur. For subsequent updates, you need to follow the process of [updating the app](#update-the-app).
 
 ## Update the app
 
-If you want to update your app after it’s published, implement the changes and then use the following Cobo CLI commands:
+If you want to update your app after it's published, you can implement the changes and then use the [app update](/v2/developer-tools/cobo-cli/app-update) Cobo CLI command:
 
 ```shell
-// Update your app in the production environment.
-$ cobo -e prod apps update
-// Update your app in the developement environment.
-$ cobo -e dev apps update
+cobo app update
 ```
+
+Before updating your Cobo Portal Apps, ensure the following:
+- Verify the [app manifest file](/v2/apps/build-app#configure-the-manifest-file) is configured correctly.
+- Log into Cobo CLI with your Cobo Portal account.
+- Run the command from the project directory where the manifest file is located.
 
 Similar to publishing an app, if you update an app in the production environment, the update command will automatically trigger a workflow that requires approval from Cobo. Otherwise, if you update an app in the development environment, no approval is required.
 <Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

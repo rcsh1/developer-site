@@ -1,0 +1,68 @@
+---
+title: "Introduction to Cobo CLI"
+sidebarTitle: "Introduction"
+---
+
+Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with [Cobo Wallet-as-a-Service (WaaS) 2.0](/v2/guides/overview/introduction) directly from the command line.
+
+## Key features
+
+- **[API interaction](/v2/developer-tools/cobo-cli/get-requests)**: Easily interact with Cobo WaaS 2.0 through [RESTful API](/v2/api-references/playground) directly from your terminal.
+- **[App management](/v2/developer-tools/cobo-cli/app-init)**: Streamline your development process by creating applications from pre-built templates that support multiple programming languages and frameworks, with the WaaS SDK pre-integrated. Additionally, you can use Cobo CLI to build, manage, and publish [Cobo Portal Apps](/v2/apps/introduction) efficiently through the command line.
+- **[Multiple authentication methods](/v2/developer-tools/cobo-cli/login-and-authentication)**: Utilize and test three types of authentication mechanisms: Cobo Portal account, Org Access Token, and API key.
+- **[Webhook testing](/v2/developer-tools/cobo-cli/trigger-events)**: Test and debug your webhook integrations locally.
+- **[Real-time API monitoring](/v2/developer-tools/cobo-cli/real-time-logs)**: Stream API request logs for quick debugging and monitoring.
+- **[Environment switching](/v2/developer-tools/cobo-cli/global-options#environment-selection-e-env)**: Seamlessly switch between the development and production environments, allowing for safe testing and development before deploying to production.
+- **[API documentation lookup](/v2/developer-tools/cobo-cli/api-documentation)**: Access helpful documentation for the Cobo WaaS 2.0 API, requests, responses, and their parameters directly from the command line.
+
+## Use cases
+
+Cobo CLI is particularly useful for:
+
+- Developers integrating Cobo WaaS 2.0 into their applications.
+- DevOps engineers managing Cobo resources and monitoring transactions.
+- QA teams testing Cobo integrations and API responses.
+- Support teams troubleshooting customer issues related to Cobo's services.
+
+
+## Example usage
+
+Here are some quick examples of how to use Cobo CLI. These examples demonstrate some of the key functionalities of Cobo CLI, including REST API interactions, application management, accessing API documentation, real-time log monitoring, and webhook event handling.
+
+1. List all Custodial Wallets:
+
+```shell
+cobo get /wallets --wallet_type Custodial 
+```
+
+2. Create a new application with WaaS SDK integrated using a template:
+
+```shell
+cobo app init --app-type portal --web react --backend fastapi -d demo_project
+```
+
+3. Look up documentation for a specific API operation:
+
+```shell
+cobo doc /wallets/{wallet_id}/utxos
+```
+
+4. Monitor real-time API request logs for debugging and troubleshooting:
+
+```shell
+cobo logs tail --http-method GET --request-path /wallets
+```
+
+5. Trigger a webhook event:
+
+```shell
+cobo webhook trigger wallets.transaction.updated --override '{"wallet_id": "1234567890"}'
+```
+
+6. Listen for webhook events and forward them to a local endpoint:
+
+```shell
+cobo webhook listen --events wallets.transaction.updated --forward http://localhost:9988
+```
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

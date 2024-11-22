@@ -10,6 +10,10 @@ description: "This operation enables activity logging for the UCW SDK."
 public func setLogger(completion: @escaping (String?, String?) -> Void)
 ```
 
+```Dart Flutter
+Future<void> setLogger(Function(String level, String message)? logCallback) async
+```
+
 </CodeGroup>
 
 
@@ -21,12 +25,18 @@ setLogger { level, message in
 }
 ```
 
+```Dart Flutter
+await setLogger((level, message) {
+    print("Log Level: $level, Log Message: $message");
+});
+```
+
 </RequestExample>
 
 
 ## Parameters
 
-<ParamField path="logger" type="function">
+<ParamField path="logCallback" type="function">
 A callback function that receives log level and log message parameters to monitor the logger activity.
 
   <Expandable title="child attributes">

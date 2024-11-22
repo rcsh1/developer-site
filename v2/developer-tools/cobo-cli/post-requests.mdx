@@ -1,0 +1,59 @@
+---
+title: "POST requests"
+---
+
+Use the `post` command to perform POST HTTP requests to a specified endpoint of the WaaS 2.0 service. 
+
+If the  `path` argument is provided, the command initiates a POST request to that endpoint. Otherwise, it retrieves a list of all available POST operations or displays the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+## Usage
+
+```shell
+cobo post <path> [options]
+``` 
+
+## Arguments
+`<path>`: The URL of the endpoint to which the POST request will be sent.
+
+## Options
+- `-d, --describe`: Display the description of the specified POST operation, including its expected responses and error information (if any). You can use this option with parameter names to retrieve specific descriptions, for example:
+
+    ```shell
+    cobo post -d /wallets/mpc/vaults --name --vault_type
+    ```
+
+    This command displays the information about both the `name` and `vault_type` parameters for the API operation of creating a vault.
+- `-l, --list`: List all available POST operations of the WaaS 2.0 service. 
+
+## Example
+
+### Create a new wallet
+
+```shell
+cobo post /wallets --name "My New Wallet" --wallet_type Custodial --wallet_subtype Asset
+```
+
+This command creates a new Custodial Wallet (Asset Wallet) named `My New Wallet`.
+
+### POST operation description
+
+```shell
+cobo post /wallets -d
+```
+
+This command retrieves the description of the [Create wallet](/v2/api-references/wallets/create-wallet) operation.
+
+### List all POST operations
+
+```shell
+cobo post -l
+```
+
+This command lists all available POST operations of the WaaS 2.0 service.
+
+## API Reference
+
+For a complete list of available POST endpoints and their parameters, refer to the [API reference](/v2/api-references).
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

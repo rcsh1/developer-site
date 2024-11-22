@@ -1,0 +1,40 @@
+---
+title: 'Listen and forward events'
+---
+
+Use this command to establish a WebSocket connection to the WaaS 2.0 service and stream webhook events, as well as optionally forward them to a specified URL. You can use **Ctrl + C** to stop the event listening process.
+
+<Note>This command is mainly intended for use in development and testing environments. For production environment, set up a proper webhook endpoint in your application as instructed in [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Note>
+
+## Usage
+
+```shell
+cobo webhook listen [options]
+```
+
+## Options
+
+- `--events <event_type>`: Filter the events by specifying event types. Replace `<event_type>` with the specific event types you're interested in and separate them by commas. Possible values for event types include:
+    - `wallets.transaction.created`
+    - `wallets.transaction.updated`
+    - `wallets.transaction.failed`
+    - `wallets.transaction.succeeded`
+    - `wallets.mpc.tss_request.created`
+    - `wallets.mpc.tss_request.updated`
+    - `wallets.mpc.tss_request.failed`
+    - `wallets.mpc.tss_request.succeeded`
+
+    <Info>You can also run the [cobo webhook events](/v2/developer-tools/cobo-cli/event-types) command to get the latest list of all available event types.</Info>
+
+- `--forward <url>`: Forward received events to the specified URL.
+    <Note>When using this option, ensure that your endpoint is properly secured, especially if you're forwarding to a public URL.</Note>
+
+## Example
+
+```shell   
+cobo webhook listen --events wallets.transaction.created,wallets.transaction.updated --forward "https://your-endpoint.com/webhook"
+```
+
+This command listens for the `wallets.transaction.created` and `wallets.transaction.updated` event types and forward the received events to the url `https://your-endpoint.com/webhook`.
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

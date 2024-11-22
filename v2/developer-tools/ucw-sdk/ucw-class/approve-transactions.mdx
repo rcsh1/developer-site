@@ -10,6 +10,10 @@ description: "This operation approves the specified transactions."
 public func approveTransactions(transactionIDs: [String]) throws
 ```
 
+```Dart Flutter
+Future<void> approveTransactions(List<String> transactionIDs) async
+```
+
 </CodeGroup>
 
 
@@ -22,6 +26,16 @@ do {
     try sdkInstance?.approveTransactions(transactionIDs: transactionIDs)
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+final List<String> transactionIDs = ["transaction_id_01"];
+
+try {
+    await sdkInstance?.approveTransactions(transactionIDs: transactionIDs);
+} catch (error) {
+     print("Error: $error");
 }
 ```
 

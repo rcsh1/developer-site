@@ -74,6 +74,30 @@ The private key is saved in the `private.key.pem` file, and the public key is sa
     print("public key:", vk.to_bytes().hex())
     ```
 
+#### Use Cobo CLI
+
+Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with Cobo Wallet-as-a-Service (WaaS) 2.0 directly from the command line.
+
+1. Install Cobo CLI using the following command:
+
+    ```shell
+    # Install Cobo CLI
+    pip install cobo-cli
+    # Test if the installation is successful
+    cobo version
+    ```
+
+    For more details about the system requirements for Cobo CLI, please refer to [Install Cobo CLI](/v2/developer-tools/cobo-cli/quick-start-guide#system-requirements).
+
+2. Use the `keys generate` command to generate an API key as follows:
+
+    ```shell
+    # Generate an API key
+    cobo keys generate --key-type API
+    ```
+
+    Generated keys are securely stored in your configuration file (default: `~/.cobo/config.toml`). For more information about this command, refer to [Key management](/v2/developer-tools/cobo-cli/key-management).
+
 ### Register the API key
 
 After generating an API key, you need to register the key and configure related permissions on Cobo Portal. To learn how to register an API key, see [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key). 

@@ -1,0 +1,103 @@
+---
+title: "Quick start guide"
+---
+
+This guide walks you through getting started with Cobo CLI. You'll learn how to:
+
+- Install Cobo CLI
+- Log in and authenticate with your Cobo Portal account 
+- Configure your environment for optimal use
+- Learn basic CLI commands for wallet management, transaction handling, and other key operations
+
+<Note>
+Cobo CLI is designed for use in the development environment by default. Always exercise caution when using it in the production environment, and ensure you understand the implications of each command before execution.
+</Note>
+
+
+## Prerequisites
+
+- Follow the instructions in Cobo Portal's [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo Portal account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
+- Basic knowledge of the command line interface
+
+
+## Install Cobo CLI
+
+### System requirements
+
+Cobo CLI is supported on most operating systems. Ensure your system meets the following requirements:
+
+- macOS (10.14 Mojave or later)
+- Windows 10 or later
+- Linux (most distributions supported)
+
+### Install Cobo CLI
+
+You can install Cobo CLI using pip, which works on all supported operating systems:
+
+```shell
+pip install cobo-cli
+```
+
+
+### Verify the installation
+
+To verify that Cobo CLI has been installed correctly, open a new terminal and run the following command:
+
+```shell
+cobo version
+```
+
+## Log in and authenticate
+
+After installing Cobo CLI, you need to authenticate your Cobo CLI to Cobo WaaS 2.0. You can choose one of the [three authentication methods](/v2/developer-tools/cobo-cli/login-and-authentication) to authenticate. As an example, this guide will show you how to authenticate with your Cobo Portal account:
+
+1. Switch to use your Cobo Portal account to authenticate:
+
+    ```
+    cobo auth user
+    ```
+2. Run the following command to initiate the user login process:
+
+    ```
+    cobo login --user
+    ```
+3. You'll be prompted to open a browser to continue the authorization process. Complete the authorization process in your browser, granting the necessary permissions for Cobo CLI to access your organization. 
+
+
+## Configure your environment
+Configure your environment for development or production use. We always recommend starting with the development environment:
+
+```
+cobo env dev
+```
+
+
+For more information about environments, see [Development and production environments](/v2/guides/overview/environments).
+
+## Send your first request
+
+Now you have successfully installed and configured Cobo CLI. It is time to explore what you can do with Cobo CLI.
+
+### List all Custodial Wallets:
+
+If you already have one or more Custodial Wallets, you can list all your Custodial Wallets by running the following command:
+
+```shell
+cobo get /wallets --wallet_type Custodial 
+```
+
+### Look up API documentation
+
+If you have questions about a specific API operation, you can look up the API documentation by running the following command:
+
+```shell
+cobo doc /wallets
+```
+### Create a new application
+
+Create a new application using a template, with the WaaS SDK integrated:
+
+```shell
+cobo app init
+```
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
