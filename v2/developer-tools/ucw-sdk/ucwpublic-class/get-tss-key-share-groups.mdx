@@ -10,6 +10,10 @@ description: "This operation retrieves detailed information about the specified 
 public func getTSSKeyShareGroups(tssKeyShareGroupIDs: [String]) throws -> [TSSKeyShareGroup]
 ```
 
+```Dart Flutter
+Future<List<TSSKeyShareGroup>> getTSSKeyShareGroups(List<String> tssKeyShareGroupIDs) async 
+```
+
 </CodeGroup>
 
 
@@ -28,6 +32,19 @@ do {
     }
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+final List<String> tssKeyShareGroupIDs = ["gjRIvhmnDfpcGrzjOABE"];
+
+try {
+    final groups = await sdkInstance?.getTSSKeyShareGroups(tssKeyShareGroupIDs: tssKeyShareGroupIDs);
+    for (final group in groups) {
+        print("$group\n");
+    }
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

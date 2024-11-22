@@ -10,6 +10,10 @@ description: "This operation retrieves the TSS Node ID."
 public func getTSSNodeID() throws -> String
 ```
 
+```Dart Flutter
+Future<String> getTSSNodeID() async
+```
+
 </CodeGroup>
 
 
@@ -17,13 +21,22 @@ public func getTSSNodeID() throws -> String
 
 ```Swift iOS
 do {
-    if let nodeID = try sdkInstance?.getTSSNodeID() {
-        print("TSS Node ID: \(nodeID)")
+    if let tssNodeID = try sdkInstance?.getTSSNodeID() {
+        print("TSS Node ID: \(tssNodeID)")
     } else {
         print("Failed to retrieve the TSS Node ID")
     }
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+try {
+    final tssNodeID = await sdkInstance?.getTSSNodeID();
+    print("TSS Node ID: $tssNodeID");
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

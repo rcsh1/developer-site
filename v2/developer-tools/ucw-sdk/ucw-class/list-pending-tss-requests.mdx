@@ -10,6 +10,10 @@ description: "This operation retrieves a list of pending TSS requests."
 public func listPendingTSSRequests() async throws -> [TSSRequest]
 ```
 
+```Dart Flutter
+Future<List<TSSRequest>> listPendingTSSRequests() async
+```
+
 </CodeGroup>
 
 
@@ -28,6 +32,17 @@ Task {
     } catch {
         print("Error: \(error)")
     }
+}
+```
+
+```Dart Flutter
+try {
+    final requests = await sdkInstance?.listPendingTSSRequests();
+    for (final request in requests) {
+        print("$request\n");
+    }
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

@@ -1,0 +1,33 @@
+---
+title: View API documentation
+---
+
+Use this command to fetch and update the latest WaaS 2.0 OpenAPI specification. Cobo CLI downloads the YAML file and saves it to your local configuration directory, ensuring you have the most up-to-date API definitions.
+
+## Usage
+
+```shell
+cobo doc <topic_or_path> [options]
+```
+
+## Arguments
+
+`<topic_or_path>`: Specifies the documentation topic or the API operation path. Possible values include:
+   - `guides`: (Default)Opens the [Introduction to WaaS 2.0](/v2/guides/overview/introduction) guide.
+   - `api`: Opens the [API Reference](/v2/api-references/playground) page.
+   - `sdk`: Opens the [WaaS SDKs](/v2/developer-tools/quickstart-python) guide.
+   - `apps`: Opens the [Cobo Portal App development](/v2/apps/introduction) guide.
+   - API endpoint paths: Displays detailed information on API operations available for the specified path such as `/wallets`.
+
+## Options
+
+`-u`, `--update`: Update the OpenAPI specification for WaaS 2.0, ensuring you have the latest API definitions and documentation. With this option used, this command will only perform the updates and then exit. After a successful update, Cobo CLI confirms the operation with a "specification file downloaded successfully" message.
+
+## Example
+
+```shell
+cobo doc /wallets/mpc/vaults
+```
+
+This command fetches the documentation of the `/wallets/mpc/vaults` endpoint, including its description, parameters, and response format.
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

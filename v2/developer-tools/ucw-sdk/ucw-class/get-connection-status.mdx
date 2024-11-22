@@ -10,6 +10,10 @@ description: "This operation retrieves the connection status with the Cobo serve
 public func getConnStatus() -> (ConnCode, String?)
 ```
 
+```Dart Flutter
+ConnStatus? getConnStatus()
+```
+
 </CodeGroup>
 
 
@@ -20,6 +24,15 @@ if let (connCode, connMessage) = sdkInstance?.getConnStatus() {
     print("Connection Code: \(connCode), Message: \(connMessage ?? "No message")")
 } else {
     print("Failed to get connection status")
+}
+```
+
+```Dart Flutter
+final connStatus = sdkInstance?.getConnStatus();
+if (connStatus != null) {
+    print('Connection Code: ${connStatus.connCode}, ${connStatus.connMessage}');
+} else {
+    print('Failed to get connection status');
 }
 ```
 

@@ -1,0 +1,29 @@
+---
+title: Publish Cobo Portal Apps
+---
+
+Use the `upload` command to publish your Cobo Portal Apps to Cobo Portal. For more details about publish Cobo Portal Apps, refer to [Publish the app](/v2/apps/build-app#publish-the-app).
+
+Before uploading your Cobo Portal Apps, ensure the following:
+- Verify the [app manifest file](/v2/apps/build-app#configure-the-manifest-file) is configured correctly.
+- Log into Cobo CLI with your Cobo Portal account.
+- Generate an app key if you haven't done so. For more details, refer to [Generate keys](/v2/developer-tools/cobo-cli/key-management#generate-keys).
+- Run the command from the project directory where the manifest file is located.
+
+Upon successful upload, an `app_id` value will be automatically added to the app manifest file. 
+
+<Note>A Cobo Portal App can be uploaded only once. For any further updates, you will need to use the [update command](/v2/developer-tools/cobo-cli/app-update).</Note>
+
+## Usage
+```shell
+cobo app upload
+```
+
+## Example
+```shell
+cobo app upload
+```
+
+This command uploads a Cobo Portal App to Cobo Portal.
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

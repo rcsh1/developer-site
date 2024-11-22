@@ -11,6 +11,10 @@ description: "This operation creates an instance of the UCWPublic class."
 public init(secretsFile: String) throws
 ```
 
+```Dart Flutter
+static Future<UCWPublic> create({required String secretsFile}) async
+```
+
 </CodeGroup>
 
 
@@ -24,6 +28,17 @@ do {
     sdkInstance = try UCWPublic(secretsFile: secrets)
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+const String secrets = "secrets.db";
+UCWPublic? sdkInstance;
+
+try {
+    sdkInstance = await UCWPublic.create(secretsFile: secrets);
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

@@ -10,6 +10,10 @@ description: "This operation exports the specified key shares as a passphrase-en
 public func exportRecoveryKeyShares(tssKeyShareGroupIDs: [String], exportPassphrase: String) throws -> String
 ```
 
+```Dart Flutter
+Future<String> exportRecoveryKeyShares(List<String> tssKeyShareGroupIDs, String exportPassphrase) async
+```
+
 </CodeGroup>
 
 
@@ -27,6 +31,21 @@ do {
     }
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+final List<String> tssKeyShareGroupIDs = ["gjRIvhmnDfpcGrzjOABE"];
+const String exportPassphrase = "wZdcycVuexvmgt7aMkaeA_2_ioCKrw!B";
+
+try {
+    final jsonRecoverySecrets = await sdkInstance?.exportRecoveryKeyShares(
+        tssKeyShareGroupIDs: tssKeyShareGroupIDs,
+        exportPassphrase: exportPassphrase
+    );
+    print("$jsonRecoverySecrets\n");
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

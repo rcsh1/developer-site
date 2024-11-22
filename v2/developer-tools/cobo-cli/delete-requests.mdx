@@ -1,0 +1,38 @@
+---
+title: "DELETE requests"
+---
+
+Use the `delete` command to perform DELETE HTTP requests to a specified endpoint of the WaaS 2.0 service. 
+
+If the `path` argument is provided, the command initiates a DELETE request to that endpoint. Otherwise, it retrieves a list of all available DELETE operations or displays the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+<Note>Currently there is no DELETE operation within the WaaS 2.0 API.</Note>
+
+## Usage
+
+```shell
+cobo delete <path> [options]
+```
+
+## Arguments
+`<path>`: The URL of the endpoint to which the DELETE request will be sent.
+
+## Options
+
+- `-d, --describe`: Display the description of the specified DELETE operation, including its expected responses and error information (if any).
+- `-l, --list`: List all available DELETE operations of the WaaS 2.0 service.
+
+## Example
+
+```shell
+cobo delete -l
+```
+
+This command lists all available DELETE operations of the WaaS 2.0 service.
+
+## API Reference
+
+For a complete list of available DELETE endpoints and their parameters, refer to the [API reference](/v2/api-references).
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

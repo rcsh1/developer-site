@@ -1,0 +1,49 @@
+---
+title: "Environment management"
+---
+
+Cobo CLI allows you to switch between the [development and production environments](/v2/guides/overview/environments). This guide explains how to switch between environments effectively. Always remember to switch to the correct environment before executing commands to avoid unintended actions in the wrong environment.
+
+
+<Note>
+Cobo CLI is designed for use in the development environment by default. Always exercise caution when using it in the production environment, and ensure you understand the implications of each command before execution.
+</Note>
+
+## View current environment
+
+To check which environment is currently active, use:
+
+```shell
+cobo env
+```
+
+This command will display the name of the currently active environment.
+
+
+
+## Set environment
+
+To switch to a different environment, use the following command:
+
+```shell
+cobo env <environment>
+```
+
+Replace `<environment>` with your desired environment (`dev` or `prod`). This command will set the specified environment as the active one for subsequent CLI commands.
+<Info>
+If you don't specify an environment, Cobo CLI defaults to the "development" environment.
+</Info>
+## Override environment for a single command
+
+You can override the current environment for a single command by using the
+global `-e` or `--env` option:
+
+```shell
+cobo -e <environment> {command}
+```
+
+This allows you to execute a command in a specific environment without changing the overall active environment.
+
+
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

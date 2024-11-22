@@ -1,0 +1,60 @@
+---
+title: "PUT requests"
+---
+
+Use the `put` command to perform PUT HTTP requests to a specified endpoint of the WaaS 2.0 service. 
+
+If the `path` argument is provided, the command initiates a PUT request to that endpoint. Otherwise, it retrieves a list of all available PUT operations or displays the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+## Usage
+
+```shell
+cobo put <path> [options]
+```
+
+## Arguments
+`<path>`: The URL of the endpoint to which the PUT request will be sent.
+
+## Options
+
+- `-d, --describe`: Display the description of the specified PUT operation, including its expected responses and error information (if any). You can use this option with parameter names to retrieve specific descriptions, for example:
+
+    ```shell
+    cobo put -d /wallets/mpc/projects/{project_id} --name
+    ```
+
+    This command displays the information about the `name` parameter for the API operation of updating the MPC project name.
+- `-l, --list`: List all available PUT operations of the WaaS 2.0 service.
+
+## Example
+
+### Update wallet information
+
+```shell
+cobo put /wallets/11223344 --name "Updated Wallet Name"
+```
+
+This command updates the name of a specific wallet with wallet ID of `11223344` to `Updated Wallet Name`.
+
+### Get operation description
+
+```shell
+cobo put /wallets/{wallet_id} -d
+```
+
+This command retrieves the description of the [Update wallet](/v2/api-references/wallets/update-wallet) operation.
+
+### List all PUT operations
+
+```shell
+cobo put -l
+```
+
+This command lists all available PUT operations of the WaaS 2.0 service.
+
+## API Reference
+
+For a complete list of available PUT endpoints and their parameters, refer to the [API reference](/v2/api-references).
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

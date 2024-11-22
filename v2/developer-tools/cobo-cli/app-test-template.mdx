@@ -1,0 +1,41 @@
+---
+title: Test template application functionality //rm
+---
+
+Use the `test-template` command to test whether the template application functions as expected on a file or directory.
+
+
+## Usage
+```shell
+cobo app test-template [options] <PATH>
+```
+
+## Arguments
+`<PATH>`: The path to the file or directory in which you want to test the application.
+
+## Options
+- (Required) `-t`, `--app-type <portal|web|mobile|automation>`: Type of application to create. Possible values include:
+  - `portal`: Cobo Portal Apps
+  - `web`: Web applications
+  - `mobile`: Mobile applications
+  - `automation`: AI agents for automating tasks or processes
+- (Required) `--auth <apikey|org|user>`: Authentication method that the application uses to access the WaaS 2.0 service. Possible values include:
+  - `apikey`: API keys
+  - `org`: Org Access Tokens
+  - `user`: Cobo Portal accounts
+- (Required) `--wallet-type <custodial-asset|custodial-web3|mpc-org-controlled|mpc-user-controlled|smart-contract|exchange>`: Wallet type that the app interacts with. Possible values include:
+  - `custodial-asset`: Custodial Wallets (Asset Wallets)
+  - `custodial-web3`: Custodial Wallets (Web3 Wallets)
+  - `mpc-org-controlled`: MPC Wallets (Organization-Controlled Wallets)
+  - `mpc-user-controlled`: MPC Wallets (User-Controlled Wallets)
+  - `smart-contract`: Smart Contract Wallets (Safe{Wallet})
+  - `exchange`: Exchange Wallets
+
+## Example
+```shell
+cobo app test-template --app-type web --auth org my_template_directory
+```
+
+This command tests the template web application using Org Access Tokens as the authentication method in `my_template_directory`.
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

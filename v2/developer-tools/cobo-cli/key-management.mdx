@@ -1,0 +1,60 @@
+---
+title: "Key management"
+---
+
+This guide explains how to generate and manage API keys and app keys using Cobo CLI. Both keys are used for authenticating with Cobo WaaS 2.0. 
+
+## Generate keys
+
+Use the `keys generate` command to generate a new API or app key pair.
+
+### Usage
+
+```shell
+cobo keys generate [options]
+```
+
+### Options
+
+- `--key-type <key_type>`: Specify the type of key to generate (`API` or `APP`). Default is `API`.
+- `--alg <algorithm>`: Specify the key generation algorithm. Default is `ed25519`.
+- `--force`: Force replacement of existing keys.
+
+### Example
+
+Generate a new API key pair:
+
+```shell
+cobo keys generate
+```
+
+Generate a new APP key pair:
+
+```shell
+cobo keys generate --key-type APP
+```
+
+Force replacement of existing API keys:
+
+```shell
+cobo keys generate --force
+```
+
+## Key storage
+
+Generated keys are securely stored in your configuration file (default: `~/.cobo/config.toml`).
+
+<Warning>
+Never share your secret key. Keep it secure and use only the public key when registering your API key in Cobo Portal.
+</Warning>
+
+
+## Best practices
+
+- Regularly rotate your API and app keys to maintain security.
+- Use different keys for the development and production environments.
+- Limit the permissions associated with each key to the minimum required for its intended use.
+- Monitor key usage and revoke any keys that may have been compromised.
+
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

@@ -10,6 +10,10 @@ description: "This operation retrieves the specified transactions."
 public func getTransactions(transactionIDs: [String]) async throws -> [Transaction]
 ```
 
+```Dart Flutter
+Future<List<Transaction>> getTransactions(List<String> transactionIDs) async
+```
+
 </CodeGroup>
 
 
@@ -30,6 +34,19 @@ Task {
     } catch {
         print("Error: \(error)")
     }
+}
+```
+
+```Dart Flutter
+final List<String> transactionIDs = ["transaction_id_01"];
+
+try {
+    final transactions = await sdkInstance?.getTransactions(transactionIDs: transactionIDs);
+    for (final transaction in transactions) {
+        print("$transaction\n");
+    }
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

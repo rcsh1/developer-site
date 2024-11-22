@@ -1,0 +1,155 @@
+---
+title: "Login and authentication"
+---
+
+This guide explains how to authenticate your Cobo CLI to Cobo Wallet-as-a-Service (WaaS) 2.0. You'll learn about the three available authentication methods, understand their key differences, and get step-by-step instructions for implementing each approach. Choose the authentication method that best suits your security requirements and use case.
+
+## Manage authentication methods
+
+Cobo CLI supports the following three authentication methods:
+
+- Log in with your Cobo Portal account. Cobo CLI will be granted the same permissions and wallet scope as your Cobo Portal account. You can use this method to manage your Cobo Portal Apps, such as creating, publishing, and updating an app.
+- You can also use an API key for authentication. Cobo CLI will be granted the permissions and wallet scope configured for the API key.
+- If you want to test your Cobo Portal App locally through Cobo CLI, you can use an Org Access Token for authentication. This method grants your Cobo Portal App access to an organization.
+
+
+You can switch between these methods using the `auth` command:
+
+```shell
+cobo auth <METHOD>
+```
+Replace `<METHOD>` with one of the following:
+
+- `apikey`: Use the API Key to authenticate.
+- `user`: Log in with your Cobo Portal account.
+- `org`: Use the Org Access Token to authenticate.
+
+For example, to switch to the API Key authentication method, run the following command:
+
+```shell
+cobo auth apikey
+```
+
+To view the current authentication method, run the following command:
+
+```shell
+cobo auth
+```
+
+## Log in with your Cobo Portal account
+
+To log in with your Cobo Portal account, run the following command:
+
+```
+cobo login --user
+```
+
+This command will initiate the user login process:
+
+1. Cobo CLI will display a browser URL and a setup code.
+2. You'll be prompted to open a browser to continue the authorization process. If you confirm, your default browser will open with the provided URL.
+<img src="/v2/images/developer-tools/user-login.png" className="screenshot_modal" alt="Log in with your Cobo Portal account" />
+3. Verify that the setup code shown in your browser matches the code displayed in your terminal. This step ensures the security of your login process.
+4. After verifying that the codes match, proceed with authorization by selecting your target organization and clicking **Confirm**. This completes the login process and grants Cobo CLI access to the selected organization.
+
+
+## Authenticate with Org Access Tokens
+
+An Org Access Token allows a Cobo Portal App to access an organization's resources. 
+
+### Submit your app to Cobo
+
+To acquire an Org Access Token, you need to create a Cobo Portal App and submit it to Cobo first:
+
+
+1. Create a Cobo Portal App. Select `portal` as the app type when prompted.
+
+    ```
+    cobo app init
+    ```
+
+2. In the root directory of the app that you created, generate an app key, which is used by Cobo to authenticate a Cobo Portal App.
+
+    ```
+    cobo keys generate --key-type APP
+    ```
+
+3. [Log in with your Cobo Portal account](#log-in-with-your-cobo-portal-account). This is required before you can submit your app to Cobo. Follow the instructions on the screen to complete the authentication process.
+
+    ```
+    cobo login --user
+    ```
+4. Submit your app to Cobo for approval.
+
+    ```
+    cobo app upload
+    ```
+
+### Acquire an Org Access Token
+After you submit your app to Cobo, you can acquire an Org Access Token by running the following command:
+
+```
+cobo login --org
+```
+This command will:
+
+1. Display a browser URL and a setup code in the terminal.
+2. Prompt you to open a browser to continue the authorization process. If you confirm, your default browser will open with the provided URL.
+<img src="/v2/images/developer-tools/org-access-token.png" className="screenshot_modal" alt="Acquire an Org Access Token" />
+3. Verify that the setup code shown in your browser matches the code displayed in your terminal. This step ensures the security of your authentication process.
+4. After verifying that the codes match, proceed with authorization by granting permissions for Cobo CLI to access your organization's resources.
+
+
+After submitting the authorization request, your organization's admin will need to approve it. Once approved, your Org Access Token will be saved in the `.env` file in the root directory of your project.
+
+<Note>
+If you want to call the WaaS APIs with the Org Access Token, you need to have your app approved by Cobo first.
+</Note>
+
+### Refresh an Org Access Token
+It is best practice to regularly refresh your Org Access Token to maintain security. To refresh an existing Org Access Token and update it in the `.env` file, add the `--refresh-token` flag:
+
+```shell
+cobo login --org --refresh-token
+```
+
+
+## Authenticate with API keys
+
+To use this method, you need to generate an API key pair and register the public key in [Cobo Portal](https://portal.cobo.com).
+
+1. Generate an API key pair by running the following command.
+    ```shell
+    cobo keys generate
+    ```
+2. Add the newly generated API key to Cobo Portal by following the instructions in [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key). Remember to update the API key in Cobo Portal every time you generate a new key pair.
+
+<Info>You can quickly access the developer console by using the `cobo open developer` command. This shortcut opens your browser and takes you directly to the right page in Cobo Portal.</Info> 
+<Warning>
+Ensure you grant only the necessary permissions to your API key. Limiting access helps maintain the security of your account and resources.
+</Warning>
+
+Once you've added the API key to Cobo Portal and set the appropriate permissions, your Cobo CLI will be able to authenticate using this key for subsequent operations.
+
+
+## Log out
+
+To log out of Cobo CLI, use the `logout` command:
+
+```shell
+cobo logout
+```
+
+You can specify the authentication method you want to log out from using the following options:
+
+- `cobo logout --user`: Log out from your Cobo Portal account.
+- `cobo logout --org`: Remove the Org Access Token only. You will need to acquire a new token to authenticate your CLI.
+- `cobo logout --all`: Log out from your Cobo Portal account and remove the Org Access Token (this is the default behavior if no option is specified).
+
+
+## Best Practices
+
+- Keep your keys and access tokens secure and never share them with others. Use environment variables or a secure configuration file to store them.
+- Regularly refresh your tokens and rotate your API keys to maintain security. Remember to update the API key in Cobo Portal every time you generate a new key pair.
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
