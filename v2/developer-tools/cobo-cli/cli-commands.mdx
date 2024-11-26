@@ -1,0 +1,466 @@
+---
+title: 'Command reference'
+description: 'A comprehensive guide to all commands supported by Cobo CLI'
+---
+
+## version
+
+Use the [version](/v2/developer-tools/cobo-cli/version-and-updates) command to display the current version of Cobo CLI.
+
+```shell
+cobo version
+```
+
+## login
+
+Use the [login](/v2/developer-tools/cobo-cli/login-and-authentication) command to log in to your Cobo Portal account or acquire an Org Access Token.
+
+```shell
+cobo login [options]
+```
+
+**Options**
+- `-u`, `--user`: Log in with your Cobo Portal account (default).
+- `-o`, `--org`: Acquire an Org Access Token.
+- `--refresh-token`: Refresh the existing Org Access Token instead of generating a new one.
+
+**Example**
+
+```shell
+cobo login --org
+```
+
+## logout
+
+Use the [logout](/v2/developer-tools/cobo-cli/login-and-authentication#remove-an-access-token) commands to log out of your Cobo Portal account or remove the Org Access Token.
+
+```shell
+cobo logout [options]
+```
+
+**Options**
+- `-u`, `--user`: Log out from your Cobo Portal account.
+- `-o`, `--org`: Remove the Org Access Token only.
+- `-a`, `--all`: Log out from your Cobo Portal account and remove the Org Access Token (default behavior).
+
+**Example**
+
+```shell
+cobo logout --user
+```
+## auth
+
+Use the [auth](/v2/developer-tools/cobo-cli/login-and-authentication) command to set or view the current authentication method.
+
+```shell
+cobo auth <method>
+```
+
+**Arguments**
+- `method`: The authentication method to set. Possible values include `apikey`, `user`, and `org`.
+
+**Example**
+
+```shell
+cobo auth apikey
+```
+
+## env
+
+Use the [env](/v2/developer-tools/cobo-cli/environment-management) command to set or view the current environment.
+
+```shell
+cobo env <environment>
+```
+
+**Arguments**
+- `<environment>`: The environment to set. Possible values include `dev` and `prod`.
+
+**Example**
+
+```shell
+cobo env prod
+```
+## keys
+
+Use the [keys](/v2/developer-tools/cobo-cli/key-management) commands to generate and manage API keys and app keys.
+
+### generate
+
+Use the `generate` command to generate a new API or app key pair.
+
+```shell
+cobo keys generate [options]
+```
+
+**Options**
+- `--key-type <key_type>`: Specify the type of key to generate (`API` or `APP`). Default is `API`.
+- `--alg <algorithm>`: Specify the key generation algorithm. Default is `ed25519`.
+- `--force`: Force replacement of existing keys.
+
+**Example**
+
+```shell
+cobo keys generate --key-type APP --force
+```
+
+
+## config
+
+Use the [config](/v2/developer-tools/cobo-cli/configuration) commands to manage CLI configuration settings.
+
+### set
+Use the `set` command to set a configuration value.
+
+```shell
+cobo config set <key> <value>
+```
+**Arguments**
+- `key`: The key to set.
+- `value`: The value to set.
+
+**Example**
+
+```shell
+cobo config set environment dev
+```
+
+### get
+
+Use the `get` command to get a configuration value.
+
+```shell
+cobo config get <key>
+```
+
+**Arguments**
+- `key`: The key to get.
+
+**Example**
+
+```shell
+cobo config get environment
+```
+
+### list
+
+Use the `list` command to list all configuration values.
+
+```shell
+cobo config list
+```
+
+### delete
+
+Use the `delete` command to delete a configuration value.
+```shell
+cobo config delete <key>
+```
+
+**Arguments**
+- `key`: The key to delete.
+
+**Example**
+
+```shell
+cobo config delete api_key
+```
+
+## app
+
+### app init
+
+Use the [init](/v2/developer-tools/cobo-cli/app-init) command to create an application that integrates the WaaS 2.0 service.
+
+```shell
+cobo app init [options]
+```
+
+**Options**
+- `-t`, `--app-type <portal|web|mobile|automation>`: The type of WaaS application. 
+- `--auth <apikey|org|user>`: The authentication method that the application uses to access the WaaS 2.0 service. 
+- `--wallet-type <custodial-asset|custodial-web3|mpc-org-controlled|mpc-user-controlled|smart-contract|exchange>`: The wallet type that the application interacts with.
+- `--mobile <flutter|react-native|kotlin|swift>`: The mobile development framework of the application.
+- `--web <react|nextjs|vue|svelte>`: The web development framework of the application. 
+    <Note>Currently Cobo CLI only supports `react`.</Note>
+- `--backend <fastapi|django|express|flask|spring-boot|gin|laravel|rails|nextjs>`: The backend development framework of the application.
+    <Note>Currently Cobo CLI only supports `fastapi`.</Note>
+- `-d`, `--directory <DIRECTORY>`: The directory in which you want to create the application project. 
+- `-f`, `--force`: Force overwrite the project directory if it already exists.
+
+**Example**
+
+```shell
+cobo app init --app-type web --auth apikey --directory my_project
+```
+
+### app upload
+
+Use the [upload](/v2/developer-tools/cobo-cli/app-upload) command to publish your Cobo Portal Apps to Cobo Portal.
+
+```shell
+cobo app upload
+```
+
+### app update
+
+Use the [update](/v2/developer-tools/cobo-cli/app-update) command to deploy updates to a Cobo Portal App on Cobo Portal.
+
+```shell
+cobo app update
+```
+
+### app status
+
+Use the [status](/v2/developer-tools/cobo-cli/app-status) command to check the status of Cobo Portal Apps. 
+
+```shell
+cobo app status
+```
+
+## webhook
+
+### listen
+
+Use the [listen](/v2/developer-tools/cobo-cli/listen-and-forward-events) command to establish a WebSocket connection to the WaaS 2.0 service and stream webhook events.
+
+```shell
+cobo webhook listen [options]
+```
+
+**Options**
+
+- `--events <event_type>`: Filter the events by specifying event types. Possible values for event types include:
+    - `wallets.transaction.created`
+    - `wallets.transaction.updated`
+    - `wallets.transaction.failed`
+    - `wallets.transaction.succeeded`
+    - `wallets.mpc.tss_request.created`
+    - `wallets.mpc.tss_request.updated`
+    - `wallets.mpc.tss_request.failed`
+    - `wallets.mpc.tss_request.succeeded`
+- `--forward <url>`: Forward received events to the specified URL.
+
+**Example**
+
+```shell   
+cobo webhook listen --events wallets.transaction.created,wallets.transaction.updated --forward "https://your-endpoint.com/webhook"
+```
+
+### trigger
+
+Use the [trigger](/v2/developer-tools/cobo-cli/trigger-events) command to test the functionality of your webhook endpoint by triggering a test webhook event.
+
+```shell
+cobo webhook trigger <event_type> [options]
+```
+
+**Arguments**
+
+`<event_type>`: The webhook event type you want to trigger. Possible values include:
+  - `wallets.transaction.created`
+  - `wallets.transaction.updated`
+  - `wallets.transaction.failed`
+  - `wallets.transaction.succeeded`
+  - `wallets.mpc.tss_request.created`
+  - `wallets.mpc.tss_request.updated`
+  - `wallets.mpc.tss_request.failed`
+  - `wallets.mpc.tss_request.succeeded`
+
+**Options**
+
+`--override <json_string>`: Override specific fields in the event payload with the provided JSON string.
+
+**Example**
+
+```shell
+cobo webhook trigger wallets.transaction.updated --override '{"chain_id": "ETH", "amount": "1000000000000000000"}'
+```
+
+### events
+
+Use the [events](/v2/developer-tools/cobo-cli/event-types) command to retrieve all available webhook event types in WaaS 2.0.
+
+```shell
+cobo webhook events
+```
+
+
+## API commands
+
+### get
+
+Use the [get](/v2/developer-tools/cobo-cli/get-requests) command to make a GET request to the WaaS 2.0 service. You can also use it to retrieve a list of all available GET operations or display the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+```shell
+cobo get <path> [options]
+```
+
+**Arguments**
+
+`<path>`: The URL of the endpoint to which the GET request will be sent.
+
+**Options**
+- `-d, --describe`: Display the description of the specified GET operation, including its expected responses and error information (if any).
+- `-l, --list`: List all available GET operations of the WaaS 2.0 service. 
+
+**Example**
+
+```shell
+cobo get /wallets/11223344
+```
+
+### post
+
+Use the [post](/v2/developer-tools/cobo-cli/post-requests) command to make a POST request to the WaaS 2.0 service. You can also use it to retrieve a list of all available POST operations or display the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+```shell
+cobo post <path> [options]
+``` 
+
+**Arguments**
+
+`<path>`: The URL of the endpoint to which the POST request will be sent.
+
+**Options**
+- `-d, --describe`: Display the description of the specified POST operation, including its expected responses and error information (if any).
+- `-l, --list`: List all available POST operations of the WaaS 2.0 service. 
+
+**Example**
+
+```shell
+cobo post /wallets --name "My New Wallet" --wallet_type Custodial
+```
+
+### put
+
+Use the [put](/v2/developer-tools/cobo-cli/put-requests) command to make a PUT request to the WaaS 2.0 service. You can also use it to retrieve a list of all available PUT operations or display the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+```shell
+cobo put <path> [options]
+``` 
+
+**Arguments**
+
+`<path>`: The URL of the endpoint to which the PUT request will be sent.
+
+**Options**
+- `-d, --describe`: Display the description of the specified PUT operation, including its expected responses and error information (if any).
+- `-l, --list`: List all available PUT operations of the WaaS 2.0 service. 
+
+**Example**
+
+```shell
+cobo put /wallets/{wallet_id} --wallet_id your_wallet_id --name "Updated Wallet Name"
+```
+
+### delete
+
+Use the [delete](/v2/developer-tools/cobo-cli/delete-requests) command to make a DELETE request to the WaaS 2.0 service. You can also use it to retrieve a list of all available DELETE operations or display the description of a specified operation within the WaaS 2.0 API.
+
+<Note>To make API requests via Cobo CLI, you need to authenticate your requests by logging in and using Org Access Tokens or API Keys as the authentication method. For more information, refer to [Authenticate with Org Access Tokens](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) and [Authenticate with API Keys](/v2/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys).</Note>
+
+```shell
+cobo delete <path> [options]
+``` 
+
+**Arguments**
+
+`<path>`: The URL of the endpoint to which the DELETE request will be sent.
+
+**Options**
+- `-d, --describe`: Display the description of the specified DELETE operation, including its expected responses and error information (if any).
+- `-l, --list`: List all available DELETE operations of the WaaS 2.0 service. 
+
+**Example**
+
+```shell
+cobo delete -l
+```
+
+
+## Utility commands
+
+### logs tail
+
+Use the [logs tail](/v2/developer-tools/cobo-cli/real-time-logs) command to stream real-time logs of your API requests to the WaaS 2.0 service directly in your terminal. 
+
+```shell
+cobo logs tail [options]
+```
+
+**Options**
+- `--http-method`: Filter API logs by the HTTP method, such as `POST`.
+- `--request-path`: Filter API logs by the endpoint path, such as `/v2/wallets/{wallet_id}`.
+- `--status-code`: Filter API logs by the HTTP status code, such as `200`.
+- `--api-key`: Filter API logs by a specific API key used in requests.
+- `--ip-address`: Filter API logs by the IP address from which requests were made.
+
+**Example**
+
+```shell
+cobo logs tail --http-method POST --status-code 404 --request-path /v2/wallets --ip-address 192.168.1.1
+```
+
+### open
+
+Use the [open](/v2/developer-tools/cobo-cli/open-browser-shortcuts) command to open various pages of Cobo Portal conveniently in your default web browser with shortcuts.
+
+```shell
+cobo open <shortcut>
+```
+
+**Arguments**
+
+`<shortcut>`: Shortcut used to quickly open a page of Cobo Portal. The following shortcuts are available:
+    - `portal`: The login page of Cobo Portal 
+    - `dashboard`: The Dashboard page
+    - `wallets`: The Wallets overview page
+    - `custodial`: The Custodial Wallets overview page
+    - `mpc`: The MPC Wallets overview page
+    - `scw`: The Smart Contract Wallets overview page
+    - `exchange`: The Exchange Wallets overview page
+    - `developer`: Developer Console
+    - `apps`: The Cobo Portal Apps overview page  
+    - `pricing`: The Pricing Plans page 
+    - `approval`: The Approvals page 
+
+**Example**
+
+```shell
+cobo open mpc
+```
+
+### doc
+
+Use the [doc](/v2/developer-tools/cobo-cli/api-documentation) command to fetch and update the latest WaaS 2.0 OpenAPI specification.
+
+```shell
+cobo doc <topic_or_path> [options]
+```
+
+**Arguments**
+
+`<topic_or_path>`: Specifies the documentation topic or the API operation path. Possible values include:
+   - `guides`: (Default)Opens the [Introduction to WaaS 2.0](/v2/guides/overview/introduction) guide.
+   - `api`: Opens the [API Reference](/v2/api-references/playground) page.
+   - `sdk`: Opens the [WaaS SDKs](/v2/developer-tools/quickstart-python) guide.
+   - `apps`: Opens the [Cobo Portal App development](/v2/apps/introduction) guide.
+   - API endpoint paths: Displays detailed information on API operations available for the specified path such as `/wallets`.
+
+**Options**
+
+`-u`, `--update`: Update the OpenAPI specification for WaaS 2.0, ensuring you have the latest API definitions and documentation.
+
+**Example**
+
+```shell
+cobo doc /wallets/mpc/vaults
+```
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

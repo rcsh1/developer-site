@@ -10,6 +10,10 @@ description: "This operation rejects the specified transactions and provides rea
 public func rejectTransactions(transactionIDs: [String], reason: String) throws
 ```
 
+```Dart Flutter
+Future<void> rejectTransactions(List<String> transactionIDs, String reason) async
+```
+
 </CodeGroup>
 
 
@@ -23,6 +27,20 @@ do {
     try sdkInstance?.rejectTransactions(transactionIDs: transactionIDs, reason: reason)
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+final List<String> transactionIDs = ["transaction_id_01"];
+const String reason = "Insufficient funds";
+
+try {
+    await sdkInstance?.rejectTransactions(
+        transactionIDs: transactionIDs,
+        reason: reason
+    );
+} catch (error) {
+    print("Error: $error");
 }
 ```
 

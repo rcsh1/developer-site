@@ -11,6 +11,10 @@ To meet the threshold requirement of [the Threshold Signature Scheme (TSS) speci
 public func importRecoveryKeyShare(jsonRecoverySecrets: String, exportPassphrase: String) throws
 ```
 
+```Dart Flutter
+Future<void> importRecoveryKeyShare(String jsonRecoverySecrets, String exportPassphrase) async
+```
+
 </CodeGroup>
 
 
@@ -21,9 +25,23 @@ let jsonRecoverySecrets = "{}" // exported jsonRecoverySecrets
 let exportPassphrase = "wZdcycVuexvmgt7aMkaeA_2_ioCKrw!B"
 
 do {
-    try sdkInstance?.importRecoveryKeyShare(jsonRecoverySecrets: jsonRecoverySecrets, exportPassphrase: exportPassphrase)
+    try recoverKey?.importRecoveryKeyShare(jsonRecoverySecrets: jsonRecoverySecrets, exportPassphrase: exportPassphrase)
 } catch {
     print("Error: \(error)")
+}
+```
+
+```Dart Flutter
+const String jsonRecoverySecrets = "{}"; // exported jsonRecoverySecrets
+const String exportPassphrase = "wZdcycVuexvmgt7aMkaeA_2_ioCKrw!B";
+
+try {
+    await recoverKey?.importRecoveryKeyShare(
+        jsonRecoverySecrets: jsonRecoverySecrets,
+        exportPassphrase: exportPassphrase
+    );
+} catch (error) {
+     print("Error: $error");
 }
 ```
 

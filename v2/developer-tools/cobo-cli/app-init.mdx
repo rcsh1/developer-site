@@ -1,0 +1,79 @@
+---
+title: Create a WaaS application
+---
+
+Use the `init` command to create an application that integrates the WaaS 2.0 service.
+
+You can specify the details of the WaaS application you want to create through options, including the application type, authentication method, and development frameworks. You can also choose these parameters step by step and create the project using the prompts of Cobo CLI.
+
+## Usage
+
+```shell
+cobo app init [options]
+```
+
+## Options
+- `-t`, `--app-type <portal|web|mobile|automation>`: The type of WaaS application. Possible values include:
+  - `portal`: [Cobo Portal Apps](/v2/apps/introduction)
+  - `web`: Web applications
+  - `mobile`: Mobile applications
+  - `automation`: AI agents for automating tasks or processes
+
+- `--auth <apikey|org|user>`: The authentication method that the application uses to access the WaaS 2.0 service. Possible values include:
+  - `apikey`: [API keys](/v2/guides/overview/cobo-auth#generate-an-api-key)
+  - `org`: [Org Access Tokens](/v2/apps/org-access-tokens)
+
+    <Note>If you are creating a Cobo Portal App, you need to use Org Access Tokens as the authentication method.</Note>
+
+  - `user`: Cobo Portal accounts
+
+- `--wallet-type <custodial-asset|custodial-web3|mpc-org-controlled|mpc-user-controlled|smart-contract|exchange>`: The wallet type that the application interacts with. Possible values include:
+  - `custodial-asset`: Custodial Wallets (Asset Wallets)
+  - `custodial-web3`: Custodial Wallets (Web3 Wallets)
+  - `mpc-org-controlled`: MPC Wallets (Organization-Controlled Wallets)
+  - `mpc-user-controlled`: MPC Wallets (User-Controlled Wallets)
+  - `smart-contract`: Smart Contract Wallets (Safe{Wallet})
+  - `exchange`: Exchange Wallets
+
+    <Note>Currently this parameter does not affect the application to be created.</Note>
+
+- `--mobile <flutter|react-native|kotlin|swift>`: The mobile development framework of the application. Possible values include:
+  - `flutter`: Flutter
+  - `react-native`: React Native
+  - `kotlin`: Kotlin
+  - `swift`: Swift
+
+- `--web <react|nextjs|vue|svelte>`: The web development framework of the application. Possible values include:
+  - `react`: React
+  - `nextjs`: Next.js
+  - `vue`: Vue
+  - `svelte`: Svelte
+<Note>Currently Cobo CLI only supports `react`.</Note>
+
+
+- `--backend <fastapi|django|express|flask|spring-boot|gin|laravel|rails|nextjs>`: The backend development framework of the application. Possible values include:
+  - `fastapi`: FastAPI
+  - `django`: Django
+  - `express`: Express
+  - `flask`: Flask
+  - `spring-boot`: Spring Boot
+  - `gin`: Gin
+  - `laravel`: Laravel
+  - `rails`: Ruby on Rails
+  - `nextjs`: Next.js
+<Note>Currently Cobo CLI only supports `fastapi`.</Note>
+
+- `-d`, `--directory <DIRECTORY>`: The directory in which you want to create the application project. 
+- `-f`, `--force`: Force overwrite the project directory if it already exists.
+
+<Note>If you use the prompts of Cobo CLI to create the application, you can skip the app key step for now if you have not generated an app key.</Note>
+
+## Example
+
+```shell
+cobo app init --app-type web --auth org --directory my_project
+```
+
+This command initializes a new WaaS application project of the `web` type (indicating a web application), using Org Access Tokens for authentication, and creates it in the directory named `my_project`.
+
+<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>

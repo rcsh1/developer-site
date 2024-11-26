@@ -10,6 +10,10 @@ description: "This operation rejects the specified TSS requests and provides rea
 public func rejectTSSRequests(tssRequestIDs: [String], reason: String) throws
 ```
 
+```Dart Flutter
+Future<void> rejectTSSRequests(List<String> tssRequestIDs, String reason) async
+```
+
 </CodeGroup>
 
 
@@ -25,6 +29,21 @@ do {
     print("Error: \(error)")
 }
 ```
+
+```Dart Flutter
+final List<String> tssRequestIDs = ["tss_request_id_01"];
+const String reason = "The TSS request does not meet the required criteria.";
+
+try {
+    await sdkInstance?.rejectTSSRequests(
+        tssRequestIDs: tssRequestIDs, 
+        reason: reason
+    );
+} catch (error) {
+    print("Error: $error");
+}
+```
+
 
 </RequestExample>
 
