@@ -1,10 +1,6 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "Developer Hub",
-  "metadata": {
-    "og:title": "Cobo Developer Hub",
-    "og:description": "An institutional-grade, open platform for Web3 developers. Browse our resources to build innovative blockchain products and secure crypto custody solutions."
-  },
   "analytics": {
     "ga4": {
       "measurementId": "G-XLRX3YMJXT"
@@ -106,7 +102,13 @@
         "v2/guides/overview/introduction",
         "v2/guides/overview/environments",
         "v2/guides/overview/cobo-auth",
-        "v2/guides/overview/pagination",
+        {
+          "group": "Permissions",
+          "pages": [
+            "v2/guides/overview/permissions-and-scopes",
+            "v2/guides/overview/permission-list"
+          ]
+        },
         "v2/guides/overview/changelog",
         "v2/guides/overview/upgrade-guide"
       ],
@@ -165,9 +167,10 @@
       "version": "Version 2.0"
     },
     {
-      "group": "Testing and debugging",
+      "group": "Development Tools and Resources",
       "pages": [
         "v2/api-references/playground",
+        "v2/api-references/pagination",
         "v2/api-references/error-codes"
       ],
       "version": "Version 2.0"
@@ -1083,6 +1086,10 @@
     {
       "source": "/v2/guides/troubleshoot/error-codes",
       "destination": "/v2/api-references/error-codes"
+    },
+    {
+      "source": "/v2/guides/overview/pagination",
+      "destination": "/v2/api-references/pagination"
     }
   ]
 }
