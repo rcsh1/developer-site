@@ -128,9 +128,9 @@ To enable effective tracking, each clickable element in your app needs a unique 
 
 Each `data-track-id` or `dtid` attribute value must be lowercase words separated by underscores in the format `{PAGE_IDENTIFIER}_{COMPONENT_IDENTIFIER}_{ELEMENT_IDENTIFIER}` that follow the following rules:
 
-- Page identifier: Identifying the page or module's feature, such as ` home`, `login`, or `profile`.
-- Component identifier: Identifies the specific UI component within the page, such as `form`, `navbar`, or `modal`.
-- Element identifier: Identifies the button or interactive element, such as `submit`, `register`, or `next_step`.
+- Page identifier: Identifying the page or module's feature, including `home`, `login`, and `profile`.
+- Component identifier: Identifies the specific UI component within the page, including `form`, `navbar`, `modal`, `search_bar`, `button`, `banner`, `icon_button`, `tab`, `switch_button`, `checkbox`, `radio`, `sidebar`, `footer`, `header`, and `link`.
+- Element identifier: Identifies the button or interactive element, including `submit`, `register`, and `next_step`.
 
 For example, the attribute value for a submit button on the home page can be `home_form_submit`.
 
@@ -145,6 +145,34 @@ The following example shows how to implement this:
 ```
 
 However, if using the event-blocking methods is necessary, ensure that each child element within the parent has the same tracking attribute to maintain accurate tracking.
+
+**Input field collection rules**
+
+For input fields with a `data-track-id`, the user input and the value of `data-track-id` will be collected for analyzing user behavior.
+
+In the following example, the keywords entered by the user and the value of `home_search_bar_wallet` will be collected.
+
+```html
+<input type="text" data-track-id="home_search_bar_wallet" placeholder="Enter keywords" />
+```
+
+For sensitive information such as passwords and personal identification information, you can mark an input field as containing sensitive information by using `data-track-sensitive="true"`, which will tell the tracking script to automatically ignore the data and not collect it.
+
+In the following example, the password entered by the user will not be collected by the tracking script.
+
+```html
+<input type="password" data-track-id="login_form_password" data-track-sensitive="true" placeholder="Enter your password" />
+```
+
+If an input field is nested within other components (such as a form), the parent `data-track-id` will not override or replace the input field's own `data-track-id`.
+
+In the following example, the `data-track-id` of the input field is `login_form_email`, not `login_form`.
+
+```html
+<form data-track-id="login_form">
+   <input type="text" data-track-id="login_form_email" placeholder="Email" />
+</form>
+```
 
 ### useAddUidToBody
 

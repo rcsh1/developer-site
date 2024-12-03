@@ -20,9 +20,9 @@ cobo auth <METHOD>
 ```
 Replace `<METHOD>` with one of the following:
 
-- `apikey`: Use the API Key to authenticate.
+- `apikey`: Use the API Key to authenticate. For more details, refer to [API key and API secret](/v2/guides/overview/cobo-auth#api-key-and-api-secret).
 - `user`: Log in with your Cobo Portal account.
-- `org`: Use the Org Access Token to authenticate.
+- `org`: Use the Org Access Token to authenticate. For more details, refer to [Org Access Tokens](/v2/apps/org-access-tokens).
 
 For example, to switch to the API Key authentication method, run the following command:
 
@@ -116,9 +116,9 @@ cobo login --org --refresh-token
 
 ## Authenticate with API keys
 
-To use this method, you need to generate an API key pair and register the public key in [Cobo Portal](https://portal.cobo.com).
+To use this method, you need to generate an API key and an API secret, and register the API key on [Cobo Portal](https://portal.cobo.com).
 
-1. Generate an API key pair by running the following command.
+1. Generate an API key pair (an API key and an API secret) by running the following command.
     ```shell
     cobo keys generate
     ```
@@ -152,4 +152,4 @@ You can specify the authentication method you want to log out from using the fol
 - Keep your keys and access tokens secure and never share them with others. Use environment variables or a secure configuration file to store them.
 - Regularly refresh your tokens and rotate your API keys to maintain security. Remember to update the API key in Cobo Portal every time you generate a new key pair.
 
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

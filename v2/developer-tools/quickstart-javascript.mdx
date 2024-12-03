@@ -15,7 +15,7 @@ You can go to [GitHub](https://github.com/CoboGlobal/cobo-waas2-js-sdk/) to acce
 - Install NPM.
 
 - Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
-- You have [generated an API key](/v2/guides/overview/cobo-auth#generate-an-api-key), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
+- You have [generated an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
 
 ## Install the SDK
 
@@ -27,13 +27,13 @@ npm install @cobo/cobo-waas2 --save
 
 ## Configure API key and HTTP host
 
-1. Set the private key.
+1. Set the API secret.
 
 ```javascript
 // Initialize the default API client
 const apiClient = CoboWaas2.ApiClient.instance
-// Set the private key
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// Set the API secret
+apiClient.setPrivateKey("<YOUR_API_SECRET_IN_HEX>");
 ```
 
 2. Select which [environment](/v2/guides/overview/environments) you want to use.
@@ -58,8 +58,8 @@ const CoboWaas2 = require('@cobo/cobo-waas2');
 const apiClient = CoboWaas2.ApiClient.instance
 // Use the development environment
 apiClient.setEnv(CoboWaas2.Env.DEV);
-// Set the private key
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// Set the API secret
+apiClient.setPrivateKey("<YOUR_API_SECRET_IN_HEX>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsApi();
 const opts = {
@@ -85,8 +85,8 @@ const CoboWaas2 = require('@cobo/cobo-waas2');
 const apiClient = CoboWaas2.ApiClient.instance
 // Use the development environment
 apiClient.setEnv(CoboWaas2.Env.DEV);
-// Set the private key
-apiClient.setPrivateKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+// Set the API secret
+apiClient.setPrivateKey("<YOUR_API_SECRET_IN_HEX>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsApi();
 const walletName = "My Wallet"
@@ -109,4 +109,4 @@ apiInstance.createWallet(opts).then((data) => {
 ```
 
 
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

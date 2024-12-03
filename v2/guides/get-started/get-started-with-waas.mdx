@@ -15,17 +15,15 @@ If you choose to use a WaaS SDK instead of manually writing the API requests, yo
 
 Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
 
-
-
 <Note>This guide uses the development environment in all of its examples. Please create your organization in the development environment at https://portal.dev.cobo.com/.</Note>
 
-## Generate an API key
+## Generate an API key and an API secret
 
-Use either OpenSSL or the Python library to generate an Ed25519 key pair. This guide uses OpenSSL as an example. To learn more about generating an API key, see [Generate an API key](/v2/guides/overview/cobo-auth#generate-an-api-key).
+Use either OpenSSL or the Python library to generate an Ed25519 key pair as the API key and API secret. This guide uses OpenSSL as an example. To learn more about generating an API key and an API secret, see [Generate an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret).
 
 1. In a terminal window, run the following OpenSSL commands:
 
-```
+```shell
 # Generate a private key and save it in the `private.key.pem` file.
 openssl genpkey -algorithm ed25519 -out private_key.pem
 
@@ -77,7 +75,7 @@ headers = {
 }
 ```
 
-- Biz-Api-Key: The public key you generate in [Generate an API key](/v2/guides/overview/cobo-auth#generate-an-api-key).
+- Biz-Api-Key: The API key. To learn how to generate an API key, see [Generate an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret).
 - Biz-Api-Nonce: A nonce is the current time in Unix timestamp format, measured in milliseconds. 
 - Biz-Api-Signature: The API signature. To learn how to calculate an API signature, see [Calculate an API Signature](/v2/guides/overview/cobo-auth#calculate-the-api-signature).
 
@@ -91,7 +89,7 @@ This guide uses the [List supported chains](/v2/api-references/wallets/list-supp
 curl --location --request GET 'https://api.dev.cobo.com/v2/wallets/chains?wallet_type=Custodial&wallet_subtype=&chain_ids=&limit=10&before=&after='
   
   # Replace the following with your own authentication information
-  --header 'BIZ-API-KEY: {YOUR_PUBLIC_KEY}' \
+  --header 'BIZ-API-KEY: {YOUR_API_KEY}' \
   --header 'Biz-Api-Nonce: {NONCE}' \
   --header 'Biz-Api-Signature: {YOUR_API_SIGNATURE}'
 ```
@@ -140,8 +138,8 @@ import cobo_waas2
 from pprint import pprint
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key.
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret.
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment 
    host="https://api.dev.cobo.com/v2"
 )
@@ -176,4 +174,4 @@ You have successfully sent an API request and received a response. However, ther
 - To learn the complete process of creating and interacting with Custodial Wallets (Asset Wallets), see [Get started with Custodial Wallets (Asset Wallets)](/v2/guides/custodial-wallets/get-started-asset-wallets).
 
 - To learn where to view API-related data and logs, see [Introduction to Developer Console](https://manuals.cobo.com/en/portal/developer-console/introduction).
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

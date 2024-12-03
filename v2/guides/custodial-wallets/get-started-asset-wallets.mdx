@@ -42,8 +42,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -82,8 +82,8 @@ public class ListEnabledChainsExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Use the development environment
         defaultClient.setEnv(Env.DEV);
-        // Replace `<YOUR_PRIVATE_KEY>` with your private key
-        defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
         WalletsApi apiInstance = new WalletsApi();
         try {
             Integer limit = 50;
@@ -131,8 +131,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -172,8 +172,8 @@ public class ListEnabledTokensExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Use the development environment
         defaultClient.setEnv(Env.DEV);
-        // Replace `<YOUR_PRIVATE_KEY>` with your private key
-        defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
         WalletsApi apiInstance = new WalletsApi();
         try {
             String chainIds = null;
@@ -217,8 +217,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -260,8 +260,8 @@ public class CreateWalletExample {
        ApiClient defaultClient = Configuration.getDefaultApiClient();
        // Use the development environment
        defaultClient.setEnv(Env.DEV);
-       // Replace `<YOUR_PRIVATE_KEY>` with your private key
-       defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
        WalletsApi apiInstance = new WalletsApi();
        try {
            CreateCustodialWalletParams params = new CreateCustodialWalletParams()
@@ -306,8 +306,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -351,8 +351,8 @@ public class CreateAddressExample {
        ApiClient defaultClient = Configuration.getDefaultApiClient();
        // Use the development environment
        defaultClient.setEnv(Env.DEV);
-       // Replace `<YOUR_PRIVATE_KEY>` with your private key
-       defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
        WalletsApi apiInstance = new WalletsApi();
        try {
            UUID wallet_id = UUID.fromString("<YOUR_WALLET_ID>");
@@ -420,8 +420,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -460,8 +460,8 @@ public class ListTransactionsExample {
        ApiClient defaultClient = Configuration.getDefaultApiClient();
        // Use the development environment
        defaultClient.setEnv(Env.DEV);
-       // Replace `<YOUR_PRIVATE_KEY>` with your private key
-       defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
        TransactionsApi apiInstance = new TransactionsApi();
        try {
            String requestId = null;
@@ -538,8 +538,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -598,8 +598,8 @@ public class TransferExample {
        ApiClient defaultClient = Configuration.getDefaultApiClient();
        // Use the development environment
        defaultClient.setEnv(Env.DEV);
-       // Replace `<YOUR_PRIVATE_KEY>` with your private key
-       defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
        TransactionsApi apiInstance = new TransactionsApi();
        try {
            UUID walletId = UUID.fromString("<YOUR_WALLET_ID>");
@@ -671,8 +671,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -709,8 +709,8 @@ public class GetTransactionExample {
        ApiClient defaultClient = Configuration.getDefaultApiClient();
        // Use the development environment
        defaultClient.setEnv(Env.DEV);
-       // Replace `<YOUR_PRIVATE_KEY>` with your private key
-       defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
        TransactionsApi apiInstance = new TransactionsApi();
        try {
            UUID transactionId = UUID.fromString("<YOUR_TRANSACTION_ID>");
@@ -748,8 +748,8 @@ from cobo_waas2 import (
 )
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -786,8 +786,8 @@ public class ListTokenBalancesExample {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Use the development environment
         defaultClient.setEnv(Env.DEV);
-        // Replace `<YOUR_PRIVATE_KEY>` with your private key
-        defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
         WalletsApi apiInstance = new WalletsApi();
         try {
             UUID wallet_id = UUID.fromString("<YOUR_WALLET_ID>");
@@ -824,4 +824,4 @@ public class ListTokenBalancesExample {
 
 
 
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

@@ -14,7 +14,7 @@ You can go to [GitHub](https://github.com/CoboGlobal/cobo-waas2-python-sdk/) to 
 
 - You have installed Python 3.7 or newer.
 - Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
-- You have [generated an API key](/v2/guides/overview/cobo-auth#generate-an-api-key), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
+- You have [generated an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
 
 ## Install the SDK
 
@@ -39,8 +39,8 @@ You can refer to the [configuration.py file](https://github.com/CoboGlobal/cobo-
 ```python
 configuration = cobo_waas2.Configuration(
 
-  # Replace `<YOUR_PRIVATE_KEY>` with your private key.
-  api_private_key="<YOUR_PRIVATE_KEY>",
+  # Replace `<YOUR_API_SECRET>` with your API secret.
+  api_private_key="<YOUR_API_SECRET>",
 
   # To use the development environment, set the host to `https://api.dev.cobo.com/v2`.
   # To use the production environment, set the host to `https://api.cobo.com/v2`.
@@ -61,8 +61,8 @@ import cobo_waas2
 from pprint import pprint
 
 configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
    # Use the development environment
    host="https://api.dev.cobo.com/v2"
 )
@@ -89,8 +89,8 @@ from pprint import pprint
 from cobo_waas2 import CreateCustodialWalletParams, WalletType, WalletSubtype
 
 configuration = cobo_waas2.Configuration(
-    # Replace `<YOUR_PRIVATE_KEY>` with your private key
-    api_private_key="<YOUR_PRIVATE_KEY>",
+    # Replace `<YOUR_API_SECRET>` with your API secret
+    api_private_key="<YOUR_API_SECRET>",
     # Use the development environment
     host="https://api.dev.cobo.com/v2"
 )
@@ -113,4 +113,4 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     except Exception as e:
         print("Exception when calling WalletsApi->create_wallet: %s\n" % e)
 ```
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
