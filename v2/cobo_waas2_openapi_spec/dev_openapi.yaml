@@ -1476,7 +1476,7 @@ paths:
 
         Access tokens allow the app to signal to the WaaS service that it has received permission to access specific resources of the app user's [organization](https://manuals.cobo.com/en/portal/organization/introduction). Once the app has been granted permission by the organization's admin, it can use this operation to obtain both an Org Access Token and a Refresh Token.
 
-        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token.
+        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token. 
       security:
         - CoboAuth: []
       parameters:
@@ -2031,7 +2031,7 @@ components:
         total_count:
           type: integer
           example: 10000
-          description: 'The total number of records that match the query, across all pages.'
+          description: 'The total number of records that match the query criteria, unaffected by the pagination parameters (`before` , `after`, and `limit`).'
     ErrorResponse:
       type: object
       description: The response of a failed request.
