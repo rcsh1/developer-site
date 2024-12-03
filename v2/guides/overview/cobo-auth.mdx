@@ -4,8 +4,6 @@ title: "Authentication"
 
 This article explains how to authenticate your API requests to the WaaS service using Cobo Auth. 
 
-<Note>If you are using Cobo's WaaS SDKs, you can skip this topic because the SDKs already encapsulate the authentication mechanism for you.</Note>
-
 To ensure secure access to your crypto assets, the WaaS service requires you to use an EdDSA signature to sign each of your API requests, except for publicly accessible API operations.
 
 You need to provide your API key, a nonce, and an API signature as request headers:
@@ -18,19 +16,63 @@ headers = {
 }
 ```
 
-- Biz-Api-Key: The public key you generate in [Generate an API key](#generate-an-api-key).
-- Biz-Api-Nonce: A nonce is the current time in Unix timestamp format, measured in milliseconds. 
+- Biz-Api-Key: The API key used for the request. For more details, refer to [API key](#api-key).
+- Biz-Api-Nonce: The nonce. A nonce is the current time in Unix timestamp format, measured in milliseconds. 
 - Biz-Api-Signature: The API signature. To learn how to calculate an API signature, see [Calculate an API Signature](#calculate-the-api-signature).
 
+If you are using Cobo's WaaS SDKs, you only need to provide your API secret because the SDKs handles the remaining steps for you. For more details, refer to [API secret](#api-secret).
 
-## API key
+## API key and API secret
 
-The API key is used to identify the client making the API request. It is associated with a certain level of access to the API’s resources. Different API keys can be assigned with different permissions, allowing you to control what actions the client can perform.
+To enable secure and authenticated communication between clients and the WaaS 2.0 service, a mechanism based on the API key and API secret is used.  This mechanism relies on cryptographic key pairs to verify the identity of the client and the integrity of the requests.
 
-### Generate an API key
+### API key
 
-This section introduces how to generate an API key using the Ed25519 algorithm.
-You can use either OpenSSL or the Python library to generate an Ed25519 key pair. The public key will be used as an API key, and the private key will be used as an API secret to sign an API request.
+The API key is the public key in the cryptographic key pair. It is used to identify the client making the API request. 
+
+The API key is associated with permissions and wallet scopes, which define the actions the client can perform and the wallets they can access. Different API keys can be assigned with varying permissions and wallet scopes, providing granular control over client capabilities. 
+<Info>For more details about permissions and wallet scopes, see [Permissions and wallet scopes](/v2/guides/overview/permissions-and-wallet-scopes).</Info>
+
+### API secret
+
+The API secret is the private key in the key pair. It is used to sign API requests, guaranteeing their authenticity and integrity. The API secret must always remain confidential and secure to prevent unauthorized access.
+
+The API key and API secret work as a pair to secure communication with the WaaS 2.0 service:
+
+- The API key is included in API requests to identify the client to the WaaS service. It is required to be registered on Cobo Portal. For more information, refer to [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key).
+- The API secret is used to generate a signature for each API request. The WaaS service validates the signature to confirm the request’s authenticity and prevent tampering.
+
+### Generate an API key and an API secret
+
+This section introduces three ways to generate an API key and an API secret using the Ed25519 algorithm. You can also generate app keys using other tools that use the Ed25519 algorithm.
+
+The public key will be used as an API key, and the private key will be used as an API secret.
+
+#### Use Cobo CLI
+
+Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with Cobo Wallet-as-a-Service (WaaS) 2.0 directly from the command line.
+
+1. Install Cobo CLI using the following command:
+
+    ```shell
+    # Install Cobo CLI using pip (Python 3.9 or newer is required).
+    pip install cobo-cli
+    # Alternatively, you can install Cobo CLI using Homebrew.
+    brew install cobo-cli
+    # Test if the installation is successful
+    cobo version
+    ```
+
+    For more details about the system requirements for Cobo CLI, please refer to [Install Cobo CLI](/v2/developer-tools/cobo-cli/quick-start-guide#system-requirements).
+
+2. Use the `keys generate` command to generate an API key and an API secret as follows:
+
+    ```shell
+    # Generate an API key and an API secret
+    cobo keys generate --key-type API
+    ```
+
+    Generated keys are securely stored in your configuration file (default: `~/.cobo/config.toml`). For more information about this command, refer to [Key management](/v2/developer-tools/cobo-cli/key-management).
 
 #### Use OpenSSL
 
@@ -54,49 +96,24 @@ The private key is saved in the `private.key.pem` file, and the public key is sa
 
 #### Use the Python library
 
-1. Install the ed25519 Python library. In a terminal window, run the following command:
+1. Install the `PyNaCl` Python library.
 
+   In a terminal window, run the following command:
     ```shell
-    pip install ed25519
+    pip install PyNaCl
     ```
-2. Generate a key pair. Import the function from the Python library to generate a key pair as follows:
+
+2. Generate a key pair.
+   Import the function from the Python library to generate a key pair as follows:
 
     ```python
-    from ed25519.keys import create_keypair
-
-    # Create a key pair
-    sk, vk = create_keypair()
-
+    from nacl.signing import SigningKey
+    # Create a key pair.
+    sk = SigningKey.generate()
     # Print the private key in hexadecimal format.
-    print("private key:", sk.to_seed().hex())
-
+    print("private key:", sk.encode().hex())
     # Print the public key in hexadecimal format.
-    print("public key:", vk.to_bytes().hex())
-    ```
-
-#### Use Cobo CLI
-
-Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with Cobo Wallet-as-a-Service (WaaS) 2.0 directly from the command line.
-
-1. Install Cobo CLI using the following command:
-
-    ```shell
-    # Install Cobo CLI
-    pip install cobo-cli
-    # Test if the installation is successful
-    cobo version
-    ```
-
-    For more details about the system requirements for Cobo CLI, please refer to [Install Cobo CLI](/v2/developer-tools/cobo-cli/quick-start-guide#system-requirements).
-
-2. Use the `keys generate` command to generate an API key as follows:
-
-    ```shell
-    # Generate an API key
-    cobo keys generate --key-type API
-    ```
-
-    Generated keys are securely stored in your configuration file (default: `~/.cobo/config.toml`). For more information about this command, refer to [Key management](/v2/developer-tools/cobo-cli/key-management).
+    print("public key:", sk.verify_key.encode().hex())
 
 ### Register the API key
 
@@ -130,10 +147,10 @@ The following steps introduce how to calculate an API signature.
     content_hash = hashlib.sha256(hashlib.sha256(str_to_sign.encode()).digest()).digest()
     ```
 
-3. Use the private key of your API key to sign the string as follows:
+3. Use the API secret to sign the string as follows:
 
     ```python
-    # Create an Ed25519 signing Key. Replace `api_secret` with your private key.
+    # Create an Ed25519 signing Key. Replace `api_secret` with your API secret.
     sk = ed25519.SigningKey(sk_s=bytes.fromhex(api_secret))
     # Sign the hashed message
     signature = sk.sign(content_hash)
@@ -141,4 +158,4 @@ The following steps introduce how to calculate an API signature.
 
 Now you've calculated an API signature.
 
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

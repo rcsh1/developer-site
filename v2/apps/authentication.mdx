@@ -7,14 +7,14 @@ This section explains how to authenticate your API requests to the WaaS service 
 
 ## Cobo OAuth vs Cobo Auth
 
-Cobo Auth and Cobo OAuth are two authentication mechanisms. Cobo Auth identifies clients using an API key, while Cobo OAuth identifies clients using an app key and controls access to resources in other organizations through an Org Access Token, along with its permissions and scopes.
+Cobo Auth and Cobo OAuth are two authentication mechanisms. Cobo Auth identifies clients using an API key and an API secret, while Cobo OAuth identifies clients using an app key and an app secret, and controls access to resources in other organizations through an Org Access Token, along with its permissions and scopes.
 
 - If you are developing Cobo Portal Apps for installation and use across different organizations, use Cobo OAuth to authenticate your API requests.
 - If you are developing other types of apps to access data and resources within your own organization, use Cobo Auth instead. For more details about Cobo Auth, refer to [Authentication with Cobo Auth](/v2/guides/overview/cobo-auth).
 
 ## With the WaaS SDK
 
-If you are using the [WaaS SDK](/v2/developer-tools/quickstart-python), you only need to provide the private key of the app key and Org Access Token in the API request as follows:
+If you are using the [WaaS SDK](/v2/developer-tools/quickstart-python), you only need to provide the app secret and Org Access Token in the API request as follows:
 
 ```python
 from cobo_waas2 import Configuration, ApiClient, WalletsApi
@@ -22,8 +22,8 @@ from cobo_waas2 import Configuration, ApiClient, WalletsApi
 configuration = Configuration(
     # Use `https://api.dev.cobo.com/v2` for the development environment, or `https://api.cobo.com/v2` for the production environment.
     host="https://api.dev.cobo.com/v2",
-    # Replace `<APP_PRIVATE_KEY>` with the private key of your app key.
-    api_private_key="<APP_PRIVATE_KEY>",
+    # Replace `<APP_SECRET>` with your app secret.
+    api_private_key="<APP_SECRET>",
 )
 
 client = ApiClient(configuration=configuration)
@@ -31,7 +31,7 @@ client = ApiClient(configuration=configuration)
 client.set_default_header("AUTHORIZATION", f"Bearer {ORG_ACCESS_TOKEN}")
 ```
 
-- To learn how to generate an app key, see [Generate an app key](#generate-an-app-key).
+- To learn how to generate an app key and an app secret, see [Generate an app key and an app secret](#generate-an-app-key-and-an-app-secret).
 - To learn how to get and use Org Access Tokens, refer to [Org Access Tokens](/v2/apps/org-access-tokens).
 
 ## Without the WaaS SDK
@@ -42,8 +42,8 @@ If you don't use the WaaS SDK, you need to provide all the required authenticati
 headers = {
     // Replace `{ORG_ACCESS_TOKEN}` with the Org Access Token.
     "Authorization": Bearer {ORG_ACCESS_TOKEN},
-    // Replace `<APP_PUBLIC_KEY>` with the public key of your app key.
-    "Biz-Api-Key": {APP_PUBLIC_KEY}.hex(),
+    // Replace `<APP_KEY>` with your app key.
+    "Biz-Api-Key": {APP_KEY}.hex(),
     // Replace `{Nonce}` with the current time in Unix timestamp format, measured in milliseconds.
     // This value must be the same as the value of the `TIMESTAMP` field in the API signature.
     "Biz-Api-Nonce": {Nonce},
@@ -52,42 +52,60 @@ headers = {
 }
 ```
 
-- To learn how to generate an app key, see [Generate an app key](#generate-an-app-key).
+- To learn how to generate an app key and an app secret, see [Generate an app key and an app secret](#generate-an-app-key-and-an-app-secret).
 - To learn how to get and use Org Access Tokens, refer to [Org Access Tokens](/v2/apps/org-access-tokens).
 - To learn how to calculate the API signature using your app key, refer to [Calculate an API signature](#calculate-an-api-signature).
 
-## Generate an app key
+## App key and an app secret
 
-An app key is used to authenticate the Cobo Portal App when it makes an API request to the WaaS service. This section introduces three ways to generate an app key. You can also generate app keys using other tools that use the Ed25519 algorithm. 
+To ensure secure and authenticated communication between Cobo Portal Apps and the WaaS 2.0 service, a mechanism based on the app key and app secret is used. This mechanism relies on cryptographic key pairs to verify the identity of the app and the integrity of the requests.
 
-- The public key will be used in the manifest file. For more information, refer to [Configure the manifest file](/v2/apps/build-app#configure-the-manifest-file).
-- The private key will be used to authenticate API requests to the WaaS service.
+### App key
 
-### Use Cobo CLI
+The app key is the public key in the cryptographic key pair. It is used to identify the Cobo Portal App making the API request.
+
+### App secret
+
+The app secret is the private key in the key pair. It is used to sign API requests, guaranteeing their authenticity and integrity. The app secret must always remain confidential and secure to prevent unauthorized access.
+
+The app key and app secret form a cryptographic key pair that enables secure communication with the WaaS service:
+
+- The app key is included in API requests to identify the application to the WaaS service. It is also required in the app manifest file. For more information, refer to [Configure the manifest file](/v2/apps/build-app#configure-the-manifest-file).
+- The app secret signs the requests. The WaaS service verifies the signature to confirm the request's authenticity and integrity.
+
+### Generate an app key and an app secret
+
+This section introduces three ways to generate an app key pair (an app key and an app secret) using the Ed25519 algorithm. You can also generate app key pairs using other tools that use the Ed25519 algorithm.
+
+The public key will be used as an app key, and the private key will be used as an app secret.
+
+#### Use Cobo CLI
 
 Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with Cobo Wallet-as-a-Service (WaaS) 2.0 directly from the command line.
 
 1. Install Cobo CLI using the following command:
 
     ```shell
-    # Install Cobo CLI
+    # Install Cobo CLI using pip (Python 3.9 or newer is required).
     pip install cobo-cli
+    # Alternatively, you can install Cobo CLI using Homebrew.
+    brew install cobo-cli
     # Test if the installation is successful
     cobo version
     ```
 
     For more details about the system requirements for Cobo CLI, please refer to [Install Cobo CLI](/v2/developer-tools/cobo-cli/quick-start-guide#system-requirements).
 
-2. Use the `keys generate` command to generate an app key as follows:
+2. Use the `keys generate` command to generate an app key pair as follows:
 
     ```shell
-    # Generate an app key
+    # Generate an app key pair
     cobo keys generate --key-type APP
     ```
 
     Generated keys are securely stored in your configuration file (default: `~/.cobo/config.toml`). For more information about this command, refer to [Key management](/v2/developer-tools/cobo-cli/key-management).
 
-### Use OpenSSL
+#### Use OpenSSL
 
 In a terminal window, run the following OpenSSL commands:
 
@@ -104,26 +122,26 @@ openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | t
 
 The private key is saved in the `private.key.pem` file, and the public key is saved in the `public.key.pem` file.
 
-### Use a Python library
+#### Use a Python library
 
-1. Install the ed25519 Python library.
+1. Install the `PyNaCl` Python library.
+
    In a terminal window, run the following command:
     ```shell
-    pip install ed25519
+    pip install PyNaCl
     ```
 
 2. Generate a key pair.
    Import the function from the Python library to generate a key pair as follows:
 
-    ```shell
-    from ed25519.keys import create_keypair
-
+    ```python
+    from nacl.signing import SigningKey
     # Create a key pair.
-    sk, vk = create_keypair()
+    sk = SigningKey.generate()
     # Print the private key in hexadecimal format.
-    print("private key:", sk.to_seed().hex())
+    print("private key:", sk.encode().hex())
     # Print the public key in hexadecimal format.
-    print("public key:", vk.to_bytes().hex())
+    print("public key:", sk.verify_key.encode().hex())
     ```
 
 ## Calculate an API signature
@@ -148,13 +166,14 @@ The following steps introduce how to calculate an API signature.
     content_hash = hashlib.sha256(hashlib.sha256(str_to_sign.encode()).digest()).digest()
     ```
 
-3. Use the private key of your app key to sign the string as follows:
+3. Use your app secret to sign the string as follows:
     ```python
-    # Replace `api_secret` with your private key.
-    sk = ed25519.SigningKey(sk_s=bytes.fromhex(api_secret))
+    # Replace `app_secret` with your app secret.
+    sk = ed25519.SigningKey(sk_s=bytes.fromhex(app_secret))
     # Sign the hashed message
     signature = sk.sign(content_hash)
     ```
 
 Now you've calculated an API signature.
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

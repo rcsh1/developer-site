@@ -24,8 +24,10 @@ Cobo Command Line Interface (CLI) is a powerful developer tool designed to help 
 1. Install Cobo CLI using the following command:
 
     ```shell
-    # Install Cobo CLI
+    # Install Cobo CLI using pip (Python 3.9 or newer is required).
     pip install cobo-cli
+    # Alternatively, you can install Cobo CLI using Homebrew.
+    brew install cobo-cli
     # Test if the installation is successful
     cobo version
     ```
@@ -71,8 +73,8 @@ from cobo_waas2 import Configuration, ApiClient, WalletsApi
 configuration = Configuration(
     # Use `https://api.dev.cobo.com/v2` for the development environment, or `https://api.cobo.com/v2` for the production environment.
     host="https://api.dev.cobo.com/v2",
-    # Replace `<APP_PRIVATE_KEY>` with the private key of your app key.
-    api_private_key=<APP_PRIVATE_KEY>,
+    # Replace `<APP_SECRET>` with your app secret.
+    api_private_key=<APP_SECRET>,
 )
 client = ApiClient(configuration=configuration)
 # Replace `{ORG_ACCESS_TOKEN}` with the Org Access Token.
@@ -100,7 +102,7 @@ Before you publish the app, you need to fill out the manifest file, which contai
 | `optional_permissions` | A list of permissions that the app can request to access additional resources within users' organizations. These are not mandatory but may enhance app functionality. A permission consists of a resource type and an operation, separated by a comma. For example, `wallet:create` represents the permission to create a wallet. For the full list of permissions in WaaS 2.0, refer to [Permissions list](/v2/guides/overview/permission-list). | `"address_book:create", "kyc_profile:read", "team_member:freeze", ""`                            |
 | `homepage_url`         | The host URL of the app homepage, used to embed the app into Cobo Portal via an iframe. | `https://example.com`                                        |
 | `callback_urls`        | The URL of the endpoint used to receive the callback after the organization admin approves the app's request for permissions. | `https://example.com/webhooks/organization/authorization`    |
-| `client_key`           | The public key of the app key. For instructions on how to generate an app key, refer to[ Generate an app key](/v2/apps/authentication#generate-an-app-key). | `AbCdEfGhIjKlMnOpQrStUvWxYz1234567890`                       |
+| `client_key`           | The app key. For instructions on how to generate an app key, refer to[ Generate an app key and an app secret](/v2/apps/authentication#generate-an-app-key-and-an-app-secret). | `AbCdEfGhIjKlMnOpQrStUvWxYz1234567890`                       |
 | `creator_name`         | The developer's name.                                        | `Cobo`                                                       |
 | `contact_email`        | The developer's contact email.                               | `sample@email.com`                                           |
 
@@ -154,4 +156,4 @@ Before updating your Cobo Portal Apps, ensure the following:
 - Run the command from the project directory where the manifest file is located.
 
 Similar to publishing an app, if you update an app in the production environment, the update command will automatically trigger a workflow that requires approval from Cobo. Otherwise, if you update an app in the development environment, no approval is required.
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

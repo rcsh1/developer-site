@@ -14,7 +14,7 @@ You can go to [GitHub](https://github.com/CoboGlobal/cobo-waas2-go-sdk/) to acce
 
 - You have installed Go 1.18 or newer.
 - Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
-- You have [generated an API key](/v2/guides/overview/cobo-auth#generate-an-api-key), and [register the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
+- You have [generated an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
 
 ## Install the SDK
 
@@ -40,7 +40,7 @@ You can go to [GitHub](https://github.com/CoboGlobal/cobo-waas2-go-sdk/) to acce
 
 ## Configure API key and HTTP host
 
-In the main function in your `main.go` file, configure the HTTP host by selecting the environment and provide your private key.
+In the main function in your `main.go` file, configure the HTTP host by selecting the environment and provide your API secret.
 The following code snippet shows the configuration for the development environment.
 
 ```go
@@ -48,8 +48,8 @@ The following code snippet shows the configuration for the development environme
 ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
 // ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
 ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-    // Replace `<YOUR_PRIVATE_KEY>` with your private key.
-    Secret: "<YOUR_PRIVATE_KEY>",
+    // Replace `<YOUR_API_SECRET>` with your API secret.
+    Secret: "<YOUR_API_SECRET>",
 })
 ```
 
@@ -94,8 +94,8 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
 	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-		// Replace `<YOUR_PRIVATE_KEY>` with your own private key.
-		Secret: "<YOUR_PRIVATE_KEY>",
+		// Replace `<YOUR_API_SECRET>` with your own API secret.
+		Secret: "<YOUR_API_SECRET>",
 	})
 	// Call the List supported chains operation.
 	req := apiClient.WalletsAPI.ListSupportedChains(ctx).WalletType(walletType).WalletSubtype(walletSubtype)
@@ -165,8 +165,8 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
 	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-             // Replace `<YOUR_PRIVATE_KEY>` with your own private key.
-		Secret: "<YOUR_PRIVATE_KEY>",
+             // Replace `<YOUR_API_SECRET>` with your own API secret.
+		Secret: "<YOUR_API_SECRET>",
 	})
 	// Call the Create wallet operation.
 	resp, r, err := apiClient.WalletsAPI.CreateWallet(ctx).CreateWalletParams(createWalletParams).Execute()
@@ -186,4 +186,4 @@ func main() {
 
 
 
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

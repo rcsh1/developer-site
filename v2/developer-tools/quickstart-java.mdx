@@ -16,7 +16,7 @@ You can go to [GitHub](https://github.com/CoboGlobal/cobo-waas2-java-sdk/) to ac
 - Install Maven 3.8.3 or newer / Gradle 7.2 or newer
 
 - Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide) to set up your Cobo account and create your organization. If an organization has already been set up, ask your organization admin to invite you to join the organization.
-- You have [generated an API key](/v2/guides/overview/cobo-auth#generate-an-api-key), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
+- You have [generated an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret), and [registered the API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) on Cobo Portal.
 
 ## Add dependency
 
@@ -48,11 +48,11 @@ For Gradle users, add the dependency to your project's build file:
 
 ## Configure API key and HTTP host
 
-1. Set the private key.
+1. Set the API secret.
 
 ```java
 ApiClient defaultClient = Configuration.getDefaultApiClient();
-defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+defaultClient.setPrivKey("<YOUR_API_SECRET_IN_HEX>");
 ```
 
 2. Select which [environment](/v2/guides/overview/environments) you want to use. The SDK uses the production environment by default. 
@@ -85,8 +85,8 @@ public class Example {
     ApiClient defaultClient = Configuration.getDefaultApiClient();
     // Use the development environment 
     defaultClient.setEnv(Env.DEV);
-    // Set the private key
-    defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+    // Set the API secret
+    defaultClient.setPrivKey("<YOUR_API_SECRET_IN_HEX>");
     WalletsApi apiInstance = new WalletsApi();
     WalletType walletType = WalletType.fromValue("Custodial");
     WalletSubtype walletSubtype = WalletSubtype.fromValue("Asset");
@@ -126,8 +126,8 @@ public class Example {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
         // Use the development environment 
         defaultClient.setEnv(Env.DEV);
-        // Set the private key
-        defaultClient.setPrivKey("<YOUR_API_PRIVATE_KEY_IN_HEX>");
+        // Set the API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET_IN_HEX>");
         WalletsApi apiInstance = new WalletsApi();
         CreateWalletParams createWalletParams = new CreateWalletParams(
                 new CreateCustodialWalletParams()
@@ -151,4 +151,4 @@ public class Example {
 ```
 
 
-<Tip>Did you find this document helpful? Please [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to share your thoughts with us.</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
