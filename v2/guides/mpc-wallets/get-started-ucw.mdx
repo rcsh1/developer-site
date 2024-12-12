@@ -27,8 +27,6 @@ This guide gets you started with using MPC Wallets (User-Controlled Wallets). Fo
   </Step>
 </Steps>
 
-<Tip>Some links in this document may not be functional until all relevant documentation for User-Controlled Wallets has been published.</Tip>
-
 <Note>You can choose between the 2-2, 2-3, or 3-3 [signature scheme](https://manuals.cobo.com/en/portal/mpc-wallets/introduction#threshold-signature-scheme-tss) for your User-Controlled Wallets. For the purposes of this documentation, we will use the 2-2 signature scheme.</Note>
 
 <Note>This guide uses the [development environment](/v2/guides/overview/environments) in all its code samples. It is recommended that you use the development environment to test your new features first before deploying them to the production environment.</Note>
@@ -219,7 +217,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
 - Follow the instructions in [Get started with WaaS 2.0](/v2/guides/get-started/get-started-with-waas) to set up your account and send your first API request to the WaaS 2.0 service.
 - If you choose to use a WaaS SDK instead of manually writing the API requests, refer to the SDK guide corresponding to the programming language of your choice ([Python](/v2/developer-tools/quickstart-python), [Java](https://github.com/CoboGlobal/cobo-waas2-java-sdk), [Go](/v2/developer-tools/quickstart-go), [JavaScript](https://github.com/CoboGlobal/cobo-waas2-js-sdk)) to integrate the SDK into your Client Backend.
-- Prepare some test tokens as you will need them when testing the deposit feature. To know which test tokens you can use, refer to [Query chain and token information](https://docs.google.com/document/d/14fjeIBG_luQJb6mU4BYqMIzCMacCXKG3foZfMald9zc/edit#heading=h.eyriyqbnqjcs). In most cases, you can use XTN as the test token.
+- Prepare some test tokens as you will need them when testing the deposit feature. To know which test tokens you can use, refer to [Query chain and token information](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#1-query-chain-and-token-information). In most cases, you can use XTN as the test token.
 - It is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests and a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
 ## 1. Complete the initial setup
@@ -258,7 +256,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client App → UCW SDK
 
-            1. Client App sends a request to initialize the UCW SDK by calling the [Initialize Secrets](http://localhost:3000/v2/ucw_sdk/initialize-secrets/initialize-secrets) operation.
+            1. Client App sends a request to initialize the UCW SDK by calling the [Initialize Secrets](/v2/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets) operation.
 
         - UCW SDK → Client App
 
@@ -297,7 +295,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client Backend → Cobo Backend
 
-            2. Client Backend forwards the request to the Cobo Backend to create a new vault for the specified project by calling the [Create vault](http://localhost:3000/v2/api-references/wallets--mpc-wallets/create-vault) operation.
+            2. Client Backend forwards the request to the Cobo Backend to create a new vault for the specified project by calling the [Create vault](/v2/api-references/wallets--mpc-wallets/create-vault) operation.
 
         - Cobo Backend → Client Backend
 
@@ -393,7 +391,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client App → UCW SDK
 
-            1. Client App opens a UCW SDK instance by calling the [Create UCW SDK](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/create-ucw-sdk) and [Create UCW SDK Public](http://localhost:3000/v2/ucw_sdk/ucwsdkpublic-class/create-ucw-sdk-public) operations.
+            1. Client App opens a UCW SDK instance by calling the [Create UCW class](/v2/developer-tools/ucw-sdk/ucw-class/create-ucw) and [Create UCWPublic class](/v2/developer-tools/ucw-sdk/ucwpublic-class/create-ucw-public) operations.
 
         - UCW SDK → Client App
 
@@ -403,7 +401,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client App → UCW SDK
 
-            3. Client App calls the [Get TSS Node ID](http://localhost:3000/v2/ucw_sdk/ucwsdkpublic-class/get-tss-node-id) operation on the UCWSDKPublic to retrieve the TSS Node ID.
+            3. Client App calls the [Get TSS Node ID](/v2/developer-tools/ucw-sdk/ucwpublic-class/get-tss-node-id) operation on the UCWSDKPublic to retrieve the TSS Node ID.
 
         - UCW SDK → Client App
 
@@ -418,7 +416,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client Backend → Cobo Backend
 
-            6. Client Backend calls the [Create key share holder group](http://localhost:3000/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) operation, instructing the Cobo Backend to create a Main Group.
+            6. Client Backend calls the [Create key share holder group](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) operation, instructing the Cobo Backend to create a Main Group.
 
         - Cobo Backend → Client Backend
 
@@ -434,7 +432,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client Backend → Cobo Backend
 
-            10. Client Backend calls the [Create TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/create-tss-request) operation, instructing the Cobo Backend to initiate the key generation process.
+            10. Client Backend calls the [Create TSS request](/v2/api-references/wallets--mpc-wallets/create-tss-request) operation, instructing the Cobo Backend to initiate the key generation process.
 
         - Cobo Backend → Client Backend
 
@@ -474,7 +472,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                 - **Polling option**
 
-                    17. Client Backend polls the Cobo Backend to retrieve the status of the TSS request by calling the [Get TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
+                    17. Client Backend polls the Cobo Backend to retrieve the status of the TSS request by calling the [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
 
                     18. Cobo Backend returns the status of the TSS request.
 
@@ -497,7 +495,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client App → UCW SDK
 
-            22. Client App calls the UCW SDK to get the pending TSS requests by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            22. Client App calls the UCW SDK to get the pending TSS requests by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
         - UCW SDK → Cobo TSS Relay
 
@@ -515,7 +513,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client App → UCW SDK
 
-            27. User uses the Client App to approve the TSS request. The Client App calls the [Approve TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/approve-tss-requests) operation and passes in the TSS request ID.
+            27. User uses the Client App to approve the TSS request. The Client App calls the [Approve TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/approve-tss-requests) operation and passes in the TSS request ID.
 
         - UCW SDK → Cobo TSS Relay
 
@@ -525,7 +523,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
         - Client App → UCW SDK
 
-            30. Client App checks the status of the TSS request with the UCW SDK by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            30. Client App checks the status of the TSS request with the UCW SDK by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
         - UCW SDK → Client App
 
@@ -556,7 +554,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
             - **Polling Option**
 
-                35. Client Backend polls the Cobo Backend for the key generation result by calling the [Get TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
+                35. Client Backend polls the Cobo Backend for the key generation result by calling the [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
 
                 36. Cobo Backend returns the key generation result.
   </Step>
@@ -598,7 +596,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
           - Client Backend → Cobo Backend
 
 
-            2. Client Backend forwards the request to the Cobo Backend by calling the [Create wallet](http://localhost:3000/v2/api-references/wallets/create-wallet) operation and passing in the necessary vault ID and wallet name to create the wallet.
+            2. Client Backend forwards the request to the Cobo Backend by calling the [Create wallet](/v2/api-references/wallets/create-wallet) operation and passing in the necessary vault ID and wallet name to create the wallet.
 
           - Cobo Backend → Client Backend
 
@@ -620,7 +618,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Backend → Cobo Backend
 
-            7. Client Backend forwards the request to the Cobo Backend by calling the [Create addresses in wallet](http://localhost:3000/v2/api-references/wallets/create-addresses-in-wallet) operation, specifying the wallet ID, the chain ID, and the number of addresses to create (count).
+            7. Client Backend forwards the request to the Cobo Backend by calling the [Create addresses in wallet](/v2/api-references/wallets/create-addresses-in-wallet) operation, specifying the wallet ID, the chain ID, and the number of addresses to create (count).
 
           - Cobo Backend → Client Backend
 
@@ -708,7 +706,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Backend → Cobo Backend
 
-            2. Client Backend forwards the request to the Cobo Backend to estimate the fee for the transaction by calling the [Estimate transaction fee](http://localhost:3000/v2/api-references/transactions/estimate-transaction-fee) operation.
+            2. Client Backend forwards the request to the Cobo Backend to estimate the fee for the transaction by calling the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation.
 
           - Cobo Backend → Client Backend
 
@@ -730,7 +728,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Backend → Cobo Backend
 
-            7. Client Backend forwards the transaction data to the Cobo Backend to initiate the transaction by calling the [Transfer token](http://localhost:3000/v2/api-references/transactions/transfer-token) operation.
+            7. Client Backend forwards the transaction data to the Cobo Backend to initiate the transaction by calling the [Transfer token](/v2/api-references/transactions/transfer-token) operation.
 
           - Cobo Backend → Client Backend
 
@@ -769,7 +767,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
             - **Polling option**
 
-              Client Backend polls the Cobo Backend to get updates on the transaction status by calling the [Get transaction information](http://localhost:3000/v2/api-references/transactions/get-transaction-information) operation.
+              Client Backend polls the Cobo Backend to get updates on the transaction status by calling the [Get transaction information](/v2/api-references/transactions/get-transaction-information) operation.
 
               Cobo Backend returns the transaction status to the Client Backend.
 
@@ -793,7 +791,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App → UCW SDK
 
-            17. Client App calls the UCW SDK to retrieve detailed transaction information by calling the [Get transactions](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-transactions) operation.
+            17. Client App calls the UCW SDK to retrieve detailed transaction information by calling the [Get transactions](/v2/developer-tools/ucw-sdk/ucw-class/get-transactions) operation.
 
           - UCW SDK → Cobo TSS Relay
 
@@ -811,7 +809,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App → UCW SDK
 
-            22. Client App approves the transaction using the UCW SDK by calling the [Approve transactions](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-transactions) operation, initiating the signing process.
+            22. Client App approves the transaction using the UCW SDK by calling the [Approve transactions](/v2/developer-tools/ucw-sdk/ucw-class/approve-transactions) operation, initiating the signing process.
 
           - UCW SDK → Cobo TSS Relay
 
@@ -823,7 +821,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App → UCW SDK
 
-            25. Client App checks the status of the transaction via the UCW SDK by calling the [Get transactions](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-transactions) operation.
+            25. Client App checks the status of the transaction via the UCW SDK by calling the [Get transactions](/v2/developer-tools/ucw-sdk/ucw-class/get-transactions) operation.
 
           - UCW SDK → Client App
 
@@ -853,7 +851,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
             - **Polling option**
 
-              Client Backend polls the Cobo Backend for the final transaction information by calling the [Get transaction information](http://localhost:3000/v2/api-references/transactions/get-transaction-information) operation.
+              Client Backend polls the Cobo Backend for the final transaction information by calling the [Get transaction information](/v2/api-references/transactions/get-transaction-information) operation.
 
               Cobo Backend returns the transaction status to the Client Backend.
 
@@ -897,7 +895,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 1 → UCW SDK 1
 
-            1. Client App 1 opens an instance of the UCW SDK 1 by calling the [Create UCW SDK](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/create-ucw-sdk) operation.
+            1. Client App 1 opens an instance of the UCW SDK 1 by calling the [Create UCW class](/v2/developer-tools/ucw-sdk/ucw-class/create-ucw) operation.
 
           - UCW SDK 1 → Client App 1
 
@@ -907,7 +905,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 1 → UCW SDK 1
 
-            3. Client App 1 calls the [Export Secrets](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/export-secrets) operation on the UCW SDK 1 instance, providing a passphrase for encryption.
+            3. Client App 1 calls the [Export Secrets](/v2/developer-tools/ucw-sdk/ucw-class/export-secrets) operation on the UCW SDK 1 instance, providing a passphrase for encryption.
 
           - UCW SDK 1 → Client App 1
 
@@ -929,7 +927,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2 → UCW SDK 2
 
-            7. Client App 2 calls the [Import Secrets](http://localhost:3000/v2/ucw_sdk/other-apis/import-secrets) operation and provides the passphrase and the encrypted Secrets, which allows UCW SDK 2 to import the Secrets.
+            7. Client App 2 calls the [Import Secrets](/v2/developer-tools/ucw-sdk/other-apis/import-secrets) operation and provides the passphrase and the encrypted Secrets, which allows UCW SDK 2 to import the Secrets.
 
           - UCW SDK 2 → Client App 2
 
@@ -1026,7 +1024,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Apps 2, 3 → UCW SDK 2, 3
 
-            1. Client Apps 2 and 3 initiate their respective UCW SDKs 2 and 3 instances by calling the [Create UCW SDK](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/create-ucw-sdk) operation.
+            1. Client Apps 2 and 3 initiate their respective UCW SDKs 2 and 3 instances by calling the [Create UCW class](/v2/developer-tools/ucw-sdk/ucw-class/create-ucw) operation.
 
           - UCW SDK 2, 3 → Client Apps 2, 3
 
@@ -1034,7 +1032,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Apps 2, 3 → UCW SDK 2, 3
 
-            3. Client Apps 2 and 3 obtain the TSS Node IDs by calling the [Get TSS Node ID](http://localhost:3000/v2/ucw_sdk/ucwsdkpublic-class/get-tss-node-id) operation.
+            3. Client Apps 2 and 3 obtain the TSS Node IDs by calling the [Get TSS Node ID](/v2/developer-tools/ucw-sdk/ucwpublic-class/get-tss-node-id) operation.
 
           - UCW SDK 2, 3 → Client Apps 2, 3
 
@@ -1052,7 +1050,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Backend → Cobo Backend
 
-            7. Client Backend forwards the request to the Cobo Backend by calling the [Create key share holder group](http://localhost:3000/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) operation, specifying the Recovery Group details and key share holders.
+            7. Client Backend forwards the request to the Cobo Backend by calling the [Create key share holder group](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) operation, specifying the Recovery Group details and key share holders.
           - Cobo Backend → Client Backend
 
             8. The Cobo Backend returns the key share holder group ID to the Client Backend.
@@ -1061,7 +1059,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Backend → Cobo Backend
 
-            9. Client Backend submits a request to the Cobo Backend to use the Main Group to create key shares for your Recovery Group by calling the [Create TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/create-tss-request) operation and specifying `KenGenFromKeyGroup` as the `type`.
+            9. Client Backend submits a request to the Cobo Backend to use the Main Group to create key shares for your Recovery Group by calling the [Create TSS request](/v2/api-references/wallets--mpc-wallets/create-tss-request) operation and specifying `KenGenFromKeyGroup` as the `type`.
 
           - Cobo Backend → Client Backend
 
@@ -1094,7 +1092,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
             - **Polling option**
 
-              The Client Backend polls the Cobo Backend for the status of the TSS request by calling the [Get TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
+              The Client Backend polls the Cobo Backend for the status of the TSS request by calling the [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
 
               The Cobo Backend returns the TSS request status to Client Backend.
 
@@ -1118,7 +1116,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 1 → UCW SDK 1
 
-            21. Client App 1 retrieves the pending TSS request by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            21. Client App 1 retrieves the pending TSS request by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
           - UCW SDK 1 → Client App 1
 
@@ -1130,7 +1128,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 1 → UCW SDK 1
 
-            24. After review, Client App 1 approves the TSS request by calling the [Approve TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/approve-tss-requests) operation.
+            24. After review, Client App 1 approves the TSS request by calling the [Approve TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/approve-tss-requests) operation.
 
          - UCW SDK 1
 
@@ -1138,7 +1136,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Apps 2, 3 → UCW SDK 2, 3
 
-            26. Client Apps 2 and 3 retrieve the pending TSS request by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            26. Client Apps 2 and 3 retrieve the pending TSS request by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
           - UCW SDK 2, 3 → Client Apps 2, 3
 
@@ -1150,7 +1148,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Apps 2, 3 → UCW SDK 2, 3
 
-            29. After review, Client Apps 2 and 3 approve the TSS request by calling the [Approve TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/approve-tss-requests) operation.
+            29. After review, Client Apps 2 and 3 approve the TSS request by calling the [Approve TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/approve-tss-requests) operation.
 
           - UCW SDK 2, 3
 
@@ -1168,7 +1166,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 1 → UCW SDK 1
 
-            35. Client App 1 retrieves the status of the TSS request by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            35. Client App 1 retrieves the status of the TSS request by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
           - UCW SDK 1 → Client App 1
 
@@ -1180,7 +1178,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Apps 2, 3 → UCW SDK 2, 3
 
-            38. Client Apps 2 and 3 retrieve the status of the TSS request by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            38. Client Apps 2 and 3 retrieve the status of the TSS request by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
           - UCW SDK 2, 3 → Client Apps 2, 3
 
@@ -1209,7 +1207,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                      - **Polling option**
 
-                       Client Backend polls the Cobo Backend to retrieve the final result by calling the [Get TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
+                       Client Backend polls the Cobo Backend to retrieve the final result by calling the [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
 
                        Cobo Backend sends the final result to Client Backend.
   </Step>
@@ -1307,7 +1305,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 4 → UCW SDK 4
 
-            1. Client App 4 initiates its UCW SDK instance by calling the [Create UCW SDK](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/create-ucw-sdk) operation.
+            1. Client App 4 initiates its UCW SDK instance by calling the [Create UCW class](/v2/developer-tools/ucw-sdk/ucw-class/create-ucw) operation.
 
           - UCW SDK 4 → Client App 4
 
@@ -1315,7 +1313,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 4 → UCW SDK 4
 
-            3. Client App 4 requests the TSS Node ID by calling the [Get TSS Node ID](http://localhost:3000/v2/ucw_sdk/ucwsdkpublic-class/get-tss-node-id) operation.
+            3. Client App 4 requests the TSS Node ID by calling the [Get TSS Node ID](/v2/developer-tools/ucw-sdk/ucwpublic-class/get-tss-node-id) operation.
 
           - UCW SDK 4 → Client App 4
 
@@ -1343,7 +1341,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Backend → Cobo Backend
 
-            9. Client Backend forwards the request to the Cobo Backend by calling the [Create key share holder group](http://localhost:3000/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) operation and creating a Main Group.
+            9. Client Backend forwards the request to the Cobo Backend by calling the [Create key share holder group](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) operation and creating a Main Group.
 
           - Cobo Backend → Client Backend
 
@@ -1351,7 +1349,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Backend → Cobo Backend
 
-            11. Client Backend submits a request to the Cobo Backend to initiate a key generation request by calling the [Create TSS requests](http://localhost:3000/v2/api-references/wallets--mpc-wallets/create-tss-request) operation and specifying `Recovery` as the `type`.
+            11. Client Backend submits a request to the Cobo Backend to initiate a key generation request by calling the [Create TSS requests](/v2/api-references/wallets--mpc-wallets/create-tss-request) operation and specifying `Recovery` as the `type`.
 
           - Cobo Backend → Client Backend
 
@@ -1386,7 +1384,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                 - **Polling option**
 
-                  Client Backend polls the TSS request status by calling the [Get TSS request](http://localhost:3000/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
+                  Client Backend polls the TSS request status by calling the [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
 
                   Cobo Backend sends the TSS request status to Client Backend.
 
@@ -1410,7 +1408,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2, 3 → UCW SDK 2, 3
 
-            23. Client Apps 2 and 3 retrieve the pending TSS request by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            23. Client Apps 2 and 3 retrieve the pending TSS request by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
           - UCW SDK 2, 3 → Client App 2, 3
 
@@ -1422,7 +1420,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2, 3 → UCW SDK 2, 3
 
-            26. After reviewing the request, Client Apps 2 and 3 approve it by calling the [Approve TSS request](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/approve-tss-requests) operation.
+            26. After reviewing the request, Client Apps 2 and 3 approve it by calling the [Approve TSS request](/v2/developer-tools/ucw-sdk/ucw-class/approve-tss-requests) operation.
 
           - UCW SDK 2, 3
 
@@ -1430,7 +1428,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 4 → UCW SDK 4
 
-            28. Client Apps 4 retrieves the pending TSS request by calling the [Get TSS requests](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            28. Client Apps 4 retrieves the pending TSS request by calling the [Get TSS requests](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
           - UCW SDK 4 → Client App 4
 
@@ -1442,7 +1440,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 4 → UCW SDK 4
 
-            31. After reviewing the request, Client App 4 approves it by calling the [Approve TSS request](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/approve-tss-requests) operation.
+            31. After reviewing the request, Client App 4 approves it by calling the [Approve TSS request](/v2/developer-tools/ucw-sdk/ucw-class/approve-tss-requests) operation.
 
           - UCW SDK 4
 
@@ -1462,7 +1460,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client Apps 2, 3, 4 → UCW SDK 2, 3, 4
 
-            37. (37 & 40) Client Apps 2, 3, and 4 retrieve the TSS request status by calling the [Get TSS request](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/get-tss-requests) operation.
+            37. (37 & 40) Client Apps 2, 3, and 4 retrieve the TSS request status by calling the [Get TSS request](/v2/developer-tools/ucw-sdk/ucw-class/get-tss-requests) operation.
 
           - UCW SDK 2, 3, 4 → Client Apps 2, 3, 4
 
@@ -1484,6 +1482,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
 
 
+
                          - **Webhook option**
 
                            Cobo Backend sends the final key generation result via webhooks.
@@ -1495,7 +1494,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
                          - **Polling option**
 
-                           Client Backend polls the final key generation result by calling the [Get TSS requests](http://localhost:3000/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
+                           Client Backend polls the final key generation result by calling the [Get TSS requests](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
 
                            Cobo Backend sends Client Backend the key generation result.
   </Step>
@@ -1559,7 +1558,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 3 → UCW SDK 3
 
-            3. Client App 3 opens its UCW SDK 3 instance by calling the [Create UCW SDK](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/create-ucw-sdk) operation.
+            3. Client App 3 opens its UCW SDK 3 instance by calling the [Create UCW class](/v2/developer-tools/ucw-sdk/ucw-class/create-ucw) operation.
 
           - UCW SDK 3 → Client App 3
 
@@ -1567,7 +1566,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 3 → UCW SDK 3
 
-            5. Client App 3 exports its recovery key shares using a passphrase for encryption by calling the [Export recovery key shares](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/export-recovery-key-shares) operation.
+            5. Client App 3 exports its recovery key shares using a passphrase for encryption by calling the [Export recovery key shares](/v2/developer-tools/ucw-sdk/ucw-class/export-recovery-key-shares) operation.
 
           - UCW SDK 3 → Client App 3
 
@@ -1577,7 +1576,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2 → UCW SDK 2
 
-            7. Client App 2 opens its UCW SDK 2 instance by calling the [Create UCW SDK](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/create-ucw-sdk) operation.
+            7. Client App 2 opens its UCW SDK 2 instance by calling the [Create UCW class](/v2/developer-tools/ucw-sdk/ucw-class/create-ucw) operation.
 
           - UCW SDK 2 → Client App 2
 
@@ -1585,7 +1584,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2 → UCW SDK 2
 
-            9. Client App 2 exports its recovery key shares using a passphrase for encryption by calling the [Export recovery key shares](http://localhost:3000/v2/ucw_sdk/ucwsdk-class/export-recovery-key-shares) operation.
+            9. Client App 2 exports its recovery key shares using a passphrase for encryption by calling the [Export recovery key shares](/v2/developer-tools/ucw-sdk/ucw-class/export-recovery-key-shares) operation.
 
           - UCW SDK 2 → Client App 2
 
@@ -1595,7 +1594,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2 → UCW SDK 2
 
-            11. Client App 2 opens a UCWRecoverKey instance in UCW SDK 2 by calling the [Create UCW recover key](http://localhost:3000/v2/ucw_sdk/ucwrecoverkey-class/create-ucw-recover-key) operation.
+            11. Client App 2 opens a UCWRecoverKey instance in UCW SDK 2 by calling the [Create UCW recover key](/v2/developer-tools/ucw-sdk/ucwrecoverkey-class/create-ucw-recover-key) operation.
 
           - UCW SDK 2 → Client App 2
 
@@ -1605,7 +1604,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2 → UCW SDK 2
 
-            13. Client App 2 imports the recovery key shares from UCW SDK 2's exported passphrase-encrypted JSON data of key shares by calling the [Import recovery key share](http://localhost:3000/v2/ucw_sdk/ucwrecoverkey-class/import-recovery-key-share) operation and passing in UCW SDK 2's exported passphrase-encrypted JSON data of key shares.
+            13. Client App 2 imports the recovery key shares from UCW SDK 2's exported passphrase-encrypted JSON data of key shares by calling the [Import recovery key share](/v2/developer-tools/ucw-sdk/ucwrecoverkey-class/import-recovery-key-share) operation and passing in UCW SDK 2's exported passphrase-encrypted JSON data of key shares.
 
           - UCW SDK 2 → Client App 2
 
@@ -1613,7 +1612,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2 → UCW SDK 3
 
-            15. Client App 2 imports the recovery key shares from UCW SDK 3's exported passphrase-encrypted JSON data of key shares by calling the [Import recovery key share](http://localhost:3000/v2/ucw_sdk/ucwrecoverkey-class/import-recovery-key-share) operation and passing in UCW SDK 3's exported passphrase-encrypted JSON data of key shares
+            15. Client App 2 imports the recovery key shares from UCW SDK 3's exported passphrase-encrypted JSON data of key shares by calling the [Import recovery key share](/v2/developer-tools/ucw-sdk/ucwrecoverkey-class/import-recovery-key-share) operation and passing in UCW SDK 3's exported passphrase-encrypted JSON data of key shares
 
           - UCW SDK 2 → Client App 2
 
@@ -1623,7 +1622,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2 → UCW SDK 2
 
-            17. After importing the key shares, Client App 2 initiates the recovery of the full root extended private key for the specified address by calling the [Recovery private key](http://localhost:3000/v2/ucw_sdk/ucwrecoverkey-class/recover-private-keys) operation.
+            17. After importing the key shares, Client App 2 initiates the recovery of the full root extended private key for the specified address by calling the [Recovery private key](/v2/developer-tools/ucw-sdk/ucwrecoverkey-class/recover-private-keys) operation.
 
           - UCW SDK 2 → Client App 2
 
