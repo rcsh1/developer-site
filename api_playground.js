@@ -16,7 +16,7 @@ function onUrlChange() {
 
     inputs.forEach(function(input) {
       if (input.placeholder === 'Enter BIZ-API-KEY' || input.placeholder === 'Enter API-SECRET') {
-        input.placeholder = 'Enter your API secret';
+        input.placeholder = 'The private key paired with your API key';
       }
     });
     }, 100);
