@@ -13,10 +13,10 @@ This permissions framework is designed to provide a seamless and secure user exp
 
 ## Key concepts
 
-### Permission
+### Permissions
 A permission is a specific combination of a resource and an operation, defining what actions a user can perform on a given resource. For example, `transaction:withdraw` indicates that the resource `transaction` paired with the operation `withdraw` grants permission to initiate withdrawal transactions. Permissions govern functional access, specifying which actions users are authorized to perform, while data boundaries are controlled through wallet scopes.
 
-### Wallet scope
+### Wallet scopes
 A wallet scope defines the boundaries within which wallet-related permissions are effective, specifying access at levels such as wallet type, wallet ID, and other identifiers. Each type of wallet scope limits permissions to a specific subset of resources, ensuring a tailored access model. The wallet scope dimensions include:
 
 - Wallet type
@@ -25,7 +25,7 @@ A wallet scope defines the boundaries within which wallet-related permissions ar
 - Vault ID (for MPC Wallets only)
 - Wallet ID
 
-### User role
+### User roles
 A user role is a collection of permissions that defines what resources and actions are available to users. Each role grants a specific set of permissions that determine users' capabilities, such as viewing, operating, or managing resources. For more information, refer to [Introduction to user roles and permissions](https://manuals.cobo.com/en/portal/organization/roles-and-permissions).
 
 ## Assign and manage permissions
@@ -33,10 +33,10 @@ A user role is a collection of permissions that defines what resources and actio
 ### General developers via API key
 For general developers, permissions and wallet scope are associated with the API key. When you register an API key, you select user roles and define the wallet scope, which grants shared permissions to all developers using that key. For more details, refer to [API key](/v2/guides/overview/cobo-auth#api-key) and [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key).
 
-### Cobo Portal Apps developers via Org Access Token
+### Cobo Portal Apps developers via Org Access Tokens
 Permissions for Cobo Portal Apps to access users' organization resources are granted through an Org Access Token. When a user installs an app, the necessary permissions and wallet scope are set, and once approved by the organization's admin, these are linked to the app's Org Access Token. Therefore, before publishing an app, developers should specify both required and optional permissions in the [app's manifest file](/v2/apps/build-app#configure-the-manifest-file) to ensure proper access is granted. For a comprehensive list of permissions, refer to [Permissions list](/v2/guides/overview/permission-list).
 
-### Cobo Portal users via user role
+### Cobo Portal users via user roles
 Permissions for Cobo Portal users are based on their user role and wallet scope, with predefined roles available and customizable options for specific needs. For more details, refer to [Assign user roles to members](https://manuals.cobo.com/en/portal/organization/assign-roles-to-members).
 
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

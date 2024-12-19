@@ -1,0 +1,50 @@
+---
+title: "Estimate transaction fees"
+---
+
+<Note>This guide applies only to estimating transaction fees for transfers made from Externally Owned Accounts (EOAs). An EOA is basically a type of account on the Ethereum network that is controlled by a person using a private key. </Note>
+
+Transaction fees are required to process and validate transactions on a blockchain network, ensuring network security and efficiency. Cobo currently offers two methods for estimating transaction fees considering factors such as the source, destination, and the number of inputs and outputs:
+- When you make a transfer on Cobo Portal, you can see the estimated transaction fee on the UI. 
+- You can call the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation. 
+
+When you call the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation, you need to specify the following parameters:
+- `request_type`: The type of transaction, which can be a transfer or a contract call.
+- `source`: The transaction source.
+- `destination`: The transaction destination.
+- (Only required for transfers) `token_id`: The ID of the token being transferred.
+- (Only required for contract calls) `chain_id`: The ID of the chain on which the smart contract is deployed.
+
+You will get the estimated transaction fee with different fee levels in the response, which varies based on the blockchain network and the fee model used.
+
+
+## Fee models
+
+Each blockchain may employ various fee models to calculate transaction fees, creating a one-to-many relationship with its fee structures. For example, Ethereum supports both the Legacy model and the EIP-1559 model.
+
+Cobo currently supports transactions with four types of fee models:
+
+| Fee Model | Calculation Method | Typical Blockchains Using This Model | Customizable Parameters | 
+|-----------|--------------------|---------------------------------|-------------------------|
+| Legacy    | Transaction fee = gas price * gas units used<ul><li>Gas price: The gas price, in wei, represents the amount of ETH that must be paid to validators for processing transactions per gas unit used.</li><li>Gas units: A measure of computational work required to perform operations on the Ethereum network.</li></ul>   |      Ethereum and other EVM-compatible chains      |           Gas limit. Refer to the response of the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation for details.          | 
+| [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)  | Transaction fee = (Base fee per gas unit + priority fee per gas unit) * gas units used<ul><li>Base fee per gas unit: The base fee required to include a transaction in a block per gas unit used on the chain, dynamically adjusted based on network demand.</li><li>Priority fee per gas unit: An additional fee paid to miners to prioritize the transaction per gas unit used on the chain, also known as a tip.</li><li>Gas units: A measure of computational work required to perform operations on the Ethereum network.</li></ul>  | Ethereum and other EVM-compatible chains  | <ul><li>Maximum gas fee per gas unit</li><li>Maximum priority fee per gas unit</li><li>Gas limit</li></ul>Refer to the response of the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation for details.  | 
+| UTXO      | Transaction fee = fee rate * transaction size<ul><li>Fee rate:The fee rate, in sat/vByte, represents the satoshis you are willing to pay for each byte of data that your transaction will consume on the blockchain.</li><li>Transaction size: The total size of a transaction in bytes, affecting the total fee in UTXO models.</li></ul> | Bitcoin and other UTXO-based chains  | Maximum fee amount. Refer to the response of the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation for details.             |
+| Fixed     | The transaction fee is fixed fee amount.  | TRON                            | Maximum fee amount. Refer to the response of the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation for details.                   |
+
+
+## Fee levels
+
+For the legacy, EIP-1559, and UTXO fee models, Cobo also supports three different transaction speed levels: slow, recommended, and fast. The faster the transaction speed, the higher the transaction fee. 
+
+Besides, the transaction fee is also affected by the network conditions, such as congestion.
+
+## How Cobo estimate the fees
+
+| Fee Model | Estimation Method | 
+|-----------|--------------------|
+| Legacy    | <ul><li>Gas price: Calculated based on third-party nodes and self-managed nodes.</li><li>Gas limit: Queried from the corresponding node based on the source and destination.</li></ul>  | 
+| [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)  | <ul><li>Maximum gas fee per gas unit: Calculated based on third-party nodes and self-managed nodes.</li><li>Maximum priority fee per gas unit: Calculated based on third-party nodes and self-managed nodes.</li><li>Gas limit: Queried from the corresponding node based on the source and destination.</li></ul>  | 
+| UTXO      | <ul><li>Fee rate: Calculated based on third-party nodes and self-managed nodes.</li><li>Transaction size: Calculated based on the source spendables (UTXOs) and destination.</li></ul> | 
+| Fixed     | <ul><li>Fixed fee amount: Calculated based on self-managed nodes.</li></ul>  |
+
+<Note>The estimated transaction fee is based on current network conditions and may change by the time the actual transaction is made.</Note>

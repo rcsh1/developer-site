@@ -23,7 +23,7 @@ The information about the content that needs to be signed.
 
   <Expandable title="child attributes">
 
-    <ResponseField name="signatureType" type="int32">
+    <ResponseField name="signatureType" type="enum<int32>">
     
     The signature type. Possible values include:
 
@@ -33,7 +33,7 @@ The information about the content that needs to be signed.
 
     </ResponseField>
     
-    <ResponseField name="tssProtocol" type="int32">
+    <ResponseField name="tssProtocol" type="enum<int32>">
     
     The TSS Node protocol. Possible values include:
 
@@ -94,7 +94,7 @@ The result of completing a transaction is a new list of signatures.
     </ResponseField>
 
 
-    <ResponseField name="signatureType" type="int32">
+    <ResponseField name="signatureType" type="enum<int32>">
     
     The signature type. Possible values include:
 
@@ -104,7 +104,7 @@ The result of completing a transaction is a new list of signatures.
 
     </ResponseField>
     
-    <ResponseField name="tssProtocol" type="int32">
+    <ResponseField name="tssProtocol" type="enum<int32>">
     
     The TSS Node protocol. Possible values include:
 
