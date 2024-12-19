@@ -89,22 +89,92 @@ For details about each API operation, refer to [the API reference](/v2/api-refer
 
 Before you publish the app, you need to fill out the manifest file, which contains the app's configuration information. Refer to the following table for field descriptions and examples.
 
-
-
-| Field                  | Description                                                  | Example                                                      |
-| ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `app_name`             | The app name.                                                | `SuperLoop`                                                  |
-| `app_desc`             | A brief description of the app, with a maximum length of 80 characters. | `SuperLoop is an off-exchange settlement network that allows institutions to trade on exchanges without worrying about counterparty risks.` |
-| `app_desc_long`        | A detailed description of the app, including use cases and key features. The description must be under 1000 characters and formatted in Markdown. | `<br/>SuperLoop is an off-exchange settlement network that allows institutions to trade on exchanges without worrying about counterparty risks.<br/> <br/>For asset managers, trading on exchanges can be conducted with greater confidence and efficiency. The need to pre-fund on exchanges before trading is eliminated, minimizing counterparty risks. Additionally, asset managers can deploy funds for trading without the delays and risks associated with on-chain transfers, thereby maximizing capital efficiency.<br/> <br/>For exchanges, SuperLoop helps attract more asset managers and larger volumes by removing pre-funding requirements. Exchanges can rest assured knowing that asset managers can meet their obligations before executing trades, providing an extra layer of security and ensuring compliance with regulatory requirements.<br/>` |
-| `app_icon_url`         | The URL of the app icon. Please contact our Operation team at [help@cobo.com](mailto:help@cobo.com) to help you upload the app icon. | `https://d.cobo.com/public/logos/Logo.png`                   |
-| `screen_shots`         | The URLs of at least three screenshots showcasing key features. Please contact our Operation team at [help@cobo.com](mailto:help@cobo.com) to help you upload the screenshots. | `"https://d.cobo.com/apk/android/SuperLoop.png",    "https://d.cobo.com/apk/android/Loop.png",    "https://d.cobo.com/apk/android/MirrorModal.png"` |
-| `required_permissions` | A list of the permissions required for the app to access resources within users' organizations. A permission consists of a resource type and an operation, separated by a comma. For example, `wallet:create` represents the permission to create a wallet. For the full list of permissions in WaaS 2.0, refer to [Permissions list](/v2/guides/overview/permission-list).| `"wallet:create", "transaction:withdraw", "mpc_project:update"` |
-| `optional_permissions` | A list of permissions that the app can request to access additional resources within users' organizations. These are not mandatory but may enhance app functionality. A permission consists of a resource type and an operation, separated by a comma. For example, `wallet:create` represents the permission to create a wallet. For the full list of permissions in WaaS 2.0, refer to [Permissions list](/v2/guides/overview/permission-list). | `"address_book:create", "kyc_profile:read", "team_member:freeze", ""`                            |
-| `homepage_url`         | The host URL of the app homepage, used to embed the app into Cobo Portal via an iframe. | `https://example.com`                                        |
-| `callback_urls`        | The URL of the endpoint used to receive the callback after the organization admin approves the app's request for permissions. | `https://example.com/webhooks/organization/authorization`    |
-| `client_key`           | The app key. For instructions on how to generate an app key, refer to[ Generate an app key and an app secret](/v2/apps/authentication#generate-an-app-key-and-an-app-secret). | `AbCdEfGhIjKlMnOpQrStUvWxYz1234567890`                       |
-| `creator_name`         | The developer's name.                                        | `Cobo`                                                       |
-| `contact_email`        | The developer's contact email.                               | `sample@email.com`                                           |
+<table class="table-three-cols">
+    <thead>
+        <tr>
+            <th>Field</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>app_name</td>
+            <td>The app name.</td>
+            <td><code>SuperLoop</code></td>
+        </tr>
+        <tr>
+            <td>app_desc</td>
+            <td>A brief description of the app, with a maximum length of 80 characters.</td>
+            <td><code>SuperLoop is an off-exchange settlement network that allows institutions to trade on exchanges without worrying about counterparty risks.</code></td>
+        </tr>
+        <tr>
+            <td>app_desc_long</td>
+            <td>A detailed description of the app, including use cases and key features. <p>The description must be under 1000 characters and formatted in Markdown.</p></td>
+            <td><code>SuperLoop is an off-exchange settlement network that allows institutions to trade on exchanges without worrying about counterparty risks. For asset managers, trading on exchanges can be conducted with greater confidence and efficiency. The need to pre-fund on exchanges before trading is eliminated, minimizing counterparty risks.</code></td>
+        </tr>
+        <tr>
+            <td>app_icon_url</td>
+            <td>The URL of the app icon. <p>Please contact our Operation team at <a href="mailto:help@cobo.com">help@cobo.com</a> to help you upload the app icon.</p></td>
+            <td><code>https://d.cobo.com/public/logos/Logo.png</code></td>
+        </tr>
+        <tr>
+            <td>screen_shots</td>
+            <td>The URLs of at least three screenshots showcasing key features. <p>Please contact our Operation team at <a href="mailto:help@cobo.com">help@cobo.com</a> to help you upload the screenshots.</p></td>
+            <td><code>"https://d.cobo.com/apk/android/SuperLoop.png", "https://d.cobo.com/apk/android/Loop.png", "https://d.cobo.com/apk/android/MirrorModal.png"</code></td>
+        </tr>
+        <tr>
+            <td>required_permissions</td>
+            <td>A list of the permissions required for the app to access resources within users' organizations. <p>A permission consists of a resource type and an operation, separated by a comma. For example, <code>wallet:create</code> represents the permission to create a wallet.</p>For the full list of permissions in WaaS 2.0, refer to <a href="/v2/guides/overview/permission-list">Permissions list</a>.</td>
+            <td><code>"wallet:create", "transaction:withdraw", "mpc_project:update"</code></td>
+        </tr>
+        <tr>
+            <td>optional_permissions</td>
+            <td>(Optional) A list of permissions that the app can request to access additional resources within users' organizations. <p>These are not mandatory but may enhance app functionality. A permission consists of a resource type and an operation, separated by a comma. For example, <code>wallet:create</code> represents the permission to create a wallet.</p>For the full list of permissions in WaaS 2.0, refer to <a href="/v2/guides/overview/permission-list">Permissions list</a>.</td>
+            <td><code>"address_book:create", "kyc_profile:read", "team_member:freeze"</code></td>
+        </tr>
+        <tr>
+            <td>homepage_url</td>
+            <td>The host URL of the app homepage, used to embed the app into Cobo Portal via an iframe.</td>
+            <td><code>https://example.com</code></td>
+        </tr>
+        <tr>
+            <td>callback_urls</td>
+            <td>The URL of the endpoint used to receive the callback after the organization admin approves the app's request for permissions.</td>
+            <td><code>https://example.com/webhooks/organization/authorization</code></td>
+        </tr>
+        <tr>
+            <td>client_key</td>
+            <td>The app key. <p>For instructions on how to generate an app key, refer to <a href="/v2/apps/authentication#generate-an-app-key-and-an-app-secret">Generate an app key and an app secret</a>.</p></td>
+            <td><code>AbCdEfGhIjKlMnOpQrStUvWxYz1234567890</code></td>
+        </tr>
+        <tr>
+            <td>creator_name</td>
+            <td>The developer's name.</td>
+            <td><code>Cobo</code></td>
+        </tr>
+        <tr>
+            <td>contact_email</td>
+            <td>The developer's contact email.</td>
+            <td><code>sample@email.com</code></td>
+        </tr>
+        <tr>
+            <td>operation_approval_rules</td>
+            <td>(Optional) The app's default workflows.<br />A workflow consists of specific operations on the app that will trigger certain approval rules. When users install an app, the app will be automatically configured with default workflows.<br />For more details, refer to <a href="/en/portal/portal-apps/workflow">View and update workflows</a>.</td>
+            <td><code>[\{"operation_id": "25cbb115-82a1-4474-9993-538bb439ad33", "operation_name": "Make Batch Payout", "default_approval_policies": [\{"action": \{"type": "Quorum", "content": \{"roles": ["admin"], "user_ids": [], "threshold": 1, "type": "PART_APPROVAL"\}\}, "conditions": [\{"field": "amount", "value_type": "INT", "value": "100", "operator": ">"\}]\}, \{"action": \{"type": "Accept", "content": ""\}, "conditions": null\}], "descriptions": [\{"field": "amount", "description": "Total USD amount", "value_type": "INT", "display_name": "Total Amount(USD)", "operators": null\}], "webhook_config": ""\}]</code></td>
+        </tr>
+        <tr>
+            <td>wallet_type</td>
+            <td>(Optional) The wallet types supported by the app. The possible values are as follows: <ul><li><code>Custodial</code></li><li><code>MPC</code></li><li><code>SmartContract</code></li><li><code>Exchange</code></li><li><code>User-Controlled</code></li><li><code>Org-Controlled</code></li><li><code>Asset</code></li><li><code>Safe{Wallet}</code></li><li><code>Main</code></li></ul> For example, if this field is set to <code>Custodial, MPC</code>, users will only be able to select these wallet types as the wallet scope that the app can access. <p>If this field is left empty, users can select any wallet type available.</p>For the full list of wallet scopes in WaaS 2.0, refer to <a href="/v2/guides/overview/permissions-and-scopes#wallet-scopes">Wallet scopes</a>.</td>
+            <td><code>"Custodial", "MPC"</code></td>
+        </tr>
+        <tr>
+            <td>is_policy_reminded</td>
+            <td>(Optional) Whether app users will be reminded of setting up transaction policies for the app. <p>The default value is <code>true</code>.</p></td>
+            <td><code>true</code></td>
+        </tr>
+    </tbody>
+</table>
 
 Refer to the following screenshots for where these fields will display on the app UI.
 
