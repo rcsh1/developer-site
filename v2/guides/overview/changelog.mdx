@@ -4,6 +4,33 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.7.0
+
+This version was released on December 19, 2024.
+
+### Breaking Changes
+- Renamed `create_timestamp` to `created_timestamp` in the `MPCProject` schema to improve consistency in naming conventions.
+
+### New features
+
+- Added the [Create claim activity](/v2/api-references/stakings/create-claim-activity) operation for claiming staking rewards.
+- Added a new version of the [Estimate staking fees](/v2/api-references/stakings/estimate-staking-fees-v2) operation with improved functionality.
+- Added support for staking in the CORE protocol.
+- Added the `auto_fuel` property to the request payloads of the following operations to enable the use of [Fee Station](https://manuals.cobo.com/en/portal/fee-station/introduction) for automatic transaction fee payment:
+  - [Transfer token](/v2/api-references/transactions/transfer-token)
+  - [Call smart contract](/v2/api-references/transactions/call-smart-contract)
+  - [Speed up transaction](/v2/api-references/transactions/speed-up-transaction)
+  - [Drop transaction](/v2/api-references/transactions/drop-transaction)
+
+### Improvements
+
+- Made several fields optional in the `BabylonValidator` schema.
+- Extended ETH staking functionality by adding the `beacon_validators` property to the `EthStakingExtra` schema to represent the list of validator information.
+- Improved the `StakingPoolId` schema by making it an enum type.
+- Extended the `ActivityAction` schema with additional enums to cover more actions that can occur during a staking activity.
+- Deprecated the original version of the "Estimate staking fees" operation.
+
+
 ## v1.6.0
 
 This version was released on November 13, 2024.

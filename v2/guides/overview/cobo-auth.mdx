@@ -152,7 +152,7 @@ The following steps introduce how to calculate an API signature.
     ```python
     from nacl.signing import SigningKey
     
-    # Create an Ed25519 signing key. Replace `api_secret` with your API secret.
+    # Create a signing key. Replace `api_secret` with your API secret.
     sk = SigningKey(bytes.fromhex(api_secret))
     # Sign the hashed message
     signature = sk.sign(content_hash).signature.hex()

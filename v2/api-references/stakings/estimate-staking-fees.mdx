@@ -1,6 +1,5 @@
 ---
 openapi: post /stakings/estimate_fee
-title: Estimate staking fees
 ---
 
 <RequestExample>
@@ -17,8 +16,8 @@ from pprint import pprint
 
 # See configuration.py for a list of all supported configurations.
 configuration = cobo_waas2.Configuration(
-    # Replace `<YOUR_API_SECRET>` with your API secret
-    api_private_key="<YOUR_API_SECRET>",
+    # Replace `<YOUR_PRIVATE_KEY>` with your private key
+    api_private_key="<YOUR_PRIVATE_KEY>",
     # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
     host="https://api.dev.cobo.com/v2",
 )
@@ -57,8 +56,8 @@ public class Example {
     // `Env.PROD
     defaultClient.setEnv(Env.DEV);
 
-    // Replace `<YOUR_API_SECRET>` with your API secret
-    defaultClient.setPrivKey("<YOUR_API_SECRET>");
+    // Replace `<YOUR_PRIVATE_KEY>` with your private key
+    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     StakingsApi apiInstance = new StakingsApi();
     GetStakingEstimationFeeRequest getStakingEstimationFeeRequest =
         new GetStakingEstimationFeeRequest();
@@ -90,26 +89,7 @@ import (
 
 func main() {
 	getStakingEstimationFeeRequest := coboWaas2.get_staking_estimation_fee_request{
-		EstimateStakeFee: coboWaas2.NewEstimateStakeFee(
-			coboWaas2.ActivityType("Stake"),
-			"babylon_btc",
-			"100.00",
-			coboWaas2.TransactionRequestFee{
-				TransactionRequestEvmEip1559Fee: coboWaas2.NewTransactionRequestEvmEip1559Fee(
-					"9000000000000",
-					"1000000000000",
-					coboWaas2.FeeType("Fixed"),
-					"ETH",
-				),
-			},
-			coboWaas2.CreateStakeActivity_extra{
-				BabylonStakeExtra: coboWaas2.NewBabylonStakeExtra(
-					coboWaas2.StakingPoolType("Babylon"),
-					"eca1b104dce16c30705f4147a9c4a373ac88646c5d1bcda6a89c018940cb96a0",
-					int64(2000),
-				),
-			},
-		),
+		EstimateClaimFee: coboWaas2.NewEstimateClaimFee(coboWaas2.ActivityType("Stake")),
 	}
 
 	configuration := coboWaas2.NewConfiguration()
@@ -119,9 +99,9 @@ func main() {
 
 	// Select the development environment. To use the production environment, replace coboWaas2.DevEnv with coboWaas2.ProdEnv
 	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
-	// Replace `<YOUR_API_SECRET>` with your API secret
+	// Replace `<YOUR_PRIVATE_KEY>` with your private key
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
-		Secret: "<YOUR_API_SECRET>",
+		Secret: "<YOUR_PRIVATE_KEY>",
 	})
 	resp, r, err := apiClient.StakingsAPI.GetStakingEstimationFee(ctx).
 		GetStakingEstimationFeeRequest(getStakingEstimationFeeRequest).
@@ -145,8 +125,8 @@ const CoboWaas2 = require('@cobo/cobo-waas2');
 const apiClient = CoboWaas2.ApiClient.instance
 // Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
 apiClient.setEnv(CoboWaas2.Env.DEV);
-// Replace `<YOUR_API_SECRET>` with your API secret
-apiClient.setPrivateKey("<YOUR_API_SECRET>");
+// Replace `<YOUR_PRIVATE_KEY>` with your private key
+apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
