@@ -11,7 +11,7 @@ info:
     - Programmatic control of smart contract wallets such as Safe{Wallet} with fine-grained access controls
     - Seamlessly transfer funds across multiple exchanges, including Binance, OKX, Bybit, Deribit, and more
 
-    For more information about the WaaS 2.0 API, see [Introduction to WaaS 2.0](/v2/guides/overview/introduction).
+    For more information about the WaaS 2.0 API, see [Introduction to WaaS 2.0](https://www.cobo.com/developers/v2/guides/overview/introduction).
   termsOfService: 'https://cobo.com/waas/tos/'
   license:
     name: Apache 2.0
@@ -691,7 +691,7 @@ paths:
       description: |
         This operation creates a vault.
 
-        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -718,7 +718,7 @@ paths:
         1. `project_id` is required when `vault_type` is set to `User-Controlled`.
         2. `project_id` must be left blank when `vault_type` is set to `Org-Controlled`.
 
-        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
       parameters:
@@ -752,7 +752,7 @@ paths:
       description: |
         This operation retrieves detailed information about a vault.
 
-        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
       parameters:
@@ -772,7 +772,7 @@ paths:
       description: |
         This operation updates a vault's name.
 
-        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
+        <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1154,7 +1154,7 @@ paths:
 
         You need to specify the transaction information, including the request ID, request type, source address, destination address, token ID (only applicable to token transfers), and chain ID (only applicable to contract calls).
 
-        The response can contain different properties based on the transaction fee model used by the chain. For the legacy, EIP-1559, and UTXO fee models, Cobo also supports three different transaction speed levels: slow, recommended, and fast. For more information about estimating transaction fees, refer to [Estimate transaction fee](/v2/guides/transactions/estimate-fees).
+        The response can contain different properties based on the transaction fee model used by the chain. For the legacy, EIP-1559, and UTXO fee models, Cobo also supports three different transaction speed levels: slow, recommended, and fast. For more information about estimating transaction fees, refer to [Estimate transaction fee](https://www.cobo.com/developers/v2/guides/transactions/estimate-fees).
       security:
         - CoboAuth: []
       requestBody:
@@ -1476,7 +1476,7 @@ paths:
 
         Access tokens allow the app to signal to the WaaS service that it has received permission to access specific resources of the app user's [organization](https://manuals.cobo.com/en/portal/organization/introduction). Once the app has been granted permission by the organization's admin, it can use this operation to obtain both an Org Access Token and a Refresh Token.
 
-        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token.
+        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token. 
       security:
         - CoboAuth: []
       parameters:
@@ -1499,7 +1499,7 @@ paths:
         <Note>This operation is only applicable to Cobo Portal Apps developers. To call this operation, you need to use the Cobo OAuth authentication method that requires an app key.</Note>
         This operation allows Cobo Portal Apps to obtain a new Org Access Token with a specified client ID, grant type and a Refresh Token. 
 
-        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call this operation to get a new Org Access Token and a new Refresh Token.
+        For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call this operation to get a new Org Access Token and a new Refresh Token. 
       security:
         - CoboAuth: []
       requestBody:
@@ -1832,7 +1832,7 @@ paths:
         - Stakings
       summary: List staking positions
       description: |
-        This operation retrieves a list of staking positions.
+        This operation retrieves a list of staking positions. 
       operationId: list_stakings
       parameters:
         - $ref: '#/components/parameters/poolIdOptionalParam'
@@ -1945,7 +1945,7 @@ paths:
 
         <Note>Currently, only the Ethereum Beacon protocol supports this operation.</Note>
 
-        For some protocols, you can use the `fee` property in the request body to specify the maximum fee you are willing to pay. The transaction will fail if the actual fee exceeds the specified maximum fee.
+        For some protocols, you can use the `fee` property in the request body to specify the maximum fee you are willing to pay. The transaction will fail if the actual fee exceeds the specified maximum fee. 
       operationId: create_claim_activity
       requestBody:
         $ref: '#/components/requestBodies/createClaimActivityBody'
@@ -2366,20 +2366,20 @@ components:
           properties:
             total:
               type: string
-              description: 'The current amount of tokens in an address, which is retrieved directly from the network. To learn more, see [Balances and transaction amounts for MPC Wallets](/v2/guides/mpc-wallets/balance-amounts) for more details.'
+              description: 'The current amount of tokens in an address, which is retrieved directly from the network. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
               example: '100.0'
             available:
               type: string
-              description: 'The amount of tokens ready to be spent. To learn more, see [Balances and transaction amounts for MPC Wallets](/v2/guides/mpc-wallets/balance-amounts) for more details.'
+              description: 'The amount of tokens ready to be spent. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
               example: '80.5'
             pending:
               type: string
-              description: 'The total amount being sent in a transaction, which is calculated as the withdrawal amount plus the transaction fee. To learn more, see [Balances and transaction amounts for MPC Wallets](/v2/guides/mpc-wallets/balance-amounts) for more details.'
+              description: 'The total amount being sent in a transaction, which is calculated as the withdrawal amount plus the transaction fee. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
               default: '0'
               example: '10.5'
             locked:
               type: string
-              description: 'For UTXO chains, this is the combined value of the selected UTXOs for the transaction. For other chains, it is equal to the Pending amount. To learn more, see [Balances and transaction amounts for MPC Wallets](/v2/guides/mpc-wallets/balance-amounts) for more details.'
+              description: 'For UTXO chains, this is the combined value of the selected UTXOs for the transaction. For other chains, it is equal to the Pending amount. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
               default: '0'
               example: '3.0'
     AssetBalance:
@@ -3286,7 +3286,7 @@ components:
 
         Each fee model requires a different set of properties. Switch between the above tabs for details.
 
-        To learn more about the fee models, refer to [Fee models](/v2/guides/transactions/estimate-fees#fee-models).
+        To learn more about the fee models, refer to [Fee models](https://www.cobo.com/developers/v2/guides/transactions/estimate-fees#fee-models).
     FeeAmount:
       type: object
       description: The transaction fee.
@@ -3615,7 +3615,7 @@ components:
       description: |
         The preset properties to limit transaction fee.
 
-        In the fixed fee model, the transaction fee is a fixed amount within a certain amount of period regardless of the transaction size or network congestion, which can vary between different chains. For more information about the fixed fee model, refer to [Fee models](/v2/guides/transactions/estimate-fees#fee-models).
+        In the fixed fee model, the transaction fee is a fixed amount within a certain amount of period regardless of the transaction size or network congestion, which can vary between different chains. For more information about the fixed fee model, refer to [Fee models](https://www.cobo.com/developers/v2/guides/transactions/estimate-fees#fee-models).
 
         You can specify the maximum fee amount to limit the transaction fee. The transaction will fail if the transaction fee exceeds the specified maximum fee amount.
 
@@ -3639,7 +3639,7 @@ components:
       description: |
         The preset properties to limit transaction fee.
 
-        In the EIP-1559 fee model, the transaction fee is calculated by multiplying the gas price and the gas units used by the transaction. This can be expressed as: Transaction fee = gas price * gas units used. For more information about the EIP-1559 fee model, refer to [Fee models](/v2/guides/transactions/estimate-fees#fee-models).
+        In the EIP-1559 fee model, the transaction fee is calculated by multiplying the gas price and the gas units used by the transaction. This can be expressed as: Transaction fee = gas price * gas units used. For more information about the EIP-1559 fee model, refer to [Fee models](https://www.cobo.com/developers/v2/guides/transactions/estimate-fees#fee-models).
 
         You can specify the maximum gas fee per gas unit, maximum priority fee per gas unit, and the gas limit to limit the gas price, priority fee per gas unit, gas units used in the transaction. 
 
@@ -3669,7 +3669,7 @@ components:
       description: |
         The preset properties to limit transaction fee.
 
-        In the legacy fee model, the transaction fee is calculated by multiplying the gas price by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). For more information about the legacy fee model, refer to [Fee models](/v2/guides/transactions/estimate-fees#fee-models).
+        In the legacy fee model, the transaction fee is calculated by multiplying the gas price by the gas units used by the transaction. This can be expressed as: Transaction fee =  (gas price * gas units used). For more information about the legacy fee model, refer to [Fee models](https://www.cobo.com/developers/v2/guides/transactions/estimate-fees#fee-models).
 
         You can specify the gas limit to limit the gas units used in the transaction.
 
@@ -3698,7 +3698,7 @@ components:
       description: |
         The preset properties to limit transaction fee.
 
-        In the UTXO fee model, the transaction fee is calculated by multiplying the fee rate by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. For more information about the UTXO fee model, see [Fee models](/v2/guides/transactions/estimate-fees#fee-models).
+        In the UTXO fee model, the transaction fee is calculated by multiplying the fee rate by the transaction size. This can be expressed as: Transaction fee = fee rate * transaction size. For more information about the UTXO fee model, see [Fee models](https://www.cobo.com/developers/v2/guides/transactions/estimate-fees#fee-models).
 
         You can specify the maximum fee amount to limit the transaction fee. The transaction will fail if the transaction fee exceeds the specified maximum fee amount.
 
@@ -4225,11 +4225,11 @@ components:
         - DepositFromLoop
       example: DepositFromAddress
       description: |
-        The transaction source. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The transaction source. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     TransactionCustodialAssetWalletSource:
       type: object
       description: |
-        Information about the transaction source type `Asset`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `Asset`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Custodial Wallet (Asset)
@@ -4247,7 +4247,7 @@ components:
     TransactionMPCWalletSource:
       type: object
       description: |
-        Information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: MPC Wallet
@@ -4281,7 +4281,7 @@ components:
     TransactionSmartContractSafeWalletSource:
       type: object
       description: |
-        Information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Smart Contract Wallet
@@ -4306,7 +4306,7 @@ components:
     TransactionExchangeWalletSource:
       type: object
       description: |
-        Information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Exchange Wallet
@@ -4331,7 +4331,7 @@ components:
     TransactionDepositFromAddressSource:
       type: object
       description: |
-        Information about the transaction source type `DepositFromAddress`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `DepositFromAddress`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Deposit from Address
@@ -4359,7 +4359,7 @@ components:
     TransactionDepositFromWalletSource:
       type: object
       description: |
-        Information about the transaction source type `DepositFromWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `DepositFromWallet`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Deposit from Wallet
@@ -4387,7 +4387,7 @@ components:
     TransactionDepositFromLoopSource:
       type: object
       description: |
-        Information about the transaction source type `DepositFromLoop`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction source type `DepositFromLoop`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Deposit from Cobo Loop
@@ -4424,11 +4424,11 @@ components:
         - DepositToWallet
       example: Address
       description: |
-        The transaction destination type. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The transaction destination type. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     TransactionDepositToAddressDestination:
       type: object
       description: |
-        Information about the transaction destination type `DepositToAddress`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `DepositToAddress`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Deposit to Address
@@ -4466,7 +4466,7 @@ components:
     TransactionDepositToWalletDestination:
       type: object
       description: |
-        Information about the transaction destination type `DepositToWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `DepositToWallet`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Deposit to Wallet
@@ -4570,7 +4570,7 @@ components:
       title: EVM Contract
       type: object
       description: |
-        Information about the transaction destination type `EVM_Contract`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `EVM_Contract`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       required:
@@ -4599,7 +4599,7 @@ components:
     TransactionMessageSignEIP191Destination:
       title: EIP-191 Signature
       description: |
-        Information about the transaction destination type `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       type: object
@@ -4616,7 +4616,7 @@ components:
     TransactionMessageSignEIP712Destination:
       title: EIP-712 Signature
       description: |
-        Information about the transaction destination type `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       type: object
@@ -4635,7 +4635,7 @@ components:
     TransactionRawMessageSignDestination:
       title: Raw Message Signature
       description: |
-        The information about the destination `Raw_Message_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the destination `Raw_Message_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       type: object
@@ -4651,7 +4651,7 @@ components:
     TransactionTransferToAddressDestination:
       type: object
       description: |
-        Information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Address
@@ -4711,7 +4711,7 @@ components:
     TransactionTransferToWalletDestination:
       type: object
       description: |
-        Information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Exchange Wallet
@@ -5013,7 +5013,7 @@ components:
     CustodialTransferSource:
       type: object
       description: |
-        The information about the transaction source types `Asset` and `Web3`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source types `Asset` and `Web3`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Transfer from Custodial Wallet
@@ -5031,7 +5031,7 @@ components:
     MpcTransferSource:
       type: object
       description: |
-        The information about the transaction source types `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source types `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         You need to provide either the `address` or `included_utxos` property. If neither property is provided, the transfer will fail.
 
@@ -5067,7 +5067,7 @@ components:
     SafeTransferSource:
       type: object
       description: |
-        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       title: Transfer from Smart Contract Wallet
@@ -5132,7 +5132,7 @@ components:
     ExchangeTransferSource:
       type: object
       description: |
-        The information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source types `Main` and `Sub`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Assets in an Exchange Wallet (Sub Account) can only be transferred to another Exchange Wallet.
 
@@ -5172,7 +5172,7 @@ components:
     AddressTransferDestination:
       type: object
       description: |
-        The information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Specify either the `account_output` property or the `utxo_outputs` property. You can transfer tokens to multiple addresses only if you use MPC Wallets as the transaction source. You should use the `utxo_outputs` property to specify the destination addresses.
 
@@ -5244,7 +5244,7 @@ components:
     ExchangeTransferDestination:
       type: object
       description: |
-        The information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         An Exchange Wallet (Sub Account) can only receive asset transfers from another Exchange Wallet.
 
@@ -5279,7 +5279,7 @@ components:
         - ExchangeWallet
       example: Address
       description: |
-        The transaction destination type. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The transaction destination type. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Each destination type requires a different set of properties. Switch between the above tabs for details.
     TransferDestination:
@@ -5400,7 +5400,7 @@ components:
     BaseContractCallSource:
       type: object
       description: |
-        The information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source type `Org-Controlled` and `User-Controlled`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       required:
@@ -5426,7 +5426,7 @@ components:
     SafeContractCallSource:
       title: Contract Call from Smart Contract Wallet
       description: |
-        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The information about the transaction source type `Safe{Wallet}`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction sources.
       allOf:
@@ -5445,7 +5445,7 @@ components:
         - 'Safe{Wallet}'
       example: Org-Controlled
       description: |
-        The type of the source. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The type of the source. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Each source type requires a different set of properties. Switch between the above tabs for details.
     ContractCallSource:
@@ -5464,11 +5464,11 @@ components:
         - EVM_Contract
       example: EVM_Contract
       description: |
-        The type of the contract format. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The type of the contract format. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     EvmContractCallDestination:
       title: EVM Contract
       type: object
-      description: 'The information about the transaction destination. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the transaction destination. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       required:
         - destination_type
         - address
@@ -5560,7 +5560,7 @@ components:
         - User-Controlled
       example: Org-Controlled
       description: |
-        The wallet subtype of the transaction source. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The wallet subtype of the transaction source. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
     MessageSignSource:
       oneOf:
         - $ref: '#/components/schemas/MpcMessageSignSource'
@@ -5571,7 +5571,7 @@ components:
           User-Controlled: '#/components/schemas/MpcMessageSignSource'
     EvmEIP191MessageSignDestination:
       title: EIP-191 Signature
-      description: 'The information about the destination `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the destination `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
         - destination_type
@@ -5585,7 +5585,7 @@ components:
           example: YWFhYQ==
     EvmEIP712MessageSignDestination:
       title: EIP-712 Signature
-      description: 'The information about the destination `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the destination `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
         - destination_type
@@ -5601,7 +5601,7 @@ components:
             {"types": {"EIP712Domain": [{"name": "name", "type": "string"}, {"name": "version", "type": "string"}, {"name": "chainId", "type": "uint256"}, {"name": "verifyingContract", "type": "address"}], "Person": [{"name": "name", "type": "string"}, {"name": "wallet", "type": "address"}], "Mail": [{"name": "from", "type": "Person"}, {"name": "to", "type": "Person"}, {"name": "contents", "type": "string"}]}, "primaryType": "Mail", "domain": {"name": "Ether Mail", "version": "1", "chainId": 1, "verifyingContract": "0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"}, "message": {"from": {"name": "Cow", "wallet": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"}, "to": {"name": "Bob", "wallet": "0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"}, "contents": "Hello, Bob!"}}
     RawMessageSignDestination:
       title: Raw Message Signature
-      description: 'The information about the destination `Raw_Message_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the destination `Raw_Message_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
         - destination_type
@@ -5619,7 +5619,7 @@ components:
         - EVM_EIP_712_Signature
       example: EVM_EIP_191_Signature
       description: |
-        The type of the signature format. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        The type of the signature format. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Each signature format type requires a different set of properties. Switch between the above tabs for details.
     MessageSignDestination:
@@ -5753,7 +5753,7 @@ components:
         - wallets.mpc.tss_request.failed
         - wallets.mpc.tss_request.succeeded
       example: wallets.transaction.created
-      description: 'The event type. To learn the trigger condition of each event type, refer to [Webhook event types and event data](/v2/guides/webhooks-callbacks/webhook-event-type).'
+      description: 'The event type. To learn the trigger condition of each event type, refer to [Webhook event types and event data](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type).'
     WebhookEventStatus:
       type: string
       enum:
@@ -6871,7 +6871,7 @@ components:
         api_key:
           type: string
           example: 8926ce37029ed650eb7aee66999658cad2653dbc2dbc758c04fc4dc937b47f25
-          description: 'The API key used to call the API. For more details, refer to [API key](/v2/guides/overview/cobo-auth#api-key).'
+          description: 'The API key used to call the API. For more details, refer to [API key](https://www.cobo.com/developers/v2/guides/overview/cobo-auth#api-key).'
         response_body:
           type: string
           example: '{"success":true}'
@@ -7805,7 +7805,7 @@ components:
       schema:
         type: string
       example: 8926ce37029ed650eb7aee66999658cad2653dbc2dbc758c04fc4dc937b47f25
-      description: 'The API key used to call the API. For more details, refer to [API key](/v2/guides/overview/cobo-auth#api-key).'
+      description: 'The API key used to call the API. For more details, refer to [API key](https://www.cobo.com/developers/v2/guides/overview/cobo-auth#api-key).'
     optionalApiEndpointParam:
       name: api_endpoint
       in: query
