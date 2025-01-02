@@ -1,0 +1,72 @@
+---
+title: "Embedded risk control mechanism"
+sidebarTitle: "Embedded risk control mechanism"
+description: "Configure basic risk controls in the server co-signer"
+---
+
+The embedded risk control mechanism is a basic risk control mechanism built into the TSS Node. It evaluates task requests based on predefined rules that cannot be customized. A task request must be approved by both the embedded risk control module (if enabled) and all configured [callback servers](/v2/guides/mpc-wallets/server-co-signer/callback-server-overview) before it can proceed.
+
+## Configurations
+
+The embedded risk control module can be configured through the `configs/cobo-tss-node-config.yaml` file. The configuration defines rules for the following task requests:
+
+- Key generation (KeyGen): Creating new key shares for MPC Wallets
+- Key signing (KeySign): Signing transactions or messages
+- Key resharing (KeyReshare): Redistributing key shares among participants
+
+Here's an example configuration:
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_gen:
+    reject_all: false
+    allow_list:
+      - threshold: 2
+        node_ids:
+          - <Cobo TSS Node ID>
+          - <ThirdParty TSS Node ID>
+          - <Customer TSS Node ID>
+  key_sign:
+    reject_all: true
+  key_reshare:
+    reject_all: false
+    allow_list:
+      - xpubkey: <EXTENDED_ROOT_PUBKEY>
+        new_threshold: 2
+        new_node_ids:
+          - <Cobo TSS Node ID>
+          - <ThirdParty TSS Node ID>
+          - <Customer TSS Node ID>
+  key_share_sign:
+    reject_all: true
+```
+- `enable`: Enable or disable the embedded risk control mechanism
+- `key_gen.reject_all`: If true, reject all key generation requests
+- `key_sign.reject_all`: If true, reject all key signing requests
+- `key_share_sign.reject_all`: If true, reject all requests to sign messages for key share verification
+- `key_reshare.reject_all`: If true, reject all key resharing requests
+- `<key_gen>.allow_list` or `<key_reshare>.allow_list`: List of allowed key generation or resharing configurations
+  - `xpubkey`: Root extended public key for key resharing
+  - `new_threshold`: The new signature threshold
+  - `new_node_ids`: Node IDs of the parties allowed in key resharing
+
+Replace the placeholders with actual values:
+- `<EXTENDED_ROOT_PUBKEY>`: The MPC Wallet's root extended public key
+- `<Cobo TSS Node ID>`: Cobo's TSS Node ID
+- `<Customer TSS Node ID>`: Your TSS Node ID
+- `<ThirdParty TSS Node ID>`: A third-party TSS Node ID
+
+To learn more about the TSS Node configuration, see [Configure the TSS Node](/v2/guides/mpc-wallets/server-co-signer/appendix#configure-the-tss-node).
+
+## Security recommendations
+
+1. While the embedded risk control mechanism provides basic security, it's strongly recommended to also implement the callback mechanism for additional custom risk controls. This combination offers a more comprehensive and flexible risk management strategy.
+2. Regularly review and update your risk control configurations
+3. Test your configurations in a development environment before deploying to production
+
+## Next steps
+
+- [Deploy your callback server](/v2/guides/mpc-wallets/server-co-signer/callback-server-overview)
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

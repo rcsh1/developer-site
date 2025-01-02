@@ -1,0 +1,102 @@
+---
+title: "Configure callback keys and TSS Node"
+sidebarTitle: "Configure callback keys and TSS Node"
+description: "Configure callback keys and TSS Node settings for secure communication between your callback server and TSS Node"
+---
+
+This guide explains how to configure secure communication between your callback server and TSS Node using RSA key pairs.
+
+## Generate and exchange callback keys
+
+### 1. Generate callback server keys
+
+On your callback server, generate an RSA key pair:
+
+1. Generate a private key:
+```bash
+openssl genrsa -out callback-server-pri.pem 4096
+```
+
+2. Configure the private key on the callback server because you will need to use it to sign the callback response.
+
+3. Export the public key:
+```bash
+openssl rsa -in callback-server-pri.pem -pubout >callback-server-pub.key
+```
+
+### 2. Get the TSS Node's callback public key
+
+After initializing your TSS Node, retrieve its callback public key:
+```bash
+sudo ./tss-node.sh info
+```
+
+The output will include the callback public key:
+```
+INFO[2022-12-14T07:09:44Z] Callback public key:
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA4ki4fHY4/oSJOYBxBUI1
+...
+s8wADQvpbJTyPkkMyq/i5SkCAwEAAQ==
+-----END PUBLIC KEY-----
+```
+
+### 3. Exchange public keys
+
+1. Copy your callback server's public key to your TSS Node's installation directory, such as:
+```
+cobo-tss-node-generic
+├── configs
+│   ├── callback-server-pub.key
+│   └── cobo-tss-node-config.yaml
+```
+
+2. Copy the TSS Node's callback public key to your callback server's configuration
+
+
+## Configure TSS Node settings
+
+Modify the `cobo-tss-node-config.yaml` file on your TSS Node to include the callback server's URL, public key, and other callback-related settings.
+
+You can configure multiple callback servers for enhanced security. The TSS Node will only execute a task if all configured callback servers approve it. The following example shows how to configure if you have two callback servers:
+
+```yaml
+callback:
+  cb_server_v2:
+    - service_address: https://<CALLBACK_SERVER_URL_1>/v2/check
+      pubkey_path: configs/customer-callback-server-pub-01.key
+    - service_address: https://<CALLBACK_SERVER_URL_2>/v2/check
+      pubkey_path: configs/customer-callback-server-pub-02.key
+  token_expire_minutes: 2
+  retry_times: 60
+  sleep_seconds: 60
+  request_timeout: 10
+  monitor_interval: 1h
+```
+
+### Configuration parameters
+
+- `cb_server`: A list of addresses of the TSS Node callback servers that receive the [v1 version](/v1/overview/mpc-wallet/callback/callback-server-requirements/keygen-request) of the callback request.  While still supported, we strongly recommend using the `cb_server_v2` option instead, as it provides more comprehensive request information and is more compatible with the WaaS 2.0 API.
+- `cb_server_v2`: A list of addresses of the TSS Node callback servers that receive the v2 version of the callback request.
+  - `service_address`: HTTP endpoint of your callback server.
+  - `pubkey_path`: Path to your callback server's public key file.
+- `token_expire_minutes`: JWT expiration time in minutes.
+- `retry_times`: Maximum number of retry attempts for failed requests.
+- `sleep_seconds`: Delay between retry attempts in seconds.
+- `request_timeout`: Timeout duration for HTTP requests in seconds. Specifies how long the TSS Node waits for a response from the callback server before considering the request timed out.
+- `monitor_interval`: Specifies how often the TSS Node checks the callback server's status. Use `s` for seconds, `m` for minutes, or `h` for hours (e.g., `30s`, `5m`, `2h`). If omitted, status monitoring is disabled.
+
+## Verify configuration
+
+After configuring both servers:
+1. Start your callback server
+2. Start your TSS Node
+3. Test the connection by initiating a task request
+4. Verify the callback flow
+
+## Next steps
+
+- [Back up your key shares](/v2/guides/mpc-wallets/server-co-signer/key-shares-backup)
+- [Learn about embedded risk control mechanism](/v2/guides/mpc-wallets/server-co-signer/embedded-risk-controls)
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

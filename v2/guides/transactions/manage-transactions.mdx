@@ -1,0 +1,73 @@
+---
+title: "Manage transactions"
+---
+
+This guide outlines the processes for canceling, resending, speeding up, and dropping transactions. By mastering these techniques, you can ensure that your transactions are processed promptly and accurately. 
+
+## Cancel a transaction
+
+Canceling a transaction stops it while it is still pending.
+
+You might want to cancel a transaction if it was initiated by mistake, if you need to modify its details, or if it no longer needs to be executed. Canceling prevents the transaction from being processed further.
+
+<Note>This operation only applies to transactions from MPC Wallets and Smart Contract Wallets.</Note>
+
+A transaction can be cancelled if its status is either of the following:
+- `Submitted`
+- `PendingScreening`
+- `PendingAuthorization`
+- `PendingSignature` 
+    
+To cancel a transaction via the WaaS 2.0 API, use the [Cancel transaction](/v2/api-references/transactions/cancel-transaction) operation. This requires the transaction ID of the transaction you wish to cancel.
+
+## Resend a transaction
+
+Resending a transaction means retrying a previously failed transaction.
+
+<Note>This operation only applies to transactions from MPC Wallets in the SOL token.</Note>
+
+A transaction can be resent only if its status is `failed`.
+
+To resend a transaction, use the [Resend transaction](/v2/api-references/transactions/resend-transaction) operation. This requires the transaction ID of the transaction you wish to resend.
+
+## Replace-By-Fee (RBF) transactions
+
+Replace-By-Fee (RBF) is a feature that allows you to replace an unconfirmed transaction with a new version that typically pays a higher transaction fee. This functionality provides flexibility to modify transactions after they are broadcast but before they are confirmed by miners. The key benefits of RBF include the ability to:
+
+- Accelerate transaction confirmation by increasing the fee.
+- Cancel a pending transaction.
+- Modify transaction details such as the destination address or transfer amount.
+
+The two most common use cases of RBF are speeding up and dropping transactions.
+
+### Speed up a transaction
+
+Speeding up a transaction leverages RBF to replace the original transaction with a version with a higher fee, encouraging miners to prioritize it for faster confirmation.
+
+You might want to speed up a transaction if it is taking too long to be confirmed due to low fees. This is particularly useful in times of network congestion.
+
+<Note>This operation only applies to transactions from MPC Wallets and Smart Contract Wallets. It does not apply to transactions on the following chains: VET, TRON, TVET, SOL, and TON.</Note>
+
+A transaction can be sped up only if its status is `Broadcasting`.
+
+To speed up a transaction, use the [Speed up transaction](/v2/api-references/transactions/speed-up-transaction) operation. This requires the transaction ID of the transaction you wish to speed up.
+
+<Info>If you speed up a transaction from a Smart Contract Wallet, two RBF transactions will be triggered, one for the transaction from the Smart Contract Wallet, and the other for the transaction from the Delegate.</Info>
+
+### Drop a transaction
+
+Dropping a transaction leverages RBF to replace the original transaction with a version that effectively cancels it.
+- For EVM chains, this RBF transaction has a transfer amount of `0` and the sending address is the same as the receiving address.
+- For UTXO chains, this RBF transaction has a transfer amount of `0` and the destination address is the same as the change address in the original transaction.
+
+You might want to drop a transaction if it was initiated by mistake, if you need to modify its details, or if it no longer needs to be executed but it cannot be canceled.
+
+<Note>This operation only applies to transactions from MPC Wallets and Smart Contract Wallets. It does not apply to transactions on the following chains: VET, TRON, TVET, SOL, and TON.</Note>
+
+A transaction can be dropped only if its status is `Broadcasting`.
+
+To drop a transaction, use the [Drop transaction](/v2/api-references/transactions/drop-transaction) operation. This requires the transaction ID of the transaction you wish to drop.
+
+When a transaction is being dropped, any subsequent drop or speed up operations will still apply to the original transaction. For example, if a user creates Transaction A and later performs a drop operation on Transaction A using Transaction B, followed by a speed up operation on Transaction B using Transaction C, the speed up operation will still apply to Transaction A, not Transaction B.
+
+<Info>If you drop a transaction from a Smart Contract Wallet, two RBF transactions will be triggered, one for the transaction from the Smart Contract Wallet, and the other for the transaction from the Delegate.</Info>

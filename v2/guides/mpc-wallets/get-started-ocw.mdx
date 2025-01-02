@@ -310,7 +310,7 @@ A key share holder group has a set of TSS Nodes storing the private key shares t
 
 #### Become a key share holder
 
-A Main Group consists of two key share holders. One holder is always Cobo, so you now need to find another holder to make up a Main Group. If you already have Cobo Guard installed on your phone, you can become a key share holder by using your phone as a mobile co-signer. As an alternative, you can set up a TSS node and use it as an API co-signer. 
+A Main Group consists of two key share holders. One holder is always Cobo, so you now need to find another holder to make up a Main Group. If you already have Cobo Guard installed on your phone, you can become a key share holder by using your phone as a mobile co-signer. As an alternative, you can set up a TSS node and use it as a server co-signer. 
 
 To learn the differences between the two co-signer types, how to complete the setup, and how to acquire their TSS Node IDs, see [Co-signer Type](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#signer-type).
 
@@ -328,7 +328,7 @@ To create a Main Group, call the [Create key share holder group](/v2/api-referen
   - `threshold`: `2`.
   - `key_share_holders`: The information about the key share holder. You do not need to provide the information about Cobo as the key share holder, as it will be automatically filled by the WaaS service.
     - `name`: Use a name that can help you easily identify the key share holder.
-    - `type`: `Mobile` if you use a mobile co-signer, or `API` if you use an API co-signer.
+    - `type`: `Mobile` if you use a mobile co-signer, or `API` if you use a server co-signer.
     - `tss_node_id`: The TSS Node ID you have prepared in the previous step.
     - `signer`: `true`
 
@@ -455,7 +455,7 @@ To do so, perform the following steps:
 
    - If you choose to use a mobile co-signer, you need to approve the “**Approve Become Key Holder**” request on Cobo Guard, and click **Generate Key Shares** to initiate the key generation process. Wait a brief moment for the key shares to be generated.
 
-   - If you choose to use an API co-signer, the key share generation process will be automatically initiated unless you have also configured a [TSS Node callback server](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-callback), in which case the generation process will be initiated upon approval from the TSS Node callback server. 
+   - If you choose to use a server co-signer, the key share generation process will be automatically initiated unless you have also configured a [TSS Node callback server](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-callback), in which case the generation process will be initiated upon approval from the TSS Node callback server. 
 
 Once the root extended public key and key shares have been successfully generated, the TSS request status will become `Success`. You can subscribe to [TSS request-related event types](/v2/guides/webhooks-callbacks/webhook-event-type) to receive real-time status updates or call [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) to query the latest request status.
 

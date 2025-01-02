@@ -1,0 +1,67 @@
+---
+title: "Deploy a TSS Node callback server"
+sidebarTitle: "Deploy a callback server"
+description: "Step-by-step guide to deploy a TSS Node callback server"
+---
+
+This guide explains how to deploy your TSS Node callback server.
+
+## General workflow
+
+Your callback server must:
+1. Implement HTTP endpoints for receiving task requests
+2. Process JWT-signed messages from the TSS Node
+3. Implement your custom risk control logic
+4. Return signed responses to the TSS Node
+
+### HTTP endpoint
+
+The callback server must expose an HTTP endpoint with these specifications:
+- Path: `/v2/check` (or any other path that aligns with your business needs)
+  <Note>Remember to register your chosen path in the TSS Node's configuration file. For detailed instructions, refer to [Configure TSS Node settings](/v2/guides/mpc-wallets/server-co-signer/callback-server-configure#configure-tss-node-settings).</Note>
+- Method: `POST`
+- Content-Type: `application/x-www-form-urlencoded`
+
+### Parsing the request
+
+For each task request, the TSS Node:
+1. Creates a `CallbackRequest` struct based on the task type (KeyGen, KeySign, or KeyReshare)
+2. Serializes the `CallbackRequest` struct to JSON format to obtain `CallbackRequestJsonString`
+3. Uses `CallbackRequestJsonString` as the JWT payload and signs it with its RSA private key (the TSS Node's callback private key)
+4. Sends an HTTP POST request with the JWT in a form field named `TSS_JWT_MSG`
+
+Your callback server must:
+1. Extract the JWT from the `TSS_JWT_MSG` form field in the HTTP POST request
+2. Verify the JWT signature using the TSS Node's callback public key
+3. Extract the payload from the JWT and deserialize it into a `CallbackRequest` struct
+4. Based on the `CallbackRequest` type, deserialize the `meta` field to obtain detailed request information
+
+### Risk control implementation
+
+Your callback server must implement risk controls to validate each task request. For each `CallbackRequest`, you should:
+1. Analyze the request content
+3. Apply your risk control policies to ensure the requested key share operation is legitimate and authorized
+4. Return an approval or rejection decision
+
+### Creating a response
+
+To build the HTTP response, your callback server must:
+1. Create a `CallbackResponse` struct based on your risk control decision
+2. Serialize the `CallbackResponse` struct to JSON format to obtain `CallbackResponseJsonString`
+3. Use `CallbackResponseJsonString` as the JWT payload and sign it with your callback server's RSA private key
+4. Return the JWT directly in the HTTP response body to the TSS Node
+
+<Note>
+If the TSS Node doesn't receive a response, it will retry the request. After maximum retries, the TSS Node will consider the risk control decision as "REJECT."
+</Note>
+
+## Request and response format
+
+Detailed specifications for the `CallbackRequest` and `CallbackResponse` formats will be available in an upcoming documentation update.
+
+
+## Next steps
+
+- [Configure callback keys](/v2/guides/mpc-wallets/server-co-signer/callback-server-configure)
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

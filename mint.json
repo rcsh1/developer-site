@@ -139,6 +139,47 @@
           "pages": [
             "v2/guides/mpc-wallets/get-started-ocw",
             "v2/guides/mpc-wallets/get-started-ucw",
+            {
+              "group": "Server co-signers",
+              "pages": [
+                "v2/guides/mpc-wallets/server-co-signer/tss-node-overview",
+                {
+                  "group": "Deploy and configure a server co-signer",
+                  "pages": [
+                    "v2/guides/mpc-wallets/server-co-signer/tss-node-release-notes",
+                    "v2/guides/mpc-wallets/server-co-signer/tss-node-network-environments",
+                    "v2/guides/mpc-wallets/server-co-signer/tss-node-server-environments",
+                    "v2/guides/mpc-wallets/server-co-signer/tss-node-deployment",
+                    "v2/guides/mpc-wallets/server-co-signer/tss-node-update"
+                  ]
+                },
+                {
+                  "group": "Risk control mechanisms",
+                  "pages": [
+                    "v2/guides/mpc-wallets/server-co-signer/risk-control-mechanisms",
+                    "v2/guides/mpc-wallets/server-co-signer/embedded-risk-controls",
+                    {
+                      "group": "TSS Node callback",
+                      "pages": [
+                        "v2/guides/mpc-wallets/server-co-signer/callback-server-overview",
+                        "v2/guides/mpc-wallets/server-co-signer/callback-server-deploy",
+                        "v2/guides/mpc-wallets/server-co-signer/callback-server-configure"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "group": "Backup, restore, and recovery",
+                  "pages": [
+                    "v2/guides/mpc-wallets/server-co-signer/disaster-recovery-overview",
+                    "v2/guides/mpc-wallets/server-co-signer/key-shares-backup",
+                    "v2/guides/mpc-wallets/server-co-signer/key-shares-restore"
+                  ]
+                },
+                "v2/guides/mpc-wallets/server-co-signer/key-share-verify",
+                "v2/guides/mpc-wallets/server-co-signer/appendix"
+              ]
+            },
             "v2/guides/mpc-wallets/balance-amounts"
           ]
         },
@@ -155,9 +196,10 @@
     {
       "group": "Transactions",
       "pages": [
-        "v2/guides/transactions/sources-and-destinations",
         "v2/guides/transactions/transaction-process-custodial",
-        "v2/guides/transactions/estimate-fees"
+        "v2/guides/transactions/estimate-fees",
+        "v2/guides/transactions/manage-transactions",
+        "v2/guides/transactions/sources-and-destinations"
       ],
       "version": "Version 2.0"
     },
@@ -631,6 +673,13 @@
       "pages": [
         "v2/developer-tools/uitoolkit-intro",
         "v2/developer-tools/uitoolkit-api"
+      ],
+      "version": "Version 2.0"
+    },
+    {
+      "group": "Get Testnet Coins",
+      "pages": [
+        "v2/developer-tools/get-testnet-coins"
       ],
       "version": "Version 2.0"
     },

@@ -1,0 +1,94 @@
+---
+title: "Verify key shares"
+sidebarTitle: "Verify key shares"
+description: "Learn how to verify your key shares to ensure they are valid and properly configured"
+---
+
+Regular verification of key shares in MPC Wallets is crucial to maintaining their integrity and security. This process helps detect issues like corruption, unauthorized modifications, or loss of key shares.
+
+This article introduces the methods you can use to verify key shares on your server co-signer and key shares you have exported and stored as backup files.
+
+<Note>
+  To use this feature, ensure your TSS Node is running version 0.10.0 or higher.
+</Note>
+
+
+## How it works
+
+The verification process involves:
+1. Using the key share to sign some data
+2. Verifying the signature using the original data and the key share's public key
+
+
+## Verify active key shares
+
+This section explains how to verify your active key shares - the ones currently in use in your TSS Node.
+
+<Note>
+  For TSS Nodes kept offline, an alternative verification method is required. We are currently developing this feature and will provide detailed instructions in the near future.
+</Note>
+
+
+1. Follow the instructions in [Verify key shares](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/key-share-verification) to trigger recurring or one-time key share verification in Cobo Portal.
+2. Cobo Portal will verify the signed message and displays the result. If you want to verify by yourself, you can use either online tools or your local environment.
+
+    <Note>Currently, key share verification through the Cobo Portal is only supported for Organization-Controlled Wallets.</Note>
+
+    - Using online tools
+        1. Go to [Google Colab](https://colab.research.google.com/)
+        2. Paste the verification code below
+            - You can retrieve the original and signed message by clicking <img src="/v2/images/guides/view-details.svg" className="icon" alt="View key share verification details" /> next to the key share you want to check.<img src="/v2/images/guides/view-verification-details.png" className="screenshot_full_screen" alt="View key share verification details" />
+            - You can run the [info group](/v2/guides/mpc-wallets/server-co-signer/appendix#info-group) command to get the share public key.
+
+        ```python
+        import ed25519
+        from hashlib import sha256
+        
+        message = bytes.fromhex("<ORIGINAL_MESSAGE>")
+        public = "<SHARE_PUBLIC_KEY>"
+        signature = '<SIGNATURE>'
+        
+        VerifyKey = ed25519.VerifyingKey(bytes.fromhex(public))
+        print("VerifyKey: ", VerifyKey.to_bytes().hex())
+        
+        hashmsg = sha256(message)
+        print("Hash message: ", hashmsg.hexdigest())
+        
+        try:
+            VerifyKey.verify(signature, hashmsg.digest(), encoding='hex')
+            print("ed25519 verify pass!")
+        except:
+            print("ed25519 verify failed!")
+        ```
+        3. Run the code to verify signatures
+
+    - Local verification
+        1. Set up your environment:
+        ```bash
+        pip3 install ecdsa
+        pip3 install ed25519
+        ```
+        2. Create a `checker.py` file with the verification code above.
+        3. Run the code to verify signatures
+
+
+
+### Note
+Key share verification is enabled by default in a TSS Node. If you want to disable key share verification by using the embedded risk control module, you can modify the `configs/cobo-tss-node-config.yaml` file as follows:
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_share_sign:
+    reject_all: true
+```
+
+By default, the TSS Node callback does not include risk control for key share verification. If you want to implement risk control for key share verification in the TSS Node callback, please reach out to our support team at <a href="mailto:help@cobo.com">help@cobo.com</a> for assistance.
+
+
+
+## Verify backup key shares
+
+This feature is under development. Stay tuned for updates.
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

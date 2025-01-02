@@ -1330,9 +1330,10 @@ paths:
       operationId: resend_transaction_by_id
       summary: Resend transaction
       description: |
-        This operation resends a specified transaction. Resending a transaction initiates a new attempt to process the transaction that failed previously. A transaction can be resent if its status is `failed`.
+        This operation resends a specified transaction. Resending a transaction means retrying a previously failed transaction. For more details about resending a transaction, see [Resend a transaction](/v2/guides/transactions/manage-transactions#resend-a-transaction).
 
-        A transaction request for tracking is returned upon successful operation.
+        A transaction can be resent if its status is `failed`.
+
         <Note>This operation only applies to transactions from MPC Wallets in the SOL token.</Note>
       security:
         - CoboAuth: []
@@ -1354,14 +1355,15 @@ paths:
       operationId: cancel_transaction_by_id
       summary: Cancel transaction
       description: |
-        This operation cancels a specified transaction. A transaction can be cancelled if its status is either of the following:
+        This operation cancels a specified transaction. Canceling a transaction stops it while it is still pending. For more information, see [Cancel a transaction](/v2/guides/transactions/manage-transaction#cancel-a-transaction).
+
+        <Note>This operation only applies to transactions from MPC Wallets and Smart Contract Wallets.</Note>
+
+        A transaction can be cancelled if its status is either of the following:
         - `Submitted`
         - `PendingScreening`
         - `PendingAuthorization`
         - `PendingSignature` 
-
-        A transaction request for tracking is returned upon successful operation.
-        <Note>This operation only applies to transactions from MPC Wallets and Smart Contract Wallets.</Note>
       security:
         - CoboAuth: []
       responses:
@@ -1404,24 +1406,13 @@ paths:
       operationId: drop_transaction_by_id
       summary: Drop transaction
       description: |
-        This operation drops a specified transaction. 
+        This operation drops a specified transaction. Dropping a transaction leverages RBF to replace the original transaction with a version that effectively cancels it. For more details about dropping a transaction, refer to [Drop a transaction](/v2/guides/transactions/manage-transactions#drop-a-transaction).
 
-        Dropping a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. It must have a higher transaction fee to incentivize miners to prioritize its confirmation over the original one. A transaction can be dropped if its status is `Broadcasting`.
-
-        <ul>
-        <li>For EVM chains, this RBF transaction has a transfer amount of `0` and the sending address is the same as the receiving address.</li>
-        <li>For UTXO chains, this RBF transaction has a transfer amount of `0` and the destination address is the same as the change address in the original transaction.</li>
-        </ul>
-
-        You can use the `address` or `included_utxos` properties in the request body to specify the address or UTXOs that will cover the transaction fee. Generally, the transaction fee is paid by the original transaction's source. If that source's balance is insufficient, the specified address or UTXOs can be used to cover the fee.
-
-        A transaction request for tracking is returned upon successful operation.
-
-        When a transaction is being dropped, any subsequent drop or speed up operations will still apply to the original transaction. For example, if a user creates Transaction A and later performs a drop operation on Transaction A using Transaction B, followed by a speed up operation on Transaction B using Transaction C, the speed up operation will still apply to Transaction A, not Transaction B.
+        A transaction can be sped up only if its status is `Broadcasting`.
 
         <Note>This operation only applies to transactions from MPC Wallets and Smart Contract Wallets. It does not apply to transactions on the following chains: VET, TRON, TVET, SOL, and TON.</Note>
 
-        <Info>If you drop a transaction from a Smart Contract Wallet, two RBF transactions will be triggered, one for the transaction from the Smart Contract Wallet, and the other for the transaction from the Delegate.</Info>
+        You can use the `address` or `included_utxos` properties in the request body to specify the address or UTXOs that will cover the transaction fee. Generally, the transaction fee is paid by the original transaction's source. If that source's balance is insufficient, the specified address or UTXOs can be used to cover the fee.
       security:
         - CoboAuth: []
       requestBody:
@@ -1442,13 +1433,11 @@ paths:
       operationId: speedup_transaction_by_id
       summary: Speed up transaction
       description: |
-        This operation accelerates a specified transaction. 
-
-        Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. It shares the same inputs but must have a higher transaction fee to incentivize miners to prioritize its confirmation over the previous one. A transaction can be accelerated if its status is `Broadcasting`.
+        This operation accelerates a specified transaction. Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For more details about speeding up a transaction, refer to [Speed up a transaction](/v2/guides/transactions/manage-transactions#speed-up-a-transaction).
 
         You can use the `address` or `included_utxos` properties in the request body to specify the address or UTXOs that will cover the transaction fee. Generally, the transaction fee is paid by the original transaction's source. If that source's balance is insufficient, the specified address or UTXOs can be used to cover the fee.
 
-        A transaction request for tracking is returned upon successful operation.
+        A transaction can be sped up only if its status is `Broadcasting`.
 
         <Note>This operation only applies to transactions from MPC Wallets and Smart Contract Wallets. It does not apply to transactions on the following chains: VET, TRON, TVET, SOL, and TON.</Note>
 
@@ -3002,7 +2991,7 @@ components:
           $ref: '#/components/schemas/KeyShareHolderType'
         tss_node_id:
           type: string
-          description: 'Key share holder''s TSS Node ID. You can obtain the TSS Node ID using either mobile co-signer or API co-signer. See the "Primary Purposes" row on the table in [Create a Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group).'
+          description: 'Key share holder''s TSS Node ID. You can obtain the TSS Node ID using either mobile co-signer or server co-signer. See the "Primary Purposes" row on the table in [Create a Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group).'
           example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
         signer:
           type: boolean
@@ -3078,7 +3067,7 @@ components:
 
         - `Mobile`: The TSS Node is generated and held by a [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group) using [Cobo Guard](https://manuals.cobo.com/en/guard/introduction).
 
-        - `API`: The TSS Node is generated and held by an [API co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group) using the [TSS Node software package](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment).
+        - `API`: The TSS Node is generated and held by a [server co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group) using the [TSS Node software package](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment).
     MPCVault:
       type: object
       description: The data for vault information.
@@ -3218,7 +3207,7 @@ components:
         - `MPCProcessing`: The TSS request approval is waiting to be started. 
           - For [MPC Wallets (User-Controlled Wallets)](https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction), you need to use the Client App and call the UCW SDK to start the TSS request approval process.
           - For [MPC Wallets (Organization-Controlled Wallets)](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction):
-            - If you are using the [API co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group), this status indicates that the TSS Node will soon request the callback server to start the [risk controls](https://manuals.cobo.com/en/portal/risk-controls/introduction) check. No further action is required from you at this stage.
+            - If you are using the [server co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group), this status indicates that the TSS Node will soon request the callback server to start the [risk controls](https://manuals.cobo.com/en/portal/risk-controls/introduction) check. No further action is required from you at this stage.
             - If you are using the [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group), key share holders need to use their [Cobo Guard](https://manuals.cobo.com/en/guard/introduction) to approve the TSS request and participate in the signing process.
 
         - `KeyGeneratingFailed`: The key share generation process has failed for the action to be done to the TSS request.
@@ -4129,7 +4118,7 @@ components:
           - `PendingApprovalStart`: The transaction approval is waiting to be started.      
             - For [MPC Wallets (User-Controlled Wallets)](https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction), you need to use the Client App and call the UCW SDK to start the transaction approval process.
             - For [MPC Wallets (Organization-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction)):
-              - If you are using the [API co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups), this status indicates that the TSS Node will soon request the callback server to start the [risk controls](https://manuals.cobo.com/en/portal/risk-controls/introduction) check. No further action is required from you at this stage.
+              - If you are using the [server co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups), this status indicates that the TSS Node will soon request the callback server to start the [risk controls](https://manuals.cobo.com/en/portal/risk-controls/introduction) check. No further action is required from you at this stage.
               - If you are using the [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups), key share holders need to use their [Cobo Guard](https://manuals.cobo.com/en/guard/introduction) to approve the transaction and participate in the signing process.
           - `FailedBySigner`: The transaction failed during the signing process.
           - `SignatureVerificationSuccess`: The transaction's signature has been successfully verified.
