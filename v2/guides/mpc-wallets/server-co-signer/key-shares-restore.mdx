@@ -1,0 +1,39 @@
+---
+title: "Restore key shares"
+sidebarTitle: "Restore key shares"
+description: "Guide to restoring TSS Node key shares from backup"
+---
+
+Restoring key shares means moving your backed up TSS Node data to a new host and configuring it to run with the same key shares as before. This process is necessary when you need to migrate your TSS Node to a different server or recover from a system failure.
+
+You should restore your key shares on a host with the same environment as the original deployment. For example, if your `secrets.db` was generated on a Mac, you should set up a new Mac environment for restoration. Ensure the new host meets the server requirements specified in [Server requirements for deploying a TSS Node](/v2/guides/mpc-wallets/server-co-signer/tss-node-server-environments).
+
+## Prerequisites
+
+Before restoring your key shares:
+1. Set up the TSS Node environment on your new host following the [server requirements](/v2/guides/mpc-wallets/server-co-signer/tss-node-server-environments)
+2. Download the same version of TSS Node software package that was used for the backup
+
+## Restore process
+
+1. Extract the TSS Node software package
+2. Copy your backed up `db` folder to the extracted directory
+3. Start the TSS Node
+
+## Verify restoration
+
+1. Check your key share information:
+```bash
+sudo ./tss-node.sh info group
+```
+
+2. In the output log, verify that the root extended public key matches the one displayed in Cobo Portal.
+
+## Complete restoration
+
+1. Restart your TSS Node
+2. Enter the encryption password used when creating the backup
+3. If the password is correct, your TSS Node will start running normally on the new host
+
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

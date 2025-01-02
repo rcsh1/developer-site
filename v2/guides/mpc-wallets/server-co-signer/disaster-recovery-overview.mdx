@@ -1,0 +1,63 @@
+---
+title: "Backup, restore, and recovery"
+sidebarTitle: "Backup, restore, and recovery"
+description: "Overview of backup, restore, and recovery methods for your key shares"
+---
+
+This guide provides an overview of different restore and recovery methods to handle system failures and disaster scenarios for your server co-signer, and a comparison between them.
+
+## Available methods
+
+### Backup and restore
+
+To prevent system failures or other unforeseen scenarios, you should regularly backup your TSS Node data. This includes:
+- The `secrets.db` file containing your key shares
+- The encryption password for the database
+
+Use restore when you need to:
+- Move your TSS Node to a new host
+- Recover from system failure using your backup
+
+The restore process uses your backed up data to recreate your TSS Node environment exactly as it was.
+
+For details, see [Backup key shares](/v2/guides/mpc-wallets/server-co-signer/key-shares-backup) and [Restore key shares](/v2/guides/mpc-wallets/server-co-signer/key-shares-restore).
+
+### Recover
+
+There are two recovery methods available depending on your situation:
+
+#### Recover key shares from another active holder group
+
+Use this method when:
+- Your key share is lost and backup is not accessible
+- You have another active key share holder group available
+
+This method requires assistance from another active key share holder group to recover your key shares.
+
+For details, see [Recover key shares from another active holder group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/recover-from-active-keys).
+
+#### Recover root extended private keys
+In the unlikely event of Cobo Portal discontinuing its services, you can reconstruct the root extended private keys corresponding to the vault by utilizing an active Recovery Group.
+
+For details, see [Recover root extended private keys](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/recover-root-key).
+
+## Method comparison
+
+| Method | When to use | Prerequisites | Cobo involvement |
+|--------|-------------|---------------|------------------|
+| Backup and restore | Moving to new host or system failure | Backup data | Not required |
+| Recover key shares from another active holder group| Lost key share without backup | Active holder group | Required |
+| Recover root extended private keys | Cobo service unavailable | A recovery group| Not required |
+
+## Best practices
+
+1. **Regular backups**
+   - Back up your TSS Node data regularly
+   - Store backups in secure locations
+
+2. **Testing**
+   - Regularly test your restore and recovery processes
+   - Verify key functionality after any operation
+
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

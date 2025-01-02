@@ -1,0 +1,87 @@
+---
+title: "Introduction to server co-signers"
+sidebarTitle: "Introduction"
+---
+
+A server co-signer is a server node that uses the threshold signature scheme (TSS) Node package to automate transaction signing without manual intervention. This allows you to automate your transaction signing process and improve the overall efficiency of your workflows.
+
+To ensure the safety of your assets and transactions, it is highly recommended that you also set up a TSS Node callback server to add custom risk controls to your signing process.
+
+## Technical architecture
+
+The following diagram illustrates how the server co-signer interacts with the Cobo Wallet-as-a-Service (WaaS) service and the TSS Node callback server, as well as the key components in each of these systems:
+
+<img src="/v2/images/guides/api-co-signer-technical-architecture.svg" className="diagram" alt="server co-signer's technical architecture" />
+
+### Server co-signer (TSS Node)
+
+The TSS Node, which serves as a server co-signer, consists of the following main components that work together to ensure security and efficiency:
+
+#### TSS logic
+
+Implements core TSS operations, such as generating key shares, signing transactions and messages, and resharing keys, based on the MPC-TSS protocol.
+
+#### Secret.db
+
+Provides encrypted storage for your MPC Wallets' key shares and the TSS Node's callback private key. The callback private key is used to sign the node's JSON Web Tokens (JWTs) sent to the TSS Node’s callback server. The database file itself is encrypted to ensure the security of its contents.
+
+The callback private key is generated during TSS Node initialization, and the key shares are generated after completing key generation or resharing operations.
+
+
+#### Embedded risk control module
+
+A module within the TSS Node that implements the embedded risk control mechanism, one of the [two risk control mechanisms](/v2/guides/mpc-wallets/server-co-signer/risk-control-mechanisms) provided by the server co-signer solution.
+
+A task request must be approved by both the embedded risk control module and all configured TSS Node callback servers to proceed. If any component (embedded or callback) rejects the operation, it will be denied.
+
+#### Callback risk control module
+
+A module within the TSS Node that implements the TSS Node callback mechanism, one of the [two risk control mechanisms](/v2/guides/mpc-wallets/server-co-signer/risk-control-mechanisms) provided by the server co-signer solution. This module:
+
+- Sends task request details to the TSS Node callback server for risk assessment.  
+- Receives and processes approval/rejection decisions made by the TSS Node callback server.
+
+It is strongly recommended that you use the TSS Node callback mechanism to add custom risk controls, especially for key signing requests.
+
+
+#### Configs
+
+Contains configurations for the TSS Node, including:
+
+- Embedded risk control rules that are used by the embedded risk control module to decide whether to approve or reject a TSS operation request.  
+- Configurations about the TSS Node callback servers, including the callback server’s URL and public key which is used to verify the callback server's JWT.  
+- System configurations, such as the operating environment.
+
+To learn more about the configuration options, see [Configure the TSS Node](/v2/guides/mpc-wallets/server-co-signer/appendix#configure-the-tss-node).
+
+### Metrics
+
+You can configure to export server metrics to your InfluxDB database in order to monitor the performance of the TSS Node.
+
+To learn more about the configuration details of metrics, see [Configure the TSS Node](/v2/guides/mpc-wallets/server-co-signer/appendix#configure-the-tss-node).
+
+### Cobo WaaS Service
+
+The Cobo Wallet-as-a-Service (WaaS) 2.0 service requests the server co-signer to generate key shares, sign transactions or messages, or reshare keys for your MPC Wallets.
+
+### TSS Node callback server
+
+The TSS Node callback server is a server that implements the TSS Node callback mechanism, one of the [two risk control mechanisms](/v2/guides/mpc-wallets/server-co-signer/risk-control-mechanisms) provided by the server co-signer solution.
+
+You can enhance security by setting up one or more TSS Node callback servers that:
+
+- Implements custom risk control rules and provides real-time approval/rejection for transaction or message signing, key generation, or key resharing.  
+- Uses JWTs to authenticate requests from the TSS Node
+- If any configured callback server rejects a transaction, the entire operation will be denied regardless of other approvals.
+
+The callback server should store two keys: a private key used to sign the JWT sent to the TSS Node, and the TSS Node's callback public key used to verify the TSS Node's JWT.
+
+## Next Steps
+
+Now that you understand the architecture, you can:
+
+1. [Set up a server co-signer](/v2/guides/mpc-wallets/server-co-signer/tss-node-deployment)  
+2. [Configure your risk controls](/v2/guides/mpc-wallets/server-co-signer/risk-control-mechanisms)  
+3. [Back up your key shares](/v2/guides/mpc-wallets/server-co-signer/key-shares-backup) and learn other [disaster recovery options](/v2/guides/mpc-wallets/server-co-signer/disaster-recovery-overview).
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

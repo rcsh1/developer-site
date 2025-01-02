@@ -1,0 +1,73 @@
+---
+title: "Risk control mechanisms overview"
+sidebarTitle: "Overview"
+description: "Understanding the risk control mechanisms in server co-signer"
+---
+
+The server co-signer solution provides two risk control mechanisms to help secure your MPC Wallets:
+
+1. Embedded risk control mechanism
+2. TSS Node callback mechanism
+
+The two risk control mechanisms work together to ensure the security of your MPC Wallet operations. The embedded risk control mechanism provides basic, non-customizable rules, while the TSS Node callback mechanism enables you to implement custom risk control logic. Both mechanisms must approve a task request before it can proceed.
+
+## Embedded risk control mechanism
+
+The embedded risk control mechanism is a basic risk control mechanism built into the TSS Node. It:
+
+- Can be enabled or disabled through the configuration file.
+- Uses a set of predefined rules that are fixed and cannot be customized.
+- Provides a foundational layer of security for your MPC Wallet operations.
+
+For more detail about the embedded risk control mechanism, see [Embedded risk control mechanism](/v2/guides/mpc-wallets/server-co-signer/embedded-risk-controls).
+
+## TSS Node callback mechanism
+
+The TSS Node callback mechanism provides a flexible, customizable risk control mechanism that:
+
+- Implements your custom risk control rules.
+- Reviews all task requests in real-time.
+- Makes approval/rejection decisions based on your business logic.
+- Communicates securely with the TSS Node using JWT authentication.
+
+You can deploy multiple callback servers for enhanced security. Each callback server can have its own risk control rules, and a task request will be approved only if all configured callback servers approve.
+
+
+To learn more about the TSS Node callback mechanism, see [TSS Node callback mechanism](/v2/guides/mpc-wallets/server-co-signer/callback-server-overview).
+
+## Controlled operations
+
+Both risk control mechanisms can review and control the following task requests:
+- Key generation (KeyGen): Creating new key shares for MPC Wallets.
+- Key signing (KeySign): Signing transactions or messages.
+- Key resharing (KeyReshare): Redistributing key shares among participants.
+
+
+## Risk control workflow
+
+The following diagram illustrates how the two risk control mechanisms work together:
+
+<img src="/v2/images/guides/risk-control-workflow.svg" alt="Risk control workflow" className="diagram" />
+
+When the TSS Node receives a task request:
+  - If enabled, the embedded risk control module evaluates the request using its basic rules.
+  - If configured, the callback risk control module sends the request to all configured callback servers.
+
+The request proceeds only if:
+- The embedded risk control module approves (if enabled).
+- AND all configured callback servers approve.
+
+## Security best practices
+
+For optimal security:
+
+1. Enable both risk control mechanisms.
+2. Implement comprehensive risk control rules in your callback servers.
+3. Regularly review and update your risk control configurations.
+
+## Next steps
+
+1. [Configure embedded risk controls](/v2/guides/mpc-wallets/server-co-signer/embedded-risk-controls)
+2. [Set up your TSS Node callback server](/v2/guides/mpc-wallets/server-co-signer/callback-server-overview)
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

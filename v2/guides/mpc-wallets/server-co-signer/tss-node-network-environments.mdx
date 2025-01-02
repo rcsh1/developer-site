@@ -1,0 +1,20 @@
+---
+title: "Network environments for deploying a server co-signer"
+sidebarTitle: "Network environments"
+---
+
+A server co-signer requires the following network environments to run optimally:
+
+- No inbound connections are required.
+- During installation (or upgrade) phase:
+  - Able to access the apt sources of the system to install all necessary dependencies (only applicable to Ubuntu servers)
+  - Able to access the Docker Engine installation files to install the Docker Engine
+  - Able to access docker.io registry (the public Docker registry)
+  - Able to access the Intel website to download the driver (applicable to a SGX-ready server)
+- When the server is running:
+  - Development environment: Able to access port 443 of ws.tss.dev.cobo.com. If you have configured a TSS Node callback server, the server co-signer should also be able to access the callback server.
+  - Production environment: Able to access port 443 of ws.tss.cobo.com. If you have configured a TSS Node callback server, the server co-signer should also be able to access the callback server.
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
+
+
+

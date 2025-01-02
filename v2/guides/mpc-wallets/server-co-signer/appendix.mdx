@@ -1,0 +1,198 @@
+---
+title: "Appendix"
+sidebarTitle: "Appendix"
+---
+
+## Configure the TSS Node
+
+Currently, you can configure the TSS Node in two methods: 
+
+- Through the configuration file.
+- Through command line arguments, for example, `./tss-node.sh start --ws-url=ws://ws.example.com/ws`.
+
+It's recommended that you use the configuration file to configure the TSS Node. To do so, please follow these steps:
+
+1. Navigate to the `configs` directory. 
+2. Copy and paste the file `cobo-tss-node-config.yaml.template`. 
+3. Rename the copied file to `cobo-tss-node-config.yaml`. The directory structure will appear as follows:
+
+   ```
+   cobo-tss-node-generic
+   
+   ├── configs
+   
+   │ ├── cobo-tss-node-config.yaml
+   
+   │ └── cobo-tss-node-config.yaml.template (default configuration file template)
+   
+   └── tss-node.sh (startup script)
+   ```
+
+4. Edit the `cobo-tss-node-config.yaml` file by following these steps: 
+   1. Open the file in a text editor. 
+   2. Locate the config item that needs modification (e.g., `env`). 
+   3. Remove any remarks associated with the config item. 
+   4. Update the content of the configuration item. For instance, set `env` to `production`.
+
+Please be aware that the TSS Node uses reasonable default values for all configuration items. Only modify the items that require customization.
+
+### Configuration items
+
+| **Configuration Item** | **Description** |
+|----------------------|-----------------|
+| env | The operating environment. Can be either `development` or `production`. For details, see [Environments](/v2/guides/overview/environments). |
+| db.path | The path to the database file. You should NEVER modify this file. |
+| callback | Configurations for the TSS Node callback servers. For details, see [Configure TSS Node settings](/v2/guides/mpc-wallets/server-co-signer/callback-server-configure#configure-tss-node-settings) |
+| websocket.url | No configuration is required. The WebSocket server will be connected based on the environment. If a URL is configured, it will be connected by default. |
+| log.std.enable | Whether to output the log. |
+| log.file.enable | Whether to save the log. |
+| log.file.filename | Log file name. |
+| log.file.maxsize | Maximum size of the log file. |
+| log.file.max_backups | Number of backups for each log file. |
+| metrics.job | Global tag for all metrics. Default value is "tss-node". |
+| metrics.instance | Global tag to identify the instance number. Default value is 0. |
+| metrics.name_prefix | Prefix added to all metric names. |
+| metrics.influxdb.server_addr | The address of your InfluxDB server (e.g., http://example.com:8086). |
+| metrics.influxdb.database | The name of your InfluxDB database. |
+| metrics.influxdb.username | Username for InfluxDB authentication. |
+| metrics.influxdb.password | Password for InfluxDB authentication. |
+
+## TSS Node commands
+
+### init
+
+```
+sudo ./tss-node.sh init
+```
+
+You can initialize the TSS Node and create a database file. The execution will fail if the database file already exists. For more information, please refer to [Initialize the TSS Node](/v2/guides/mpc-wallets/server-co-signer/tss-node-deployment#initialize-the-tss-node).
+
+### info
+
+```
+sudo ./tss-node.sh info
+```
+
+You can review the information associated with the TSS Node, including the TSS Node ID and the TSS Node's callback public key used to communicate with the TSS Node callback server.
+
+The output example is as follows. 
+
+```
+$ sudo ./tss-node.sh info
+
+Container started: 5c3819f6bf9425312ad5fe9561a9d8a4ae7145e05f73b3998a3a8112d7056653
+
+Wait a few seconds ..
+
+INFO[2022-12-14T09:12:11Z] Node ID: coboXNCDGc4eWaWYTbbgH3Q5jmNNRpZzVatRXyanYeC2XjkJb
+
+INFO[2022-12-14T09:12:11Z] Callback public key:
+
+-----BEGIN PUBLIC KEY-----
+
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz13MMDtCMdmBci/f7boS
+
+……
+
+gQIDAQAB
+
+-----END PUBLIC KEY-----
+
+5c3819f6bf9425312ad5fe9561a9d8a4ae7145e05f73b3998a3a8112d7056653
+```
+
+### info group
+
+```
+sudo ./tss-node.sh info group [group_id]
+```
+
+You can use the `info group` command to query the information of the corresponding key share holder group.:
+
+| **Item**                 | **Value**                               | **Description**                                              |
+| ------------------------ | --------------------------------------- | ------------------------------------------------------------ |
+| Group ID                 | vnJShriEOIzBLaOUxUDs                    | Unique identifier of a key share holder group.                             |
+| Created Time             | 2023-01-11 14:36:42.179778596 +0000 UTC | Creation time of the key share holder group.                                  |
+| Root Extended Public Key | xpub661MyMwAq……Mcet8                    | The root extended public key that corresponds to the key shares under the current group. |
+| ChainCode                | 0x098a……9dd9                            | The chain code corresponding to the root extended public key, in hexadecimal format. |
+| Share ID                 | 121637……483926                          | The ID of the key share, in decimal format.       |
+| Share Public Key         | 0x0231adf……d2773                        | The public key that corresponds to the key share. Default value: compressed public key in hexadecimal format. |
+| Type                     | 1                                       | Type: 1 represents ECDSA, and 2 represents EdDSA.               |
+| Curve                    | secp256k1                               | Supported signature algorithm.                                 |
+| Threshold                | 2                                       | The minimum number of key shares required for each transaction signing. |
+| Local Node ID            | coboA1B2C3D4                            | The Node ID of the locally stored TSS Node.                      |
+| Other Node IDs           | [coboA1B2C3D4, coboA2B3C4D5]            | The Node ID of the TSS Node managed by other parties.          |
+| Participants:            | 3                                       | The total number of key shares, Node IDs, and key share IDs. |
+
+### start
+
+```
+sudo ./tss-node.sh start
+```
+
+The cobo-tss-node will start running.
+
+### version
+
+```
+sudo ./tss-node.sh version
+```
+
+You can use the `version` command to query the version of the TSS Node.
+
+### status
+
+```
+sudo ./tss-node.sh status
+```
+You can use the `status` command to query the status of the TSS Node. An example output is as follows:
+
+```
+$ sudo ./tss-node.sh status
+
+Checking docker engine ... OK, version: 19.03.6
+
+Checking container image ... OK, id: sha256:4ff66478be3f193293fbaf85ce764734dab14eff002699636d1329a16f1ce57b
+
+=================================================================
+
+Recent logs from TSS-node daemon container cefc3335c10b (Running)
+
+-----------------------------------------------------------------
+
+INFO[2022-12-14T09:00:37Z] Failed to register service: invalid TSS Node, please initial TSS Node on Cobo MPC Server first
+
+INFO[2022-12-14T09:00:52Z] Start to register service
+
+INFO[2022-12-14T09:00:52Z] Failed to register service: invalid TSS Node,please initial TSS Node on Cobo MPC Server first
+
+INFO[2022-12-14T09:01:07Z] Start to register service
+
+INFO[2022-12-14T09:01:07Z] Failed to register service: invalid TSS Node, please initial TSS Node on Cobo MPC Server first
+```
+
+Execution workflow:
+
+- Verify the successful installation of Docker Engine and ensure the client has the necessary permissions. 
+- Check the status of the SGX driver (applicable to an SGX-ready version). 
+- Confirm the existence of the built container image. 
+- Inspect containers for any errors. 
+- Monitor the currently running TSS Node container and display the latest five logs.
+
+### log
+
+```
+sudo ./tss-node.sh log
+```
+
+Use this command to view the logs of the currently running TSS Node container.
+
+### stop
+
+```
+sudo ./tss-node.sh stop
+```
+Use this command to stop the currently running TSS Node container.
+
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

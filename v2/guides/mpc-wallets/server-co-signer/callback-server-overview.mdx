@@ -1,0 +1,40 @@
+---
+title: "TSS Node callback mechanism"
+sidebarTitle: "TSS Node callback mechanism"
+description: Understanding the TSS Node callback mechanism architecture and workflow 
+---
+
+The TSS Node callback mechanism is a critical component in the server co-signer solution that enables custom risk control implementation. When enabled, it reviews and approves all task requests before the TSS Node executes them.
+
+
+## How it works
+
+After startup, the TSS Node establishes a persistent connection with the Cobo WaaS service to receive task requests. These tasks fall into three categories:
+
+- **Key generation (KeyGen)**: Creating new key shares for your MPC Wallets.
+- **Key signing (KeySign)**: Signing transactions or messages.
+- **Key resharing (KeyReshare)**: Redistributing key shares among participants.
+
+Without the callback mechanism, the TSS Node executes each task if approved by the [embedded risk control module](/v2/guides/mpc-wallets/server-co-signer/embedded-risk-controls). With the callback mechanism enabled, the TSS Node requests approval from your TSS Node callback servers for each task. The TSS Node only executes tasks that all of your callback servers approve.
+
+## Communication security
+
+The TSS Node and callback server communicate via HTTP, using JSON Web Token (JWT) with RS256 signing algorithm to ensure secure data transmission. This involves:
+
+1. **Key generation**: Both the TSS Node and callback server generate their own RSA key pairs.
+2. **Key exchange**: Each component configures the other's RSA public key in their system.
+3. **Request signing**: All requests are signed using the sender's private key.
+4. **Signature verification**: Recipients verify signatures using the sender's public key.
+
+To learn more about JWTs, see [Introduction to JSON Web Tokens](https://jwt.io/introduction).
+
+## Implementation steps
+
+To implement the callback mechanism:
+
+1. [Deploy your TSS Node callback server](/v2/guides/mpc-wallets/server-co-signer/callback-server-deploy).
+2. [Configure callback keys](/v2/guides/mpc-wallets/server-co-signer/callback-server-configure).
+3. Start both the TSS Node and callback server.
+
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
