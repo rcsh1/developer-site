@@ -65,7 +65,7 @@ Cobo Command Line Interface (CLI) is a powerful developer tool designed to help 
 
     For more details about the system requirements for Cobo CLI, please refer to [Install Cobo CLI](/v2/developer-tools/cobo-cli/quick-start-guide#system-requirements).
 
-2. Use the `keys generate` command to generate an API key and an API secret as follows:
+2. Use the `keys generate` command to generate a key pair using the Ed25519 algorithm as follows:
 
     ```shell
     # Generate an API key and an API secret
@@ -76,23 +76,29 @@ Cobo Command Line Interface (CLI) is a powerful developer tool designed to help 
 
 #### Use OpenSSL
 
-In a terminal window, run the following OpenSSL commands:
+In a terminal window, run the following OpenSSL commands to generate a key pair using the Ed25519 algorithm:
 
 ```shell
-# Generate a private key and save it in the `private.key.pem` file.
 openssl genpkey -algorithm ed25519 -out private_key.pem
 
-# Extract the public key from the private key and save it in the `public.key.pem` file.
 openssl pkey -in private_key.pem -pubout -out public_key.pem
 
-# Export the private key in hexadecimal format.
-openssl pkey -in private_key.pem -text | grep 'priv:' -A 3 | tail -n +2 | tr -d ':\n '
+echo "Private Key (Hex):"
+openssl pkey -in private_key.pem -text | grep 'priv:' -A 3 | tail -n +2 | tr -d ':\n ' && echo
 
-# Export the public key in hexadecimal format.
-openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | tr -d ':\n '
+echo "Public Key (Hex):"
+openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | tr -d ':\n ' && echo
 ```
 
-The private key is saved in the `private.key.pem` file, and the public key is saved in the `public.key.pem` file.
+You will see the output similar to the following example:
+```
+Private Key (Hex):
+06f78882576ec0e05b1e51a33548da7e8cf958c190ba96be77b1c671f98a2b5f
+Public Key (Hex):
+5987dedc180167b7ab1d27e6009e5065d10d764cd85d7b64f8c968ca40326e28
+```
+
+Use the `Private Key (Hex)` as your API secret and the `Public Key (Hex)` as your API key.
 
 #### Use the Python library
 
@@ -104,7 +110,7 @@ The private key is saved in the `private.key.pem` file, and the public key is sa
     ```
 
 2. Generate a key pair.
-   Import the function from the Python library to generate a key pair as follows:
+   Import the function from the Python library to generate a key pair using the Ed25519 algorithm as follows:
 
     ```python
     from nacl.signing import SigningKey
