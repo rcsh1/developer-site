@@ -1,0 +1,97 @@
+---
+title: "Configure approval workflow"
+---
+
+This section introduces how to configure approval workflows for your Cobo Portal Apps.
+
+In the context of Cobo Portal Apps, an approval workflow consists of specific operations on the app, such as submitting a transaction or initiating a payout, that will trigger certain approval rules. When users install an app, the app will be automatically configured with default approval workflows, which are defined in the app manifest file. For more details about how the approval workflow affects the app UI, refer to <a href="https://manuals.cobo.com/en/portal/portal-apps/workflow">View and update approval workflows</a>.
+
+You can configure the default approval workflow for your app in the `operation_approval_rules` field in the app manifest file. The following is an example of the `operation_approval_rules` object. This object is defined in the [Batch Payout](https://manuals.cobo.com/en/apps/batch-payouts/introduction) app's manifest file, which configures the default approval workflow for the app. If you make a batch payout in the Batch Payout app, and the payout amount is greater than $100, you will trigger an approval workflow in which the batch payout requires approval from one organization admin. The payout request will be in the Pending Approval status until an admin approves or rejects.
+
+<Note>To fully use the approval workflow, your app must send `operation_id` to the WaaS 2.0 service. Please contact [help@cobo.com](mailto:help@cobo.com.).</Note>
+
+```json
+[
+    {
+        // The unique ID of the approval workflow. 
+        // It must be unique within the app and not exceed 64 characters in length.
+        "operation_id": "25cbb115-82a1-4474-9993-538bb439ad33",
+        // The name of the approval workflow that will be displayed on the UI.
+        "operation_name": "Make Batch Payout",
+        // The details of the approval workflow.
+        "default_approval_policies": [
+            {
+                // The approval actions triggered once the conditions are met.
+                "action": {
+                    // The action type. Possible values include:
+                    // `Accept`: Automatically approve the operation.
+                    // `Reject`: Automatically reject the operation.
+                    // `Quorum`: Need at least a specific user role to approve.
+                    "type": "Quorum",
+                    // The details of the `Quorum` action.
+                    // This field is applicable only when `type` is `Quorum`.
+                    "content": {
+                        // The user roles that can approve. It must be lowercase.
+                        "roles": ["admin"],
+                        // Approval threshold. Applicable only when `type` is `PART_APPROVAL`.
+                        // If the threshold is not met, the operation will remain in a pending state until the required approvals are obtained.
+                        "threshold": 2,
+                        // Approval type. Possible values include: 
+                        // `PART_APPROVAL`: Need part of user roles to approve.
+                        // `FULL_APPROVAL`: Need all user roles to approve.
+                        "type": "PART_APPROVAL"
+                    }
+                },
+                // Conditions that will trigger the approval actions.
+                "conditions": [
+                    {
+                        // The field value serves as the key of the field.
+                        "field": "amount",
+                        // The field value type. Possible values include:
+                        // `INT`: Integer
+                        // `FLOAT2`: Floating-point number with two decimal places
+                        "value_type": "INT",
+                        // The value of the field. 
+                        // If `value_type` is `FLOAT2`, set the value as `100.00`.
+                        "value": "100",
+                        // The operator type. Possible values include `>`, `>=`, `=`, `<`, and `<=`.
+                        "operator": ">"
+                    }
+                ]
+            },
+            // Please keep this structure.
+            {
+                "action": {
+                    "type": "Accept",
+                    "content": ""
+                },
+                "conditions": null
+            }
+        ],
+        // The text of the `condition` fields that will be displayed on the UI.
+        // The `descriptions` fields must contain the elements in the `conditions` field.
+        "descriptions": [
+            {
+                // The field value that must be the same as the `field` in `conditions`.
+                "field": "amount",
+                // The description of the field on the UI. 
+                "description": "Total USD amount",
+                // The value of the field that must be the same as the `value_type` in `conditions`.
+                "value_type": "INT",
+                // Display name of the field on the UI.
+                "display_name": "Total Amount(USD)"
+            }
+        ]
+    },
+    {
+        // Create more approval workflows with the same structure as above.
+        ...
+    }
+]
+```
+
+<Info>For more details about user roles, refer to [User roles](/v2/guides/overview/permissions-and-scopes#user-roles).</Info>
+
+The following is a screenshot of the approval workflow fields on the UI.
+
+<img src="/v2/images/apps/workflow_settings.png" className="screenshot_full_screen" alt="The Edit Approval Workflow dialog" />

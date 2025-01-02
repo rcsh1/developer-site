@@ -160,8 +160,8 @@ Before you publish the app, you need to fill out the manifest file, which contai
         </tr>
         <tr>
             <td>operation_approval_rules</td>
-            <td>(Optional) The app's default workflows.<br />A workflow consists of specific operations on the app that will trigger certain approval rules. When users install an app, the app will be automatically configured with default workflows.<br />For more details, refer to <a href="/en/portal/portal-apps/workflow">View and update workflows</a>.</td>
-            <td><code>[\{"operation_id": "25cbb115-82a1-4474-9993-538bb439ad33", "operation_name": "Make Batch Payout", "default_approval_policies": [\{"action": \{"type": "Quorum", "content": \{"roles": ["admin"], "user_ids": [], "threshold": 1, "type": "PART_APPROVAL"\}\}, "conditions": [\{"field": "amount", "value_type": "INT", "value": "100", "operator": ">"\}]\}, \{"action": \{"type": "Accept", "content": ""\}, "conditions": null\}], "descriptions": [\{"field": "amount", "description": "Total USD amount", "value_type": "INT", "display_name": "Total Amount(USD)", "operators": null\}], "webhook_config": ""\}]</code></td>
+            <td>(Optional) The app's default approval workflows. For how to configure approval workflows, refer to <a href="/v2/apps/configure-workflow">Configure approval workflows</a>.</td>
+            <td><code>[\{"operation_id": "25cbb115-82a1-4474-9993-538bb439ad33", "operation_name": "Make Batch Payout", "default_approval_policies": [\{"action": \{"type": "Quorum", "content": \{"roles": ["admin"], "threshold": 1, "type": "PART_APPROVAL"}}, "conditions": [\{"field": "amount", "value_type": "INT", "value": "100", "operator": ">"}]}, \{"action": \{"type": "Accept", "content": ""}, "conditions": null}], "descriptions": [\{"field": "amount", "description": "Total USD amount", "value_type": "INT", "display_name": "Total Amount(USD)"}]}]</code></td>
         </tr>
         <tr>
             <td>wallet_type</td>
