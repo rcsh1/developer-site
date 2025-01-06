@@ -55,7 +55,7 @@ Cobo Command Line Interface (CLI) is a powerful developer tool designed to help 
 
 ### Acquire authentication information
 
-To authenticate your API requests to the WaaS service in Cobo Portal Apps, you need to provide your app key and Org Access Token. You also need to calculate an API signature if you are not using the [WaaS SDK](/v2/developer-tools/quickstart-python). Refer to [Cobo OAuth](/v2/apps/authentication) for how to acquire all the necessary information for authentication.
+To authenticate your API requests to the WaaS service in Cobo Portal Apps, you need to provide your app key and Org Access Token. You also need to calculate an API signature if you are not using the [WaaS SDK](/v2/developer-tools/quickstart-python). Refer to [Cobo OAuth](https://www.cobo.com/developers/v2/apps/authentication) for how to acquire all the necessary information for authentication.
 
 ### Verify app users
 
@@ -125,7 +125,7 @@ Before you publish the app, you need to fill out the manifest file, which contai
         </tr>
         <tr>
             <td>required_permissions</td>
-            <td>A list of the permissions required for the app to access resources within users' organizations. <p>A permission consists of a resource type and an operation, separated by a comma. For example, <code>wallet:create</code> represents the permission to create a wallet.</p>For the full list of permissions in WaaS 2.0, refer to <a href="/v2/guides/overview/permission-list">Permissions list</a>.</td>
+            <td>A list of the permissions required for the app to access resources within users' organizations. <p>A permission consists of a resource type and an operation, separated by a comma. For example, <code>wallet:create</code> represents the permission to create a wallet.</p>For the full list of permissions in WaaS 2.0, refer to <a href="https://www.cobo.com/developers/overview/permission-list">Permissions list</a>.</td>
             <td><code>"wallet:create", "transaction:withdraw", "mpc_project:update"</code></td>
         </tr>
         <tr>
@@ -160,12 +160,12 @@ Before you publish the app, you need to fill out the manifest file, which contai
         </tr>
         <tr>
             <td>operation_approval_rules</td>
-            <td>(Optional) The app's default approval workflows. To use this feature, the `required_permissions` field must be contain `app_governance_policy:update` and `app_governance_policy:read`. For how to configure approval workflows, refer to <a href="/v2/apps/configure-workflow">Configure approval workflows</a>.</td>
+            <td>(Optional) The app's default approval workflows. To use this feature, the `required_permissions` field must be contain `app_governance_policy:update` and `app_governance_policy:read`. For how to configure approval workflows, refer to <a href="https://www.cobo.com/developers/v2/apps/configure-workflow">Configure approval workflows</a>.</td>
             <td><code>[\{"operation_id": "25cbb115-82a1-4474-9993-538bb439ad33", "operation_name": "Make Batch Payout", "default_approval_policies": [\{"action": \{"type": "Quorum", "content": \{"roles": ["admin"], "threshold": 1, "type": "PART_APPROVAL"}}, "conditions": [\{"field": "amount", "value_type": "INT", "value": "100", "operator": ">"}]}, \{"action": \{"type": "Accept", "content": ""}, "conditions": null}], "descriptions": [\{"field": "amount", "description": "Total USD amount", "value_type": "INT", "display_name": "Total Amount(USD)"}]}]</code></td>
         </tr>
         <tr>
             <td>wallet_type</td>
-            <td>(Optional) The wallet types supported by the app. The possible values are as follows: <ul><li><code>Custodial</code></li><li><code>MPC</code></li><li><code>SmartContract</code></li><li><code>Exchange</code></li><li><code>User-Controlled</code></li><li><code>Org-Controlled</code></li><li><code>Asset</code></li><li><code>Safe{Wallet}</code></li><li><code>Main</code></li></ul> For example, if this field is set to <code>Custodial, MPC</code>, users will only be able to select these wallet types as the wallet scope that the app can access. <p>If this field is left empty, users can select any wallet type available.</p>For the full list of wallet scopes in WaaS 2.0, refer to <a href="/v2/guides/overview/permissions-and-scopes#wallet-scopes">Wallet scopes</a>.</td>
+            <td>(Optional) The wallet types supported by the app. The possible values are as follows: <ul><li><code>Custodial</code></li><li><code>MPC</code></li><li><code>SmartContract</code></li><li><code>Exchange</code></li><li><code>User-Controlled</code></li><li><code>Org-Controlled</code></li><li><code>Asset</code></li><li><code>Safe{Wallet}</code></li><li><code>Main</code></li></ul> For example, if this field is set to <code>Custodial, MPC</code>, users will only be able to select these wallet types as the wallet scope that the app can access. <p>If this field is left empty, users can select any wallet type available.</p>For the full list of wallet scopes in WaaS 2.0, refer to <a href="/https://www.cobo.com/developersv2/guides/overview/permissions-and-scopes#wallet-scopes">Wallet scopes</a>.</td>
             <td><code>"Custodial", "MPC"</code></td>
         </tr>
         <tr>
