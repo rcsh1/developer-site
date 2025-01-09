@@ -1,14 +1,14 @@
 ---
-openapi: post /stakings/activities/stake
+openapi: post /travel_rule/transaction/deposit/travel_rule_info
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.create_stake_activity201_response import (
-    CreateStakeActivity201Response,
+from cobo_waas2.models.submit_deposit_travel_rule_info201_response import (
+    SubmitDepositTravelRuleInfo201Response,
 )
-from cobo_waas2.models.create_stake_activity_request import CreateStakeActivityRequest
+from cobo_waas2.models.travel_rule_deposit_request import TravelRuleDepositRequest
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -22,18 +22,21 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.StakingsApi(api_client)
-    create_stake_activity_request = cobo_waas2.CreateStakeActivityRequest()
+    api_instance = cobo_waas2.TravelRuleApi(api_client)
+    travel_rule_deposit_request = cobo_waas2.TravelRuleDepositRequest()
 
     try:
-        # Create stake activity
-        api_response = api_instance.create_stake_activity(
-            create_stake_activity_request=create_stake_activity_request
+        # Submit Travel Rule information for deposits
+        api_response = api_instance.submit_deposit_travel_rule_info(
+            travel_rule_deposit_request=travel_rule_deposit_request
         )
-        print("The response of StakingsApi->create_stake_activity:\n")
+        print("The response of TravelRuleApi->submit_deposit_travel_rule_info:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling StakingsApi->create_stake_activity: %s\n" % e)
+        print(
+            "Exception when calling TravelRuleApi->submit_deposit_travel_rule_info: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -42,7 +45,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.StakingsApi;
+import com.cobo.waas2.api.TravelRuleApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -54,14 +57,14 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    StakingsApi apiInstance = new StakingsApi();
-    CreateStakeActivityRequest createStakeActivityRequest = new CreateStakeActivityRequest();
+    TravelRuleApi apiInstance = new TravelRuleApi();
+    TravelRuleDepositRequest travelRuleDepositRequest = new TravelRuleDepositRequest();
     try {
-      CreateStakeActivity201Response result =
-          apiInstance.createStakeActivity(createStakeActivityRequest);
+      SubmitDepositTravelRuleInfo201Response result =
+          apiInstance.submitDepositTravelRuleInfo(travelRuleDepositRequest);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling StakingsApi#createStakeActivity");
+      System.err.println("Exception when calling TravelRuleApi#submitDepositTravelRuleInfo");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -83,7 +86,7 @@ import (
 )
 
 func main() {
-	createStakeActivityRequest := *coboWaas2.NewCreateStakeActivityRequest(coboWaas2.StakingPoolId("babylon_btc_signet"), "100.00", coboWaas2.TransactionRequestFee{TransactionRequestEvmEip1559Fee: coboWaas2.NewTransactionRequestEvmEip1559Fee("9000000000000", "1000000000000", coboWaas2.FeeType("Fixed"), "ETH")})
+	travelRuleDepositRequest := *coboWaas2.NewTravelRuleDepositRequest("f47ac10b-58cc-4372-a567-0e02b2c3d479", coboWaas2.TravelRuleDepositRequest_travel_rule_info{SelfCustodyWallet: coboWaas2.NewSelfCustodyWallet(coboWaas2.DestinationWalletType("EXCHANGES_OR_VASP"), "challenge_token_abc123", "0x1234567890abcdef1234567890abcdef12345678", "0xf0a0ca69dd3afc57235c72aba3ff1f1144ee5409aeec013a9b17cdb58d0185a66a525945bfbd66e87bf0503eb0b83bf90cb973a8cbb730d19dc032e00dfe393a1c")})
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -96,15 +99,19 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.StakingsAPI.CreateStakeActivity(ctx).
-		CreateStakeActivityRequest(createStakeActivityRequest).
+	resp, r, err := apiClient.TravelRuleAPI.SubmitDepositTravelRuleInfo(ctx).
+		TravelRuleDepositRequest(travelRuleDepositRequest).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `StakingsAPI.CreateStakeActivity``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `TravelRuleAPI.SubmitDepositTravelRuleInfo``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateStakeActivity`: CreateStakeActivity201Response
-	fmt.Fprintf(os.Stdout, "Response from `StakingsAPI.CreateStakeActivity`: %v\n", resp)
+	// response from `SubmitDepositTravelRuleInfo`: SubmitDepositTravelRuleInfo201Response
+	fmt.Fprintf(os.Stdout, "Response from `TravelRuleAPI.SubmitDepositTravelRuleInfo`: %v\n", resp)
 }
 
 ```
@@ -117,11 +124,11 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.StakingsApi();
+const apiInstance = new CoboWaas2.TravelRuleApi();
 const opts = {
-  'CreateStakeActivityRequest': new CoboWaas2.CreateStakeActivityRequest()
+  'TravelRuleDepositRequest': new CoboWaas2.TravelRuleDepositRequest()
 };
-apiInstance.createStakeActivity(opts).then((data) => {
+apiInstance.submitDepositTravelRuleInfo(opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

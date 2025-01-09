@@ -50,11 +50,26 @@ The available webhook event types are as follows:
       <td><code>wallets.mpc.tss_request.failed</code></td>
       <td>The requested action failed.</td>
     </tr>
+    <tr>
+      <td><code>wallets.addresses.created</code></td>
+      <td><code>Addresses</code></td>
+      <td>A new wallet address has been created.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.created</code></td>
+      <td><code>WalletInfo</code></td>
+      <td>A new wallet has been created.</td>
+    </tr>
+    <tr>
+      <td><code>mpc_vaults.created</code></td>
+      <td><code>MPCVault</code></td>
+      <td>A new MPC vault has been created.</td>
+    </tr>
   </tbody>
 </table>
 
 ## Data structure of webhook events           
 For a complete introduction of the webhook event data and its data structure, refer to the `data.data` property in the response of the [List all webhook events](/v2/api-references/developers--webhooks/list-all-webhook-events) operation. 
-![Screenshot of the webhook data stucture](/v2/images/guides/webhook_data_structure.png)
+![Screenshot of the webhook data structure](/v2/images/guides/webhook_data_structure.png)
 Additionally, you can view all webhook events in your organization on **Cobo Portal** > **Developer**> **Webhook Events**.
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

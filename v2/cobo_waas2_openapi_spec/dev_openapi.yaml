@@ -47,6 +47,8 @@ tags:
     description: Operations related to developers.
   - name: AddressBooks
     description: Operations related to address books.
+  - name: TravelRule
+    description: Operations related to travel rule.
 paths:
   /wallets/chains:
     get:
@@ -1330,7 +1332,7 @@ paths:
       operationId: resend_transaction_by_id
       summary: Resend transaction
       description: |
-        This operation resends a specified transaction. Resending a transaction means retrying a previously failed transaction. For more details about resending a transaction, see [Resend a transaction](https://www.cobo.com/developers/v2/guides/transactions/manage-transactions#resend-a-transaction).
+        This operation resends a specified transaction. Resending a transaction means retrying a previously failed transaction. For more details about resending a transaction, see [Resend a transaction](/v2/guides/transactions/manage-transactions#resend-a-transaction).
 
         A transaction can be resent if its status is `failed`.
 
@@ -1433,7 +1435,7 @@ paths:
       operationId: speedup_transaction_by_id
       summary: Speed up transaction
       description: |
-        This operation accelerates a specified transaction. Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For more details about speeding up a transaction, refer to [Speed up a transaction](https://www.cobo.com/developers/v2/guides/transactions/manage-transactions#speed-up-a-transaction).
+        This operation accelerates a specified transaction. Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For more details about speeding up a transaction, refer to [Speed up a transaction](/v2/guides/transactions/manage-transactions#speed-up-a-transaction).
 
         You can use the `address` or `included_utxos` properties in the request body to specify the address or UTXOs that will cover the transaction fee. Generally, the transaction fee is paid by the original transaction's source. If that source's balance is insufficient, the specified address or UTXOs can be used to cover the fee.
 
@@ -1449,6 +1451,25 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/createTransactionRequestResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/transactions/{transaction_id}/approval_detail':
+    parameters:
+      - $ref: '#/components/parameters/transactionIdParam'
+    get:
+      tags:
+        - Transactions
+      operationId: get_transaction_approval_detail
+      summary: Get transaction approval information
+      description: |
+        This operation retrieves approval detailed information about a specified transaction.
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getTransactionApprovalDetailResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -1963,6 +1984,7 @@ paths:
         - $ref: '#/components/parameters/minModifiedTimestampOptionalParam'
         - $ref: '#/components/parameters/maxModifiedTimestampOptionalParam'
         - $ref: '#/components/parameters/activityInitiatorOptionalParam'
+        - $ref: '#/components/parameters/optionalRequestIdParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -1987,7 +2009,11 @@ paths:
         - $ref: '#/components/parameters/activityIdRequiredParam'
       responses:
         '200':
-          $ref: '#/components/responses/activityDetailsResponse'
+          description: A staking activity has been successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -2008,6 +2034,55 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/getApiKeyInfoResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /developers/callback_messages:
+    get:
+      tags:
+        - Developers
+      operationId: list_callback_messages
+      summary: List all callback messages
+      description: |
+        This operation retrieves all the callback messages in your organization.
+
+        For more details about how to respond to callback messages, refer to [Callback messages](/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/optionalCallbackMessageIdsParam'
+        - $ref: '#/components/parameters/optionalRequestIdsParam'
+        - $ref: '#/components/parameters/optionalTransactionIdsParam'
+        - $ref: '#/components/parameters/optionalWalletIdsParam'
+        - $ref: '#/components/parameters/optionalCallbackStatusParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listCallbackMessagesResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/developers/callback_messages/{message_id}/retry':
+    post:
+      tags:
+        - Developers
+      operationId: retry_callback_message
+      summary: Retry callback message
+      description: |
+        This operation resends a callback message that failed previously.
+
+        If your callback endpoint doesn't respond as expected, the WaaS service will retry sending the callback message up to 30 times. After that, the callback message status will be `Failed`. Use this operation to resend the message. For more details, refer to [Webhooks and Callbacks](/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/callbackMessageIdParam'
+      responses:
+        '201':
+          $ref: '#/components/responses/retryCallbackMessageResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -2034,6 +2109,101 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
+  /travel_rule/transaction/countries:
+    get:
+      tags:
+        - TravelRule
+      operationId: list_supported_countries
+      summary: List supported countries
+      description: |
+        This operation retrieves a list of supported countries that can be used when submitting Travel Rule information.
+
+        Use this endpoint to obtain valid country values for:
+          - Place of incorporation of a legal entity
+          - Place of birth of a natural person
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - 'travel_rule:read'
+      responses:
+        '200':
+          $ref: '#/components/responses/getCountriesResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /travel_rule/transaction/limitation:
+    get:
+      tags:
+        - TravelRule
+      operationId: get_transaction_limitation
+      summary: Retrieve transaction limitations
+      description: |
+        This operation retrieves Travel Rule requirements and available options for a transaction based on its transaction type and ID.
+
+        Use this endpoint before submitting Travel Rule information to understand the requirements and available options for your transaction.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - 'travel_rule:read'
+      parameters:
+        - $ref: '#/components/parameters/requiredTransactionTypeParam'
+        - $ref: '#/components/parameters/requiredTransactionIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getTransactionLimitationResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /travel_rule/transaction/deposit/travel_rule_info:
+    post:
+      tags:
+        - TravelRule
+      operationId: submit_deposit_travel_rule_info
+      summary: Submit Travel Rule information for deposits
+      description: |
+        This operation submits Travel Rule information for a deposit transaction.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - 'travel_rule:edit'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleDepositRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/submitTravelRuleInfoResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /travel_rule/transaction/withdraw/travel_rule_info:
+    post:
+      tags:
+        - TravelRule
+      operationId: submit_withdraw_travel_rule_info
+      summary: Submit Travel Rule information for withdrawals
+      description: |
+        This operation submits Travel Rule information for a withdrawal transaction.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - 'travel_rule:edit'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRuleWithdrawRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/submitTravelRuleInfoResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
 components:
   schemas:
     Pagination:
@@ -2048,16 +2218,20 @@ components:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1
           description: |
-            An object ID that serves as a starting point for retrieving data in reverse chronological order for the next request. 
+            An object ID used to retrieve records before the specified object, indicating earlier or smaller records relative to the current dataset. You can use it to paginate backwards. 
 
-            If this property is empty, it means that you have reached the start of the data records.
+            If empty, it means you have reached the start of the data.  
+
+            Most API endpoints sort by object ID, but some use other fields depending on the endpoint.
         after:
           type: string
           example: RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk
           description: |
-            An object ID that acts as a starting point for retrieving data in chronological order for the next request.
+            An object ID used to retrieve records after the specified object, indicating newer or larger records relative to the current dataset. You can use it to paginate forwards.  
 
-            If this property is empty, it means that you have reached the end of the data records.
+            If empty, it means you have reached the end of the data.  
+
+            Most API endpoints sort by object ID, but some use other fields depending on the endpoint.
         total_count:
           type: integer
           example: 10000
@@ -2609,17 +2783,21 @@ components:
         path:
           type: string
           description: 'The derivation path of the address. This property applies to MPC Wallets only. To learn the meaning of each level in the path, see [Path levels](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki#path-levels).'
-          example: m/44'/60'/0'/0
+          example: m/44/0/2/0/0
         encoding:
           $ref: '#/components/schemas/AddressEncoding'
         pubkey:
           type: string
           description: The public key of the address. This property applies to MPC Wallets only.
-          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
+          example: xpub6HFaEKt4XdwgEQrQmWr8AEAZ7XBSGh7QYFspwdE86sJn6PjkqsPwVQc2poriBdizqXnTB3UWurJJAZpFnD2DAp9vFTmM2gQ264AArYtFWLH
         x_only_pubkey:
           type: string
           description: The 32-byte x-only public key in hexadecimal format after tweaking.
           example: '0x165ed2f04462ec0d3d44dc8690fa9000903b5a96f14ad7f233c21ff748a17b54'
+        root_pubkey:
+          type: string
+          description: The root public key of the address. This property applies to MPC Wallets only.
+          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
         taproot_script_tree_hash:
           type: string
           description: The information about the new address.
@@ -2903,6 +3081,26 @@ components:
         mapping:
           ContractCall: '#/components/schemas/SafeWalletDelegatesContractCall'
           Transfer: '#/components/schemas/SafeWalletDelegatesTransfer'
+    OrgInfo:
+      type: object
+      description: |
+        The information of an organization. To learn more about organizations, see [Introduction to Organization](https://manuals.cobo.com/en/portal/organization/introduction).
+      required:
+        - org_id
+      properties:
+        org_id:
+          type: string
+          description: The organization ID.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        name:
+          type: string
+          description: The organization name.
+          example: Org name
+        created_timestamp:
+          type: integer
+          format: int64
+          description: 'The organization''s creation time in Unix timestamp format, measured in milliseconds.'
+          example: 1718619403933
     CurveType:
       type: string
       enum:
@@ -4785,11 +4983,31 @@ components:
           type: array
           description: The selected UTXOs to be consumed in the transaction.
           items:
-            $ref: '#/components/schemas/TransactionUtxo'
+            $ref: '#/components/schemas/TransactionSelectedUtxo'
         raw_tx:
           type: string
           description: The raw transaction data.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
+    TransactionSelectedUtxo:
+      type: object
+      description: The selected UTXO information.
+      properties:
+        tx_hash:
+          type: string
+          description: The transaction hash of the UTXO.
+          example: 7014d7d9b91862d7131f7543d84da3bec60e20be93c23ad01167c48b778fdemo
+        vout_n:
+          type: integer
+          description: The output index of the UTXO.
+          example: 0
+        address:
+          type: string
+          description: The address of the UTXO.
+          example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+        value:
+          type: string
+          description: The value of the UTXO.
+          example: '0.5'
     TransactionUtxo:
       type: object
       description: The UTXO information.
@@ -4999,6 +5217,76 @@ components:
         - `PassiveAutoFuel`: Use Fee Station only when the source address balance is insufficient to cover the transaction fees.
 
         Please note that the TRON chain does not support `PassiveAutoFuel` due to its fee delegation mechanism.
+    TransactionApprovalDetail:
+      type: object
+      description: The approval detail data for transaction.
+      properties:
+        spender:
+          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
+        approver:
+          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
+        address_owner:
+          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
+    TransactionApprovalResult:
+      type: string
+      enum:
+        - Approved
+        - Rejected
+        - Pending
+      example: Approved
+      description: |
+        The transaction approval result. Possible values include: 
+          - `Approved`: The transaction is approved.
+          - `Rejected`: The transaction is rejected. 
+          - `Pending`: The transaction is pending approvals.
+    TransactionRoleApprovalDetail:
+      type: object
+      description: The role approval data for transaction.
+      properties:
+        result:
+          $ref: '#/components/schemas/TransactionApprovalResult'
+        review_threshold:
+          type: integer
+          description: The threshold for passing the review of this role.
+          example: 1
+        initiator:
+          type: string
+          description: The initiator of the transaction.
+          example: tom@gmail.com
+        complete_time:
+          type: string
+          description: Time to complete the review.
+        user_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionUserApprovalDetail'
+    TransactionUserApprovalDetail:
+      type: object
+      description: The user approval data for transaction.
+      properties:
+        pubkey:
+          type: string
+          description: The gaurd pubkey of the user who audited the message.
+          example: 96db1b3c68c3a3497bffb7e257a3900b0e86575c968a346a6696d1676fa8c5a6431b46c867134bd5fb8a9b5f787fa0c534d7c7664f1e52c432ce64326cc4cc1d
+        result:
+          $ref: '#/components/schemas/TransactionApprovalResult'
+        signature:
+          type: string
+          description: Signature of the audited message.
+        language:
+          type: string
+          description: The language of the audited message.
+          example: en
+        message_version:
+          type: string
+          description: Version of the audited message.
+          example: 1.0.1
+        message:
+          type: string
+          description: The audited message.
+        extra_message:
+          type: string
+          description: The extra audited message.
     CustodialTransferSource:
       type: object
       description: |
@@ -5705,21 +5993,33 @@ components:
           enum:
             - Transaction
             - TSSRequest
+            - Addresses
+            - WalletInfo
+            - MPCVault
           description: |-
 
             The data type of the event.
             - `Transaction`: The transaction event data.
             - `TSSRequest`: The TSS request event data.
+            - `Addresses`: The addresses event data.
+            - `WalletInfo`: The wallet information event data.
+            - `MPCVault`: The MPC vault event data.
           example: Transaction
     WebhookEventData:
       oneOf:
         - $ref: '#/components/schemas/TransactionWebhookEventData'
         - $ref: '#/components/schemas/TSSRequestWebhookEventData'
+        - $ref: '#/components/schemas/AddressesEventData'
+        - $ref: '#/components/schemas/WalletInfoEventData'
+        - $ref: '#/components/schemas/MPCVaultEventData'
       discriminator:
         propertyName: data_type
         mapping:
           Transaction: '#/components/schemas/TransactionWebhookEventData'
           TSSRequest: '#/components/schemas/TSSRequestWebhookEventData'
+          Addresses: '#/components/schemas/AddressesEventData'
+          WalletInfo: '#/components/schemas/WalletInfoEventData'
+          MPCVault: '#/components/schemas/MPCVaultEventData'
     TransactionWebhookEventData:
       title: Transaction Event Data
       allOf:
@@ -5730,6 +6030,30 @@ components:
       allOf:
         - $ref: '#/components/schemas/WebhookEventDataType'
         - $ref: '#/components/schemas/TSSRequest'
+    AddressesEventData:
+      title: Addresses Event Data
+      allOf:
+        - $ref: '#/components/schemas/WebhookEventDataType'
+        - type: object
+          properties:
+            addresses:
+              type: array
+              description: A list of addresses.
+              items:
+                $ref: '#/components/schemas/AddressInfo'
+    WalletInfoEventData:
+      title: Wallet Event Data
+      allOf:
+        - $ref: '#/components/schemas/WebhookEventDataType'
+        - type: object
+          properties:
+            wallet:
+              $ref: '#/components/schemas/WalletInfo'
+    MPCVaultEventData:
+      title: MPC Vault Event Data
+      allOf:
+        - $ref: '#/components/schemas/WebhookEventDataType'
+        - $ref: '#/components/schemas/MPCVault'
     WebhookEventType:
       type: string
       enum:
@@ -5741,6 +6065,9 @@ components:
         - wallets.mpc.tss_request.updated
         - wallets.mpc.tss_request.failed
         - wallets.mpc.tss_request.succeeded
+        - wallets.addresses.created
+        - wallets.created
+        - mpc_vaults.created
       example: wallets.transaction.created
       description: 'The event type. To learn the trigger condition of each event type, refer to [Webhook event types and event data](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type).'
     WebhookEventStatus:
@@ -5988,6 +6315,10 @@ components:
           description: A list of public keys associated with the Ethereum validators for this staking operation.
           example:
             - '0x1234567890987654321012345678909876543210'
+        core_btc_staking_address:
+          type: string
+          description: The P2WSH address generated for this staking operation (only applicable if the estimated fee is for CORE staking).
+          example: bc1qcqj9k34vrvgmmvt85ym2ua79k2d22vcfxmuratakfm78chdqksnq5agezk
     EthStakeExtra:
       title: Ethereum Beacon Chain
       allOf:
@@ -6019,6 +6350,7 @@ components:
                 - '0x1234567890987654321012345678909876543210'
                 - '0x1234567890987654321012345678909876543210'
     BabylonStakingExtra:
+      title: Babylon
       allOf:
         - $ref: '#/components/schemas/BaseStakeExtra'
         - type: object
@@ -6049,6 +6381,7 @@ components:
               type: string
               example: tb1pzcn4hmsfq32vyfnckvrtyjhdh0cf2hsm2nr6m8034x4lnrx3ry4q2nyzqv
     EthStakingExtra:
+      title: Ethereum Beacon Chain
       allOf:
         - $ref: '#/components/schemas/BaseStakeExtra'
         - type: object
@@ -6090,6 +6423,7 @@ components:
                     format: int64
                     example: 1640995200000
     CoreStakingExtra:
+      title: CORE
       allOf:
         - $ref: '#/components/schemas/BaseStakeExtra'
         - type: object
@@ -6144,6 +6478,82 @@ components:
               type: number
               format: int32
               example: 30
+    BabylonStakingActivityDetailExtra:
+      title: Babylon
+      allOf:
+        - $ref: '#/components/schemas/BaseStakeExtra'
+        - type: object
+          description: The staking information specific to the Babylon protocol.
+          properties:
+            finality_provider_public_key:
+              description: The public key of the finality provider.
+              type: string
+              pattern: '^[0-9a-fA-F]{64}$'
+              example: eca1b104dce16c30705f4147a9c4a373ac88646c5d1bcda6a89c018940cb96a0
+            stake_block_time:
+              description: The number of blocks that need to be processed before the locked tokens are unlocked and become accessible.
+              type: integer
+              format: int64
+              example: 2000
+            auto_broadcast:
+              description: |
+                Whether to automatically broadcast the transaction.
+
+                - `true`: Automatically broadcast the transaction.
+                - `false`: The transaction will not be submitted to the blockchain automatically. You can call [Broadcast signed transactions](https://www.cobo.com/developers/v2/api-references/transactions/broadcast-signed-transactions) to broadcast the transaction to the blockchain, or retrieve the signed raw transaction data `raw_tx` by calling [Get transaction information](https://www.cobo.com/developers/v2/api-references/transactions/get-transaction-information) and broadcast it yourself.
+              type: boolean
+              example: false
+            param_version:
+              description: The version of babylon global parameters.
+              type: integer
+              format: int64
+              example: 2
+            withdraw_from_type:
+              $ref: '#/components/schemas/ActivityType'
+              description: The type of origin activity associated with the current activity when the type is withdraw.
+              example: Stake
+    EthStakingActivityDetailExtra:
+      title: Ethereum Beacon Chain
+      allOf:
+        - $ref: '#/components/schemas/BaseStakeExtra'
+        - type: object
+          description: The staking information specific to the Ethereum Beacon Chain.
+          properties:
+            provider_name:
+              description: The name of the provider.
+              type: string
+              example: Stakefish
+            validator_pubkeys:
+              description: A list of public keys associated with the Ethereum validators for this unstaking operation.
+              type: array
+              items:
+                type: string
+              example:
+                - '0x1234567890987654321012345678909876543210'
+                - '0x1234567890987654321012345678909876543210'
+    CoreStakingActivityDetailExtra:
+      title: CoreBTC
+      allOf:
+        - $ref: '#/components/schemas/BaseStakeExtra'
+        - type: object
+          description: The staking information specific to the CORE staking protocol.
+          properties:
+            timelock:
+              description: The Unix timestamp (in seconds) when the staking position will be unlocked and available for withdrawal.
+              type: integer
+              example: 1704067200
+            change_address:
+              description: 'The change address on the Bitcoin chain. If not provided, the source wallet''s address will be used as the change address.'
+              type: string
+              example: bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+            validator_address:
+              description: The validator's EVM address.
+              type: string
+              example: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+            reward_address:
+              description: The EVM address to receive staking rewards.
+              type: string
+              example: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
     Activity:
       type: object
       description: The staking activity.
@@ -6186,6 +6596,12 @@ components:
           type: string
           example: 0011039d-27fb-49ba-b172-6e0aa80e37ec
           description: The ID of the corresponding staking position.
+        request_ids:
+          type: array
+          items:
+            type: string
+            example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: The request IDs of the corresponding transactions of the activity.
         amount:
           type: string
           example: '100.00'
@@ -6205,6 +6621,17 @@ components:
           $ref: '#/components/schemas/TransactionRequestFee'
         status:
           $ref: '#/components/schemas/ActivityStatus'
+        extra:
+          oneOf:
+            - $ref: '#/components/schemas/BabylonStakingActivityDetailExtra'
+            - $ref: '#/components/schemas/EthStakingActivityDetailExtra'
+            - $ref: '#/components/schemas/CoreStakingActivityDetailExtra'
+          discriminator:
+            propertyName: pool_type
+            mapping:
+              Babylon: '#/components/schemas/BabylonStakingActivityDetailExtra'
+              ETHBeacon: '#/components/schemas/EthStakingActivityDetailExtra'
+              CoreBTC: '#/components/schemas/CoreStakingActivityDetailExtra'
         created_timestamp:
           description: The time when the activity was created.
           type: integer
@@ -6225,6 +6652,12 @@ components:
         - ClaimRewards
         - ActivateValidator
         - UnstakeETH
+        - ApproveUSDC
+        - ConvertToUSDS
+        - ApproveUSDS
+        - DepositUSDS
+        - WithdrawUSDS
+        - ConvertToUSDC
       example: Submitted
       description: |
         The specific action taken within an activity. Possible values include:
@@ -6235,6 +6668,12 @@ components:
         - `ClaimRewards`: Claim the rewards from the validator.
         - `ActivateValidator`: Activate the validator to start staking.
         - `UnstakeETH`: Unstake ETH from the validator.
+        - `ApproveUSDC`: Grant permission for the protocol to use your USDC.
+        - `ConvertToUSDS`: Convert your USDC to USDS.
+        - `ApproveUSDS`: Grant permission for the protocol to use your USDS.
+        - `DepositUSDS`: Stake the USDS with the validator.
+        - `WithdrawUSDS`: Withdraw the USDS from the protocol.
+        - `ConvertToUSDC`: Convert USDS back to USDC.
     ActivityTimeline:
       description: The timeline of the staking activity.
       type: object
@@ -6279,7 +6718,6 @@ components:
         - wallet_id
         - address
         - pool_id
-        - extra
       properties:
         request_id:
           type: string
@@ -6692,6 +7130,7 @@ components:
         - Babylon
         - ETHBeacon
         - CoreBTC
+        - SkyFarm
       example: Babylon
       description: The type of the staking pool.
     StakingPoolId:
@@ -6703,6 +7142,7 @@ components:
         - beacon_eth_holesky
         - core_btc
         - core_xtn
+        - sky_farm_eth_usdc
       example: babylon_btc_signet
       description: 'The ID of the staking pool. A staking pool is a pairing of a staking protocol and a specific type of token. Currently, only `babylon_btc_signet` and `babylon_btc` are supported.'
     BaseEstimateStakingFee:
@@ -6786,6 +7226,301 @@ components:
           type: string
           description: The email of the address owner.
           example: help@cobo.com
+    TravelRuleDepositExchangesOrVASP:
+      type: object
+      title: VASPs (Deposit)
+      description: Required information when depositing from an exchange or other virtual asset service providers (VASP).
+      required:
+        - destination_wallet_type
+        - vendor_code
+        - vendor_vasp_id
+        - entity_info
+      properties:
+        destination_wallet_type:
+          $ref: '#/components/schemas/DestinationWalletType'
+        vendor_code:
+          type: string
+          description: The vendor code of the VASP.
+          example: NB
+        vendor_vasp_id:
+          type: string
+          description: The unique identifier of the VASP.
+          example: 'did:ethr:0x45fca8109a8d2ce93e37f79f0acbb16f4a91f4c5'
+        vendor_vasp_name:
+          type: string
+          description: The vendor name. Use this field to specify the name of a vendor not listed.
+          example: Vendor A
+        entity_info:
+          oneOf:
+            - $ref: '#/components/schemas/TravelRuleDepositLegalEntity'
+            - $ref: '#/components/schemas/TravelRuleDepositNaturalEntity'
+          discriminator:
+            propertyName: selected_entity_type
+            mapping:
+              LEGAL: '#/components/schemas/TravelRuleDepositLegalEntity'
+              NATURAL: '#/components/schemas/TravelRuleDepositNaturalEntity'
+    TravelRuleDepositLegalEntity:
+      type: object
+      title: Legal Entity (Deposit)
+      description: The required information of a legal entity.
+      required:
+        - selected_entity_type
+        - legal_name
+      properties:
+        selected_entity_type:
+          type: string
+          enum:
+            - LEGAL
+            - NATURAL
+          description: |
+            The entity type. Possible values include:
+            - `LEGAL`: Legal entity.
+            - `NATURAL`: Natural person.
+          example: LEGAL
+        legal_name:
+          type: string
+          description: The legal name of the entity.
+          example: Company ABC Ltd.
+        date_of_incorporation:
+          type: string
+          format: date
+          description: |
+            The date of incorporation of the entity. This field is required when either of the following conditions is met:
+            - `is_threshold_reached` is `true` in the response of the [Retrieve transaction limitations](https://www.cobo.com/developers/v2/api-references/travelrule/retrieve-transaction-limitations) operation.
+            - `selected_entity_type` is `LEGAL`.
+          example: '2010-05-20'
+        place_of_incorporation:
+          type: string
+          description: |
+            The place of incorporation of the entity. This field is required when either of the following conditions is met:
+            - `is_threshold_reached` is `true` in the response of the [Retrieve transaction limitations](https://www.cobo.com/developers/v2/api-references/travelrule/retrieve-transaction-limitations) operation.
+            - `selected_entity_type` is `LEGAL`.
+          example: 'City, Country'
+    TravelRuleDepositNaturalEntity:
+      type: object
+      title: Natural Person (Deposit)
+      description: The required information of a natural person.
+      required:
+        - selected_entity_type
+        - first_name
+        - last_name
+      properties:
+        selected_entity_type:
+          type: string
+          enum:
+            - LEGAL
+            - NATURAL
+          description: |
+            Specifies the type of entity associated with the transaction.
+            - `LEGAL`: Legal entity.
+            - `NATURAL`: Natural person.
+          example: NATURAL
+        first_name:
+          type: string
+          description: The first name of the natural person.
+          example: John
+        last_name:
+          type: string
+          description: The last name of the natural person.
+          example: Doe
+        date_of_birth:
+          type: string
+          format: date
+          description: |
+            The date of birth of the natural person. This field is required when either of the following conditions is met:
+            - `is_threshold_reached` is `true` in the response of the [Retrieve transaction limitations](https://www.cobo.com/developers/v2/api-references/travelrule/retrieve-transaction-limitations) operation.
+            - `selected_entity_type` is `NATURAL`.
+          example: '1980-01-01'
+        place_of_birth:
+          type: string
+          description: |
+            The place of birth of the natural person. This field is required when either of the following conditions is met:
+            - `is_threshold_reached` is `true` in the response of the [Retrieve transaction limitations](https://www.cobo.com/developers/v2/api-references/travelrule/retrieve-transaction-limitations) operation.
+            - `selected_entity_type` is `NATURAL`.
+          example: 'City, Country'
+    TravelRuleDepositRequest:
+      type: object
+      required:
+        - transaction_id
+        - travel_rule_info
+      properties:
+        transaction_id:
+          type: string
+          description: The transaction ID.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        travel_rule_info:
+          oneOf:
+            - $ref: '#/components/schemas/TravelRuleDepositExchangesOrVASP'
+            - $ref: '#/components/schemas/SelfCustodyWallet'
+          discriminator:
+            propertyName: destination_wallet_type
+            mapping:
+              EXCHANGES_OR_VASP: '#/components/schemas/TravelRuleDepositExchangesOrVASP'
+              SELF_CUSTODY_WALLET: '#/components/schemas/SelfCustodyWallet'
+    SelfCustodyWallet:
+      type: object
+      title: Self-Custody Wallet
+      description: Required information when depositing from or withdrawing to a self-custody wallet.
+      required:
+        - destination_wallet_type
+        - self_custody_wallet_challenge
+        - self_custody_wallet_address
+        - self_custody_wallet_sign
+      properties:
+        destination_wallet_type:
+          $ref: '#/components/schemas/DestinationWalletType'
+        self_custody_wallet_challenge:
+          type: string
+          description: The message obtained from the `Retrieve transaction limitations` operation. This message is used to verify wallet ownership through signing.
+          example: challenge_token_abc123
+        self_custody_wallet_address:
+          type: string
+          description: The address of the self-custody wallet.
+          example: '0x1234567890abcdef1234567890abcdef12345678'
+        self_custody_wallet_sign:
+          type: string
+          description: The signature created by signing the challenge message with the wallet's private key.
+          example: '0xf0a0ca69dd3afc57235c72aba3ff1f1144ee5409aeec013a9b17cdb58d0185a66a525945bfbd66e87bf0503eb0b83bf90cb973a8cbb730d19dc032e00dfe393a1c'
+    DestinationWalletType:
+      type: string
+      enum:
+        - EXCHANGES_OR_VASP
+        - SELF_CUSTODY_WALLET
+      description: |
+        The wallet type. Possible values include:
+          - `EXCHANGES_OR_VASP`: Exchanges or other virtual asset service providers (VASP)
+          - `SELF_CUSTODY_WALLET`: Self-custody wallets
+      example: EXCHANGES_OR_VASP
+    SelectedEntityType:
+      type: string
+      enum:
+        - LEGAL
+        - NATURAL
+      description: |
+        Specifies the entity type. This must be `LEGAL`.
+          - `LEGAL`: Legal entity.
+          - `NATURAL`: Natural person.
+      example: LEGAL
+    Vasp:
+      type: object
+      description: The information of a virtual asset service provider (VASP).
+      required:
+        - name
+        - vendor_code
+        - vendor_vasp_id
+      properties:
+        name:
+          type: string
+          format: name
+          description: The VASP name.
+          example: ManyAges
+        vendor_code:
+          type: string
+          description: The vendor code of the VASP.
+          example: NB
+        vendor_vasp_id:
+          type: string
+          description: The VASP ID.
+          example: 'did:ethr:0x34414c8d5c8ed6f242aa6558ecb500283bab10f4'
+    TravelRuleWithdrawExchangesOrVASP:
+      type: object
+      title: VASPs (Withdrawal)
+      description: Required information when withdrawing tokens to an exchange or other virtual asset service providers (VASP).
+      required:
+        - destination_wallet_type
+        - vendor_code
+        - vendor_vasp_id
+        - entity_info
+      properties:
+        destination_wallet_type:
+          $ref: '#/components/schemas/DestinationWalletType'
+        vendor_code:
+          type: string
+          description: The vendor code of the exchange or virtual asset service provider (VASP).
+          example: NB
+        vendor_vasp_id:
+          type: string
+          description: The unique identifier of the VASP.
+          example: 'did:ethr:0x45fca8109a8d2ce93e37f79f0acbb16f4a91f4c5'
+        entity_info:
+          oneOf:
+            - $ref: '#/components/schemas/TravelRuleWithdrawLegalEntity'
+            - $ref: '#/components/schemas/TravelRuleWithdrawNaturalEntity'
+          discriminator:
+            propertyName: selected_entity_type
+            mapping:
+              LEGAL: '#/components/schemas/TravelRuleWithdrawLegalEntity'
+              NATURAL: '#/components/schemas/TravelRuleWithdrawNaturalEntity'
+    TravelRuleWithdrawLegalEntity:
+      type: object
+      title: Legal Entity (Withdrawal)
+      description: The required information of a legal entity.
+      required:
+        - selected_entity_type
+        - legal_name
+      properties:
+        selected_entity_type:
+          $ref: '#/components/schemas/SelectedEntityType'
+        legal_name:
+          type: string
+          description: The legal name of the entity.
+          example: Company ABC Ltd.
+        date_of_incorporation:
+          type: string
+          format: date
+          description: The date of incorporation of the entity.
+          example: '2010-05-20'
+        place_of_incorporation:
+          type: string
+          description: The place of incorporation of the entity.
+          example: 'City, Country'
+    TravelRuleWithdrawNaturalEntity:
+      type: object
+      title: Natural Person (Withdrawal)
+      description: The required information of a natural person.
+      required:
+        - selected_entity_type
+        - first_name
+        - last_name
+      properties:
+        selected_entity_type:
+          $ref: '#/components/schemas/SelectedEntityType'
+        first_name:
+          type: string
+          description: The first name of the natural person.
+          example: John
+        last_name:
+          type: string
+          description: The last name of the natural person.
+          example: Doe
+        date_of_birth:
+          type: string
+          format: date
+          description: The date of birth of the natural person.
+          example: '1980-01-01'
+        place_of_birth:
+          type: string
+          description: The place of birth of the natural person.
+          example: 'City, Country'
+    TravelRuleWithdrawRequest:
+      type: object
+      required:
+        - transaction_id
+        - travel_rule_info
+      properties:
+        transaction_id:
+          type: string
+          description: The transaction ID.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        travel_rule_info:
+          oneOf:
+            - $ref: '#/components/schemas/SelfCustodyWallet'
+            - $ref: '#/components/schemas/TravelRuleWithdrawExchangesOrVASP'
+          discriminator:
+            propertyName: destination_wallet_type
+            mapping:
+              EXCHANGES_OR_VASP: '#/components/schemas/TravelRuleWithdrawExchangesOrVASP'
+              SELF_CUSTODY_WALLET: '#/components/schemas/SelfCustodyWallet'
     ApiLogSummary:
       type: object
       description: The information about an API log.
@@ -6929,6 +7664,146 @@ components:
           items:
             type: string
             example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    CallbackMessage:
+      type: object
+      description: The information about a callback message.
+      required:
+        - id
+        - created_timestamp
+        - updated_timestamp
+        - request_id
+        - transaction_id
+        - url
+        - data
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The callback message ID.
+          example: 00000000-0000-0000-0000-000000000000
+        created_timestamp:
+          type: integer
+          format: int64
+          description: 'The time when the callback message was created, in Unix timestamp format, measured in milliseconds.'
+          example: 1640918000000
+        updated_timestamp:
+          type: integer
+          format: int64
+          description: 'The time when the callback message was updated, in Unix timestamp format, measured in milliseconds.'
+          example: 1640918000000
+        request_id:
+          type: string
+          example: '1734602498819'
+          description: The request ID of the transaction.
+        transaction_id:
+          type: string
+          description: The transaction ID.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        wallet_id:
+          type: string
+          description: The wallet ID.
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        url:
+          type: string
+          description: The callback endpoint URL.
+          example: 'https://example.com/withdraw_callback'
+        data:
+          $ref: '#/components/schemas/Transaction'
+        status:
+          type: string
+          enum:
+            - Denied
+            - Approved
+            - Failed
+          description: |
+            The callback message status. Possible values include `Denied`, `Approved`, and `Failed`.
+          example: Approved
+        result:
+          type: string
+          enum:
+            - ok
+            - deny
+          description: |
+            The callback message result. Possible values include `ok` and `deny`.
+          example: ok
+    SwapActivity:
+      type: object
+      properties:
+        activity_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the swap activity.
+          example: 123e4567-e89b-12d3-a456-426614174000
+        status:
+          type: string
+          description: The status of the swap activity.
+          example: Success
+        wallet_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the wallet.
+          example: 123e4567-e89b-12d3-a456-426614174001
+        pay_token_id:
+          type: string
+          description: The token symbol to swap from.
+          example: ETH
+        receive_token_id:
+          type: string
+          description: The token symbol to swap to.
+          example: USDT
+        pay_amount:
+          type: string
+          description: The amount of tokens to bridge.
+          example: '1.5'
+        receive_amount:
+          type: string
+          description: The amount of tokens to receive.
+          example: '2000'
+        fee_amount:
+          type: string
+          description: The amount of fee.
+          example: '0.005'
+        initiator:
+          type: string
+          nullable: true
+          description: The initiator of the swap activity.
+          example: John Doe
+        initiator_type:
+          $ref: '#/components/schemas/TransactionInitiatorType'
+        created_timestamp:
+          type: integer
+          description: 'The time when the swap activity was created, in Unix timestamp format, measured in milliseconds.'
+          example: 1677587333000
+        updated_timestamp:
+          type: integer
+          description: 'The time when the swap activity was last updated, in Unix timestamp format, measured in milliseconds.'
+          example: 1677587393000
+    SwapTokenPair:
+      type: object
+      properties:
+        pay_token_id:
+          type: string
+          description: The source token symbol.
+          example: ETH
+        receive_token_id:
+          type: string
+          description: The target token symbol.
+          example: USDT
+    SwapSummary:
+      type: object
+      required:
+        - total_usd_value
+        - activity_count
+      properties:
+        total_usd_value:
+          type: string
+          description: 'The total USD value of the swap activities, represented as a string.'
+          example: '12345.67'
+        activity_count:
+          type: integer
+          description: The total number of swap activities.
+          example: 100
   parameters:
     sortByParam:
       name: sort_by
@@ -6968,13 +7843,14 @@ components:
       name: before
       in: query
       description: |
-        An object ID that serves as a starting point for retrieving data in reverse chronological order. For example, if you specify `before` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`, the request will retrieve a list of data objects that end before the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1`. You can set this parameter to the value of `pagination.before` in the response of the previous request.
+        This parameter specifies an object ID as a starting point for pagination, retrieving data before the specified object relative to the current dataset.  
 
+        Suppose the current data is ordered as Object A, Object B, and Object C.  If you set `before` to the ID of Object C (`RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`), the response will include Object B and Object A.  
+
+        **Notes**:  
         - If you set both `after` and `before`, an error will occur.
-
         - If you leave both `before` and `after` empty, the first page of data is returned.
-
-        - If you set `before` to `infinity`, the last page of data is returned.
+        - If you set it to `infinity`, the last page of data is returned.
       required: false
       schema:
         type: string
@@ -6983,10 +7859,12 @@ components:
       name: after
       in: query
       description: |
-        An object ID that acts as a starting point for retrieving data in chronological order. For example, if you specify `after` as `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`, the request will retrieve a list of data objects that start after the object with the object ID `RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`. You can set this parameter to the value of `pagination.after` in the response of the previous request.
+        This parameter specifies an object ID as a starting point for pagination, retrieving data after the specified object relative to the current dataset.  
 
+        Suppose the current data is ordered as Object A, Object B, and Object C. If you set `after` to the ID of Object A (`RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`), the response will include Object B and Object C.  
+
+        **Notes**:  
         - If you set both `after` and `before`, an error will occur.
-
         - If you leave both `before` and `after` empty, the first page of data is returned.
       required: false
       schema:
@@ -7173,6 +8051,15 @@ components:
       name: wallet_id
       in: query
       required: false
+      description: The wallet ID.
+      schema:
+        type: string
+        format: uuid
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    requiredWalletIdParam:
+      name: wallet_id
+      in: query
+      required: true
       description: The wallet ID.
       schema:
         type: string
@@ -7735,6 +8622,29 @@ components:
         type: string
         description: The address label.
       example: test
+    requiredTransactionTypeParam:
+      name: transaction_type
+      in: query
+      required: true
+      schema:
+        type: string
+        enum:
+          - DEPOSIT
+          - WITHDRAW
+      example: DEPOSIT
+      description: |
+        The transaction type. Possible values include: 
+          - `DEPOSIT`: A deposit transaction.
+          - `WITHDRAW`: A withdrawal transaction.
+    requiredTransactionIdParam:
+      name: transaction_id
+      in: query
+      required: true
+      description: The transaction ID.
+      schema:
+        type: string
+        format: uuid
+        example: 123e4567-e89b-12d3-a456-426614174000
     apilogIdParam:
       name: log_id
       in: path
@@ -7830,6 +8740,157 @@ components:
         type: string
       example: 9535384b-33cf-4ef7-88fa-74136f9748db1
       description: The client ID of the Cobo Portal App that made the API request.
+    optionalCallbackMessageIdsParam:
+      name: callback_message_ids
+      in: query
+      required: false
+      schema:
+        type: string
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      description: 'A list of callback message IDs, separated by commas.'
+    optionalTransactionIdsParam:
+      name: transaction_ids
+      in: query
+      required: false
+      schema:
+        type: string
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      description: 'A list of transaction IDs, separated by commas.'
+    optionalWalletIdsParam:
+      name: wallet_ids
+      in: query
+      required: false
+      schema:
+        type: string
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      description: 'A list of wallet IDs, separated by commas.'
+    optionalRequestIdsParam:
+      name: request_ids
+      in: query
+      required: false
+      schema:
+        type: string
+      example: 'f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479'
+      description: 'A list of request IDs, separated by commas. The request ID is provided by you and must be unique within your organization.'
+    optionalCallbackStatusParam:
+      name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - Denied
+          - Approved
+          - Failed
+      example: Approved
+      description: 'The callback message status. Possible values include `Approved`, `Denied`, and `Failed`.'
+    callbackMessageIdParam:
+      name: message_id
+      in: path
+      required: true
+      schema:
+        type: string
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+      description: The callback message ID.
+    activityIdParam:
+      name: activity_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The unique id of the activity.
+      example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+    initiatorOptionalParam:
+      name: initiator
+      in: query
+      required: false
+      description: 'The activity initiator, which is your API key by default. You can also specify the initiator when creating the activity.'
+      schema:
+        type: string
+      example: steve@example.com
+    payAmountRequiredParam:
+      name: pay_amount
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The amount of pay token to swap.
+      example: '1.5'
+    payAmountOptionalParam:
+      name: pay_amount
+      in: query
+      required: false
+      schema:
+        type: string
+      description: The amount of pay token to swap.
+      example: '1.5'
+    receiveAmountRequiredParam:
+      name: receive_amount
+      in: query
+      required: true
+      schema:
+        type: string
+      description: The amount of token to receive.
+      example: '2000'
+    receiveAmountOptionalParam:
+      name: receive_amount
+      in: query
+      required: false
+      schema:
+        type: string
+      description: The amount of token to receive.
+      example: '2000'
+    payTokenIdRequiredParam:
+      name: pay_token_id
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Unique id of the token to pay.
+      example: ETH
+    receiveTokenIdRequiredParam:
+      name: receive_token_id
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Unique id of the token to receive.
+      example: USDT
+    swapActivityStatusOptionalParam:
+      name: status
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - Success
+          - Processing
+          - Failed
+        example: Success
+        description: |
+          The status of the swap activity. Possible values include:
+          - `Success`: The activity is successfully completed.
+          - `Processing`: The activity is being processed.
+          - `Failed`: The activity has failed.
+      example: Success
+    swapActivityMinUpdatedTimestampOptionalParam:
+      name: min_updated_timestamp
+      in: query
+      required: false
+      description: 'The start time of the query. All staking activities updated after the specified time will be retrieved. The time is in Unix timestamp format, measured in milliseconds.'
+      schema:
+        type: integer
+        format: int64
+      example: 1635744000000
+    swapActivityMaxUpdatedTimestampOptionalParam:
+      name: max_updated_timestamp
+      in: query
+      required: false
+      description: 'The end time of the query. All staking activities updated before the specified time will be retrieved. The time is in Unix timestamp format, measured in milliseconds.'
+      schema:
+        type: integer
+        format: int64
+      example: 1635744000000
   requestBodies:
     createWalletBody:
       description: The request body to create a wallet
@@ -8245,6 +9306,27 @@ components:
                 type: string
                 description: The Refresh Token of the current Org Access Token.
                 example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
+    createSwapActivityBody:
+      description: The request body for creating a swap activity.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - wallet_id
+              - quote_id
+            properties:
+              wallet_id:
+                type: string
+                format: uuid
+                description: The unique identifier of the wallet.
+                example: 123e4567-e89b-12d3-a456-426614174000
+              quote_id:
+                type: string
+                format: uuid
+                description: The unique identifier of the quote.
+                example: 123e4567-e89b-12d3-a456-426614174001
   responses:
     badRequestError:
       description: Bad request. Your request contains malformed syntax or invalid parameters.
@@ -8807,6 +9889,12 @@ components:
                   type: string
                   description: The transaction ID of this broadcast transaction.
                   example: c986cb3b-1301-412f-9450-13a52c43a95f
+    getTransactionApprovalDetailResponse:
+      description: The information about a transaction approval detail.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionApprovalDetail'
     createWebhookEndpointResponse:
       description: The request was successful.
       content:
@@ -8940,12 +10028,6 @@ components:
                 type: string
                 description: The ID of the staking position.
                 example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
-    activityDetailsResponse:
-      description: A staking activity has been successfully retrieved.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Activity'
     stakingsDetailsResponse:
       description: A staking position has been successfully retrieved.
       content:
@@ -9091,6 +10173,81 @@ components:
                   $ref: '#/components/schemas/AddressBook'
               pagination:
                 $ref: '#/components/schemas/Pagination'
+    getCountriesResponse:
+      description: A list of countries supported.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                en:
+                  type: string
+                  description: The English name of the country.
+                  example: Singapore
+                zh_hans:
+                  type: string
+                  description: The simplified Chinese name of the country.
+                  example: 新加坡
+                code2:
+                  type: string
+                  description: The 2-letter country code (ISO 3166-1 alpha-2).
+                  example: SG
+              required:
+                - en
+                - zh_hans
+                - code2
+    getTransactionLimitationResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              vasp_list:
+                description: A list of virtual asset service providers (VASP) you can select as the transaction source or destination.
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vasp'
+              is_threshold_reached:
+                type: boolean
+                description: |
+                  Indicates whether the transaction amount exceeds a predefined threshold. If exceeded, additional information is required when filling Travel Rule details.
+                  - `true`: Threshold exceeded.
+                  - `false`: Threshold not exceeded.
+                example: true
+              self_custody_wallet_challenge:
+                type: string
+                description: |
+                  A human-readable, time-sensitive message to be signed by the wallet owner. The message contains key information including the wallet address, a unique nonce, and a timestamp. Signing this message confirms ownership of the wallet and allows the operation to proceed.
+                example: |
+                  Hi, please sign this message to confirm that you are the owner of this wallet address.
+                  The transfer can only proceed after signing.
+                  - Address: 0x1234567890abcdef1234567890abcdef12345678
+                  - Nonce: b2860f5c9f201a81bc76f33e991c1f24
+                  - Timestamp: 1732523887
+              connect_wallet_list:
+                type: array
+                description: A list of self-custody wallet providers you can select as the transaction source or destination.
+                items:
+                  type: string
+                  description: A supported wallet type or integration.
+                  example: metamask
+    submitTravelRuleInfoResponse:
+      description: Successfully submitted the Travel Rule information.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              submitted:
+                type: boolean
+                example: true
+                description: |
+                  Whether the Travel Rule information has been successfully submitted.
+                  - `true`: The information has been successfully submitted.
+                  - `false`: The information has not been submitted.
     listApiLogsResponse:
       description: The information about API logs.
       content:
@@ -9174,6 +10331,146 @@ components:
                 description: The list of user roles and wallet scopes associated with the API key.
                 items:
                   $ref: '#/components/schemas/RoleScopes'
+    listCallbackMessagesResponse:
+      description: The information about callback messages.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - data
+              - pagination
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CallbackMessage'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    retryCallbackMessageResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              retried:
+                type: boolean
+                example: true
+                description: |
+                  Whether the callback message has been successfully resent:
+                  - `true`: The callback message has been successfully resent.
+                  - `false`: The callback message has not been successfully resent.
+    getSwapSummaryResponse:
+      description: The summary information of swap activities.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SwapSummary'
+    getSwapActivityResponse:
+      description: The swap activity details have been successfully retrieved.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SwapActivity'
+    listSwapActivitiesResponse:
+      description: A list of staking activities have been successfully retrieved.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                items:
+                  $ref: '#/components/schemas/SwapActivity'
+                type: array
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    listSwapTokenPairsResponse:
+      description: The supported token pairs have been successfully retrieved.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SwapTokenPair'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getSwapQuoteResponse:
+      description: The swap quote has been successfully retrieved.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - activity_id
+              - quote_id
+              - pay_amount
+              - pay_usd_value
+              - receive_amount
+              - receive_usd_value
+              - quote_created_time
+              - quote_expired_time
+            properties:
+              quote_id:
+                type: string
+                description: The unique identifier of this quote.
+                example: 550e8400-e29b-41d4-a716-446655440000
+              pay_amount:
+                type: string
+                description: The amount of tokens to pay.
+                example: '1.5'
+              pay_usd_value:
+                type: string
+                description: The USD value of pay_amount.
+                example: '2850.75'
+              receive_amount:
+                type: string
+                description: The amount of tokens to receive.
+                example: '2000'
+              receive_usd_value:
+                type: string
+                description: The USD value of receive_amount.
+                example: '2000'
+              fee_token_id:
+                type: string
+                description: The token to pay for fee.
+                example: '1.5'
+              fee_amount:
+                type: string
+                description: The amount of tokens to pay for fee.
+                example: '2000'
+              fee_usd_value:
+                type: string
+                description: The USD value of fee_amount.
+                example: '2850.75'
+              min_pay_amount:
+                type: string
+                description: The minimum amount of tokens to pay.
+                example: '0'
+              max_pay_amount:
+                type: string
+                description: The maximum amount of tokens to pay.
+                example: '1000'
+              min_receive_amount:
+                type: string
+                description: The minimum amount of tokens to receive.
+                example: '0'
+              max_receive_amount:
+                type: string
+                description: The maximum amount of tokens to receive.
+                example: '0'
+              quote_created_time:
+                type: integer
+                description: 'The time when the quote was created, in Unix timestamp format, measured in milliseconds.'
+                example: 1677587333000
+              quote_expired_time:
+                type: integer
+                description: 'The time when the quote will expire, in Unix timestamp format, measured in milliseconds.'
+                example: 1677587393000
   securitySchemes:
     CoboAuth:
       type: apiKey
