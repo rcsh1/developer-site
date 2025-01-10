@@ -2,13 +2,11 @@
 title: "Estimate transaction fees"
 ---
 
-<Note>This guide applies to transactions from Custodial Wallets (Web3 Wallets), MPC Wallets (Organization-Controlled Wallets), MPC Wallets (User-Controlled Wallets), and Smart Contract Wallets (Safe\{Wallet\}).</Note>
-
-Transaction fees are required to process and validate transactions on a blockchain network, ensuring network security and efficiency. Cobo currently offers two methods for estimating transaction fees considering factors such as the source, destination, and the number of inputs and outputs:
+Transaction fees are essential for processing and validating transactions on a blockchain network. They ensure network security, incentivize validators, and maintain efficiency. The method of calculating these fees depends on the blockchain's design and current network conditions. Cobo offers specific features to streamline transaction fee estimation for users.
 - When you make a transfer on Cobo Portal, you can see the estimated transaction fee on the UI. 
-- You can call the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation. 
+- You can call the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) API operation. 
 
-<Note>The estimated transaction fee is based on current network conditions and may change by the time the actual transaction is made.</Note>
+<Note>The estimated transaction fee reflects current network conditions and may change by the time the actual transaction is processed.</Note>
 
 When you call the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation, you need to specify the following parameters:
 - `request_type`: The type of transaction, which can be a transfer or a contract call.
@@ -33,11 +31,17 @@ Cobo currently supports transactions with four types of fee models:
 | UTXO      | Transaction fee = fee rate * transaction size<ul><li>Fee rate:The fee rate, in sat/vByte, represents the satoshis you are willing to pay for each byte of data that your transaction will consume on the blockchain.</li><li>Transaction size: The total size of a transaction in bytes, affecting the total fee in UTXO models.</li></ul> | Bitcoin and other UTXO-based chains  | Maximum fee amount. Refer to the response of the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation for details.             |
 | Fixed     | The transaction fee is fixed fee amount.  | TRON                            | Maximum fee amount. Refer to the response of the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation for details.                   |
 
+While most transactions follow the blockchain's native fee model, transactions from Custodial Wallets (Asset Wallets) and Exchange Wallets always use the fixed fee model.
+
 ## Fee levels
 
-For the legacy, EIP-1559, and UTXO fee models, Cobo also supports three different transaction speed levels: slow, recommended, and fast. The faster the transaction speed, the higher the transaction fee. 
+Transaction fees are influenced by speed levels. Users can choose between slow, recommended, and fast transaction speeds, with faster speeds incurring higher fees.
 
-Besides, the transaction fee is also affected by the network conditions, such as congestion.
+Cobo supports three fee levels for Legacy, EIP-1559, and UTXO models:
+
+- Slow: Lowest fee, longer confirmation time.
+- Recommended: Balanced fee and confirmation time.
+- Fast: Higher fee for quicker processing.
 
 ## Replace-By-Fee (RBF) transaction fee
 
@@ -50,6 +54,8 @@ The logic for estimating RBF transaction fees is similar to that for normal tran
 - Fixed: Increase the fee amount.
 
 ## How Cobo estimate the fees
+
+Below is how Cobo calculates the fees for each model:
 
 | Fee Model | Estimation Method | 
 |-----------|--------------------|
