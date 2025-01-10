@@ -88,7 +88,7 @@ Your endpoint should not assume that events will arrive in this sequence and mus
 
 When your callback endpoint receives a callback message, it should respond with a status code of `200` or `201` and a response body of `ok` or `deny` to indicate transaction approval or rejection. Once this response is sent, the WaaS service will stop retrying to send the message and the callback message status will become `Delivered`on Cobo Portal.
 
-If the callback endpoint does not respond, responds with a status code other than `200` or `201`,  or the response body does not contain `ok` or `deny`, the WaaS service will continue to retry sending the message.  If the number of retry attempts reaches 30, the WaaS service will stop sending the message and the callback message status will become `Failed`. You can resend the message by clicking **Retry** on **Cobo Portal** > **Developer** > **Callback Messages**.
+If the callback endpoint does not respond, responds with a status code other than `200` or `201`,  or the response body does not contain `ok` or `deny`, the WaaS service will continue to retry sending the message.  If the number of retry attempts reaches 30, the WaaS service will stop sending the message and the callback message status will become `Failed`. You can resend the message by using the [Retry callback message](/v2/api-references/developers/retry-callback-message) operation.
 
 ### Code samples
 

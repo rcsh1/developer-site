@@ -4,6 +4,30 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.8.0
+
+This version was released on January 8, 2025.
+
+### New Features
+- Added Travel Rule operations:
+  - [Submit Travel Rule information for deposits](/v2/api-references/travelrule/submit-travel-rule-information-for-deposits)
+  - [Submit Travel Rule information for withdrawals](/v2/api-references/travelrule/submit-travel-rule-information-for-withdrawals)
+  - [Retrieve transaction limitations](/v2/api-references/travelrule/retrieve-transaction-limitations)
+  - [List supported countries](/v2/api-references/travelrule/list-supported-countries)
+- Added support for Sky Farm staking protocol.
+- Added the [List all callback messages](/v2/api-references/developers/list-all-callback-messages) and [Retry callback message](/v2/api-references/developers/retry-callback-message) operations for efficient management on callback messages.
+
+
+### Improvements
+- Added new [webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types) `wallets.addresses.created`, `wallets.created`, and `mpc_vaults.created` and new event data types `Addresses`, `WalletInfo`, and `MPCVault` to optimize the processing of webhook events.
+- Made several improvements to staking operations:
+  - Added the `BabylonStakingActivityDetailExtra`, `EthStakingActivityDetailExtra`, and `CoreStakingActivityDetailExtra` schemas to represent the extra details for each staking protocol.
+  - Added the `request_id` query parameter for the [List staking activities](/v2/api-references/stakings/list-staking-activities) operation to filter activities based on a specific request ID.
+  - Made the `extra` property optional in the `CreateStakeActivity` schema.
+- Added the `root_pubkey` property to the `AddressInfo` schema to indicate the root extended public key of the address.
+- Added the `TransactionSelectedUtxo` schema to represent the selected UTXO information in a transaction.
+
+
 ## v1.7.0
 
 This version was released on December 19, 2024.

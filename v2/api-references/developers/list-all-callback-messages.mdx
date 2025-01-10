@@ -1,14 +1,12 @@
 ---
-openapi: get /stakings/activities
+openapi: get /developers/callback_messages
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.activity_status import ActivityStatus
-from cobo_waas2.models.activity_type import ActivityType
-from cobo_waas2.models.list_staking_activities200_response import (
-    ListStakingActivities200Response,
+from cobo_waas2.models.list_callback_messages200_response import (
+    ListCallbackMessages200Response,
 )
 from cobo_waas2.rest import ApiException
 from pprint import pprint
@@ -23,38 +21,40 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.StakingsApi(api_client)
-    pool_id = "babylon_btc"
-    staking_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    activity_type = cobo_waas2.ActivityType()
-    activity_status = cobo_waas2.ActivityStatus()
-    min_modified_timestamp = 1635744000000
-    max_modified_timestamp = 1635744000000
-    initiator = "steve@example.com"
-    request_id = "web_send_by_user_327_1610444045047"
+    api_instance = cobo_waas2.DevelopersApi(api_client)
+    callback_message_ids = (
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    )
+    request_ids = (
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    )
+    transaction_ids = (
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    )
+    wallet_ids = (
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    )
+    status = "Approved"
     limit = 10
     before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
     after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 
     try:
-        # List staking activities
-        api_response = api_instance.list_staking_activities(
-            pool_id=pool_id,
-            staking_id=staking_id,
-            activity_type=activity_type,
-            activity_status=activity_status,
-            min_modified_timestamp=min_modified_timestamp,
-            max_modified_timestamp=max_modified_timestamp,
-            initiator=initiator,
-            request_id=request_id,
+        # List all callback messages
+        api_response = api_instance.list_callback_messages(
+            callback_message_ids=callback_message_ids,
+            request_ids=request_ids,
+            transaction_ids=transaction_ids,
+            wallet_ids=wallet_ids,
+            status=status,
             limit=limit,
             before=before,
             after=after,
         )
-        print("The response of StakingsApi->list_staking_activities:\n")
+        print("The response of DevelopersApi->list_callback_messages:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling StakingsApi->list_staking_activities: %s\n" % e)
+        print("Exception when calling DevelopersApi->list_callback_messages: %s\n" % e)
 
 ```
 ```java Java
@@ -63,7 +63,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.StakingsApi;
+import com.cobo.waas2.api.DevelopersApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -75,35 +75,31 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    StakingsApi apiInstance = new StakingsApi();
-    String poolId = "babylon_btc";
-    String stakingId = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
-    ActivityType activityType = ActivityType.fromValue("Stake");
-    ActivityStatus activityStatus = ActivityStatus.fromValue("Success");
-    Long minModifiedTimestamp = 1635744000000L;
-    Long maxModifiedTimestamp = 1635744000000L;
-    String initiator = "steve@example.com";
-    String requestId = "web_send_by_user_327_1610444045047";
+    DevelopersApi apiInstance = new DevelopersApi();
+    String callbackMessageIds =
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479";
+    String requestIds = "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479";
+    String transactionIds =
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479";
+    String walletIds = "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479";
+    String status = "Denied";
     Integer limit = 10;
     String before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1";
     String after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk";
     try {
-      ListStakingActivities200Response result =
-          apiInstance.listStakingActivities(
-              poolId,
-              stakingId,
-              activityType,
-              activityStatus,
-              minModifiedTimestamp,
-              maxModifiedTimestamp,
-              initiator,
-              requestId,
+      ListCallbackMessages200Response result =
+          apiInstance.listCallbackMessages(
+              callbackMessageIds,
+              requestIds,
+              transactionIds,
+              walletIds,
+              status,
               limit,
               before,
               after);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling StakingsApi#listStakingActivities");
+      System.err.println("Exception when calling DevelopersApi#listCallbackMessages");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -125,14 +121,11 @@ import (
 )
 
 func main() {
-	poolId := "babylon_btc"
-	stakingId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-	activityType := coboWaas2.ActivityType("Stake")
-	activityStatus := coboWaas2.ActivityStatus("Success")
-	minModifiedTimestamp := int64(1635744000000)
-	maxModifiedTimestamp := int64(1635744000000)
-	initiator := "steve@example.com"
-	requestId := "web_send_by_user_327_1610444045047"
+	callbackMessageIds := "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	requestIds := "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	transactionIds := "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	walletIds := "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	status := "Approved"
 	limit := int32(10)
 	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
 	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
@@ -148,25 +141,26 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.StakingsAPI.ListStakingActivities(ctx).
-		PoolId(poolId).
-		StakingId(stakingId).
-		ActivityType(activityType).
-		ActivityStatus(activityStatus).
-		MinModifiedTimestamp(minModifiedTimestamp).
-		MaxModifiedTimestamp(maxModifiedTimestamp).
-		Initiator(initiator).
-		RequestId(requestId).
+	resp, r, err := apiClient.DevelopersAPI.ListCallbackMessages(ctx).
+		CallbackMessageIds(callbackMessageIds).
+		RequestIds(requestIds).
+		TransactionIds(transactionIds).
+		WalletIds(walletIds).
+		Status(status).
 		Limit(limit).
 		Before(before).
 		After(after).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `StakingsAPI.ListStakingActivities``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `DevelopersAPI.ListCallbackMessages``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListStakingActivities`: ListStakingActivities200Response
-	fmt.Fprintf(os.Stdout, "Response from `StakingsAPI.ListStakingActivities`: %v\n", resp)
+	// response from `ListCallbackMessages`: ListCallbackMessages200Response
+	fmt.Fprintf(os.Stdout, "Response from `DevelopersAPI.ListCallbackMessages`: %v\n", resp)
 }
 
 ```
@@ -179,21 +173,18 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.StakingsApi();
+const apiInstance = new CoboWaas2.DevelopersApi();
 const opts = {
-  'pool_id': "babylon_btc",
-  'staking_id': "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  'activity_type': new CoboWaas2.ActivityType(),
-  'activity_status': new CoboWaas2.ActivityStatus(),
-  'min_modified_timestamp': 1635744000000,
-  'max_modified_timestamp': 1635744000000,
-  'initiator': "steve@example.com",
-  'request_id': "web_send_by_user_327_1610444045047",
+  'callback_message_ids': "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  'request_ids': "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  'transaction_ids': "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  'wallet_ids': "f47ac10b-58cc-4372-a567-0e02b2c3d479,f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  'status': "Approved",
   'limit': 10,
   'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
   'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 };
-apiInstance.listStakingActivities(opts).then((data) => {
+apiInstance.listCallbackMessages(opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

@@ -1,14 +1,13 @@
 ---
-openapi: post /stakings/activities/stake
+openapi: get /travel_rule/transaction/limitation
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.create_stake_activity201_response import (
-    CreateStakeActivity201Response,
+from cobo_waas2.models.get_transaction_limitation200_response import (
+    GetTransactionLimitation200Response,
 )
-from cobo_waas2.models.create_stake_activity_request import CreateStakeActivityRequest
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -22,18 +21,21 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.StakingsApi(api_client)
-    create_stake_activity_request = cobo_waas2.CreateStakeActivityRequest()
+    api_instance = cobo_waas2.TravelRuleApi(api_client)
+    transaction_type = "DEPOSIT"
+    transaction_id = "123e4567-e89b-12d3-a456-426614174000"
 
     try:
-        # Create stake activity
-        api_response = api_instance.create_stake_activity(
-            create_stake_activity_request=create_stake_activity_request
+        # Retrieve transaction limitations
+        api_response = api_instance.get_transaction_limitation(
+            transaction_type, transaction_id
         )
-        print("The response of StakingsApi->create_stake_activity:\n")
+        print("The response of TravelRuleApi->get_transaction_limitation:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling StakingsApi->create_stake_activity: %s\n" % e)
+        print(
+            "Exception when calling TravelRuleApi->get_transaction_limitation: %s\n" % e
+        )
 
 ```
 ```java Java
@@ -42,7 +44,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.StakingsApi;
+import com.cobo.waas2.api.TravelRuleApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -54,14 +56,15 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    StakingsApi apiInstance = new StakingsApi();
-    CreateStakeActivityRequest createStakeActivityRequest = new CreateStakeActivityRequest();
+    TravelRuleApi apiInstance = new TravelRuleApi();
+    String transactionType = "DEPOSIT";
+    UUID transactionId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000");
     try {
-      CreateStakeActivity201Response result =
-          apiInstance.createStakeActivity(createStakeActivityRequest);
+      GetTransactionLimitation200Response result =
+          apiInstance.getTransactionLimitation(transactionType, transactionId);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling StakingsApi#createStakeActivity");
+      System.err.println("Exception when calling TravelRuleApi#getTransactionLimitation");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -83,7 +86,8 @@ import (
 )
 
 func main() {
-	createStakeActivityRequest := *coboWaas2.NewCreateStakeActivityRequest(coboWaas2.StakingPoolId("babylon_btc_signet"), "100.00", coboWaas2.TransactionRequestFee{TransactionRequestEvmEip1559Fee: coboWaas2.NewTransactionRequestEvmEip1559Fee("9000000000000", "1000000000000", coboWaas2.FeeType("Fixed"), "ETH")})
+	transactionType := "DEPOSIT"
+	transactionId := "123e4567-e89b-12d3-a456-426614174000"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -96,15 +100,20 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.StakingsAPI.CreateStakeActivity(ctx).
-		CreateStakeActivityRequest(createStakeActivityRequest).
+	resp, r, err := apiClient.TravelRuleAPI.GetTransactionLimitation(ctx).
+		TransactionType(transactionType).
+		TransactionId(transactionId).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `StakingsAPI.CreateStakeActivity``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `TravelRuleAPI.GetTransactionLimitation``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateStakeActivity`: CreateStakeActivity201Response
-	fmt.Fprintf(os.Stdout, "Response from `StakingsAPI.CreateStakeActivity`: %v\n", resp)
+	// response from `GetTransactionLimitation`: GetTransactionLimitation200Response
+	fmt.Fprintf(os.Stdout, "Response from `TravelRuleAPI.GetTransactionLimitation`: %v\n", resp)
 }
 
 ```
@@ -117,11 +126,10 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.StakingsApi();
-const opts = {
-  'CreateStakeActivityRequest': new CoboWaas2.CreateStakeActivityRequest()
-};
-apiInstance.createStakeActivity(opts).then((data) => {
+const apiInstance = new CoboWaas2.TravelRuleApi();
+const transaction_type = "DEPOSIT";
+const transaction_id = "123e4567-e89b-12d3-a456-426614174000";
+apiInstance.getTransactionLimitation(transaction_type, transaction_id).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

@@ -4,7 +4,18 @@ title: "Pagination"
 
 Pagination in the WaaS 2.0 API allows you to retrieve data in manageable chunks. You can control the page size and navigate through the dataset using three query parameters:
 
-- `before`: This parameter specifies an object ID that acts as a starting point for retrieving data in reverse chronological order. You can set this parameter to the value of `pagination.before` in the response of the previous request.
-- `after`: This parameter specifies an object ID that acts as a starting point for retrieving data in chronological order. You can set this parameter to the value of `pagination.after` in the response of the previous request.
 - `limit`: This parameter defines the maximum number of objects you want to receive in each response.
+
+- `before`: This parameter specifies an object ID as a starting point for pagination, retrieving data before the specified object relative to the current dataset.  
+ 
+    Suppose the current data is ordered as Object A, Object B, and Object C.  If you set `before` to the ID of Object C (`RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`), the response will include Object B and Object A.  
+- `after`: This parameter specifies an object ID as a starting point for pagination, retrieving data after the specified object relative to the current dataset.  
+
+    Suppose the current data is ordered as Object A, Object B, and Object C. If you set `after` to the ID of Object A (`RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk`), the response will include Object B and Object C.  
+
+**Notes**:  
+- If you set both `after` and `before`, an error will occur.
+- If you leave both `before` and `after` empty, the first page of data is returned.
+- If you set `before` to `infinity`, the last page of data is returned.
+
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
