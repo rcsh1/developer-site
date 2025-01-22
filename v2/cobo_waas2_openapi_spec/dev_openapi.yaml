@@ -1455,25 +1455,6 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
-  '/transactions/{transaction_id}/approval_detail':
-    parameters:
-      - $ref: '#/components/parameters/transactionIdParam'
-    get:
-      tags:
-        - Transactions
-      operationId: get_transaction_approval_detail
-      summary: Get transaction approval information
-      description: |
-        This operation retrieves approval detailed information about a specified transaction.
-      security:
-        - CoboAuth: []
-      responses:
-        '200':
-          $ref: '#/components/responses/getTransactionApprovalDetailResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
   /oauth/token:
     get:
       tags:
@@ -5217,76 +5198,6 @@ components:
         - `PassiveAutoFuel`: Use Fee Station only when the source address balance is insufficient to cover the transaction fees.
 
         Please note that the TRON chain does not support `PassiveAutoFuel` due to its fee delegation mechanism.
-    TransactionApprovalDetail:
-      type: object
-      description: The approval detail data for transaction.
-      properties:
-        spender:
-          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
-        approver:
-          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
-        address_owner:
-          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
-    TransactionApprovalResult:
-      type: string
-      enum:
-        - Approved
-        - Rejected
-        - Pending
-      example: Approved
-      description: |
-        The transaction approval result. Possible values include: 
-          - `Approved`: The transaction is approved.
-          - `Rejected`: The transaction is rejected. 
-          - `Pending`: The transaction is pending approvals.
-    TransactionRoleApprovalDetail:
-      type: object
-      description: The role approval data for transaction.
-      properties:
-        result:
-          $ref: '#/components/schemas/TransactionApprovalResult'
-        review_threshold:
-          type: integer
-          description: The threshold for passing the review of this role.
-          example: 1
-        initiator:
-          type: string
-          description: The initiator of the transaction.
-          example: tom@gmail.com
-        complete_time:
-          type: string
-          description: Time to complete the review.
-        user_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/TransactionUserApprovalDetail'
-    TransactionUserApprovalDetail:
-      type: object
-      description: The user approval data for transaction.
-      properties:
-        pubkey:
-          type: string
-          description: The gaurd pubkey of the user who audited the message.
-          example: 96db1b3c68c3a3497bffb7e257a3900b0e86575c968a346a6696d1676fa8c5a6431b46c867134bd5fb8a9b5f787fa0c534d7c7664f1e52c432ce64326cc4cc1d
-        result:
-          $ref: '#/components/schemas/TransactionApprovalResult'
-        signature:
-          type: string
-          description: Signature of the audited message.
-        language:
-          type: string
-          description: The language of the audited message.
-          example: en
-        message_version:
-          type: string
-          description: Version of the audited message.
-          example: 1.0.1
-        message:
-          type: string
-          description: The audited message.
-        extra_message:
-          type: string
-          description: The extra audited message.
     CustodialTransferSource:
       type: object
       description: |
@@ -9889,12 +9800,6 @@ components:
                   type: string
                   description: The transaction ID of this broadcast transaction.
                   example: c986cb3b-1301-412f-9450-13a52c43a95f
-    getTransactionApprovalDetailResponse:
-      description: The information about a transaction approval detail.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TransactionApprovalDetail'
     createWebhookEndpointResponse:
       description: The request was successful.
       content:

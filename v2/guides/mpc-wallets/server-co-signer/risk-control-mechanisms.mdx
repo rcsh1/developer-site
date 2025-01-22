@@ -7,9 +7,9 @@ description: "Understanding the risk control mechanisms in server co-signer"
 The server co-signer solution provides two risk control mechanisms to help secure your MPC Wallets:
 
 1. Embedded risk control mechanism
-2. TSS Node callback mechanism
+2. (Recommended) TSS Node callback mechanism
 
-The two risk control mechanisms work together to ensure the security of your MPC Wallet operations. The embedded risk control mechanism provides basic, non-customizable rules, while the TSS Node callback mechanism enables you to implement custom risk control logic. Both mechanisms must approve a task request before it can proceed.
+The embedded risk control mechanism provides basic, non-customizable rules, while the TSS Node callback mechanism enables you to implement custom risk control logic. If both mechanisms are enabled, they work together - a task proceeds only when approved by both. We recommend implementing the callback mechanism for greater flexibility in managing your MPC Wallet security.
 
 ## Embedded risk control mechanism
 
@@ -30,7 +30,8 @@ The TSS Node callback mechanism provides a flexible, customizable risk control m
 - Makes approval/rejection decisions based on your business logic.
 - Communicates securely with the TSS Node using JWT authentication.
 
-You can deploy multiple callback servers for enhanced security. Each callback server can have its own risk control rules, and a task request will be approved only if all configured callback servers approve.
+You can deploy multiple callback servers for enhanced security when you have multiple systems with different control requirements. Each callback server can have its own risk control rules, and a task request will be approved only if all configured callback servers approve.
+
 
 
 To learn more about the TSS Node callback mechanism, see [TSS Node callback mechanism](/v2/guides/mpc-wallets/server-co-signer/callback-server-overview).
@@ -56,14 +57,6 @@ When the TSS Node receives a task request:
 The request proceeds only if:
 - The embedded risk control module approves (if enabled).
 - AND all configured callback servers approve.
-
-## Security best practices
-
-For optimal security:
-
-1. Enable both risk control mechanisms.
-2. Implement comprehensive risk control rules in your callback servers.
-3. Regularly review and update your risk control configurations.
 
 ## Next steps
 

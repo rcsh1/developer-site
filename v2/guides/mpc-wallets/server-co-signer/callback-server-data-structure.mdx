@@ -1,0 +1,135 @@
+---
+title: "Callback request and response formats"
+sidebarTitle: "Callback request and response formats"
+description: Detailed specifications of the payload formats used in TSS Node callback server interaction
+---
+
+This document specifies the request and response payload formats used in TSS Node callback server communication.
+
+## Callback request
+
+The callback request is sent from the TSS Node to the callback server.
+
+### Base request structure
+
+| Field | Type | Description |
+|-------|------|-------------|
+| request_id | `string` | The unique ID of the callback request.|
+| request_type | `int` | Type of the callback request:<br/>- `TypePing` (0): Used for heartbeat monitoring<br/>- `TypeKeyGen` (1): Creating new key shares for your MPC Wallets.<br/>- `TypeKeySign` (2): Signing transactions or messages.<br/>- `TypeKeyReshare` (3): Redistributing key shares among participants.|
+| request_detail | `string` | Details specific to the request type. The structure varies depending on the request type. The content is a JSON-serialized string. |
+| extra_info | `string` | Additional contextual information. The structure varies depending on the request type. The content is a JSON-serialized string. |
+
+### TypePing request
+
+Used for heartbeat monitoring of the callback server.
+
+If you have specified the `monitor_interval` parameter when [configuring the TSS Node settings](/v2/guides/mpc-wallets/server-co-signer/callback-server-configure#configure-tss-node-settings), the node will periodically send the request to verify server availability.
+
+```yaml
+callback:
+  monitor_interval: 1h # Monitoring interval; if empty, monitoring is disabled
+```
+
+For `TypePing` requests, `request_id`, `request_detail` and `extra_info` will be empty objects.
+
+### TypeKeyGen request
+
+Used for key share generation.
+
+#### request_detail
+
+| Field | Type | Description |
+|-------|------|-------------|
+| threshold | `int` | The number of key share holders required to approve operations in this key share holder group. |
+| node_ids | `array[string]` | The TSS node IDs of the key share holders in this key share holder group. |
+| curve | `int` | The elliptic curve type of the root extended public key. Possible values: <br/>`0`: Secp256k1<br/>`2`: Ed25519. |
+| task_id | `string` | The unique identifier for this key generation task. |
+| biz_task_id | `string` | For this request type, this field contains the TSS request ID. |
+
+#### extra_info
+
+| Field | Type | Description |
+|-------|------|-------------|
+| org | `object` | The organization information:<br/>- `org_id`: String. The ID of the organization.<br/>- `name`: String. The organization name.<br/>- `created_timestamp`: Int. The organization's creation time in Unix timestamp format, measured in milliseconds. |
+| project | `object` | The project information. For details, see the response of the [Get project information](/v2/api-references/wallets--mpc-wallets/get-project-information) operation. |
+| vault | `object` | The vault information. For details, see the response of the [Get vault information](/v2/api-references/wallets--mpc-wallets/get-vault-information) operation. |
+| target_key_share_holder_group | `object` | The key share holder group information. For details, see the response of the [Get key share holder group information](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information) operation. |
+| tss_request | `object` | The TSS request information. For details, see the response of the  [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation. |
+
+### TypeKeySign request
+
+Used for transaction or message signing operations.
+
+#### request_detail
+
+| Field | Type | Description |
+|-------|------|-------------|
+| group_id | `string` | The ID of the key share holder group. |
+| root_pub_key | `string` | The root extended public key of the group. |
+| used_node_ids | `array[string]` | The list of TSS node IDs participating in signing. |
+| bip32_path_list | `array[string]` | The BIP32 derivation paths. |
+| msg_hash_list | `array[string]` | The list of message hashes to sign. |
+| tweak_list | `array[string]` | The list of tweaks to apply. |
+| signature_type | `int` | The type of signature to generate. Possible values:<br/>- `1`: ECDSA signature<br/>- `2`: EdDSA signature<br/>- `3`: Schnorr signature |
+| tss_protocol | `int` | The TSS protocol. Possible values:<br/>- `1`: GG18<br/>- `2`: Lindell<br/>- `3`: EddsaTSS |
+| task_id | `string` | The unique identifier for this signing task. |
+| biz_task_id | `string` | For this request type, this field contains the transaction ID. |
+
+#### extra_info
+
+| Field | Type | Description |
+|-------|------|-------------|
+| org | `object` |The organization information:<br/>- `org_id`: String. The ID of the organization.<br/>- `name`: String. The organization name.<br/>- `created_timestamp`: Int. The organization's creation time in Unix timestamp format, measured in milliseconds. |
+| project | `object` | The project information. For details, see the response of the [Get project information](/v2/api-references/wallets--mpc-wallets/get-project-information) operation. |
+| vault | `object` | The vault information. For details, see the response of the [Get vault information](/v2/api-references/wallets--mpc-wallets/get-vault-information) operation. |
+| wallet | `object` | The wallet information. For details, see the response of the [Get wallet information](/v2/api-references/wallets/get-wallet-information) operation. |
+| signer_key_share_holder_group | `object` | The information of the key share holder group that signs the transaction. For details, see the response of the [Get key share holder group information](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information) operation. |
+| source_addresses | `array[object]` | The information of the source addresses of the transaction. For details, see the response of the [List wallet addresses](/v2/api-references/wallets/list-wallet-addresses) operation. |
+| transaction | `object` | The information of the transaction to sign. For details, see the response of the [Get transaction information](/v2/api-references/transactions/get-transaction-information) operation. |
+| staking_activity | `object` | The information of the staking activity, if the transaction is a staking activity. For details, see the response of the [Get staking activity details](/v2/api-references/stakings/get-staking-activity-details) operation.  |
+
+### TypeKeyReshare request
+
+Used for [key resharing](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/manage-key-share-groups#manage-recovery-groups) operations. Resharing means to use an existing key share holder group to generate key shares for a new group.
+
+#### request_detail
+
+| Field | Type | Description |
+|-------|------|-------------|
+| old_group_id | `string` | The ID of the existing key share holder group. |
+| root_pub_key | `string` | The root extended public key of the vault. |
+| curve | `int` | The elliptic curve type of the root extended public key. <br/>`0`: Secp256k1<br/>`2`: Ed25519. |
+| used_node_ids | `array[string]` | The TSS node IDs of the existing key share holder group. |
+| old_threshold | `int` | The threshold value of the existing key share holder group used.  |
+| new_threshold | `int` | The threshold value of the new key share holder group. |
+| new_node_ids | `array[string]` | The TSS node IDs of the new key share holder group. |
+| task_id | `string` | The unique identifier for this resharing task. |
+| biz_task_id | `string` | For this request type, this field contains the TSS request ID. |
+
+#### extra_info
+
+| Field | Type | Description |
+|-------|------|-------------|
+| org | `object` |The organization information:<br/>- `org_id`: String. The ID of the organization.<br/>- `name`: String. The organization name.<br/>- `created_timestamp`: Int. The organization's creation time in Unix timestamp format, measured in milliseconds. |
+| project | `object` | The project information. For details, see the response of the [Get project information](/v2/api-references/wallets--mpc-wallets/get-project-information) operation. |
+| vault | `object` | The vault information. For details, see the response of the [Get vault information](/v2/api-references/wallets--mpc-wallets/get-vault-information) operation. |
+| source_key_share_holder_group | `object` | The information of the existing key share holder group. For details, see the response of the [Get key share holder group information](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information) operation. |
+| target_key_share_holder_group | `object` | The information of the new key share holder group. For details, see the response of the [Get key share holder group information](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information) operation. |
+| tss_request | `object` | The TSS request information. For details, see the response of the  [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation. |
+
+## Callback response
+
+Your callback server must respond to all callback requests with the following structure:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| status | `int` | The response status code. `0` indicates success. Any other value indicates that an error occurred while processing the request in the callback server. |
+| request_id | `string` | The unique ID of the callback request.|
+| action | `string` | Action to take. Possible values:<br/>- `ACCEPT`: Approve the request and proceed with the operation<br/>- `REJECT`: Deny the request and stop the operation |
+| error | `string` | The error message:<br/>- When `status` is not `0`: Contains internal error messages from the callback server.<br/>- When `status` is `0` and action is `REJECT`: Contains the specific reason for the rejection. |
+
+### Important notes
+
+- If the TSS Node fails to receive an HTTP response, it will retry the callback request.
+- After exceeding the maximum retry attempts, the risk control result will be set to `REJECT`.
+- For `TypePing` requests, a successful response (status = `0`) is required to indicate server availability.

@@ -21,7 +21,7 @@ The TSS Node, which serves as a server co-signer, consists of the following main
 
 Implements core TSS operations, such as generating key shares, signing transactions and messages, and resharing keys, based on the MPC-TSS protocol.
 
-#### Secret.db
+#### Secrets.db
 
 Provides encrypted storage for your MPC Wallets' key shares and the TSS Node's callback private key. The callback private key is used to sign the node's JSON Web Tokens (JWTs) sent to the TSS Node’s callback server. The database file itself is encrypted to ensure the security of its contents.
 
@@ -32,7 +32,7 @@ The callback private key is generated during TSS Node initialization, and the ke
 
 A module within the TSS Node that implements the embedded risk control mechanism, one of the [two risk control mechanisms](/v2/guides/mpc-wallets/server-co-signer/risk-control-mechanisms) provided by the server co-signer solution.
 
-A task request must be approved by both the embedded risk control module and all configured TSS Node callback servers to proceed. If any component (embedded or callback) rejects the operation, it will be denied.
+When both mechanisms are enabled, a task request must be approved by both the embedded risk control module and all TSS Node callback servers to proceed. If any component (embedded or callback) rejects the operation, it will be denied.
 
 #### Callback risk control module
 
@@ -75,6 +75,9 @@ You can enhance security by setting up one or more TSS Node callback servers tha
 - If any configured callback server rejects a transaction, the entire operation will be denied regardless of other approvals.
 
 The callback server should store two keys: a private key used to sign the JWT sent to the TSS Node, and the TSS Node's callback public key used to verify the TSS Node's JWT.
+
+
+Cobo provides example callback server implementations in multiple programming languages to help you quickly develop your callback server. You can find these examples in our [GitHub repository](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template).
 
 ## Next Steps
 
