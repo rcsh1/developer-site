@@ -1,0 +1,163 @@
+---
+title: "Transaction statuses and sub-statuses"
+---
+
+The following table provides an overview of the various transaction statuses and their corresponding sub-statuses in WaaS 2.0.
+
+<table>
+  <tr>
+    <th>Status</th>
+    <th>Sub-Status</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td rowspan="1">Submitted</td>
+    <td>N/A</td>
+    <td>The transaction is submitted.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">PendingScreening</td>
+    <td>PendingTravelRuleCheck</td>
+    <td>The transaction is undergoing a Travel Rule check.</td>
+  </tr>
+  <tr>
+    <td>PendingTravelRuleInfo</td>
+    <td>The transaction is awaiting users to provide information related to the Travel Rule.</td>
+  </tr>
+  <tr>
+    <td rowspan="4">PendingAuthorization</td>
+    <td>PendingDoubleCheck</td>
+    <td>The transaction is pending a double check.</td>
+  </tr>
+  <tr>
+    <td>PendingSpenderCheck</td>
+    <td>The transaction is pending a spender check.</td>
+  </tr>
+  <tr>
+    <td>PendingRiskControlCheck</td>
+    <td>The transaction is pending for a Risk Control check.</td>
+  </tr>
+  <tr>
+    <td>PendingApproverCheck</td>
+    <td>The transaction is pending approval from the approver.</td>
+  </tr>
+  <tr>
+    <td rowspan="5">PendingSignature</td>
+    <td>Built</td>
+    <td>The transaction has been built but not signed yet.</td>
+  </tr>
+  <tr>
+    <td>PendingWaitSigner</td>
+    <td>The transaction is pending signature.</td>
+  </tr>
+  <tr>
+    <td>PendingApprovalStart</td>
+    <td>The transaction approval is waiting to be started.<ul><li>For <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction">MPC Wallets (User-Controlled Wallets)</a>, you need to use the Client App and call the UCW SDK to start the transaction approval process.</li><li>For <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction">MPC Wallets (Organization-Controlled Wallets)</a>:<ul><li>If you are using the <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">server co-signer</a>, this status indicates that the TSS Node will soon request the callback server to start the <a href="https://manuals.cobo.com/en/portal/risk-controls/introduction">risk controls</a> check. No further action is required from you at this stage.</li><li>If you are using the <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">mobile co-signer</a>, key share holders need to use their <a href="https://manuals.cobo.com/en/guard/introduction">Cobo Guard</a> to approve the transaction and participate in the signing process.</li></ul></li></ul></td>
+  </tr>
+  <tr>
+    <td>Queue</td>
+    <td>The transaction is queued to be processed by Cobo Portal.</td>
+  </tr>
+  <tr>
+    <td>SignatureVerificationSuccess</td>
+    <td>The transaction's signature has been successfully verified.</td>
+  </tr>
+  <tr>
+    <td rowspan="1">Broadcasting</td>
+    <td>FailedBroadcasting</td>
+    <td>The transaction failed to be broadcast to the blockchain network.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Confirming</td>
+    <td>Reverting</td>
+    <td>The transaction is being reverted due to failure on the blockchain.</td>
+  </tr>
+  <tr>
+    <td>PendingBlockConfirmations</td>
+    <td> The transaction is awaiting the required number of confirmations.</td>
+  </tr>
+  <tr>
+    <td rowspan="1">Completed</td>
+    <td>N/A</td>
+    <td>The transaction is completed.</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Failed</td>
+    <td>FailedBySigner</td>
+    <td>The transaction failed during the signing process.</td>
+  </tr>
+  <tr>
+    <td>FailedOnChain</td>
+    <td>The transaction failed on the blockchain.</td>
+  </tr>
+  <tr>
+    <td>ReplacedByNewTransaction</td>
+    <td>The transaction has been replaced by a new transaction.</td>
+  </tr>
+  <tr>
+    <td>SignatureVerificationFailed</td>
+    <td>The transaction's signature failed verification.</td>
+  </tr>
+  <tr>
+    <td rowspan="14">Rejected</td>
+    <td>RejectedWhiteList</td>
+    <td>The transaction is rejected because the IP address of the initiator is not in the whitelist.</td>
+  </tr>
+  <tr>
+    <td>RejectedKYT</td>
+    <td>The transaction is rejected because it failed Know Your Transaction (KYT) compliance checks.</td>
+  </tr>
+  <tr>
+    <td>RejectedRiskControlCheck</td>
+    <td>The transaction is rejected because it failed the risk control check.</td>
+  </tr>
+  <tr>
+    <td>RejectedSpenderAuth</td>
+    <td>The transaction is rejected by the spender.</td>
+  </tr>
+  <tr>
+    <td>RejectedApproverAuth</td>
+    <td>The transaction is rejected by the approver.</td>
+  </tr>
+  <tr>
+    <td>RejectedDoubleCheck</td>
+    <td>The transaction is rejected because it failed a double check.</td>
+  </tr>
+  <tr>
+    <td>RejectedbyMobileCosigner</td>
+    <td>The transaction is rejected by a mobile cosigner.</td>
+  </tr>
+  <tr>
+    <td>RejectedCoboCheck</td>
+    <td>The transaction is rejected because it failed the internal check by Cobo.</td>
+  </tr>
+  <tr>
+    <td>RejectedTravelRuleDueToUnsupportedToken</td>
+    <td>The transaction is rejected because the token is not supported by the Travel Rule.</td>
+  </tr>
+  <tr>
+    <td>RejectedTravelRule</td>
+    <td>The transaction is rejected because it failed to comply with the Travel Rule.</td>
+  </tr>
+  <tr>
+    <td>RejectedTravelRuleDueToCompliance</td>
+    <td>The transaction is rejected because it failed the cross-check of the Travel Rule.</td>
+  </tr>
+  <tr>
+    <td>CanceledBySpender</td>
+    <td>The transaction is canceled by a spender.</td>
+  </tr>
+  <tr>
+    <td>CanceledByAPI</td>
+    <td>The transaction is canceled by a [Cancel transaction](https://www.cobo.com/developers/v2/api-references/transactions/cancel-transaction) operation.</td>
+  </tr>
+  <tr>
+    <td>OnchainRejection</td>
+    <td>The transaction is rejected from being added to the blockchain.</td>
+  </tr>
+  <tr>
+    <td rowspan="1">Pending</td>
+    <td>N/A</td>
+    <td>The transaction is waiting to be included in the next block of the blockchain.</td>
+  </tr>
+</table>
