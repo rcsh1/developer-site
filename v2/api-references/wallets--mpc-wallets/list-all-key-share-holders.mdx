@@ -1,11 +1,13 @@
 ---
-openapi: get /wallets/{wallet_id}/utxos
+openapi: get /wallets/mpc/vaults/{vault_id}/key_share_holders
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.list_utxos200_response import ListUtxos200Response
+from cobo_waas2.models.list_key_share_holders200_response import (
+    ListKeyShareHolders200Response,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -19,30 +21,31 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.WalletsApi(api_client)
-    wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    token_id = "ETH_USDT"
-    address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-    tx_hash = "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83"
+    api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
+    vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    key_share_holder_group_ids = (
+        "dc0cac48-9add-4243-9c7a-b8badac8a198,5558bd1b-d221-4e2b-8c29-f6c97d9e6aca"
+    )
     limit = 10
     before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
     after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 
     try:
-        # List UTXOs
-        api_response = api_instance.list_utxos(
-            wallet_id,
-            token_id,
-            address=address,
-            tx_hash=tx_hash,
+        # List all key share holders
+        api_response = api_instance.list_key_share_holders(
+            vault_id,
+            key_share_holder_group_ids=key_share_holder_group_ids,
             limit=limit,
             before=before,
             after=after,
         )
-        print("The response of WalletsApi->list_utxos:\n")
+        print("The response of WalletsMPCWalletsApi->list_key_share_holders:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling WalletsApi->list_utxos: %s\n" % e)
+        print(
+            "Exception when calling WalletsMPCWalletsApi->list_key_share_holders: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -51,7 +54,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.api.WalletsMpcWalletsApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -63,20 +66,19 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    WalletsApi apiInstance = new WalletsApi();
-    UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    String tokenId = "ETH_USDT";
-    String address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
-    String txHash = "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83";
+    WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
+    UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    String keyShareHolderGroupIds =
+        "dc0cac48-9add-4243-9c7a-b8badac8a198,5558bd1b-d221-4e2b-8c29-f6c97d9e6aca";
     Integer limit = 10;
     String before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1";
     String after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk";
     try {
-      ListUtxos200Response result =
-          apiInstance.listUtxos(walletId, tokenId, address, txHash, limit, before, after);
+      ListKeyShareHolders200Response result =
+          apiInstance.listKeyShareHolders(vaultId, keyShareHolderGroupIds, limit, before, after);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WalletsApi#listUtxos");
+      System.err.println("Exception when calling WalletsMpcWalletsApi#listKeyShareHolders");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -98,10 +100,8 @@ import (
 )
 
 func main() {
-	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-	tokenId := "ETH_USDT"
-	address := "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-	txHash := "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83"
+	vaultId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	keyShareHolderGroupIds := "dc0cac48-9add-4243-9c7a-b8badac8a198,5558bd1b-d221-4e2b-8c29-f6c97d9e6aca"
 	limit := int32(10)
 	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
 	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
@@ -117,20 +117,22 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.WalletsAPI.ListUtxos(ctx, walletId).
-		TokenId(tokenId).
-		Address(address).
-		TxHash(txHash).
+	resp, r, err := apiClient.WalletsMPCWalletsAPI.ListKeyShareHolders(ctx, vaultId).
+		KeyShareHolderGroupIds(keyShareHolderGroupIds).
 		Limit(limit).
 		Before(before).
 		After(after).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.ListUtxos``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `WalletsMPCWalletsAPI.ListKeyShareHolders``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListUtxos`: ListUtxos200Response
-	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.ListUtxos`: %v\n", resp)
+	// response from `ListKeyShareHolders`: ListKeyShareHolders200Response
+	fmt.Fprintf(os.Stdout, "Response from `WalletsMPCWalletsAPI.ListKeyShareHolders`: %v\n", resp)
 }
 
 ```
@@ -143,17 +145,15 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.WalletsApi();
-const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
-const token_id = "ETH_USDT";
+const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
+const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  'address': "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-  'tx_hash': "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83",
+  'key_share_holder_group_ids': "dc0cac48-9add-4243-9c7a-b8badac8a198,5558bd1b-d221-4e2b-8c29-f6c97d9e6aca",
   'limit': 10,
   'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
   'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 };
-apiInstance.listUtxos(wallet_id, token_id, opts).then((data) => {
+apiInstance.listKeyShareHolders(vault_id, opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

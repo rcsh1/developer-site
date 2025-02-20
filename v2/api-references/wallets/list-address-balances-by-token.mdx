@@ -1,11 +1,13 @@
 ---
-openapi: get /wallets/{wallet_id}/utxos
+openapi: get /wallets/{wallet_id}/tokens/{token_id}
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.list_utxos200_response import ListUtxos200Response
+from cobo_waas2.models.list_address_balances_by_token200_response import (
+    ListAddressBalancesByToken200Response,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -22,27 +24,28 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.WalletsApi(api_client)
     wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
     token_id = "ETH_USDT"
-    address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-    tx_hash = "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83"
+    addresses = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97"
     limit = 10
     before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
     after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 
     try:
-        # List UTXOs
-        api_response = api_instance.list_utxos(
+        # List address balances by token
+        api_response = api_instance.list_address_balances_by_token(
             wallet_id,
             token_id,
-            address=address,
-            tx_hash=tx_hash,
+            addresses=addresses,
             limit=limit,
             before=before,
             after=after,
         )
-        print("The response of WalletsApi->list_utxos:\n")
+        print("The response of WalletsApi->list_address_balances_by_token:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling WalletsApi->list_utxos: %s\n" % e)
+        print(
+            "Exception when calling WalletsApi->list_address_balances_by_token: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -66,17 +69,18 @@ public class Example {
     WalletsApi apiInstance = new WalletsApi();
     UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     String tokenId = "ETH_USDT";
-    String address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
-    String txHash = "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83";
+    String addresses =
+        "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97";
     Integer limit = 10;
     String before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1";
     String after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk";
     try {
-      ListUtxos200Response result =
-          apiInstance.listUtxos(walletId, tokenId, address, txHash, limit, before, after);
+      ListAddressBalancesByToken200Response result =
+          apiInstance.listAddressBalancesByToken(
+              walletId, tokenId, addresses, limit, before, after);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WalletsApi#listUtxos");
+      System.err.println("Exception when calling WalletsApi#listAddressBalancesByToken");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -100,8 +104,7 @@ import (
 func main() {
 	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 	tokenId := "ETH_USDT"
-	address := "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
-	txHash := "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83"
+	addresses := "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97"
 	limit := int32(10)
 	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
 	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
@@ -117,20 +120,22 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.WalletsAPI.ListUtxos(ctx, walletId).
-		TokenId(tokenId).
-		Address(address).
-		TxHash(txHash).
+	resp, r, err := apiClient.WalletsAPI.ListAddressBalancesByToken(ctx, walletId, tokenId).
+		Addresses(addresses).
 		Limit(limit).
 		Before(before).
 		After(after).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.ListUtxos``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `WalletsAPI.ListAddressBalancesByToken``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListUtxos`: ListUtxos200Response
-	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.ListUtxos`: %v\n", resp)
+	// response from `ListAddressBalancesByToken`: ListAddressBalancesByToken200Response
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.ListAddressBalancesByToken`: %v\n", resp)
 }
 
 ```
@@ -147,13 +152,12 @@ const apiInstance = new CoboWaas2.WalletsApi();
 const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const token_id = "ETH_USDT";
 const opts = {
-  'address': "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-  'tx_hash': "dd7e1cecf6bbde1844ee1815b780711a1e306a718bcd23cd64401b48ef88eb83",
+  'addresses': "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045,0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97",
   'limit': 10,
   'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
   'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 };
-apiInstance.listUtxos(wallet_id, token_id, opts).then((data) => {
+apiInstance.listAddressBalancesByToken(wallet_id, token_id, opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);
