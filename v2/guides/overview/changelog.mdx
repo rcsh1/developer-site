@@ -4,6 +4,24 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.9.0
+
+This version was released on February 19, 2025.
+
+### New Features
+- Added [List address balances by token](/v2/api-references/wallets/list-address-balances-by-token) operation for MPC Wallets to retrieve token balances across multiple addresses. 
+- Enhanced MPC Wallet key share holder management with new operations:
+  - [Get key share holder information](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-information): Retrieve detailed information about specific key share holders.
+  - [List all key share holders](/v2/api-references/wallets--mpc-wallets/list-all-key-share-holders): Get a comprehensive list of all key share holders.
+- Added the [Sign and broadcast transaction](/v2/api-references/transactions/sign-and-broadcast-transaction) operation, along with the `Built` transaction sub-status and the `unsigned_raw_tx` property in the `raw_tx_info` object of the `Transaction` schema, to manually sign and broadcast transactions that were built without being executed automatically.
+
+### Improvements
+- Enhanced the [List UTXOs](/v2/api-references/wallets/list-utxos) operation with a new `tx_hash` query parameter, enabling UTXO lookup by transaction hash.
+- Enhanced the [Sign message](/v2/api-references/transactions/sign-message) operation to support raw message and BTC EIP-191 signature.
+- Enhanced the [Create addresses in wallet](/v2/api-references/wallets/create-addresses-in-wallet) operation to enable generating tweaked addresses.
+- Enhanced the [Transfer token](/v2/api-references/transactions/transfer-token) operation by adding a new property `change_output_type` to the `AddressTransferDestination` schema.
+- Added a `tx_info` property to the `TransactionDepositToAddressDestination` schema, including `vout_n` index information.
+
 ## v1.8.0
 
 This version was released on January 8, 2025.

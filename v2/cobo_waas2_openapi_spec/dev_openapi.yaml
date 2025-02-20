@@ -49,6 +49,8 @@ tags:
     description: Operations related to address books.
   - name: TravelRule
     description: Operations related to travel rule.
+  - name: PrimeBroker
+    description: Operations related to prime broker.
 paths:
   /wallets/chains:
     get:
@@ -62,8 +64,6 @@ paths:
         It provides details such as the chain ID, chain symbol, and other relevant information. If you do not specify a wallet type, this operation returns a combination of chains supported by each wallet type. You can filter the result by chain IDs. The chain metadata is publicly available without any permission restrictions.
 
         Cobo Portal currently supports over 80 blockchains and more than 3,000 tokens. In addition to this operation, you can also view the full list of supported chains [here](https://www.cobo.com/chains). We regularly update the list with new additions. If you want to request support for a specific chain or token, please [contact us](https://www.cobo.com/contact).
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
@@ -88,8 +88,6 @@ paths:
       summary: Get chain information
       description: |
         This operation retrieves the detailed information about a specified chain.
-      security:
-        - CoboAuth: []
       responses:
         '200':
           $ref: '#/components/responses/getChainByIdResponse'
@@ -109,8 +107,6 @@ paths:
         It provides details such as token ID, token symbol, and other relevant information. If you do not specify a wallet type, this operation returns a combination of tokens supported by each wallet type. You can filter the result by token IDs or chain IDs. The token metadata is publicly available without any permission restrictions.
 
         Cobo Portal currently supports over 80 blockchains and more than 3,000 tokens. In addition to this operation, you can also view the full list of supported tokens [here](https://www.cobo.com/tokens). We regularly update the list with new additions. If you want to request support for a specific chain or token, please [contact us](https://www.cobo.com/contact).
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
@@ -136,8 +132,6 @@ paths:
       summary: Get token information
       description: |
         This operation retrieves the detailed information about a specified token.
-      security:
-        - CoboAuth: []
       responses:
         '200':
           $ref: '#/components/responses/getTokenByIdResponse'
@@ -155,8 +149,6 @@ paths:
         This operation retrieves all the chains that can be used by your organization. 
 
         You can filter the result by wallet type or subtype. If you do not specify a wallet type, this operation returns a combination of chains that can be used by your organization for each wallet type.
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
@@ -180,8 +172,6 @@ paths:
         This operation retrieves all the tokens that can be used by your organization. 
 
         You can filter the result by wallet type, subtype, and chain IDs. If you do not specify a wallet type, this operation returns a combination of tokens that can be used by your organization for each wallet type.
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
@@ -207,11 +197,8 @@ paths:
 
         <Note>This operation is not applicable to Smart Contract Wallets.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'custodial_asset_wallet:create'
-            - 'mpc_organization_controlled_wallet:create'
-            - 'mpc_user_controlled_wallet:create'
+            - wallet.create
       requestBody:
         $ref: '#/components/requestBodies/createWalletBody'
       responses:
@@ -229,7 +216,8 @@ paths:
       description: |
         This operation retrieves the information of all wallets under your organization. You can filter the result by wallet type and subtype. For MPC Wallets, you can also filter by project ID and vault ID.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
@@ -256,7 +244,8 @@ paths:
       description: |
         This operation retrieves the detailed information about a specified wallet.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       responses:
         '200':
           $ref: '#/components/responses/getWalletByIdResponse'
@@ -274,11 +263,8 @@ paths:
 
         For Exchange Wallets, you can update the API key, API secret, and other information about your exchange accounts with this operation. For other wallet types, you can only update the wallet name.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'custodial_asset_wallet:edit'
-            - 'mpc_organization_controlled_wallet:edit'
-            - 'mpc_user_controlled_wallet:edit'
+            - wallet.update
       requestBody:
         $ref: '#/components/requestBodies/updateWalletBody'
       responses:
@@ -301,7 +287,8 @@ paths:
 
         <Note>This operation is applicable to Exchange Wallets only.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.delete
       responses:
         '201':
           $ref: '#/components/responses/deleteWalletResponse'
@@ -322,10 +309,12 @@ paths:
 
         <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/requiredTokenIdParam'
         - $ref: '#/components/parameters/optionalAddressParam'
+        - $ref: '#/components/parameters/optionalUtxoTxHashParam'
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
@@ -349,10 +338,8 @@ paths:
 
         <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_wallet:withdraw'
-            - 'mpc_user_controlled_wallet:withdraw'
+            - wallet.manage_utxo
       requestBody:
         $ref: '#/components/requestBodies/lockUtxosBody'
       responses:
@@ -375,10 +362,8 @@ paths:
 
         <Note>This operation is applicable to MPC Wallets only.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_wallet:withdraw'
-            - 'mpc_user_controlled_wallet:withdraw'
+            - wallet.manage_utxo
       requestBody:
         $ref: '#/components/requestBodies/lockUtxosBody'
       responses:
@@ -401,7 +386,8 @@ paths:
 
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/walletIdParam'
         - $ref: '#/components/parameters/requiredTokenIdParam'
@@ -428,11 +414,8 @@ paths:
 
         <Note>This operation is applicable to Custodial Wallets and MPC Wallets only.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'custodial_asset_wallet:add'
-            - 'mpc_organization_controlled_wallet:add'
-            - 'mpc_user_controlled_wallet:add'
+            - wallet.create_address
       requestBody:
         $ref: '#/components/requestBodies/createAddressBody'
       responses:
@@ -450,7 +433,8 @@ paths:
       description: |
         This operation retrieves a list of addresses within a specified wallet.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/optionalChainIdListParam'
         - $ref: '#/components/parameters/optionalAddressListParam'
@@ -478,7 +462,8 @@ paths:
 
         <Note>This operation is applicable to MPC Wallets and Smart Contract Wallets only.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/limitParam'
@@ -502,7 +487,8 @@ paths:
 
         <Note>This operation is not applicable to Exchange Wallets.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/walletIdParam'
         - $ref: '#/components/parameters/optionalTokenListIdParam'
@@ -516,6 +502,34 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
+  '/wallets/{wallet_id}/tokens/{token_id}':
+    parameters:
+      - $ref: '#/components/parameters/walletIdParam'
+      - $ref: '#/components/parameters/tokenIdParam'
+    get:
+      tags:
+        - Wallets
+      operationId: list_address_balances_by_token
+      summary: List address balances by token
+      description: |
+        This operation retrieves a list of address balances for a specified token within a wallet.
+
+        <Note>This operation is applicable to MPC Wallets only.</Note>
+      security:
+        - OAuth2:
+            - wallet.read
+      parameters:
+        - $ref: '#/components/parameters/optionalAddressListParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getAddressBalancesResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /wallets/check_address_validity:
     get:
       tags:
@@ -524,8 +538,6 @@ paths:
       summary: Check address validity
       description: |
         This operation verifies if a given address is valid for a specific chain.
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/requiredChainIdParam'
         - $ref: '#/components/parameters/requiredAddressParam'
@@ -544,8 +556,6 @@ paths:
       summary: Check addresses validity
       description: |
         This operation verifies if given addresses are valid for a specific chain.
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/requiredChainIdParam'
         - $ref: '#/components/parameters/requiredAddressListParam'
@@ -564,8 +574,6 @@ paths:
       summary: Check address validity across chains
       description: |
         This operation verifies if a given address is valid for a list of chains.
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/requiredAddressParam'
         - $ref: '#/components/parameters/requiredChainIdListParam'
@@ -586,8 +594,6 @@ paths:
         This operation retrieves a list of all Cobo key share holders and their information. 
 
         <Info>When using this operation, `type` will only return `Cobo` and will never return `Mobile` or `API`.</Info>
-      security:
-        - CoboAuth: []
       responses:
         '200':
           $ref: '#/components/responses/getCoboKeyHoldersResponse'
@@ -606,9 +612,8 @@ paths:
 
         <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_user_controlled_project:manage'
+            - mpc_project.create
       requestBody:
         $ref: '#/components/requestBodies/createMpcProjectBody'
       responses:
@@ -628,7 +633,8 @@ paths:
 
         <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - mpc_project.read
       parameters:
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
@@ -650,7 +656,8 @@ paths:
         This operation retrieves detailed information about a project.
         <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - mpc_project.read
       parameters:
         - $ref: '#/components/parameters/projectIdParam'
       responses:
@@ -670,9 +677,8 @@ paths:
 
         <Note>This operation applies to MPC Wallets (User-Controlled Wallets) only.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_user_controlled_project:manage'
+            - mpc_project.update
       parameters:
         - $ref: '#/components/parameters/projectIdParam'
       requestBody:
@@ -695,10 +701,8 @@ paths:
 
         <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_vault:manage'
-            - 'mpc_user_controlled_vault:manage'
+            - mpc_vault.create
       requestBody:
         $ref: '#/components/requestBodies/createMpcVaultBody'
       responses:
@@ -722,7 +726,8 @@ paths:
 
         <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - mpc_vault.read
       parameters:
         - name: vault_type
           in: query
@@ -756,7 +761,8 @@ paths:
 
         <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - mpc_vault.read
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       responses:
@@ -776,10 +782,8 @@ paths:
 
         <Info>To learn what a vault is and how it relates to MPC Wallets, see [Get started with MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#technical-architecture).</Info>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_vault:manage'
-            - 'mpc_user_controlled_vault:manage'
+            - mpc_vault.update
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -800,10 +804,8 @@ paths:
       description: |
         This operation creates a key share holder group for a specified vault. <Note>This operation will not return the `tss_key_share_groups` property until key shares have been created using the [Create TSS request](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-tss-request) operation. Creating a wallet with the [Create wallet](https://www.cobo.com/developers/v2/api-references/wallets/create-wallet) operation is only possible after you've completed the previous actions.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_key_group:manage'
-            - 'mpc_user_controlled_key_group:manage'
+            - mpc_key_group.create
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -823,7 +825,8 @@ paths:
       description: |
         This operation retrieves all key share holder groups under a specified vault. You can filter the result by group type.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - mpc_key_group.read
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/optionalKeyShareHolderGroupTypeParam'
@@ -846,7 +849,8 @@ paths:
       description: |
         This operation retrieves detailed information about a specified key share holder group.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - mpc_key_group.read
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyShareHolderGroupIdParam'
@@ -865,10 +869,8 @@ paths:
       description: |
         This operation updates a specified active [Signing Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups). For example, you can use this operation to upgrade a Signing Group to the [Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_key_group:manage'
-            - 'mpc_user_controlled_key_group:manage'
+            - mpc_key_group.update
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyShareHolderGroupIdParam'
@@ -889,10 +891,8 @@ paths:
       summary: Delete key share holder group
       description: This operation deletes a specified key share holder group.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_key_group:manage'
-            - 'mpc_user_controlled_key_group:manage'
+            - mpc_key_group.delete
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/keyShareHolderGroupIdParam'
@@ -912,10 +912,8 @@ paths:
       description: |
         This operation creates a TSS request under a specified vault. You can use this operation to perform actions such as key generation and recovery.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_tss_request:manage'
-            - 'mpc_user_controlled_tss_request:manage'
+            - mpc_key_group.create
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
       requestBody:
@@ -939,7 +937,8 @@ paths:
       description: |
         This operation retrieves a list of TSS requests and their details.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - mpc_key_group.read
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/requiredKeyShareHolderGroupIdParam'
@@ -973,10 +972,8 @@ paths:
       description: |
         This operation retrieves detailed information about a TSS request.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_tss_request:manage'
-            - 'mpc_user_controlled_tss_request:manage'
+            - mpc_key_group.read
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
@@ -996,16 +993,57 @@ paths:
       description: |
         This operation cancels a TSS request.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_tss_request:manage'
-            - 'mpc_user_controlled_tss_request:manage'
+            - mpc_key_group.delete
       parameters:
         - $ref: '#/components/parameters/vaultIdParam'
         - $ref: '#/components/parameters/tssRequestIdParam'
       responses:
         '201':
           $ref: '#/components/responses/putTssRequestResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/wallets/mpc/vaults/{vault_id}/key_share_holders':
+    get:
+      tags:
+        - Wallets - MPC Wallets
+      operationId: list_key_share_holders
+      summary: List all key share holders
+      description: |
+        This operation retrieves a list of all key share holders under a specified vault. You can filter the result by key share holder group ID.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/optionalGroupIdsListQueryParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getKeyShareHoldersResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/wallets/mpc/vaults/{vault_id}/key_share_holders/{tss_node_id}':
+    get:
+      tags:
+        - Wallets - MPC Wallets
+      operationId: get_key_share_holder_by_tss_node_id
+      summary: Get key share holder information
+      description: |
+        This operation retrieves detailed information about a specified key share holder.
+      security:
+        - CoboAuth: []
+      parameters:
+        - $ref: '#/components/parameters/vaultIdParam'
+        - $ref: '#/components/parameters/tssNodeIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getKeyShareHolderResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -1017,8 +1055,6 @@ paths:
       operationId: list_exchanges
       summary: List supported exchanges
       description: 'This operation retrieves the information about the exchanges supported by Cobo''s Exchange Wallets, including exchange IDs and trading account types.'
-      security:
-        - CoboAuth: []
       responses:
         '200':
           $ref: '#/components/responses/getExchangeSettingsResponse'
@@ -1035,8 +1071,6 @@ paths:
       operationId: list_supported_assets_for_exchange
       summary: List supported assets
       description: This operation retrieves all the assets supported by a specified exchange.
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
@@ -1067,8 +1101,6 @@ paths:
         This operation retrieves all the chains supported by a specified exchange for a given asset. 
 
         You can use this operation to confirm whether you can transfer an asset from or to your Exchange Wallet when using a specific chain.
-      security:
-        - CoboAuth: []
       responses:
         '200':
           $ref: '#/components/responses/getChainsByAssetIdResponse'
@@ -1087,7 +1119,8 @@ paths:
       description: |
         This operation retrieves the asset balances in a specified Exchange Wallet. You can filter the results by trading account type or asset ID.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/optionalTradingAccountTypeListParam'
         - $ref: '#/components/parameters/optionalAssetIdListParam'
@@ -1110,7 +1143,8 @@ paths:
       description: |
         This operation retrieves all available Delegates of a Safe\{Wallet\} for a given transfer or contract call request.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/walletIdParam'
       requestBody:
@@ -1133,7 +1167,8 @@ paths:
 
         For more information about Cobo Loop, see [Cobo Loop's product manuals](https://manuals.cobo.com/en/portal/custodial-wallets/cobo-loop).
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.estimate_fee
       parameters:
         - $ref: '#/components/parameters/requiredTokenIdParam'
         - $ref: '#/components/parameters/requiredSourceWalletIdParam'
@@ -1158,7 +1193,8 @@ paths:
 
         The response can contain different properties based on the transaction fee model used by the chain. For the legacy, EIP-1559, and UTXO fee models, Cobo also supports three different transaction speed levels: slow, recommended, and fast. For more information about estimating transaction fees, refer to [Estimate transaction fee](https://www.cobo.com/developers/v2/guides/transactions/estimate-fees).
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.estimate_fee
       requestBody:
         $ref: '#/components/requestBodies/estimateFeeBody'
       responses:
@@ -1185,11 +1221,8 @@ paths:
 
         <Info>If you initiate a transaction from a Smart Contract Wallet, a relevant transaction will be triggered from the Delegate to the Cobo Safe's address of the Smart Contract Wallet, with a transfer amount of <code>0</code>.</Info>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'custodial_asset_wallet:withdraw'
-            - 'mpc_organization_controlled_wallet:withdraw'
-            - 'mpc_user_controlled_wallet:withdraw'
+            - transaction.withdraw
       requestBody:
         $ref: '#/components/requestBodies/createTransferBody'
       responses:
@@ -1214,10 +1247,8 @@ paths:
 
         <Info>If you initiate a transaction from a Smart Contract Wallet, a relevant transaction will be triggered from the Delegate to the Cobo Safe's address of the Smart Contract Wallet, with a transfer amount of <code>0</code>.</Info>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_wallet:contract_call'
-            - 'mpc_user_controlled_wallet:contract_call'
+            - transaction.contract_call
       requestBody:
         $ref: '#/components/requestBodies/createSmartContractCallBody'
       responses:
@@ -1242,10 +1273,8 @@ paths:
 
         <Note>This operation only applies to transactions from MPC Wallets.</Note>
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'mpc_organization_controlled_wallet:message_sign'
-            - 'mpc_user_controlled_wallet:message_sign'
+            - transaction.message_sign
       requestBody:
         $ref: '#/components/requestBodies/createMessageSignBody'
       responses:
@@ -1266,7 +1295,8 @@ paths:
 
         You can filter the results by request ID, Cobo ID, transaction ID, transaction hash, type, status, and timestamps. You can also paginate and sort your query results.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.read
       parameters:
         - $ref: '#/components/parameters/optionalRequestIdParam'
         - $ref: '#/components/parameters/optionalCoboIdParam'
@@ -1315,7 +1345,8 @@ paths:
       description: |
         This operation retrieves detailed information about a specified transaction, such as the transaction status, source address, destination address, and timestamp.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.read
       responses:
         '200':
           $ref: '#/components/responses/getTransactionByIdResponse'
@@ -1332,13 +1363,14 @@ paths:
       operationId: resend_transaction_by_id
       summary: Resend transaction
       description: |
-        This operation resends a specified transaction. Resending a transaction means retrying a previously failed transaction. For more details about resending a transaction, see [Resend a transaction](https://www.cobo.com/developers/v2/guides/transactions/manage-transactions#resend-a-transaction).
+        This operation resends a specified transaction. Resending a transaction means retrying a previously failed transaction. For more details about resending a transaction, see [Resend a transaction](/v2/guides/transactions/manage-transactions#resend-a-transaction).
 
         A transaction can be resent if its status is `failed`.
 
         <Note>This operation only applies to transactions from MPC Wallets in the SOL token.</Note>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.manage
       requestBody:
         $ref: '#/components/requestBodies/resendTransactionBody'
       responses:
@@ -1367,7 +1399,8 @@ paths:
         - `PendingAuthorization`
         - `PendingSignature` 
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.manage
       responses:
         '201':
           $ref: '#/components/responses/createTransactionRequestResponse'
@@ -1389,7 +1422,8 @@ paths:
 
         A transaction can only be broadcast if its status is `Broadcasting`.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.manage
       requestBody:
         $ref: '#/components/requestBodies/broadcastTransactionsBody'
       responses:
@@ -1416,7 +1450,8 @@ paths:
 
         You can use the `address` or `included_utxos` properties in the request body to specify the address or UTXOs that will cover the transaction fee. Generally, the transaction fee is paid by the original transaction's source. If that source's balance is insufficient, the specified address or UTXOs can be used to cover the fee.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.manage
       requestBody:
         $ref: '#/components/requestBodies/feeRequestBody'
       responses:
@@ -1435,7 +1470,7 @@ paths:
       operationId: speedup_transaction_by_id
       summary: Speed up transaction
       description: |
-        This operation accelerates a specified transaction. Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For more details about speeding up a transaction, refer to [Speed up a transaction](https://www.cobo.com/developers/v2/guides/transactions/manage-transactions#speed-up-a-transaction).
+        This operation accelerates a specified transaction. Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For more details about speeding up a transaction, refer to [Speed up a transaction](/v2/guides/transactions/manage-transactions#speed-up-a-transaction).
 
         You can use the `address` or `included_utxos` properties in the request body to specify the address or UTXOs that will cover the transaction fee. Generally, the transaction fee is paid by the original transaction's source. If that source's balance is insufficient, the specified address or UTXOs can be used to cover the fee.
 
@@ -1445,12 +1480,55 @@ paths:
 
         <Info>If you speed up a transaction from a Smart Contract Wallet, two RBF transactions will be triggered, one for the transaction from the Smart Contract Wallet, and the other for the transaction from the Delegate.</Info>
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - transaction.manage
       requestBody:
         $ref: '#/components/requestBodies/feeRequestBody'
       responses:
         '201':
           $ref: '#/components/responses/createTransactionRequestResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/transactions/{transaction_id}/sign_and_broadcast':
+    parameters:
+      - $ref: '#/components/parameters/transactionIdParam'
+    post:
+      tags:
+        - Transactions
+      operationId: sign_and_broadcast_transaction_by_id
+      summary: Sign and broadcast transaction
+      description: |
+        This operation signs and broadcasts a specified transaction.
+
+        To call this operation, the following conditions must be met:
+        - The `transaction_process_type` of the transaction must be set to `BuildOnly` when you call the [Transfer token](https://www.cobo.com/developers/v2/api-references/transactions/transfer-token) or [Call smart contract](https://www.cobo.com/developers/v2/api-references/transactions/call-smart-contract) operation.  
+        - The transaction status must be `Built`.
+      security:
+        - CoboAuth: []
+      responses:
+        '201':
+          $ref: '#/components/responses/createTransactionRequestResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/transactions/{transaction_id}/approval_detail':
+    parameters:
+      - $ref: '#/components/parameters/transactionIdParam'
+    get:
+      tags:
+        - Transactions
+      operationId: get_transaction_approval_detail
+      summary: Get transaction approval details
+      description: |
+        This operation retrieves approval detailed information about a specified transaction.
+      security:
+        - CoboAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getTransactionApprovalDetailResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -1468,8 +1546,6 @@ paths:
         Access tokens allow the app to signal to the WaaS service that it has received permission to access specific resources of the app user's [organization](https://manuals.cobo.com/en/portal/organization/introduction). Once the app has been granted permission by the organization's admin, it can use this operation to obtain both an Org Access Token and a Refresh Token.
 
         For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call [Refresh token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-org-access-token) to get a new Org Access Token and a new Refresh Token. 
-      security:
-        - CoboAuth: []
       parameters:
         - $ref: '#/components/parameters/ClientIdRequiredParam'
         - $ref: '#/components/parameters/OrgIdRequiredParam'
@@ -1491,8 +1567,6 @@ paths:
         This operation allows Cobo Portal Apps to obtain a new Org Access Token with a specified client ID, grant type and a Refresh Token. 
 
         For security purposes, Org Access Tokens expire after a certain period. Once they expire, the app needs to call this operation to get a new Org Access Token and a new Refresh Token. 
-      security:
-        - CoboAuth: []
       requestBody:
         $ref: '#/components/requestBodies/tokenEndpointBody'
       responses:
@@ -1509,6 +1583,9 @@ paths:
       summary: List webhook endpoints
       description: This operation retrieves the information of all webhook endpoints registered under your organization. You can filter the result by endpoint status and the subscribed event type.
       operationId: list_webhook_endpoints
+      security:
+        - OAuth2:
+            - webhook.read
       parameters:
         - in: query
           name: status
@@ -1536,9 +1613,8 @@ paths:
       description: This operation registers a new webhook endpoint for your organization.
       operationId: create_webhook_endpoint
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'webhook_url:edit'
+            - webhook.edit
       requestBody:
         $ref: '#/components/requestBodies/createWebhookEndpointBody'
       responses:
@@ -1557,6 +1633,9 @@ paths:
       summary: Get webhook endpoint information
       description: This operation retrieves the information of a specified webhook endpoint.
       operationId: get_webhook_endpoint_by_id
+      security:
+        - OAuth2:
+            - webhook.read
       responses:
         '200':
           $ref: '#/components/responses/getWebhookEndpointResponse'
@@ -1571,9 +1650,8 @@ paths:
       description: This operation updates the information of a specified webhook endpoint.
       operationId: update_webhook_endpoint_by_id
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'webhook_url:edit'
+            - webhook.edit
       requestBody:
         $ref: '#/components/requestBodies/updateWebhookBody'
       responses:
@@ -1626,6 +1704,9 @@ paths:
 
         <Note>The request will only return webhook events that have occurred to the wallets associated with your current API key. For example, if the current API key is only associated with Custodial Wallets, any webhook events that have occurred to an MPC Wallet will not be retrieved with the current API key.</Note>
       operationId: list_webhook_events
+      security:
+        - OAuth2:
+            - webhook.read
       parameters:
         - $ref: '#/components/parameters/endpointIdParam'
         - in: query
@@ -1661,6 +1742,9 @@ paths:
       description: |
         This operation retrieves the information of a webhook event by the event ID.
       operationId: get_webhook_event_by_id
+      security:
+        - OAuth2:
+            - webhook.read
       responses:
         '200':
           $ref: '#/components/responses/getWebhookEventResponse'
@@ -1682,6 +1766,9 @@ paths:
       description: |
         This operation retrieves a list of webhook event logs by event ID. Each retry will generate a separate event log.
       operationId: list_webhook_event_logs
+      security:
+        - OAuth2:
+            - webhook.read
       responses:
         '200':
           $ref: '#/components/responses/getWebhookEventLogsResponse'
@@ -1701,9 +1788,8 @@ paths:
         This operation retries delivering a webhook event with the specified event ID. You can only retry delivering a webhook event in the `Retrying` or `Failed` status.
       operationId: retry_webhook_event_by_id
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'webhook:resend'
+            - webhook.resend
       responses:
         '201':
           $ref: '#/components/responses/retryWebhookEventResponse'
@@ -1719,6 +1805,9 @@ paths:
       description: |
         This operation retrieves a list of staking pools currently supported.
       operationId: list_staking_pools
+      security:
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/optionalChainIdParam'
         - $ref: '#/components/parameters/optionalTokenIdParam'
@@ -1742,6 +1831,9 @@ paths:
       description: |
         This operation retrieves the detailed information about a specified staking pool.
       operationId: get_staking_pool_by_id
+      security:
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/poolIdRequiredParam'
       responses:
@@ -1770,6 +1862,9 @@ paths:
         The `fee.max_fee_amount` property in the request body will be ignored.
 
         <Note>For the Babylon protocol, you can only select UTXO as the fee model.</Note>
+      security:
+        - OAuth2:
+            - transaction.estimate_fee
       requestBody:
         $ref: '#/components/requestBodies/estimateStakeActivityFeeBody'
       responses:
@@ -1787,6 +1882,9 @@ paths:
         This operation calculates the fee required for a staking activity based on factors such as network congestion and transaction complexity.
 
         <Note>For the Babylon protocol, you can only select UTXO as the fee model.</Note>
+      security:
+        - OAuth2:
+            - transaction.estimate_fee
       requestBody:
         $ref: '#/components/requestBodies/estimateStakeActivityFeeBody'
       responses:
@@ -1806,6 +1904,9 @@ paths:
 
         <Note>For the Babylon protocol, you can only select UTXO as the fee model.</Note>
       operationId: create_stake_activity
+      security:
+        - OAuth2:
+            - transaction.stake
       requestBody:
         $ref: '#/components/requestBodies/createStakeActivityBody'
       responses:
@@ -1825,6 +1926,9 @@ paths:
       description: |
         This operation retrieves a list of staking positions. 
       operationId: list_stakings
+      security:
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/poolIdOptionalParam'
         - name: statuses
@@ -1867,6 +1971,9 @@ paths:
       description: |
         This operation retrieves the detailed information about a specified staking position.
       operationId: get_staking_by_id
+      security:
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/stakingIdRequiredParam'
       responses:
@@ -1892,6 +1999,9 @@ paths:
 
         <Note>For the Babylon protocol, you can only select UTXO as the fee model.</Note>
       operationId: create_unstake_activity
+      security:
+        - OAuth2:
+            - transaction.unstake
       requestBody:
         $ref: '#/components/requestBodies/createUnstakeActivityBody'
       responses:
@@ -1915,6 +2025,9 @@ paths:
 
         <Note>For the Babylon protocol, you can only select UTXO as the fee model.</Note>
       operationId: create_withdraw_activity
+      security:
+        - OAuth2:
+            - transaction.unstake_withdraw
       requestBody:
         $ref: '#/components/requestBodies/createWithdrawActivityBody'
       responses:
@@ -1938,6 +2051,9 @@ paths:
 
         For some protocols, you can use the `fee` property in the request body to specify the maximum fee you are willing to pay. The transaction will fail if the actual fee exceeds the specified maximum fee. 
       operationId: create_claim_activity
+      security:
+        - OAuth2:
+            - transaction.stake
       requestBody:
         $ref: '#/components/requestBodies/createClaimActivityBody'
       responses:
@@ -1957,6 +2073,9 @@ paths:
       description: |
         This operation retrieves a list of staking activities.
       operationId: list_staking_activities
+      security:
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/poolIdOptionalParam'
         - $ref: '#/components/parameters/stakingIdOptionalParam'
@@ -1986,6 +2105,9 @@ paths:
       description: |
         This operation retrieves the details of a specified staking activity.
       operationId: get_staking_activity_by_id
+      security:
+        - OAuth2:
+            - wallet.read
       parameters:
         - $ref: '#/components/parameters/activityIdRequiredParam'
       responses:
@@ -2011,7 +2133,8 @@ paths:
       summary: Get API key information
       description: This operation retrieves the details of the API key that you are using.
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - api_key.read
       responses:
         '200':
           $ref: '#/components/responses/getApiKeyInfoResponse'
@@ -2028,9 +2151,10 @@ paths:
       description: |
         This operation retrieves all the callback messages in your organization.
 
-        For more details about how to respond to callback messages, refer to [Callback messages](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
+        For more details about how to respond to callback messages, refer to [Callback messages](/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - callback.read
       parameters:
         - $ref: '#/components/parameters/optionalCallbackMessageIdsParam'
         - $ref: '#/components/parameters/optionalRequestIdsParam'
@@ -2056,9 +2180,10 @@ paths:
       description: |
         This operation resends a callback message that failed previously.
 
-        If your callback endpoint doesn't respond as expected, the WaaS service will retry sending the callback message up to 30 times. After that, the callback message status will be `Failed`. Use this operation to resend the message. For more details, refer to [Webhooks and Callbacks](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
+        If your callback endpoint doesn't respond as expected, the WaaS service will retry sending the callback message up to 30 times. After that, the callback message status will be `Failed`. Use this operation to resend the message. For more details, refer to [Webhooks and Callbacks](/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
       security:
-        - CoboAuth: []
+        - OAuth2:
+            - callback.resend
       parameters:
         - $ref: '#/components/parameters/callbackMessageIdParam'
       responses:
@@ -2076,6 +2201,9 @@ paths:
       description: |
         This operation retrieves a list of addresses from your address book.
       operationId: list_address_books
+      security:
+        - OAuth2:
+            - address_book.read
       parameters:
         - $ref: '#/components/parameters/requiredChainIdParam'
         - $ref: '#/components/parameters/optionalAddressParam'
@@ -2090,6 +2218,127 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
+  '/prime_broker/user/{user_id}/guard_pubkey':
+    post:
+      tags:
+        - PrimeBroker
+      summary: Create Guard pubkey binding
+      description: |
+        This operation creates a binding between a broker user ID and a Cobo Guard public key. 
+      operationId: create_guard_pubkey
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '201':
+          $ref: '#/components/responses/createGuardPubkeyResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+    put:
+      tags:
+        - PrimeBroker
+      summary: Change Guard pubkey binding
+      description: |
+        This operation updates an existing binding to associate a broker user ID with a new Cobo Guard public key.
+      operationId: change_guard_pubkey
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/createGuardPubkeyResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+    get:
+      tags:
+        - PrimeBroker
+      summary: Query a Guard pubkey
+      description: |
+        This operation retrieves the current Cobo Guard public key binding details for a broker user.
+      operationId: query_guard_pubkey
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/queryGuardPubkeyResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+  '/prime_broker/user/{user_id}/guard_pubkey/delete':
+    post:
+      tags:
+        - PrimeBroker
+      summary: Delete Guard pubkey binding
+      description: |
+        This operation deletes a binding between a broker user ID and a Cobo Guard public key.
+      operationId: delete_guard_pubkey
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      responses:
+        '201':
+          $ref: '#/components/responses/deleteGuardPubkeyResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+  '/prime_broker/user/{user_id}/addresses':
+    post:
+      tags:
+        - PrimeBroker
+      summary: Bind addresses to a broker user
+      description: |
+        This operation binds addresses to a broker user.
+      operationId: create_prime_broker_address
+      parameters:
+        - $ref: '#/components/parameters/UserIdParam'
+      requestBody:
+        $ref: '#/components/requestBodies/createPrimeBrokerUserAddressBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createUserAdressResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
+  '/prime_broker/approval_statement/{statement_id}':
+    get:
+      tags:
+        - PrimeBroker
+      summary: Query approval statement
+      description: |
+        This operation queries an approval statement.
+      operationId: query_approval_statement
+      parameters:
+        - name: statement_id
+          in: path
+          required: true
+          description: The approval statement ID.
+          schema:
+            type: string
+            description: The approval statement ID.
+          example: '168108513539918'
+      responses:
+        '200':
+          $ref: '#/components/responses/queryApprovalStatementResponse'
+        '400':
+          $ref: '#/components/responses/badRequestError'
+        '401':
+          $ref: '#/components/responses/unauthorizedError'
+        '403':
+          $ref: '#/components/responses/forbiddenError'
   /travel_rule/transaction/countries:
     get:
       tags:
@@ -2103,9 +2352,8 @@ paths:
           - Place of incorporation of a legal entity
           - Place of birth of a natural person
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'travel_rule:read'
+            - travel_rule.read
       responses:
         '200':
           $ref: '#/components/responses/getCountriesResponse'
@@ -2124,9 +2372,8 @@ paths:
 
         Use this endpoint before submitting Travel Rule information to understand the requirements and available options for your transaction.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'travel_rule:read'
+            - travel_rule.read
       parameters:
         - $ref: '#/components/parameters/requiredTransactionTypeParam'
         - $ref: '#/components/parameters/requiredTransactionIdParam'
@@ -2146,9 +2393,8 @@ paths:
       description: |
         This operation submits Travel Rule information for a deposit transaction.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'travel_rule:edit'
+            - travel_rule.edit
       requestBody:
         content:
           application/json:
@@ -2170,9 +2416,8 @@ paths:
       description: |
         This operation submits Travel Rule information for a withdrawal transaction.
       security:
-        - CoboAuth: []
         - OAuth2:
-            - 'travel_rule:edit'
+            - travel_rule.edit
       requestBody:
         content:
           application/json:
@@ -2490,6 +2735,31 @@ components:
           - `bitmart`: BitMart
           - `bitfinex`: Bitfinex
       example: binance
+    Balance:
+      type: object
+      description: The balance details.
+      required:
+        - total
+        - available
+      properties:
+        total:
+          type: string
+          description: 'The current amount of tokens in an address, which is retrieved directly from the network. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
+          example: '100.0'
+        available:
+          type: string
+          description: 'The amount of tokens ready to be spent. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
+          example: '80.5'
+        pending:
+          type: string
+          description: 'The total amount being sent in a transaction, which is calculated as the withdrawal amount plus the transaction fee. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
+          default: '0'
+          example: '10.5'
+        locked:
+          type: string
+          description: 'For UTXO chains, this is the combined value of the selected UTXOs for the transaction. For other chains, it is equal to the Pending amount. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
+          default: '0'
+          example: '3.0'
     TokenBalance:
       type: object
       description: The balance information.
@@ -2502,30 +2772,20 @@ components:
           description: 'The token ID, which is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
           example: BTC
         balance:
-          type: object
-          description: The balance details.
-          required:
-            - total
-            - available
-          properties:
-            total:
-              type: string
-              description: 'The current amount of tokens in an address, which is retrieved directly from the network. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
-              example: '100.0'
-            available:
-              type: string
-              description: 'The amount of tokens ready to be spent. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
-              example: '80.5'
-            pending:
-              type: string
-              description: 'The total amount being sent in a transaction, which is calculated as the withdrawal amount plus the transaction fee. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
-              default: '0'
-              example: '10.5'
-            locked:
-              type: string
-              description: 'For UTXO chains, this is the combined value of the selected UTXOs for the transaction. For other chains, it is equal to the Pending amount. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
-              default: '0'
-              example: '3.0'
+          $ref: '#/components/schemas/Balance'
+    AddressBalance:
+      type: object
+      description: The token balance for a specific wallet address.
+      required:
+        - address
+        - balance
+      properties:
+        address:
+          type: string
+          description: The wallet address.
+          example: '0x0000000000000000000000000000000000000000'
+        balance:
+          $ref: '#/components/schemas/Balance'
     AssetBalance:
       type: object
       description: The data for asset balance information.
@@ -2538,7 +2798,7 @@ components:
           description: (This concept applies to Exchange Wallets only) The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account.
           example: USDT
         balance:
-          $ref: '#/components/schemas/TokenBalance/properties/balance'
+          $ref: '#/components/schemas/Balance'
     SubWalletAssetBalance:
       type: object
       description: The information about the asset balance of a trading account.
@@ -2555,7 +2815,7 @@ components:
           description: The asset ID. An asset ID is the unique identifier of the asset held within your linked exchange account.
           example: USDT
         balance:
-          $ref: '#/components/schemas/TokenBalance/properties/balance'
+          $ref: '#/components/schemas/Balance'
     SafeWallet:
       allOf:
         - allOf:
@@ -3089,7 +3349,7 @@ components:
         - ED25519
       example: SECP256K1
       description: |
-        The elliptic curve type of the [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key). Possible values include:
+        The elliptic curve type of the [root extended public key](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#root-extended-public-keys). Possible values include:
 
         - `SECP256K1`: The secp256k1 elliptic curve.
 
@@ -3136,7 +3396,7 @@ components:
       example: Valid
       description: |
         The status of the key share holder group. Possible values include:
-        - `New`: The key share holder group has been newly created. The status will become `Valid` after you call [Create TSS request](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallet/create-a-tss-request-to-generate-key-secrets-for-a-tss-group) and specifying this key share holder group as the target key share holder group.
+        - `New`: The key share holder group has been newly created. The status will become `Valid` after you call [Create TSS request](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/create-tss-request) and specifying this key share holder group as the target key share holder group.
 
         - `Valid`: The key share holder group is valid.
 
@@ -3320,7 +3580,7 @@ components:
       properties:
         root_pubkey:
           type: string
-          description: 'The vault''s [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).'
+          description: 'The vault''s [root extended public key](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#root-extended-public-keys).'
           example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
         curve:
           $ref: '#/components/schemas/CurveType'
@@ -3336,7 +3596,7 @@ components:
           $ref: '#/components/schemas/CurveType'
         root_pubkey:
           type: string
-          description: 'The vault''s [root extended public key](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/tss-node-deployment#tss-node-on-cobo-portal-and-mpc-root-extended-public-key).'
+          description: 'The vault''s [root extended public key](https://www.cobo.com/developers/v2/guides/mpc-wallets/get-started-ocw#root-extended-public-keys).'
           example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
     TSSRequest:
       type: object
@@ -4230,17 +4490,7 @@ components:
         - Pending
       example: Submitted
       description: |
-        The transaction status. Possible values include: 
-          - `Submitted`: The transaction is submitted.
-          - `PendingScreening`: The transaction is pending screening by Risk Control. 
-          - `PendingAuthorization`: The transaction is pending approvals.
-          - `PendingSignature`: The transaction is pending signature. 
-          - `Broadcasting`: The transaction is being broadcast.
-          - `Confirming`: The transaction is waiting for the required number of confirmations.
-          - `Completed`: The transaction is completed.
-          - `Failed`: The transaction failed.
-          - `Rejected`: The transaction is rejected.
-          - `Pending`: The transaction is waiting to be included in the next block of the blockchain.
+        The transaction status. For more details including sub-statuses, please refer to [Transaction statuses and sub-statuses](https://www.cobo.com/developers/v2/guides/transactions/status).
     TransactionSubStatus:
       type: string
       enum:
@@ -4256,6 +4506,7 @@ components:
         - RejectedRiskControlCheck
         - RejectedApproverAuth
         - RejectedbyMobileCosigner
+        - Built
         - PendingWaitSigner
         - PendingApprovalStart
         - FailedBySigner
@@ -4277,40 +4528,7 @@ components:
         - SignatureVerificationFailed
       example: PendingDoubleCheck
       description: |
-        The transaction sub-status. Possible values include: 
-          - `PendingDoubleCheck`: The transaction is pending a double check. 
-          - `RejectedDoubleCheck`: The transaction is rejected because it failed a double check.
-          - `PendingSpenderCheck`: The transaction is pending a spender check.
-          - `RejectedSpenderAuth`: The transaction is rejected by the spender.
-          - `PendingTravelRuleCheck`: The transaction is undergoing a Travel Rule check.
-          - `PendingTravelRuleInfo`: The transaction is awaiting users to provide information related to the Travel Rule.
-          - `RejectedTravelRule`: The transaction is rejected because it failed to comply with the Travel Rule.
-          - `RejectedTravelRuleDueToCompliance`: The transaction is rejected because it failed the cross-check of the Travel Rule. 
-          - `RejectedTravelRuleDueToUnsupportedToken`: The transaction is rejected because the token is not supported by the Travel Rule.
-          - `PendingRiskControlCheck`: The transaction is pending for a Risk Control check.
-          - `PendingApproverCheck`: The transaction is pending approval from the approver.
-          - `RejectedApproverAuth`: The transaction is rejected by the approver.
-          - `RejectedbyMobileCosigner`: The transaction is rejected by a mobile cosigner.
-          - `RejectedCoboCheck`: The transaction is rejected because it failed the internal check by Cobo.
-          - `RejectedWhiteList`: The transaction is rejected because the sender or receiver is not included in a whitelist.
-          - `PendingWaitSigner`: The transaction is pending signature.
-          - `PendingApprovalStart`: The transaction approval is waiting to be started.      
-            - For [MPC Wallets (User-Controlled Wallets)](https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction), you need to use the Client App and call the UCW SDK to start the transaction approval process.
-            - For [MPC Wallets (Organization-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction)):
-              - If you are using the [server co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups), this status indicates that the TSS Node will soon request the callback server to start the [risk controls](https://manuals.cobo.com/en/portal/risk-controls/introduction) check. No further action is required from you at this stage.
-              - If you are using the [mobile co-signer](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups), key share holders need to use their [Cobo Guard](https://manuals.cobo.com/en/guard/introduction) to approve the transaction and participate in the signing process.
-          - `FailedBySigner`: The transaction failed during the signing process.
-          - `SignatureVerificationSuccess`: The transaction's signature has been successfully verified.
-          - `SignatureVerificationFailed`: The transaction's signature failed verification.
-          - `FailedBroadcasting`: The transaction failed to be broadcast to the blockchain network.
-          - `CanceledBySpender`: The transaction is canceled by a Spender.
-          - `CanceledByAPI`: The transaction is canceled by a [Cancel transaction](https://www.cobo.com/developers/v2/api-references/transactions/cancel-transaction) operation.
-          - `Queue`: The transaction is queued to be processed by Cobo Portal.
-          - `Reverting`: The transaction is being reverted due to failure on the blockchain.
-          - `OnchainRejection`: The transaction is rejected from being added to the blockchain.
-          - `FailedOnChain`: The transaction failed on the blockchain.
-          - `PendingBlockConfirmations`: The transaction is awaiting the required number of confirmations.
-          - `ReplacedByNewTransaction`: The transaction has been replaced by a new transaction.
+        The transaction sub-status. For more details, please refer to [Transaction statuses and sub-statuses](https://www.cobo.com/developers/v2/guides/transactions/status).
     TransactionTimeline:
       type: object
       description: 'The information about transaction timeline, which lists all statuses that the transaction passes through with timestamps indicating when each status is completed.'
@@ -4631,6 +4849,13 @@ components:
           description: |
             The transfer amount. For example, if you trade 1.5 BTC, then the value is `1.5`.
           example: '1.5'
+        tx_info:
+          type: object
+          properties:
+            vout_n:
+              type: integer
+              description: The output index of the UTXO.
+              example: 0
     TransactionDepositToWalletDestination:
       type: object
       description: |
@@ -4969,6 +5194,10 @@ components:
           type: string
           description: The raw transaction data.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
+        unsigned_raw_tx:
+          type: string
+          description: The unsigned raw transaction data.
+          example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
     TransactionSelectedUtxo:
       type: object
       description: The selected UTXO information.
@@ -5198,6 +5427,76 @@ components:
         - `PassiveAutoFuel`: Use Fee Station only when the source address balance is insufficient to cover the transaction fees.
 
         Please note that the TRON chain does not support `PassiveAutoFuel` due to its fee delegation mechanism.
+    TransactionApprovalDetail:
+      type: object
+      description: The approval detail data for transaction.
+      properties:
+        spender:
+          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
+        approver:
+          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
+        address_owner:
+          $ref: '#/components/schemas/TransactionRoleApprovalDetail'
+    TransactionApprovalResult:
+      type: string
+      enum:
+        - Approved
+        - Rejected
+        - Pending
+      example: Approved
+      description: |
+        The transaction approval result. Possible values include: 
+          - `Approved`: The transaction is approved.
+          - `Rejected`: The transaction is rejected. 
+          - `Pending`: The transaction is pending approval.
+    TransactionRoleApprovalDetail:
+      type: object
+      description: The role approval data for transaction.
+      properties:
+        result:
+          $ref: '#/components/schemas/TransactionApprovalResult'
+        review_threshold:
+          type: integer
+          description: The threshold for passing the review of this role.
+          example: 1
+        initiator:
+          type: string
+          description: The initiator of the transaction.
+          example: tom@gmail.com
+        complete_time:
+          type: string
+          description: Time to complete the review.
+        user_details:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionUserApprovalDetail'
+    TransactionUserApprovalDetail:
+      type: object
+      description: The user approval data for transaction.
+      properties:
+        pubkey:
+          type: string
+          description: The Cobo Guard public key of the user who audited this message.
+          example: 96db1b3c68c3a3497bffb7e257a3900b0e86575c968a346a6696d1676fa8c5a6431b46c867134bd5fb8a9b5f787fa0c534d7c7664f1e52c432ce64326cc4cc1d
+        result:
+          $ref: '#/components/schemas/TransactionApprovalResult'
+        signature:
+          type: string
+          description: The signature of the audited message.
+        language:
+          type: string
+          description: The language of the audited message.
+          example: en
+        message_version:
+          type: string
+          description: The version of the audited message.
+          example: 1.0.1
+        message:
+          type: string
+          description: The audited message.
+        extra_message:
+          type: string
+          description: The extra audited message.
     CustodialTransferSource:
       type: object
       description: |
@@ -5411,6 +5710,16 @@ components:
           type: string
           description: The address used to receive the remaining funds or change from the transaction.
           example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sDEMO
+        change_output_type:
+          type: string
+          enum:
+            - Last
+            - First
+          example: First
+          description: |
+            The position of the change output in the transaction's outputs. Possible values are:
+            - `Last`: The change output is placed at the end of the transaction's outputs.  
+            - `First`: The change output is placed at the beginning of the transaction's outputs.
         force_internal:
           type: boolean
           description: |
@@ -5513,6 +5822,16 @@ components:
           example: Transfer from wallet
         fee:
           $ref: '#/components/schemas/TransactionRequestFee'
+        transaction_process_type:
+          type: string
+          enum:
+            - AutoProcess
+            - BuildOnly
+          example: AutoProcess
+          description: |
+            Transaction processing type. Possible values are:
+            - `AutoProcess` (default): After the transaction is constructed, it will be automatically signed and broadcast.  
+            - `BuildOnly`: Set to this value if you want to build the transaction first without automatically signing and broadcasting it. You can manually call the [Sign and broadcast transaction](https://www.cobo.com/developers/v2/api-references/transactions/sign-and-broadcast-transaction) operation to complete the signing and broadcasting process.
         auto_fuel:
           $ref: '#/components/schemas/AutoFuelType'
     EstimateFeeRequestType:
@@ -5720,6 +6039,8 @@ components:
             example: Trading
         fee:
           $ref: '#/components/schemas/TransactionRequestFee'
+        transaction_process_type:
+          $ref: '#/components/schemas/TransferParams/properties/transaction_process_type'
         auto_fuel:
           $ref: '#/components/schemas/AutoFuelType'
     MpcMessageSignSource:
@@ -5758,7 +6079,7 @@ components:
           Org-Controlled: '#/components/schemas/MpcMessageSignSource'
           User-Controlled: '#/components/schemas/MpcMessageSignSource'
     EvmEIP191MessageSignDestination:
-      title: EIP-191 Signature
+      title: EVM EIP-191 Signature
       description: 'The information about the destination `EVM_EIP_191_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
@@ -5771,8 +6092,22 @@ components:
           type: string
           description: 'The raw data of the message to be signed, encoded in Base64 format.'
           example: YWFhYQ==
+    BTCEIP191MessageSignDestination:
+      title: BTC EIP-191 Signature
+      description: 'The information about the destination `BTC_EIP_191_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      type: object
+      required:
+        - destination_type
+        - message
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/MessageSignDestinationType'
+        message:
+          type: string
+          description: 'The raw data of the message to be signed, encoded in Base64 format.'
+          example: YWFhYQ==
     EvmEIP712MessageSignDestination:
-      title: EIP-712 Signature
+      title: EVM EIP-712 Signature
       description: 'The information about the destination `EVM_EIP_712_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
@@ -5805,6 +6140,8 @@ components:
       enum:
         - EVM_EIP_191_Signature
         - EVM_EIP_712_Signature
+        - BTC_EIP_191_Signature
+        - Raw_Message_Signature
       example: EVM_EIP_191_Signature
       description: |
         The type of the signature format. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
@@ -5814,11 +6151,15 @@ components:
       oneOf:
         - $ref: '#/components/schemas/EvmEIP191MessageSignDestination'
         - $ref: '#/components/schemas/EvmEIP712MessageSignDestination'
+        - $ref: '#/components/schemas/RawMessageSignDestination'
+        - $ref: '#/components/schemas/BTCEIP191MessageSignDestination'
       discriminator:
         propertyName: destination_type
         mapping:
           EVM_EIP_191_Signature: '#/components/schemas/EvmEIP191MessageSignDestination'
           EVM_EIP_712_Signature: '#/components/schemas/EvmEIP712MessageSignDestination'
+          RAW_MESSAGE: '#/components/schemas/RawMessageSignDestination'
+          BTC_EIP_191_Signature: '#/components/schemas/BTCEIP191MessageSignDestination'
     MessageSignParams:
       type: object
       description: The information about a transaction that signs a message. You can provide the message either as raw data or as structured data.
@@ -7715,6 +8056,46 @@ components:
           type: integer
           description: The total number of swap activities.
           example: 100
+    GuardPubkeyStatus:
+      type: string
+      enum:
+        - New
+        - ChangeNew
+        - WaitSelfConfirm
+        - WaitConfirm
+        - WaitActive
+        - Active
+        - Freeze
+        - Invalid
+      example: New
+      description: |
+        The status of a Cobo Guard public key binding. Possible values include: 
+          - `New`: The binding is created.
+          - `ChangeNew`: A new binding is created 
+          - `WaitSelfConfirm`: The binding is waiting for user confirmation on the old Cobo Guard.
+          - `WaitConfirm`: The binding is waiting for admin confirmation.
+          - `WaitActive`: The binding is waiting to become active.
+          - `Active`: The binding has come into effect.
+          - `Freeze`: The binding is frozen.
+          - `Invalid`: The binding is invalid.
+    ApprovalStatementStatus:
+      type: string
+      enum:
+        - UnSend
+        - WaitAudit
+        - Approve
+        - Reject
+        - Invalid
+        - Timeout
+      example: New
+      description: |
+        The status of the approval statement. Possible values include: 
+          - `UnSend`: The request has been created but not yet sent to the broker user.
+          - `Wait`: The request is sent to broker user and is pending review by the broker user.
+          - `Approve`: The user has approved the request.
+          - `Reject`: The user has rejected the request.
+          - `Invalid`: The request is invalid.
+          - `Timeout`: The request has expired.
   parameters:
     sortByParam:
       name: sort_by
@@ -8191,6 +8572,22 @@ components:
       schema:
         type: string
       example: my vault name
+    tssNodeIdParam:
+      name: tss_node_id
+      in: path
+      required: true
+      description: The TSS Node ID.
+      schema:
+        type: string
+      example: coboBTGDvjJG99pABegvPYmavrcTU3SkjTLHVdsko8dWBga4w
+    optionalGroupIdsListQueryParam:
+      name: key_share_holder_group_ids
+      in: query
+      required: false
+      description: 'A list of key share holder group IDs, separated by comma. You can retrieve the IDs of all the key share holder groups by calling [List all key share holder groups](https://www.cobo.com/developers/v2/api-references/wallets--mpc-wallets/list-all-key-share-holder-groups).'
+      schema:
+        type: string
+      example: 'dc0cac48-9add-4243-9c7a-b8badac8a198,5558bd1b-d221-4e2b-8c29-f6c97d9e6aca'
     exchangeIdParam:
       name: exchange_id
       in: path
@@ -8802,6 +9199,15 @@ components:
         type: integer
         format: int64
       example: 1635744000000
+    UserIdParam:
+      name: user_id
+      in: path
+      required: true
+      description: The user ID.
+      schema:
+        type: string
+        description: The user ID.
+      example: '168108513539918'
   requestBodies:
     createWalletBody:
       description: The request body to create a wallet
@@ -8834,8 +9240,18 @@ components:
                 maximum: 50
                 minimum: 1
                 default: 1
-                description: The number of addresses to create.
+                description: The number of addresses to create. This property will be ignored if you are generating tweaked Taproot addresses.
                 example: 1
+              taproot_script_tree_hashes:
+                type: array
+                items:
+                  type: string
+                  example: '0x138fdd0f6c3803d45553e730c25924baf7be741b8a72a4e6fdbd9d44cb19f85b'
+                description: A list of script tree hashes used to generate a tweaked Taproot address. This property is required only if you want to generate tweaked Taproot addresses.
+              taproot_internal_address:
+                type: string
+                description: The original Taproot address to be tweaked. This property is required only if you want to generate tweaked Taproot addresses.
+                example: 3HYV6ta67197syD1ZVFganpmL2wLz4RyoC
               encoding:
                 $ref: '#/components/schemas/AddressEncoding'
     lockUtxosBody:
@@ -9217,6 +9633,29 @@ components:
                 type: string
                 description: The Refresh Token of the current Org Access Token.
                 example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
+    createPrimeBrokerUserAddressBody:
+      description: The request body to bind addresses to a broker user.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              addresses:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - chain_id
+                    - address
+                  properties:
+                    address:
+                      type: string
+                      description: The wallet address.
+                      example: '0x0000000000000000000000000000000000000000'
+                    chain_id:
+                      type: string
+                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+                      example: ETH
     createSwapActivityBody:
       description: The request body for creating a swap activity.
       required: true
@@ -9343,6 +9782,19 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/TokenBalance'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    getAddressBalancesResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressBalance'
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getAssetBalancesResponse:
@@ -9677,6 +10129,25 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MPCVault'
+    getKeyShareHolderResponse:
+      description: Successfully retrieved key share holder information
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/KeyShareHolder'
+    getKeyShareHoldersResponse:
+      description: Successfully retrieved key share holder list
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KeyShareHolder'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
     getExchangeSettingsResponse:
       description: The request was successful.
       content:
@@ -9800,6 +10271,12 @@ components:
                   type: string
                   description: The transaction ID of this broadcast transaction.
                   example: c986cb3b-1301-412f-9450-13a52c43a95f
+    getTransactionApprovalDetailResponse:
+      description: The information about a transaction approval detail.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionApprovalDetail'
     createWebhookEndpointResponse:
       description: The request was successful.
       content:
@@ -10065,6 +10542,113 @@ components:
               error_description:
                 type: string
                 description: The error description.
+    createUserAdressResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - pubkey
+            properties:
+              pubkey:
+                type: string
+                description: The Cobo Guard's public key.
+                example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
+              addresses:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - chain_id
+                    - address
+                  properties:
+                    address:
+                      type: string
+                      description: The wallet address.
+                      example: '0x0000000000000000000000000000000000000000'
+                    chain_id:
+                      type: string
+                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+                      example: ETH
+    createGuardPubkeyResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - binder_id
+            properties:
+              binder_id:
+                type: string
+                description: The binding ID.
+                example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
+    deleteGuardPubkeyResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - statement_id
+            properties:
+              statement_id:
+                type: string
+                description: The deleted Cobo Guard binding statement ID.
+                example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
+    queryGuardPubkeyResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - binder_id
+            properties:
+              pubkey:
+                type: string
+                description: The Cobo Guard's public key.
+                example: 0111039d-27fb-49ba-b172-6e0aa80e37ec
+              status:
+                $ref: '#/components/schemas/GuardPubkeyStatus'
+              addresses:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - chain_id
+                    - address
+                  properties:
+                    address:
+                      type: string
+                      description: The wallet address.
+                      example: '0x0000000000000000000000000000000000000000'
+                    chain_id:
+                      type: string
+                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+                      example: ETH
+    queryApprovalStatementResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The approval statement ID.
+                example: '168108513539918'
+              user_id:
+                type: string
+                description: The user ID of the approver.
+                example: '168108513539918'
+              pubkey:
+                type: string
+                description: The Cobo Guard public key of the approver.
+                example: 96db1b3c68c3a3497bffb7e257a3900b0e86575c968a346a6696d1676fa8c5a6431b46c867134bd5fb8a9b5f787fa0c534d7c7664f1e52c432ce64326cc4cc1d
+              status:
+                $ref: '#/components/schemas/ApprovalStatementStatus'
     listAddressBooksResponse:
       description: The information about an address book entry.
       content:
@@ -10385,6 +10969,16 @@ components:
         The API key. For more details, refer to [API key](https://www.cobo.com/developers/v2/guides/overview/cobo-auth#api-key).
 
         In the API playground, enter your [API secret](https://www.cobo.com/developers/v2/guides/overview/cobo-auth#api-secret), and your API key will be accordingly calculated.
+    CoboSignature:
+      type: apiKey
+      in: header
+      name: BIZ-API-SIGNATURE
+      description: 'This field contains the EDDSA(ED25519) signature, generated using `HTTP_METHOD`, `HTTP_REQUEST_PATH`, `TIMESTAMP`, and `PARAMS`.'
+    CoboNonce:
+      type: apiKey
+      in: header
+      name: BIZ-API-NONCE
+      description: 'The UNIX EPOCH timestamp when calling the API, in milliseconds.'
     OAuth2:
       type: oauth2
       flows:
@@ -10392,30 +10986,40 @@ components:
           authorizationUrl: 'https://auth.cobo.com/authorize'
           tokenUrl: 'https://auth.cobo.com/oauth/token'
           scopes:
-            'custodial_asset_wallet:create': Create access to custodial asset wallets
-            'custodial_asset_wallet:add': Generate address access to custodial asset wallets
-            'custodial_asset_wallet:edit': Change wallet name access to custodial asset wallets
-            'custodial_asset_wallet:withdraw': Withdraw access to custodial asset wallets
-            'mpc_organization_controlled_wallet:create': Create access to MPC organization-controlled wallets
-            'mpc_organization_controlled_wallet:add': Generate address access to MPC organization-controlled wallets
-            'mpc_organization_controlled_wallet:edit': Change wallet name access to MPC organization-controlled wallets
-            'mpc_organization_controlled_wallet:withdraw': Withdraw access to MPC organization-controlled wallets
-            'mpc_organization_controlled_wallet:contract_call': Contract call access to MPC organization-controlled wallets
-            'mpc_organization_controlled_wallet:message_sign': Message sign access to MPC organization-controlled wallets
-            'mpc_organization_controlled_vault:manage': Create/Edit access to MPC organization-controlled vaults
-            'mpc_organization_controlled_key_group:manage': Create/Edit/Delete access to MPC organization-controlled key groups
-            'mpc_organization_controlled_tss_request:manage': Create/Cancel access to MPC organization-controlled tss requests
-            'mpc_user_controlled_wallet:create': Create access to MPC user-controlled wallets
-            'mpc_user_controlled_wallet:add': Generate address access to MPC user-controlled wallets
-            'mpc_user_controlled_wallet:edit': Change wallet name access to MPC user-controlled wallets
-            'mpc_user_controlled_wallet:withdraw': Withdraw access to MPC user-controlled wallets
-            'mpc_user_controlled_wallet:contract_call': Contract call access to MPC user-controlled wallets
-            'mpc_user_controlled_wallet:message_sign': Message sign access to MPC user-controlled wallets
-            'mpc_user_controlled_project:manage': Create/Edit access to MPC user-controlled projects
-            'mpc_user_controlled_vault:manage': Create/Edit access to MPC user-controlled vaults
-            'mpc_user_controlled_key_group:manage': Create/Edit/Delete access to MPC user-controlled key groups
-            'mpc_user_controlled_tss_request:manage': Create/Cancel access to MPC user-controlled tss requests
-            'webhook:resend': Resend access to webhook events
-            'webhook_url:edit': Create/Edit access to webhook urls
+            address_book.read: Read address book
+            api_key.read: Read API key information
+            callback.read: Read callback message
+            callback.resend: Resend callback message
+            wallet.create: Create wallet
+            wallet.read: Read wallet information
+            wallet.update: Update wallet information
+            wallet.delete: Delete wallet information
+            wallet.create_address: Create wallet address
+            wallet.manage_utxo: Manage UTXO
+            mpc_project.create: Create MPC project
+            mpc_project.read: Read MPC project information
+            mpc_project.update: Update MPC project information
+            mpc_vault.create: Create MPC Vault
+            mpc_vault.read: Read MPC Vault information
+            mpc_vault.update: Update MPC Vault information
+            mpc_key_group.create: Create MPC key group
+            mpc_key_group.read: Read MPC key group information
+            mpc_key_group.update: Update MPC key group information
+            mpc_key_group.delete: Delete MPC key group information
+            transaction.read: Read transaction information
+            transaction.withdraw: Make withdrawals
+            transaction.estimate_fee: Estimate transaction fee
+            transaction.contract_call: Initiate contract calls
+            transaction.message_sign: Initiate message signings
+            transaction.stake: Stake assets
+            transaction.unstake: Unstake assets
+            transaction.unstake_withdraw: Withdraw unstaked assets
+            transaction.manage: Manage ongoing transactions
+            transaction.update: Update transaction notes
+            travel_rule.read: Read travel rule information
+            travel_rule.edit: Edit travel rule information
+            webhook.read: Read webhook URLs/events
+            webhook.edit: Edit webhook URLs
+            webhook.resend: Resend webhook events
 security:
   - CoboAuth: []

@@ -20,7 +20,7 @@ The following diagram illustrates the components within a fully-functioning MPC 
 <img src="/v2/images/guides/final.svg" className="diagram" alt="The components within a fully-functioning MPC vault"></img>
 
 - An Organization-Controlled Wallet is always associated with a vault. A vault is a collection of Organization-Controlled Wallets that share the same root extended public/private key pairs.
-- Root extended public keys: A root extended public key is used in hierarchical deterministic (HD) wallets to derive multiple child public keys and addresses. Each vault has two root extended public keys, one derived from the Secp256k1 curve (used by chains such as Bitcoin and Ethereum) and the other derived from the EdDSA curve (used by chains such as Solona and TON). To learn more about root extended public keys, see [Key derivation](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#specification-key-derivation).
+- <a name="root-extended-public-keys"></a>Root extended public keys: A root extended public key is used in hierarchical deterministic (HD) wallets to derive multiple child public keys and addresses. Each vault has two root extended public keys, one derived from the Secp256k1 curve (used by chains such as Bitcoin and Ethereum) and the other derived from the EdDSA curve (used by chains such as Solona and TON). To learn more about root extended public keys, see [Key derivation](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#specification-key-derivation).
 - Key share holder groups: Each vault can have multiple key share holder groups. Each holder group has a set of TSS Nodes storing the private key shares that can collectively sign a transaction or recover the root extended private key. For Main Groups and Signing Groups, one key share holder will always be Cobo. To learn more about key share holder groups, see [Create holder groups](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups).
 - TSS key share groups: Each TSS key share group consists of two or three private key shares, depending on the number of holders. Each key share group can form a key pair with the root extended public key derived from the same curve. Each key share is unique.
 
@@ -279,7 +279,7 @@ import com.cobo.waas2.model.*;
 public class CreateVaultExample {
     public static void main(String[] args) {
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Use the development environment
+        // for dev environment
         defaultClient.setEnv(Env.DEV);
         // Replace `<YOUR_API_SECRET>` with your API secret
         defaultClient.setPrivKey("<YOUR_API_SECRET>");
@@ -310,7 +310,7 @@ A key share holder group has a set of TSS Nodes storing the private key shares t
 
 #### Become a key share holder
 
-A Main Group consists of two key share holders. One holder is always Cobo, so you now need to find another holder to make up a Main Group. If you already have Cobo Guard installed on your phone, you can become a key share holder by using your phone as a mobile co-signer. As an alternative, you can set up a TSS node and use it as a server co-signer. 
+A Main Group consists of two key share holders. One holder is always Cobo, so you now need to find another holder to make up a Main Group. If you already have Cobo Guard installed on your phone, you can become a key share holder by using your phone as a mobile co-signer. As an alternative, you can set up a TSS node server and use it as a server co-signer. 
 
 To learn the differences between the two co-signer types, how to complete the setup, and how to acquire their TSS Node IDs, see [Co-signer Type](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#signer-type).
 
@@ -322,6 +322,7 @@ To create a Main Group, call the [Create key share holder group](/v2/api-referen
 
 - Path:
   - `vault_id`: The ID of the vault you have just created.
+
 - Request body:
   - `key_share_holder_group_type`: `MainGroup`.
   - `participants`: `2`.
@@ -871,17 +872,14 @@ public class ListTransactionsExample {
 
 ### Withdraw tokens
 
-Now that you have tokens in your wallet, it's time to try withdrawing them. 
+Now that you have tokens in your wallet, let's walk through the withdrawal process. Before making your first withdrawal, there are two important things to understand:
 
-#### Set up a callback endpoint
+1. **The withdrawal process**: A withdrawal involves multiple steps including initiation, double confirmation, risk control checks, and transaction signing. For a detailed overview of each step, see [Transfer from MPC Wallets (Organization-Controlled Wallets)](https://manuals.cobo.com/en/portal/transfers/from-mpc-wallets#withdrawal-process).
 
-To enhance the security of your transactions, it is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests. Once you initiate a withdrawal using the WaaS 2.0 API, the callback endpoint will receive a callback message containing the transaction details. The transaction will proceed only if you approve the withdrawal request.
+2. **Callback endpoint setup**: For enhanced security, you should set up a callback endpoint to double confirm withdrawal requests. When you initiate a withdrawal via the WaaS 2.0 API, this endpoint will receive the transaction details and must confirm them before the transaction proceeds. To set this up, follow our guide on [webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
-To learn how to set up a callback endpoint and register it on Cobo Portal, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
-
-#### Withdraw tokens
-
-To withdraw tokens from the Asset Wallet, call the [Transfer token](/v2/api-references/transactions/transfer-token) operation and set the properties in the request body as follows:
+#### Initiate a withdrawal
+Once you understand these concepts, you can initiate a withdrawal by calling the [Transfer token](/v2/api-references/transactions/transfer-token) operation. Set the properties in the request body as follows:
 
 - `request_id`: Your request ID.
 - `source.source_type`: `Org-Controlled`.
@@ -1023,9 +1021,7 @@ The response of the withdrawal request is as follows. Record the transaction ID 
 }
 ```
 
-#### Confirm the withdrawal
 
-If you have set up a callback endpoint, after you initiate the withdrawal transaction, your callback endpoint will receive a message containing the transaction details. Check if the transaction meets expectations, and respond with a success status code (200 or 201) and a response body of `ok` to approve the transaction. To learn more about handling a callback message, see Handle messages.
 
 #### Monitor the withdrawal status
 
@@ -1034,7 +1030,7 @@ In addition to webhook events, you can also call the [Get transaction informatio
 
 
 <Accordion title="Sample code in Python">
-```python
+```py
 import json
 import uuid
 
