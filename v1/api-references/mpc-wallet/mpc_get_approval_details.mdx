@@ -16,6 +16,7 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
             <Expandable title="object">
                 <ResponseField name="role_result" type="Int">approval result of the role, 0: WAITING, 1: APPROVED, -1: DECLINED</ResponseField>
                 <ResponseField name="review_threshold" type="Int">review threshold</ResponseField>
+                <ResponseField name="initiator" type="String">transaction initiator</ResponseField>
                 <ResponseField name="user_details" type="object">
                     <Expandable title="object">
                         <ResponseField name="pubkey" type="object">
@@ -24,8 +25,10 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
                                 <ResponseField name="signature" type="String">signature</ResponseField>
                                 <ResponseField name="last_time" type="String">last operation time</ResponseField>
                                 <ResponseField name="language" type="String">language</ResponseField>
+                                <ResponseField name="message" type="String">transaction review message</ResponseField>
                                 <ResponseField name="message_version" type="String">message version</ResponseField>
                                 <ResponseField name="extra_message" type="String">extra message</ResponseField>
+                                <ResponseField name="transaction_type" type="String">transaction type</ResponseField>
                             </Expandable>
                         </ResponseField>
                     </Expandable>
@@ -36,6 +39,7 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
             <Expandable title="object">
                 <ResponseField name="role_result" type="Int">approval result of the role, 0: WAITING, 1: APPROVED, -1: DECLINED</ResponseField>
                 <ResponseField name="review_threshold" type="Int">review threshold</ResponseField>
+                <ResponseField name="initiator" type="String">Initiator</ResponseField>
                 <ResponseField name="user_details" type="object">
                     <Expandable title="object">
                         <ResponseField name="pubkey" type="object">
@@ -44,8 +48,10 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
                                 <ResponseField name="signature" type="String">signature</ResponseField>
                                 <ResponseField name="last_time" type="String">last operation time</ResponseField>
                                 <ResponseField name="language" type="String">language</ResponseField>
+                                <ResponseField name="message" type="String">transaction review message</ResponseField>
                                 <ResponseField name="message_version" type="String">message version</ResponseField>
                                 <ResponseField name="extra_message" type="String">extra message</ResponseField>
+                                <ResponseField name="transaction_type" type="String">transaction type</ResponseField>
                             </Expandable>
                         </ResponseField>
                     </Expandable>
@@ -56,6 +62,7 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
             <Expandable title="object">
                 <ResponseField name="role_result" type="Int">approval result of the role, 0: WAITING, 1: APPROVED, -1: DECLINED</ResponseField>
                 <ResponseField name="review_threshold" type="Int">review threshold</ResponseField>
+                <ResponseField name="initiator" type="String">Initiator</ResponseField>
                 <ResponseField name="user_details" type="object">
                     <Expandable title="object">
                         <ResponseField name="pubkey" type="object">
@@ -64,8 +71,10 @@ description: <Note>This content applies to WaaS 1.0 only. We highly recommend th
                                 <ResponseField name="signature" type="String">signature</ResponseField>
                                 <ResponseField name="last_time" type="String">last operation time</ResponseField>
                                 <ResponseField name="language" type="String">language</ResponseField>
+                                <ResponseField name="message" type="String">transaction review message</ResponseField>
                                 <ResponseField name="message_version" type="String">message version</ResponseField>
                                 <ResponseField name="extra_message" type="String">extra message</ResponseField>
+                                <ResponseField name="transaction_type" type="String">transaction type</ResponseField>
                             </Expandable>
                         </ResponseField>
                     </Expandable>
@@ -117,28 +126,33 @@ Request("GET", "/v1/custody/mpc/get_approval_details/", map[string]string{
     "broker_user": {
       "role_result": 1,
       "review_threshold": 1,
+      "initiator": "API",
       "user_details": {
         "51ae8dbdcf49a117e80b61ee278e4925cdf0aec29a51965da5421dd51ecaba9038373138a32a706507eb2de5112946aede58f9c996e02548e0a5a2246d46f342": {
           "result": 2,
           "signature": "d9db4fd719104d014d9ed6bcb79b959bd268d009c0da88f2120035aba4f2ee237389b283fad545ac756ffb2c2342d1be80a113a4dab6a486e3699cde4925663c",
           "last_time": "2024-05-24 06:40:23.792131+00:00",
-          "language": "zh",
+          "language": "en",
+          "message": "【Transaction Review】Please confirm the details\n\nRequest ID: mpc-transfer-1723544808437\n\nFrom: 0x3d3e6f2ce7f434caeef3d28dd5e21e0cbf3eb548\n\nInteracted With (To): 0x3d3e6f2ce7f434caeef3d28dd5e21e0cbf3eb548\n\nValue: 0.0001 Holesky ETH\n\nTentative Fee: 0.0000000513744 Holesky ETH（0.0000000000024464 Holesky ETH * 21000）\n\nTime: 2025-01-07 13:48:59\nMax Fee Amount: \n",
           "message_version": "1.0.1",
-          "extra_message": "custody|3aM7ZZUr6ZKjtPekiz9fuFcehjGbYddW8vtLsUPvE5hXhe2gL9BJ4Ng5T9V4rEC1KXfc3cNtCPu4twcXDNPQ44eaVj8sU2jHQJ5m3jybaBZVXJFpC8DcqY1NkPppLCpTSvQCN9z7n|web_send_by_user_1475_1716532814022|1716532817"
+          "extra_message": "custody|3aM7ZZUr6ZKjtPekiz9fuFcehjGbYddW8vtLsUPvE5hXhe2gL9BJ4Ng5T9V4rEC1KXfc3cNtCPu4twcXDNPQ44eaVj8sU2jHQJ5m3jybaBZVXJFpC8DcqY1NkPppLCpTSvQCN9z7n|web_send_by_user_1475_1716532814022|1716532817",
+          "transaction_type": "Withdraw"
         }
       }
     },
     "approver": {
       "role_result": -1,
       "review_threshold": 1,
+      "initiator": "API",
       "user_details": {
         "51ae8dbdcf49a117e80b61ee278e4925cdf0aec29a51965da5421dd51ecaba9038373138a32a706507eb2de5112946aede58f9c996e02548e0a5a2246d46f342": {
           "result": 3,
           "signature": "0dec39cb9ac2909e037722ba753ea52342db33399d49226b1cf826e8fa0b92df440a42a623e78c7a2d3c6d90e71fd561dcfc7750531acb073a7903c50220b761",
           "last_time": "2024-05-24 06:42:32.660555+00:00",
           "language": "zh",
-          "message_version": "1.0.1",
-          "extra_message": "custody|3aM7ZZUr6ZKjtPekiz9fuFcehjGbYddW8vtLsUPvE5hXhe2gL9BJ4Ng5T9V4rEC1KXfc3cNtCPu4twcXDNPQ44eaVj8sU2jHQJ5m3jybaBZVXJFpC8DcqY1NkPppLCpTSvQCN9z7n|web_send_by_user_1475_1716532814022|1716532914"
+          "message": "审核员审核\n交易类型: Withdraw\n钱包: My MPC wallet\n网络: Ethereum Holsky Testnet\n发起人: API\n请求 ID: mpc-transfer-1723544808437\n创建时间: 2025-01-07 13:48:59\n\n协议:  \n发送地址: 0x3d3e6f2ce7f434caeef3d28dd5e21e0cbf3eb548\n接收地址: 0x3d3e6f2ce7f434caeef3d28dd5e21e0cbf3eb548\n\n金额: 0.0001 Holesky ETH\nEstimated Fee: 0.0000000513744 Holesky ETH（0.0000000000024464 Holesky ETH * 21000）\n\n交易说明: test mpc transfer\n",
+          "extra_message": "custody|3aM7ZZUr6ZKjtPekiz9fuFcehjGbYddW8vtLsUPvE5hXhe2gL9BJ4Ng5T9V4rEC1KXfc3cNtCPu4twcXDNPQ44eaVj8sU2jHQJ5m3jybaBZVXJFpC8DcqY1NkPppLCpTSvQCN9z7n|web_send_by_user_1475_1716532814022|1716532914",
+          "transaction_type": "Withdraw"
         }
       }
     }

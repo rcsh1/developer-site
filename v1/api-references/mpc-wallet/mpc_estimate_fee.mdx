@@ -60,39 +60,59 @@ extra_parameters: '{"calldata": "0xa8059cbb000000000000000000000000971948873f869
         <ResponseField name="fee_decimal" type="Int">Fee decimal</ResponseField>
 
         <ResponseField name="slow" type="object">
-            <Expandable title="object">
+          <Expandable title="object">
             <ResponseField name="fee_per_byte" type="Int" >transaction fees per byte; applicable to the UTXO model</ResponseField>
             <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
             <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
             <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
-            </Expandable>
+            <ResponseField name="fee_reserved" type="Int" >
+            The amount that needs to be reserved as a fee. The meaning of this field varies depending on the blockchain:<br />
+              - For certain cryptocurrencies, this field indicates the minimum balance required to be maintained on the address due to chain-specific restrictions.<br />
+              - For some Layer 2 blockchains, this field represents the Layer 1 transaction fee.
+            </ResponseField>
+          </Expandable>
         </ResponseField>
 
         <ResponseField name="average" type="object">
-            <Expandable title="object">
+          <Expandable title="object">
             <ResponseField name="fee_per_byte" type="Int" >transaction fees per byte; applicable to the UTXO model</ResponseField>
             <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
             <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
             <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
-            </Expandable>
+            <ResponseField name="fee_reserved" type="Int" >
+            The amount that needs to be reserved as a fee. The meaning of this field varies depending on the blockchain:<br />
+              - For certain cryptocurrencies, this field indicates the minimum balance required to be maintained on the address due to chain-specific restrictions.<br />
+              - For some Layer 2 blockchains, this field represents the Layer 1 transaction fee.
+            </ResponseField>
+          </Expandable>
         </ResponseField>
 
         <ResponseField name="fast" type="object">
-            <Expandable title="object">
+          <Expandable title="object">
             <ResponseField name="fee_per_byte" type="Int" >transaction fees per byte; applicable to the UTXO model</ResponseField>
             <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
             <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
             <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
-            </Expandable>
+            <ResponseField name="fee_reserved" type="Int" >
+            The amount that needs to be reserved as a fee. The meaning of this field varies depending on the blockchain:<br />
+              - For certain cryptocurrencies, this field indicates the minimum balance required to be maintained on the address due to chain-specific restrictions.<br />
+              - For some Layer 2 blockchains, this field represents the Layer 1 transaction fee.
+            </ResponseField>
+          </Expandable>
         </ResponseField>
 
         <ResponseField name="custom" type="object">
-            <Expandable title="object">
+          <Expandable title="object">
             <ResponseField name="fee_per_byte" type="Float" >transaction fees per byte; applicable to the UTXO model</ResponseField>
             <ResponseField name="fee_amount" type="Int" >transaction fee; applicable to the UTXO model</ResponseField>
             <ResponseField name="gas_price" type="Int" >gas price for account model</ResponseField>
             <ResponseField name="gas_limit" type="Int" >gas limit for account model</ResponseField>
-            </Expandable>
+            <ResponseField name="fee_reserved" type="Int" >
+            The amount that needs to be reserved as a fee. The meaning of this field varies depending on the blockchain:<br />
+              - For certain cryptocurrencies, this field indicates the minimum balance required to be maintained on the address due to chain-specific restrictions.<br />
+              - For some Layer 2 blockchains, this field represents the Layer 1 transaction fee.
+            </ResponseField>
+          </Expandable>
         </ResponseField>
 
       </Expandable>
@@ -189,25 +209,29 @@ Request("POST", "/v1/custody/mpc/estimate_fee/", map[string]string{
       "fee_per_byte": 0,
       "fee_amount": 0,
       "gas_price": 13349966041,
-      "gas_limit": 21000
+      "gas_limit": 21000,
+      "fee_reserved": 0
     },
     "average": {
       "fee_per_byte": 0,
       "fee_amount": 0,
       "gas_price": 13349966041,
-      "gas_limit": 21000
+      "gas_limit": 21000,
+      "fee_reserved": 0
     },
     "fast": {
       "fee_per_byte": 0,
       "fee_amount": 0,
       "gas_price": 26699932082,
-      "gas_limit": 21000
+      "gas_limit": 21000,
+      "fee_reserved": 0
     },
     "custom": {
       "fee_per_byte": 0,
       "fee_amount": 0,
       "gas_price": 0,
-      "gas_limit": 0
+      "gas_limit": 0,
+      "fee_reserved": 0
     }
   }
 }
@@ -223,25 +247,29 @@ Request("POST", "/v1/custody/mpc/estimate_fee/", map[string]string{
       "fee_per_byte": 2,
       "fee_amount": 632,
       "gas_price": 0,
-      "gas_limit": 0
+      "gas_limit": 0,
+      "fee_reserved": 0
     },
     "average": {
       "fee_per_byte": 5,
       "fee_amount": 1580,
       "gas_price": 0,
-      "gas_limit": 0
+      "gas_limit": 0,
+      "fee_reserved": 0
     },
     "fast": {
       "fee_per_byte": 50,
       "fee_amount": 1580,
       "gas_price": 0,
-      "gas_limit": 0
+      "gas_limit": 0,
+      "fee_reserved": 0
     },
     "custom": {
       "fee_per_byte": 2.2,
       "fee_amount": 695,
       "gas_price": 0,
-      "gas_limit": 0
+      "gas_limit": 0,
+      "fee_reserved": 0
     }
   }
 }

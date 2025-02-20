@@ -10,6 +10,7 @@ None
 <ResponseField name="success" type="bool">request successful or failed</ResponseField>
    <ResponseField name="result" type="object">
       <Expandable title="object">
+        <ResponseField name="wallet_name" type="String">wallet name</ResponseField>
         <ResponseField name="chain_codes" type="String[ ]" >List of supported chain codes.</ResponseField>
       </Expandable>
 </ResponseField>
@@ -42,6 +43,7 @@ Request("GET", "/v1/custody/mpc/get_supported_chains/", map[string]string{})
 {
   "success": true,
   "result":{
+      "wallet_name": "My MPC Wallet",
       "chain_codes": [
         "BSC_BNB",
         "ETH",
