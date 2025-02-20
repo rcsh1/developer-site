@@ -18,10 +18,10 @@ Refer to the following table for the source and destination types corresponding 
 | Withdrawal - Transfers between Exchange Wallets    | Main<br />Sub                                                                                    | ExchangeWallet           |
 | Withdrawal - Other withdrawal transactions         | Asset<br />Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Main<br />Sub                      | Address                  |
 | ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}                                               | EVM_Contract             |
-| MessageSign                                       | Org-Controlled<br />User-Controlled                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature |
+| MessageSign                                       | Org-Controlled<br />User-Controlled                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature<br />Raw_Message_Signature<br />BTC_EIP_191_Signature |
 | ExternalSafeTx                                    | Safe\{Wallet\}                                                                                   |       EVM_Contract        |
-| Stake                                    | Org-Controlled                                                                                  |    EVM_Contract          |
-| Unstake                                    | Org-Controlled                                                                                   |    EVM_Contract          |
+| Stake                                    | Org-Controlled                                                                                  |    Address          |
+| Unstake                                    | Org-Controlled                                                                                   |    Address          |
 
 
 
@@ -46,6 +46,8 @@ The transaction destination types are as follows:
 - `EVM_Contract`: An EVM-compatible contract.
 - `EVM_EIP_191_Signature`: An EVM EIP-191 signature. For more details, see [Signed Data Standard](https://eips.ethereum.org/EIPS/eip-191).
 - `EVM_EIP_712_Signature`: An EVM EIP-712 signature. For more details, see [Typed structured data hashing and signing](https://eips.ethereum.org/EIPS/eip-712).
+- `Raw_Message_Signature`: A raw message signature.
+- `BTC_EIP_191_Signature`: A BTC EIP-191 signature.
 - `DepositToAddress`: A wallet address.
 - `DepositToWallet`: An Exchange Wallet.
 
