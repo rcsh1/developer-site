@@ -1,0 +1,817 @@
+---
+title: "全托管钱包（资产钱包）入门"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南将帮助您快速上手[全托管钱包（资产钱包）](https://manuals.cobo.com/zh/portal/custodial-wallets/introduction)。通过本指南，您将能够使用 WaaS 2.0 API 完成以下操作：
+
+1. 查询可以使用的链和代币
+2. 创建资产钱包
+3. 在钱包中生成充币地址
+4. 向钱包存入代币并跟踪交易状态
+5. 从钱包提取代币
+6. 查询钱包余额
+
+<Note>本指南在所有代码示例中都使用[开发环境](/v2_cn/guides/overview/environments)。建议您先在开发环境中测试新功能，然后再将其部署到生产环境。</Note>
+
+## 前提条件
+
+- 按照[钱包即服务 (WaaS) 2.0 入门](/v2_cn/guides/get-started/get-started-with-waas)中的说明设置您的账户，并向 WaaS 2.0 服务发送第一个 API 请求。
+- 如果您选择使用 WaaS SDK 而不是手动编写 API 请求，请参阅相应编程语言的 SDK 指南（[Python](/v2_cn/developer-tools/quickstart-python)、[Java](/v2_cn/developer-tools/quickstart-java)、[Go](/v2_cn/developer-tools/quickstart-go)、[JavaScript](/v2_cn/developer-tools/quickstart-javascript)），将 SDK 集成到您的项目中。
+- 准备一些测试代币，因为您将需要它们来测试充币功能。要了解可以使用哪些测试代币，请参阅[查询链和代币信息](#1-query-chain-and-token-information)。在大多数情况下，您可以使用 XTN 作为测试代币。
+- 强烈建议您设置一个 Callback Endpoint 来接收和批准提币请求，以及一个 Webhook Endpoint 来接收有关交易状态更新和其他重要事件的实时通知。要了解如何设置和注册 Webhook 和 Callback Endpoint，请参阅[Webhook 和 Callback 简介](/v2_cn/guides/webhooks-callbacks/introduction)。
+
+## 1. 查询链和代币信息
+
+在开始设置钱包并生成充币地址之前，您需要先了解可用的区块链和代币。
+
+### 查询启用的链
+
+要检索可以用于资产钱包的链及其对应的链 ID，请调用 [List enabled chains](/v2/api-references/wallets/list-enabled-chains) 并指定以下查询参数：
+
+- `wallet_type`：`Custodial`。
+- `wallet_subtype`：`Asset`。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   WalletType,
+   WalletSubtype,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Query enabled chains
+       api_response = wallet_api_instance.list_enabled_chains(
+           wallet_type=WalletType.CUSTODIAL,
+           wallet_subtype=WalletSubtype.ASSET
+       )
+       print(f"The response of WalletsApi->list_enabled_chains:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->list_enabled_chains, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.ListSupportedChains200Response;
+import com.cobo.waas2.model.WalletSubtype;
+import com.cobo.waas2.model.WalletType;
+
+public class ListEnabledChainsExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            Integer limit = 50;
+            String before = null;
+            String after = null;
+            // Query enabled chains
+            ListSupportedChains200Response result = apiInstance.listEnabledChains(WalletType.CUSTODIAL, WalletSubtype.ASSET, limit, before, after);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#listEnabledChains");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+如果您想使用的链不在查询到的列表上，请先启用该链。要启用新的区块链，请登陆 Cobo Portal， 并在**套餐**页面的**可用公链数**配置中添加公链。
+
+如果您已达到可用链的数量限制，请考虑升级您的[套餐](https://manuals.cobo.com/en/portal/bills-and-payments/introduction)。
+
+### 查询启用的代币
+
+要检索可以用于全托管钱包的代币及其对应的代币 ID，请调用 [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens)并指定以下查询参数：
+
+- `wallet_type`：`Custodial`。
+- `wallet_subtype`：`Asset`。
+- `chain_ids`：指定所需的链 ID。您也可以将此参数留空以查询所有链。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   WalletType,
+   WalletSubtype,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Query enabled tokens
+       api_response = wallet_api_instance.list_enabled_tokens(
+           wallet_type=WalletType.CUSTODIAL,
+           wallet_subtype=WalletSubtype.ASSET
+       )
+       print(f"The response of WalletsApi->list_enabled_tokens:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->list_enabled_tokens, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.ListSupportedTokens200Response;
+import com.cobo.waas2.model.WalletSubtype;
+import com.cobo.waas2.model.WalletType;
+
+public class ListEnabledTokensExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            String chainIds = null;
+            Integer limit = 50;
+            String before = null;
+            String after = null;
+            // Query enabled tokens
+            ListSupportedTokens200Response result = apiInstance.listEnabledTokens(WalletType.CUSTODIAL, WalletSubtype.ASSET, chainIds, limit, before, after);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#listEnabledTokens");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+如果您想使用的代币不在查询到的列表上，请先启用该代币。要启用新的代币，请登陆 Cobo Portal， 并在您的钱包页面点击**添加代币**进行添加。
+
+## 2. 创建钱包
+
+现在您已经确认可以使用哪些链和代币，下一步是设置钱包。要创建资产钱包，请调用 [Create wallet](/v2/api-references/wallets/create-wallet)，并在请求包体中指定以下属性：
+
+- `wallet_type`：`Custodial`。
+- `wallet_subtype`：`Asset`。
+
+在请求成功完成后，响应中将包含钱包 ID，即您刚刚创建的钱包的唯一标识符。请保存此钱包 ID，因为您将在后续步骤中使用它。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   WalletType,
+   WalletSubtype,
+   CreateCustodialWalletParams,
+   CreateWalletParams,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Create an Asset Wallet
+       api_response = wallet_api_instance.create_wallet(
+           CreateWalletParams(
+               actual_instance=CreateCustodialWalletParams(
+                   name="Asset Example Wallet Demo(Python)",
+                   wallet_type=WalletType.CUSTODIAL,
+                   wallet_subtype=WalletSubtype.ASSET,
+               )
+           )
+       )
+       print("The response of WalletsApi->create_wallet:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->create_wallet, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.*;
+
+public class CreateWalletExample {
+   public static void main(String[] args) {
+       ApiClient defaultClient = Configuration.getDefaultApiClient();
+       // Use the development environment
+       defaultClient.setEnv(Env.DEV);
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
+       WalletsApi apiInstance = new WalletsApi();
+       try {
+           CreateCustodialWalletParams params = new CreateCustodialWalletParams()
+                   .name("Asset Example Wallet Demo(Java)")
+                   .walletType(WalletType.CUSTODIAL)
+                   .walletSubtype(WalletSubtype.ASSET);
+           // Create an Asset Wallet
+           CreatedWalletInfo result = apiInstance.createWallet(new CreateWalletParams(params));
+           System.out.println(result);
+       } catch (ApiException e) {
+           System.err.println("Exception when calling WalletsApi#createWallet");
+           System.err.println("Status code: " + e.getCode());
+           System.err.println("Reason: " + e.getResponseBody());
+           System.err.println("Response headers: " + e.getResponseHeaders());
+           e.printStackTrace();
+       }
+   }
+}
+```
+</Accordion>
+
+## 3. 生成充币地址
+
+创建钱包后，您现在需要在钱包中生成充币地址来接收代币。要在刚刚创建的资产钱包中生成充币地址，请调用 [Create addresses in wallet](/v2/api-references/wallets/create-addresses-in-wallet)，并指定以下参数和属性：
+
+- 路径：
+  - `wallet_id`：您刚刚创建的钱包 ID。
+- 请求包体：
+  - `chain_id`：链 ID。
+  - `count`：指定要创建的地址数量。
+
+在请求成功完成后，响应将包含您刚刚创建的地址。您现在可以将代币充币到这些地址中。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Generate two addresses on the Bitcoin testnet3 (XTN) chain using P2TR encoding
+       api_response = wallet_api_instance.create_address(
+           wallet_id="<Your Wallet ID>",
+           create_address_request=CreateAddressRequest(
+               chain_id="XTN", count=2, encoding=AddressEncoding.ENCODING_P2_TR
+           ),
+       )
+       print("The response of WalletsApi->create_address:")
+       for address_info in api_response:
+           print(json.dumps(address_info.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->create_address, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.AddressEncoding;
+import com.cobo.waas2.model.AddressInfo;
+import com.cobo.waas2.model.CreateAddressRequest;
+
+import java.util.List;
+import java.util.UUID;
+
+public class CreateAddressExample {
+   public static void main(String[] args) {
+       ApiClient defaultClient = Configuration.getDefaultApiClient();
+       // Use the development environment
+       defaultClient.setEnv(Env.DEV);
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
+       WalletsApi apiInstance = new WalletsApi();
+       try {
+           UUID wallet_id = UUID.fromString("<YOUR_WALLET_ID>");
+           CreateAddressRequest params = new CreateAddressRequest()
+                   .chainId("XTN")
+                   .count(2)
+                   .encoding(AddressEncoding.BECH32);
+           // Generate two addresses on the Bitcoin testnet3 (XTN) chain using P2TR encoding
+           List<AddressInfo> result = apiInstance.createAddress(wallet_id, params);
+           for (AddressInfo addressInfo : result)
+               System.out.println(addressInfo);
+       } catch (ApiException e) {
+           System.err.println("Exception when calling WalletsApi#createAddress");
+           System.err.println("Status code: " + e.getCode());
+           System.err.println("Reason: " + e.getResponseBody());
+           System.err.println("Response headers: " + e.getResponseHeaders());
+           e.printStackTrace();
+       }
+   }
+}
+```
+</Accordion>
+
+## 4. 处理充币
+
+在将代币存入生成的地址后，您可以通过以下两种方式跟踪充币状态。我们推荐使用 Webhook，因为它能提供实时通知，相比定期使用 API 查询交易状态更为高效和实时。
+
+### 选项 1：使用 Webhook 进行实时通知
+
+Webhook 是 WaaS 服务与您的 App 通信的重要机制。注册 Webhook Endpoint 后，WaaS 服务会在事件发生时将推送消息发送到指定的 URL。
+
+要了解如何设置 Webhook Endpoint 并在 Cobo Portal 上注册，请参阅 [Webhook 和 Callback 简介](/v2_cn/guides/webhooks-callbacks/introduction)。
+
+要跟踪充币状态，您可以订阅以下 Webhook 事件类型：
+
+- `wallets.transaction.created`
+- `wallets.transaction.updated`
+- `wallets.transaction.succeeded`
+- `wallets.transaction.failed`
+
+要了解每个事件类型的触发条件和数据结构，请参阅 [Webhook 事件类型和数据类型](/v2_cn/guides/webhooks-callbacks/webhook-event-type)。
+
+### 选项 2：通过 API 调用获取交易状态
+
+要查询充币交易的状态，请调用 [List all transactions](/v2/api-references/transactions/list-all-transactions)，并设置以下查询参数：
+
+- `types`：`Deposit`。
+- `statuses`：`Confirming,Completed`。如果您从外部地址充币，则可以在交易等待所需的确认数量或成功完成时查询交易详细信息。
+- `wallet_ids`：您在第一步中创建的钱包 ID。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+import uuid
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+   TransferParams,
+   TransferSource,
+   CustodialTransferSource,
+   WalletSubtype,
+   TransferDestination, AddressTransferDestination, TransferDestinationType, AddressTransferDestinationAccountOutput,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   transaction_api_instance = cobo_waas2.TransactionsApi(api_client)
+   try:
+       # List deposit transactions
+       api_response = transaction_api_instance.list_transactions(
+           types="Deposit",
+           statuses="Confirming,Completed",
+           wallet_ids="<YOUR_WALLET_ID>"
+       )
+       print("The response of TransactionsApi->list_transactions:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling TransactionsApi->list_transactions, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.ListTransactions200Response;
+
+import java.util.UUID;
+
+public class ListTransactionsExample {
+   public static void main(String[] args) {
+       ApiClient defaultClient = Configuration.getDefaultApiClient();
+       // Use the development environment
+       defaultClient.setEnv(Env.DEV);
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
+       TransactionsApi apiInstance = new TransactionsApi();
+       try {
+           String requestId = null;
+           String coboIds = null;
+           String transactionIds = null;
+           String transactionHashes = "";
+           String types = "Deposit";
+           String statuses = "Confirming,Completed";
+           String walletIds = "<YOUR_WALLET_ID>";
+           String chainIds = null;
+           String tokenIds = null;
+           String assetIds = null;
+           UUID vaultId = null;
+           UUID projectId = null;
+           Long minCreatedTimestamp = null;
+           Long maxCreatedTimestamp = null;
+           Integer limit = 50;
+           String before = null;
+           String after = null;
+
+           // List deposit transactions
+           ListTransactions200Response result = apiInstance.listTransactions(
+                   requestId, coboIds, transactionIds, transactionHashes, types, statuses, walletIds, chainIds,
+                   tokenIds, assetIds, vaultId, projectId, minCreatedTimestamp, maxCreatedTimestamp, limit, before, after);
+           System.out.println(result);
+       } catch (ApiException e) {
+           System.err.println("Exception when calling WalletsApi#createAddress");
+           System.err.println("Status code: " + e.getCode());
+           System.err.println("Reason: " + e.getResponseBody());
+           System.err.println("Response headers: " + e.getResponseHeaders());
+           e.printStackTrace();
+       }
+   }
+}
+```
+</Accordion>
+
+## 5. 提取代币
+
+现在您的钱包中已经有了代币，让我们来学习如何提取它们。
+
+### 设置 Callback Endpoint
+
+为了增强交易的安全性，强烈建议您设置 Callback Endpoint 来接收和批准提币请求。一旦您使用 WaaS 2.0 API 发起提币，Callback Endpoint 将接收包含交易详细信息的回调消息。只有在您批准提币请求后，交易才会继续进行。
+
+要了解如何设置 Callback Endpoint 并在 Cobo Portal 上注册，请参阅[Webhook 和 Callback 简介](/v2_cn/guides/webhooks-callbacks/introduction)。
+
+### 提取代币
+
+要从资产钱包中提取代币，请调用 [Transfer token](/v2/api-references/transactions/transfer-token)，并在请求包体中指定以下属性：
+
+- `request_id`：您的请求 ID。
+- `source.source_type`：`Asset`。
+- `source.wallet_id`：您刚刚创建的钱包 ID。
+- `token_id`：您要提取的代币 ID。
+- `destination.destination_type`：`Address`。
+- `destination.account_output`：接收地址和 memo（如有），以及您要提取的金额。
+- `category_names`：用于识别交易的自定义类别。
+- `description`：转账的描述。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+import uuid
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+   TransferParams,
+   TransferSource,
+   CustodialTransferSource,
+   WalletSubtype,
+   TransferDestination, AddressTransferDestination, TransferDestinationType, AddressTransferDestinationAccountOutput,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   transaction_api_instance = cobo_waas2.TransactionsApi(api_client)
+   try:
+       # Transfer Bitcoin testnet3(XTN) token from the wallet
+       api_response = transaction_api_instance.create_transfer_transaction(
+           transfer_params=TransferParams(
+               request_id=str(uuid.uuid4()),
+               source=TransferSource(
+                   actual_instance=CustodialTransferSource(
+                       source_type=WalletSubtype.ASSET,
+                       wallet_id="<YOUR_WALLET ID>",
+                   )
+               ),
+               token_id="XTN",
+               destination=TransferDestination(
+                   actual_instance=AddressTransferDestination(
+                       destination_type=TransferDestinationType.ADDRESS,
+                       account_output=AddressTransferDestinationAccountOutput(
+                           address="<TARGET_ADDRESS>",
+                           amount="<TRANSFER_AMOUNT>"
+                       )
+                   )
+               ),
+               category_names=["<CATEGORY_NAME>"],
+               description="<DESCRIPTION>",
+           )
+       )
+       print("The response of TransactionsApi->create_transfer_transaction:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling TransactionsApi->create_transfer_transaction, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class TransferExample {
+   public static void main(String[] args) {
+       ApiClient defaultClient = Configuration.getDefaultApiClient();
+       // Use the development environment
+       defaultClient.setEnv(Env.DEV);
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
+       TransactionsApi apiInstance = new TransactionsApi();
+       try {
+           UUID walletId = UUID.fromString("<YOUR_WALLET_ID>");
+
+           TransferParams params = new TransferParams();
+           params.setRequestId("Demo" + UUID.randomUUID());
+
+           CustodialTransferSource custodialTransferSource = new CustodialTransferSource().sourceType(WalletSubtype.ASSET).walletId(walletId
+);
+           params.setSource(new TransferSource(custodialTransferSource));
+
+           params.setTokenId("XTN");
+           AddressTransferDestination addressTransferDestination = new AddressTransferDestination()
+                   .destinationType(TransferDestinationType.ADDRESS)
+                   .accountOutput(new AddressTransferDestinationAccountOutput()
+                           .address("<TARGET_ADDRESS>")
+                           .amount("<TRANSFER_AMOUNT>"));
+           params.setDestination(new TransferDestination(addressTransferDestination));
+
+           List<String> categoryNames = new ArrayList<>();
+           categoryNames.add("<CATEGORY_NAME>");
+           params.categoryNames(categoryNames).description("<DESCRIPTION>");
+
+           // Transfer Bitcoin testnet3(XTN) token from the wallet
+           CreateTransferTransaction201Response result = apiInstance.createTransferTransaction(params);
+           System.out.println(result);
+       } catch (ApiException e) {
+           System.err.println("Exception when calling TransactionsApi#createTransferTransaction");
+           System.err.println("Status code: " + e.getCode());
+           System.err.println("Reason: " + e.getResponseBody());
+           System.err.println("Response headers: " + e.getResponseHeaders());
+           e.printStackTrace();
+       }
+   }
+}
+```
+</Accordion>
+
+提币请求的响应如下。请记录交易 ID，因为您将在后续步骤中使用它。
+```json
+{
+   "request_id": "<YOUR_REQUEST_ID>",
+   "transaction_id": "<THE_GENERATED_TRANSACTION_ID>",
+   "status": "Submitted"
+}
+```
+### 确认提币
+
+如果您已经设置了 Callback Endpoint，则在发起提币交易后，您的 Callback Endpoint 将接收包含交易详细信息的消息。检查交易是否符合预期，然后使用成功状态码（200 或 201）和响应包体 `ok` 来批准交易。要了解如何处理回调消息，请参阅[设置 Callback 或 Webhook 端点](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)。
+
+### 监控提币状态
+
+除了 Webhook 事件外，您还可以调用 [Get transaction information](/v2/api-references/transactions/get-transaction-information) 来查询交易状态。将路径参数 `transaction_id` 设置为上一个提币请求响应中返回的交易 ID。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+import uuid
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+   TransferParams,
+   TransferSource,
+   CustodialTransferSource,
+   WalletSubtype,
+   TransferDestination, AddressTransferDestination, TransferDestinationType, AddressTransferDestinationAccountOutput,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   transaction_api_instance = cobo_waas2.TransactionsApi(api_client)
+   try:
+       # Get transaction by ID
+       api_response = transaction_api_instance.get_transaction_by_id(
+           transaction_id="<YOUR_TRANSACTION_ID>"
+       )
+       print("The response of TransactionsApi->get_transaction_by_id:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling TransactionsApi->get_transaction_by_id, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.TransactionDetail;
+
+import java.util.UUID;
+
+public class GetTransactionExample {
+   public static void main(String[] args) {
+       ApiClient defaultClient = Configuration.getDefaultApiClient();
+       // Use the development environment
+       defaultClient.setEnv(Env.DEV);
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
+       TransactionsApi apiInstance = new TransactionsApi();
+       try {
+           UUID transactionId = UUID.fromString("<YOUR_TRANSACTION_ID>");
+           
+           // Get transaction by ID
+           TransactionDetail result = apiInstance.getTransactionById(transactionId);
+           System.out.println(result);
+       } catch (ApiException e) {
+           System.err.println("Exception when calling TransactionsApi#getTransactionById");
+           System.err.println("Status code: " + e.getCode());
+           System.err.println("Reason: " + e.getResponseBody());
+           System.err.println("Response headers: " + e.getResponseHeaders());
+           e.printStackTrace();
+       }
+   }
+}
+```
+</Accordion>
+
+## 6. 查询钱包余额
+
+在成功提取代币后，您可以调用 [List token balances by wallet](/v2/api-references/wallets/list-token-balances-by-wallet) 来查询钱包余额。指定以下路径和查询参数：
+
+- `wallet_id`：您在第一步中创建的钱包 ID。
+- `token_ids`：您可以将其留空以查询所有代币的余额，也可以将其设置为您要查询的特定代币。
+
+<Accordion title="Python 示例代码">
+```python
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   WalletType,
+   WalletSubtype,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Query token balances
+       api_response = wallet_api_instance.list_token_balances_for_wallet(
+           wallet_id="<YOUR_WALLET_ID>",
+       )
+       print(f"The response of WalletsApi->list_token_balances_for_wallet:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->list_token_balances_for_wallet, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Java 示例代码">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.ListTokenBalancesForAddress200Response;
+
+import java.util.UUID;
+
+public class ListTokenBalancesExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            UUID wallet_id = UUID.fromString("<YOUR_WALLET_ID>");
+            String tokenIds = null;
+            Integer limit = 50;
+            String before = null;
+            String after = null;
+            // Query token balances
+            ListTokenBalancesForAddress200Response result = apiInstance.listTokenBalancesForWallet(wallet_id, tokenIds, limit, before, after);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#listTokenBalancesForWallet");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

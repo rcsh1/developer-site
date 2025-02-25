@@ -1,0 +1,87 @@
+---
+title: "创建示例 App "
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本文指导您通过模板创建示例 Cobo Portal Apps 并在本地预览。
+
+## 前提条件
+
+- 要构建和管理 Cobo Portal Apps ，您需要首先在 [开发环境](https://portal.dev.cobo.com/) 中在 Cobo Portal 中创建一个团队。按照 [快速入门指南](https://manuals.cobo.com/zh/portal/quick-start-guide) 中的说明设置您的 Cobo 帐户并创建您的团队。如果已设置团队，请要求您的团队管理员邀请您加入团队。
+- 安装 FastAPI 作为开发环境。
+
+## 使用 Cobo CLI 创建 App 项目
+
+Cobo 命令行接口（CLI）是一种强大的开发工具，旨在帮助您直接从命令行构建、测试和管理与 Cobo Wallet-as-a-Service（WaaS）2.0 的集成。
+
+1. 使用以下命令安装 Cobo CLI：
+
+   ```shell
+    # 使用 pip 安装 Cobo CLI（需要 Python 3.9 或更高版本）。
+    pip install cobo-cli
+    # 或者，您可以使用 Homebrew 安装 Cobo CLI。
+    brew install cobo-cli
+    # 测试安装是否成功
+    cobo version
+   ```
+
+   有关 Cobo CLI 的系统要求的更多详细信息，请参阅 [安装 Cobo CLI](/v2_cn/developer-tools/cobo-cli/quick-start-guide#system-requirements)。
+
+2. 登录到 Cobo Portal 并将 Cobo CLI 连接到您的 Cobo Portal 帐户。您可以选择 [三种身份验证方法](/v2_cn/developer-tools/cobo-cli/login-and-authentication) 之一进行身份验证。作为示例，此步骤将向您展示如何使用您的 Cobo Portal 帐户进行身份验证：
+
+   ```shell
+   # 使用您的 Cobo Portal 帐户进行身份验证。
+   cobo auth user
+   # 启动用户登录过程。
+   cobo login
+   ```
+
+   系统会提示您打开浏览器以继续授权过程。在您的浏览器中完成授权过程，授予 Cobo CLI 访问您的加密钱包的必要权限。有关身份验证方法的更多详细信息，请参阅 [登录和身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication)。
+
+3. 使用 [app init](/v2_cn/developer-tools/cobo-cli/app-init) 命令基于模板创建示例 App 。您可以通过选项指定要创建的 WaaS App 的详细信息，或逐步选择这些参数并使用 Cobo CLI 的提示创建项目。
+
+   以下命令创建一个 Cobo Portal Apps 项目，使用 Org Access Tokens 进行身份验证，并在名为 `hello_world` 的目录中创建：
+
+   ```shell
+   cobo app init --app-type portal --auth org --directory hello_world
+   ```
+
+## 运行和预览 App 
+
+1. 启动前端服务器。
+   导航到创建 App 项目的目录中的 `frontend` 文件夹，并运行以下命令：
+
+   ```shell
+   npm install
+   npm start
+   ```
+
+   现在您可以查看 App 的前端，如下面的截图所示：
+
+   <img src="/v2_cn/images/apps/frontend.png" className="screenshot_full_screen" alt="前端预览" />
+
+2. 启动后端服务器。
+   导航到创建 App 项目的目录中的 `backend` 文件夹，并运行以下命令：
+
+   ```shell
+   uvicorn main:app --reload
+   ```
+
+   现在您可以查看 App 的后端，如下面的截图所示：
+
+   <img src="/v2_cn/images/apps/backend.png" className="screenshot_full_screen" alt="后端预览" />
+
+   若要显示团队中的钱包和交易，您需要完成以下步骤：
+
+   - 找到 `backend` 文件夹中的 `.env.example` 文件，并将其重命名为 `.env`。在 `.env` 文件中，设置 `COBO_API_KEY` 为您的 API Key，设置 `COBO_API_SECRET` 为您的 API Secret，设置 `COBO_ENV` 为 `dev` 或 `production`，具体取决于您使用的环境。有关 API Key的更多信息，请参阅 [API Key](/v2_cn/guides/overview/cobo-auth#api-key)。
+   - 在 Cobo Portal 中注册您的 API Key。有关更多详细信息，请参阅 [注册 API Key](https://manuals.cobo.com/zh/portal/developer-console/create-api-key)。
+
+   完成上述步骤后，您可以查看钱包和交易，如下面的截图所示：
+
+   <img src="/v2_cn/images/apps/frontend_info.png" className="screenshot_full_screen" alt="前端预览，包含钱包和交易" />
+
+## 发布 App 
+
+如果您想将 App 发布到 Cobo Portal ，您可以使用 [app upload](/v2_cn/developer-tools/cobo-cli/app-upload) Cobo CLI 命令将 App 发布到生产环境或开发环境。有关更多详细信息，请参阅 [发布 App ](/v2_cn/apps/build-app#publish-the-app)。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

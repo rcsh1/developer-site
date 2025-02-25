@@ -1,0 +1,33 @@
+---
+title: '查看实时日志'
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+使用此命令在终端中直接流式传输您对 WaaS 2.0 服务的 API 请求的实时日志。
+
+该命令提供每个 API 请求的详细信息，包括请求方法、端点、状态码等，使您能够实时监控和排查与 WaaS 2.0 服务的交互。
+
+<Note>`cobo logs tail` 命令需要适当的身份验证和权限。请确保您已登录并具有查看 API 日志所需的访问权限。</Note>
+
+## 用法
+
+```shell
+cobo logs tail [options]
+```
+
+## 选项
+- `--http-method`：按 HTTP 方法过滤 API 日志，例如 `POST`。
+- `--request-path`：按端点路径过滤 API 日志，例如 `/v2/wallets/{wallet_id}`。
+- `--status-code`：按 HTTP 状态码过滤 API 日志，例如 `200`。
+- `--api-key`：按请求中使用的特定 API Key过滤 API 日志。
+- `--ip-address`：按发出请求的 IP 地址过滤 API 日志。
+
+## 示例
+
+```shell
+cobo logs tail --http-method POST --status-code 404 --request-path /v2/wallets --ip-address 192.168.1.1
+```
+
+此命令获取 HTTP 方法为 `POST`、状态码为 `404`、请求 `/v2/wallets` 端点且来自特定 IP `192.168.1.1` 的 API 日志。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

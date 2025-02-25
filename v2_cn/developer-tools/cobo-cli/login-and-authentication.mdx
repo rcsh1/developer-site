@@ -1,0 +1,149 @@
+---
+title: "登录和身份验证"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南解释了如何将 Cobo CLI 认证到 Cobo Wallet-as-a-Service (WaaS) 2.0。您将了解三种可用的身份验证方法，理解它们的主要区别，并获得每种方法的分步实施说明。选择最适合您的安全要求和用例的身份验证方法。
+
+## 管理身份验证方法
+
+Cobo CLI 支持以下三种身份验证方法：
+
+- 使用您的 Cobo Portal 账户登录。Cobo CLI 将被授予与您的 Cobo Portal 账户相同的权限和钱包范围。您可以使用此方法来管理您的 Cobo Portal Apps，如创建、发布和更新应用。
+- 您也可以使用 API Key进行身份验证。Cobo CLI 将被授予为 API Key配置的权限和钱包范围。
+- 如果您想通过 Cobo CLI 本地测试您的 Cobo Portal Apps，您可以使用 Org Access Token 进行身份验证。此方法授予您的 Cobo Portal Apps访问团队的权限。
+
+您可以使用 `auth` 命令在这些方法之间切换：
+
+```shell
+cobo auth <METHOD>
+```
+将 `<METHOD>` 替换为以下之一：
+
+- `apikey`：使用 API Key 进行身份验证。有关详细信息，请参阅 [API Key 和 API Secret](/v2_cn/guides/overview/cobo-auth#api-key-and-api-secret)。
+- `user`：使用您的 Cobo Portal 账户登录。
+- `org`：使用 Org Access Token 进行身份验证。有关详细信息，请参阅 [Org Access Tokens](/v2_cn/apps/org-access-tokens)。
+
+例如，要切换到 API身份验证方法，请运行以下命令：
+
+```shell
+cobo auth apikey
+```
+
+要查看当前的身份验证方法，请运行以下命令：
+
+```shell
+cobo auth
+```
+
+## 使用您的 Cobo Portal 账户登录
+
+要使用您的 Cobo Portal 账户登录，请运行以下命令：
+
+```
+cobo login --user
+```
+
+此命令将启动用户登录过程：
+
+1. Cobo CLI 将显示一个浏览器 URL 和一个设置代码。
+2. 系统将提示您打开浏览器以继续授权过程。如果您确认，您的默认浏览器将使用提供的 URL 打开。
+<img src="/v2_cn/images/developer-tools/user-login.png" className="screenshot_modal" alt="使用您的 Cobo Portal 账户登录" />
+3. 验证浏览器中显示的设置代码与终端中显示的代码是否匹配。此步骤确保您的登录过程的安全性。
+4. 在确认代码匹配后，选择您的目标团队并点击 **确认** 以完成授权。这将完成登录过程并授予 Cobo CLI 访问选定团队的权限。
+
+## 使用 Org Access Tokens 认证
+
+Org Access Token 允许 Cobo Portal Apps访问团队的资源。
+
+### 将您的应用提交给 Cobo
+
+要获取 Org Access Token，您需要首先创建一个 Cobo Portal Apps并将其提交给 Cobo：
+
+1. 创建一个 Cobo Portal Apps。在提示时选择 `portal` 作为应用类型。
+
+    ```
+    cobo app init
+    ```
+
+2. 在您创建的应用的根目录中生成一个 App Key，Cobo 用于认证 Cobo Portal Apps。
+
+    ```
+    cobo keys generate --key-type APP
+    ```
+
+3. [使用您的 Cobo Portal 账户登录](#log-in-with-your-cobo-portal-account)。在您可以将应用提交给 Cobo 之前，这是必需的。按照屏幕上的说明完成身份验证过程。
+
+    ```
+    cobo login --user
+    ```
+4. 将您的应用提交给 Cobo 以获得批准。
+
+    ```
+    cobo app upload
+    ```
+
+### 获取 Org Access Token
+提交应用给 Cobo 后，您可以通过运行以下命令获取 Org Access Token：
+
+```
+cobo login --org
+```
+此命令将：
+
+1. 在终端中显示一个浏览器 URL 和一个设置代码。
+2. 提示您打开浏览器以继续授权过程。如果您确认，您的默认浏览器将使用提供的 URL 打开。
+<img src="/v2_cn/images/developer-tools/org-access-token.png" className="screenshot_modal" alt="获取 Org Access Token" />
+3. 验证浏览器中显示的设置代码与终端中显示的代码是否匹配。此步骤确保您的身份验证过程的安全性。
+4. 在确认代码匹配后，继续授权，授予 Cobo CLI 访问您团队资源的权限。
+
+提交授权请求后，您的团队管理员需要批准它。一旦获得批准，您的 Org Access Token 将保存在项目根目录的 `.env` 文件中。
+
+<Note>
+如果您想使用 Org Access Token 调用 WaaS API，您需要首先获得 Cobo 的应用批准。
+</Note>
+
+### 刷新 Org Access Token
+定期刷新您的 Org Access Token 以维护安全性是最佳实践。要刷新现有的 Org Access Token 并在 `.env` 文件中更新它，请添加 `--refresh-token` 标志：
+
+```shell
+cobo login --org --refresh-token
+```
+
+## 使用 API Key认证
+
+要使用此方法，您需要生成一个 API Key和一个 API Secret，并在 [Cobo Portal](https://portal.cobo.com) 上注册 API Key。
+
+1. 通过运行以下命令生成 API Key 密钥对（API Key和 API Secret）。
+    ```shell
+    cobo keys generate
+    ```
+2. 按照 [注册 API Key](https://manuals.cobo.com/en/portal/developer-console/create-api-key) 中的说明，将新生成的 API Key添加到 Cobo Portal。请记住，每次生成新的密钥对时都要更新 Cobo Portal 中的 API Key。
+
+<Info>您可以通过使用 `cobo open developer` 命令快速访问开发者控制台。此快捷方式将打开您的浏览器并直接带您到 Cobo Portal 的正确页面。</Info> 
+<Warning>
+确保仅授予您的 API Key必要的权限。限制访问有助于维护您账户和资源的安全性。
+</Warning>
+
+一旦您将 API Key添加到 Cobo Portal 并设置了适当的权限，您的 Cobo CLI 将能够使用此密钥进行后续操作的身份验证。
+
+## 登出
+
+要登出 Cobo CLI，请使用 `logout` 命令：
+
+```shell
+cobo logout
+```
+
+您可以使用以下选项指定要登出的身份验证方法：
+
+- `cobo logout --user`：从您的 Cobo Portal 账户登出。
+- `cobo logout --org`：仅移除 Org Access Token。您需要获取一个新的令牌来认证您的 CLI。
+- `cobo logout --all`：从您的 Cobo Portal 账户登出并移除 Org Access Token（如果未指定选项，这是默认行为）。
+
+## 最佳实践
+
+- 保持您的密钥和 Org Access Token 的安全，切勿与他人分享。使用环境变量或安全的配置文件存储它们。
+- 定期刷新您的 Org Access Token 并轮换您的 API Key以维护安全性。记住每次生成新的密钥对时都要更新 Cobo Portal 中的 API Key。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

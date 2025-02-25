@@ -1,0 +1,39 @@
+---
+title: "Cobo Portal Apps 开发简介"
+--- 
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+Cobo Portal Apps 是 [Cobo Portal ](https://manuals.cobo.com/zh/portal/introduction) 的扩展。它们可以作为 iframe 元素存在于 Cobo Portal 中，也可以作为 API 和 webhook 形式的机器人存在。通过利用包括 [Cobo Wallet-as-a-Service (WaaS) 2.0 API](/v2_cn/guides/overview/introduction) 在内的工具，像您这样的开发人员可以构建 Cobo Portal Apps ，以显著扩展 Cobo Portal 的功能，例如质押、交易、自动化财务操作等。
+
+用户可以通过访问 [Cobo Portal ](https://portal.cobo.com/apps) 轻松探索 Cobo Portal Apps 。要了解更多关于公开可用的 Cobo Portal Apps 的信息，请参阅 [Cobo Portal Apps 简介](https://manuals.cobo.com/zh/portal/portal-apps/introduction)。
+
+
+<img src="/v2_cn/images/apps/all_apps.png" className="screenshot_full_screen" alt="Cobo Portal Apps homepage"/>
+
+## 您可以利用的工具
+
+Cobo 提供以下工具，允许您轻松开发 Cobo Portal Apps 。
+
+### WaaS 2.0 API
+
+[Cobo WaaS 2.0 API](/v2/api-references/playground) 是 Cobo 最新的 WaaS API 产品。它使 Cobo Portal Apps 能够与用户的钱包进行交互，包括：
+
+- 查询信息，例如钱包详细信息、余额和交易历史。
+- 管理钱包，例如转移代币和调用智能合约。
+- 订阅 webhook 事件以接收通知。
+
+API 使用 [Cobo OAuth](/v2_cn/apps/authentication) 授权 Cobo Portal Apps 访问其他团队的数据并对团队的钱包执行操作。
+
+### Cobo CLI
+
+Cobo CLI 是一个开发工具，允许您直接从命令行构建、测试和发布 Cobo Portal Apps 。使用 Cobo CLI，您可以轻松处理常见任务，例如创建、发布和更新 App 。
+
+### Cobo UI Toolkit
+
+Cobo UI Toolkit是一个预构建组件库，符合 Cobo Portal 的设计和视觉标准。您可以利用该Cobo UI Toolkit快速构建 Cobo Portal Apps 的用户界面。
+
+## 相关链接
+
+- Cobo 提供一个 Hello World 示例项目，展示如何快速构建 Cobo Portal Apps 。有关详细信息，请参阅 [开始使用 Cobo Portal Apps ](/v2_cn/apps/get-started)。
+- 有关如何从头开始构建 Cobo Portal Apps 的分步指南，请参阅 [构建 Cobo Portal Apps ](/v2_cn/apps/build-app)。
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

@@ -1,0 +1,238 @@
+---
+title: "更新日志"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
+
+## v1.9.0
+
+此版本发布于 2025 年 2 月 19 日。
+
+### 新功能
+- 为 MPC 钱包添加了[按代币列出地址余额](/v2/api-references/wallets/list-address-balances-by-token)操作，以检索多个地址的代币余额。
+- 增强了 MPC 钱包私钥分片持有者管理，新增操作：
+  - [获取私钥分片持有者信息](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-information)：检索特定私钥分片持有者的详细信息。
+  - [列出所有私钥分片持有者](/v2/api-references/wallets--mpc-wallets/list-all-key-share-holders)：获取所有私钥分片持有者的综合列表。
+- 添加了[签署并广播交易](/v2/api-references/wallets--mpc-wallets/sign-and-broadcast-transaction)操作，以及 `Transaction` 模式中的 `raw_tx_info` 对象中的 `Built` 交易子状态和 `unsigned_raw_tx` 属性，以手动签署和广播未自动执行的构建交易。
+
+### 改进
+- 增强了[列出 UTXO](/v2/api-references/wallets/list-utxos) 操作，新增 `tx_hash` 查询参数，支持通过交易哈希查找 UTXO。
+- 增强了[签署消息](/v2/api-references/transactions/sign-message)操作，以支持原始消息和BTC EIP-191签名。
+- 增强了[在钱包中创建地址](/v2/api-references/wallets/create-addresses-in-wallet)操作，以支持生成调整后的地址。
+- 增强了[代币转账](/v2/api-references/transactions/transfer-token)操作，在 `AddressTransferDestination` 模式中添加了新的 `change_output_type` 属性。
+- 在 `TransactionDepositToAddressDestination` 模式中添加了 `tx_info` 属性，包括 `vout_n` 索引信息。
+
+## v1.8.0
+
+此版本发布于 2025 年 1 月 8 日。
+
+### 新功能
+- 新增 Travel Rule （Travel Rule）相关操作：
+  - [提交充币的 Travel Rule 信息](/v2/api-references/travelrule/submit-travel-rule-information-for-deposits)
+  - [提交提币的 Travel Rule 信息](/v2/api-references/travelrule/submit-travel-rule-information-for-withdrawals)
+  - [获取交易限制](/v2/api-references/travelrule/retrieve-transaction-limitations)
+  - [列出支持的国家](/v2/api-references/travelrule/list-supported-countries)
+- 新增对 Sky Farm 质押协议的支持。
+- 新增 [列出所有回调消息](/v2/api-references/developers/list-all-callback-messages) 和 [重试回调消息](/v2/api-references/developers/retry-callback-message) 操作，用于高效管理回调消息。
+
+### 改进
+- 新增 [webhook 事件类型](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types) `wallets.addresses.created`、`wallets.created` 和 `mpc_vaults.created`，以及新的事件数据类型 `Addresses`、`WalletInfo` 和 `MPCVault`，以优化 webhook 事件的处理。
+- 对质押操作进行了多项改进：
+  - 新增 `BabylonStakingActivityDetailExtra`、`EthStakingActivityDetailExtra` 和 `CoreStakingActivityDetailExtra` 模式，用于表示各质押协议的额外详细信息。
+  - 在 [列出质押活动](/v2/api-references/stakings/list-staking-activities) 操作中新增 `request_id` 查询参数，用于根据特定请求 ID 筛选活动。
+  - 在 `CreateStakeActivity` 模式中将 `extra` 属性设为可选。
+- 在 `AddressInfo` 模式中新增 `root_pubkey` 属性，用于表示地址的根扩展公钥。
+- 新增 `TransactionSelectedUtxo` 模式，用于表示交易中已选择的 UTXO 信息。
+
+## v1.7.0
+
+此版本于 2024 年 12 月 19 日发布。
+
+### 重大变更
+- 在 `MPCProject` 模式中将 `create_timestamp` 重命名为 `created_timestamp`，以提高命名一致性。
+
+### 新功能
+
+- 添加了[创建领取活动](/v2/api-references/stakings/create-claim-activity)操作，用于领取质押奖励。
+- 添加了[估算质押费用](/v2/api-references/stakings/estimate-staking-fees-v2)操作的新版本，功能得到改进。
+- 添加了对 CORE 协议质押的支持。
+- 在以下操作的请求负载中添加了 `auto_fuel` 属性，以启用[Fee station](https://manuals.cobo.com/zh/portal/fee-station/introduction)进行自动交易费用支付：
+  - [转账代币](/v2/api-references/transactions/transfer-token)
+  - [调用智能合约](/v2/api-references/transactions/call-smart-contract)
+  - [加速交易](/v2/api-references/transactions/speed-up-transaction)
+  - [丢弃交易](/v2/api-references/transactions/drop-transaction)
+
+### 改进
+
+- 在 `BabylonValidator` 模式中将多个字段设为可选。
+- 通过在 `EthStakingExtra` 模式中添加 `beacon_validators` 属性来扩展 ETH 质押功能，以表示验证者信息列表。
+- 通过将 `StakingPoolId` 模式改为枚举类型来改进。
+- 扩展了 `ActivityAction` 模式，添加了更多枚举以涵盖质押活动中可能发生的更多操作。
+- 弃用了"估算质押费用"操作的原始版本。
+
+## v1.6.0
+
+此版本于 2024 年 11 月 13 日发布。
+
+### 重大变更
+
+- 移除了"获取地址信息"操作。
+- 在 `AddressTransferDestination` 模式中将 `amount` 设为必需属性。
+
+### 新功能
+
+- 添加了以下新操作：
+  - [获取 API Key信息](/v2/api-references/developers/get-api-key-information)：检索 API Key的详细信息。
+  - [检查多链地址有效性](/v2/api-references/wallets/check-address-validity-across-chains)：验证多个链上的地址。
+- 添加了对以太坊质押的支持。
+
+### 改进
+
+- 通过在 `TransactionStatus` 和 `TransactionSubStatus` 模式中添加和移除某些状态和子状态来改进交易跟踪。
+- 在 `TSSRequestStatus` 模式中添加了 `MPCProcessing` 状态，以表示 TSS 请求批准正在等待启动。
+- 移除了 `MpcContractCallSource` 模式中的 `nonce` 属性。
+
+## v1.5.0
+
+此版本于 2024 年 10 月 24 日发布。
+
+### 重大变更
+
+在此版本中，以下参数名称在 [Python SDK](https://github.com/CoboGlobal/cobo-waas2-python-sdk/) 中已更新：
+
+- `ORG_MINUS_CONTROLLED` → `ORG_CONTROLLED`
+- `USER_MINUS_CONTROLLED` → `USER_CONTROLLED`
+- `SAFE_LEFT_CURLY_BRACKET_WALLET_RIGHT_CURLY_BRACKET` → `SAFE_WALLET`
+
+请更新您的代码以反映这些更改，因为以前的参数名称不再受支持。
+
+### 新功能
+
+* 添加了 [列出委托人](/v2/api-references/wallets--smart-contract-wallets/list-delegates) 操作，用于智能合约钱包。
+* 添加了 [列出地址簿条目](/v2/api-references/addressbooks/list-address-book-entries) 操作，用于检索地址簿中的地址。
+* 添加了 [触发测试事件](/v2/api-references/developers--webhooks/trigger-test-event) 操作，用于测试 webhook 端点的功能。
+
+### 改进
+
+* 在 [获取代币信息](/v2/api-references/wallets/get-token-information) 操作的响应中添加了 `asset_model_type` 属性，用于指示代币是否使用帐户模型或 UTXO 模型。
+* 在 `TransactionEvmContractDestination` 模式中添加了 `calldata_info` 属性，用于提供智能合约 calldata 的更详细表示。
+* 添加了 `TransactionRawMessageSignDestination` 模式，并在 `destination_type` 枚举中添加了 `Raw_Message_Signature` 值，用于表示原始消息签名的交易目的地。
+* 在 [列出所有交易](/v2/api-references/transactions/list-all-transactions) 操作中添加了 `Stake` 和 `Unstake` 作为 `types` 查询参数的新可能值。
+* 在 `exchange_id` 枚举中添加了 `bitmart` 和 `bitfinex` 作为新可能值。
+* 在 `TransactionSmartContractSafeWalletSource` 模式中，`delegate` 属性不再是必需属性。
+
+## v1.4.0
+
+此版本于 2024 年 9 月 25 日发布。
+
+### 改进
+
+- 通过在 `TransactionStatus` 和 `TransactionSubStatus` 模式中添加和移除某些状态和子状态来改进交易跟踪。
+- 在 `TSSRequestStatus` 模式中添加了 `MPCProcessing` 状态，以表示 TSS 请求批准正在等待启动。
+- 移除了 `MpcContractCallSource` 模式中的 `nonce` 属性。
+
+## v1.3.0
+
+此版本于 2024 年 9 月 12 日发布。
+
+### 新功能
+
+- 您现在可以使用 WaaS 2.0 API 进行代币质押。质押操作包括：
+  - [列出质押位置](/v2/api-references/stakings/list-staking-positions)
+  - [获取质押位置详细信息](/v2/api-references/stakings/get-staking-position-details)
+  - [列出质押活动](/v2/api-references/stakings/list-staking-activities)
+  - [估算质押费用](/v2/api-references/stakings/estimate-staking-fees)
+  - [创建质押活动](/v2/api-references/stakings/create-stake-activity)
+  - [创建解质押活动](/v2/api-references/stakings/create-unstake-activity)
+  - [创建提币活动](/v2/api-references/stakings/create-withdraw-activity)
+  - [获取质押活动详细信息](/v2/api-references/stakings/get-staking-activity-details)
+  - [列出质押池](/v2/api-references/stakings/list-staking-pools)
+  - [获取质押池详细信息](/v2/api-references/stakings/get-staking-pool-details)
+- 添加了 [广播已签名交易](/v2/api-references/transactions/broadcast-signed-transactions) 操作，用于广播已签名交易。
+
+### 改进
+
+- 将 [检查 Cobo Loop 转账](/v2/api-references/transactions/check-cobo-loop-transfers) 操作的路径从 `/wallets/check_loop_transfers` 更改为 `/transactions/check_loop_transfers`。
+- 在 `TokenInfo` 模式中添加了 `dust_threshold` 和 `custodial_minimum_deposit_threshold` 属性，用于指示托管钱包的最小提币和充币金额。
+- 在 `ChainInfo` 模式中添加了 `confirming_threshold` 属性，用于指示每个链上交易所需的确认数量。
+
+### Bug 修复
+
+- 修复了使用 WaaS SDK 执行与智能合约调用或消息签名相关操作时出现的问题。
+
+## v1.2.0
+
+此版本于 2024 年 8 月 21 日发布。
+
+### 新功能
+
+- 添加了对 [交易所钱包](https://manuals.cobo.com/zh/portal/exchange-wallets/introduction) 和 [智能合约钱包](https://manuals.cobo.com/zh/portal/smart-contract-wallets/introduction) 的支持。添加了以下操作，用于交易所钱包：
+  - [列出支持的交易所](/v2/api-references/wallets--exchange-wallet/list-supported-exchanges)
+  - [列出支持的资产](/v2/api-references/wallets--exchange-wallet/list-supported-assets)
+  - [列出支持的链](/v2/api-references/wallets--exchange-wallet/list-supported-chains)
+  - [列出资产余额](/v2/api-references/wallets--exchange-wallet/list-asset-balances)
+- 添加了以下操作，用于批量支付：
+  - [检查地址有效性](/v2/api-references/wallets/check-addresses-validity)
+  - [检查 Cobo Loop 转账](/v2/api-references/transactions/check-cobo-loop-transfers)
+- 您现在可以订阅与 TSS 请求相关的事件类型，以用于 webhook 端点。有关 TSS 请求相关事件类型的更多信息，请参阅 [Webhook 事件类型和数据类型](/v2_cn/guides/webhooks-callbacks/webhook-event-type)。
+
+### 改进
+
+- 将 `sub_wallet_id` 属性重命名为 `trading_account_type`。受影响的模式包括：
+  - `ExchangeTransferSource`
+  - `ExchangeTransferDestination`
+  - `TransactionTransferToWalletDestination`
+  - `TransactionExchangeWalletSource`
+  - `TransactionDepositFromWalletSource`
+  - `TransactionDepositToWalletDestination`
+- 在 `TransactionSubStatus` 枚举中添加了 `PendingApprovalStart` 值，用于指示需要用户特定操作才能继续交易的状态。
+- 在 `MPCWalletInfo` 模式中添加了 `project_name` 和 `vault_name` 属性，用于指示项目名称和 Vault 名称。
+- 在 `TSSRequest` 模式中添加了 `description` 和 `created_timestamp` 属性，用于指示 TSS 请求的描述和创建时间。
+- 在 `KeyShareHolder` 模式中添加了 `account_id` 属性，用于指示钥匙份额持有者的 Cobo Portal 帐户 ID。
+- 在 `TransactionMPCWalletSource` 模式中添加了 `signer_key_share_holder_group_id` 属性，用于指示交易签名者的钥匙份额持有者组 ID。
+- 在 [创建 TSS 请求](/v2/api-references/wallets--mpc-wallets/create-tss-request) 操作的请求包体中添加了 `description` 属性，用于指示 TSS 请求的描述。
+
+## v1.1.0
+
+此版本于 2024 年 8 月 7 日发布。
+
+### 新功能
+
+添加了 OAuth 操作，用于 Cobo Portal Apps 开发者：
+
+- [获取 Org Access Tokens](/v2/api-references/oauth/get-org-access-token)
+- [刷新 Org Access Tokens](/v2/api-references/oauth/refresh-org-access-token)
+
+### 改进
+
+- 在 [列出 webhook 事件日志](/v2/api-references/developers--webhooks/list-webhook-event-logs) 的响应中，`data.response_body` 的数据类型从对象更新为字符串。
+- 在以下模式中添加了 `signer` 属性，用于指示钥匙份额持有者的 TSS Node 是否是指定的交易签名者：
+  - `CreateKeyShareHolder`
+  - `KeyShareHolder`
+- 将 `node_count` 属性重命名为 `participants`，用于以下模式：
+  - [创建项目](/v2/api-references/wallets--mpc-wallets/create-project) 的请求包体
+  - [创建钥匙份额持有者组](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) 的请求包体
+  - `KeyShareHolderGroup` 模式
+  - `MPCProject` 模式
+- 将 `pubkey` 属性重命名为 `root_pubkey`，用于 `RootPubkey` 模式。
+- 在 `TSSGroups` 模式中添加了 `root_pubkey` 属性，用于指示 Vault 的根扩展公钥。
+- 将多个与时间戳相关的属性重命名为使用“_timestamp”后缀。受影响的模式包括：
+  - `Transaction`
+  - `TransactionBlockInfo`
+  - `TransactionTimeline`
+  - `KeyShareHolderGroup`
+  - `MPCVault`
+
+## v1.0.0
+
+这是 Cobo WaaS 2.0 API 的第一个版本。
+
+此版本包括对 [托管钱包](https://manuals.cobo.com/zh/portal/custodial-wallets/introduction) 和 [MPC 钱包](https://manuals.cobo.com/zh/portal/mpc-wallets/introduction) 的支持，包括以下类别的操作：
+
+- [通用钱包操作](/v2/api-references/wallets/list-supported-chains)
+- [MPC 钱包特定操作](/v2/api-references/wallets--mpc-wallets/list-all-cobo-key-share-holders)
+- [交易操作](/v2/api-references/transactions/estimate-transaction-fee)
+- [Webhook 操作](/v2/api-references/developers--webhooks/list-webhook-endpoints)
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

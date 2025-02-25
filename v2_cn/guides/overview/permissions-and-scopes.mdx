@@ -1,0 +1,43 @@
+---
+title: "权限和钱包范围"
+sidebarTitle: "权限和钱包范围"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+在 WaaS 2.0 中，权限和钱包范围是维护强大安全性和精确访问控制的重要组成部分。它们确保用户（无论是开发者还是最终用户）都被授予适当级别的资源和操作访问权限。这种访问控制普遍适用于所有用户类别：
+
+- 普通开发者：API 操作需要特定权限。
+- Cobo Portal Apps 开发者： App 仅限于访问其授权范围内的资源。
+- Cobo Portal 用户：权限控制对 Cobo Portal 内资源、操作和交易的访问。
+
+这个权限框架旨在提供无缝和安全的用户体验，符合团队政策和合规要求。
+
+## 关键概念
+
+### 权限
+权限是资源和操作的特定组合，定义了用户可以对给定资源执行的操作。例如，`transaction:withdraw` 表示资源 `transaction` 与操作 `withdraw` 配对，授予发起提币交易的权限。权限管理功能访问，指定用户有权执行的操作，而数据边界则通过钱包范围控制。
+
+### 钱包范围
+钱包范围定义了钱包相关权限生效的边界，指定钱包类型、钱包 ID 和其他标识符等级别的访问权限。每种类型的钱包范围将权限限制在特定的资源子集内，确保定制的访问模型。钱包范围维度包括：
+
+- 钱包类型
+- 钱包子类型
+- 项目 ID（仅适用于 MPC 钱包）
+- 保管库 ID（仅适用于 MPC 钱包）
+- 钱包 ID
+
+### 用户角色
+用户角色是定义用户可用资源和操作的权限集合。每个角色授予特定的权限集，决定用户的能力，如查看、操作或管理资源。更多信息，请参阅[用户角色和权限介绍](https://manuals.cobo.com/zh/portal/organization/roles-and-permissions)。
+
+## 分配和管理权限
+
+### 通过 API Key的普通开发者
+对于普通开发者，权限和钱包范围与 API Key相关联。当您注册 API Key时，您需要选择用户角色并定义钱包范围，这将授予共享权限给所有使用该密钥的开发者。更多详细信息，请参阅[API Key](/v2_cn/guides/overview/cobo-auth#api-key) 和 [注册 API Key](https://manuals.cobo.com/zh/portal/developer-console/create-api-key)。
+
+### 通过 Org Access Tokens 的 Cobo Portal Apps 开发者
+Cobo Portal Apps 访问用户团队资源的权限是通过 Org Access Tokens 授予的。当用户安装 App 时，必要的权限和钱包范围将被设置，一旦团队管理员批准，这些权限将与 App 的 Org Access Tokens 相关联。因此，在发布 App 之前，开发者应该在 [ App Manifest 文件](/v2_cn/apps/build-app#configure-the-manifest-file) 中指定所需和可选的权限，以确保授予适当的访问权限。有关权限的完整列表，请参阅[权限列表](/v2_cn/guides/overview/permission-list)。
+
+### 通过用户角色分配的 Cobo Portal 用户
+Cobo Portal 用户的权限基于其用户角色和钱包范围，预定义的角色可用，并且可以根据特定需求进行自定义。更多详细信息，请参阅[为成员分配用户角色](https://manuals.cobo.com/zh/portal/organization/assign-roles-to-members)。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

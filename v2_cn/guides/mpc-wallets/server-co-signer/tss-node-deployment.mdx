@@ -1,0 +1,273 @@
+---
+title: "部署服务端签名人"
+sidebarTitle: "部署服务端签名人"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本文提供了有关如何部署服务端签名人的分步指南，涵盖了 TSS Node 包的安装以及 TSS Node 的初始化和启动。
+
+## 前提条件
+
+在部署服务端签名人之前，请确保您的环境符合我们的网络和服务器要求。有关详细信息，请参阅：
+- 服务器规格和安全建议，请参阅[服务器环境](/v2_cn/guides/mpc-wallets/server-co-signer/tss-node-server-environments)
+- 网络连接和环境，请参阅[网络环境](/v2_cn/guides/mpc-wallets/server-co-signer/tss-node-network-environments)
+
+## 安装 TSS Node 包
+
+首先，在您的服务器上安装 TSS Node 包。
+
+### 获取 TSS Node 包
+
+TSS Node 包有两个版本，适用于不同的部署环境：
+
+- **SGX 安全增强版**：专为配备 SGX 功能的服务器设计。您可以在[这里](https://cobo-tss-node.s3.amazonaws.com/linux-sgx/latest/cobo-tss-node-linux-sgx.tgz)下载此 TSS Node 包，并在[这里](https://cobo-tss-node.s3.amazonaws.com/linux-sgx/latest/cobo-tss-node-linux-sgx.tgz.sha256)下载相应的 SHA256 文件。
+
+- **通用版**：兼容所有服务器，包括云提供商的服务器、自建服务器、通用服务器和 Apple MacBooks。虽然此版本也可以在 SGX 准备好的服务器上运行，但 SGX 特定功能将不会启用。您可以在[这里](https://cobo-tss-node.s3.amazonaws.com/generic/latest/cobo-tss-node-generic.tgz)下载此 TSS Node 包，并在[这里](https://cobo-tss-node.s3.amazonaws.com/generic/latest/cobo-tss-node-generic.tgz.sha256)下载相应的 SHA256 文件。
+
+以下示例使用通用版的 TSS Node 包。
+
+```
+cobo-tss-node-generic.tgz (TSS Node 文件)
+
+cobo-tss-node-generic.tgz.sha256 (哈希文件）
+```
+
+要验证包的完整性：
+
+1. 从 SHA256 文件中显示预期的校验和：
+```bash
+cat cobo-tss-node-generic.tgz.sha256
+```
+
+2. 将其与下载包的实际校验和进行比较。它们必须完全匹配：
+```bash
+sha256sum cobo-tss-node-generic.tgz
+```
+<Note>如果您使用的是 Apple MacBook，请改用 `shasum -a 256`：</Note>
+
+```bash
+shasum -a 256 cobo-tss-node-generic.tgz
+```
+
+如果校验和不匹配，包可能在下载过程中被损坏或篡改。在这种情况下，请重新下载包。
+
+验证包完整性后，请执行以下命令来解压 TSS Node 包。
+
+```
+tar -xzf cobo-tss-node-generic.tgz
+```
+
+解压 TSS Node 包后，将显示以下目录。
+
+```
+cobo-tss-node-generic
+
+├── configs
+
+│ └── cobo-tss-node-config.yaml.template （默认配置文件模板）
+
+└── tss-node.sh （启动脚本）
+```
+
+除非另有说明，请在解压后的 TSS Node 包的根目录下执行所有后续命令。例如，在执行任何进一步命令之前，请导航到 **cobo-tss-node-generic** 路径。
+
+### TSS Node 命令行命令
+
+TSS Node 命令行命令在所有部署环境中保持一致。但是，命令的执行可能会略有不同。对于 SGX 准备好的服务器和其他类型的服务器，sudo 访问是部署和运行 TSS Node 的必要条件。换句话说，请确保在命令中插入 sudo。
+
+```
+sudo ./tss-node.sh status
+```
+
+对于 Apple MacBook，不需要 sudo 访问。
+
+```
+./tss-node.sh status
+```
+
+除非另有说明，后续命令将使用通用服务器作为示例。
+
+要了解有关 TSS Node 命令行命令的更多信息，请参阅 [TSS Node 命令行命令](/v2_cn/guides/mpc-wallets/server-co-signer/appendix#tss-node-commands)。
+
+### 获取 TSS Node 容器镜像
+
+请执行以下命令来验证必要依赖项和驱动程序的安装。如果这是 TSS Node 的初始配置，命令还将自动获取最新的容器镜像。
+
+```
+sudo ./tss-node.sh status
+```
+
+输出示例如下。
+
+```
+$ sudo ./tss-node.sh status
+
+[sudo] password for ubuntu: （ubuntu 账户密码）
+
+检查 docker 引擎 ... OK，版本：20.10.22
+
+检查容器镜像 ... 未找到镜像：coboglobal/tss-node:v0.10.0
+
+正在拉取容器镜像 coboglobal/tss-node:v0.10.0 …
+
+登录成功
+
+v0.10.0: 拉取中
+
+4e7e0215f4ad: 拉取完成
+
+7fd35d9d7f31: 拉取完成
+
+86c277e0f34d: 拉取完成
+
+4f4fb700ef54: 拉取完成
+
+摘要：sha256:9dd6c67522b6f36df61e2a945d6093683fd4c980e5e15d3bcdd661ca8e062578
+
+状态：下载了新的镜像 coboglobal/tss-node:v0.10.0
+
+docker.io/coboglobal/tss-node:v0.10.0
+
+检查容器镜像 ... OK，ID：sha256:8ab0c7353f5b62cdff5bdc6d9a436f0d99079d404b080aa6a61f594fe6446ba8
+
+检查 TSS Node 守护进程 ... 未运行
+
+请使用 './tss-node.sh start' 启动守护进程。
+
+请使用 './tss-node.sh init' 如果 TSS Node 尚未初始化。
+```
+
+到目前为止，所有依赖项都已成功配置，TSS Node 已准备好初始化。
+
+### 配置 TSS Node 
+
+默认配置文件是 `configs/cobo-tss-node-config.yaml.template`。
+
+TSS Node 默认配置为连接到开发环境，因此不需要额外的配置文件即可运行。但是，如果您希望连接到生产环境，则需要手动修改配置文件。
+
+要开始，请创建 `cobo-tss-node-config.yaml.template` 的副本，并将其重命名为 `cobo-tss-node-config.yaml`。将新文件粘贴到 `configs` 目录中。有关说明，请参阅 [配置 TSS Node ](/v2_cn/guides/mpc-wallets/server-co-signer/appendix#configure-the-tss-node)。请记住，在修改配置文件后重新启动 TSS Node 包。
+
+### 启动脚本
+
+TSS Node 包包含一个启动脚本 `tss-node.sh`，用于：
+
+- 检查所需软件和驱动程序是否成功安装。
+- 拉取 TSS Node 容器镜像。
+- 管理容器的运行状态。
+
+启动脚本将传递大多数命令和参数给容器内的 `cobo-tss-node` 程序。
+
+## 初始化 TSS Node 
+
+请执行以下命令：
+
+```
+sudo ./tss-node.sh init
+```
+
+输出示例如下。
+
+```
+$ sudo ./tss-node.sh init
+
+[sudo] password for ubuntu: （ubuntu 账户密码）
+
+输入密码（至少 16 个字符）：（输入密码）
+
+重新输入密码：（重新输入密码）
+
+INFO[2023-01-13T05:12:04Z] 初始化数据库：db/secrets.db
+
+INFO[2023-01-13T05:12:04Z] 初始化节点 ID：cobo73VA6C6WvofPg8tWYmqvdUF1cPYhd7EmGUxTexz5HCzYe
+
+INFO[2023-01-13T05:12:04Z] 生成回调公钥：
+
+-----BEGIN PUBLIC KEY-----
+
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAomg0FRc8qm/vdNnjBDBv
+
+DzKK7cZeeoRFAw2xcuaKWyCRHazERYAmICWG+q6dGZ8eS0C8AUqeqf23LlY3gDtr
+
+...
+
+TQIDAQAB
+
+-----END PUBLIC KEY-----
+
+INFO[2023-01-13T05:12:04Z] 开始初始化 TSS 参数；此过程可能需要几分钟
+
+INFO[2023-01-13T05:12:11Z] 完成初始化 TSS 参数
+
+INFO[2023-01-13T05:12:11Z] 完成初始化 TSS Node 密钥和数据
+```
+
+执行工作流：
+
+- 在 TSS Node 初始化期间，系统将验证 Docker 引擎的成功安装，并继续构建容器镜像。您将被提示批准 Docker 引擎的自动安装。
+- 如果使用的是 SGX 准备好的服务器，系统还将验证 SGX 驱动程序的成功安装。您将被提示批准 Intel DCAP 1.41 驱动程序的自动安装。
+- 设置一个密码来加密在 TSS Node 初始化期间生成的数据。在丢失访问权限或需要修改密码的情况下，请参阅 [从另一个活动持有者组恢复私钥分片](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/recover-from-active-keys)。建议设置一个复杂的密码，长度在 16-32 个字符之间，使用密码管理器（例如 1Password），并在受信任的设备上安全存储密码。
+- 数据库文件将自动生成，默认路径为 `db/secrets.db`。
+- 节点 ID 将自动生成（例如 `cobo73VA6C6WvofPg8tWYmqvdUF1cPYhd7EmGUxTexz5HCzYe`），并作为 TSS Node 的唯一标识符。
+- TSS Node Callback 私钥将自动生成，用于验证与 TSS Node Callback 服务器的通信，并打印出相应的公钥。
+
+## 启动 TSS Node 
+
+执行以下命令来启动 TSS Node ：
+
+```
+sudo ./tss-node.sh start
+```
+
+输出示例如下。
+
+```
+$ sudo ./tss-node.sh start
+
+容器已启动：4d33d31066279927bd0f9e283aa60454ac02a040a6f49e684ee372321bd41065
+
+等待几秒钟 ..
+
+输入密码：（输入密码）
+
+cobo-tss-node
+
+版本：v0.10.0
+
+构建模式：prod
+
+Git 提交：45431a4b3d4ad8ddf4a52aab619f41353310f0ba
+
+构建时间：20230112T111204
+
+INFO[2023-01-13T05:13:32Z] 等待密码输入 HTTP 端点。
+
+嵌入式风险控制规则：
+
+|__ 启用：false
+
+INFO[2023-01-13T05:15:09Z] TSS Node  ID：cobo73VA6C6WvofPg8tWYmqvdUF1cPYhd7EmGUxTexz5HCzYe
+
+INFO[2023-01-13T05:15:09Z] WebSocket 连接到 wss://ws.tss.dev.cobo.com/ws
+
+INFO[2023-01-13T05:15:10Z] 开始注册服务
+```
+
+此时，TSS Node 已准备好加入私钥分片持有者组。一旦您创建了一个持有者组，并将 TSS Node 添加到其中，您将在日志中看到成功注册的状态。
+
+## 创建私钥分片持有者组
+
+您现在可以继续创建持有者组，请参阅 [通过 Cobo Portal 创建持有者组](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/holder-group-overview)。
+
+创建持有者组后，注册状态将更新为以下内容：
+
+```
+INFO[2023-01-13T05:17:09Z] TSS Node 注册已接受
+```
+
+您可以按 Ctrl+C 退出，TSS Node 将继续在后台运行。有关检查 TSS Node 状态的更多信息，请参阅 [TSS Node 命令](/v2_cn/guides/mpc-wallets/server-co-signer/appendix#tss-node-commands)。
+
+## 管理私钥分片
+
+一旦您成功创建了一个持有者组，并将 TSS Node 添加到其中，生成的私钥分片将被加密并存储在 TSS Node 包的数据库文件中，默认路径为 `db/secrets.db`。强烈建议创建数据库文件和用于加密的密码的备份，并将备份文件存储在单独的设备上以增强安全性。有关更多信息，请参阅 [备份您的私钥分片](/v2_cn/guides/mpc-wallets/server-co-signer/key-shares-backup)。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

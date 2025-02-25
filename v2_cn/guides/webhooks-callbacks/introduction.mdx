@@ -1,0 +1,68 @@
+---
+title: "Webhook 和 Callback 的介绍"
+sidebarTitle: "介绍"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+Webhook 和 Callback 是 WaaS 服务与您的 App 进行通信的重要机制。在您设置并注册 Callback 和 Webhook Endpoint 后，当事件发生时，WaaS 服务会将推送消息发送到指定的 URL。它们允许您的 App 实时接收更新或通知，并相应地响应事件。
+
+## Webhook 与 Callback 
+
+Callback 和 webhook 在您的业务操作中具有不同的用途。
+
+| 机制 | 描述                        | 触发条件                                        | 接收到消息后需要采取的操作              |
+| ------------- | -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Callback     | 类似于 2FA 验证。您必须注册一个 Callback Endpoint才能批准并完成代币提币。 | 当您使用 WaaS API 发起提币或合约调用时触发。 | 检查交易是否符合预期，并以成功状态码（`200` 或 `201`）和响应体 `ok` 或 `deny` 响应，以指示交易批准或拒绝。 |
+| Webhook      | 用作事件的实时通知，例如交易状态更新。  | 当某些事件发生时触发，例如交易状态或 TSS 请求状态更改，基于您订阅的事件类型。              | 以成功状态码（`200` 或 `201`）响应。             |
+
+您可以在 **Cobo Portal** > **开发者** > **Webhook 事件** / **Callback消息** 中查看您团队中所有 webhook 事件和Callback消息的数据。
+
+## 处理 webhook 事件和Callback消息
+
+按照以下步骤处理 WaaS 服务发送的 webhook 事件和Callback消息：
+
+1. 创建一个 webhook 或Callback Endpoint。
+    - 选择服务器环境。
+    - 定义Endpoint URL。
+2. 在服务器端实现处理逻辑。
+    - 解析 API 请求。
+    - 验证签名。
+    - 响应 API 请求。
+    - 添加其他处理逻辑（如果适用）。
+3. 在 Cobo Portal 上注册Endpoint。
+    <Note>注册 Webhook Endpoint 时，您需要指定要订阅的事件类型。</Note>
+
+要创建Endpoint并实现处理逻辑，请参阅 [设置Callback或 Webhook Endpoint](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)。
+
+要注册Endpoint，请参阅 [注册 Webhook Endpoint](https://manuals.cobo.com/zh/portal/developer-console/webhooks-create) 和 [注册Callback Endpoint](https://manuals.cobo.com/zh/portal/developer-console/callbacks-register)。
+
+要了解更多关于事件类型和事件数据类型的信息，请参阅 [Webhook 事件类型和数据类型](/v2_cn/guides/webhooks-callbacks/webhook-event-type)。
+
+要使用 Cobo CLI 管理 webhook 事件，请参阅以下指南：[监听和转发事件](/v2_cn/developer-tools/cobo-cli/listen-and-forward-events)、[触发 webhook 事件](/v2_cn/developer-tools/cobo-cli/trigger-events) 和 [列出事件类型](/v2_cn/developer-tools/cobo-cli/event-types)。
+
+## 从 WaaS 1.0 升级到 WaaS 2.0 的注意事项
+
+WaaS 1.0 服务使用 API Callback进行交易通知和提币确认，类似于 WaaS 2.0 中引入的 webhook 和Callback。以下表格提供了两种版本基于事件通知机制的比较：
+
+|  | 通知交易状态更改的机制 | 确认提币的机制 | 注册Endpoint的位置 |
+| --- | --- | --- | --- |
+| WaaS 1.0 | Callback - 交易通知 | Callback - 提币确认 | Cobo Custody |
+| WaaS 2.0 | Webhook 事件 | Callback消息 | Cobo Portal |
+
+有关 WaaS 1.0 Callback的更多详细信息，请参阅 [如何配置 API Callback](/v1/guides/howtos/configure-api-callback)。
+
+### 继续使用 WaaS 1.0 API
+
+如果您选择继续使用 WaaS 1.0 API，则无需进行任何额外配置。现有的 API Callback将按预期工作。
+
+### 升级到 WaaS 2.0 API
+
+当升级到 WaaS 2.0 时，您需要执行以下操作：
+- 按照 [设置Callback或 Webhook Endpoint](/v2_cn/guides/webhooks-callbacks/set-up-endpoint) 中的说明设置您的 webhook 或 Callback Endpoint。
+- 按照 [注册 Webhook Endpoint](https://manuals.cobo.com/zh/portal/developer-console/webhooks-create) 或 [注册 Callback Endpoint](https://manuals.cobo.com/zh/portal/developer-console/callbacks-register) 中的说明在 Cobo Portal 上注册Endpoint。
+
+<Note>WaaS 1.0 API Callback使用的签名算法与 WaaS 2.0 webhook 和Callback不同。请勿直接在 Cobo Portal 上注册您的 WaaS 1.0 Endpoint。否则，由于 WaaS 1.0 和 WaaS 2.0 之间的签名算法和 webhook/Callback数据结构的差异，您的Endpoint将收到错误。请确保参考提供的 [示例代码](/v2_cn/guides/webhooks-callbacks/set-up-endpoint#code-samples) 正确配置您的 WaaS 2.0 Endpoint。</Note>
+
+<Note><p>如果您为交易通知配置了 WaaS 1.0 API Callback，但没有设置 WaaS 2.0 webhook，您的Endpoint仍将收到来自 WaaS 1.0 的交易通知。</p>如果您同时为交易通知配置了 WaaS 1.0 API Callback和 WaaS 2.0 webhook，并继续使用 WaaS 1.0 API，您的Endpoint将收到：<ul><li>来自 WaaS 1.0 的交易通知。</li><li>来自 WaaS 2.0 的 webhook 事件。</li></ul>在这种情况下，您需要使用唯一 ID（例如 `cobo_id`）实现去重，以避免处理重复通知。</Note>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

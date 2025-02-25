@@ -1,0 +1,107 @@
+---
+title: "设置 Callback 或 Webhook Endpoint"
+sidebarTitle: "设置 Callback 或 Webhook Endpoint"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+Webhook 事件和 Callback 消息对于确保 WaaS 服务与您的 App 之间的无缝数据集成和通信至关重要。本指南介绍如何搭建一个用于接收和处理 Webhook 事件和 Callback 消息的 Endpoint。
+
+## 创建 Endpoint
+
+首先，选择一个支持接收和处理 Webhook 事件或 Callback 消息的服务器环境，例如 AWS、Google Cloud 或自托管服务器。然后，在您的服务器上定义一个 Endpoint URL，以便接收 Webhook 事件和 Callback 消息。
+
+## 实现处理逻辑
+
+创建 Endpoint 后，您需要在服务器上实现逻辑以处理 Webhook 事件或 Callback 消息，包括解析 API 请求、验证签名、响应请求以及在必要时添加其他处理逻辑。
+
+### 验证签名
+
+为了防止未经授权的访问，当您收到 Webhook 事件或 Callback 消息时，您需要通过验证签名来验证 API 请求的真实性。
+
+验证步骤如下：
+
+1. 获取请求包体的原始数据和时间戳。
+
+    从请求 Payload 中提取包体的原始字符串，并从请求头中提取时间戳。
+
+    ```python
+    raw_body = request.body().decode('utf8')
+    timestamp = request.headers.get("BIZ_TIMESTAMP")
+    ```
+
+2. 获取签名。
+
+    从请求头中获取签名值。
+
+    ```python
+    signature = request.headers.get('BIZ_RESP_SIGNATURE')
+    ```
+
+3. 拼接消息并对其进行哈希处理。
+
+    ```python
+    import hashlib
+    
+    # Concatenate raw body and timestamp to form the message.
+    message = "raw_body|timestamp"
+    
+    # Compute double SHA-256 hash.
+    sha256_hash = hashlib.sha256(hashlib.sha256(message.encode()).digest()).digest()
+    ```
+
+4. 选择 Cobo 的公钥。
+
+    根据您使用的环境，选择相应的公钥进行验证：
+    - 开发环境：`a04ea1d5fa8da71f1dcfccf972b9c4eba0a2d8aba1f6da26f49977b08a0d2718`
+    - 生产环境：`8d4a482641adb2a34b726f05827dba9a9653e5857469b8749052bf4458a86729`
+
+5. 使用 Ed25519 算法验证签名。
+
+    ```python
+    import ed25519
+    
+    # Obtain the verifying key from Cobo's public key.
+    vk = ed25519.VerifyingKey(bytes.fromhex(public_key)) 
+    
+    # Verify the signature against the computed message hash.
+    vk.verify(bytes.fromhex(signature), sha256_hash)
+    ```
+
+### 响应 API 请求
+
+正确响应 Webhook 事件和 Callback 消息对于确保 Webhook 和 Callback 按预期处理至关重要。本节描述了 Webhook 和 Callback Endpoint 的预期响应。
+
+#### Webhook 事件
+
+当您的 Webhook Endpoint 收到 Webhook 事件时，它应该响应状态码 `200` 或 `201` 以指示事件已成功接收和处理。一旦发送此响应，WaaS 服务将停止重试发送事件，事件状态将变为**已送达**。
+
+如果 Webhook Endpoint 没有响应或响应状态码不是 `200` 或 `201`，WaaS 服务将继续重试发送事件。如果重试次数达到 10 次，WaaS 服务将停止发送事件，事件状态将变为**发送失败**。您可以通过单击 Cobo Portal > 开发者 > WaaS 2.0 > Webhook 事件上的**重新发送**来重新发送事件。
+
+Cobo 不保证事件将按生成顺序交付。例如，创建转账将生成以下事件：
+
+- `wallets.transaction.created`
+- `wallets.transaction.updated`
+- `wallets.transaction.succeeded`
+
+您的 Endpoint 不应假设事件将按此顺序到达。
+
+#### Callback 消息
+
+当您的 Callback Endpoint 收到 Callback 消息时，它应该响应状态码 `200` 或 `201` 和响应包体 `ok` 或 `deny` 以指示交易批准或拒绝。一旦发送此响应，WaaS 服务将停止重试发送消息，Callback 消息状态将变为**已送达**。
+
+如果 Callback Endpoint 没有响应，响应状态码不是 `200` 或 `201`，或响应包体不包含 `ok` 或 `deny`，WaaS 服务将继续重试发送消息。如果重试次数达到 30 次，WaaS 服务将停止发送消息，Callback 消息状态将变为**发送失败**。您可以使用 [Retry callback message](/v2/api-references/developers/retry-callback-message) 来重新发送消息。
+
+### 代码示例
+
+要查看如何实现处理逻辑的示例，请参阅 WaaS SDK GitHub 库中的如下文件：
+- Python：[server_demo.py](https://github.com/CoboGlobal/cobo-waas2-python-sdk/blob/master/cobo_waas2/server_demo.py)（基于 FastAPI 框架实现）
+- Java：[DemoController.java](https://github.com/CoboGlobal/cobo-waas2-java-sdk/blob/master/src/main/java/com/cobo/waas2/demo/DemoController.java)（基于 SpringBoot 框架实现）
+- JavaScript：[ServerDemo.js](https://github.com/CoboGlobal/cobo-waas2-js-sdk/blob/master/src/ServerDemo.js)
+- Go：[server_demo.go](https://github.com/CoboGlobal/cobo-waas2-go-sdk/blob/master/cobo_waas2/demo/server_demo.go)
+
+## 最佳实践
+
+- 在接收 Webhook 事件时，您的 Endpoint 应该首先快速返回正确的状态码，然后异步处理任何后续处理，以防止超时。
+
+- Webhook Endpoint 有时会多次接收到相同的事件。为了防止重复事件处理，您可以记录已处理的事件 ID，并避免处理已记录的事件。
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

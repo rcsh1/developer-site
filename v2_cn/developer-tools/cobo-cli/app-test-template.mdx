@@ -1,0 +1,41 @@
+---
+title: 测试模板 App 功能
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+使用 `test-template` 命令测试模板 App 在文件或目录中的功能是否符合预期。
+
+## 用法
+```shell
+cobo app test-template [options] <PATH>
+```
+
+## 参数
+`<PATH>`：您要测试 App 的文件或目录的路径。
+
+## 选项
+- （必需）`-t`, `--app-type <portal|web|mobile|automation>`：要创建的 App 类型。可能的值包括：
+  - `portal`：Cobo Portal Apps
+  - `web`：Web  App 
+  - `mobile`：移动 App 
+  - `automation`：用于自动化任务或流程的 AI 代理
+- （必需）`--auth <apikey|org|user>`： App 用于访问 WaaS 2.0 服务的身份验证方法。可能的值包括：
+  - `apikey`：API Key
+  - `org`： Org Access Tokens 
+  - `user`：Cobo Portal 账户
+- （必需）`--wallet-type <custodial-asset|custodial-web3|mpc-org-controlled|mpc-user-controlled|smart-contract|exchange>`： App 交互的钱包类型。可能的值包括：
+  - `custodial-asset`：托管钱包（资产钱包）
+  - `custodial-web3`：托管钱包（Web3 钱包）
+  - `mpc-org-controlled`：MPC 钱包（团队控制的钱包）
+  - `mpc-user-controlled`：MPC 钱包（用户控制的钱包）
+  - `smart-contract`：智能合约钱包（Safe{Wallet}）
+  - `exchange`：交易所钱包
+
+## 示例
+```shell
+cobo app test-template --app-type web --auth org my_template_directory
+```
+
+此命令使用 Org Access Tokens 作为身份验证方法，在 `my_template_directory` 中测试模板 Web  App 。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

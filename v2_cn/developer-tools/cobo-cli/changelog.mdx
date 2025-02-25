@@ -1,0 +1,29 @@
+---
+title: "变更日志"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+
+此变更日志详细列出了 Cobo CLI 的所有新增功能和更改。
+
+## v0.0.5
+
+此版本于 2025 年 1 月 3 日发布。
+
+此版本包括以下更改：
+- Cobo Portal Apps 现在支持审批工作流。使用 `cobo app init` 命令创建 Cobo Portal Apps 时，您可以在 `manifest.json` 文件的 `operation_approval_rules` 字段中配置这些工作流。有关详细说明，请参阅 [配置审批工作流](/v2_cn/apps/configure-workflow)。
+- 修复了一些错误。
+
+## v0.0.4
+
+此版本于 2024 年 11 月 22 日发布。这是 Cobo CLI 的首个版本。
+
+此版本包括支持以下功能：
+- **[API 交互](/v2_cn/developer-tools/cobo-cli/get-requests)**：直接从终端轻松与 Cobo WaaS 2.0 进行 [RESTful API](/v2/api-references/playground) 交互。
+- **[应用管理](/v2_cn/developer-tools/cobo-cli/app-init)**：通过支持多种编程语言和框架的预构建模板创建 App ，简化您的开发流程，并预先集成 WaaS SDK。此外，您还可以使用 Cobo CLI 通过命令行高效地构建、管理和发布 [Cobo Portal Apps ](/v2_cn/apps/introduction)。
+- **[多种身份验证方法](/v2_cn/developer-tools/cobo-cli/login-and-authentication)**：利用和测试三种类型的身份验证机制：Cobo Portal 账户、 Org Access Tokens 和 API Key。
+- **[Webhook 测试](/v2_cn/developer-tools/cobo-cli/listen-and-forward-events)**：在本地测试和调试您的 webhook 集成。
+- **[实时 API 监控](/v2_cn/developer-tools/cobo-cli/real-time-logs)**：流式传输 API 请求日志以进行快速调试和监控。
+- **[环境切换](/v2_cn/developer-tools/cobo-cli/global-options#environment-selection-e-env)**：在开发和生产环境之间无缝切换，允许在部署到生产之前进行安全测试和开发。
+- **[API 文档查阅](/v2_cn/developer-tools/cobo-cli/api-documentation)**：直接从命令行访问 Cobo WaaS 2.0 API、请求、响应及其参数的有用文档。
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

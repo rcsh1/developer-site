@@ -1,0 +1,62 @@
+---
+title: "PUT 请求"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+使用 `put` 命令对 WaaS 2.0 服务的指定端点执行 PUT HTTP 请求。
+
+如果提供了 `path` 参数，命令将向该端点发起 PUT 请求。否则，它将检索所有可用 PUT 操作的列表或显示 WaaS 2.0 API 中指定操作的描述。
+
+<Note>要通过 Cobo CLI 发起 API 请求，您需要登录并使用 Org Access Tokens 或 API Key对请求进行身份验证。有关更多信息，请参阅 [使用 Org Access Tokens 进行身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens) 和 [使用 API Key进行身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys)。</Note>
+
+## 用法
+
+```shell
+cobo put <path> [options]
+```
+
+## 参数
+`<path>`：PUT 请求将被发送到的端点 URL。
+
+## 选项
+
+- `-d, --describe`：显示指定 PUT 操作的描述，包括其预期响应和错误信息（如果有）。您可以使用此选项与参数名称一起检索特定描述，例如：
+
+    ```shell
+    cobo put -d /wallets/mpc/projects/{project_id} --name
+    ```
+
+    此命令显示有关更新 MPC 项目名称的 API 操作的 `name` 参数的信息。
+- `-l, --list`：列出 WaaS 2.0 服务的所有可用 PUT 操作。
+
+## 示例
+
+### 更新钱包信息
+
+```shell
+cobo put /wallets/11223344 --name "更新后的钱包名称"
+```
+
+此命令将钱包 ID 为 `11223344` 的特定钱包的名称更新为 `更新后的钱包名称`。
+
+### 获取操作描述
+
+```shell
+cobo put /wallets/{wallet_id} -d
+```
+
+此命令检索 [更新钱包](/v2/api-references/wallets/update-wallet) 操作的描述。
+
+### 列出所有 PUT 操作
+
+```shell
+cobo put -l
+```
+
+此命令列出 WaaS 2.0 服务的所有可用 PUT 操作。
+
+## API 参考
+
+有关可用 PUT 端点及其参数的完整列表，请参阅 [API 参考](/v2/api-references)。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

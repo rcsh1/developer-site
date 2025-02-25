@@ -1,0 +1,103 @@
+---
+title: "配置回调密钥和 TSS Node "
+sidebarTitle: "配置回调密钥和 TSS Node "
+description: "配置回调服务器和 TSS Node 之间安全通信的回调密钥和设置"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南解释了如何使用 RSA 密钥对配置回调服务器和 TSS Node 之间的安全通信。
+
+## 生成和交换回调密钥
+
+### 1. 生成回调服务器密钥
+
+在您的回调服务器上，生成一个 RSA 密钥对：
+
+1. 生成私钥：
+```bash
+openssl genrsa -out callback-server-pri.pem 4096
+```
+
+2. 在回调服务器上配置私钥，因为您需要使用它来签署回调响应。
+
+3. 导出公钥：
+```bash
+openssl rsa -in callback-server-pri.pem -pubout >callback-server-pub.key
+```
+
+### 2. 获取 TSS Node 的回调公钥
+
+初始化 TSS Node 后，检索其回调公钥：
+```bash
+sudo ./tss-node.sh info
+```
+
+输出将包括回调公钥：
+```
+INFO[2022-12-14T07:09:44Z] 回调公钥：
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA4ki4fHY4/oSJOYBxBUI1
+...
+s8wADQvpbJTyPkkMyq/i5SkCAwEAAQ==
+-----END PUBLIC KEY-----
+```
+
+### 3. 交换公钥
+
+1. 将回调服务器的公钥复制到 TSS Node 的安装目录中，例如：
+```
+cobo-tss-node-generic
+├── configs
+│   ├── callback-server-pub.key
+│   └── cobo-tss-node-config.yaml
+```
+
+2. 将 TSS Node 的回调公钥复制到您的回调服务器的配置中
+
+
+## 配置 TSS Node 设置
+
+修改 TSS Node 上的 `cobo-tss-node-config.yaml` 文件，以包含回调服务器的 URL、公钥和其他回调相关设置。
+
+您可以配置多个回调服务器以增强安全性。TSS Node 仅在所有配置的回调服务器都批准时才会执行任务。以下示例显示了如何配置两个回调服务器：
+
+```yaml
+callback:
+  cb_server_v2:
+    - service_address: https://<CALLBACK_SERVER_URL_1>/v2/check
+      pubkey_path: configs/customer-callback-server-pub-01.key
+    - service_address: https://<CALLBACK_SERVER_URL_2>/v2/check
+      pubkey_path: configs/customer-callback-server-pub-02.key
+  token_expire_minutes: 2
+  retry_times: 60
+  sleep_seconds: 60
+  request_timeout: 10
+  monitor_interval: 1h
+```
+
+### 配置参数
+
+- `cb_server`: TSS Node Callback 服务器的地址列表，接收 [v1 版本](/v1/overview/mpc-wallet/callback/callback-server-requirements/keygen-request) 的回调请求。虽然仍然支持，但我们强烈建议使用 `cb_server_v2` 选项，因为它提供了更全面的请求信息，并与 WaaS 2.0 API 兼容。
+- `cb_server_v2`: TSS Node Callback 服务器的地址列表，接收 v2 版本的回调请求。
+  - `service_address`: 回调服务器的 HTTP 端点。
+  - `pubkey_path`: 回调服务器公钥文件的路径。
+- `token_expire_minutes`: JWT 过期时间（分钟）。
+- `retry_times`: 失败请求的最大重试次数。
+- `sleep_seconds`: 重试之间的延迟（秒）。
+- `request_timeout`: HTTP 请求超时时间（秒）。指定 TSS Node 等待回调服务器响应的时间长度。
+- `monitor_interval`: 指定 TSS Node 检查回调服务器状态的频率。使用 `s` 表示秒，`m` 表示分钟，`h` 表示小时（例如，`30s`、`5m`、`2h`）。如果省略，则禁用状态监控。
+
+## 验证配置
+
+配置完成后：
+1. 启动回调服务器
+2. 启动 TSS Node 
+3. 通过发起任务请求测试连接
+4. 验证回调流程
+
+## 下一步
+
+- [备份私钥分片](/v2_cn/guides/mpc-wallets/server-co-signer/key-shares-backup)
+- [了解嵌入式风险控制机制](/v2_cn/guides/mpc-wallets/server-co-signer/embedded-risk-controls)
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

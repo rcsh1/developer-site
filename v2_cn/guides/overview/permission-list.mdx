@@ -1,0 +1,512 @@
+---
+title: "权限列表"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+下表列出了共同定义权限的各种资源和操作，以及需要这些权限的 API 操作。
+
+<table>
+  <thead>
+    <tr>
+      <th>资源</th>
+      <th>操作</th>
+      <th>权限描述</th>
+      <th>相关 API 操作</th>
+    </tr>
+  </thead>
+<tbody>
+<tr>
+<td colspan="1" rowspan="2">
+<div>organization_profile</div>
+</td>
+<td>update</td>
+<td>
+<div>
+<div>编辑团队资料</div>
+</div>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>freeze</td>
+<td>
+<div>
+<div>冻结团队</div>
+</div>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>kyc_profile</div>
+</td>
+<td>read</td>
+<td>
+<div>
+<div>查看 KYC 资料</div>
+</div>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑 KYC 资料</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="6">
+<div>team_member</div>
+</td>
+<td>create</td>
+<td>邀请成员</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看成员</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑成员用户角色</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除成员</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>freeze</td>
+<td>冻结成员</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>unfreeze</td>
+<td>解冻成员</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>fee_station</div>
+</td>
+<td>read</td>
+<td>查看 Fee station</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑 Fee station设置</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>roles</div>
+</td>
+<td>read</td>
+<td>查看角色</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>create</td>
+<td>创建自定义用户角色</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑自定义用户角色</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>activity_logs</td>
+<td>read</td>
+<td>查看活动</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>app_governance_policy</div>
+</td>
+<td>update</td>
+<td>编辑 App 审批工作流</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看 App 审批工作流</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>governance_policy</div>
+</td>
+<td>create</td>
+<td>创建业务风控</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看业务风控</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑业务风控</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除业务风控</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>transaction_category</div>
+</td>
+<td>create</td>
+<td>创建交易类别</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看交易类别</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>bills</div>
+</td>
+<td>read</td>
+<td>查看账单</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update_billing_emails</td>
+<td>编辑账单邮箱</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>pricing_plan</div>
+</td>
+<td>read</td>
+<td>查看定价计划</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑定价计划</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update_supported_chains</td>
+<td>编辑支持链</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="8">
+<div>wallet</div>
+</td>
+<td>create</td>
+<td>创建钱包</td>
+<td>`POST /wallets`</td>
+</tr>
+<tr>
+<td>connect</td>
+<td>Cobo 连接</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>import</td>
+<td>导入钱包</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看钱包</td>
+<td>`GET /wallets`<br />`GET /wallets/{wallet_id}`<br />`GET /wallets/{wallet_id}/addresses`<br />`GET /wallets/{wallet_id}/addresses/{address}`<br />`GET /wallets/{wallet_id}/addresses/{address}/tokens`<br />`GET /wallets/{wallet_id}/tokens`<br />`GET /wallets/{wallet_id}/max_transferable_value`<br />`GET /wallets/{wallet_id}/exchanges/assets`<br />`GET /wallets/{wallet_id}/utxos`</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑钱包</td>
+<td>`PUT /wallets/{wallet_id}`</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除钱包</td>
+<td>`POST /wallets/{wallet_id}/delete`</td>
+</tr>
+<tr>
+<td>create_address</td>
+<td>创建地址</td>
+<td>`POST /wallets/{wallet_id}/addresses`</td>
+</tr>
+<tr>
+<td>manage_utxo</td>
+<td>管理 UTXO</td>
+<td>`POST /wallets/{wallet_id}/utxos/lock`<br />`POST /wallets/{wallet_id}/utxos/unlock`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="11">
+<div>transaction</div>
+</td>
+<td>read</td>
+<td>查看交易</td>
+<td>`GET /transactions/{transaction_id}`</td>
+</tr>
+<tr>
+<td>export</td>
+<td>导出交易</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>withdraw</td>
+<td>发起提币</td>
+<td>`POST /transactions/transfer`</td>
+</tr>
+<tr>
+<td>estimate_fee</td>
+<td>估算交易手续费</td>
+<td>`POST /transactions/check_loop_transfers`<br />`POST /transactions/estimate_fee`<br />`POST /stakings/estimate_fee`</td>
+</tr>
+<tr>
+<td>contract_call</td>
+<td>发起合约调用</td>
+<td>`POST /transactions/contract_call`</td>
+</tr>
+<tr>
+<td>message_sign</td>
+<td>发起消息签名</td>
+<td>`POST /transactions/message_sign`</td>
+</tr>
+<tr>
+<td>stake</td>
+<td>质押资产</td>
+<td>`POST /stakings/activities/stake`</td>
+</tr>
+<tr>
+<td>manage</td>
+<td>管理进行中的交易</td>
+<td>`POST /transactions/{transaction_id}/resend`<br />`POST /transactions/{transaction_id}/cancel`<br />`POST /transactions/{transaction_id}/drop`<br />`POST /transactions/{transaction_id}/speedup`</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑交易备注</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>unstake</td>
+<td>解除质押</td>
+<td>`POST /stakings/activities/unstake`</td>
+</tr>
+<tr>
+<td>unstake_withdraw</td>
+<td>提取解除质押的资产</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>travel_rule</div>
+</td>
+<td>read</td>
+<td><div>查看 Travel Rule</div></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>edit</td>
+<td><div>编辑 Travel Rule</div></td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>mpc_project</div>
+</td>
+<td>create</td>
+<td>创建项目</td>
+<td>`POST /wallets/mpc/projects`</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看项目</td>
+<td>`GET /wallets/mpc/projects`<br />`GET /wallets/mpc/projects/{project_id}`</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑 MPC 钱包项目</td>
+<td>`PUT /wallets/mpc/projects/{project_id}`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>mpc_vault</div>
+</td>
+<td>create</td>
+<td>创建 MPC 钱包 Vault </td>
+<td>`POST /wallets/mpc/vaults`</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看 Vault </td>
+<td>`GET /wallets/mpc/vaults`<br />`GET /wallets/mpc/vaults/{vault_id}`</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑 MPC 钱包 Vault </td>
+<td>`PUT /wallets/mpc/vaults/{vault_id}`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>mpc_key_group</div>
+</td>
+<td>create</td>
+<td>创建私钥分片持有者组</td>
+<td>`POST /wallets/mpc/vaults/{vault_id}/key_share_holder_groups`<br />`POST /wallets/mpc/vaults/{vault_id}/tss_requests`</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看私钥分片持有者组</td>
+<td>`GET /wallets/mpc/vaults/{vault_id}/key_share_holder_groups`<br />`GET /wallets/mpc/vaults/{vault_id}/key_share_holder_groups/{key_share_holder_group_id}`<br />`GET /wallets/mpc/vaults/{vault_id}/tss_requests`<br />`GET /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}`</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑私钥分片持有者组</td>
+<td>`PUT /wallets/mpc/vaults/{vault_id}/key_share_holder_groups/{key_share_holder_group_id}`<br />`PUT /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}`</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除私钥分片持有者组</td>
+<td>`POST /wallets/mpc/vaults/{vault_id}/key_share_holder_groups/{key_share_holder_group_id}/delete`<br />`POST /wallets/mpc/vaults/{vault_id}/tss_requests/{tss_request_id}/cancel`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>address_book</div>
+</td>
+<td>create</td>
+<td>添加地址到地址簿</td>
+<td>`POST /address_books`</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看地址簿</td>
+<td>`GET /address_books`</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑地址簿</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>从地址簿中删除地址</td>
+<td>`POST /address_books`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="4">
+<div>transaction_policy</div>
+</td>
+<td>create</td>
+<td>创建交易风控</td>
+<td>`POST /transaction_policies`</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看交易风控</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>update</td>
+<td>编辑交易风控</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>删除交易风控</td>
+<td>`POST /transaction_policies`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>api_key</div>
+</td>
+<td>edit</td>
+<td>编辑 API Key</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看 API Key</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="2">
+<div>api_log</div>
+</td>
+<td>read</td>
+<td>查看 API 日志</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>export</td>
+<td>导出 API 日志</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>developer_dashboard</td>
+<td>view</td>
+<td>
+<div>
+<div>查看开发者控制台仪表盘</div>
+</div>
+</td>
+<td>`GET /developer_dashboard`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>webhook</div>
+</td>
+<td>edit</td>
+<td>编辑 Webhook URL</td>
+<td>`POST /webhooks/endpoints`<br />`POST /webhooks/endpoints/{endpoint_id}`</td>
+</tr>
+<tr>
+<td>read</td>
+<td>查看 Webhook URL/事件</td>
+<td>`GET /webhooks/endpoints`<br />`GET /webhooks/endpoints/{endpoint_id}`<br />`GET /webhooks/endpoints/{endpoint_id}/events`<br />`GET /webhooks/endpoints/{endpoint_id}/events/{event_id}`<br />`GET /webhooks/endpoints/{endpoint_id}/events/{event_id}/logs`</td>
+</tr>
+<tr>
+<td>resend</td>
+<td>重新发送 Webhook 事件</td>
+<td>`POST /webhooks/endpoints/{endpoint_id}/events/{event_id}/retry`</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="3">
+<div>callback</div>
+</td>
+<td>edit</td>
+<td>
+<div>
+<div>编辑回调 URL</div>
+</div>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>read</td>
+<td>
+<div>
+<div>查看回调 URL/消息</div>
+</div>
+</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>resend</td>
+<td>
+<div>
+<div>重新发送回调消息</div>
+</div>
+</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
