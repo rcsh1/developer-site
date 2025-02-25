@@ -1,0 +1,183 @@
+---
+title: "UCW SDK (iOS) 快速入门"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+<Tip>在发布所有 MPC 钱包（终端用户钱包）的相关文档之前，本文档中的某些链接可能无法使用。</Tip>
+
+## 概述
+
+本指南介绍如何开始使用 [UCW SDK (iOS)](/v2_cn/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets)，该 SDK 是[实现您自己的 MPC 钱包（终端用户钱包）](/v2_cn/guides/mpc-wallets/get-started-ucw)所必需的，并允许您将 UCW SDK 集成到您的[客户端 App ](/v2_cn/guides/mpc-wallets/get-started-ucw#technical-architecture)中，以与 [Cobo TSS 中继](/v2_cn/guides/mpc-wallets/get-started-ucw#technical-architecture)进行交互。
+
+您可以访问 [GitHub](https://github.com/CoboGlobal/cobo-ucw-sdk-ios) 查看 [UCW SDK](/v2_cn/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets) 的源代码。
+
+## 安装 UCW SDK
+
+您可以将 UCW SDK 作为依赖项安装在 [Swift 包](https://developer.apple.com/documentation/xcode/swift-packages)或 Xcode 项目中。
+
+<Tabs>
+  <Tab title="Swift 包">
+      要将 UCW SDK 作为依赖项安装在 Swift 包中，请按照以下说明操作：
+      1. 使用 Xcode 创建 Swift 包，请参阅[使用 Xcode 创建独立的 Swift 包](https://developer.apple.com/documentation/xcode/creating-a-standalone-swift-package-with-xcode)。
+      2. 在您的 `Package.swift` 文件中的 `dependencies` 中添加 UCW SDK：
+
+            ```swift
+            dependencies: [
+                .package(url: "https://github.com/CoboGlobal/cobo-ucw-sdk-ios")
+            ]
+
+            ```
+
+3. 在 `target` 中添加以下内容：
+    ```swift
+    targets: [
+        .target(
+            name: "<project_name>",
+            dependencies: ["UCWSDK"]
+        )
+    ]
+
+    ```
+
+4. 在要使用 UCW SDK 的源文件中，添加以下内容：
+
+    ```swift
+    import UCWSDK
+    ```
+
+  </Tab>
+  <Tab title="Xcode 项目">
+    要在 Xcode 项目中将 UCW SDK 作为依赖项安装，请按照以下说明进行操作： 
+    1. 使用 Xcode 设置您的[客户端 App](/v2_cn/guides/mpc-wallets/get-started-ucw#technical-architecture)的应用程序开发环境，请参阅[为应用创建 Xcode 项目](https://developer.apple.com/documentation/xcode/creating-an-xcode-project-for-an-app)。 
+    2. 一旦您的 Xcode 项目设置完成，在 Xcode 中点击 **File** > **Add Package Dependency**，然后输入仓库 URL: `https://github.com/CoboGlobal/cobo-ucw-sdk-ios`。有关更多详细信息，请参阅[向您的应用添加包依赖项](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app)。 
+    3. 在您希望使用 UCW SDK 的源文件中，添加以下内容：
+        ```swift
+        import UCWSDK
+        ```
+  </Tab>
+</Tabs>
+
+## 代码示例
+
+本节展示了在创建主控组时直接涉及 UCW SDK 的步骤实现。有关创建主控组或实施您自己的 MPC 钱包（终端用户钱包）的完整指南，请参阅 [MPC 钱包（终端用户钱包）入门](/v2_cn/guides/mpc-wallets/get-started-ucw)。
+
+有关操作特定的文档和示例代码，请参阅开发者中心的 UCW SDK 操作。
+
+以下示例展示了如何使用 UCW SDK。
+
+<Steps>
+    <Step title="初始化密钥">
+        此步骤对应于[开始使用 MPC 钱包（终端用户钱包）](/v2_cn/guides/mpc-wallets/get-started-ucw)中**完成初始设置** > **初始化 UCW SDK**下的步骤 1。有关此操作的文档，请参阅[初始化密钥](/v2_cn/developer-tools/ucw-sdk/initialize-secrets/initialize-secrets)。
+
+        ```swift
+        let secrets = "secrets.db"
+        let passphrase = "d3hxNyoiAP@Lm!D7Qpo_hghdpgyc_r39"
+
+        Task {
+           do {
+               let nodeID = try await initializeSecrets(secretsFile: secrets, passphrase: passphrase)
+               print(" TSS Node ID: \(nodeID)")
+           } catch {
+               print("Error: \(error)")
+           }
+        }
+
+        ```
+    </Step>
+    <Step title="创建 UCW SDK">
+        此步骤对应于[开始使用 MPC 钱包（终端用户钱包）](/v2_cn/guides/mpc-wallets/get-started-ucw)中**完成初始设置** > **创建一个主控组**下的步骤 1。有关此操作的文档，请参阅[创建 UCW](/v2_cn/developer-tools/ucw-sdk/ucw-class/create-ucw)。
+
+        ```swift
+        let secrets = "secrets.db"
+        let passphrase = "d3hxNyoiAP@Lm!D7Qpo_hghdpgyc_r39"
+        let sdkConfig = SDKConfig(env: Env.development, timeout: 30, debug: true)
+        var sdkInstance: UCW?
+        var connCode: ConnCode = .CodeUnknown
+        var connMessage: String? = ""
+
+        do {
+            sdkInstance = try UCW(config: sdkConfig, secretsFile: secrets, passphrase: passphrase) { code, message in
+                connCode = code
+                connMessage = message
+                print("Connection Code: \(connCode), Message: \(connMessage ?? "No message")")
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+
+        ```
+    </Step>
+    <Step title="获取 TSS Node  ID">
+        此步骤对应于[开始使用 MPC 钱包（终端用户钱包）](/v2_cn/guides/mpc-wallets/get-started-ucw)中**完成初始设置** > **创建一个主控组**下的步骤 3。有关此操作的文档，请参阅[获取 TSS Node  ID](/v2_cn/developer-tools/ucw-sdk/ucwpublic-class/get-tss-node-id)。
+
+        ```swift
+        do {
+            if let nodeID = try sdkInstance?.getTSSNodeID() {
+                print("TSS Node ID: \(nodeID)")
+            } else {
+                print("Failed to get TSS Node ID")
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+
+        ```
+    </Step>
+    <Step title="获取 TSS 请求">
+        此步骤对应于[开始使用 MPC 钱包（终端用户钱包）](/v2_cn/guides/mpc-wallets/get-started-ucw)中**完成初始设置** > **创建一个主控组**下的步骤 22。有关此操作的文档，请参阅[获取 TSS 请求](/v2_cn/developer-tools/ucw-sdk/ucw-class/get-tss-requests)。
+
+        ```swift
+        let tssRequestIDs = ["tss_request_id_01"]
+        Task {
+            do {
+                if let requests = try await sdkInstance?.getTSSRequests(tssRequestIDs: tssRequestIDs) {
+                    for request in requests {
+                        print("\(request)\n")
+                    }
+                } else {
+                    print("Get no TSS request")
+                }
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+
+        ```
+    </Step>
+    <Step title="批准 TSS 请求">
+        此步骤对应于[开始使用 MPC 钱包（终端用户钱包）](/v2_cn/guides/mpc-wallets/get-started-ucw)中**完成初始设置** > **创建一个主控组**下的步骤 27。有关此操作的文档，请参阅[批准 TSS 请求](/v2_cn/developer-tools/ucw-sdk/ucw-class/approve-tss-requests)。
+
+        ```swift
+        let tssRequestIDs = ["tss_request_id_01"]
+        do {
+            try sdkInstance?.approveTSSRequests(tssRequestIDs: tssRequestIDs)
+        } catch {
+            print("Error: \(error)")
+        }
+
+        ```
+    </Step>
+    <Step title="获取 TSS 请求">
+        此步骤对应于[开始使用 MPC 钱包（终端用户钱包）](/v2_cn/guides/mpc-wallets/get-started-ucw)中**完成初始设置** > **创建一个主控组**下的步骤 30。有关此操作的文档，请参阅[获取 TSS 请求](/v2_cn/developer-tools/ucw-sdk/ucw-class/get-tss-requests)。
+
+        ```swift
+        let tssRequestIDs = ["tss_request_id_01"]
+        Task {
+            do {
+                if let requests = try await sdkInstance?.getTSSRequests(tssRequestIDs: tssRequestIDs) {
+                    for request in requests {
+                        print("\(request)\n")
+                    }
+                } else {
+                    print("Get no TSS request")
+                }
+            } catch {
+                print("Error: \(error)")
+            }
+        }
+
+        ```
+    </Step>
+</Steps>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

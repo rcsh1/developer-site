@@ -1,0 +1,95 @@
+---
+title: "验证私钥分片"
+sidebarTitle: "验证私钥分片"
+description: "了解如何验证您的私钥分片以确保其有效且配置正确"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+定期验证 MPC 钱包中的私钥分片对于维护其完整性和安全性至关重要。此过程有助于检测诸如损坏、未经授权的修改或私钥分片丢失等问题。
+
+本文介绍了您可以用来验证服务端签名人上的私钥分片以及您已导出并存储为备份文件的私钥分片的方法。
+
+<Note>
+  要使用此功能，请确保您的 TSS Node 运行版本 0.10.0 或更高版本。
+</Note>
+
+
+## 工作原理
+
+验证过程包括：
+1. 使用私钥分片签署一些数据
+2. 使用原始数据和私钥分片的公钥验证签名
+
+
+## 验证活动私钥分片
+
+本节说明如何验证您的活动私钥分片 - 当前在您的 TSS Node 中使用的那些。
+
+<Note>
+  对于保持离线的 TSS Node ，需要使用替代验证方法。我们正在开发此功能，并将在不久的将来提供详细说明。
+</Note>
+
+
+1. 按照 [验证私钥分片](https://manuals.cobo.com/zh/portal/mpc-wallets/ocw/key-share-verification) 中的说明，在 Cobo Portal 中触发定期或一次性私钥分片验证。
+2. Cobo Portal 将验证签名消息并显示结果。如果您想自行验证，可以使用在线工具或本地环境。
+
+    <Note>目前，Cobo Portal 仅支持通过团队控制的钱包进行私钥分片验证。</Note>
+
+    - 使用在线工具
+        1. 前往 [Google Colab](https://colab.research.google.com/)
+        2. 粘贴下面的验证代码
+            - 您可以通过单击 <img src="/v2_cn/images/guides/view-details.svg" className="icon" alt="查看私钥分片验证详细信息" /> 来检索原始和签名消息，位于您要检查的私钥分片旁边。<img src="/v2_cn/images/guides/view-verification-details.png" className="screenshot_full_screen" alt="查看私钥分片验证详细信息" />
+            - 您可以运行 [info group](/v2_cn/guides/mpc-wallets/server-co-signer/appendix#info-group) 命令以获取共享公钥。
+
+        ```python
+        import ed25519
+        from hashlib import sha256
+        
+        message = bytes.fromhex("<ORIGINAL_MESSAGE>")
+        public = "<SHARE_PUBLIC_KEY>"
+        signature = '<SIGNATURE>'
+        
+        VerifyKey = ed25519.VerifyingKey(bytes.fromhex(public))
+        print("VerifyKey: ", VerifyKey.to_bytes().hex())
+        
+        hashmsg = sha256(message)
+        print("Hash message: ", hashmsg.hexdigest())
+        
+        try:
+            VerifyKey.verify(signature, hashmsg.digest(), encoding='hex')
+            print("ed25519 verify pass!")
+        except:
+            print("ed25519 verify failed!")
+        ```
+        3. 运行代码以验证签名
+
+    - 本地验证
+        1. 设置环境：
+        ```bash
+        pip3 install ecdsa
+        pip3 install ed25519
+        ```
+        2. 创建一个 `checker.py` 文件，包含上面的验证代码。
+        3. 运行代码以验证签名
+
+
+
+### 注意
+私钥分片验证在 TSS Node 中默认启用。如果您想使用嵌入式风险控制模块禁用私钥分片验证，可以修改 `configs/cobo-tss-node-config.yaml` 文件如下：
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_share_sign:
+    reject_all: true
+```
+
+默认情况下，TSS Node Callback 不包括私钥分片验证的风险控制。如果您想在 TSS Node Callback 中实现私钥分片验证的风险控制，请联系我们的支持团队 <a href="mailto:help@cobo.com">help@cobo.com</a> 获取帮助。
+
+
+
+## 验证备份私钥分片
+
+该功能正在开发中，请稍候更新。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

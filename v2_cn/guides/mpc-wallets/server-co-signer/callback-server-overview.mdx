@@ -1,0 +1,39 @@
+---
+title: "TSS Node Callback 机制"
+sidebarTitle: "TSS Node Callback 机制"
+description: 了解 TSS Node Callback 机制的架构和工作流程
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+TSS Node Callback 机制是服务端签名人解决方案中的关键组件，启用后，它会在 TSS Node 执行任务请求之前对其进行审核和批准。
+
+## 工作原理
+
+启动后，TSS Node 与 Cobo WaaS 服务建立持久连接以接收任务请求。这些任务分为三类：
+
+- **密钥生成（KeyGen）**：为您的 MPC 钱包创建新的私钥分片。
+- **密钥签名（KeySign）**：签署交易或消息。
+- **密钥重新共享（KeyReshare）**：在参与者之间重新分配私钥分片。
+
+如果没有回调机制，TSS Node 会直接执行任务。如果您启用了[嵌入式风险控制模块](/v2_cn/guides/mpc-wallets/server-co-signer/embedded-risk-controls)，则会在该模块批准后执行每个任务。启用回调机制后，TSS Node 会请求您的 TSS Node Callback 服务器批准每个任务。TSS Node 仅执行所有回调服务器批准的任务。
+
+## 通信安全
+
+TSS Node 和回调服务器通过 HTTP 通信，使用 RS256 签名算法的 JSON Web Token (JWT) 确保数据传输安全。这包括：
+
+1. **密钥生成**：TSS Node 和回调服务器都生成自己的 RSA 密钥对。
+2. **密钥交换**：每个组件在其系统中配置对方的 RSA 公钥。
+3. **请求签名**：所有请求都使用发送方的私钥进行签名。
+4. **签名验证**：接收方使用发送方的公钥验证签名。
+
+要了解有关 JWT 的更多信息，请参阅 [JSON Web Tokens 简介](https://jwt.io/introduction)。
+
+## 实施步骤
+
+要实施回调机制：
+
+1. [部署您的 TSS Node Callback 服务器](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-deploy)。
+2. [配置回调密钥](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-configure)。
+3. 启动 TSS Node 和回调服务器。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

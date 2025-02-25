@@ -1,0 +1,79 @@
+---
+title: 创建 WaaS App 
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+使用 `init` 命令创建一个集成 WaaS 2.0 服务的 App 。
+
+您可以通过选项指定要创建的 WaaS App 的详细信息，包括 App 类型、身份验证方法和开发框架。您还可以逐步选择这些参数，并使用 Cobo CLI 的提示创建项目。
+
+## 用法
+
+```shell
+cobo app init [options]
+```
+
+## 选项
+- `-t`, `--app-type <portal|web|mobile|automation>`：WaaS App 的类型。可能的值包括：
+  - `portal`：[Cobo Portal Apps](/v2_cn/apps/introduction)
+  - `web`：网页端 App 
+  - `mobile`：移动端 App 
+  - `automation`：用于自动化任务或流程的 AI Agent
+
+- `--auth <apikey|org|user>`： App 用于访问 WaaS 2.0 服务的身份验证方法。可能的值包括：
+  - `apikey`：[API Key](/v2_cn/guides/overview/cobo-auth#api-key)
+  - `org`：[ Org Access Tokens ](/v2_cn/apps/org-access-tokens)
+
+    <Note>如果您正在创建 Cobo Portal Apps，则需要使用 Org Access Tokens 作为身份验证方法。</Note>
+
+  - `user`：Cobo Portal 账户
+
+- `--wallet-type <custodial-asset|custodial-web3|mpc-org-controlled|mpc-user-controlled|smart-contract|exchange>`： App 交互的钱包类型。可能的值包括：
+  - `custodial-asset`：全托管钱包（资产钱包）
+  - `custodial-web3`：全托管钱包（Web3 钱包）
+  - `mpc-org-controlled`：MPC 钱包（机构钱包）
+  - `mpc-user-controlled`：MPC 钱包（终端用户钱包）
+  - `smart-contract`：智能合约钱包（Safe{Wallet}）
+  - `exchange`：交易所钱包
+
+    <Note>目前此参数不会影响要创建的 App 。</Note>
+
+- `--mobile <flutter|react-native|kotlin|swift>`： App 的移动开发框架。可能的值包括：
+  - `flutter`：Flutter
+  - `react-native`：React Native
+  - `kotlin`：Kotlin
+  - `swift`：Swift
+
+- `--web <react|nextjs|vue|svelte>`： App 的 Web 开发框架。可能的值包括：
+  - `react`：React
+  - `nextjs`：Next.js
+  - `vue`：Vue
+  - `svelte`：Svelte
+<Note>目前 Cobo CLI 仅支持 `react`。</Note>
+
+- `--backend <fastapi|django|express|flask|spring-boot|gin|laravel|rails|nextjs>`： App 的后端开发框架。可能的值包括：
+  - `fastapi`：FastAPI
+  - `django`：Django
+  - `express`：Express
+  - `flask`：Flask
+  - `spring-boot`：Spring Boot
+  - `gin`：Gin
+  - `laravel`：Laravel
+  - `rails`：Ruby on Rails
+  - `nextjs`：Next.js
+<Note>目前 Cobo CLI 仅支持 `fastapi`。</Note>
+
+- `-d`, `--directory <DIRECTORY>`：要创建 App 项目的目录。
+- `-f`, `--force`：强制覆盖项目目录，如果它已经存在。
+
+<Note>如果您使用 Cobo CLI 的提示创建 App ，则可以暂时跳过 App Key步骤，如果您尚未生成 App Key。</Note>
+
+## 示例
+
+```shell
+cobo app init --app-type web --auth org --directory my_project
+```
+
+此命令初始化一个新的 WaaS App 项目，类型为 `web`（表示网页端 App ），使用 Org Access Tokens 进行身份验证，并在名为 `my_project` 的目录中创建它。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

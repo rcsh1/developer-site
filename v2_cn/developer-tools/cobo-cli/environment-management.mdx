@@ -1,0 +1,44 @@
+---
+title: "环境管理"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+Cobo CLI 允许您在[开发和生产环境](/v2_cn/guides/overview/environments)之间切换。本指南解释了如何有效地在环境之间切换。始终记得在执行命令之前切换到正确的环境，以避免在错误的环境中执行不必要的操作。
+
+<Note>
+Cobo CLI 默认设计用于开发环境。在生产环境中使用时务必小心，并确保您在执行每个命令之前了解其含义。
+</Note>
+
+## 查看当前环境
+
+要检查当前活动的环境，请使用：
+
+```shell
+cobo env
+```
+
+此命令将显示当前活动环境的名称。
+
+## 设置环境
+
+要切换到不同的环境，请使用以下命令：
+
+```shell
+cobo env <environment>
+```
+
+将 `<environment>` 替换为您想要的环境（`dev` 或 `prod`）。此命令将设置指定的环境为后续 CLI 命令的活动环境。
+<Info>
+如果您不指定环境，Cobo CLI 默认使用“开发”环境。
+</Info>
+## 为单个命令覆盖环境
+
+您可以使用全局 `-e` 或 `--env` 选项覆盖当前环境以执行单个命令：
+
+```shell
+cobo -e <environment> {command}
+```
+
+这允许您在不更改整体活动环境的情况下，在特定环境中执行命令。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

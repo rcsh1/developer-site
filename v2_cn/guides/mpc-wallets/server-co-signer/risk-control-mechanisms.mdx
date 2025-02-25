@@ -1,0 +1,68 @@
+---
+title: "风险控制机制概述"
+sidebarTitle: "概述"
+description: "了解服务端签名人中的风险控制机制"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+服务端签名人解决方案提供了两种风险控制机制，以帮助保护您的 MPC 钱包：
+
+1. 嵌入式风险控制机制
+2. （推荐）TSS Node Callback 机制
+
+嵌入式风险控制机制提供基本的、不可定制的规则，而 TSS Node Callback 机制使您能够实现自定义风险控制逻辑。如果两种机制都启用，它们将协同工作 - 只有在两种机制都批准的情况下，任务才会继续执行。我们建议实施 Callback 机制，以便更灵活地管理您的 MPC 钱包安全性。
+
+
+## 嵌入式风险控制机制
+
+嵌入式风险控制机制是内置于 TSS Node 的基本风险控制机制。它：
+
+- 可以通过配置文件启用或禁用。
+- 使用一组固定且不可定制的预定义规则。
+- 为您的 MPC 钱包操作提供基础安全层。
+
+有关嵌入式风险控制机制的更多详细信息，请参阅 [嵌入式风险控制机制](/v2_cn/guides/mpc-wallets/server-co-signer/embedded-risk-controls)。
+
+## TSS Node Callback 机制
+
+TSS Node Callback 机制提供了一个灵活的、可定制的风险控制机制，它：
+
+- 实现您的自定义风险控制规则。
+- 实时审核所有任务请求。
+- 根据您的业务逻辑做出批准/拒绝决策。
+- 使用 JWT 认证与 TSS Node 进行安全通信。
+
+当您有多个具有不同控制要求的系统时，您可以部署多个回调服务器来增强安全性。每个回调服务器可以有自己的风险控制规则，只有当所有配置的回调服务器都批准时，任务请求才会被批准。
+
+
+要了解有关 TSS Node Callback 机制的更多信息，请参阅 [TSS Node Callback 机制](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-overview)。
+
+## 可控操作
+
+两种风险控制机制都可以审核和控制以下任务请求：
+- 密钥生成（KeyGen）：为 MPC 钱包创建新的私钥分片。
+- 密钥签名（KeySign）：签署交易或消息。
+- 密钥重新共享（KeyReshare）：在参与者之间重新分配私钥分片。
+
+
+## 风险控制工作流程
+
+下图说明了这两种风险控制机制如何协同工作：
+
+<img src="/v2_cn/images/guides/risk-control-workflow.svg" alt="风险控制工作流程" className="diagram" />
+
+
+当 TSS Node 接收到任务请求时：
+  - 如果启用，嵌入式风险控制模块使用其基本规则评估请求。
+  - 如果配置，回调风险控制模块将请求发送到所有配置的回调服务器。
+
+请求仅在以下情况下继续：
+- 嵌入式风险控制模块批准（如果启用）。
+- 且所有配置的回调服务器都批准。
+
+## 下一步
+
+1. [配置嵌入式风险控制](/v2_cn/guides/mpc-wallets/server-co-signer/embedded-risk-controls)
+2. [设置您的 TSS Node Callback 服务器](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-overview)
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

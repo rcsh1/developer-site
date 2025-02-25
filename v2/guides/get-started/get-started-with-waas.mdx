@@ -19,7 +19,7 @@ Follow the instructions in [Quick start guide](https://manuals.cobo.com/en/porta
 
 ## Generate an API key and an API secret
 
-Use either OpenSSL or the Python library to generate an Ed25519 key pair as the API key and API secret. This guide uses OpenSSL as an example. To learn more about generating an API key and an API secret, see [Generate an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret).
+Generate an Ed25519 key pair as the API key and API secret. This guide uses OpenSSL as an example. To learn other methods for generating an API key and an API secret, see [Generate an API key and an API secret](/v2/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret).
 
 1. In a terminal window, run the following OpenSSL commands:
 
@@ -55,9 +55,9 @@ Register your API key and configure related permissions on Cobo Portal. To learn
 3. Click **Register API Key**.
 4. Enter the API key name (maximum 30 characters).
 5. Enter the public key you have generated in the previous step.
-6. Under **User Roles**, select **Viewer**. Each user role is permitted to call a specific set of operations.
-7. Under **Wallets**, select **Any Wallets**. This selection determines the wallets this API key has control over.
-8. Select **Temporary** as the key type. <Note>If you already have a static IP address, you can select **Permanent** as the key type instead and enter your IP address in the textbox.</Note>
+6. Under **Role & Wallet Scope**, set **Viewer** as the user role and **All Wallets** as the wallet scope. Each user role is permitted to call a specific set of operations, and the wallet scope determines the set of wallets this API key can access.
+7. Click **Confirm** to save the changes.
+8. Select **Temporary** as the key type. <Note>If you already have a static IP address, you can select **Permanent** as the key type instead and enter your IP address in **IP Whitelist**.</Note>
 9. Click **Register**.
 10. Notify your organization admins to approve the request on Cobo Guard. By default, it requires the approval of at least half of the admins to successfully register an API key. You can only start using an API key after its status becomes **Active**.
 

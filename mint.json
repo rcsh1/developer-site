@@ -26,7 +26,8 @@
   },
   "versions": [
     "Version 1.0",
-    "Version 2.0"
+    "Version 2.0",
+    "Version 2.0 中文版"
   ],
   "topbarLinks": [
     {
@@ -68,6 +69,26 @@
       "version": "Version 2.0"
     },
     {
+      "name": "开发指南",
+      "url": "v2_cn/guides",
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "name": "API 参考",
+      "url": "v2_cn/api-references",
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "name": "开发者工具",
+      "url": "v2_cn/developer-tools",
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "name": "Cobo Portal Apps",
+      "url": "v2_cn/apps",
+      "version": "Version 2.0 中文版"
+    },
+    {
       "name": "Documentation",
       "url": "v1/overview",
       "version": "Version 1.0"
@@ -99,6 +120,256 @@
     }
   ],
   "navigation": [
+    {
+      "group": "概述",
+      "pages": [
+        "v2_cn/guides/overview/introduction",
+        "v2_cn/guides/overview/environments",
+        "v2_cn/guides/overview/cobo-auth",
+        {
+          "group": "权限",
+          "pages": [
+            "v2_cn/guides/overview/permissions-and-scopes",
+            "v2_cn/guides/overview/permission-list"
+          ]
+        },
+        "v2_cn/guides/overview/changelog",
+        "v2_cn/guides/overview/upgrade-guide"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "快速开始",
+      "pages": [
+        "v2_cn/guides/get-started/get-started-with-waas",
+        "v2_cn/guides/get-started/use-postman-to-call-waas-api"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "管理钱包",
+      "pages": [
+        {
+          "group": "全托管钱包",
+          "pages": [
+            "v2_cn/guides/custodial-wallets/get-started-asset-wallets"
+          ]
+        },
+        {
+          "group": "MPC 钱包",
+          "pages": [
+            "v2_cn/guides/mpc-wallets/get-started-ocw",
+            "v2_cn/guides/mpc-wallets/get-started-ucw",
+            {
+              "group": "服务器签名人",
+              "pages": [
+                "v2_cn/guides/mpc-wallets/server-co-signer/tss-node-overview",
+                {
+                  "group": "部署和配置服务器签名人",
+                  "pages": [
+                    "v2_cn/guides/mpc-wallets/server-co-signer/tss-node-release-notes",
+                    "v2_cn/guides/mpc-wallets/server-co-signer/tss-node-network-environments",
+                    "v2_cn/guides/mpc-wallets/server-co-signer/tss-node-server-environments",
+                    "v2_cn/guides/mpc-wallets/server-co-signer/tss-node-deployment",
+                    "v2_cn/guides/mpc-wallets/server-co-signer/tss-node-update"
+                  ]
+                },
+                {
+                  "group": "风控机制",
+                  "pages": [
+                    "v2_cn/guides/mpc-wallets/server-co-signer/risk-control-mechanisms",
+                    "v2_cn/guides/mpc-wallets/server-co-signer/embedded-risk-controls",
+                    {
+                      "group": "TSS Node callback",
+                      "pages": [
+                        "v2_cn/guides/mpc-wallets/server-co-signer/callback-server-overview",
+                        "v2_cn/guides/mpc-wallets/server-co-signer/callback-server-deploy",
+                        "v2_cn/guides/mpc-wallets/server-co-signer/callback-server-configure",
+                        "v2_cn/guides/mpc-wallets/server-co-signer/callback-server-data-structure"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "group": "备份和恢复",
+                  "pages": [
+                    "v2_cn/guides/mpc-wallets/server-co-signer/disaster-recovery-overview",
+                    "v2_cn/guides/mpc-wallets/server-co-signer/key-shares-backup",
+                    "v2_cn/guides/mpc-wallets/server-co-signer/key-shares-restore"
+                  ]
+                },
+                "v2_cn/guides/mpc-wallets/server-co-signer/key-share-verify",
+                "v2_cn/guides/mpc-wallets/server-co-signer/appendix"
+              ]
+            },
+            "v2_cn/guides/mpc-wallets/balance-amounts"
+          ]
+        },
+        {
+          "group": "智能合约钱包",
+          "pages": [
+            "v2_cn/guides/smart-contract-wallets/get-started-scw",
+            "v2_cn/guides/smart-contract-wallets/automate-farming-rewards-collection"
+          ]
+        }
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "交易",
+      "pages": [
+        "v2_cn/guides/transactions/transaction-process-custodial",
+        "v2_cn/guides/transactions/estimate-fees",
+        "v2_cn/guides/transactions/manage-transactions",
+        "v2_cn/guides/transactions/sources-and-destinations",
+        "v2_cn/guides/transactions/status"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "Webhooks 和 Callbacks",
+      "pages": [
+        "v2_cn/guides/webhooks-callbacks/introduction",
+        "v2_cn/guides/webhooks-callbacks/set-up-endpoint",
+        "v2_cn/guides/webhooks-callbacks/webhook-event-type"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "概览",
+      "pages": [
+        "v2_cn/api-references/overview"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "Cobo CLI",
+      "pages": [
+        {
+          "group": "Overview",
+          "pages": [
+            "v2_cn/developer-tools/cobo-cli/introduction",
+            "v2_cn/developer-tools/cobo-cli/changelog"
+          ]
+        },
+        {
+          "group": "快速开始",
+          "pages": [
+            "v2_cn/developer-tools/cobo-cli/quick-start-guide",
+            "v2_cn/developer-tools/cobo-cli/version-and-updates",
+            "v2_cn/developer-tools/cobo-cli/login-and-authentication",
+            "v2_cn/developer-tools/cobo-cli/environment-management",
+            "v2_cn/developer-tools/cobo-cli/configuration"
+          ]
+        },
+        {
+          "group": "API 命令",
+          "pages": [
+            "v2_cn/developer-tools/cobo-cli/get-requests",
+            "v2_cn/developer-tools/cobo-cli/post-requests",
+            "v2_cn/developer-tools/cobo-cli/put-requests",
+            "v2_cn/developer-tools/cobo-cli/delete-requests"
+          ]
+        },
+        {
+          "group": "App 开发",
+          "pages": [
+            "v2_cn/developer-tools/cobo-cli/app-init",
+            "v2_cn/developer-tools/cobo-cli/app-upload",
+            "v2_cn/developer-tools/cobo-cli/app-update",
+            "v2_cn/developer-tools/cobo-cli/app-status"        
+          ]
+        },
+        {
+          "group": "Webhooks",
+          "pages": [
+            "v2_cn/developer-tools/cobo-cli/listen-and-forward-events",
+            "v2_cn/developer-tools/cobo-cli/trigger-events",
+            "v2_cn/developer-tools/cobo-cli/event-types"
+          ]
+        },
+        "v2_cn/developer-tools/cobo-cli/key-management",
+        {
+          "group": "实用命令",
+          "pages": [
+            "v2_cn/developer-tools/cobo-cli/real-time-logs",
+            "v2_cn/developer-tools/cobo-cli/open-browser-shortcuts",
+            "v2_cn/developer-tools/cobo-cli/api-documentation"
+          ]
+        },
+        {
+          "group": "命令参考",
+          "pages": [
+            "v2_cn/developer-tools/cobo-cli/global-options",
+            "v2_cn/developer-tools/cobo-cli/cli-commands"
+          ]
+        }
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "WaaS SDKs",
+      "pages": [
+        "v2_cn/developer-tools/quickstart-python",
+        "v2_cn/developer-tools/quickstart-java",
+        "v2_cn/developer-tools/quickstart-go",
+        "v2_cn/developer-tools/quickstart-javascript"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "UCW SDKs",
+      "pages": [
+        "v2_cn/developer-tools/quickstart-ucw-ios",
+        "v2_cn/developer-tools/ucw-sdk/api-reference"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "Cobo UI Toolkit",
+      "pages": [
+        "v2_cn/developer-tools/uitoolkit-intro",
+        "v2_cn/developer-tools/uitoolkit-api"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "获取测试币",
+      "pages": [
+        "v2_cn/developer-tools/get-testnet-coins"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "介绍",
+      "pages": [
+        "v2_cn/apps/introduction"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "快速开始",
+      "pages": [
+        "v2_cn/apps/get-started"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "创建 App",
+      "pages": [
+        {
+          "group": "身份验证",
+          "pages": [
+            "v2_cn/apps/authentication",
+            "v2_cn/apps/org-access-tokens",
+            "v2_cn/apps/verify-users"
+          ]
+        },
+        "v2_cn/apps/build-app",
+        "v2_cn/apps/configure-workflow"
+      ],
+      "version": "Version 2.0 中文版"
+    },
     {
       "group": "Overview",
       "pages": [

@@ -1,0 +1,73 @@
+---
+title: "嵌入式风险控制机制"
+sidebarTitle: "嵌入式风险控制机制"
+description: "在服务端签名人中配置基本风险控制"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+嵌入式风险控制机制是内置于 TSS Node 的基本风险控制机制。它根据预定义的规则评估任务请求，这些规则无法自定义。任务请求必须得到嵌入式风险控制模块（如果启用）和所有配置的[回调服务器](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-overview)的批准后，才能继续进行。
+
+## 配置
+
+可以通过 `configs/cobo-tss-node-config.yaml` 文件配置嵌入式风险控制模块。配置定义了以下任务请求的规则：
+
+- 密钥生成（KeyGen）：为 MPC 钱包创建新的私钥分片
+- 密钥签名（KeySign）：签署交易或消息
+- 密钥再共享（KeyReshare）：在参与者之间重新分配私钥分片
+
+以下是一个配置示例：
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_gen:
+    reject_all: false
+    allow_list:
+      - threshold: 2
+        node_ids:
+          - <Cobo TSS Node  ID>
+          - <第三方 TSS Node  ID>
+          - <客户 TSS Node  ID>
+  key_sign:
+    reject_all: true
+  key_reshare:
+    reject_all: false
+    allow_list:
+      - xpubkey: <扩展根公钥>
+        new_threshold: 2
+        new_node_ids:
+          - <Cobo TSS Node  ID>
+          - <第三方 TSS Node  ID>
+          - <客户 TSS Node  ID>
+  key_share_sign:
+    reject_all: true
+```
+- `enable`: 启用或禁用嵌入式风险控制机制
+- `key_gen.reject_all`: 如果为 true，拒绝所有密钥生成请求
+- `key_sign.reject_all`: 如果为 true，拒绝所有密钥签名请求
+- `key_share_sign.reject_all`: 如果为 true，拒绝所有私钥分片验证请求
+- `key_reshare.reject_all`: 如果为 true，拒绝所有密钥再共享请求
+- `<key_gen>.allow_list` 或 `<key_reshare>.allow_list`: 允许的密钥生成或再共享配置列表
+  - `xpubkey`: 密钥再共享的根扩展公钥
+  - `new_threshold`: 新的签名阈值
+  - `new_node_ids`: 允许参与密钥再共享的节点 ID
+
+请将占位符替换为实际值：
+- `<扩展根公钥>`：MPC 钱包的根扩展公钥
+- `<Cobo TSS Node  ID>`：Cobo 的 TSS Node  ID
+- `<客户 TSS Node  ID>`：您的 TSS Node  ID
+- `<第三方 TSS Node  ID>`：第三方 TSS Node  ID
+
+有关 TSS Node 配置的更多信息，请参见[配置 TSS Node ](/v2_cn/guides/mpc-wallets/server-co-signer/appendix#configure-the-tss-node)。
+
+## 安全建议
+
+1. 尽管嵌入式风险控制机制提供了基本的安全性，但强烈建议也实现回调机制以进行额外的自定义风险控制。这两者的组合提供了更全面的和灵活的风险管理策略。
+2. 定期审查和更新您的风险控制配置
+3. 在部署到生产环境之前，请在开发环境中测试您的配置
+
+## 下一步
+
+- [部署您的回调服务器](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-overview)
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

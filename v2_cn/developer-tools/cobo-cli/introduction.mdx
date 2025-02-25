@@ -1,0 +1,68 @@
+---
+title: "Cobo CLI 简介"
+sidebarTitle: "简介"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+Cobo 命令行界面（CLI）是一个强大的开发者工具，旨在帮助您直接从命令行构建、测试和管理与 [Cobo Wallet-as-a-Service (WaaS) 2.0](/v2_cn/guides/overview/introduction) 的集成。
+
+## 主要功能
+
+- **[API 交互](/v2_cn/developer-tools/cobo-cli/get-requests)**：直接从终端轻松与 Cobo WaaS 2.0 通过 [RESTful API](/v2/api-references/playground) 进行交互。
+- **[应用管理](/v2_cn/developer-tools/cobo-cli/app-init)**：通过预构建的模板创建 App ，支持多种编程语言和框架，并预集成 WaaS SDK，从而简化您的开发过程。此外，您可以使用 Cobo CLI 通过命令行高效地构建、管理和发布 [Cobo Portal Apps](/v2_cn/apps/introduction)。
+- **[多种认证方式](/v2_cn/developer-tools/cobo-cli/login-and-authentication)**：使用和测试三种认证机制：Cobo Portal 账户、 Org Access Tokens 和 API Key。
+- **[Webhook 测试](/v2_cn/developer-tools/cobo-cli/trigger-events)**：在本地测试和调试您的 webhook 集成。
+- **[实时 API 监控](/v2_cn/developer-tools/cobo-cli/real-time-logs)**：流式传输 API 请求日志，以便快速调试和监控。
+- **[环境切换](/v2_cn/developer-tools/cobo-cli/global-options#environment-selection-e-env)**：在开发和生产环境之间无缝切换，允许在部署到生产环境之前进行安全测试和开发。
+- **[API 文档查询](/v2_cn/developer-tools/cobo-cli/api-documentation)**：直接从命令行访问 Cobo WaaS 2.0 API、请求、响应及其参数的帮助文档。
+
+## 使用场景
+
+Cobo CLI 特别适用于：
+
+- 将 Cobo WaaS 2.0 集成到 App 中的开发人员。
+- 管理 Cobo 资源和监控交易的 DevOps 工程师。
+- 测试 Cobo 集成和 API 响应的 QA 团队。
+- 解决与 Cobo 服务相关的客户问题的支持团队。
+
+## 使用示例
+
+以下是一些使用 Cobo CLI 的快速示例。这些示例展示了 Cobo CLI 的一些主要功能，包括 REST API 交互、 App 管理、访问 API 文档、实时日志监控和 webhook 事件处理。
+
+1. 列出所有托管钱包：
+
+```shell
+cobo get /wallets --wallet_type Custodial 
+```
+
+2. 创建一个新 App ，使用模板并集成 WaaS SDK：
+
+```shell
+cobo app init --app-type portal --web react --backend fastapi -d demo_project
+```
+
+3. 查询特定 API 操作的文档：
+
+```shell
+cobo doc /wallets/{wallet_id}/utxos
+```
+
+4. 监控实时 API 请求日志以进行调试和故障排除：
+
+```shell
+cobo logs tail --http-method GET --request-path /wallets
+```
+
+5. 触发 webhook 事件：
+
+```shell
+cobo webhook trigger wallets.transaction.updated --override '{"wallet_id": "1234567890"}'
+```
+
+6. 监听 webhook 事件并将其转发到本地端点：
+
+```shell
+cobo webhook listen --events wallets.transaction.updated --forward http://localhost:9988
+```
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

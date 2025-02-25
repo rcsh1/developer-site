@@ -1,0 +1,59 @@
+---
+title: "密钥管理"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南说明如何使用 Cobo CLI 生成和管理 API Key 密钥对和 App Key 密钥对。所有密钥都用于与 Cobo WaaS 2.0 进行认证。
+
+## 生成密钥
+
+使用 `keys generate` 命令生成新的 API Key 密钥对（API Key 和 API Secret）或 App Key 密钥对（ App Key 和 App Secret）。
+
+### 用法
+
+```shell
+cobo keys generate [options]
+```
+
+### 选项
+
+- `--key-type <key_type>`：指定要生成的密钥类型（`API` 或 `APP`）。默认为 `API`。
+- `--alg <algorithm>`：指定密钥生成算法。默认为 `ed25519`。
+- `--force`：强制替换现有密钥。
+
+### 示例
+
+生成新的 API Key 密钥对：
+
+```shell
+cobo keys generate
+```
+
+生成新的 App Key 密钥对：
+
+```shell
+cobo keys generate --key-type APP
+```
+
+强制替换现有 API Key 密钥对：
+
+```shell
+cobo keys generate --force
+```
+
+## 密钥存储
+
+生成的密钥安全地存储在您的配置文件中（默认：`~/.cobo/config.toml`）。
+
+<Warning>
+切勿分享您的 API Key或 App Key。请妥善保管，并且仅在 Cobo Portal 上注册时使用 API Key。
+</Warning>
+
+## 最佳实践
+
+- 定期轮换您的 API Key 密钥对或 App Key 密钥对，以保持安全。
+- 为开发和生产环境使用不同的密钥。
+- 限制每个密钥的权限，仅授予其所需的最低权限。
+- 监控密钥的使用情况，并注销可能已被泄露的密钥。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

@@ -1,0 +1,26 @@
+---
+title: "部署服务端签名人的网络环境"
+sidebarTitle: "网络环境"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+服务端签名人需要以下网络环境以实现最佳运行：
+
+- 不需要入站连接。
+- 在安装（或升级）阶段：
+  - 能够访问系统的 apt 源以安装所有必要的依赖项（仅适用于 Ubuntu 服务器）
+  - 能够访问 Docker 引擎安装文件以安装 Docker 引擎
+  - 能够访问 docker.io 注册表（公共 Docker 注册表）
+  - 能够访问 Intel 网站以下载驱动程序（适用于 SGX 准备好的服务器）
+- 当服务器正在运行时：
+  - 开发环境：能够访问 ws.tss.dev.cobo.com 的 443 端口。如果您已配置 TSS Node Callback 服务器，服务端签名人还应能够访问回调服务器。
+  - 生产环境：能够访问 ws.tss.cobo.com 的 443 端口。如果您已配置 TSS Node Callback 服务器，服务端签名人还应能够访问回调服务器。
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
+
+- 当服务器正在运行时，您的服务器必须可以访问以下环境：
+  | 环境 | 端口 | 域名 |
+  |------------|------|--------|
+  | 开发环境 | 443 | ws.tss.dev.cobo.com |
+  | 生产环境 | 443 | ws.tss.cobo.com |
+  
+如果您已配置 TSS Node Callback 服务器，服务端签名人还应能够访问回调服务器。

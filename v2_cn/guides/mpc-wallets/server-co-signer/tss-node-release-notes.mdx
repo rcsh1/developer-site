@@ -1,0 +1,59 @@
+---
+title: "TSS Node 包发布说明"
+sidebarTitle: "TSS Node 包发布说明"
+lang: "zh"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+## v0.10.0
+- 您现在可以在 Cobo Portal 中验证密钥份额。有关详细信息，请参阅 [验证密钥份额](https://manuals.cobo.com/zh/portal/mpc-wallets/ocw/key-share-verification)。
+- 更新了 TSS Node Callback 请求的数据结构。
+- 修复了若干问题。
+
+## v0.9.5
+- 在 TSS Node Callback 请求中添加了 `signature_type` 和 `tss_protocol`。
+- 添加了对签名类型为 Schnorr 时非空 tweak 值的支持。
+
+## v0.9.4
+- 添加了对 Schnorr 签名的支持。
+- 更新了 `tss-node.sh` 脚本。
+- 添加了密码分段功能并修改了新密码长度限制。
+- 修改了文件夹和文件创建权限。
+
+## v0.9.0
+
+- 添加了回调请求超时配置。
+- 添加了回调服务监控配置。
+- 在回调服务请求参数中添加了 tweaklist。
+- 回调服务配置现在支持策略。
+- 修改了通过 export-share 导出的恢复组文件格式。
+- 添加了更改密码功能。
+- 增强了数据迁移和优化的迁移命令。
+- 修复了安全审计中发现的问题。
+- 优化和升级了 MPC 安全协议。
+- 添加了连接 MySQL 进行私钥存储的支持。
+- 改善了整体系统性能和可靠性。
+
+## v0.7.0
+
+- 针对特定模块实施了安全增强。
+- 增强了 "migrate" 命令以包括数据迁移和优化。
+- 调整了配置文件和命令行的优先级。
+- 添加了在回调服务拒绝请求时通知客户端的功能。
+- 改善了整体系统性能和可靠性。
+- 解决了错误修复。
+
+## v0.6.0
+
+- 改进了底层 MPC 协议实现以增强安全性。
+- 建立了与开发环境的默认连接。
+- 升级了系统消息格式和加密方法。
+- 重构了 TSS Node 注册机制。
+- 引入了规范组 ID 和协议组 ID。
+- 启用了对异常状态会话的自动处理。
+- 扩展了恢复文件数据字段。
+- 重构了 TSS Node Callback 机制。
+- 优化了数据库结构和日志系统。
+- 改善了整体系统性能和可靠性。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

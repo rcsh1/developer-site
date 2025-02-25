@@ -1,0 +1,232 @@
+---
+title: "构建 Cobo Portal Apps "
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本文将引导您从头开始构建 Cobo Portal Apps 的详细步骤。
+
+有关开发 Cobo Portal Apps 的概述，请参阅 [Cobo Portal Apps 开发简介](/v2_cn/apps/introduction)。
+
+## 示例项目
+
+Cobo 提供了一个示例项目 Hello World，允许您快速构建 Cobo Portal Apps 并在本地计算机上预览。有关详细信息，请参阅 [创建示例 App ](/v2_cn/apps/get-started)。
+
+## 前提条件
+
+- 要构建和管理 Cobo Portal Apps ，您需要首先在 [开发环境](https://portal.dev.cobo.com/) 中在 Cobo Portal 中创建一个团队。按照 [快速入门指南](https://manuals.cobo.com/en/portal/quick-start-guide) 中的说明设置您的 Cobo 帐户并创建您的团队。如果已设置团队，请要求您的团队管理员邀请您加入团队。
+- 选择并安装 FastAPI 或 Next.js 作为您的开发框架。
+
+## 开发 App 
+
+### 使用 Cobo CLI 创建 App 
+
+Cobo 命令行接口（CLI）是一种强大的开发工具，旨在帮助您直接从命令行构建、测试和管理与 Cobo Wallet-as-a-Service（WaaS）2.0 的集成。
+
+1. 使用以下命令安装 Cobo CLI：
+
+    ```shell
+    # 使用 pip 安装 Cobo CLI（需要 Python 3.9 或更高版本）。
+    pip install cobo-cli
+    # 或者，您可以使用 Homebrew 安装 Cobo CLI。
+    brew install cobo-cli
+    # 测试安装是否成功
+    cobo version
+    ```
+
+    有关 Cobo CLI 的系统要求的更多详细信息，请参阅 [安装 Cobo CLI](/v2_cn/developer-tools/cobo-cli/quick-start-guide#system-requirements)。
+
+2. 登录到 Cobo Portal 并将 Cobo CLI 连接到您的 Cobo Portal 帐户。您可以选择 [三种身份验证方法](/v2_cn/developer-tools/cobo-cli/login-and-authentication) 之一进行身份验证。作为示例，此步骤将向您展示如何使用您的 Cobo Portal 帐户进行身份验证：
+
+   ```shell
+   # 使用您的 Cobo Portal 帐户进行身份验证。
+   cobo auth user
+   # 启动用户登录过程。
+   cobo login
+   ```
+
+   系统会提示您打开浏览器以继续授权过程。在您的浏览器中完成授权过程，授予 Cobo CLI 访问您的加密钱包的必要权限。有关身份验证方法的更多详细信息，请参阅 [登录和身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication)。
+
+3. 使用 [app init](/v2_cn/developer-tools/cobo-cli/app-init) 命令基于模板创建示例 App 。您可以通过选项指定要创建的 WaaS App 的详细信息，或逐步选择这些参数并使用 Cobo CLI 的提示创建项目。
+
+   以下命令创建一个 Cobo Portal Apps 项目，使用 Org Access Tokens 进行身份验证，并在名为 `hello_world` 的目录中创建项目：
+
+   ```shell
+   cobo app init --app-type portal --auth org --directory hello_world
+   ```
+
+### 获取身份验证信息
+
+要在 Cobo Portal Apps 中对 WaaS 服务的 API 请求进行身份验证，您需要提供 App Key和 Org Access Tokens 。如果您不使用 [WaaS SDK](/v2_cn/developer-tools/quickstart-python)，则还需要计算 API 签名。有关获取身份验证所需信息的详细信息，请参阅 [Cobo OAuth](https://www.cobo.com/developers/v2/apps/authentication)。
+
+### 验证 App 用户
+
+User Info Tokens 是由 Cobo Portal 签名的 JSON Web  Tokens 。这些 Tokens 允许 Cobo Portal Apps 检索有关用户的信息，包括用户 ID、电子邮件地址和权限。Cobo Portal Apps 可以使用这些信息来验证用户的身份，并根据权限控制用户访问团队资源。建议在用户开始使用 App 之前验证其身份。有关更多信息，请参阅 [User Info Tokens ](/v2_cn/apps/verify-users)。
+
+### 调用 WaaS API
+
+现在，您可以调用 WaaS 2.0 API 来构建 App 的功能。在调用 API 操作时，您需要在请求头中提供所需的身份验证信息。
+
+以下代码片段显示了如何使用 [WaaS Python SDK](/v2_cn/developer-tools/quickstart-python) 列出团队中的所有钱包：
+
+```python
+from cobo_waas2 import Configuration, ApiClient, WalletsApi
+
+configuration = Configuration(
+    # 使用 `https://api.dev.cobo.com/v2` 作为开发环境，或者 `https://api.cobo.com/v2` 作为生产环境。
+    host="https://api.dev.cobo.com/v2",
+    # 将 `<APP_SECRET>` 替换为您的 App Secret。
+    api_private_key=<APP_SECRET>,
+)
+client = ApiClient(configuration=configuration)
+# 将 `{ORG_ACCESS_TOKEN}` 替换为 Org Access Tokens 。
+client.set_default_header("AUTHORIZATION", f"Bearer {ORG_ACCESS_TOKEN}")
+api_instance = WalletsApi(client)
+wallets = api_instance.list_wallets(wallet_type=WalletType.CUSTODIAL).data
+```
+
+有关每个 API 操作的详细信息，请参阅 [API 参考](/v2/api-references)。
+
+### 配置Manifest 文件
+
+在发布 App 之前，您需要填写Manifest 文件，该文件包含 App 的配置信息。有关字段描述和示例，请参阅以下表格：
+
+<table class="table-three-cols">
+    <thead>
+        <tr>
+            <th>字段</th>
+            <th>描述</th>
+            <th>示例</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>app_name</td>
+            <td> App 名称。</td>
+            <td><code>SuperLoop</code></td>
+        </tr>
+        <tr>
+            <td>app_desc</td>
+            <td> App 的简要描述，长度限制为 80 个字符。</td>
+            <td><code>SuperLoop 是一个离线结算网络，允许机构在不担心对手方风险的情况下在交易所进行交易。</code></td>
+        </tr>
+        <tr>
+            <td>app_desc_long</td>
+            <td> App 的详细描述，包括用例和关键功能。 <p>描述必须少于 1000 个字符，并以 Markdown 格式编写。</p></td>
+            <td><code>SuperLoop 是一个离线结算网络，允许机构在不担心对手方风险的情况下在交易所进行交易。对于资产管理者，在交易所进行交易可以更有信心和效率地进行。无需在交易所预先充币，最大限度地降低对手方风险。</code></td>
+        </tr>
+        <tr>
+            <td>app_icon_url</td>
+            <td> App 图标的 URL。 <p>请联系我们的运营团队（<a href="mailto:help@cobo.com">help@cobo.com</a>）帮助您上传 App 图标。</p></td>
+            <td><code>https://d.cobo.com/public/logos/Logo.png</code></td>
+        </tr>
+        <tr>
+            <td>screen_shots</td>
+            <td>至少三个展示关键功能的截图的 URL。 <p>请联系我们的运营团队（<a href="mailto:help@cobo.com">help@cobo.com</a>）帮助您上传截图。</p></td>
+            <td><code>"https://d.cobo.com/apk/android/SuperLoop.png", "https://d.cobo.com/apk/android/Loop.png", "https://d.cobo.com/apk/android/MirrorModal.png"</code></td>
+        </tr>
+        <tr>
+            <td>required_permissions</td>
+            <td> App 访问团队资源所需的权限列表。 <p>权限由资源类型和操作组成，中间用逗号隔开。例如，<code>wallet:create</code> 表示创建钱包的权限。</p>有关 WaaS 2.0 中的权限列表，请参阅 <a href="https://www.cobo.com/developers/v2/guides/overview/permission-list">权限列表</a>。</td>
+            <td><code>"wallet:create", "transaction:withdraw", "mpc_project:update"</code></td>
+        </tr>
+        <tr>
+            <td>optional_permissions</td>
+            <td>(可选)  App 可以请求访问团队资源的权限列表。 <p>这些权限不是必需的，但可能会增强 App 功能。权限由资源类型和操作组成，中间用逗号隔开。例如，<code>wallet:create</code> 表示创建钱包的权限。</p>有关 WaaS 2.0 中的权限列表，请参阅 <a href="https://www.cobo.com/developers/v2/guides/overview/permission-list">权限列表</a>。</td>
+            <td><code>"address_book:create", "kyc_profile:read", "team_member:freeze"</code></td>
+        </tr>
+        <tr>
+            <td>homepage_url</td>
+            <td> App 主页的 URL，用于将 App 嵌入 Cobo Portal 中的 iframe 中。</td>
+            <td><code>https://example.com</code></td>
+        </tr>
+        <tr>
+            <td>callback_urls</td>
+            <td>接收团队管理员批准 App 权限请求后回调的 URL。</td>
+            <td><code>https://example.com/webhooks/organization/authorization</code></td>
+        </tr>
+        <tr>
+            <td>client_key</td>
+            <td> App Key。 <p>有关生成 App Key的说明，请参阅 <a href="https://www.cobo.com/developers/v2/apps/authentication#generate-an-app-key-and-an-app-secret">生成 App Key 和 App Secret</a>。</p></td>
+            <td><code>AbCdEfGhIjKlMnOpQrStUvWxYz1234567890</code></td>
+        </tr>
+        <tr>
+            <td>creator_name</td>
+            <td>开发者的名称。</td>
+            <td><code>Cobo</code></td>
+        </tr>
+        <tr>
+            <td>contact_email</td>
+            <td>开发者的联系电子邮件。</td>
+            <td><code>sample@email.com</code></td>
+        </tr>
+        <tr>
+            <td>operation_approval_rules</td>
+            <td>(可选)  App 的默认审批工作流。如果要使用此功能，<code>required_permissions</code> 字段必须包含 <code>app_governance_policy:update</code> 和 <code>app_governance_policy:read</code>。有关配置审批工作流的详细信息，请参阅 <a href="https://www.cobo.com/developers/v2/apps/configure-workflow">配置审批工作流</a>。</td>
+            <td><code>[\{"operation_id": "25cbb115-82a1-4474-9993-538bb439ad33", "operation_name": "Make Batch Payout", "default_approval_policies": [\{"action": \{"type": "Quorum", "content": \{"roles": ["admin"], "threshold": 1, "type": "PART_APPROVAL"}}, "conditions": [\{"field": "amount", "value_type": "INT", "value": "100", "operator": ">"}]}, \{"action": \{"type": "Accept", "content": ""}, "conditions": null}], "descriptions": [\{"field": "amount", "description": "总金额（美元）", "value_type": "INT", "display_name": "总金额（美元）"}]}]</code></td>
+        </tr>
+        <tr>
+            <td>wallet_type</td>
+            <td>(可选)  App 支持的钱包类型。可能的值如下： <ul><li><code>Custodial</code></li><li><code>MPC</code></li><li><code>SmartContract</code></li><li><code>Exchange</code></li><li><code>User-Controlled</code></li><li><code>Org-Controlled</code></li><li><code>Asset</code></li><li><code>Safe{Wallet}</code></li><li><code>Main</code></li></ul> 例如，如果此字段设置为 <code>Custodial, MPC</code>，则用户只能选择这些钱包类型作为 App 可以访问的钱包范围。 <p>如果此字段留空，则用户可以选择任何可用的钱包类型。</p>有关 WaaS 2.0 中的钱包范围的详细信息，请参阅 <a href="https://www.cobo.com/developers/v2/guides/overview/permissions-and-scopes#wallet-scopes">钱包范围</a>。</td>
+            <td><code>"Custodial", "MPC"</code></td>
+        </tr>
+        <tr>
+            <td>is_policy_reminded</td>
+            <td>(可选) 是否提醒 App 用户设置 App 的交易风控。 <p>默认值为 <code>true</code>。</p></td>
+            <td><code>true</code></td>
+        </tr>
+    </tbody>
+</table>
+
+有关这些字段在 App  UI 中的显示位置，请参阅以下截图：
+
+**App 页面**
+<img src="/v2_cn/images/apps/app_list.png" className="screenshot_full_screen" alt=" App 页面" />
+
+**App 详细信息页面的概述选项卡**
+<img src="/v2_cn/images/apps/app_overview.png" className="screenshot_full_screen" alt=" App 详细信息页面的概述选项卡" />
+
+**App 详细信息页面的权限选项卡**
+<img src="/v2_cn/images/apps/app_permissions.png" className="screenshot_full_screen" alt=" App 详细信息页面的权限选项卡" />
+
+## 发布 App 
+
+完成 App 开发后，您可以使用 [app upload](/v2_cn/developer-tools/cobo-cli/app-upload) Cobo CLI 命令将 App 发布到生产环境或开发环境：
+
+```shell
+cobo app upload
+```
+
+<Info>有关如何在开发环境和生产环境之间切换的更多信息，请参阅 [环境管理](/v2_cn/developer-tools/cobo-cli/environment-management)。</Info>
+
+在发布 Cobo Portal Apps 之前，请确保：
+
+- 正确配置 [ App Manifest 文件](/v2_cn/apps/build-app#configure-the-manifest-file)。
+- 使用您的 Cobo Portal 帐户登录 Cobo CLI。
+- 如果尚未生成 App Key，请生成 App Key。有关详细信息，请参阅 [生成密钥](/v2_cn/developer-tools/cobo-cli/key-management#generate-keys)。
+- 从包含Manifest 文件的项目目录运行命令。
+
+如果您将 App 发布到生产环境，命令将自动触发一个需要 Cobo 批准的工作流。批准结果将通过电子邮件发送到Manifest 文件中配置的 `contact_email`。一旦批准，您的 App 将可供所有 Cobo Portal 用户使用。
+
+如果您将 App 发布到开发环境，则无需批准，您的 App 将仅可供团队中的用户使用。
+
+`app upload` 命令将在Manifest 文件中生成 App 的客户端 ID。客户端 ID 是 Cobo Portal Apps 的唯一标识符，在生成后无法修改。它是获取 Org Access Tokens 所必需的。有关详细信息，请参阅 [ Org Access Tokens ](/v2_cn/apps/org-access-tokens)。
+
+ App 只能发布一次，否则将出现错误。对于后续更新，您需要遵循 [更新 App ](#update-the-app) 的过程。
+
+## 更新 App 
+
+如果您希望更新已发布的 App ，可以实现更改，然后使用 [app update](/v2_cn/developer-tools/cobo-cli/app-update) Cobo CLI 命令：
+
+```shell
+cobo app update
+```
+
+在更新 Cobo Portal Apps 之前，请确保：
+
+- 正确配置 [ App Manifest 文件](/v2_cn/apps/build-app#configure-the-manifest-file)。
+- 使用您的 Cobo Portal 帐户登录 Cobo CLI。
+- 从包含Manifest 文件的项目目录运行命令。
+
+与发布 App 类似，如果您更新 App 到生产环境，更新命令将自动触发一个需要 Cobo 批准的工作流。否则，如果您更新 App 到开发环境，则无需批准。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

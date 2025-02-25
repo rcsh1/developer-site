@@ -1,0 +1,82 @@
+---
+title: "Webhook 事件类型和数据类型"
+sidebarTitle: "Webhook 事件类型和数据类型"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+## Webhook 事件类型
+
+可用的 webhook 事件类型如下：
+
+<Info>本文所指交易为所有类型的交易，包括转账，合约调用和消息签名。</Info>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>事件类型</th>
+      <th>事件数据类型</th>
+      <th>发生时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>wallets.transaction.created</code></td>
+      <td rowspan="4"><code>Transaction</code></td>
+      <td>在区块链上检测到交易，生成交易记录。此事件不表示交易成功。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.transaction.updated</code></td>
+      <td>交易的状态或确认数量发生变化。<Note>`wallets.transaction.updated` 事件涵盖交易的整个生命周期，包括创建、完成和失败。如果您想跟踪每个状态变化，可以订阅此事件。</Note></td>
+    </tr>
+    <tr>
+      <td><code>wallets.transaction.succeeded</code></td>
+      <td>交易已成功完成。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.transaction.failed</code></td>
+      <td>交易失败。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.created</code></td>
+      <td rowspan="4"><code>TSSRequest</code></td>
+      <td>创建了 TSS 请求。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.updated</code></td>
+      <td>TSS 请求的状态发生变化。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.succeeded</code></td>
+      <td>请求的操作已成功完成。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.mpc.tss_request.failed</code></td>
+      <td>请求的操作失败。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.addresses.created</code></td>
+      <td>`Addresses`</td>
+      <td>已创建一个新的钱包地址。</td>
+    </tr>
+    <tr>
+      <td><code>wallets.created</code></td>
+      <td>`WalletInfo`</td>
+      <td>已创建一个新的钱包。</td>
+    </tr>
+    <tr>
+      <td><code>mpc_vaults.created</code></td>
+      <td>`MPCVault`</td>
+      <td>已创建一个新的 MPC Vault。</td>
+    </tr>
+  </tbody>
+</table>
+
+## Webhook 事件数据结构
+有关 webhook 事件数据和其数据结构的完整介绍，请参阅 Retrieve event information 操作的响应中的 [data](/v2/api-references/developers--webhooks/retrieve-event-information#response-data) 属性或 List all webhook events 操作的响应中的 [data.data](/v2/api-references/developers--webhooks/list-all-webhook-events#response-data-data) 属性。
+
+<img src="/v2/images/guides/webhook_data_structure.png" className="screenshot_full_screen" alt="Webhook 数据结构截图" />
+
+您可以在事件数据类型之间切换来查看每个事件数据类型的数据结构。
+
+另外，您可以在 **Cobo Portal** > **开发者** > **Webhook 事件** 中查看团队中的所有 webhook 事件。
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

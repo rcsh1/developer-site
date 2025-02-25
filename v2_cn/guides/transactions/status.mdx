@@ -1,0 +1,163 @@
+---
+title: "交易状态和子状态"
+---
+
+下表提供了WaaS 2.0中各种交易状态及其对应的子状态的概述。
+
+<table>
+  <tr>
+    <th>状态</th>
+    <th>子状态</th>
+    <th>描述</th>
+  </tr>
+  <tr>
+    <td rowspan="1">Submitted</td>
+    <td>N/A</td>
+    <td>交易已提交。</td>
+  </tr>
+  <tr>
+    <td rowspan="2">PendingScreening</td>
+    <td>PendingTravelRuleCheck</td>
+    <td>交易正在进行 Travel Rule 检查。</td>
+  </tr>
+  <tr>
+    <td>PendingTravelRuleInfo</td>
+    <td>交易正在等待用户提供与 Travel Rule 相关的信息。</td>
+  </tr>
+  <tr>
+    <td rowspan="4">PendingAuthorization</td>
+    <td>PendingDoubleCheck</td>
+    <td>交易正在等待双重检查。</td>
+  </tr>
+  <tr>
+    <td>PendingSpenderCheck</td>
+    <td>交易正在等待提币员检查。</td>
+  </tr>
+  <tr>
+    <td>PendingRiskControlCheck</td>
+    <td>交易正在等待风控策略检查。</td>
+  </tr>
+  <tr>
+    <td>PendingApproverCheck</td>
+    <td>交易正在等待审批员的批准。</td>
+  </tr>
+  <tr>
+    <td rowspan="5">PendingSignature</td>
+    <td>Built</td>
+    <td>交易已构建但尚未签名。</td>
+  </tr>
+  <tr>
+    <td>PendingWaitSigner</td>
+    <td>交易正在等待签名。</td>
+  </tr>
+  <tr>
+    <td>PendingApprovalStart</td>
+    <td>交易审批正在等待开始。<ul><li>对于<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction">MPC 钱包（终端用户钱包）</a>，您需要使用客户端 App 并调用 UCW SDK 以开始交易审批流程。</li><li>对于<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction">MPC 钱包（机构控制钱包）</a>：<ul><li>如果您使用<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">服务器端签名人</a>，此状态表示 TSS Node将很快请求回调服务器开始<a href="https://manuals.cobo.com/en/portal/risk-controls/introduction">风控策略</a>检查。在此阶段无需您采取进一步行动。</li><li>如果您使用<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">移动端签名人</a>，私钥分片持有者需要使用他们的<a href="https://manuals.cobo.com/en/guard/introduction">Cobo Guard</a>批准交易并参与签名过程。</li></ul></li></ul></td>
+  </tr>
+  <tr>
+    <td>Queue</td>
+    <td>交易正在排队等待 Cobo Portal 处理。</td>
+  </tr>
+  <tr>
+    <td>SignatureVerificationSuccess</td>
+    <td>交易的签名已成功验证。</td>
+  </tr>
+  <tr>
+    <td rowspan="1">Broadcasting</td>
+    <td>FailedBroadcasting</td>
+    <td>交易未能广播到区块链网络。</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Confirming</td>
+    <td>Reverting</td>
+    <td>由于区块链上的失败，交易正在回退（Revert）。</td>
+  </tr>
+  <tr>
+    <td>PendingBlockConfirmations</td>
+    <td>交易正在等待所需数量的确认。</td>
+  </tr>
+  <tr>
+    <td rowspan="1">Completed</td>
+    <td>N/A</td>
+    <td>交易已完成。</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Failed</td>
+    <td>FailedBySigner</td>
+    <td>交易在签名过程中失败。</td>
+  </tr>
+  <tr>
+    <td>FailedOnChain</td>
+    <td>交易在区块链上失败。</td>
+  </tr>
+  <tr>
+    <td>ReplacedByNewTransaction</td>
+    <td>交易已被新交易替换。</td>
+  </tr>
+  <tr>
+    <td>SignatureVerificationFailed</td>
+    <td>交易的签名验证失败。</td>
+  </tr>
+  <tr>
+    <td rowspan="14">Rejected</td>
+    <td>RejectedWhiteList</td>
+    <td>交易被拒绝，因为发起者的 IP 地址不在白名单中。</td>
+  </tr>
+  <tr>
+    <td>RejectedKYT</td>
+    <td>交易被拒绝，因为未通过 KYT 合规检查。</td>
+  </tr>
+  <tr>
+    <td>RejectedRiskControlCheck</td>
+    <td>交易被拒绝，因为未通过风控策略检查。</td>
+  </tr>
+  <tr>
+    <td>RejectedSpenderAuth</td>
+    <td>交易被提币员拒绝。</td>
+  </tr>
+  <tr>
+    <td>RejectedApproverAuth</td>
+    <td>交易被审批员拒绝。</td>
+  </tr>
+  <tr>
+    <td>RejectedDoubleCheck</td>
+    <td>交易被拒绝，因为未通过双重检查。</td>
+  </tr>
+  <tr>
+    <td>RejectedbyMobileCosigner</td>
+    <td>交易被移动端签名人拒绝。</td>
+  </tr>
+  <tr>
+    <td>RejectedCoboCheck</td>
+    <td>交易被拒绝，因为未通过Cobo的内部检查。</td>
+  </tr>
+  <tr>
+    <td>RejectedTravelRuleDueToUnsupportedToken</td>
+    <td>交易被拒绝，因为该代币不支持 Travel Rule。</td>
+  </tr>
+  <tr>
+    <td>RejectedTravelRule</td>
+    <td>交易被拒绝，因为未能遵守 Travel Rule。</td>
+  </tr>
+  <tr>
+    <td>RejectedTravelRuleDueToCompliance</td>
+    <td>交易被拒绝，因为未通过 Travel Rule 的交叉检查。</td>
+  </tr>
+  <tr>
+    <td>CanceledBySpender</td>
+    <td>交易被提币员取消。</td>
+  </tr>
+  <tr>
+    <td>CanceledByAPI</td>
+    <td>交易被[取消交易](https://www.cobo.com/developers/v2/api-references/transactions/cancel-transaction)操作取消。</td>
+  </tr>
+  <tr>
+    <td>OnchainRejection</td>
+    <td>交易被拒绝添加到区块链中。</td>
+  </tr>
+  <tr>
+    <td rowspan="1">Pending</td>
+    <td>N/A</td>
+    <td>交易正在等待被包含在区块链的下一个区块中。</td>
+  </tr>
+</table>

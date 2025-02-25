@@ -1,0 +1,1172 @@
+---
+title: "MPC 钱包（机构钱包）入门指南"
+sidebarTitle: "机构钱包入门指南"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南将帮助您快速入门 [MPC 钱包（机构钱包）](https://manuals.cobo.com/zh-CN/portal/mpc-wallets/ocw/introduction)。通过本指南，您将能够使用 WaaS 2.0 API：
+
+1. 查询您可以使用的链和代币
+2. 设置钱包
+3. 存入和提取代币
+4. 查询钱包余额
+
+<Note>本指南在所有代码示例中使用[开发环境](/v2_cn/guides/overview/environments)。建议您首先使用开发环境测试新功能，然后再将其部署到生产环境。</Note>
+
+## 技术架构
+本节解释了 Vault、钱包、地址之间的关系以及机构钱包的其他关键概念。
+
+下图展示了一个完整的 MPC Vault 中的组件：
+
+<img src="/v2_cn/images/guides/final.svg" className="diagram" alt="完整的 MPC Vault 中的组件"></img>
+
+- 钱包始终与某个 Vault 相关联。Vault 是所有拥有相同根扩展公私钥对的机构钱包的集合。
+- 根扩展公钥：根扩展公钥用于分层确定性（HD）钱包中，以派生多个子公钥和地址。每个 Vault 有两个根扩展公钥，一个从 Secp256k1 曲线派生（用于比特币和以太坊等链），另一个从 EdDSA 曲线派生（用于 Solona 和 TON 等链）。要了解更多关于根扩展公钥的信息，请参阅[密钥派生](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#specification-key-derivation)。
+- 私钥分片持有者组：每个 Vault 可以有多个私钥分片持有者组。每个持有者组都包括一组 TSS Node ，存储可以共同签署交易或恢复根扩展私钥的私钥分片。对于主控组和签名组，始终会有一个私钥分片持有者是 Cobo。要了解更多关于私钥分片持有者组的信息，请参阅[创建持有者组](https://manuals.cobo.com/zh-CN/portal/mpc-wallets/ocw/create-key-share-groups)。
+- TSS 私钥分片组：每个 TSS 私钥分片组由两个或三个私钥分片组成，具体取决于持有者的数量。每个私钥分片组可以与从同一条曲线派生的根扩展公钥形成一个密钥对。每个私钥分片都是独一无二的。
+
+## 前提条件
+
+- 按照[钱包即服务 (WaaS) 2.0 入门](/v2_cn/guides/get-started/get-started-with-waas)中的说明设置您的账户并发送您的第一个 API 请求到 WaaS 2.0 服务。
+- 如果您选择使用 WaaS SDK 而不是手动编写 API 请求，请参阅相应编程语言的 SDK 指南（[Python](/v2_cn/developer-tools/quickstart-python)、[Java](https://github.com/CoboGlobal/cobo-waas2-java-sdk)、[Go](/v2_cn/developer-tools/quickstart-go)、[JavaScript](https://github.com/CoboGlobal/cobo-waas2-js-sdk)），将 SDK 集成到您的项目中。
+- 准备一些测试代币，因为您将需要它们来测试充币功能。要了解哪些测试代币可用，请参阅[查询链和代币信息](#1-查询链和代币信息)。在大多数情况下，您可以使用 XTN 作为测试代币。
+- 强烈建议您设置一个 Callback Endpoint 来接收和批准提币请求，以及一个 Webhook Endpoint 来接收有关交易状态更新和其他重要事件的实时通知。要了解如何设置和注册 Webhook 和 Callback Endpoint，请参阅 [Webhook 和 Callback 简介](/v2_cn/guides/webhooks-callbacks/introduction)。
+
+## 1. 查询链和代币信息
+
+在开始设置钱包并生成充币地址之前，您需要先了解可用的区块链和代币。
+
+### 查询启用的链
+
+要检索可以用于机构钱包的链及其对应的链 ID，请调用 [List enabled chains](/v2/api-references/wallets/list-enabled-chains) 并指定以下查询参数：
+
+- `wallet_type`：`MPC`。
+- `wallet_subtype`：`Org-Controlled`。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   WalletType,
+   WalletSubtype,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Query enabled chains
+       api_response = wallet_api_instance.list_enabled_chains(
+           wallet_type=WalletType.MPC,
+           wallet_subtype=WalletSubtype.ORG_CONTROLLED
+       )
+       print(f"The response of WalletsApi->list_enabled_chains:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->list_enabled_chains, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.ListSupportedChains200Response;
+import com.cobo.waas2.model.WalletSubtype;
+import com.cobo.waas2.model.WalletType;
+
+public class ListEnabledChainsExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            Integer limit = 50;
+            String before = null;
+            String after = null;
+            ListSupportedChains200Response result = apiInstance.listEnabledChains(WalletType.MPC, WalletSubtype.ORG_CONTROLLED, limit, before, after);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#listEnabledChains");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+如果您想使用的链不在查询到的列表上，请先启用该链。要启用新的区块链，请登陆 Cobo Portal， 并在**套餐**页面的**可用公链数**配置中添加公链。
+
+如果您已达到可用链的数量限制，请考虑升级您的[套餐](https://manuals.cobo.com/zh-CN/portal/bills-and-payments/introduction)。
+
+### 查询启用的代币
+
+要检索您可以使用的代币及其对应的代币 ID，请调用 [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens) 并指定以下查询参数：
+
+- `wallet_type`：`MPC`。
+- `wallet_subtype`：`Org-Controlled`。
+- `chain_ids`：指定您选择的链。您也可以留空此参数来查询所有链上的启用代币。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   WalletType,
+   WalletSubtype,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Query enabled tokens
+       api_response = wallet_api_instance.list_enabled_tokens(
+           wallet_type=WalletType.MPC,
+           wallet_subtype=WalletSubtype.ORG_CONTROLLED
+       )
+       print(f"The response of WalletsApi->list_enabled_tokens:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->list_enabled_tokens, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.ListSupportedTokens200Response;
+import com.cobo.waas2.model.WalletSubtype;
+import com.cobo.waas2.model.WalletType;
+
+
+public class ListEnabledTokensExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            String chainIds = null;
+            Integer limit = 50;
+            String before = null;
+            String after = null;
+            ListSupportedTokens200Response result = apiInstance.listEnabledTokens(WalletType.MPC, WalletSubtype.ORG_CONTROLLED, chainIds, limit, before, after);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#listEnabledTokens");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+</Accordion>
+如果您想使用的代币不在查询到的列表上，请先启用该代币。要启用新的代币，请登陆 Cobo Portal， 并在您的钱包页面点击**添加代币**进行添加。
+
+## 2. 设置钱包
+
+设置机构钱包通常涉及以下步骤：
+
+1. 创建 Vault。
+2. 创建私钥分片持有者组。
+3. 生成根扩展公钥和私钥分片。
+4. 创建机构钱包。
+
+### 创建 Vault
+
+现在您已经确认可以使用的链和代币，下一步是设置 Vault。要创建 Vault，请调用 [Create vault](/v2/api-references/wallets--mpc-wallets/create-vault) 并在请求包体中指定以下属性：
+
+- `vault_type`：`Org-Controlled`。
+- `name`：Vault 的名称。
+
+成功完成请求后，响应将包含 Vault ID，即您刚刚创建的 Vault 的唯一标识符。存储此 Vault ID，因为您将在后续步骤中使用它。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+import cobo_waas2
+from cobo_waas2.models.create_mpc_vault_request import CreateMpcVaultRequest
+from cobo_waas2.models.mpc_vault import MPCVault
+from cobo_waas2.models.mpc_vault_type import MPCVaultType
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_API_SECRET>",
+    host="https://api.dev.cobo.com/v2",
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
+    create_mpc_vault_request = cobo_waas2.CreateMpcVaultRequest(
+        name="<YOUR_VAULT_NAME>",
+        vault_type=MPCVaultType.ORG_CONTROLLED
+    )
+
+    try:
+        # Create a vault
+        api_response = api_instance.create_mpc_vault(create_mpc_vault_request=create_mpc_vault_request)
+        print("The response of WalletsMPCWalletsApi->create_mpc_vault:\n")
+        print(json.dumps(api_response.to_dict(), indent=2))
+    except Exception as e:
+        print("Exception when calling WalletsMPCWalletsApi->create_mpc_vault: %s\n" % e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsMpcWalletsApi;
+import com.cobo.waas2.model.*;
+
+public class CreateVaultExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
+        try {
+            CreateMpcVaultRequest params = new CreateMpcVaultRequest()
+                    .name("OCW vault Demo(Java)")
+                    .vaultType(MPCVaultType.ORG_CONTROLLED);
+            MPCVault result = apiInstance.createMpcVault(params);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsMpcWalletsApi#createMpcVault");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+### 创建私钥分片持有者组
+
+私钥分片持有者组拥有一组 TSS Node ，存储可以共同签署交易或恢复根扩展私钥的私钥分片。在本步骤中，您将成为私钥分片持有者，获取 TSS Node  ID，然后调用 WaaS API 创建持有者组。
+
+<img src="/v2_cn/images/guides/before_keygen.svg" className="diagram" alt="一个 Vault 和一个私钥分片持有者组"></img>
+
+#### 成为私钥分片持有者
+
+主控组由两个私钥分片持有者组成。一个持有者始终是 Cobo，因此您现在需要找到另一个持有者来组成主控组。如果您已经在手机上安装了 Cobo Guard，您可以成为私钥分片持有者，使用手机作为移动端签名人。或者，您可以设置一个 TSS Node 服务器并将其用作服务端签名人。
+
+要了解两种签名人的区别、如何完成设置以及如何获取 TSS Node  ID，请参阅[签名人类型](https://manuals.cobo.com/zh-CN/portal/mpc-wallets/ocw/create-key-share-groups#signer-type)。
+
+#### 创建主控组
+
+创建主控组是创建 MPC 钱包的必要步骤。为了帮助您快速入门，本指南仅介绍如何创建主控组。但是，在实际项目中，强烈建议您同时创建签名组和恢复组，并备份私钥分片。要了解更多信息，请参阅[创建持有者组](https://manuals.cobo.com/zh-CN/portal/mpc-wallets/ocw/create-key-share-groups) 和[备份私钥分片](https://manuals.cobo.com/zh-CN/portal/mpc-wallets/ocw/back-up-key-share-groups)。
+
+要创建主控组，请调用 [Create key share holder group](/v2/api-references/wallets--mpc-wallets/create-key-share-holder-group) 并指定以下参数和属性：
+
+- 路径：
+  - `vault_id`：您刚刚创建的 Vault ID。
+- 请求包体：
+  - `key_share_holder_group_type`：`MainGroup`。
+  - `participants`：`2`。
+  - `threshold`：`2`。
+  - `key_share_holders`：私钥分片持有者的信息。您不需要提供 Cobo 的信息，因为 WaaS 服务会自动填充。
+    - `name`：使用可以帮助您轻松识别私钥分片持有者的名称。
+    - `type`：如果您使用移动端签名人，则为 `Mobile`；如果您使用服务端签名人，则为 `API`。
+    - `tss_node_id`：您在上一步中准备的 TSS Node  ID。
+    - `signer`：`true`
+
+成功完成请求后，响应将包含私钥分片持有者组 ID。存储此 ID，因为您将在后续步骤中使用它。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+import cobo_waas2
+from cobo_waas2.models.create_key_share_holder_group_request import CreateKeyShareHolderGroupRequest
+from cobo_waas2.models.key_share_holder_group import KeyShareHolderGroup
+from cobo_waas2.models.key_share_holder_group_type import KeyShareHolderGroupType
+from cobo_waas2.models.create_key_share_holder import CreateKeyShareHolder
+from cobo_waas2.models.key_share_holder_type import KeyShareHolderType
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_API_SECRET>",
+    host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
+    vault_id = '<YOUR_VAULT_ID>'
+    create_key_share_holder_group_request = cobo_waas2.CreateKeyShareHolderGroupRequest(
+        key_share_holder_group_type=KeyShareHolderGroupType.MAINGROUP,
+        participants=2,
+        threshold=2,
+        key_share_holders=[
+            CreateKeyShareHolder(
+                name="<YOUR_HOLDER_NAME>",
+                # Set the share holder type to either API or Mobile
+                type=KeyShareHolderType.API,
+                tss_node_id="<YOUR_TSS_NODE_ID>",
+                signer=True,
+            )]
+    )
+
+    try:
+        # Create key share holder group
+        api_response = api_instance.create_key_share_holder_group(vault_id, create_key_share_holder_group_request=create_key_share_holder_group_request)
+        print("The response of WalletsMPCWalletsApi->create_key_share_holder_group:\n")
+        print(json.dumps(api_response.to_dict(), indent=2))
+    except Exception as e:
+        print("Exception when calling WalletsMPCWalletsApi->create_key_share_holder_group: %s\n" % e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsMpcWalletsApi;
+import com.cobo.waas2.model.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
+public class CreateKeyShareHolderGroupExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // for dev environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
+        try {
+            UUID vaultId = UUID.fromString("<YOUR_VAULT_ID>");
+            List<CreateKeyShareHolder> keyShareHolderList =  Arrays.asList(
+                    new CreateKeyShareHolder().name("<YOUR_HOLDER_NAME>")
+                            // Set the share holder type to either API or Mobile
+                            .type(KeyShareHolderType.MOBILE)
+                            .tssNodeId("<YOUR_TSS_NODE_ID>")
+                            .signer(true)
+            );
+            CreateKeyShareHolderGroupRequest request = new CreateKeyShareHolderGroupRequest()
+                    .keyShareHolderGroupType(KeyShareHolderGroupType.MAINGROUP)
+                    .participants(2)
+                    .threshold(2)
+                    .keyShareHolders(keyShareHolderList);
+            KeyShareHolderGroup result = apiInstance.createKeyShareHolderGroup(vaultId, request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsMpcWalletsApi#createKeyShareHolderGroup");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+### 生成根扩展公钥和私钥分片
+
+创建主控组后，您需要生成根扩展公钥和私钥分片。
+
+<img src="/v2_cn/images/guides/after_keygen.svg" className="diagram" alt="一个 Vault、一个私钥分片持有者组、两个根扩展公钥和四个私钥分片"></img>
+
+要生成根扩展公钥和私钥分片，请执行以下步骤：
+
+1. 调用[Create TSS request](/v2/api-references/wallets--mpc-wallets/create-tss-request) 并指定以下参数和属性：
+
+   - 路径：
+     - `vault_id`：您刚刚创建的 Vault ID。
+
+   - 请求包体：
+     - `type`：`KeyGen`。
+     - `target_key_share_holder_group_id`：您刚刚创建的私钥分片持有者组 ID。
+
+2. 生成私钥分片。
+
+   - 如果您选择使用移动端签名人，请在 Cobo Guard 上批准成为密钥持有者的请求，然后单击“**生成私钥分片**”以启动密钥生成过程。等待一会儿，直到私钥分片生成完成。
+
+   - 如果您选择使用服务端签名人，私钥分片生成过程将自动启动，除非您已配置了[TSS Node Callback 服务器](https://manuals.cobo.com/zh-CN/portal/mpc-wallets/ocw/tss-node-callback)。在这种情况下，生成过程将在 TSS Node Callback 服务器批准后启动。
+
+一旦根扩展公钥和私钥分片生成成功，TSS 请求状态将变为 `Success`。您可以订阅 [TSS 请求相关事件类型](/v2_cn/guides/webhooks-callbacks/webhook-event-type) 来接收实时状态更新，或者调用 [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) 来查询最新的请求状态。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+import cobo_waas2
+from cobo_waas2.models.create_tss_request_request import CreateTssRequestRequest
+from cobo_waas2.models.tss_request import TSSRequest
+from cobo_waas2.models.tss_request_type import TSSRequestType
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_API_SECRET>",
+    host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
+    vault_id = '<YOUR_VAULT_ID>'
+    create_tss_request_request = cobo_waas2.CreateTssRequestRequest(
+        type=TSSRequestType.KEYGEN,
+        target_key_share_holder_group_id='<YOUR_KEY_SHARE_HOLDER_GROUP_ID>'
+    )
+
+    try:
+        # Create TSS request
+        api_response = api_instance.create_tss_request(vault_id, create_tss_request_request=create_tss_request_request)
+        print("The response of WalletsMPCWalletsApi->create_tss_request:\n")
+        print(json.dumps(api_response.to_dict(), indent=2))
+    except Exception as e:
+        print("Exception when calling WalletsMPCWalletsApi->create_tss_request: %s\n" % e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsMpcWalletsApi;
+import com.cobo.waas2.model.CreateTssRequestRequest;
+import com.cobo.waas2.model.TSSRequest;
+import com.cobo.waas2.model.TSSRequestType;
+
+import java.util.UUID;
+
+public class CreateTssRequestExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
+        try {
+            UUID vaultId = UUID.fromString("<YOUR_VAULT_ID>");
+            CreateTssRequestRequest request = new CreateTssRequestRequest()
+                    .type(TSSRequestType.KEYGEN)
+                    .targetKeyShareHolderGroupId("YOUR_KEY_SHARE_HOLDER_GROUP_ID");
+            TSSRequest result = apiInstance.createTssRequest(vaultId, request);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsMpcWalletsApi#createTssRequest");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+### 创建钱包
+
+现在您已经创建了 Vault、创建了私钥分片持有者组并生成了私钥分片，下一步是设置钱包。要创建机构钱包，请调用[Create wallet](/v2/api-references/wallets/create-wallet) 并指定以下属性：
+
+- `name`：您的钱包名称。
+- `wallet_type`：`MPC`。
+- `wallet_subtype`：`Org-Controlled`。
+- `vault_id`：您刚刚创建的 Vault ID。
+
+成功完成请求后，响应将包含钱包 ID，即您刚刚创建的钱包的唯一标识符。存储此钱包 ID，因为您将在后续步骤中使用它。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+import cobo_waas2
+from cobo_waas2.models.create_wallet_params import CreateWalletParams
+from cobo_waas2.models.created_wallet_info import CreatedWalletInfo
+from cobo_waas2.models.wallet_subtype import WalletSubtype
+from cobo_waas2.models.wallet_type import WalletType
+from cobo_waas2.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://api.dev.cobo.com/v2
+# See configuration.py for a list of all supported configuration parameters.
+configuration = cobo_waas2.Configuration(
+    api_private_key="<YOUR_API_SECRET>",
+    host="https://api.dev.cobo.com/v2"
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    create_wallet_params = cobo_waas2.CreateWalletParams(
+        actual_instance=cobo_waas2.CreateMpcWalletParams(
+            name="<YOUR_WALLET_NAME>",
+            wallet_type=WalletType.MPC,
+            wallet_subtype=WalletSubtype.ORG_CONTROLLED,
+            vault_id="<YOUR_VAULT_ID>"
+        )
+    )
+
+    try:
+        # Create a wallet
+        api_response = api_instance.create_wallet(create_wallet_params=create_wallet_params)
+        print("The response of WalletsApi->create_wallet:\n")
+        print(json.dumps(api_response.to_dict(), indent=2))
+    except Exception as e:
+        print("Exception when calling WalletsApi->create_wallet: %s\n" % e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.*;
+
+public class CreateWalletExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            CreateMpcWalletParams params = new CreateMpcWalletParams()
+                    .name("OCW Example Wallet Demo(Java)")
+                    .walletType(WalletType.MPC)
+                    .walletSubtype(WalletSubtype.ORG_CONTROLLED)
+                    .vaultId("<YOUR_VAULT_ID>");
+            CreatedWalletInfo result = apiInstance.createWallet(new CreateWalletParams(params));
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#createWallet");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+## 3. 存入和提取代币
+
+设置机构钱包后，您可以存入一些代币并学习如何提取代币。
+
+### 生成充币地址
+
+要接收代币，您需要在钱包中生成充币地址。要生成充币地址，请调用[Create addresses in wallet](/v2/api-references/wallets/create-addresses-in-wallet) 并指定以下参数和属性：
+
+- 路径：
+  - `wallet_id`：您刚刚创建的钱包 ID。
+- 请求包体：
+  - `chain_id`：区块链 ID。
+  - `count`：指定您要创建的地址数量。
+
+成功完成请求后，响应将包含您刚刚创建的地址。您现在可以存入代币到这些地址。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # Generate two addresses on the Bitcoin testnet3 (XTN) chain using P2TR encoding
+       api_response = wallet_api_instance.create_address(
+           wallet_id="<Your Wallet ID>",
+           create_address_request=CreateAddressRequest(
+               chain_id="XTN", count=2, encoding=AddressEncoding.ENCODING_P2_TR
+           ),
+       )
+       print("The response of WalletsApi->create_address:")
+       for address_info in api_response:
+           print(json.dumps(address_info.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->create_address, %s\n", e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.AddressEncoding;
+import com.cobo.waas2.model.AddressInfo;
+import com.cobo.waas2.model.CreateAddressRequest;
+
+import java.util.List;
+import java.util.UUID;
+
+public class CreateAddressExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            UUID wallet_id = UUID.fromString("<YOUR_WALLET_ID>");
+            CreateAddressRequest params = new CreateAddressRequest()
+                    .chainId("XTN")
+                    .count(2)
+                    .encoding(AddressEncoding.BECH32);
+            List<AddressInfo> result = apiInstance.createAddress(wallet_id, params);
+            for (AddressInfo addressInfo : result)
+                System.out.println(addressInfo);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#createAddress");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+### 处理充币
+
+在将代币存入生成的地址后，您可以通过以下两种方式跟踪充币状态。我们推荐使用 Webhook，因为它能提供实时通知，相比定期使用 API 查询交易状态更为高效和实时。
+
+#### 选项 1：使用 Webhook 进行实时通知
+
+Webhook 是 WaaS 服务与您的 App 通信的重要机制。注册 Webhook Endpoint 后，WaaS 服务会在事件发生时将推送消息发送到指定的 URL。
+
+要了解如何设置 Webhook Endpoint 并在 Cobo Portal 上注册，请参阅 [Webhook 和 Callback 简介](/v2_cn/guides/webhooks-callbacks/introduction)。
+
+要跟踪充币状态，您可以订阅以下 Webhook 事件类型：
+
+- `wallets.transaction.created`
+- `wallets.transaction.updated`
+- `wallets.transaction.succeeded`
+- `wallets.transaction.failed`
+
+要了解每个事件类型的触发条件和数据结构，请参阅 [Webhook 事件类型和数据类型](/v2_cn/guides/webhooks-callbacks/webhook-event-type)。
+
+#### 选项 2：通过 API 调用获取交易状态
+
+要查询充币交易的状态，请调用 [List all transactions](/v2/api-references/transactions/list-all-transactions)，并设置以下查询参数：
+
+- `types`：`Deposit`。
+- `statuses`：`Confirming,Completed`。如果您从外部地址充币，则可以在交易等待所需的确认数量或成功完成时查询交易详细信息。
+- `wallet_ids`：您在第一步中创建的钱包 ID。
+
+<Accordion title="Sample code in Python">
+```python
+import json
+import uuid
+
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+   TransferParams,
+   TransferSource,
+   MpcTransferSource,
+   WalletSubtype,
+   TransferDestination, AddressTransferDestination, TransferDestinationType, AddressTransferDestinationAccountOutput,
+)
+
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret.
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment.
+   host="https://api.dev.cobo.com/v2"
+)
+
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   transaction_api_instance = cobo_waas2.TransactionsApi(api_client)
+   try:
+       # List deposit transactions
+       api_response = transaction_api_instance.list_transactions(
+           types="Deposit",
+           statuses="Confirming, Completed",
+           wallet_ids="<YOUR_WALLET_ID>"
+       )
+       print("The response of TransactionsApi->list_transactions:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+
+   except Exception as e:
+       print("Exception when calling TransactionsApi->list_transactions, %s\n", e)
+```
+</Accordion>
+
+
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.ListTransactions200Response;
+
+
+import java.util.UUID;
+
+
+public class ListTransactionsExample {
+   public static void main(String[] args) {
+       ApiClient defaultClient = Configuration.getDefaultApiClient();
+       // Use the development environment
+       defaultClient.setEnv(Env.DEV);
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
+       TransactionsApi apiInstance = new TransactionsApi();
+       try {
+           String requestId = null;
+           String coboIds = null;
+           String transactionIds = null;
+           String transactionHashes = "";
+           String types = "Deposit";
+           String statuses = "Confirming, Completed";
+           String walletIds = "<YOUR_WALLET_ID>";
+           String chainIds = null;
+           String tokenIds = null;
+           String assetIds = null;
+           UUID vaultId = null;
+           UUID projectId = null;
+           Long minCreatedTimestamp = null;
+           Long maxCreatedTimestamp = null;
+           Integer limit = 50;
+           String before = null;
+           String after = null;
+
+
+           ListTransactions200Response result = apiInstance.listTransactions(
+                   requestId, coboIds, transactionIds, transactionHashes, types, statuses, walletIds, chainIds,
+                   tokenIds, assetIds, vaultId, projectId, minCreatedTimestamp, maxCreatedTimestamp, limit, before, after);
+           System.out.println(result);
+       } catch (ApiException e) {
+           System.err.println("Exception when calling WalletsApi#createAddress");
+           System.err.println("Status code: " + e.getCode());
+           System.err.println("Reason: " + e.getResponseBody());
+           System.err.println("Response headers: " + e.getResponseHeaders());
+           e.printStackTrace();
+       }
+   }
+}
+```
+</Accordion>
+
+
+### 提取代币
+
+现在您的钱包中已经有代币了，让我们来了解提现流程。在进行第一次提现之前，您需要了解两个重要事项：
+
+1. **提现流程**：提现涉及多个步骤，包括发起、二次确认、风险控制检查和交易签名。要详细了解每个步骤，请参阅[从 MPC 钱包（机构控制钱包）转账](https://manuals.cobo.com/cn/portal/transfers/from-mpc-wallets#withdrawal-process)。
+
+2. **Callback Endpoint 设置**：为了增强安全性，您应该设置一个 Callback Endpoint 来二次确认提现请求。当您通过 WaaS 2.0 API 发起提现时，该 Endpoint 将接收交易详情，并且必须确认这些详情后才能继续进行交易。要进行设置，请参考我们的 [Webhook 和 Callback](/v2/guides/webhooks-callbacks/introduction) 指南。
+
+#### 发起提现
+了解这些概念后，您可以通过调用 [Transfer token](/v2/api-references/transactions/transfer-token) 操作来发起提现。在请求包体中设置以下属性：
+
+
+- `request_id`：您的请求 ID。
+- `source.source_type`：`Org-Controlled`。
+- `source.wallet_id`：您刚刚创建的钱包 ID。
+- `token_id`：您要提取的代币 ID。
+- `destination.destination_type`：`Address`。
+- `destination.account_output`：接收地址和 memo（如有），以及您要提取的金额。
+- `category_names`：用于识别交易的自定义类别。
+- `description`：转账的描述。
+
+<Accordion title="Sample code in Python">
+```py
+import json
+import uuid
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+   TransferParams,
+   TransferSource,
+   MpcTransferSource,
+   WalletSubtype,
+   TransferDestination, AddressTransferDestination, TransferDestinationType, AddressTransferDestinationAccountOutput,
+)
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment
+   host="https://api.dev.cobo.com/v2"
+)
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   transaction_api_instance = cobo_waas2.TransactionsApi(api_client)
+   try:
+       # Withdraw Bitcoin testnet3(XTN) tokens from the wallet
+       api_response = transaction_api_instance.create_transfer_transaction(
+           transfer_params=TransferParams(
+               request_id=str(uuid.uuid4()),
+               source=TransferSource(
+                   actual_instance=MpcTransferSource
+                   (
+                       source_type=WalletSubtype.ORG_CONTROLLED,
+                       wallet_id="<YOUR_WALLET ID>",
+                   )
+               ),
+               token_id="XTN",
+               destination=TransferDestination(
+                   actual_instance=AddressTransferDestination(
+                       destination_type=TransferDestinationType.ADDRESS,
+                       account_output=AddressTransferDestinationAccountOutput(
+                           address="<TARGET_ADDRESS>",
+                           amount="<TRANSFER_AMOUNT>"
+                       )
+                   )
+               ),
+               category_names=["<CATEGORY_NAME>"],
+               description="<DESCRIPTION>",
+           )
+       )
+       print("The response of TransactionsApi->create_transfer_transaction:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+   except Exception as e:
+       print("Exception when calling TransactionsApi->create_transfer_transaction, %s\n", e)
+```
+</Accordion>
+
+
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class TransferExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        TransactionsApi apiInstance = new TransactionsApi();
+        try {
+            UUID walletId = UUID.fromString("<YOUR_WALLET_ID>");
+
+            TransferParams params = new TransferParams();
+            params.setRequestId("Demo" + UUID.randomUUID());
+
+            MpcTransferSource transferSource = new MpcTransferSource().sourceType(WalletSubtype.ORG_CONTROLLED).walletId(walletId);
+            params.setSource(new TransferSource(transferSource));
+
+            params.setTokenId("XTN");
+            AddressTransferDestination addressTransferDestination = new AddressTransferDestination()
+                    .destinationType(TransferDestinationType.ADDRESS)
+                    .accountOutput(new AddressTransferDestinationAccountOutput()
+                            .address("<TARGET_ADDRESS>")
+                            .amount("<TRANSFER_AMOUNT>"));
+            params.setDestination(new TransferDestination(addressTransferDestination));
+
+            List<String> categoryNames = new ArrayList<>();
+            categoryNames.add("<Category Example>");
+            params.categoryNames(categoryNames).description("<Description Example>");
+
+            CreateTransferTransaction201Response result = apiInstance.createTransferTransaction(params);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TransactionsApi#createTransferTransaction");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+提币请求的响应如下。记录交易 ID，因为您将在后续步骤中使用它。
+
+```json
+{
+   "request_id": "<YOUR_REQUEST_ID>",
+   "transaction_id": "<THE_GENERATED_TRANSACTION_ID>",
+   "status": "Submitted"
+}
+```
+
+#### 确认提币
+
+如果您设置了 Callback Endpoint，在发起提币交易后，您的 Callback Endpoint 将接收包含交易详细信息的消息。检查交易是否符合预期，然后响应成功状态码（200 或 201）和响应包体 `ok` 以批准交易。要了解更多关于处理 Callback 消息的信息，请参阅[处理消息](https://manuals.cobo.com/zh-CN/portal/mpc-wallets/ocw/handle-messages)。
+
+#### 监控提币状态
+
+除了 Webhook 事件外，您还可以调用 [Get transaction information](/v2/api-references/transactions/get-transaction-information) 来查询交易状态。将路径参数 `transaction_id` 设置为上一步提币请求响应中的交易 ID。
+
+
+<Accordion title="Sample code in Python">
+```python
+import json
+import uuid
+
+
+import cobo_waas2
+from cobo_waas2 import (
+   CreateAddressRequest,
+   AddressEncoding,
+   TransferParams,
+   TransferSource,
+   MpcTransferSource,
+   WalletSubtype,
+   TransferDestination, AddressTransferDestination, TransferDestinationType, AddressTransferDestinationAccountOutput,
+)
+
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret.
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment.
+   host="https://api.dev.cobo.com/v2"
+)
+
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   transaction_api_instance = cobo_waas2.TransactionsApi(api_client)
+   try:
+       # Get transaction by ID
+       api_response = transaction_api_instance.get_transaction_by_id(
+           transaction_id="<YOUR_TRANSACTION_ID>"
+       )
+       print("The response of TransactionsApi->get_transaction_by_id:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+
+   except Exception as e:
+       print("Exception when calling TransactionsApi->get_transaction_by_id, %s\n", e)
+```
+</Accordion>
+
+
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.model.TransactionDetail;
+
+
+import java.util.UUID;
+
+
+public class GetTransactionExample {
+   public static void main(String[] args) {
+       ApiClient defaultClient = Configuration.getDefaultApiClient();
+       // Use the development environment
+       defaultClient.setEnv(Env.DEV);
+       // Replace `<YOUR_API_SECRET>` with your API secret
+       defaultClient.setPrivKey("<YOUR_API_SECRET>");
+       TransactionsApi apiInstance = new TransactionsApi();
+       try {
+           UUID transactionId = UUID.fromString("<YOUR_TRANSACTION_ID>");
+
+
+           TransactionDetail result = apiInstance.getTransactionById(transactionId);
+           System.out.println(result);
+       } catch (ApiException e) {
+           System.err.println("Exception when calling TransactionsApi#getTransactionById");
+           System.err.println("Status code: " + e.getCode());
+           System.err.println("Reason: " + e.getResponseBody());
+           System.err.println("Response headers: " + e.getResponseHeaders());
+           e.printStackTrace();
+       }
+   }
+}
+```
+</Accordion>
+
+## 4. 查询钱包余额
+
+成功提取代币后，您可以调用[ List token balances by wallet](/v2/api-references/wallets/list-token-balances-by-wallet) 来查询钱包余额。指定以下路径和查询参数：
+
+- `wallet_id`：您刚刚创建的钱包 ID。
+- `token_ids`：您可以留空此参数来查询所有代币的余额，或者设置为您要查询的特定代币。
+
+
+<Accordion title="Sample code in Python">
+```py
+import json
+
+
+import cobo_waas2
+from cobo_waas2 import (
+   WalletType,
+   WalletSubtype,
+)
+
+
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_API_SECRET>` with your API secret.
+   api_private_key="<YOUR_API_SECRET>",
+   # Use the development environment.
+   host="https://api.dev.cobo.com/v2"
+)
+
+
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # List token balances
+       api_response = wallet_api_instance.list_token_balances_for_wallet(
+           wallet_id="<YOUR_WALLET_ID>",
+       )
+       print(f"The response of WalletsApi->list_token_balances_for_wallet:")
+       print(json.dumps(api_response.to_dict(), indent=2))
+
+
+   except Exception as e:
+       print("Exception when calling WalletsApi->list_token_balances_for_wallet, %s\n", e)
+```
+</Accordion>
+
+
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.model.ListTokenBalancesForAddress200Response;
+
+import java.util.UUID;
+
+public class ListTokenBalancesExample {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // Use the development environment
+        defaultClient.setEnv(Env.DEV);
+        // Replace `<YOUR_API_SECRET>` with your API secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET>");
+        WalletsApi apiInstance = new WalletsApi();
+        try {
+            UUID wallet_id = UUID.fromString("<YOUR_WALLET_ID>");
+            String tokenIds = null;
+            Integer limit = 50;
+            String before = null;
+            String after = null;
+            ListTokenBalancesForAddress200Response result = apiInstance.listTokenBalancesForWallet(wallet_id, tokenIds, limit, before, after);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#listTokenBalancesForWallet");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+</Accordion>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

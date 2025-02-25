@@ -1,0 +1,87 @@
+---
+title: "服务端签名人简介"
+sidebarTitle: "简介"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+服务端签名人是一个服务器节点，它使用门限签名方案（TSS）节点包来自动化交易签名，无需人工干预。这使您能够自动化交易签名过程，提高工作流程的整体效率。
+
+为了确保您的资产和交易的安全，强烈建议您还设置一个 TSS Node Callback 服务器，以在签名过程中添加自定义风险控制。
+
+## 技术架构
+
+下图说明了服务端签名人如何与 Cobo Wallet-as-a-Service (WaaS) 服务和 TSS Node Callback 服务器进行交互，以及这些系统中的关键组件：
+
+<img src="/v2_cn/images/guides/api-co-signer-technical-architecture.svg" className="diagram" alt="服务端签名人的技术架构" />
+
+### 服务端签名人 (TSS Node )
+
+TSS Node ，作为服务端签名人，由以下主要组件组成，这些组件协同工作以确保安全性和效率：
+
+#### TSS 逻辑
+
+根据 MPC-TSS 协议，实施核心 TSS 操作，例如生成私钥分片、签署交易和消息以及重新共享密钥。
+
+#### Secrets.db
+
+为您的 MPC 钱包的私钥分片和 TSS Node 的回调私钥提供加密存储。回调私钥用于签署发送到 TSS Node Callback 服务器的节点的 JSON Web Tokens (JWTs)。数据库文件本身是加密的，以确保其内容的安全。
+
+回调私钥在 TSS Node 初始化期间生成，私钥分片在完成密钥生成或重新共享操作后生成。
+
+
+#### 嵌入式风险控制模块
+
+TSS Node 中的一个模块，实施嵌入式风险控制机制，这是服务端签名人解决方案提供的 [两种风险控制机制](/v2_cn/guides/mpc-wallets/server-co-signer/risk-control-mechanisms) 之一。
+
+当两种风控机制都启用时，任务请求必须得到嵌入式风险控制模块和所有配置的 TSS Node Callback 服务器的批准才能继续。如果任何组件（嵌入式或回调）拒绝操作，它将被拒绝。
+
+#### 回调风险控制模块
+
+TSS Node 中的一个模块，实施 TSS Node Callback 机制，这是服务端签名人解决方案提供的 [两种风险控制机制](/v2_cn/guides/mpc-wallets/server-co-signer/risk-control-mechanisms) 之一。该模块：
+
+- 发送任务请求到回调服务器以进行批准。
+- 根据回调服务器的响应做出批准或拒绝决策。
+
+#### 配置
+
+包含 TSS Node 的配置，包括：
+
+- 嵌入式风险控制规则，用于嵌入式风险控制模块决定是否批准或拒绝 TSS 操作请求。
+- TSS Node Callback 服务器的配置，包括回调服务器的 URL 和公钥，用于验证回调服务器的 JWT。
+- 系统配置，例如操作环境。
+
+要了解更多关于配置选项的信息，请参见 [配置 TSS Node ](/v2_cn/guides/mpc-wallets/server-co-signer/appendix#configure-the-tss-node)。
+
+### 指标
+
+您可以配置将服务器指标导出到您的 InfluxDB 数据库，以监控 TSS Node 的性能。
+
+要了解更多关于指标配置的详细信息，请参见 [配置 TSS Node ](/v2_cn/guides/mpc-wallets/server-co-signer/appendix#configure-the-tss-node)。
+
+### Cobo WaaS 服务
+
+Cobo Wallet-as-a-Service (WaaS) 服务请求服务端签名人生成私钥分片、签署交易或消息、或重新共享密钥用于您的 MPC 钱包。
+
+### TSS Node Callback 服务器
+
+TSS Node Callback 服务器是一个服务器，它实施 TSS Node Callback 机制，这是服务端签名人解决方案提供的 [两种风险控制机制](/v2_cn/guides/mpc-wallets/server-co-signer/risk-control-mechanisms) 之一。
+
+您可以通过设置一个或多个 TSS Node Callback 服务器来增强安全性，这些服务器：
+
+- 实施自定义风险控制规则，并为交易或消息签名、密钥生成或密钥重新共享提供实时批准或拒绝。
+- 使用 JWT 进行来自 TSS Node 的请求认证。
+- 如果任何配置的回调服务器拒绝交易，则整个操作将被拒绝，尽管其他批准。
+
+回调服务器应该存储两个密钥：一个私钥用于签署发送到 TSS Node 的 JWT，另一个是 TSS Node 的回调公钥，用于验证 TSS Node 的 JWT。
+
+Cobo 提供了多种编程语言的示例回调服务器实现，以帮助您快速开发回调服务器。您可以在我们的 [GitHub 仓库](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template)中找到这些示例。
+
+## 下一步
+
+现在您已经了解了架构，您可以：
+
+1. [设置服务端签名人](/v2_cn/guides/mpc-wallets/server-co-signer/tss-node-deployment)  
+2. [配置您的风险控制](/v2_cn/guides/mpc-wallets/server-co-signer/risk-control-mechanisms)  
+3. [备份您的私钥分片](/v2_cn/guides/mpc-wallets/server-co-signer/key-shares-backup) 并了解其他 [灾难恢复选项](/v2_cn/guides/mpc-wallets/server-co-signer/disaster-recovery-overview)。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

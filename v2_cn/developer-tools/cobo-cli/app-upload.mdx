@@ -1,0 +1,30 @@
+---
+title: 发布 Cobo Portal Apps 
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+使用 `upload` 命令将您的 Cobo Portal Apps 发布到 Cobo Portal。有关发布 Cobo Portal Apps 的更多详细信息，请参阅 [发布 App ](/v2_cn/apps/build-app#publish-the-app)。
+
+在上传您的 Cobo Portal Apps 之前，请确保以下事项：
+- 验证 [应用Manifest 文件](/v2_cn/apps/build-app#configure-the-manifest-file) 配置正确。
+- 使用您的 Cobo Portal 账户登录 Cobo CLI。
+- 如果尚未生成 App Key，请生成一个。有关详细信息，请参阅 [生成密钥](/v2_cn/developer-tools/cobo-cli/key-management#generate-keys)。
+- 从包含Manifest 文件的项目目录中运行命令。
+
+成功上传后，`app_id` 值将自动添加到应用Manifest 文件中。
+
+<Note>一个 Cobo Portal App 只能上传一次。如需进一步更新，您需要使用 [更新命令](/v2_cn/developer-tools/cobo-cli/app-update)。</Note>
+
+## 用法
+```shell
+cobo app upload
+```
+
+## 示例
+```shell
+cobo app upload
+```
+
+此命令将 Cobo Portal Apps 上传到 Cobo Portal。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

@@ -1,0 +1,71 @@
+---
+title: "部署 TSS Node Callback 服务器"
+sidebarTitle: "部署回调服务器"
+description: "部署 TSS Node Callback 服务器的分步指南"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南解释了如何部署您的 TSS Node Callback 服务器。
+
+## 示例回调服务器
+Cobo 提供了多种编程语言的示例回调服务器实现，以帮助您快速开发回调服务器。您可以在我们的 [GitHub 仓库](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template)中找到这些示例。
+
+
+## 一般工作流程
+
+您的回调服务器必须：
+1. 实现用于接收任务请求的 HTTP 端点
+2. 处理来自 TSS Node 的 JWT 签名消息
+3. 实现您的自定义风险控制逻辑
+4. 返回签名响应给 TSS Node 
+
+### HTTP 端点
+
+回调服务器必须公开具有以下规范的 HTTP 端点：
+- 路径：`/v2/check`（或与您的业务需求一致的任何其他路径）
+  <Note>请记得在 TSS Node 的配置文件中注册您选择的路径。有关详细说明，请参阅 [配置 TSS Node 设置](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-configure#configure-tss-node-settings)。</Note>
+- 方法：`POST`
+- 内容类型：`application/x-www-form-urlencoded`
+
+### 解析请求
+
+对于每个任务请求，TSS Node ：
+1. 根据任务类型（KeyGen、KeySign 或 KeyReshare）创建一个 `CallbackRequest` 结构
+2. 将 `CallbackRequest` 结构序列化为 JSON 格式以获取 `CallbackRequestJsonString`
+3. 使用其 RSA 私钥（TSS Node 的回调私钥）对 `CallbackRequestJsonString` 进行签名，将其用作 JWT 负载
+4. 发送包含 JWT 的 HTTP POST 请求，JWT 位于名为 `TSS_JWT_MSG` 的表单字段中
+
+您的回调服务器必须：
+1. 从 HTTP POST 请求中的 `TSS_JWT_MSG` 表单字段中提取 JWT
+2. 使用 TSS Node 的回调公钥验证 JWT 签名
+3. 从 JWT 中提取负载并将其反序列化为 `CallbackRequest` 结构
+4. 根据 `CallbackRequest` 类型，反序列化 `meta` 字段以获取详细的请求信息
+
+### 风险控制实施
+
+您的回调服务器必须实施风险控制以验证每个任务请求。对于每个 `CallbackRequest`，您应该：
+1. 分析请求内容
+3. 应用您的风险控制策略以确保请求的私钥分片操作是合法和授权的
+4. 返回批准或拒绝决定
+
+### 创建响应
+
+要构建 HTTP 响应，您的回调服务器必须：
+1. 根据您的风险控制决策创建一个 `CallbackResponse` 结构
+2. 将 `CallbackResponse` 结构序列化为 JSON 格式以获取 `CallbackResponseJsonString`
+3. 使用您的回调服务器的 RSA 私钥对 `CallbackResponseJsonString` 进行签名
+4. 直接在 HTTP 响应包体中返回 JWT 给 TSS Node 
+
+<Note>
+如果 TSS Node 没有收到响应，它将重试请求。重试次数达到最大值后，TSS Node 将认为风险控制决策为“拒绝”。
+</Note>
+
+## 请求和响应格式
+
+有关回调服务器通信的详细规范，包括请求类型、有效载荷格式和响应处理，请参阅[回调请求和响应格式](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-data-structure)。
+
+## 下一步
+
+- [配置回调密钥](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-configure)
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
