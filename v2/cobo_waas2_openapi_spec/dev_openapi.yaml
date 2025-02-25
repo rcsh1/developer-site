@@ -1363,7 +1363,7 @@ paths:
       operationId: resend_transaction_by_id
       summary: Resend transaction
       description: |
-        This operation resends a specified transaction. Resending a transaction means retrying a previously failed transaction. For more details about resending a transaction, see [Resend a transaction](/v2/guides/transactions/manage-transactions#resend-a-transaction).
+        This operation resends a specified transaction. Resending a transaction means retrying a previously failed transaction. For more details about resending a transaction, see [Resend a transaction](https://www.cobo.com/developers/v2/guides/transactions/manage-transactions#resend-a-transaction).
 
         A transaction can be resent if its status is `failed`.
 
@@ -1470,7 +1470,7 @@ paths:
       operationId: speedup_transaction_by_id
       summary: Speed up transaction
       description: |
-        This operation accelerates a specified transaction. Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For more details about speeding up a transaction, refer to [Speed up a transaction](/v2/guides/transactions/manage-transactions#speed-up-a-transaction).
+        This operation accelerates a specified transaction. Speeding up a transaction will trigger a Replace-By-Fee (RBF) transaction which is a new version of the original transaction. For more details about speeding up a transaction, refer to [Speed up a transaction](https://www.cobo.com/developers/v2/guides/transactions/manage-transactions#speed-up-a-transaction).
 
         You can use the `address` or `included_utxos` properties in the request body to specify the address or UTXOs that will cover the transaction fee. Generally, the transaction fee is paid by the original transaction's source. If that source's balance is insufficient, the specified address or UTXOs can be used to cover the fee.
 
@@ -2151,7 +2151,7 @@ paths:
       description: |
         This operation retrieves all the callback messages in your organization.
 
-        For more details about how to respond to callback messages, refer to [Callback messages](/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
+        For more details about how to respond to callback messages, refer to [Callback messages](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
       security:
         - OAuth2:
             - callback.read
@@ -2180,7 +2180,7 @@ paths:
       description: |
         This operation resends a callback message that failed previously.
 
-        If your callback endpoint doesn't respond as expected, the WaaS service will retry sending the callback message up to 30 times. After that, the callback message status will be `Failed`. Use this operation to resend the message. For more details, refer to [Webhooks and Callbacks](/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
+        If your callback endpoint doesn't respond as expected, the WaaS service will retry sending the callback message up to 30 times. After that, the callback message status will be `Failed`. Use this operation to resend the message. For more details, refer to [Webhooks and Callbacks](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/set-up-endpoint#callback-messages).
       security:
         - OAuth2:
             - callback.resend
@@ -6094,7 +6094,7 @@ components:
           example: YWFhYQ==
     BTCEIP191MessageSignDestination:
       title: BTC EIP-191 Signature
-      description: 'The information about the destination `BTC_EIP_191_Signature`. Refer to [Transaction sources and destinations](/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      description: 'The information about the destination `BTC_EIP_191_Signature`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
       type: object
       required:
         - destination_type
@@ -9654,7 +9654,7 @@ components:
                       example: '0x0000000000000000000000000000000000000000'
                     chain_id:
                       type: string
-                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
                       example: ETH
     createSwapActivityBody:
       description: The request body for creating a swap activity.
@@ -10569,7 +10569,7 @@ components:
                       example: '0x0000000000000000000000000000000000000000'
                     chain_id:
                       type: string
-                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
                       example: ETH
     createGuardPubkeyResponse:
       description: The request was successful.
@@ -10626,7 +10626,7 @@ components:
                       example: '0x0000000000000000000000000000000000000000'
                     chain_id:
                       type: string
-                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](/v2/api-references/wallets/list-enabled-chains).'
+                      description: 'The chain ID, which is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
                       example: ETH
     queryApprovalStatementResponse:
       description: The request was successful.
