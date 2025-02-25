@@ -6292,7 +6292,16 @@ components:
               type: array
               description: A list of addresses.
               items:
-                $ref: '#/components/schemas/AddressInfo'
+                allOf:
+                  - type: object
+                    required:
+                      - wallet_id
+                    properties:
+                      wallet_id:
+                        type: string
+                        description: The wallet ID.
+                        example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                  - $ref: '#/components/schemas/AddressInfo'
     WalletInfoEventData:
       title: Wallet Event Data
       allOf:

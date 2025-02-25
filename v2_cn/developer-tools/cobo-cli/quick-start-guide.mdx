@@ -1,0 +1,113 @@
+---
+title: "快速入门指南"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南将帮助您开始使用 Cobo CLI。您将学习如何：
+
+- 安装 Cobo CLI
+- 使用您的 Cobo Portal 账户登录和认证
+- 配置您的环境以获得最佳使用体验
+- 学习用于钱包管理、交易处理和其他关键操作的基本 CLI 命令
+
+<Note>
+Cobo CLI 默认设计用于开发环境。在生产环境中使用时务必谨慎，并确保在执行每个命令之前理解其影响。
+</Note>
+
+## 前提条件
+
+- 按照 Cobo Portal 的[快速入门指南](https://manuals.cobo.com/en/portal/quick-start-guide)设置您的 Cobo Portal 账户并创建您的团队。如果已经设置了团队，请让您的团队管理员邀请您加入团队。
+- 基本的命令行界面知识
+
+## 安装 Cobo CLI
+
+### 系统要求
+
+Cobo CLI 支持大多数操作系统。确保您的系统满足以下要求：
+
+- macOS（10.14 Mojave 或更高版本）
+- Windows 10 或更高版本
+- Linux（支持大多数发行版）
+
+### 安装 Cobo CLI
+选择最适合您操作系统的安装方法：
+
+#### 使用 pip
+您可以使用 pip 安装 Cobo CLI，这适用于所有支持的操作系统：
+
+```shell
+pip install cobo-cli
+```
+确保您已安装 Python 3.9 或更新版本。
+
+#### 使用 Homebrew
+
+您可以在 macOS 上使用 Homebrew 安装 Cobo CLI：
+
+```shell
+brew install cobo-cli
+```
+
+### 验证安装
+
+安装完成后，运行以下命令验证安装：
+
+```shell
+cobo version
+```
+
+## 登录和认证
+
+安装 Cobo CLI 后，您需要使用您的 Cobo Portal 账户认证 Cobo CLI。您可以选择以下三种认证方法之一来认证。作为示例，本指南将展示如何使用您的 Cobo Portal 账户认证：
+
+1. 切换到使用您的 Cobo Portal 账户认证：
+
+    ```
+    cobo auth user
+    ```
+2. 运行以下命令开始登录流程：
+
+    ```
+    cobo login --user
+    ```
+3. 您的默认浏览器将打开 Cobo Portal 的登录页面。使用您的 Cobo Portal 账户凭据登录。
+
+## 配置您的环境
+
+配置您的环境以获得最佳使用体验。我们建议您从开发环境开始：
+
+```
+cobo env dev
+```
+
+有关环境的更多信息，请参阅[开发和生产环境](/v2_cn/guides/overview/environments)。
+
+## 发送您的第一个请求
+
+现在您已经成功安装和配置了 Cobo CLI，是时候探索 Cobo CLI 的功能了。
+
+### 列出所有托管钱包
+
+如果您已经有一个或多个托管钱包，您可以列出所有托管钱包：
+
+```shell
+cobo get /wallets --wallet_type Custodial 
+```
+
+### 查找 API 文档
+
+如果您对特定 API 操作有疑问，您可以查找 API 文档：
+
+```shell
+cobo doc /wallets
+```
+
+### 创建一个新 App 
+
+使用模板创建一个新 App ，并集成 WaaS SDK：
+
+```shell
+cobo app init
+```
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

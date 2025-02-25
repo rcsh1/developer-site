@@ -1,0 +1,153 @@
+---
+title: "Java SDK 快速入门"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+## 概述
+
+本指南介绍如何开始使用 Cobo WaaS 2.0 Java SDK，它允许您使用 Java 编程语言将 WaaS 服务集成到您的现有 App 中。
+
+要了解使用 WaaS API 所需的初始设置步骤，请参阅[开始使用 Wallet-as-a-Service (WaaS) 2.0](/v2_cn/guides/get-started/get-started-with-waas)。
+
+您可以访问 [GitHub](https://github.com/CoboGlobal/cobo-waas2-java-sdk/) 查看 SDK 的源代码。
+
+## 前提条件
+
+- 安装 Java 1.8 或更新版本
+- 安装 Maven 3.8.3 或更新版本 / Gradle 7.2 或更新版本
+
+- 按照[快速入门指南](https://manuals.cobo.com/en/portal/quick-start-guide)中的说明设置您的 Cobo 账户并创建您的团队。如果已经设置了团队，请让您的团队管理员邀请您加入团队。
+- 您已[生成 API Key 和 API Secret](/v2_cn/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret)，并在 Cobo Portal 上[注册了 API Key](https://manuals.cobo.com/en/portal/developer-console/create-api-key)。
+
+## 添加依赖
+
+对于 Maven 用户，将依赖添加到您项目的 POM 文件中：
+
+```
+<dependency>
+  <groupId>com.cobo.waas2</groupId>
+  <artifactId>cobo-waas2</artifactId>
+  <version>{VERSION}</version>
+  <scope>compile</scope>
+</dependency>
+```
+
+对于 Gradle 用户，将依赖添加到您项目的构建文件中：
+
+```
+  repositories {
+    mavenCentral()     // 从 Maven Central 获取依赖
+  }
+
+  dependencies {
+     implementation "com.cobo.waas2:cobo-waas2:{VERSION}"
+  }
+```
+
+<Note>将 \{VERSION\} 替换为最新版本号，例如 `1.2.0`。从 [GitHub 仓库](https://github.com/CoboGlobal/cobo-waas2-java-sdk/tags)获取最新版本号。</Note>
+
+## 配置 API Key 和 HTTP Host
+
+1. 设置 API Secret。
+
+```java
+ApiClient defaultClient = Configuration.getDefaultApiClient();
+defaultClient.setPrivKey("<YOUR_API_SECRET_IN_HEX>");
+```
+
+2. 选择环境。
+
+```java
+// 选择开发环境
+defaultClient.setEnv(Env.DEV);
+
+// 选择生产环境
+// defaultClient.setEnv(Env.PROD);
+```
+
+## 示例代码
+
+API 操作级别的文档和示例代码请参照 WaaS SDK GitHub 仓库内的 [docs](https://github.com/CoboGlobal/cobo-waas2-java-sdk/tree/master/docs) 文件夹。
+
+### 列出支持的链
+
+```java
+// 导入类 
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.model.*;
+import com.cobo.waas2.api.WalletsApi;
+
+public class Example {
+  public static void main(String[] args) {
+    ApiClient defaultClient = Configuration.getDefaultApiClient();
+    // 使用开发环境 
+    defaultClient.setEnv(Env.DEV);
+    // 设置 API Secret
+    defaultClient.setPrivKey("<YOUR_API_SECRET_IN_HEX>");
+    WalletsApi apiInstance = new WalletsApi();
+    WalletType walletType = WalletType.fromValue("Custodial");
+    WalletSubtype walletSubtype = WalletSubtype.fromValue("Asset");
+    String chainIds = "";
+    Integer limit = 10;
+    String before = "";
+    String after = "";
+    try {
+      // 列出支持的链
+      ListSupportedChains200Response result = apiInstance.listSupportedChains(walletType, walletSubtype, chainIds, limit, before, after);
+      System.out.println(result);
+    } catch (ApiException e) {
+      System.err.println("Exception when calling WalletsApi#listSupportedChains");
+      System.err.println("Status code: " + e.getCode());
+      System.err.println("Reason: " + e.getResponseBody());
+      System.err.println("Response headers: " + e.getResponseHeaders());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+### 创建钱包
+
+```java
+// 导入类 
+
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.model.*;
+import com.cobo.waas2.api.WalletsApi;
+
+public class Example {
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+        // 使用开发环境 
+        defaultClient.setEnv(Env.DEV);
+        // 设置 API Secret
+        defaultClient.setPrivKey("<YOUR_API_SECRET_IN_HEX>");
+        WalletsApi apiInstance = new WalletsApi();
+        CreateWalletParams createWalletParams = new CreateWalletParams(
+                new CreateCustodialWalletParams()
+                        .name("Example Wallet")
+                        .walletType(WalletType.CUSTODIAL)
+                        .walletSubtype(WalletSubtype.ASSET)
+        );
+        try {
+            // 创建 Custodial 钱包
+            CreatedWalletInfo result = apiInstance.createWallet(createWalletParams);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling WalletsApi#createWallet");
+            System.err.println("Status code: " + e.getCode());
+            System.err.println("Reason: " + e.getResponseBody());
+            System.err.println("Response headers: " + e.getResponseHeaders());
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

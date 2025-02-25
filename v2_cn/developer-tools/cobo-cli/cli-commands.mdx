@@ -1,0 +1,464 @@
+---
+title: '命令参考'
+description: 'Cobo CLI 支持的所有命令的综合指南'
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+## 版本
+
+使用 [version](/v2_cn/developer-tools/cobo-cli/version-and-updates) 命令显示当前的 Cobo CLI 版本。
+
+```shell
+cobo version
+```
+
+## 登录
+
+使用 [login](/v2_cn/developer-tools/cobo-cli/login-and-authentication) 命令登录到您的 Cobo Portal 账户或获取 Org Access Tokens 。
+
+```shell
+cobo login [options]
+```
+
+**选项**
+- `-u`, `--user`：使用您的 Cobo Portal 账户登录（默认）。
+- `-o`, `--org`：获取 Org Access Tokens 。
+- `--refresh-token`：刷新现有的 Org Access Tokens ，而不是生成一个新的。
+
+**示例**
+
+```shell
+cobo login --org
+```
+
+## 登出
+
+使用 [logout](/v2_cn/developer-tools/cobo-cli/login-and-authentication#remove-an-access-token) 命令登出您的 Cobo Portal 账户或移除 Org Access Tokens 。
+
+```shell
+cobo logout [options]
+```
+
+**选项**
+- `-u`, `--user`：从您的 Cobo Portal 账户登出。
+- `-o`, `--org`：仅移除 Org Access Tokens 。
+- `-a`, `--all`：从您的 Cobo Portal 账户登出并移除 Org Access Tokens （默认行为）。
+
+**示例**
+
+```shell
+cobo logout --user
+```
+## 身份验证
+
+使用 [auth](/v2_cn/developer-tools/cobo-cli/login-and-authentication) 命令进行身份验证。
+
+```shell
+cobo auth <method>
+```
+
+**参数**
+- `method`: 要使用的身份验证方法。可能的值包括 `apikey`、`user` 和 `org`。
+
+**示例**
+
+```shell
+cobo auth apikey
+```
+
+## 环境
+
+使用 [env](/v2_cn/developer-tools/cobo-cli/environment-management) 命令设置或查看当前环境。
+
+```shell
+cobo env <environment>
+```
+
+**参数**
+- `<environment>`：要设置的环境。可能的值包括 `dev` 和 `prod`。
+
+**示例**
+
+```shell
+cobo env prod
+```
+
+## 密钥
+
+使用 [keys](/v2_cn/developer-tools/cobo-cli/key-management) 命令生成和管理 API Key 密钥对和 App Key 密钥对。
+
+### 生成
+
+使用 `generate` 命令生成新的 API 或 App Key 密钥对。
+
+```shell
+cobo keys generate [options]
+```
+
+**选项**
+- `--key-type <key_type>`：指定要生成的密钥类型（`API` 或 `APP`）。默认为 `API`。
+- `--alg <algorithm>`：指定密钥生成算法。默认为 `ed25519`。
+- `--force`：强制替换现有的密钥。
+
+**示例**
+
+```shell
+cobo keys generate --key-type APP --force
+```
+
+## 配置
+
+使用 [config](/v2_cn/developer-tools/cobo-cli/configuration) 命令管理 CLI 配置设置。
+
+### 设置
+
+使用 `set` 命令设置配置值。
+
+```shell
+cobo config set <key> <value>
+```
+
+**参数**
+- `key`：要设置的键。
+- `value`：要设置的值。
+
+**示例**
+
+```shell
+cobo config set environment dev
+```
+
+### 获取
+
+使用 `get` 命令获取配置值。
+
+```shell
+cobo config get <key>
+```
+
+**参数**
+- `key`：要获取的键。
+
+**示例**
+
+```shell
+cobo config get environment
+```
+
+### 列表
+
+使用 `list` 命令列出所有配置值。
+
+```shell
+cobo config list
+```
+
+### 删除
+
+使用 `delete` 命令删除配置值。
+
+```shell
+cobo config delete <key>
+```
+
+**参数**
+- `key`：要删除的键。
+
+**示例**
+
+```shell
+cobo config delete api_key
+```
+
+## 应用
+
+### 应用初始化
+
+使用 [init](/v2_cn/developer-tools/cobo-cli/app-init) 命令创建一个集成 WaaS 2.0 服务的 App 。
+
+```shell
+cobo app init [options]
+```
+
+**选项**
+- `-t`, `--app-type <portal|web|mobile|automation>`： App 类型。
+- `--auth <apikey|org|user>`： App 使用的身份验证方法。
+- `--wallet-type <custodial-asset|custodial-web3|mpc-org-controlled|mpc-user-controlled|smart-contract|exchange>`： App 交互的钱包类型。
+- `--mobile <flutter|react-native|kotlin|swift>`： App 的移动开发框架。
+- `--web <react|nextjs|vue|svelte>`： App 的 Web 开发框架。
+- `--backend <fastapi|django|express|flask|spring-boot|gin|laravel|rails|nextjs>`： App 的后端开发框架。
+- `-d`, `--directory <DIRECTORY>`：创建 App 项目的目录。
+- `-f`, `--force`：强制覆盖项目目录，如果它已经存在。
+
+**示例**
+
+```shell
+cobo app init --app-type web --auth apikey --directory my_project
+```
+
+### 应用上传
+
+使用 [upload](/v2_cn/developer-tools/cobo-cli/app-upload) 命令将您的 Cobo Portal Apps 发布到 Cobo Portal。
+
+```shell
+cobo app upload
+```
+
+### 应用更新
+
+使用 [update](/v2_cn/developer-tools/cobo-cli/app-update) 命令部署更新到 Cobo Portal Apps 。
+
+```shell
+cobo app update
+```
+
+### 应用状态
+
+使用 [status](/v2_cn/developer-tools/cobo-cli/app-status) 命令检查 Cobo Portal Apps 的状态。
+
+```shell
+cobo app status
+```
+
+## Webhook
+
+### 监听
+
+使用 [listen](/v2_cn/developer-tools/cobo-cli/listen-and-forward-events) 命令建立 WebSocket 连接到 WaaS 2.0 服务并流式传输 Webhook 事件。
+
+```shell
+cobo webhook listen [options]
+```
+
+**选项**
+- `--events <event_type>`：通过指定事件类型来过滤事件。可能的事件类型值包括：
+  - `wallets.transaction.created`
+  - `wallets.transaction.updated`
+  - `wallets.transaction.failed`
+  - `wallets.transaction.succeeded`
+  - `wallets.mpc.tss_request.created`
+  - `wallets.mpc.tss_request.updated`
+  - `wallets.mpc.tss_request.failed`
+  - `wallets.mpc.tss_request.succeeded`
+- `--forward <url>`：将接收到的事件转发到指定的 URL。
+
+**示例**
+
+```shell
+cobo webhook listen --events wallets.transaction.created,wallets.transaction.updated --forward "https://your-endpoint.com/webhook"
+```
+
+### 触发
+
+使用 [trigger](/v2_cn/developer-tools/cobo-cli/trigger-events) 命令测试您的 Webhook 端点的功能通过触发测试 Webhook 事件。
+
+```shell
+cobo webhook trigger <event_type> [options]
+```
+
+**参数**
+`<event_type>`：要触发的 Webhook 事件类型。可能的值包括：
+  - `wallets.transaction.created`
+  - `wallets.transaction.updated`
+  - `wallets.transaction.failed`
+  - `wallets.transaction.succeeded`
+  - `wallets.mpc.tss_request.created`
+  - `wallets.mpc.tss_request.updated`
+  - `wallets.mpc.tss_request.failed`
+  - `wallets.mpc.tss_request.succeeded`
+
+**选项**
+`--override <json_string>`：使用提供的 JSON 字符串覆盖事件负载中的特定字段。
+
+**示例**
+
+```shell
+cobo webhook trigger wallets.transaction.updated --override '{"chain_id": "ETH", "amount": "1000000000000000000"}'
+```
+
+### 事件
+
+使用 [events](/v2_cn/developer-tools/cobo-cli/event-types) 命令检索 WaaS 2.0 中所有可用的 Webhook 事件类型。
+
+```shell
+cobo webhook events
+```
+
+## API 命令
+
+### GET 请求
+
+使用 [get](/v2_cn/developer-tools/cobo-cli/get-requests) 命令发送 GET 请求到 WaaS 2.0 服务。您也可以使用它来检索所有可用的 GET 操作或显示指定操作的描述。
+
+<Note>为了通过 Cobo CLI 发送 API 请求，您需要通过登录并使用 Org Access Tokens 或 API Keys 作为身份验证方法。详情请参照使用 [Org Access Token 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens)和[使用 API Key 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys)。</Note>
+
+```shell
+cobo get <path> [options]
+```
+
+**参数**
+
+`<path>`：要发送 GET 请求的端点 URL。
+
+**选项**
+- `-d`, `--describe`：显示指定 GET 操作的描述，包括其预期响应和错误信息（如果有）。
+- `-l`, `--list`：列出 WaaS 2.0 服务的所有可用 GET 操作。
+
+**示例**
+
+```shell
+cobo get /wallets/11223344
+```
+
+### POST 请求
+
+使用 [post](/v2_cn/developer-tools/cobo-cli/post-requests) 命令发送 POST 请求到 WaaS 2.0 服务。您也可以使用它来检索所有可用的 POST 操作或显示指定操作的描述。
+
+<Note>为了通过 Cobo CLI 发送 API 请求，您需要通过登录并使用 Org Access Tokens 或 API Keys 作为身份验证方法。详情请参照使用 [Org Access Token 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens)和[使用 API Key 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys)。</Note>
+
+```shell
+cobo post <path> [options]
+```
+
+**参数**
+
+`<path>`：要发送 POST 请求的端点 URL。
+
+**选项**
+- `-d`, `--describe`：显示指定 POST 操作的描述，包括其预期响应和错误信息（如果有）。
+- `-l`, `--list`：列出 WaaS 2.0 服务的所有可用 POST 操作。
+
+**示例**
+
+```shell
+cobo post /wallets --name "My New Wallet" --wallet_type Custodial
+```
+
+### PUT 请求
+
+使用 [put](/v2_cn/developer-tools/cobo-cli/put-requests) 命令发送 PUT 请求到 WaaS 2.0 服务。您也可以使用它来检索所有可用的 PUT 操作或显示指定操作的描述。
+
+<Note>为了通过 Cobo CLI 发送 API 请求，您需要通过登录并使用 Org Access Tokens 或 API Keys 作为身份验证方法。详情请参照使用 [Org Access Token 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens)和[使用 API Key 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys)。</Note>
+
+```shell
+cobo put <path> [options]
+```
+
+**参数**
+
+`<path>`：要发送 PUT 请求的端点 URL。
+
+**选项**
+- `-d`, `--describe`：显示指定 PUT 操作的描述，包括其预期响应和错误信息（如果有）。
+- `-l`, `--list`：列出 WaaS 2.0 服务的所有可用 PUT 操作。
+
+**示例**
+
+```shell
+cobo put /wallets/{wallet_id} --wallet_id your_wallet_id --name "Updated Wallet Name"
+```
+
+### DELETE 请求
+
+使用 [delete](/v2_cn/developer-tools/cobo-cli/delete-requests) 命令发送 DELETE 请求到 WaaS 2.0 服务。您也可以使用它来检索所有可用的 DELETE 操作或显示指定操作的描述。
+
+<Note>为了通过 Cobo CLI 发送 API 请求，您需要通过登录并使用 Org Access Tokens 或 API Keys 作为身份验证方法。详情请参照使用 [Org Access Token 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-org-access-tokens)和[使用 API Key 身份验证](/v2_cn/developer-tools/cobo-cli/login-and-authentication#authenticate-with-api-keys)。</Note> 
+
+```shell
+cobo delete <path> [options]
+```
+
+**参数**
+
+`<path>`：要发送 DELETE 请求的端点 URL。
+
+**选项**
+- `-d`, `--describe`：显示指定 DELETE 操作的描述，包括其预期响应和错误信息（如果有）。
+- `-l`, `--list`：列出 WaaS 2.0 服务的所有可用 DELETE 操作。
+
+**示例**
+
+```shell
+cobo delete -l
+```
+
+## 实用命令
+
+### 日志
+
+使用 [logs tail](/v2_cn/developer-tools/cobo-cli/real-time-logs) 命令实时流式传输您的 API 请求日志到 WaaS 2.0 服务。
+
+```shell
+cobo logs tail [options]
+```
+
+**选项**
+- `--http-method`：通过 HTTP 方法过滤 API 日志，例如 `POST`。
+- `--request-path`：通过端点路径过滤 API 日志，例如 `/v2/wallets/{wallet_id}`。
+- `--status-code`：通过 HTTP 状态码过滤 API 日志，例如 `200`。
+- `--api-key`：通过 API Key过滤 API 日志。
+- `--ip-address`：通过 IP 地址过滤 API 日志。
+
+**示例**
+
+```shell
+cobo logs tail --http-method POST --status-code 404 --request-path /v2/wallets --ip-address 192.168.1.1
+```
+
+### 打开
+
+使用 [open](/v2_cn/developer-tools/cobo-cli/open-browser-shortcuts) 命令在您的默认 Web 浏览器中打开 Cobo Portal 的各种页面。
+
+```shell
+cobo open <shortcut>
+```
+
+**参数**
+
+`<shortcut>`：用于快速打开 Cobo Portal 页面的快捷方式。可用的快捷方式包括：
+  - `portal`：Cobo Portal 登录页面
+  - `dashboard`：仪表板页面
+  - `wallets`：钱包概览页面
+  - `custodial`：全托管钱包概览页面
+  - `mpc`：MPC 钱包概览页面
+  - `scw`：智能合约钱包概览页面
+  - `exchange`：交易所钱包概览页面
+  - `developer`：开发者控制台
+  - `apps`：Cobo Portal Apps 概览页面
+  - `pricing`：定价计划页面
+  - `approval`：审批页面
+
+**示例**
+
+```shell
+cobo open mpc
+```
+
+### 文档
+
+使用 [doc](/v2_cn/developer-tools/cobo-cli/api-documentation) 命令获取和更新 WaaS 2.0 的最新 OpenAPI 规范。
+
+```shell
+cobo doc <topic_or_path> [options]
+```
+
+**参数**
+
+`<topic_or_path>`：指定文档主题或 API 操作路径。可能的值包括：
+  - `guides`：（默认）打开 [WaaS 2.0 简介](/v2_cn/guides/overview/introduction) 指南。
+  - `api`：打开 [API 参考](/v2/api-references/playground) 页面。
+  - `sdk`：打开 [WaaS SDK](/v2_cn/developer-tools/quickstart-python) 指南。
+  - `apps`：打开 [Cobo Portal Apps 开发](/v2_cn/apps/introduction) 指南。
+  - API 端点路径：显示指定 API 操作的详细信息，例如 `/wallets/mpc/vaults`。
+
+**选项**
+
+`-u`, `--update`：更新 WaaS 2.0 的 OpenAPI 规范，以确保您拥有最新的 API 定义和文档。
+
+**示例**
+
+```shell
+cobo doc /wallets/mpc/vaults
+```
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

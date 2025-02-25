@@ -1,0 +1,53 @@
+---
+title: "交易来源和目的地"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+在 WaaS 2.0 中，每笔交易都涉及一个来源和一个目的地。来源表示交易的起始位置，而目的地表示交易的去向，例如钱包地址、签名、合约等。每种交易类型对应一组特定的来源和目的地类型。例如，在提币交易中，来源将是 Cobo Portal 上创建的钱包，而目的地将是钱包地址或交易所钱包。
+
+## 每种交易类型的来源和目的地
+
+请参阅下表，了解每种交易类型对应的来源和目的地类型。每种来源类型和目的地类型的详细定义可以在表格下方找到。
+
+<Note>如果您在 Cobo Portal 上的两个钱包之间转移代币，将记录两笔交易：一笔存入目的地钱包，一笔从来源钱包提取。</Note>
+
+| 交易类型                                   | 交易来源类型                                                                                     | 交易目的地类型            |
+|----------------------------------------------------|-------------------------------------------------------------------------------------------------|--------------------------|
+| Deposit - [Cobo Loop](https://manuals.cobo.com/zh/portal/custodial-wallets/cobo-loop) 转账       | DepositFromLoop                                                                                | DepositToAddress         |
+| Deposit - 交易所钱包之间转账       | DepositFromWallet                                                                              | DepositToWallet          |
+| Deposit - 其他充币交易               | DepositFromAddress                                                                            | DepositToAddress         |
+| Withdrawal - 交易所钱包之间转账    | Main<br />Sub                                                                                    | ExchangeWallet           |
+| Withdrawal - 其他提币交易         | Asset<br />Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Main<br />Sub                      | Address                  |
+| ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}                                               | EVM_Contract             |
+| MessageSign                                       | Org-Controlled<br />User-Controlled                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature<br />Raw_Message_Signature<br />BTC_EIP_191_Signature |
+| ExternalSafeTx                                    | Safe\{Wallet\}                                                                                   |       EVM_Contract        |
+| Stake                                   | Org-Controlled                                                                                  |    Address          |
+| Unstake                                    | Org-Controlled                                                                                   |    Address          |
+
+## 交易来源类型
+
+交易来源类型如下：
+- `Asset`：托管钱包（资产钱包）。
+- `Org-Controlled`：MPC 钱包（机构钱包）。
+- `User-Controlled`：MPC 钱包（用户控制钱包）。
+- `Safe{Wallet}`：智能合约钱包（Safe{Wallet}）。
+- `Main`：交易所钱包（主账户）。
+- `Sub`：交易所钱包（子账户）。
+- `DepositFromAddress`：钱包地址。
+- `DepositFromWallet`：交易所钱包。
+- `DepositFromLoop`：通过 [Cobo Loop](https://manuals.cobo.com/zh/portal/custodial-wallets/cobo-loop) 转账网络发送的转账。
+
+## 交易目的地类型
+
+交易目的地类型如下：
+- `Address`：钱包地址。
+- `ExchangeWallet`：交易所钱包。
+- `EVM_Contract`：EVM 兼容合约。
+- `EVM_EIP_191_Signature`：EVM EIP-191 签名。更多详情，请参阅 [签名数据标准](https://eips.ethereum.org/EIPS/eip-191)。
+- `EVM_EIP_712_Signature`：EVM EIP-712 签名。更多详情，请参阅 [类型化结构数据哈希和签名](https://eips.ethereum.org/EIPS/eip-712)。
+- `Raw_Message_Signature`：原始消息签名。
+- `BTC_EIP_191_Signature`：BTC EIP-191 签名。
+- `DepositToAddress`：钱包地址。
+- `DepositToWallet`：交易所钱包。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

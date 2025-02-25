@@ -1,0 +1,99 @@
+---
+title: '全局选项'
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+Cobo CLI 提供了几个可与任何命令一起使用的全局选项，用于自定义其行为。这些选项允许您控制 CLI 操作的环境、身份验证方法和其他设置。
+
+<Note>
+全局选项应放在要运行的特定命令之前。例如，`-e prod` 应该在 `get /wallets` 之前。
+</Note>
+
+## 可用的全局选项
+
+### 环境选择 (-e, --env)
+
+`-e` 或 `--env` 选项允许您为特定命令覆盖默认环境。
+
+```shell
+cobo -e dev get /wallets
+```
+
+可能的值包括：
+- `dev`：开发环境
+- `prod`：生产环境
+
+如果未指定，Cobo CLI 将使用配置中设置的环境或默认使用开发环境。
+
+### 身份验证方法 (-a, --auth)
+
+`-a` 或 `--auth` 选项允许您为特定命令覆盖默认的[身份验证方法](/v2_cn/developer-tools/cobo-cli/login-and-authentication#manage-authentication-methods)。
+
+```shell
+cobo -a user get /wallets
+```
+
+可能的值包括：
+- `apikey`：API Key
+- `user`：Cobo Portal 账户
+- `org`： Org Access Tokens 
+
+如果未指定，Cobo CLI 将使用配置中设置的身份验证方法或默认使用 API Key身份验证。
+
+### 调试模式 (--enable-debug)
+
+`--enable-debug` 标志启用调试模式，提供详细的日志记录以进行故障排除。
+
+```shell
+cobo --enable-debug get /wallets
+```
+
+### 自定义配置文件 (--config-file)
+
+`--config-file` 选项允许您指定自定义配置文件而不是默认配置文件。
+
+```shell
+cobo --config-file /path/to/config.toml get /wallets 
+```
+
+如果未指定，Cobo CLI 将使用位于您主目录中的默认配置文件（`~/.cobo/config.toml`）。
+
+### 自定义 API 规范文件 (--spec)
+
+如果您有自定义的 OpenAPI 规范文件，可以将其与 Cobo CLI 一起使用。这对于测试或使用不同版本的 API 很有用。
+
+要使用自定义规范文件：
+
+```bash
+$ cobo --spec /path/to/custom_spec.yaml get /wallets -d
+```
+
+将 /path/to/custom_spec.yaml 替换为您的自定义规范文件的实际路径。
+
+<Note>使用自定义规范文件将仅覆盖该命令的默认 OpenAPI 规范。它不会影响其他命令或将来使用 Cobo CLI。</Note>
+
+## 组合全局选项
+
+您可以在单个命令中组合多个全局选项：
+
+```shell
+cobo -e prod -a user --enable-debug get /wallets
+```
+
+此命令将：
+1. 使用生产环境。
+2. 使用您的 Cobo Portal 账户进行身份验证。
+3. 启用调试模式以进行详细日志记录。
+4. 执行 GET 请求以检索钱包信息。
+
+## 配置优先级
+
+Cobo CLI 在确定使用哪些设置时遵循以下优先顺序：
+
+1. 命令行选项（最高优先级）
+2. 配置文件设置
+3. 默认值（最低优先级）
+
+这允许您在不修改配置文件的情况下轻松地逐个命令覆盖设置。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

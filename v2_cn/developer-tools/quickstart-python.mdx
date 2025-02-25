@@ -1,0 +1,117 @@
+---
+title: "Python SDK 快速入门"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+## 概述
+
+本指南介绍如何开始使用 Cobo WaaS 2.0 Python SDK，它允许您使用 Python 编程语言将 WaaS 服务集成到您的现有 App 中。
+
+要了解使用 WaaS API 所需的初始设置步骤，请参阅[开始使用 Wallet-as-a-Service (WaaS) 2.0](/v2_cn/guides/get-started/get-started-with-waas)。
+
+您可以访问 [GitHub](https://github.com/CoboGlobal/cobo-waas2-python-sdk/) 查看 SDK 的源代码。
+
+## 前提条件
+
+- 您已安装 Python 3.7 或更新版本。
+- 按照[快速入门指南](https://manuals.cobo.com/en/portal/quick-start-guide)中的说明设置您的 Cobo 账户并创建您的团队。如果已经设置了团队，请让您的团队管理员邀请您加入团队。
+- 您已[生成 API Key 和 API Secret](/v2_cn/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret)，并在 Cobo Portal 上[注册了 API Key](https://manuals.cobo.com/en/portal/developer-console/create-api-key)。
+
+## 安装 SDK
+
+1. 使用 pip install 命令安装 SDK。
+   打开终端窗口并运行以下命令：
+
+   ```shell
+   pip install cobo-waas2=={VERSION}
+   ```
+  <Note>将 \{VERSION\} 替换为最新版本号，例如 `1.2.0`。从 [GitHub 仓库](https://github.com/CoboGlobal/cobo-waas2-python-sdk/tags)获取最新版本号。</Note>
+
+2. 在您的项目文件中按如下方式导入包：
+
+   ```python
+   import cobo_waas2
+   ```
+
+## 配置 API Key 和 HTTP Host
+
+您可以参考 SDK 仓库中的 [configuration.py 文件](https://github.com/CoboGlobal/cobo-waas2-python-api/blob/master/cobo_waas2/configuration.py)了解所有支持的配置参数。
+
+```python
+configuration = cobo_waas2.Configuration(
+
+  # 将 `<YOUR_API_SECRET>` 替换为您的 API Secret。
+  api_private_key="<YOUR_API_SECRET>",
+
+  # 要使用开发环境，将主机设置为 `https://api.dev.cobo.com/v2`。
+  # 要使用生产环境，将主机设置为 `https://api.cobo.com/v2`。
+  host="https://api.dev.cobo.com/v2"
+
+)
+```
+
+## 示例代码
+
+API 操作级别的文档和示例代码请参照 WaaS SDK GitHub 仓库内的 [docs](https://github.com/CoboGlobal/cobo-waas2-python-api/tree/master/docs) 文件夹。
+
+### 列出支持的链
+
+```python
+import cobo_waas2
+from pprint import pprint
+
+configuration = cobo_waas2.Configuration(
+   # 将 `<YOUR_API_SECRET>` 替换为您的 API Secret
+   api_private_key="<YOUR_API_SECRET>",
+   # 使用开发环境
+   host="https://api.dev.cobo.com/v2"
+)
+
+# 使用 API 客户端实例进入上下文
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # 创建 API 类的实例
+   api_instance = cobo_waas2.WalletsApi(api_client)
+   try:
+       # 列出所有支持的链
+       api_response = api_instance.list_supported_chains()
+       print("The response of WalletsApi->list_supported_chains:\n")
+       pprint(api_response)
+   except Exception as e:
+       print("Exception when calling WalletsApi->list_supported_chains: %s\n" % e)
+```
+
+### 创建钱包
+
+```python
+import cobo_waas2
+from pprint import pprint
+
+from cobo_waas2 import CreateCustodialWalletParams, WalletType, WalletSubtype
+
+configuration = cobo_waas2.Configuration(
+    # 将 `<YOUR_API_SECRET>` 替换为您的 API Secret
+    api_private_key="<YOUR_API_SECRET>",
+    # 使用开发环境
+    host="https://api.dev.cobo.com/v2"
+)
+# 使用 API 客户端实例进入上下文
+with cobo_waas2.ApiClient(configuration) as api_client:
+    # 创建 API 类的实例
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    create_wallet_params = cobo_waas2.CreateWalletParams(
+        actual_instance=CreateCustodialWalletParams(
+            name="New Custodial Wallet",
+            wallet_type=WalletType.CUSTODIAL,
+            wallet_subtype=WalletSubtype.ASSET,
+        ),
+    )
+    try:
+        # 创建一个托管钱包
+        api_response = api_instance.create_wallet(create_wallet_params=create_wallet_params)
+        print("The response of WalletsApi->create_wallet:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling WalletsApi->create_wallet: %s\n" % e)
+```
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

@@ -1,0 +1,87 @@
+---
+title: "配置 Cobo CLI"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南介绍如何检查和修改 Cobo CLI 的配置。这些配置由各种 Cobo CLI 命令使用，包括 `cobo env`、`cobo auth` 和 `cobo keys`。
+
+默认情况下，Cobo CLI 将其配置存储在您的主目录中（`~/.cobo/config.toml`）。您可以使用 `--config-file <path>` 选项覆盖此位置。有关此选项的更多信息，请参阅 [全局选项](/v2_cn/developer-tools/cobo-cli/global-options#custom-configuration-file-config-file)。
+
+## 配置命令
+
+### 设置配置值
+
+要设置配置值，请使用以下命令：
+
+```shell
+cobo config set <key> <value>
+```
+
+### 检索配置值
+
+要检索配置值，请使用以下命令：
+
+```shell
+cobo config get <key>
+```
+
+如果配置键存在，它将显示该值。否则，它将通知您配置未找到。
+
+### 列出所有配置
+
+要查看您当前的所有配置设置，请使用 `list` 子命令：
+
+```shell
+cobo config list
+```
+
+这将显示您配置中的所有键值对。
+
+### 删除配置值
+
+要删除配置值，请使用 `delete` 子命令：
+
+```shell
+cobo config delete <key>
+```
+
+## 重要配置
+
+虽然您可以存储任何自定义配置值，但 Cobo CLI 使用一些关键设置：
+
+### 环境
+
+您可以使用 `cobo config set environment <environment>` 命令设置环境：
+
+```shell
+cobo config set environment dev
+```
+
+Cobo CLI 支持两种环境：
+- `dev`: 用于开发目的
+- `prod`: 用于生产环境
+
+
+<Note>
+此命令与运行 `cobo env dev` 命令具有相同的效果。
+</Note>
+
+### 身份验证方法
+
+您可以使用 `cobo config set auth_method <method>` 命令设置身份验证方法：
+
+```shell
+cobo config set auth_method apikey
+```
+
+Cobo CLI 支持三种身份验证方法：
+- `apikey`: 使用 API Key进行身份验证。
+- `user`: 使用您的 Cobo Portal 账户进行身份验证。
+- `org`: 使用 Org Access Tokens 进行身份验证。
+
+
+<Note>
+此命令与运行 `cobo auth apikey` 命令具有相同的效果。
+</Note>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

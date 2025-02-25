@@ -1,0 +1,189 @@
+---
+title: "使用 Cobo OAuth 进行身份验证"
+sidebarTitle: "Cobo OAuth"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本节介绍如何使用 Cobo OAuth 在 Cobo Portal Apps 中对 WaaS 服务的 API 请求进行身份验证。
+
+## Cobo OAuth 与 Cobo Auth
+
+Cobo Auth 和 Cobo OAuth 是两种身份验证机制。Cobo Auth 使用 API Key 和 API Secret来识别客户端，而 Cobo OAuth 使用 App Key 和 App Secret来识别客户端，并通过 Org Access Tokens 及其权限和范围控制对其他团队资源的访问。
+
+- 如果您正在开发 Cobo Portal Apps 以供不同团队安装和使用，请使用 Cobo OAuth 进行 API 请求的身份验证。
+- 如果您正在开发其他类型的 App 以访问您自己团队内的数据和资源，请改用 Cobo Auth。有关 Cobo Auth 的更多详细信息，请参阅 [使用 Cobo Auth 进行身份验证](/v2_cn/guides/overview/cobo-auth)。
+
+## 使用 WaaS SDK
+
+如果您正在使用 [WaaS SDK](/v2_cn/developer-tools/quickstart-python)，您只需在 API 请求中提供 App Secret和 Org Access Tokens ，如下所示：
+
+```python
+from cobo_waas2 import Configuration, ApiClient, WalletsApi
+
+configuration = Configuration(
+    # 对于开发环境使用 `https://api.dev.cobo.com/v2`，对于生产环境使用 `https://api.cobo.com/v2`。
+    host="https://api.dev.cobo.com/v2",
+    # 将 `<APP_SECRET>` 替换为您的 App Secret。
+    api_private_key="<APP_SECRET>",
+)
+
+client = ApiClient(configuration=configuration)
+# 将 `{ORG_ACCESS_TOKEN}` 替换为 Org Access Tokens 。
+client.set_default_header("AUTHORIZATION", f"Bearer {ORG_ACCESS_TOKEN}")
+```
+
+- 要了解如何生成 App Key 和 App Secret，请参阅 [生成 App Key 和 App Secret](#generate-an-app-key-and-an-app-secret)。
+- 要了解如何获取和使用 Org Access Tokens ，请参阅 [ Org Access Tokens ](/v2_cn/apps/org-access-tokens)。
+
+## 不使用 WaaS SDK
+
+如果您不使用 WaaS SDK，则需要在请求头中提供所有必需的身份验证信息，如下所示：
+
+```javascript
+headers = {
+    // 将 `{ORG_ACCESS_TOKEN}` 替换为 Org Access Tokens 。
+    "Authorization": Bearer {ORG_ACCESS_TOKEN},
+    // 将 `<APP_KEY>` 替换为您的 App Key。
+    "Biz-Api-Key": {APP_KEY}.hex(),
+    // 将 `{Nonce}` 替换为当前时间的 Unix 时间戳格式（以毫秒为单位）。
+    // 此值必须与 API 签名中的 `TIMESTAMP` 字段的值相同。
+    "Biz-Api-Nonce": {Nonce},
+    // 将 `{YOUR_API_SIGNATURE}` 替换为计算的 API 签名。
+    "Biz-Api-Signature": {YOUR_API_SIGNATURE}.hex(),
+}
+```
+
+- 要了解如何生成 App Key 和 App Secret，请参阅 [生成 App Key 和 App Secret](#generate-an-app-key-and-an-app-secret)。
+- 要了解如何获取和使用 Org Access Tokens ，请参阅 [ Org Access Tokens ](/v2_cn/apps/org-access-tokens)。
+- 要了解如何使用 App Secret计算 API 签名，请参阅 [计算 API 签名](#calculate-an-api-signature)。
+
+##  App Key 和 App Secret
+
+为了确保 Cobo Portal Apps 与 WaaS 服务之间的安全和身份验证通信，使用了基于 App Key 和 App Secret的机制。该机制依赖于加密密钥对来验证 App 的身份和请求的完整性。
+
+###  App Key
+
+ App Key是加密密钥对中的公钥。它用于标识发出 API 请求的 Cobo Portal Apps 。
+
+###  App Secret
+
+ App Secret是加密密钥对中的私钥。它用于签名 API 请求，保证请求的真实性和完整性。 App Secret必须始终保持机密和安全，以防止未经授权的访问。
+
+ App Key 和 App Secret形成了一个加密密钥对，启用了与 WaaS 服务的安全通信：
+
+-  App Key包含在 API 请求中，以标识 App 。它还需要包含在 App Manifest 文件中。有关更多信息，请参阅 [配置Manifest 文件](/v2_cn/apps/build-app#configure-the-manifest-file)。
+-  App Secret签名请求。WaaS 服务验证签名以确认请求的真实性和完整性。
+
+### 生成 App Key 和 App Secret
+
+本节介绍了使用 Ed25519 算法生成 App Key 密钥对（ App Key 和 App Secret）的三种方法。您也可以使用其他支持 Ed25519 算法的工具生成 App Key 密钥对。
+
+公钥将用作 App Key，私钥将用作 App Secret。
+
+#### 使用 Cobo CLI
+
+Cobo 命令行接口（CLI）是一种强大的开发工具，旨在帮助您直接从命令行构建、测试和管理与 Cobo Wallet-as-a-Service（WaaS）2.0 的集成。
+
+1. 使用以下命令安装 Cobo CLI：
+
+    ```shell
+    # 使用 pip 安装 Cobo CLI（需要 Python 3.9 或更高版本）。
+    pip install cobo-cli
+    # 或者，您可以使用 Homebrew 安装 Cobo CLI。
+    brew install cobo-cli
+    # 测试安装是否成功
+    cobo version
+    ```
+
+    有关 Cobo CLI 的系统要求，请参阅 [安装 Cobo CLI](/v2_cn/developer-tools/cobo-cli/quick-start-guide#system-requirements)。
+
+2. 使用 `keys generate` 命令生成 App Key 密钥对，如下所示：
+
+    ```shell
+    # 生成 App Key 密钥对
+    cobo keys generate --key-type APP
+    ```
+
+    生成的密钥将安全地存储在您的配置文件中（默认：`~/.cobo/config.toml`）。有关更多信息，请参阅 [密钥管理](/v2_cn/developer-tools/cobo-cli/key-management)。
+
+#### 使用 OpenSSL
+
+在终端窗口中，运行以下 OpenSSL 命令生成 Ed25519 算法的密钥对：
+
+```shell
+openssl genpkey -algorithm ed25519 -out private_key.pem
+
+openssl pkey -in private_key.pem -pubout -out public_key.pem
+
+echo "私钥（十六进制）:"
+openssl pkey -in private_key.pem -text | grep 'priv:' -A 3 | tail -n +2 | tr -d ':\n ' && echo
+
+echo "公钥（十六进制）:"
+openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | tr -d ':\n ' && echo
+```
+
+您将看到类似以下示例的输出：
+```
+私钥（十六进制）:
+06f78882576ec0e05b1e51a33548da7e8cf958c190ba96be77b1c671f98a2b5f
+公钥（十六进制）:
+5987dedc180167b7ab1d27e6009e5065d10d764cd85d7b64f8c968ca40326e28
+```
+
+使用 `私钥（十六进制）` 作为您的 App Secret，使用 `公钥（十六进制）` 作为您的 App Key。
+
+#### 使用 Python 库
+
+1. 安装 `PyNaCl` Python 库。
+
+   在终端窗口中，运行以下命令：
+    ```shell
+    pip install PyNaCl
+    ```
+
+2. 生成密钥对。
+   导入函数从 Python 库生成 Ed25519 算法的密钥对，如下所示：
+
+    ```python
+    from nacl.signing import SigningKey
+    # 生成密钥对。
+    sk = SigningKey.generate()
+    # 打印私钥的十六进制格式。
+    print("私钥:", sk.encode().hex())
+    # 打印公钥的十六进制格式。
+    print("公钥:", sk.verify_key.encode().hex())
+    ```
+
+## 计算 API 签名
+
+以下步骤介绍如何计算 API 签名。
+
+1. 首先，根据您的请求连接一个字符串，如下所示：
+    `str_to_sign = {METHOD}|{PATH}|{TIMESTAMP}|{PARAMS}|{BODY}`
+
+    | 字段 | 描述 | 示例 |
+    | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+    | `METHOD`    | HTTP 方法。 | `GET` |
+    | `PATH`      | API 端点。 | `/v2/transactions/transfer` |
+    | `TIMESTAMP` | 当前时间的 Unix 时间戳格式（以毫秒为单位）。此值必须与请求头中的随机数相同。 | `1718587017026` |
+    | `PARAMS`    | （如果适用）查询参数。 | `chain_id=ETH&limit=10` |
+    | `BODY`      | （如果适用）原始请求包体的字符串格式。 | `{"name":"Default","wallet_subtype":"Asset","wallet_type":"Custodial"}` |
+
+2. 使用 hashlib 库对字符串进行两次 SHA-256 散列，如下所示：
+    ```python
+    import hashlib
+
+    content_hash = hashlib.sha256(hashlib.sha256(str_to_sign.encode()).digest()).digest()
+    ```
+
+3. 使用您的 App Secret签名字符串，如下所示：
+    ```python
+    # 将 `app_secret` 替换为您的 App Secret。
+    sk = ed25519.SigningKey(sk_s=bytes.fromhex(app_secret))
+    # 签名哈希消息
+    signature = sk.sign(content_hash)
+    ```
+
+现在您已经计算了 API 签名。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

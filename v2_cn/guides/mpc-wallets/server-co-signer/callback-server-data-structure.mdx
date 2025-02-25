@@ -1,0 +1,138 @@
+---
+title: "回调请求和响应格式"
+sidebarTitle: "回调请求和响应格式"
+description: TSS Node Callback服务器交互中使用的 Payload 格式的详细规范
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本文档规定了 TSS Node Callback服务器通信中使用的请求和响应 Payload 格式。
+
+## 回调请求
+
+回调请求由 TSS Node发送到回调服务器。
+
+### 基本请求结构
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| request_id | `string` | 回调请求的唯一 ID。|
+| request_type | `int` | 回调请求的类型：<br/>- `TypePing` (0)：用于心跳监控<br/>- `TypeKeyGen` (1)：为您的 MPC 钱包创建新的私钥分片<br/>- `TypeKeySign` (2)：签署交易或消息<br/>- `TypeKeyReshare` (3)：在参与者之间重新分配私钥分片。|
+| request_detail | `string` | 特定于请求类型的详细信息。结构根据请求类型而变化。内容是 JSON 序列化的字符串。 |
+| extra_info | `string` | 额外的上下文信息。结构根据请求类型而变化。内容是 JSON 序列化的字符串。 |
+
+### TypePing 请求
+
+用于回调服务器的心跳监控。
+
+如果您在[配置 TSS Node设置](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-configure#configure-tss-node-settings)时指定了 `monitor_interval` 参数，节点将定期发送请求以验证服务器可用性。
+
+```yaml
+callback:
+  monitor_interval: 1h # 监控间隔；如果为空，则禁用监控
+```
+
+对于 `TypePing` 请求，`request_id`、`request_detail` 和 `extra_info` 将是空对象。
+
+### TypeKeyGen 请求
+
+用于私钥分片生成。
+
+#### request_detail
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| threshold | `int` | 此私钥分片持有者组中需要批准操作的私钥分片持有者数量。 |
+| node_ids | `array[string]` | 此私钥分片持有者组中私钥分片持有者的 TSS Node ID。 |
+| curve | `int` | 根扩展公钥的椭圆曲线类型。可能的值：<br/>`0`：Secp256k1<br/>`2`：Ed25519。 |
+| task_id | `string` | 此密钥生成任务的唯一标识符。 |
+| biz_task_id | `string` | 对于此请求类型，此字段包含 TSS 请求 ID。 |
+
+#### extra_info
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| org | `object` | 组织信息：<br/>- `org_id`：字符串。组织的 ID。<br/>- `name`：字符串。组织名称。<br/>- `created_timestamp`：整数。组织的创建时间，以毫秒为单位的 Unix 时间戳格式。 |
+| project | `object` | 项目信息。详情请参阅[获取项目信息](/v2/api-references/wallets--mpc-wallets/get-project-information)操作的响应。 |
+| vault | `object` | Vault信息。详情请参阅[获取Vault信息](/v2/api-references/wallets--mpc-wallets/get-vault-information)操作的响应。 |
+| target_key_share_holder_group | `object` | 私钥分片持有者组信息。详情请参阅[获取私钥分片持有者组信息](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information)操作的响应。 |
+| tss_request | `object` | TSS 请求信息。详情请参阅[获取 TSS 请求](/v2/api-references/wallets--mpc-wallets/get-tss-request)操作的响应。 |
+
+### TypeKeySign 请求
+
+用于交易或消息签名操作。
+
+#### request_detail
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| group_id | `string` | 私钥分片持有者组的 ID。 |
+| root_pub_key | `string` | 该组的根扩展公钥。 |
+| used_node_ids | `array[string]` | 参与签名的 TSS Node ID 列表。 |
+| bip32_path_list | `array[string]` | BIP32 派生路径。 |
+| msg_hash_list | `array[string]` | 要签名的消息哈希列表。 |
+| tweak_list | `array[string]` | 要应用的调整列表。 |
+| signature_type | `int` | 要生成的签名类型。可能的值：<br/>- `1`：ECDSA 签名<br/>- `2`：EdDSA 签名<br/>- `3`：Schnorr 签名 |
+| tss_protocol | `int` | TSS 协议。可能的值：<br/>- `1`：GG18<br/>- `2`：Lindell<br/>- `3`：EddsaTSS |
+| task_id | `string` | 此签名任务的唯一标识符。 |
+| biz_task_id | `string` | 对于此请求类型，此字段包含交易 ID。 |
+
+#### extra_info
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| org | `object` | 组织信息：<br/>- `org_id`：字符串。组织的 ID。<br/>- `name`：字符串。组织名称。<br/>- `created_timestamp`：整数。组织的创建时间，以毫秒为单位的 Unix 时间戳格式。 |
+| project | `object` | 项目信息。详情请参阅[获取项目信息](/v2/api-references/wallets--mpc-wallets/get-project-information)操作的响应。 |
+| vault | `object` | Vault信息。详情请参阅[获取Vault信息](/v2/api-references/wallets--mpc-wallets/get-vault-information)操作的响应。 |
+| wallet | `object` | 钱包信息。详情请参阅[获取钱包信息](/v2/api-references/wallets/get-wallet-information)操作的响应。 |
+| signer_key_share_holder_group | `object` | 签署交易的私钥分片持有者组的信息。详情请参阅[获取私钥分片持有者组信息](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information)操作的响应。 |
+| source_addresses | `array[object]` | 交易源地址的信息。详情请参阅[列出钱包地址](/v2/api-references/wallets/list-wallet-addresses)操作的响应。 |
+| transaction | `object` | 要签名的交易信息。详情请参阅[获取交易信息](/v2/api-references/transactions/get-transaction-information)操作的响应。 |
+| staking_activity | `object` | 如果交易是质押活动，则为质押活动的信息。详情请参阅[获取质押活动详情](/v2/api-references/stakings/get-staking-activity-details)操作的响应。 |
+
+### TypeKeyReshare 请求
+
+用于[密钥reshare](https://manuals.cobo.com/cn/portal/mpc-wallets/ocw/manage-key-share-groups#manage-recovery-groups)操作。reshare意味着使用现有的私钥分片持有者组为新组生成私钥分片。
+
+#### request_detail
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| old_group_id | `string` | 现有私钥分片持有者组的 ID。 |
+| root_pub_key | `string` | Vault的根扩展公钥。 |
+| curve | `int` | 根扩展公钥的椭圆曲线类型。<br/>`0`：Secp256k1<br/>`2`：Ed25519。 |
+| used_node_ids | `array[string]` | 现有私钥分片持有者组的 TSS Node ID。 |
+| old_threshold | `int` | 使用的现有私钥分片持有者组的阈值。 |
+| new_threshold | `int` | 新私钥分片持有者组的阈值。 |
+| new_node_ids | `array[string]` | 新私钥分片持有者组的 TSS Node ID。 |
+| task_id | `string` | 此reshare任务的唯一标识符。 |
+| biz_task_id | `string` | 对于此请求类型，此字段包含 TSS 请求 ID。 |
+
+#### extra_info
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| org | `object` | 组织信息：<br/>- `org_id`：字符串。组织的 ID。<br/>- `name`：字符串。组织名称。<br/>- `created_timestamp`：整数。组织的创建时间，以毫秒为单位的 Unix 时间戳格式。 |
+| project | `object` | 项目信息。详情请参阅[获取项目信息](/v2/api-references/wallets--mpc-wallets/get-project-information)操作的响应。 |
+| vault | `object` | Vault信息。详情请参阅[获取Vault信息](/v2/api-references/wallets--mpc-wallets/get-vault-information)操作的响应。 |
+| source_key_share_holder_group | `object` | 现有私钥分片持有者组的信息。详情请参阅[获取私钥分片持有者组信息](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information)操作的响应。 |
+| target_key_share_holder_group | `object` | 新私钥分片持有者组的信息。详情请参阅[获取私钥分片持有者组信息](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information)操作的响应。 |
+| tss_request | `object` | TSS 请求信息。详情请参阅[获取 TSS 请求](/v2/api-references/wallets--mpc-wallets/get-tss-request)操作的响应。 |
+
+## 回调响应
+
+您的回调服务器必须使用以下结构响应所有回调请求：
+
+| 字段 | 类型 | 描述 |
+|-------|------|-------------|
+| status | `int` | 响应状态码。`0` 表示成功。任何其他值表示在回调服务器处理请求时发生错误。 |
+| request_id | `string` | 回调请求的唯一 ID。|
+| action | `string` | 要采取的操作。可能的值：<br/>- `ACCEPT`：批准请求并继续操作<br/>- `REJECT`：拒绝请求并停止操作 |
+| error | `string` | 错误消息：<br/>- 当 `status` 不为 `0` 时：包含回调服务器的内部错误消息。<br/>- 当 `status` 为 `0` 且 action 为 `REJECT` 时：包含拒绝的具体原因。 |
+
+### 重要说明
+
+- 如果 TSS Node未能收到 HTTP 响应，它将重试回调请求。
+- 超过最大重试次数后，风险控制结果将被设置为 `REJECT`。
+- 对于 `TypePing` 请求，需要成功响应（status = `0`）以表明服务器可用。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

@@ -1,0 +1,100 @@
+---
+title: "配置审批工作流"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本节介绍如何为您的 Cobo Portal Apps 配置审批工作流。
+
+在 Cobo Portal Apps 的上下文中，审批工作流由 App 上的特定操作组成，例如提交交易或启动付款，这将触发某些审批规则。当用户安装 App 时， App 将自动配置为 App Manifest 文件中定义的默认审批工作流。有关审批工作流如何影响 App  UI 的更多详细信息，请参阅 <a href="https://manuals.cobo.com/en/portal/portal-apps/workflow">查看和更新审批工作流</a>。
+
+您可以在 App Manifest 文件中的 `operation_approval_rules` 字段中配置 App 的默认审批工作流。以下是 `operation_approval_rules` 对象的示例。此对象在 [批量付款](https://manuals.cobo.com/en/apps/batch-payouts/introduction)  App 的Manifest 文件中定义，该文件配置了 App 的默认审批工作流。如果您在批量付款 App 中进行批量付款，并且付款金额大于 100 美元，您将触发一个审批工作流，其中批量付款需要一个团队管理员的批准。在管理员批准或拒绝之前，付款请求将处于待批准状态。
+
+<Note>要充分利用审批工作流，您的 App 必须向 WaaS 2.0 服务发送 `operation_id`。请联系 [help@cobo.com](mailto:help@cobo.com)。</Note>
+
+```json
+[
+    {
+        // 审批工作流的唯一 ID。
+        // 在 App 中必须是唯一的，且长度不得超过 64 个字符。
+        "operation_id": "25cbb115-82a1-4474-9993-538bb439ad33",
+        // 将在 UI 上显示的审批工作流的名称。
+        "operation_name": "批量付款",
+        // 审批工作流的详细信息。
+        "default_approval_policies": [
+            {
+                // 一旦满足条件就触发的审批操作。
+                "action": {
+                    // 操作类型。可能的值包括：
+                    // `Accept`：自动批准操作。
+                    // `Reject`：自动拒绝操作。
+                    // `Quorum`：需要至少一个特定用户角色批准。
+                    "type": "Quorum",
+                    // `Quorum` 操作的详细信息。
+                    // 此字段仅适用于 `type` 为 `Quorum` 时。
+                    "content": {
+                        // 需要批准的用户角色。必须为小写。
+                        "roles": ["管理员"],
+                        // 审批阈值。仅适用于 `type` 为 `PART_APPROVAL` 时。
+                        // 如果未达到阈值，操作将保持待批准状态，直到获得所需的审批。
+                        "threshold": 2,
+                        // 审批类型。可能的值包括：
+                        // `PART_APPROVAL`：需要部分用户角色批准。
+                        // `FULL_APPROVAL`：需要所有用户角色批准。
+                        "type": "PART_APPROVAL"
+                    }
+                },
+                // 触发审批操作的条件。
+                "conditions": [
+                    {
+                        // 字段值作为字段的键。
+                        "field": "amount",
+                        // 字段值类型。可能的值包括：
+                        // `INT`：整数
+                        // `FLOAT2`：浮点数（两位小数）
+                        "value_type": "INT",
+                        // 字段值。
+                        // 如果 `value_type` 为 `FLOAT2`，则设置值为 `100.00`。
+                        "value": "100",
+                        // 操作符类型。可能的值包括 `>`, `>=`, `=`, `<`, 和 `<=`。
+                        "operator": ">"
+                    }
+                ]
+            },
+            // 请保持此结构。
+            {
+                "action": {
+                    "type": "Accept",
+                    "content": ""
+                },
+                "conditions": null
+            }
+        ],
+        // 将在 UI 上显示的 `condition` 字段的文本。
+        // `descriptions` 字段必须包含 `conditions` 字段中的元素。
+        "descriptions": [
+            {
+                // 字段值必须与 `conditions` 中的 `field` 相同。
+                "field": "amount",
+                // 字段在 UI 上的描述。
+                "description": "总金额（美元）",
+                // 字段值必须与 `conditions` 中的 `value_type` 相同。
+                "value_type": "INT",
+                // 字段在 UI 上的显示名称。
+                "display_name": "总金额（美元）"
+            }
+        ]
+    },
+    {
+        // 创建更多的审批工作流，结构与上述相同。
+        ...
+    }
+]
+```
+
+<Info>有关用户角色的更多详细信息，请参阅 [用户角色](/v2_cn/guides/overview/permissions-and-scopes#user-roles)。</Info>
+
+以下是审批工作流字段在 UI 上的屏幕截图。
+
+<img src="/v2_cn/images/apps/workflow_settings.png" className="screenshot_full_screen" alt="编辑审批工作流对话框" />
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

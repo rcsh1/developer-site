@@ -1,0 +1,212 @@
+---
+title: "部署服务端签名人的服务器要求"
+sidebarTitle: "服务器要求"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本文概述了托管 TSS Node 的服务器的最低和推荐要求。
+
+TSS Node 当前支持三种部署环境：
+
+1. [支持 SGX 的服务器](#intel-sgx)
+2. [通用服务器](#general-server)
+3. [Apple MacBook](#apple-macbook)
+
+您可以根据业务需求选择部署环境。
+
+## Intel® SGX
+
+### Intel® SGX 简介
+
+Intel® 软件保护扩展（SGX）提供基于硬件的内存加密，可在内存中隔离特定的 App 代码和数据。SGX 允许客户端级代码分配私有内存区域，称为安全区，旨在防止在更高权限级别上运行的进程的攻击。它提供了对许多已知和活跃威胁的细粒度控制和保护。有关 Intel® SGX 的更多信息，请[点击这里](https://www.intel.com/content/www/us/en/developer/tools/software-guard-extensions/overview.html)。
+
+### SGX 准备好的服务器类型
+
+#### Azure 机密虚拟机
+
+配置 SGX 准备好的服务器所需的设置如下：
+
+- 选择资源组：Ubuntu 20.04 LTS 
+- 输入虚拟机名称（例如 CoboTSSNode）
+- 选择 Azure 区域
+- 选择镜像：Ubuntu 20.04 LTS - Gen2
+- 选择虚拟机大小（推荐）：Standard DC1ds v3（1 vcpu，8 GiB 内存）
+
+有关如何使用 Azure 门户部署 SGX 准备好的服务器的更多信息，请[点击这里](https://learn.microsoft.com/en-us/azure/confidential-computing/quick-create-portal)。
+
+#### 阿里云弹性计算服务
+
+在 g7t、c7t 或 r7t 实例（vSGX 实例）上构建加密计算环境所需的设置如下：
+
+- 版本：与 UEFI 兼容的 Ubuntu 20.04 64 位
+- 推荐内存：8 GB 及以上
+- 内存（加密数据）：4 GB 及以上
+- 硬盘：64 GB SSD
+
+有关如何使用阿里云弹性计算服务部署 SGX 准备好的服务器的更多信息，请[点击这里](https://www.alibabacloud.com/help/en/ecs/user-guide/build-an-sgx-encrypted-computing-environment)。
+
+#### SGX 准备好的物理服务器（本地）  
+
+请检查支持 SGX 的处理器：
+
+- 访问 [https://ark.intel.com/content/www/us/en/ark.html](https://ark.intel.com/content/www/us/en/ark.html)
+- 单击底部的 **Find products by feature**
+- 切换到处理器选项卡并在下拉菜单中选择 **Intel® Software Guard Extensions (Intel® SGX)**
+- 选择 **Yes with both Intel® SPS and Intel® ME**
+- 查看产品规格并配置以下设置：
+  - BIOS 设置： 
+   - 启用 Intel SGX（软件保护扩展）
+   - 启用 DCAP（FLC）
+   - 禁用超线程
+  - 操作系统：Ubuntu Server 20.04 LTS 或 22.04 LTS
+  - 推荐内存：8 GB RAM
+  - 推荐存储：128 GB SSD
+  - 最小内存（加密数据）：2 GB EPC
+
+### SGX 状态检查
+
+一旦设置了加密的 SGX 环境，您可以通过 CPUID 检查 SGX 状态。请执行以下 shell 命令。
+
+```bash
+sudo apt update
+sudo apt install cpuid
+cpuid -1 | grep SGX
+```
+
+如果输出显示三个 true 状态，如下所示，则 SGX 已成功启用。其他 false 状态可以忽略。
+
+```
+SGX: Software Guard Extensions supported = true
+SGX_LC: SGX launch config supported = true
+SGX capability (0x12/0):
+SGX1 supported = true
+```
+
+### **SGX 驱动程序安装**
+
+SGX 驱动程序应该已经默认安装。 在 TSS Node 初始化期间，您将被提示批准自动安装 SGX 驱动程序（Intel DCAP 1.41）。要验证安装，请执行以下命令。
+
+```bash
+ls /dev/sgx*
+```
+
+如果显示两个或更多节点，则确认 SGX 驱动程序已成功安装。
+
+```
+/dev/sgx_enclave /dev/sgx_provision
+```
+
+有关手动安装 SGX 驱动程序的更多信息，请参阅以下内容。
+
+默认情况下，SGX 驱动程序集成到 Linux 内核中，从版本 5.11 开始。建议使用 Linux 5.11 或更高版本。
+
+- Ubuntu 22.04 LTS 服务器 + 默认内核
+- Ubuntu 20.04 LTS 服务器 + HWE [滚动更新模型](https://wiki.ubuntu.com/Kernel/LTSEnablementStack)
+
+或者，您可以安装由英特尔提供的 DCAP 驱动程序和 OOT（旧版）。请注意，TSS Node 仅支持 DCAP 驱动程序。您可以按照以下步骤手动安装 Ubuntu 20.04 DCAP 1.41 驱动程序。有关其他版本，请参阅上面的指南。
+
+1. 更新 APT 包资源列表。
+
+```bash
+sudo apt update
+```
+
+2. 安装依赖项。
+
+```bash
+sudo apt install build-essential ocaml automake autoconf libtool \
+wget python libssl-dev dkms -y
+```
+
+3. 下载英特尔 SGX DCAP 驱动程序。
+
+```bash
+wget https://download.01.org/intel-sgx/latest/linux-latest/distro/ubuntu20.04-server/sgx_linux_x64_driver_1.41.bin
+```
+
+4. 修改英特尔 SGX DCAP 驱动程序安装包的权限。
+
+```bash
+chmod a+x sgx_linux_x64_driver_1.41.bin
+```
+
+5. 安装英特尔 SGX DCAP 驱动程序。
+
+```bash
+sudo ./sgx_linux_x64_driver_1.41.bin
+```
+
+6. 检查安装是否成功。
+
+```bash
+$ ls /dev/sgx*
+/dev/sgx_enclave /dev/sgx_provision
+```
+
+### **Docker 引擎安装**
+
+Docker 引擎是运行 TSS Node 所必需的。 在 TSS Node 初始化期间，您将被提示批准自动安装 Docker 引擎。 如果您的团队遵循特定的最佳实践，则建议手动安装和配置 Docker 引擎。有关如何在 Ubuntu 上手动安装 Docker 引擎的更多信息，请[点击这里](https://docs.docker.com/engine/install/ubuntu/)。
+
+## 通用服务器
+
+### **通用服务器简介**
+
+通用服务器是满足 TSS Node 最低配置要求的任何服务器，例如弹性计算或由您管理的物理服务器。虽然通用服务器可以托管 TSS Node ，但它缺乏 SGX 准备好的服务器固有的独特安全功能。
+
+### **最低要求**
+
+- CPU：AMD64 或 ARM64，2 个核心，时钟速度 2.5 GHz
+- 内存：4 GB
+- 硬盘：64 GB SSD
+- 操作系统：Ubuntu Server 20.04 LTS 或更高版本
+
+### **推荐设置** 
+
+- CPU：AMD64 或 ARM64，4 个核心，时钟速度 3.0 GHz 
+- 内存：8 GB
+- 硬盘：128 GB SSD
+- 操作系统：Ubuntu Server 20.04 LTS 或更高版本
+
+### **Docker 引擎安装**
+
+Docker 引擎是运行 TSS Node 所必需的。 在 TSS Node 初始化期间，您将被提示批准自动安装 Docker 引擎。 如果您的团队遵循特定的最佳实践，则建议手动安装和配置 Docker 引擎。有关如何在 Ubuntu 上手动安装 Docker 引擎的更多信息，请[点击这里](https://docs.docker.com/engine/install/ubuntu/)。
+
+## Apple MacBook
+
+请准备一台新 Apple MacBook，升级操作系统到最新的 [macOS 版本](https://support.apple.com/en-sg/109033)，并执行必要的安全配置。
+
+### **注意事项**
+
+- 避免使用未知的便携式存储设备。 
+- 防止计算机与 iCloud 同步。 
+- 避免在此计算机上登录 Apple ID。
+
+### **安全配置**
+
+- 禁用蓝牙。
+- 关闭 AirDrop。
+- 激活 FileVault 以进行磁盘加密。
+- 启用防火墙。
+- 使用密码管理器（例如 1Password）建立复杂的管理员密码。
+- 设置锁屏。
+- 禁用 Handoff。
+
+### **高级配置**
+
+如果使用第三方管理系统（例如 Jamf），请考虑配置高级安全设置：
+
+- 确保计算机密码至少为 12 个字符，包括至少一个字母、一个数字和一个特殊字符。
+- 禁止连续使用相同密码三次。
+- 设置密码过期期限为 90 天，并在提示时更改密码。
+- 禁用 iCloud、Apple ID 和家庭共享。
+- 关闭 App Store。
+- 禁用互联网帐户和本地邮件客户端登录。
+- 配置隐私设置以防止自动将数据传输到 Apple。
+- 关闭所有共享服务（例如 Internet 共享、蓝牙共享、文件共享、屏幕共享）。
+- 关闭所有远程软件。
+
+### **Docker 引擎安装**
+
+确保安装 Docker 引擎以运行 TSS Node。按照 Docker 官方网站的[说明](https://docs.docker.com/desktop/install/mac-install/)完成 Docker Desktop for Apple MacBook 的安装。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

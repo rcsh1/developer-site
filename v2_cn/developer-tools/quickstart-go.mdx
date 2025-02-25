@@ -1,0 +1,188 @@
+---
+title: "Go SDK 快速入门"
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+## 概述
+
+本指南介绍如何开始使用 Cobo WaaS 2.0 Go SDK，它允许您使用 Go 编程语言将 WaaS 服务集成到您的现有 App 中。
+
+要了解使用 WaaS API 所需的初始设置步骤，请参阅[开始使用 Wallet-as-a-Service (WaaS) 2.0](/v2_cn/guides/get-started/get-started-with-waas)。
+
+您可以访问 [GitHub](https://github.com/CoboGlobal/cobo-waas2-go-sdk/) 查看 SDK 的源代码。
+
+## 前提条件
+
+- 您已安装 Go 1.18 或更新版本。
+- 按照[快速入门指南](https://manuals.cobo.com/en/portal/quick-start-guide)中的说明设置您的 Cobo 账户并创建您的团队。如果已经设置了团队，请让您的团队管理员邀请您加入团队。
+- 您已[生成 API Key 和 API Secret](/v2_cn/guides/overview/cobo-auth#generate-an-api-key-and-an-api-secret)，并在 Cobo Portal 上[注册了 API Key](https://manuals.cobo.com/en/portal/developer-console/create-api-key)。
+
+## 安装 SDK
+
+1. 如果您还没有，请创建一个 Go 项目。
+2. 在您项目的 `go.mod` 文件中，添加以下行：
+
+    ```go
+    require github.com/CoboGlobal/cobo-waas2-go-sdk {VERSION}
+    ```
+
+    <Note>将 \{VERSION\} 替换为最新版本号，例如 `v1.2.0`。从 [GitHub 仓库](https://github.com/CoboGlobal/cobo-waas2-go-sdk/tags)获取最新版本号。</Note>
+
+3. 在终端或您的 IDE 中运行 `go mod tidy` 命令以安装依赖项。
+4. 在您的 `main.go` 文件中，按如下方式导入 WaaS SDK：
+
+    ```go
+    import (
+        ...
+        coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+        ...
+    )
+    ```
+
+## 配置 API Key 和 HTTP Host
+
+在您的 `main.go` 文件的主函数中，通过选择环境来配置 HTTP Host并提供您的 API Secret。
+以下代码片段显示了开发环境的配置。
+
+```go
+// 选择您使用的环境并注释掉另一行代码
+ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
+ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+    // 将 `<YOUR_API_SECRET>` 替换为您的 API Secret。
+    PrivateKey: []byte("<YOUR_API_SECRET>"),
+})
+```
+
+## 示例代码
+
+API 操作级别的文档和示例代码请参照 WaaS SDK GitHub 仓库内的 [docs](https://github.com/CoboGlobal/cobo-waas2-go-api/tree/master/docs) 文件夹。
+
+### 列出支持的链
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+)
+
+func main() {
+
+	// 指定钱包类型为全托管钱包。
+	walletType := coboWaas2.WalletType("Custodial")
+	// walletType, err := coboWaas2.NewWalletTypeFromValue("Custodial")
+
+	// 指定钱包子类型为资产钱包。
+	walletSubtype := coboWaas2.WalletSubtype("Asset")
+	// walletSubType, err := coboWaas2.NewWalletSubtypeFromValue("Asset")
+
+	// 使用分页参数如果需要
+	limit := int32(10)
+	before := ""
+	after := ""
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// 选择您使用的环境并注释掉另一行代码。
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		// 将 `<YOUR_API_SECRET>` 替换为您的 API Secret。
+		PrivateKey: []byte("<YOUR_API_SECRET>"),
+	})
+	// 调用列出支持的链操作。
+	req := apiClient.WalletsAPI.ListSupportedChains(ctx).WalletType(walletType).WalletSubtype(walletSubtype)
+	if limit > 0 {
+		req = req.Limit(limit)
+	}
+	if before != "" {
+		req = req.Before(before)
+	}
+	if after != "" {
+		req = req.After(after)
+	}
+	resp, r, err := req.Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.ListSupportedChains``: %v\n", err)
+		if apiErr, ok := err.(*coboWaas2.GenericOpenAPIError); ok {
+			fmt.Fprintf(os.Stderr, "Error response: %s\n", string(apiErr.Body()))
+		}
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// 处理来自 `ListSupportedChains` 的响应。
+	respJson, _ := json.MarshalIndent(resp, "", " ")
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.ListSupportedChains`: \n%s", string(respJson))
+}
+```
+
+### 创建钱包
+
+```go
+package main
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"os"
+
+	coboWaas2 "github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2"
+	"github.com/CoboGlobal/cobo-waas2-go-sdk/cobo_waas2/crypto"
+)
+
+func main() {
+	// 指定要创建的钱包类型为全托管钱包。
+	walletType, err := coboWaas2.NewWalletTypeFromValue("Custodial")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when new `WalletType``: %v\n", err)
+		return
+	}
+	// 指定要创建的钱包子类型为资产钱包。
+	walletSubType, err := coboWaas2.NewWalletSubtypeFromValue("Asset")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when new `WalletSubType``: %v\n", err)
+		return
+	}
+	createWalletParams := coboWaas2.CreateWalletParams{
+		CreateCustodialWalletParams: coboWaas2.NewCreateCustodialWalletParams(
+			// 指定要创建的钱包名称。
+			"我的 WaaS 2.0 钱包",
+			*walletType,
+			*walletSubType,
+		)} 
+
+	configuration := coboWaas2.NewConfiguration()
+	apiClient := coboWaas2.NewAPIClient(configuration)
+	ctx := context.Background()
+	// 选择您使用的环境并注释掉另一行代码。
+	ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.DevEnv)
+	// ctx = context.WithValue(ctx, coboWaas2.ContextEnv, coboWaas2.ProdEnv)
+	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
+		// 将 `<YOUR_API_SECRET>` 替换为您的 API Secret。
+		PrivateKey: []byte("<YOUR_API_SECRET>"),
+	})
+	// 调用创建钱包操作。
+	resp, r, err := apiClient.WalletsAPI.CreateWallet(ctx).CreateWalletParams(createWalletParams).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.CreateWallet``: %v\n", err)
+		if apiErr, ok := err.(*coboWaas2.GenericOpenAPIError); ok {
+			fmt.Fprintf(os.Stderr, "Error response: %s\n", string(apiErr.Body()))
+		}
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+		return
+	}
+	// 处理来自 `CreateWallet` 的响应。
+	respJson, _ := json.MarshalIndent(resp.GetActualInstance(), "", " ")
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.CreateWallet`: \n%s", string(respJson))
+}
+```
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
