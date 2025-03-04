@@ -2,9 +2,9 @@ openapi: 3.0.3
 info:
   title: Cobo Wallet as a Service 2.0
   description: |
-    The Cobo Wallet-as-a-Service (WaaS) 2.0 API is the latest version of Cobo’s WaaS API offering. It enables you to access Cobo’s full suite of crypto wallet technologies with powerful and flexible access controls. By encapsulating complex security protocols and streamlining blockchain interactions, this API allows you to concentrate on your core business activities without worrying about the safety of your assets. The WaaS 2.0 API presents the following key features:
+    The Cobo Wallet-as-a-Service (WaaS) 2.0 API is the latest version of Cobo's WaaS API offering. It enables you to access Cobo's full suite of crypto wallet technologies with powerful and flexible access controls. By encapsulating complex security protocols and streamlining blockchain interactions, this API allows you to concentrate on your core business activities without worrying about the safety of your assets. The WaaS 2.0 API presents the following key features:
 
-    - A unified API for Cobo’s [all four wallet types](https://manuals.cobo.com/en/portal/introduction#an-all-in-one-wallet-platform)
+    - A unified API for Cobo's [all four wallet types](https://manuals.cobo.com/en/portal/introduction#an-all-in-one-wallet-platform)
     - Support for 80+ chains and 3000+ tokens
     - A comprehensive selection of webhook events
     - Flexible usage models for MPC Wallets, including [Organization-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction) and [User-Controlled Wallets](https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction)
@@ -1817,12 +1817,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/listStakingPoolsResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   '/stakings/pools/{pool_id}':
     get:
       tags:
@@ -1839,14 +1837,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/poolDetailsResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
-        '404':
-          $ref: '#/components/responses/notFoundError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings/estimate_fee:
     post:
       tags:
@@ -1870,8 +1864,10 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/estimateStakingFeeResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings/estimate_fee_v2:
     post:
       tags:
@@ -1890,8 +1886,10 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/estimateStakingFeeV2Response'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings/activities/stake:
     post:
       tags:
@@ -1912,12 +1910,10 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/createActivityResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings:
     get:
       tags:
@@ -1957,12 +1953,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/listStakingsResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   '/stakings/{staking_id}':
     get:
       tags:
@@ -1979,14 +1973,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/stakingsDetailsResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
-        '404':
-          $ref: '#/components/responses/notFoundError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings/activities/unstake:
     post:
       tags:
@@ -2007,12 +1997,10 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/createActivityResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings/activities/withdraw:
     post:
       tags:
@@ -2033,12 +2021,10 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/createActivityResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings/activities/claim:
     post:
       tags:
@@ -2059,12 +2045,10 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/createActivityResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /stakings/activities:
     get:
       tags:
@@ -2091,12 +2075,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/listActivitiesResponse'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   '/stakings/activities/{activity_id}':
     get:
       tags:
@@ -2117,14 +2099,222 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Activity'
-        '400':
+        4XX:
           $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
-        '404':
-          $ref: '#/components/responses/notFoundError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /stakings/protocols/babylon/stakings/registrations:
+    post:
+      tags:
+        - Stakings
+      summary: Register for Babylon Phase-2
+      description: |
+        This operation initiates a Babylon Phase-2 registration request. 
+
+        Before calling this operation, please ensure the following:
+        - The staking position is eligible for the Babylon Phase-2 and has not been registered. You can call the [List staking positions eligible for Babylon Phase-2](https://www.cobo.com/developers/v2/api-references/stakings/list-staking-positions-eligible-for-babylon-phase-2) operation to check the registration status.
+        - The Babylon address has enough asset to pay for the registration fee.
+        - The Babylon address must be a Babylon address in an MPC Wallet in your organization.
+
+        The system first checks whether the provided address is eligible for Phase-2. If eligible, it creates a unique registration ID, which can be used to track the status. 
+
+        The registration is processed asynchronously and may take some time to complete. It is recommended that you regularly call the [Get Babylon Phase-2 registration details](https://www.cobo.com/developers/v2/api-references/stakings/get-babylon-phase-2-registration-details) operation to check the status and handle registration accordingly.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: create_babylon_staking_registration
+      requestBody:
+        $ref: '#/components/requestBodies/createBabylonStakingRegistrationBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createBabylonStakingRegistrationResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    get:
+      tags:
+        - Stakings
+      summary: List Babylon Phase-2 registrations
+      description: |
+        This operation lists all Babylon Phase-2 registration records within your organization. You can filter the results by request status and staking position ID.
+
+        The registration is processed asynchronously and may take some time to complete. It is recommended to implement automatic monitoring and handle the registration on time.
+
+        If the registration request fails, please check the error message and resolve the issues before resubmitting the registration request.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: list_babylon_staking_registrations
+      parameters:
+        - $ref: '#/components/parameters/babylonRegistrationRequestStatusOptionalParam'
+        - $ref: '#/components/parameters/stakingIdOptionalParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listBabylonStakingRegistrationsResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/stakings/protocols/babylon/stakings/registrations/{registration_id}':
+    get:
+      tags:
+        - Stakings
+      summary: Get Babylon Phase-2 registration details
+      description: |
+        This operation returns the details of a specific Babylon Phase-2 registration, including registration status, Bitcoin (BTC) and Babylon addresses, staked amount, and error messages (if any).
+
+        Please note that registration is an asynchronous process and may take several minutes to complete. It is recommended to call this operation at regular intervals to track the status.
+
+        If the registration request fails, please check the error message and resolve the issues before resubmitting the registration request.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: get_babylon_staking_registration_by_id
+      parameters:
+        - $ref: '#/components/parameters/babylonRegistrationIdRequiredParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getBabylonStakingRegistrationDetailsResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /stakings/protocols/babylon/stakings/eligibles:
+    get:
+      tags:
+        - Stakings
+      summary: List staking positions eligible for Babylon Phase-2
+      description: |
+        This operation lists all staking positions that are eligible for Babylon Phase-2. If an eligible staking position's status is `Unregistered`, you can initiate a registration for it. You can filter the results by registration status.
+
+        You can use this operation to:
+        - Check which staking positions can be registered
+        - Get staking details before initiating registration
+        - Monitor available positions for registration
+
+        As registration is an asynchronous process and might take some time to complete, it is recommended that you regularly call this operation to check staking position eligibility and register eligible positions on time.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: list_babylon_eligible_stakings
+      parameters:
+        - $ref: '#/components/parameters/babylonRegistrationStatusOptionalParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listBabylonStakingEligibleResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /stakings/protocols/babylon/airdrops/registrations:
+    post:
+      tags:
+        - Stakings
+      summary: Register for Babylon airdrop
+      description: |
+        This operation initiates a Babylon airdrop registration request. 
+
+        Before calling this operation, please ensure the following:
+        - The Bitcoin (BTC) address is eligible for the Babylon airdrop and has not been registered. You can call the [List wallets eligible for Babylon airdrop](https://www.cobo.com/developers/v2/api-references/stakings/list-wallets-eligible-for-babylon-airdrop) operation to check the registration status.
+        - The Babylon address has enough asset to pay for the registration fee.
+        - The Babylon address must be a Babylon address in an MPC Wallet in your organization.
+
+        The system first checks whether the provided address is eligible for the Babylon airdrop. If eligible, it creates a unique registration ID, which can be used to track the status. 
+
+        The registration is processed asynchronously and may take some time to complete. It is recommended that you regularly call the [Get Babylon airdrop registration details](https://www.cobo.com/developers/v2/api-references/stakings/get-babylon-airdrop-registration-details) operation to check the status and handle registration accordingly.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: create_babylon_airdrop_registration
+      requestBody:
+        $ref: '#/components/requestBodies/createBabylonAirdropRegistrationBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createBabylonAirdropRegistrationResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    get:
+      tags:
+        - Stakings
+      summary: List Babylon airdrop registrations
+      description: |
+        This operation lists all Babylon airdrop registration records within your organization. You can filter the results by request status and Bitcoin (BTC) address.
+
+        The registration is processed asynchronously and may take some time to complete. It is recommended to implement automatic monitoring and handle the registration on time.
+
+        If the registration request fails, please check the error message and resolve the issues before resubmitting the registration request.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: list_babylon_airdrop_registrations
+      parameters:
+        - $ref: '#/components/parameters/babylonRegistrationRequestStatusOptionalParam'
+        - $ref: '#/components/parameters/btcAddressOptionalParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listBabylonAirdropRegistrationsResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/stakings/protocols/babylon/airdrops/registrations/{registration_id}':
+    get:
+      tags:
+        - Stakings
+      summary: Get Babylon airdrop registration details
+      description: |
+        This operation returns the details of a specific Babylon airdrop registration, including registration status, Bitcoin (BTC) and Babylon addresses, airdrop amount, and error messages (if any).
+
+        Please note that registration is an asynchronous process and may take several minutes to complete. It is recommended to call this operation at regular intervals to track the status.
+
+        If the registration request fails, please check the error message and resolve the issues before resubmitting the registration request.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: get_babylon_airdrop_registration_by_id
+      parameters:
+        - $ref: '#/components/parameters/babylonRegistrationIdRequiredParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getBabylonAirdropRegistrationDetailsResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /stakings/protocols/babylon/airdrops/eligibles:
+    get:
+      tags:
+        - Stakings
+      summary: List wallets eligible for Babylon airdrop
+      description: |
+        This operation lists all wallets that are eligible for the Babylon airdrop. If an eligible wallet's status is `Unregistered`, you can initiate an airdrop registration for it. You can filter the results by airdrop registration status.
+
+        You can use this operation to:
+        - Check which wallets are eligible for airdrop registrations
+        - Estimate airdrop amounts before claiming
+        - Monitor available airdrop
+
+        As registration is an asynchronous process and might take some time to complete, it is recommended that you regularly call this operation to check wallet eligibility and register eligible wallets on time.
+
+        For more information, refer to [Babylon's official doc](https://github.com/babylonlabs-io/babylon/tree/main/docs).
+      operationId: list_babylon_eligible_airdrops
+      parameters:
+        - $ref: '#/components/parameters/babylonRegistrationStatusOptionalParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listBabylonAirdropEligibleResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /developers/api_key_info:
     get:
       tags:
@@ -2426,6 +2616,128 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/submitTravelRuleInfoResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /swaps/activities:
+    get:
+      tags:
+        - Swaps
+      summary: List Swap Activities
+      description: |
+        This operation retrieves a list of swap activities.
+      operationId: list_swap_activities
+      parameters:
+        - $ref: '#/components/parameters/swapActivityStatusOptionalParam'
+        - $ref: '#/components/parameters/swapActivityMinUpdatedTimestampOptionalParam'
+        - $ref: '#/components/parameters/swapActivityMaxUpdatedTimestampOptionalParam'
+        - $ref: '#/components/parameters/initiatorOptionalParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/directionParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listSwapActivitiesResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/swaps/activities/{activity_id}':
+    get:
+      tags:
+        - Swaps
+      summary: Get Swap Activity Details
+      description: |
+        This operation retrieves the details of a swap activity.
+      operationId: get_swap_activity
+      parameters:
+        - $ref: '#/components/parameters/activityIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getSwapActivityResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /swaps/enabled_pairs:
+    get:
+      tags:
+        - Swaps
+      summary: List Supported Token Pairs
+      description: |
+        This operation retrieves all supported token pairs for swaps in a specified wallet.
+      operationId: list_enable_token_pairs
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listSwapTokenPairsResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /swaps/quote:
+    get:
+      tags:
+        - Swaps
+      summary: Get Current Swap Rate
+      description: |
+        This operation retrieves the current market exchange rate and estimated amount for swapping between two tokens.
+        Either pay_amount or receive_amount must be provided.
+      operationId: get_swap_quote
+      parameters:
+        - $ref: '#/components/parameters/requiredWalletIdParam'
+        - $ref: '#/components/parameters/payTokenIdRequiredParam'
+        - $ref: '#/components/parameters/receiveTokenIdRequiredParam'
+        - $ref: '#/components/parameters/payAmountOptionalParam'
+        - $ref: '#/components/parameters/receiveAmountOptionalParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getSwapQuoteResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    post:
+      tags:
+        - Swaps
+      summary: Create Swap Quote
+      description: |
+        This operation retrieves a quote for swapping between two tokens. Either pay_amount or receive_amount must be provided.
+      operationId: create_swap_quote
+      security:
+        - OAuth2:
+            - transaction.withdraw
+      requestBody:
+        $ref: '#/components/requestBodies/createSwapQuoteBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createSwapQuoteResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /swaps/swap:
+    post:
+      tags:
+        - Swaps
+      summary: Create Swap Activity
+      description: |
+        This operation to create a swap activity.
+      operationId: create_swap_activity
+      security:
+        - OAuth2:
+            - transaction.withdraw
+      requestBody:
+        $ref: '#/components/requestBodies/createSwapActivityBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/getSwapActivityResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -4255,7 +4567,7 @@ components:
               EVM_Contract: '#/components/schemas/TransactionEvmContractDestination'
               EVM_EIP_191_Signature: '#/components/schemas/TransactionMessageSignEIP191Destination'
               EVM_EIP_712_Signature: '#/components/schemas/TransactionMessageSignEIP712Destination'
-              EVM_Raw_Message_Signature: '#/components/schemas/TransactionRawMessageSignDestination'
+              Raw_Message_Signature: '#/components/schemas/TransactionRawMessageSignDestination'
               DepositToAddress: '#/components/schemas/TransactionDepositToAddressDestination'
               DepositToWallet: '#/components/schemas/TransactionDepositToWalletDestination'
         result:
@@ -4586,6 +4898,8 @@ components:
     MpcSigningGroup:
       type: object
       description: The information about the Signing Group of an MPC Wallet.
+      required:
+        - used_key_share_holder_group_id
       properties:
         used_key_share_holder_group_id:
           type: string
@@ -5198,6 +5512,20 @@ components:
           type: string
           description: The unsigned raw transaction data.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
+        utxo_change:
+          $ref: '#/components/schemas/TransactionUtxoChange'
+    TransactionUtxoChange:
+      type: object
+      description: The UTXO change output information.
+      properties:
+        address:
+          type: string
+          description: The receiving address of the UTXO change output.
+          example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+        value:
+          type: string
+          description: The amount of the UTXO change output.
+          example: '0.5'
     TransactionSelectedUtxo:
       type: object
       description: The selected UTXO information.
@@ -5551,6 +5879,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TransactionUtxo'
+        mpc_used_key_share_holder_group:
+          $ref: '#/components/schemas/MpcSigningGroup'
     SafeTransferSource:
       type: object
       description: |
@@ -5930,6 +6260,10 @@ components:
       title: Contract Call from MPC Wallet
       allOf:
         - $ref: '#/components/schemas/BaseContractCallSource'
+        - type: object
+          properties:
+            mpc_used_key_share_holder_group:
+              $ref: '#/components/schemas/MpcSigningGroup'
     SafeContractCallSource:
       title: Contract Call from Smart Contract Wallet
       description: |
@@ -6062,6 +6396,8 @@ components:
           type: string
           description: The wallet address.
           example: 19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku
+        mpc_used_key_share_holder_group:
+          $ref: '#/components/schemas/MpcSigningGroup'
     MessageSignSourceType:
       type: string
       enum:
@@ -7392,8 +7728,19 @@ components:
         - ETHBeacon
         - CoreBTC
         - SkyFarm
+        - BitHive
+        - BERABeacon
+        - BeraChainBGT
       example: Babylon
-      description: The type of the staking pool.
+      description: |
+        The type of the staking pool. Possible values are:
+        - `Babylon`: Babylon staking pool
+        - `ETHBeacon`: Ethereum Beacon Chain staking pool
+        - `CoreBTC`: Core BTC staking pool
+        - `SkyFarm`: SKY farm staking pool
+        - `BitHive`: BitHive staking pool
+        - `BERABeacon`: BERA Beacon Chain staking pool
+        - `BeraChainBGT`: Bera Chain BGT staking pool
     StakingPoolId:
       type: string
       enum:
@@ -7404,8 +7751,14 @@ components:
         - core_btc
         - core_xtn
         - sky_farm_eth_usdc
+        - bithive_signet
+        - bithive
+        - beacon_bera
+        - beacon_bera_testnet
+        - berachain_bgt
+        - berachain_bgt_testnet
       example: babylon_btc_signet
-      description: 'The ID of the staking pool. A staking pool is a pairing of a staking protocol and a specific type of token. Currently, only `babylon_btc_signet` and `babylon_btc` are supported.'
+      description: 'The ID of the staking pool. A staking pool is a pairing of a staking protocol and a specific type of token. Currently, `berachain_bgt` and `erachain_bgt_testnet` are not supported.'
     BaseEstimateStakingFee:
       type: object
       required:
@@ -7440,6 +7793,159 @@ components:
               description: 'The ID of the staking position. You can retrieve a list of staking positions by calling [List staking positions](https://www.cobo.com/developers/v2/api-references/stakings/list-staking-positions).'
             fee:
               $ref: '#/components/schemas/TransactionRequestFee'
+    BabylonRegistrationStatus:
+      type: string
+      enum:
+        - Registered
+        - Unregistered
+        - Registering
+      example: Registered
+      description: |
+        The status of Babylon airdrop or staking registration. Possible values are:
+        - `Registered`: Registered for Babylon airdrop or staking.
+        - `Unregistered`: Not registered for any Babylon airdrop or staking.
+        - `Registering`: Requesting to register for Babylon airdrop or staking.
+    BabylonRegistrationRequestStatus:
+      type: string
+      enum:
+        - Processing
+        - Completed
+        - Failed
+      example: Processing
+      description: |
+        The status of a Babylon airdrop or Babylon Phase-2 registration request. Possible values include:
+        - `Processing`: The registration request is being processed.
+        - `Completed`: The registration has been completed.
+        - `Failed`: The registration failed.
+    BabylonEligibleAirdrop:
+      type: object
+      description: The babylon airdrop eligibility.
+      properties:
+        btc_address:
+          $ref: '#/components/schemas/StakingSource'
+          description: The Bitcoin (BTC) address used for staking.
+        babylon_address:
+          $ref: '#/components/schemas/StakingSource'
+          description: The Babylon address used to receive the airdrop. This property value is `null` if the BTC address is not registered for the Babylon airdrop.
+        babylon_points:
+          type: string
+          example: '1000.50'
+          description: The current Babylon points balance accumulated by the BTC address.
+        airdrop_amount:
+          type: string
+          example: '500.25'
+          description: The estimated airdrop amount based on the current Babylon points balance.
+        status:
+          $ref: '#/components/schemas/BabylonRegistrationStatus'
+        pop:
+          $ref: '#/components/schemas/BabylonAirdropPop'
+    BabylonAirdropRegistration:
+      type: object
+      description: The details of a Babylon airdrop registration.
+      properties:
+        id:
+          type: string
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: 'The registration ID, a unique identifier for tracking the airdrop registration.'
+        status:
+          $ref: '#/components/schemas/BabylonRegistrationRequestStatus'
+        btc_address:
+          $ref: '#/components/schemas/StakingSource'
+          description: The Bitcoin (BTC) address used for staking.
+        babylon_address:
+          $ref: '#/components/schemas/StakingSource'
+          description: The Babylon address used for receiving the Babylon airdrop.
+        airdrop_amount:
+          type: string
+          example: '500.25'
+          description: The actual airdrop amount allocated for this BTC address.
+        error_message:
+          type: string
+          example: User rejected
+          description: The detailed error message if the registration failed.
+        created_timestamp:
+          type: integer
+          format: int64
+          example: 1677587333000
+          description: 'The time when the registration was created, in Unix timestamp format, measured in milliseconds.'
+        updated_timestamp:
+          type: integer
+          format: int64
+          example: 1677587400000
+          description: 'The time when the registration was updated, in Unix timestamp format, measured in milliseconds.'
+    BabylonStakingRegistration:
+      type: object
+      description: The details of aBabylon Phase-2 registration.
+      properties:
+        id:
+          type: string
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: 'The registration ID, a unique identifier for tracking the staking registration.'
+        staking_id:
+          type: string
+          example: 3f2840ce-44eb-450b-aa81-d3f84b772efb
+          description: The ID of the Phase-1 BTC staking position.
+        babylon_address:
+          $ref: '#/components/schemas/StakingSource'
+          description: The Babylon address used for receive the BABY rewards.
+        btc_address:
+          $ref: '#/components/schemas/StakingSource'
+          description: The BTC address associated with the staking position.
+        status:
+          $ref: '#/components/schemas/BabylonRegistrationRequestStatus'
+        staked_amount:
+          type: string
+          example: '500.25'
+          description: The amount of BTC that is staked.
+        error_message:
+          type: string
+          example: User rejected
+          description: The error message if the Babylon Phase-2 registration request failed.
+        created_timestamp:
+          type: integer
+          format: int64
+          example: 1677587333000
+          description: 'The time when the registration was created, in Unix timestamp format, measured in milliseconds.'
+        updated_timestamp:
+          type: integer
+          format: int64
+          example: 1677587400000
+          description: 'The time when the registration was updated, in Unix timestamp format, measured in milliseconds.'
+    BabylonAirdropPop:
+      type: object
+      required:
+        - baby_address
+        - btc_address
+        - btc_public_key
+        - btc_sign_baby
+        - baby_sign_btc
+        - baby_public_key
+      description: Proof of Participation (PoP) details used for airdrop registration.
+      properties:
+        baby_address:
+          type: string
+          example: bbn1xjz8fs9vkmefdqaxan5kv2d09vmwzru7jhy424
+          description: The Babylon (BABY) address used to receive BABY rewards.
+        btc_address:
+          type: string
+          example: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+          description: The Bitcoin (BTC) address used for staking.
+        btc_public_key:
+          type: string
+          example: 79f71003589158b2579345540b08bbc74974c49dd5e0782e31d0de674540d513
+          description: 'The public key corresponding to the `btc_address`, represented in hex format.'
+        btc_sign_baby:
+          type: string
+          example: AkcwRAIgcrI2IdD2JSFVIeQmtRA3wFjjiy+qEvqbX57rn6xvWWECIDis7vHSJeR8X91uMQReG0pPQFFLpeM0ga4BW+Tt2V54ASEDefcQA1iRWLJXk0VUCwi7x0l0xJ3V4HguMdDeZ0VA1RM=
+          description: A BTC signature that signs the `baby_address`.
+        baby_sign_btc:
+          type: string
+          example: FnYTm9ZbhJZY202R9YBkjGEJqeJ/n5McZBpGH38P2pt0YRcjwOh8XgoeVQTU9So7/RHVHHdKNB09DVmtQJ7xtw==
+          description: A BABY signature that signs the `btc_address`.
+        baby_public_key:
+          type: string
+          example: Asezdqkvh+kLbuD75DirSwi/QFbJjFe2SquiivMaPS65
+          description: 'The public key corresponding to the `baby_address`, represented in base64 format.'
     AddressBook:
       type: object
       description: The information of an address book entry.
@@ -8008,23 +8514,23 @@ components:
         pay_token_id:
           type: string
           description: The token symbol to swap from.
-          example: ETH
+          example: BTC
         receive_token_id:
           type: string
           description: The token symbol to swap to.
-          example: USDT
+          example: ETH_WBTC
         pay_amount:
           type: string
           description: The amount of tokens to bridge.
-          example: '1.5'
+          example: '100'
         receive_amount:
           type: string
           description: The amount of tokens to receive.
-          example: '2000'
+          example: '100'
         fee_amount:
           type: string
           description: The amount of fee.
-          example: '0.005'
+          example: '0.3'
         initiator:
           type: string
           nullable: true
@@ -8046,25 +8552,51 @@ components:
         pay_token_id:
           type: string
           description: The source token symbol.
-          example: ETH
+          example: BTC
         receive_token_id:
           type: string
           description: The target token symbol.
-          example: USDT
-    SwapSummary:
+          example: ETH_WBTC
+    SwapQuote:
       type: object
       required:
-        - total_usd_value
-        - activity_count
+        - pay_amount
+        - receive_amount
+        - fee_amount
+        - quote_expired_timestamp
       properties:
-        total_usd_value:
+        pay_amount:
           type: string
-          description: 'The total USD value of the swap activities, represented as a string.'
-          example: '12345.67'
-        activity_count:
+          description: The amount of tokens to pay.
+          example: '100'
+        receive_amount:
+          type: string
+          description: The amount of tokens to receive.
+          example: '100'
+        fee_amount:
+          type: string
+          description: The amount of tokens to pay for fee.
+          example: '0.3'
+        min_pay_amount:
+          type: string
+          description: The minimum amount of tokens to pay.
+          example: '0'
+        max_pay_amount:
+          type: string
+          description: The maximum amount of tokens to pay.
+          example: '10000'
+        min_receive_amount:
+          type: string
+          description: The minimum amount of tokens to receive.
+          example: '0'
+        max_receive_amount:
+          type: string
+          description: The maximum amount of tokens to receive.
+          example: '10000'
+        quote_expired_timestamp:
           type: integer
-          description: The total number of swap activities.
-          example: 100
+          description: 'The time when the quote will expire, in Unix timestamp format, measured in milliseconds.'
+          example: 1677587393000
     GuardPubkeyStatus:
       type: string
       enum:
@@ -8862,7 +9394,7 @@ components:
       name: staking_id
       in: query
       required: false
-      description: The position ID.
+      description: The ID of the Phase-1 BTC staking position.
       schema:
         type: string
       example: f47ac10b-58cc-4372-a567-0e02b2c3d479
@@ -8906,6 +9438,54 @@ components:
         type: integer
         format: int64
       example: 1635744000000
+    babylonRegistrationStatusOptionalParam:
+      name: status
+      in: query
+      description: |
+        The status of Babylon airdrop or Phase-2 registration. Possible values are:
+        - `Registered`: Registered for Babylon airdrop or Phase-2.
+        - `Unregistered`: Not registered for any Babylon airdrop or Phase-2.
+        - `Registering`: The Babylon airdrop or Phase-2 registration is in progress but not yet completed.
+      required: false
+      schema:
+        type: string
+        enum:
+          - Registered
+          - Unregistered
+          - Registering
+        example: Registered
+    babylonRegistrationRequestStatusOptionalParam:
+      name: status
+      in: query
+      description: The registration request status.
+      required: false
+      schema:
+        type: string
+        enum:
+          - Processing
+          - Completed
+          - Failed
+        example: Processing
+        description: |
+          The status of a Babylon airdrop or Babylon Phase-2 registration request. Possible values include:
+          - `Processing`: The registration request is being processed.
+          - `Completed`: The registration has been completed.
+          - `Failed`: The registration failed.
+    babylonRegistrationIdRequiredParam:
+      name: registration_id
+      in: path
+      description: 'The Babylon airdrop or Babylon Phase-2 registration ID. You can use the [Register for Babylon airdrop](https://www.cobo.com/developers/v2/api-references/stakings/register-for-babylon-airdrop) or the [Register for Babylon Phase-2](https://www.cobo.com/developers/v2/api-references/stakings/register-for-babylon-phase-2) operation to get this information.'
+      required: true
+      schema:
+        type: string
+    btcAddressOptionalParam:
+      name: btc_address
+      in: query
+      required: false
+      description: The Bitcoin (BTC) address used for staking.
+      schema:
+        type: string
+      example: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
     ClientIdRequiredParam:
       name: client_id
       in: query
@@ -9553,6 +10133,33 @@ components:
                 Unstake: '#/components/schemas/EstimateUnstakeFee'
                 Withdraw: '#/components/schemas/EstimateWithdrawFee'
                 Claim: '#/components/schemas/EstimateClaimFee'
+    createBabylonStakingRegistrationBody:
+      description: The request body to transit Babylon BTC staking to phase 2
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              staking_id:
+                description: The ID of the Phase-1 BTC staking position.
+                type: string
+                example: 3f2840ce-44eb-450b-aa81-d3f84b772efb
+              babylon_address:
+                $ref: '#/components/schemas/StakingSource'
+                description: The Babylon address used for receiving the BABY rewards.
+    createBabylonAirdropRegistrationBody:
+      description: The request body to register for the Babylon airdrop.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              btc_address:
+                $ref: '#/components/schemas/StakingSource'
+                description: The Bitcoin (BTC) address that was used for staking.
+              babylon_address:
+                $ref: '#/components/schemas/StakingSource'
+                description: The Babylon address used to receive the airdrop.
     createWebhookEndpointBody:
       description: The request body to register a webhook endpoint.
       content:
@@ -9675,6 +10282,7 @@ components:
             required:
               - wallet_id
               - quote_id
+              - slippage_tolerance
             properties:
               wallet_id:
                 type: string
@@ -9686,6 +10294,51 @@ components:
                 format: uuid
                 description: The unique identifier of the quote.
                 example: 123e4567-e89b-12d3-a456-426614174001
+              slippage_tolerance:
+                type: string
+                description: The slippage tolerance for the swap.
+                example: '0.005'
+              app_initiator:
+                type: string
+                example: steve@example.com
+                description: 'The initiator of the app activity. If you do not specify this property, the WaaS service will automatically designate the API key as the initiator.'
+    createSwapQuoteBody:
+      description: The request body for creating a swap activity.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - wallet_id
+              - pay_token_id
+              - receive_token_id
+            properties:
+              wallet_id:
+                type: string
+                format: uuid
+                description: The unique identifier of the wallet.
+                example: 123e4567-e89b-12d3-a456-426614174000
+              pay_token_id:
+                type: string
+                description: Unique id of the token to pay.
+                example: BTC
+              receive_token_id:
+                type: string
+                description: Unique id of the token to receive.
+                example: ETH_WBTC
+              pay_amount:
+                type: string
+                description: |
+                  Amount of tokens to pay. For example "0.5 BTC".
+                  Note: Either pay_amount or receive_amount must be provided, but not both.
+                example: '100'
+              receive_amount:
+                type: string
+                description: |
+                  Amount of tokens to receive. For example "0.5 ETH_WBTC".
+                  Note: Either pay_amount or receive_amount must be provided, but not both.
+                example: '100'
   responses:
     badRequestError:
       description: Bad request. Your request contains malformed syntax or invalid parameters.
@@ -10476,6 +11129,110 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EthStakeEstimatedFee'
+    getBabylonAirdropRegistrationDetailsResponse:
+      description: Get airdrop registration details successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BabylonAirdropRegistration'
+    listBabylonAirdropRegistrationsResponse:
+      description: List of babylon airdrop registrations retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BabylonAirdropRegistration'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    listBabylonAirdropEligibleResponse:
+      description: List of wallets eligible for Babylon airdrop registration
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BabylonEligibleAirdrop'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    createBabylonAirdropRegistrationResponse:
+      description: Airdrop registration created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              registration_id:
+                type: string
+                example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+                description: 'The registration ID, a unique identifier for tracking the airdrop registration request. You can check the registration status with the [Get Babylon airdrop registration details](https://www.cobo.com/developers/v2/api-references/stakings/get-babylon-airdrop-registration-details) operation.'
+    getBabylonStakingRegistrationDetailsResponse:
+      description: Get babylon staking registration details successfully
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BabylonStakingRegistration'
+    listBabylonStakingRegistrationsResponse:
+      description: List of babylon staking registrations retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BabylonStakingRegistration'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    listBabylonStakingEligibleResponse:
+      description: List of stakings eligible for Babylon Phase-2 registration
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  description: The babylon staking position eligible for Phase-2 registration.
+                  properties:
+                    staking_id:
+                      type: string
+                      example: 0011039d-27fb-49ba-b172-6e0aa80e37ec
+                      description: The ID of the Phase-1 BTC staking position.
+                    btc_address:
+                      $ref: '#/components/schemas/StakingSource'
+                      description: The Bitcoin (BTC) address associated with this staking position.
+                    babylon_address:
+                      $ref: '#/components/schemas/StakingSource'
+                      description: The Babylon address used to receive BABY rewards. This property value is `null` if the BTC address is not registered for Babylon Phase-2.
+                    staked_amount:
+                      type: string
+                      example: '1.23456789'
+                      description: The current amount of BTC staked.
+                    status:
+                      $ref: '#/components/schemas/BabylonRegistrationStatus'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    createBabylonStakingRegistrationResponse:
+      description: Register Babylon BTC staking for phase 2 successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              registration_id:
+                type: string
+                example: 0011039d-27fb-49ba-b172-6e0aa80e37ec
+                description: 'The registration ID, a unique identifier for tracking the Babylon staking registration request. You can use it with the [Get Babylon staking registration details operation](https://www.cobo.com/developers/v2/api-references/stakings/get-babylon-staking-registration-details) to check the registration status.'
     getTokenResponse:
       description: The request was successful.
       content:
@@ -10859,12 +11616,6 @@ components:
                   Whether the callback message has been successfully resent:
                   - `true`: The callback message has been successfully resent.
                   - `false`: The callback message has not been successfully resent.
-    getSwapSummaryResponse:
-      description: The summary information of swap activities.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SwapSummary'
     getSwapActivityResponse:
       description: The swap activity details have been successfully retrieved.
       content:
@@ -10902,73 +11653,22 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - activity_id
-              - quote_id
-              - pay_amount
-              - pay_usd_value
-              - receive_amount
-              - receive_usd_value
-              - quote_created_time
-              - quote_expired_time
-            properties:
-              quote_id:
-                type: string
-                description: The unique identifier of this quote.
-                example: 550e8400-e29b-41d4-a716-446655440000
-              pay_amount:
-                type: string
-                description: The amount of tokens to pay.
-                example: '1.5'
-              pay_usd_value:
-                type: string
-                description: The USD value of pay_amount.
-                example: '2850.75'
-              receive_amount:
-                type: string
-                description: The amount of tokens to receive.
-                example: '2000'
-              receive_usd_value:
-                type: string
-                description: The USD value of receive_amount.
-                example: '2000'
-              fee_token_id:
-                type: string
-                description: The token to pay for fee.
-                example: '1.5'
-              fee_amount:
-                type: string
-                description: The amount of tokens to pay for fee.
-                example: '2000'
-              fee_usd_value:
-                type: string
-                description: The USD value of fee_amount.
-                example: '2850.75'
-              min_pay_amount:
-                type: string
-                description: The minimum amount of tokens to pay.
-                example: '0'
-              max_pay_amount:
-                type: string
-                description: The maximum amount of tokens to pay.
-                example: '1000'
-              min_receive_amount:
-                type: string
-                description: The minimum amount of tokens to receive.
-                example: '0'
-              max_receive_amount:
-                type: string
-                description: The maximum amount of tokens to receive.
-                example: '0'
-              quote_created_time:
-                type: integer
-                description: 'The time when the quote was created, in Unix timestamp format, measured in milliseconds.'
-                example: 1677587333000
-              quote_expired_time:
-                type: integer
-                description: 'The time when the quote will expire, in Unix timestamp format, measured in milliseconds.'
-                example: 1677587393000
+            $ref: '#/components/schemas/SwapQuote'
+    createSwapQuoteResponse:
+      description: The swap quote has been successfully retrieved.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/SwapQuote'
+              - type: object
+                required:
+                  - quote_id
+                properties:
+                  quote_id:
+                    type: string
+                    description: The unique identifier of this quote.
+                    example: 550e8400-e29b-41d4-a716-446655440000
   securitySchemes:
     CoboAuth:
       type: apiKey

@@ -1,12 +1,15 @@
 ---
-openapi: post /prime_broker/user/{user_id}/guard_pubkey/delete
+openapi: post /stakings/protocols/babylon/stakings/registrations
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.delete_guard_pubkey201_response import (
-    DeleteGuardPubkey201Response,
+from cobo_waas2.models.create_babylon_staking_registration201_response import (
+    CreateBabylonStakingRegistration201Response,
+)
+from cobo_waas2.models.create_babylon_staking_registration_request import (
+    CreateBabylonStakingRegistrationRequest,
 )
 from cobo_waas2.rest import ApiException
 from pprint import pprint
@@ -21,16 +24,23 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.PrimeBrokerApi(api_client)
-    user_id = "168108513539918"
+    api_instance = cobo_waas2.StakingsApi(api_client)
+    create_babylon_staking_registration_request = (
+        cobo_waas2.CreateBabylonStakingRegistrationRequest()
+    )
 
     try:
-        # Delete Guard pubkey binding
-        api_response = api_instance.delete_guard_pubkey(user_id)
-        print("The response of PrimeBrokerApi->delete_guard_pubkey:\n")
+        # Register for Babylon Phase-2
+        api_response = api_instance.create_babylon_staking_registration(
+            create_babylon_staking_registration_request=create_babylon_staking_registration_request
+        )
+        print("The response of StakingsApi->create_babylon_staking_registration:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PrimeBrokerApi->delete_guard_pubkey: %s\n" % e)
+        print(
+            "Exception when calling StakingsApi->create_babylon_staking_registration: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -39,7 +49,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.PrimeBrokerApi;
+import com.cobo.waas2.api.StakingsApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -51,13 +61,15 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    PrimeBrokerApi apiInstance = new PrimeBrokerApi();
-    String userId = "168108513539918";
+    StakingsApi apiInstance = new StakingsApi();
+    CreateBabylonStakingRegistrationRequest createBabylonStakingRegistrationRequest =
+        new CreateBabylonStakingRegistrationRequest();
     try {
-      DeleteGuardPubkey201Response result = apiInstance.deleteGuardPubkey(userId);
+      CreateBabylonStakingRegistration201Response result =
+          apiInstance.createBabylonStakingRegistration(createBabylonStakingRegistrationRequest);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling PrimeBrokerApi#deleteGuardPubkey");
+      System.err.println("Exception when calling StakingsApi#createBabylonStakingRegistration");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -79,7 +91,7 @@ import (
 )
 
 func main() {
-	userId := "168108513539918"
+	createBabylonStakingRegistrationRequest := *coboWaas2.NewCreateBabylonStakingRegistrationRequest()
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -92,13 +104,23 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.PrimeBrokerAPI.DeleteGuardPubkey(ctx, userId).Execute()
+	resp, r, err := apiClient.StakingsAPI.CreateBabylonStakingRegistration(ctx).
+		CreateBabylonStakingRegistrationRequest(createBabylonStakingRegistrationRequest).
+		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PrimeBrokerAPI.DeleteGuardPubkey``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `StakingsAPI.CreateBabylonStakingRegistration``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteGuardPubkey`: DeleteGuardPubkey201Response
-	fmt.Fprintf(os.Stdout, "Response from `PrimeBrokerAPI.DeleteGuardPubkey`: %v\n", resp)
+	// response from `CreateBabylonStakingRegistration`: CreateBabylonStakingRegistration201Response
+	fmt.Fprintf(
+		os.Stdout,
+		"Response from `StakingsAPI.CreateBabylonStakingRegistration`: %v\n",
+		resp,
+	)
 }
 
 ```
@@ -111,9 +133,11 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.PrimeBrokerApi();
-const user_id = "168108513539918";
-apiInstance.deleteGuardPubkey(user_id).then((data) => {
+const apiInstance = new CoboWaas2.StakingsApi();
+const opts = {
+  'CreateBabylonStakingRegistrationRequest': new CoboWaas2.CreateBabylonStakingRegistrationRequest()
+};
+apiInstance.createBabylonStakingRegistration(opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

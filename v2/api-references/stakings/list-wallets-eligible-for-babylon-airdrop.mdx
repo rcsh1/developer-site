@@ -1,12 +1,12 @@
 ---
-openapi: post /prime_broker/user/{user_id}/guard_pubkey/delete
+openapi: get /stakings/protocols/babylon/airdrops/eligibles
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.delete_guard_pubkey201_response import (
-    DeleteGuardPubkey201Response,
+from cobo_waas2.models.list_babylon_eligible_airdrops200_response import (
+    ListBabylonEligibleAirdrops200Response,
 )
 from cobo_waas2.rest import ApiException
 from pprint import pprint
@@ -21,16 +21,24 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.PrimeBrokerApi(api_client)
-    user_id = "168108513539918"
+    api_instance = cobo_waas2.StakingsApi(api_client)
+    status = "Registered"
+    limit = 10
+    before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
+    after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 
     try:
-        # Delete Guard pubkey binding
-        api_response = api_instance.delete_guard_pubkey(user_id)
-        print("The response of PrimeBrokerApi->delete_guard_pubkey:\n")
+        # List wallets eligible for Babylon airdrop
+        api_response = api_instance.list_babylon_eligible_airdrops(
+            status=status, limit=limit, before=before, after=after
+        )
+        print("The response of StakingsApi->list_babylon_eligible_airdrops:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PrimeBrokerApi->delete_guard_pubkey: %s\n" % e)
+        print(
+            "Exception when calling StakingsApi->list_babylon_eligible_airdrops: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -39,7 +47,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.PrimeBrokerApi;
+import com.cobo.waas2.api.StakingsApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -51,13 +59,17 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    PrimeBrokerApi apiInstance = new PrimeBrokerApi();
-    String userId = "168108513539918";
+    StakingsApi apiInstance = new StakingsApi();
+    String status = "Registered";
+    Integer limit = 10;
+    String before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1";
+    String after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk";
     try {
-      DeleteGuardPubkey201Response result = apiInstance.deleteGuardPubkey(userId);
+      ListBabylonEligibleAirdrops200Response result =
+          apiInstance.listBabylonEligibleAirdrops(status, limit, before, after);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling PrimeBrokerApi#deleteGuardPubkey");
+      System.err.println("Exception when calling StakingsApi#listBabylonEligibleAirdrops");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -79,7 +91,10 @@ import (
 )
 
 func main() {
-	userId := "168108513539918"
+	status := "Registered"
+	limit := int32(10)
+	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
+	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -92,13 +107,22 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.PrimeBrokerAPI.DeleteGuardPubkey(ctx, userId).Execute()
+	resp, r, err := apiClient.StakingsAPI.ListBabylonEligibleAirdrops(ctx).
+		Status(status).
+		Limit(limit).
+		Before(before).
+		After(after).
+		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PrimeBrokerAPI.DeleteGuardPubkey``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `StakingsAPI.ListBabylonEligibleAirdrops``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `DeleteGuardPubkey`: DeleteGuardPubkey201Response
-	fmt.Fprintf(os.Stdout, "Response from `PrimeBrokerAPI.DeleteGuardPubkey`: %v\n", resp)
+	// response from `ListBabylonEligibleAirdrops`: ListBabylonEligibleAirdrops200Response
+	fmt.Fprintf(os.Stdout, "Response from `StakingsAPI.ListBabylonEligibleAirdrops`: %v\n", resp)
 }
 
 ```
@@ -111,9 +135,14 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.PrimeBrokerApi();
-const user_id = "168108513539918";
-apiInstance.deleteGuardPubkey(user_id).then((data) => {
+const apiInstance = new CoboWaas2.StakingsApi();
+const opts = {
+  'status': "Registered",
+  'limit': 10,
+  'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
+  'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
+};
+apiInstance.listBabylonEligibleAirdrops(opts).then((data) => {
   console.log('API called successfully. Returned data: ' + data);
 }, (error) => {
   console.error(error);

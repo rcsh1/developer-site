@@ -4,6 +4,28 @@ title: "Changelog"
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.10
+
+This version was released on March 3, 2025.
+
+### New Features
+Now you can initiate and track registration for Babylon airdrop and Babylon Phase-2 with the following operations:
+  - [List wallets eligible for Babylon airdrop](/v2/api-references/stakings/list-wallets-eligible-for-babylon-airdrop)
+  - [Register for Babylon airdrop](/v2/api-references/stakings/register-for-babylon-airdrop)
+  - [List Babylon airdrop registrations](/v2/api-references/stakings/list-babylon-airdrop-registrations)
+  - [Get Babylon airdrop registration details](/v2/api-references/stakings/get-babylon-airdrop-registration-details)
+  - [List staking positions eligible for Babylon Phase-2](/v2/api-references/stakings/list-staking-positions-eligible-for-babylon-phase-2)
+  - [Register for Babylon Phase-2](/v2/api-references/stakings/register-for-babylon-phase-2)
+  - [List Babylon Phase-2 registrations](/v2/api-references/stakings/list-babylon-phase-2-registrations)
+  - [Get Babylon Phase-2 registration details](/v2/api-references/stakings/get-babylon-phase-2-registration-details)
+
+### Improvements
+- Added a `utxo_change` property with UTXO change information to the `TransactionRawTxInfo` schema.
+- Added 3 enum values `BitHive`, `BERABeacon`, and `BeraChainBGT` to the `StakingPoolType` schema.
+- Added 6 enum values `bithive_signet`, `bithive`, `beacon_bera`, `beacon_bera_testnet`, `berachain_bgt`, and `berachain_bgt_testnet` to the `StakingPoolId` schema.
+- Added a property `wallet_id` to the `AddressesEventData` schema.
+- Added a property `mpc_used_key_share_holder_group` to the `MpcContractCallSource`, `MpcMessageSignSource`, and `MpcTransferSource` schemas to indicate which key share holder group is used for this transaction.
+
 ## v1.9.0
 
 This version was released on February 19, 2025.
