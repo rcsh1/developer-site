@@ -1,0 +1,58 @@
+---
+title: "Risk control best practices"
+description: Learn essential security practices and implementation guidelines for configuring risk control mechanisms in your server co-signer.
+---
+
+This guide outlines security best practices for implementing risk control in your server co-signer to ensure secure transaction signing.
+
+## Embedded risk control rules
+
+You can configure your embedded risk control rules through the `configs/cobo-tss-node-config.yaml` file as such:
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_gen:
+    reject_all: true
+  key_sign:
+    reject_all: false
+  key_reshare:
+    reject_all: true
+  key_share_sign:
+    reject_all: true
+```
+
+This configuration allows signing tasks only and rejects all other tasks.
+
+
+## TSS node callback server security
+
+To ensure transaction security and authenticity, implement the following security checks in your TSS node callback server:
+
+1. Verify the transaction hash to prevent transaction tampering:
+   1. Extract the raw transaction data from `extra_info.Transaction.RawTxInfo.UnsignedRawTx`
+   2. Calculate the hash of this raw transaction data
+   3. Compare it with the hash provided in `request_detail.msg_hash_list`
+   4. Reject the transaction if the hashes don't match
+
+2. Validate critical transaction parameters to prevent unauthorized or malicious transactions:
+   - Gas fee: Ensure it's within acceptable ranges
+   - Destination address: Verify against allowed addresses
+   - Transaction amount: Check against configured limits
+   - Chain ID: Confirm it matches your expected network
+   - Other specific parameters as needed
+
+### Auto-sweeping implementation
+
+For MPC Wallets with auto-sweeping enabled, implement the whitelisting configuration to automatically approve transactions when the transaction hash is verified and the destination address is whitelisted.
+
+You can access our [sample project](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/blob/master/cobo-mpc-callback-server-v2-golang/internal/verifier/sign.go) which demonstrates:
+   - Transaction content parsing
+   - Hash verification against signed message
+   - Whitelist-based transaction approval
+
+<Note>
+The sample implementation is currently written in Go and is applicable to EVM chains only. You can extend it to other chains via [token_adapter](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/tree/master/cobo-mpc-callback-server-v2-golang/pkg/token_adapter).
+</Note>
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
