@@ -5,6 +5,28 @@ title: "更新日志"
 
 本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
+## v1.10
+
+此版本发布于 2025 年 3 月 3 日。
+
+### 新功能
+现在，您可以通过以下操作启动并跟踪 Babylon 空投和 Babylon 第二阶段的注册：
+  - [列出 Babylon 空投的合格钱包](/v2/api-references/stakings/list-wallets-eligible-for-babylon-airdrop)
+  - [注册 Babylon 空投](/v2/api-references/stakings/register-for-babylon-airdrop)
+  - [列出所有 Babylon 空投注册](/v2/api-references/stakings/list-babylon-airdrop-registrations)
+  - [获取 Babylon 空投注册详情](/v2/api-references/stakings/get-babylon-airdrop-registration-details)
+  - [列出 Babylon 第二阶段的合格抵押头寸](/v2/api-references/stakings/list-staking-positions-eligible-for-babylon-phase-2)
+  - [注册 Babylon 第二阶段](/v2/api-references/stakings/register-for-babylon-phase-2)
+  - [列出所有 Babylon 第二阶段注册](/v2/api-references/stakings/list-babylon-phase-2-registrations)
+  - [获取 Babylon 第二阶段注册详情](/v2/api-references/stakings/get-babylon-phase-2-registration-details)
+
+### 改进
+- 在 `TransactionRawTxInfo` 模式中添加了 `utxo_change` 属性，包含 UTXO 变更信息。
+- 在 `StakingPoolType` 模式中添加了 3 个枚举值 `BitHive`、`BERABeacon` 和 `BeraChainBGT`。
+- 在 `StakingPoolId` 模式中添加了 6 个枚举值 `bithive_signet`、`bithive`、`beacon_bera`、`beacon_bera_testnet`、`berachain_bgt` 和 `berachain_bgt_testnet`。
+- 在 `AddressesEventData` 模式中添加了 `wallet_id` 属性。
+- 在 `MpcContractCallSource`、`MpcMessageSignSource` 和 `MpcTransferSource` 模式中添加了 `mpc_used_key_share_holder_group` 属性，以表明此交易使用的私钥分片持有者组。
+
 ## v1.9.0
 
 此版本发布于 2025 年 2 月 19 日。

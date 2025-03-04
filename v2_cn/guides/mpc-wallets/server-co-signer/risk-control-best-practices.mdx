@@ -1,0 +1,60 @@
+---
+title: "风控最佳实践"
+description: 了解在服务端签名人中配置风控机制的基本安全实践和实施指南。
+---
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南概述了在服务端签名人中实施风控的安全最佳实践，以确保交易签名的安全性。
+
+## 内置风控规则
+
+您可以通过 `configs/cobo-tss-node-config.yaml` 文件配置内置风控规则，如下所示：
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_gen:
+    reject_all: true
+  key_sign:
+    reject_all: false
+  key_reshare:
+    reject_all: true
+  key_share_sign:
+    reject_all: true
+```
+
+此配置仅允许签名任务，并拒绝所有其他任务。
+
+## TSS 节点回调服务器安全性
+
+为确保交易安全和真实性，在 TSS 节点回调服务器中实施以下安全检查：
+
+1. 验证交易哈希以防止交易被篡改：
+   1. 从 `extra_info.Transaction.RawTxInfo.UnsignedRawTx` 中提取原始交易数据
+   2. 计算此原始交易数据的哈希值
+   3. 将其与 `request_detail.msg_hash_list` 中提供的哈希值进行比较
+   4. 如果哈希值不匹配，则拒绝交易
+
+2. 验证关键交易参数以防止未经授权或恶意交易：
+   - Gas 费用：确保在可接受范围内
+   - 目标地址：验证是否为允许的地址
+   - 交易金额：检查是否符合配置的限制
+   - 链 ID：确认是否匹配预期网络
+   - 根据需要验证其他特定参数
+
+<a name="auto-sweeping-implementation"></a>
+
+### 自动归集
+
+对于启用了自动归集的 MPC 钱包，实施白名单配置，以便在验证交易哈希且目标地址在白名单内时自动批准交易。
+
+您可以访问我们的[示例项目](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/blob/master/cobo-mpc-callback-server-v2-golang/internal/verifier/sign.go)，其中演示了：
+   - 交易内容解析
+   - 哈希值与签名消息的验证
+   - 基于白名单的交易审批
+
+<Note>
+示例实现目前使用 Go 语言编写，仅适用于 EVM 链。您可以通过 [token_adapter](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/tree/master/cobo-mpc-callback-server-v2-golang/pkg/token_adapter) 扩展到其他链。
+</Note>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
