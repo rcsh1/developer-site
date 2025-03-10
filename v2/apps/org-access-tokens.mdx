@@ -1,5 +1,7 @@
 ---
 title: "Org Access Tokens"
+lang: "en"
+description: "Discover how Org Access Tokens enable secure resource access in Cobo Portal Apps. Learn token acquisition, refresh, and permission management."
 ---
 
 When a Cobo Portal App needs to access the resources of an organization, the Org Access Token signals to the WaaS service that the app has received approval from the organization admin to access certain resources.
@@ -57,7 +59,7 @@ When an app is published, Cobo generates a client ID for your app, which can be 
 
 ### 3. Retrieve the organization ID
 
-When a user installs an app on Cobo Portal and the organization admin has granted the permissions, a callback message will be sent to the configured endpoint `callback_url`configured in the manifest file. The callback message includes the approval result and the ID of the user’s organization.
+When a user installs an app on Cobo Portal and the organization admin has granted the permissions, a callback message will be sent to the configured endpoint `callback_url`configured in the manifest file. The callback message includes the approval result and the ID of the user's organization.
 
 A sample callback message is as follows:
 ```
@@ -79,7 +81,7 @@ The following sample code shows how to get an Org Access Token with the Python S
 from cobo_waas2 import Configuration, ApiClient, OAuthApi
 
 configuration = Configuration(
-  # Use https://api.dev.cobo.com/v2 if your app needs to access an organization’s resources in the development environment, or use https://api.cobo.com/v2 for the production environment.
+  # Use https://api.dev.cobo.com/v2 if your app needs to access an organization's resources in the development environment, or use https://api.cobo.com/v2 for the production environment.
   host="https://api.dev.cobo.com/v2",
   # Replace `<APP_SECRET>` with your app secret
   api_private_key=<APP_SECRET>,
