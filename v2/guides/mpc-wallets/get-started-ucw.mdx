@@ -1,5 +1,7 @@
 ---
 title: "Get started with MPC Wallets (User-Controlled Wallets)"
+lang: "en"
+description: "Guide to building User-Controlled Wallets using the WaaS 2.0 API and the UCW SDK, covering setup, wallet creation, and transaction management."
 sidebarTitle: "Get started with User-Controlled Wallets"
 ---
 
@@ -456,27 +458,28 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
             15. Cobo TSS Relay confirms the request creation with a 200 OK response.
 
-    - **(Optional) Monitor the TSS request status on Client Backend**
+    - **Monitor the TSS request status on Client Backend**
 
         - Cobo Backend → Client Backend
 
             You can optionally monitor the status of the TSS request on the Client Backend through either webhook or polling.
 
-                - **Webhook option**
+            - **Webhook option**
 
-                    16. Cobo Backend sends a webhook to the Client Backend with the current status of the TSS request.
+                16. Cobo Backend sends a webhook to the Client Backend with the current status of the TSS request.
 
-                        <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+                    <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
 
-                        <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+                    <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
 
-                - **Polling option**
+            - **Polling option**
 
-                    17. Client Backend polls the Cobo Backend to retrieve the status of the TSS request by calling the [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
+                17. Client Backend polls the Cobo Backend to retrieve the status of the TSS request by calling the [Get TSS request](/v2/api-references/wallets--mpc-wallets/get-tss-request) operation.
 
-                    18. Cobo Backend returns the status of the TSS request.
+                18. Cobo Backend returns the status of the TSS request.
 
         - **(Optional) Monitor TSS request status on Client App**
+
             - Client Backend → Client App
 
                 You can optionally monitor the status of the TSS request on the Client App through either app notification or polling.
@@ -540,6 +543,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
             33. Cobo TSS Relay sends the key generation result to the Cobo Backend.
 
     - **(Optional) Monitor key generation result on Client Backend**
+
         - Cobo Backend → Client Backend
 
             You can optionally monitor the key generation result on Client Backend through either webhook or polling.
@@ -573,64 +577,210 @@ Use the tabs below to learn more about each entity and attribute in the data mod
         participant C as Client Backend
         participant P as Cobo Backend
 
-        App ->> +C: POST /v1/vaults/{vault_id}/wallets
-        C ->> P: POST /v2/wallets, {vault_id, name}
-        P ->> C: return {wallet_info}
-        C ->> C: save wallet info
-        C ->> -App: return {wallet_id}
-        App ->> +C: POST /v1/wallets/{wallet_id}/address
-        C ->> P: POST /v2/wallets/{wallet_id}/addresses, {chain_id,count}
-        P ->> C: return {address_info}
-        C ->> C: save address info
-        C ->> -App: return {address}
+        App ->> +C: POST /v1/wallets/{wallet_id}/transactions/estimate_fee , {tx_data}
+        C ->> +P: POST /v2/transactions/estimate_fee , {wallet_id, tx_data}
+        P ->> -C: return {estimate_fee_info}
+        C ->> -App: return {estimate_fee_info}
+
+        App ->> App: select fee
+
+        App ->> +C: POST /v1/wallets/{wallet_id}/transactions , {tx_data}
+        C ->> +P: POST /v2/transactions/transfer , {tx_request_id, wallet_id, tx_data}
+        P ->> C: return {transaction_id, transaction_info}
+        C ->> -App: return {tx_request_id, transaction_id}
+        P ->> P: cobo risk control
+        P ->> +R: POST create_tss_request
+        R ->> -P: return 200 OK
+        P ->> -C: use [webhook] or [polling] , {transaction_event_type, transaction_info}
+
+        activate App
+        alt use push
+            C ->> +App: push notification
+        else use polling
+            App ->> +C: GET /v1/wallets/{wallet_id}/transactions , {status: unfinished, transaction_info}
+            C ->> -App: return {transaction_info}
+        end
+
+        App ->> +SDK: SDKInstance.GetTransactions, {transaction_id}
+        SDK ->> +R: GetTransactions, {transaction_id}
+        R ->> -SDK: {transaction_task_info}
+        SDK ->> -App: {transaction_info}
+
+        App ->> App: review transaction info
+        App ->> +SDK: SDKInstance.ApproveTransactions {transaction_id}
+        SDK ->> +R: participate in signing
+        R ->> -SDK: {signature}
+        App ->> SDK: SDKInstance.GetTransactions, {transaction_id}
+        SDK ->> -App: {transaction_info}
+        App ->> C: POST /v1/transactions/{transaction_id}/report
+        deactivate App
+
+        R ->> +P: {signature}
+        P ->> -C: use [webhook] or [polling] , {transaction_event_type, transaction_info}
+
+
     ```
 
     #### Sequence of operations
 
-        - **Create a wallet**
+        - **Estimate transaction fee**
 
           - Client App → Client Backend
 
-            1. Client App initiates the process by sending a request to the Client Backend to create a wallet within a vault specified by vault ID.
+            1. Client App initiates a fee estimation request by sending transaction data to the Client Backend.
 
           - Client Backend → Cobo Backend
 
-
-            2. Client Backend forwards the request to the Cobo Backend by calling the [Create wallet](/v2/api-references/wallets/create-wallet) operation and passing in the necessary vault ID and wallet name to create the wallet.
+            2. Client Backend forwards the request to the Cobo Backend to estimate the fee for the transaction by calling the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation.
 
           - Cobo Backend → Client Backend
 
-            3. Cobo Backend processes the wallet creation and returns the information of the newly created wallet, including its wallet ID.
-
-          - Client Backend
-
-            4. Client Backend saves the wallet information, such as wallet ID and other metadata, for future reference.
+            3. Cobo Backend processes the request and returns the estimated fee information.
 
           - Client Backend → Client App
 
-            5. Client Backend sends the wallet ID back to the Client App.
+            4. Client Backend returns the estimated fee information to the Client App.
 
-        - **Generate an address**
+          - Client App
+
+            5. User reviews and selects the appropriate fee using the Client App.
+
+        - **Submit transaction**
 
           - Client App → Client Backend
 
-            6. Client App sends a request to the Client Backend to generate an address for the newly created wallet.
+            6. After selecting the fee, the Client App submits the transaction data to the Client Backend for processing.
 
           - Client Backend → Cobo Backend
 
-            7. Client Backend forwards the request to the Cobo Backend by calling the [Create addresses in wallet](/v2/api-references/wallets/create-addresses-in-wallet) operation, specifying the wallet ID, the chain ID, and the number of addresses to create (count).
+            7. Client Backend forwards the transaction data to the Cobo Backend to initiate the transaction by calling the [Transfer token](/v2/api-references/transactions/transfer-token) operation.
 
           - Cobo Backend → Client Backend
 
-            8. Cobo Backend generates the addresses and returns the address information, which includes the generated addresses.
-
-          - Client Backend
-
-            9. Client Backend saves the address information, including the addresses and associated metadata, for the wallet.
+            8. Cobo Backend processes the request and returns the transaction ID and other transaction information.
 
           - Client Backend → Client App
 
-            10. Client Backend returns the generated address to the Client App.
+            9. Client Backend returns the transaction information to the Client App.
+
+        - **Perform risk controls and TSS request processing**
+
+          - Cobo Backend
+
+            10. Cobo Backend performs internal risk control checks before proceeding with the transaction.
+
+          - Cobo Backend → Cobo TSS Relay
+
+            11. Cobo Backend sends a request to the Cobo TSS Relay to create a TSS request for the transaction.
+
+          - Cobo TSS Relay → Cobo Backend
+
+            12. Cobo TSS Relay confirms the creation of the TSS request with a 200 OK response.
+
+        - **Monitor transaction status on Client Backend**
+
+          - Cobo Backend → Client Backend
+
+            (13) You can monitor the status of the transaction on the Client Backend through either webhook or polling.
+
+            - **Webhook option**
+
+              Cobo Backend sends transaction updates to the Client Backend using webhooks.
+
+                <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+
+                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+
+            - **Polling option**
+
+              Client Backend polls the Cobo Backend to get updates on the transaction status by calling the [Get transaction information](/v2/api-references/transactions/get-transaction-information) operation.
+
+              Cobo Backend returns the transaction status to the Client Backend.
+
+        - **(Optional) Monitor transaction status on Client App**
+
+          - Client Backend → Client App
+
+            You can optionally send the transaction status to the Client App through push notifications or polling.
+
+            - **Push notification option**
+
+              14. Client Backend sends a push notification to the Client App with the transaction status.
+
+            - **Polling option**
+
+              15. Client App polls the Client Backend for the transaction status.
+
+              16. Client Backend returns the transaction status to the Client App.
+
+        - **Review and approve the transaction**
+
+          - Client App → UCW SDK
+
+            17. Client App calls the UCW SDK to retrieve detailed transaction information by calling the [Get transactions](/v2/developer-tools/ucw-sdk/ucw-class/get-transactions) operation.
+
+          - UCW SDK → Cobo TSS Relay
+
+            18. UCW SDK forwards the request to the Cobo TSS Relay to retrieve the transaction information.
+
+            19. Cobo TSS Relay returns the transaction information to the UCW SDK.
+
+          - UCW SDK → Client App
+
+            20. UCW SDK returns the transaction information to the Client App.
+
+          - Client App
+
+            21. User reviews the transaction information on the Client App.
+
+          - Client App → UCW SDK
+
+            22. Client App approves the transaction using the UCW SDK by calling the [Approve transactions](/v2/developer-tools/ucw-sdk/ucw-class/approve-transactions) operation, initiating the signing process.
+
+          - UCW SDK → Cobo TSS Relay
+
+            23. UCW SDK participates in the signing process by forwarding the transaction approval to the Cobo TSS Relay.
+
+            24. Cobo TSS Relay returns the signature to the UCW SDK.
+
+        - **Update transaction status**
+
+          - Client App → UCW SDK
+
+            25. Client App checks the status of the transaction via the UCW SDK by calling the [Get transactions](/v2/developer-tools/ucw-sdk/ucw-class/get-transactions) operation.
+
+          - UCW SDK → Client App
+
+            26. UCW SDK returns the current transaction status to the Client App.
+
+          - Client App → Client Backend
+
+            27. Client App sends a transaction status update to the Client Backend.
+
+        - **Finalize the transaction**
+
+          - Cobo TSS Relay → Cobo Backend
+
+            28. Cobo TSS Relay sends the final signature to the Cobo Backend.
+
+          - Cobo Backend → Client Backend
+
+            29. You can get the final transaction information on the Client Backend via webhook or polling.
+
+            - **Webhook Option**
+
+              Cobo Backend sends the final transaction information via webhook to the Client Backend.
+
+                <Info>To see the available webhook event types, see [Webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types).</Info>
+
+                <Info>To see how to set up your Client Backend to receive webhook events, see [Set up a callback or webhook endpoint](/v2/guides/webhooks-callbacks/set-up-endpoint).</Info>
+
+            - **Polling option**
+
+              Client Backend polls the Cobo Backend for the final transaction information by calling the [Get transaction information](/v2/api-references/transactions/get-transaction-information) operation.
+
+              Cobo Backend returns the transaction status to the Client Backend.
+
   </Step>
 </Steps>
 
@@ -1416,7 +1566,7 @@ Use the tabs below to learn more about each entity and attribute in the data mod
 
           - Client App 2, 3
 
-            25. Users review the pending TSS request on Client Apps 2 and 3.
+            25. Users review the TSS request on Client Apps 2 and 3.
 
           - Client App 2, 3 → UCW SDK 2, 3
 
