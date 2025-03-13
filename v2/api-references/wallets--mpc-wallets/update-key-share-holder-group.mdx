@@ -135,9 +135,9 @@ func main() {
 
 ```
 ```javascript JavaScript
-const CoboWaas2 = require('@cobo/cobo-waas2');
+const CoboWaas2 = require("@cobo/cobo-waas2");
 // Initialize the API client
-const apiClient = CoboWaas2.ApiClient.instance
+const apiClient = CoboWaas2.ApiClient.instance;
 // Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
 apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
@@ -147,12 +147,19 @@ const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const key_share_holder_group_id = "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce";
 const opts = {
-  'UpdateKeyShareHolderGroupByIdRequest': new CoboWaas2.UpdateKeyShareHolderGroupByIdRequest()
+  UpdateKeyShareHolderGroupByIdRequest:
+    new CoboWaas2.UpdateKeyShareHolderGroupByIdRequest(),
 };
-apiInstance.updateKeyShareHolderGroupById(vault_id, key_share_holder_group_id, opts).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
-  console.error(error);
-});
+apiInstance
+  .updateKeyShareHolderGroupById(vault_id, key_share_holder_group_id, opts)
+  .then(
+    (data) => {
+      console.log("API called successfully. Returned data: " + data);
+    },
+    (error) => {
+      console.error(error);
+    },
+  );
+
 ```
 </RequestExample>

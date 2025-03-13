@@ -109,9 +109,9 @@ func main() {
 
 ```
 ```javascript JavaScript
-const CoboWaas2 = require('@cobo/cobo-waas2');
+const CoboWaas2 = require("@cobo/cobo-waas2");
 // Initialize the API client
-const apiClient = CoboWaas2.ApiClient.instance
+const apiClient = CoboWaas2.ApiClient.instance;
 // Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
 apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
@@ -120,10 +120,14 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsApi();
 const chain_id = "ETH";
 const address = "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045";
-apiInstance.checkAddressValidity(chain_id, address).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
-  console.error(error);
-});
+apiInstance.checkAddressValidity(chain_id, address).then(
+  (data) => {
+    console.log("API called successfully. Returned data: " + data);
+  },
+  (error) => {
+    console.error(error);
+  },
+);
+
 ```
 </RequestExample>

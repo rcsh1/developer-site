@@ -147,9 +147,9 @@ func main() {
 
 ```
 ```javascript JavaScript
-const CoboWaas2 = require('@cobo/cobo-waas2');
+const CoboWaas2 = require("@cobo/cobo-waas2");
 // Initialize the API client
-const apiClient = CoboWaas2.ApiClient.instance
+const apiClient = CoboWaas2.ApiClient.instance;
 // Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
 apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
@@ -158,16 +158,20 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsExchangeWalletApi();
 const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  'trading_account_types': "Trading,Funding",
-  'asset_ids': "USDT,USDC",
-  'limit': 10,
-  'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
-  'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
+  trading_account_types: "Trading,Funding",
+  asset_ids: "USDT,USDC",
+  limit: 10,
+  before: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
+  after: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk",
 };
-apiInstance.listAssetBalancesForExchangeWallet(wallet_id, opts).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
-  console.error(error);
-});
+apiInstance.listAssetBalancesForExchangeWallet(wallet_id, opts).then(
+  (data) => {
+    console.log("API called successfully. Returned data: " + data);
+  },
+  (error) => {
+    console.error(error);
+  },
+);
+
 ```
 </RequestExample>

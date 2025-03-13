@@ -35,6 +35,8 @@ Cobo currently supports transactions with four types of fee models:
 
 While most transactions follow the blockchain's native fee model, transactions from Custodial Wallets (Asset Wallets) and Exchange Wallets always use the fixed fee model.
 
+<Note>For both the Legacy and EIP-1559 fee models, an additional `reserved_fee` is charged for submitting transaction calldata to L1 (Layer 1).</Note>
+
 ## Fee levels
 
 Transaction fees are influenced by speed levels. Users can choose between slow, recommended, and fast transaction speeds, with faster speeds incurring higher fees.
