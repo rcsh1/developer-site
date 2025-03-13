@@ -4283,6 +4283,13 @@ components:
           EVM_EIP_1559: '#/components/schemas/EvmEip1559FeeRate:'
           EVM_Legacy: '#/components/schemas/EvmLegacyFeeRate:'
           UTXO: '#/components/schemas/UtxoFeeRate:'
+    FeeReserved:
+      type: object
+      properties:
+        reserved_fee:
+          type: string
+          description: 'The estimated fee required for submitting the transaction data to L1 (Layer 1), measured in wei.'
+          example: '1000000000000'
     EstimatedFixedFee:
       type: object
       description: The estimated transaction fee based on the fixed fee model.
@@ -4331,6 +4338,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
             - $ref: '#/components/schemas/FeeGasLimit'
+            - $ref: '#/components/schemas/FeeReserved'
         recommended:
           required:
             - max_fee_per_gas
@@ -4339,6 +4347,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
             - $ref: '#/components/schemas/FeeGasLimit'
+            - $ref: '#/components/schemas/FeeReserved'
         fast:
           required:
             - max_fee_per_gas
@@ -4347,6 +4356,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmEip1559FeeBasePrice'
             - $ref: '#/components/schemas/FeeGasLimit'
+            - $ref: '#/components/schemas/FeeReserved'
     EstimatedEvmLegacyFee:
       type: object
       description: The estimated transaction fee based on the legacy fee model.
@@ -4369,6 +4379,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
             - $ref: '#/components/schemas/FeeGasLimit'
+            - $ref: '#/components/schemas/FeeReserved'
         recommended:
           required:
             - gas_price
@@ -4376,6 +4387,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
             - $ref: '#/components/schemas/FeeGasLimit'
+            - $ref: '#/components/schemas/FeeReserved'
         fast:
           required:
             - gas_price
@@ -4383,6 +4395,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/EvmLegacyFeeBasePrice'
             - $ref: '#/components/schemas/FeeGasLimit'
+            - $ref: '#/components/schemas/FeeReserved'
     EstimatedUtxoFee:
       type: object
       description: The estimated transaction fee for UTXO-based chains.
@@ -4636,6 +4649,7 @@ components:
             - $ref: '#/components/schemas/TransactionTransferToAddressDestination'
             - $ref: '#/components/schemas/TransactionTransferToWalletDestination'
             - $ref: '#/components/schemas/TransactionEvmContractDestination'
+            - $ref: '#/components/schemas/TransactionSolContractDestination'
             - $ref: '#/components/schemas/TransactionMessageSignEIP191Destination'
             - $ref: '#/components/schemas/TransactionMessageSignEIP712Destination'
             - $ref: '#/components/schemas/TransactionRawMessageSignDestination'
@@ -4647,6 +4661,7 @@ components:
               Address: '#/components/schemas/TransactionTransferToAddressDestination'
               ExchangeWallet: '#/components/schemas/TransactionTransferToWalletDestination'
               EVM_Contract: '#/components/schemas/TransactionEvmContractDestination'
+              SOL_Contract: '#/components/schemas/TransactionSolContractDestination'
               EVM_EIP_191_Signature: '#/components/schemas/TransactionMessageSignEIP191Destination'
               EVM_EIP_712_Signature: '#/components/schemas/TransactionMessageSignEIP712Destination'
               Raw_Message_Signature: '#/components/schemas/TransactionRawMessageSignDestination'
@@ -5199,6 +5214,7 @@ components:
         - Address
         - ExchangeWallet
         - EVM_Contract
+        - SOL_Contract
         - EVM_EIP_191_Signature
         - EVM_EIP_712_Signature
         - Raw_Message_Signature
@@ -5385,6 +5401,58 @@ components:
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
         calldata_info:
           $ref: '#/components/schemas/TransactionEvmCalldataInfo'
+    TransactionSolContractDestination:
+      title: SOL Contract
+      type: object
+      description: 'The information about the transaction destination. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      required:
+        - destination_type
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/TransactionDestinationType'
+        instructions:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionSolContractInstruction'
+    TransactionSolContractAccount:
+      title: SOL Instruction Account
+      type: object
+      description: sol contract instruction account
+      properties:
+        pubkey:
+          type: string
+          description: |
+            account address. If the account is signer, pubkey needs to match the from_address parameter.
+          example: E4MhQWiqCLER3fFZNf8LyQFpLWW3BRxtsR5eps3c3vNS
+        is_signer:
+          type: boolean
+          description: |
+            boolean value indicating whether the account can sign transactions.
+          example: true
+        is_writable:
+          type: boolean
+          description: |
+            boolean value indicating whether the account can be modified.
+          example: true
+    TransactionSolContractInstruction:
+      title: SOL Instruction
+      type: object
+      description: sol contract instruction
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionSolContractAccount'
+        data:
+          type: string
+          description: |
+            data used for calling Solana contract..
+          example: 'Canary TX 4, slot: 219858117'
+        program_id:
+          type: string
+          description: |
+            contract address. when calling a Solana contract, the to_address parameter needs to match the program_id parameter. If multiple contracts are being called, then the to_address parameter should match the program_id parameter of the first instruction.
+          example: MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr
     TransactionMessageSignEIP191Destination:
       title: EIP-191 Signature
       description: |
@@ -6385,6 +6453,7 @@ components:
       type: string
       enum:
         - EVM_Contract
+        - SOL_Contract
       example: EVM_Contract
       description: |
         The type of the contract format. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
@@ -6413,13 +6482,80 @@ components:
           description: |
             The data that is used to invoke a specific function or method within the specified contract at the destination address.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
+    SolContractCallDestination:
+      title: SOL Contract
+      type: object
+      description: 'The information about the transaction destination. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.'
+      required:
+        - destination_type
+        - instructions
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/ContractCallDestinationType'
+        instructions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SolContractCallInstruction'
+    SolContractCallAccount:
+      title: SOL Instruction Account
+      type: object
+      description: The information about the account involved in a Solana instruction.
+      required:
+        - pubkey
+        - is_signer
+        - is_writable
+      properties:
+        pubkey:
+          type: string
+          description: |
+            The public key of the account. If the account is a signer of this transaction, this property must be the same as the value of the `source.address` property.
+          example: E4MhQWiqCLER3fFZNf8LyQFpLWW3BRxtsR5eps3c3vNS
+        is_signer:
+          type: boolean
+          description: |
+            Whether the account is the signer of this transaction:
+            - `true`: The account is a signer.
+            - `false`: The account is not a signer.
+          example: true
+        is_writable:
+          type: boolean
+          description: |
+            Whether the account can be modified by the instruction:
+            - `true`: The account can be modified by the instruction.
+            - `false`: The account cannot be modified by the instruction.
+          example: true
+    SolContractCallInstruction:
+      title: SOL Instruction
+      type: object
+      description: The information about the Solana instruction.
+      required:
+        - accounts
+        - data
+        - program_id
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SolContractCallAccount'
+        data:
+          type: string
+          description: |
+            The Base64-encoded instruction data used for interacting with a Solana program.
+          example: 37u9WtQpcm6ULa3WRQHmj49EPs4if7o9f1jSRVZpm2dvihR9C8jY4NqEwXUbLwx15HBSNcP1
+        program_id:
+          type: string
+          description: |
+            The address of the Solana program (smart contract). 
+          example: MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr
     ContractCallDestination:
       oneOf:
         - $ref: '#/components/schemas/EvmContractCallDestination'
+        - $ref: '#/components/schemas/SolContractCallDestination'
       discriminator:
         propertyName: destination_type
         mapping:
           EVM_Contract: '#/components/schemas/EvmContractCallDestination'
+          SOL_Contract: '#/components/schemas/SolContractCallDestination'
     ContractCallParams:
       type: object
       description: The information about a transaction that interacts with a smart contract

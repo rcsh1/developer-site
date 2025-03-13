@@ -111,9 +111,9 @@ func main() {
 
 ```
 ```javascript JavaScript
-const CoboWaas2 = require('@cobo/cobo-waas2');
+const CoboWaas2 = require("@cobo/cobo-waas2");
 // Initialize the API client
-const apiClient = CoboWaas2.ApiClient.instance
+const apiClient = CoboWaas2.ApiClient.instance;
 // Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
 apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
@@ -123,10 +123,14 @@ const apiInstance = new CoboWaas2.OAuthApi();
 const client_id = "pvSwS8iFrfK0oZrB0ugG54XPDOLEv0Ij";
 const org_id = "e3986401-4aec-480a-973d-e775a4518413";
 const grant_type = "org_implicit";
-apiInstance.getToken(client_id, org_id, grant_type).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
-  console.error(error);
-});
+apiInstance.getToken(client_id, org_id, grant_type).then(
+  (data) => {
+    console.log("API called successfully. Returned data: " + data);
+  },
+  (error) => {
+    console.error(error);
+  },
+);
+
 ```
 </RequestExample>

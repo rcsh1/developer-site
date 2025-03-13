@@ -210,9 +210,9 @@ func main() {
 
 ```
 ```javascript JavaScript
-const CoboWaas2 = require('@cobo/cobo-waas2');
+const CoboWaas2 = require("@cobo/cobo-waas2");
 // Initialize the API client
-const apiClient = CoboWaas2.ApiClient.instance
+const apiClient = CoboWaas2.ApiClient.instance;
 // Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
 apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
@@ -220,28 +220,35 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  'request_id': "web_send_by_user_327_1610444045047",
-  'cobo_ids': "20231213122855000000000000000000,20231213122955000000000000000000",
-  'transaction_ids': "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3",
-  'transaction_hashes': "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28",
-  'types': "Deposit,Withdrawal",
-  'statuses': "Completed,Failed",
-  'wallet_ids': "f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868",
-  'chain_ids': "BTC,ETH",
-  'token_ids': "ETH_USDT,ETH_USDC",
-  'asset_ids': "USDT,USDC",
-  'vault_id': "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  'project_id': "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  'min_created_timestamp': 1635744000000,
-  'max_created_timestamp': 1635744000000,
-  'limit': 10,
-  'before': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
-  'after': "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
+  request_id: "web_send_by_user_327_1610444045047",
+  cobo_ids: "20231213122855000000000000000000,20231213122955000000000000000000",
+  transaction_ids:
+    "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3",
+  transaction_hashes:
+    "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28",
+  types: "Deposit,Withdrawal",
+  statuses: "Completed,Failed",
+  wallet_ids:
+    "f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868",
+  chain_ids: "BTC,ETH",
+  token_ids: "ETH_USDT,ETH_USDC",
+  asset_ids: "USDT,USDC",
+  vault_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  project_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  min_created_timestamp: 1635744000000,
+  max_created_timestamp: 1635744000000,
+  limit: 10,
+  before: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
+  after: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk",
 };
-apiInstance.listTransactions(opts).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
-  console.error(error);
-});
+apiInstance.listTransactions(opts).then(
+  (data) => {
+    console.log("API called successfully. Returned data: " + data);
+  },
+  (error) => {
+    console.error(error);
+  },
+);
+
 ```
 </RequestExample>

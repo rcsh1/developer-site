@@ -125,9 +125,9 @@ func main() {
 
 ```
 ```javascript JavaScript
-const CoboWaas2 = require('@cobo/cobo-waas2');
+const CoboWaas2 = require("@cobo/cobo-waas2");
 // Initialize the API client
-const apiClient = CoboWaas2.ApiClient.instance
+const apiClient = CoboWaas2.ApiClient.instance;
 // Select the development environment. To use the production environment, replace `Env.DEV` with `Env.PROD`
 apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
@@ -139,12 +139,18 @@ const token_id = "ETH_USDT";
 const fee_rate = "10";
 const to_address = "2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE";
 const opts = {
-  'from_address': "2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE"
+  from_address: "2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE",
 };
-apiInstance.getMaxTransferableValue(wallet_id, token_id, fee_rate, to_address, opts).then((data) => {
-  console.log('API called successfully. Returned data: ' + data);
-}, (error) => {
-  console.error(error);
-});
+apiInstance
+  .getMaxTransferableValue(wallet_id, token_id, fee_rate, to_address, opts)
+  .then(
+    (data) => {
+      console.log("API called successfully. Returned data: " + data);
+    },
+    (error) => {
+      console.error(error);
+    },
+  );
+
 ```
 </RequestExample>
