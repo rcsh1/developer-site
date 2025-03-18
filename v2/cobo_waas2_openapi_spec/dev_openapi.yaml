@@ -1255,7 +1255,7 @@ paths:
 
         <Note>If you make transfers from Custodial Wallets (Asset Wallets) and Exchange Wallets, do not set the fee-related properties, as they will not take effects.</Note>
 
-        <Note>You can transfer tokens to multiple addresses only if you use MPC Wallets as the transaction source. You should use the <code>utxo_outputs</code> property to specify the destination addresses.</Note>
+        <Note>You can transfer tokens to multiple addresses only if you use MPC Wallets as the transaction source. To do this, you should use the <code>utxo_outputs</code> property to specify the destination addresses.</Note>
 
         <Info>If you initiate a transaction from a Smart Contract Wallet, a relevant transaction will be triggered from the Delegate to the Cobo Safe's address of the Smart Contract Wallet, with a transfer amount of <code>0</code>.</Info>
       security:
@@ -6141,7 +6141,9 @@ components:
       description: |
         The information about the transaction destination type `Address`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
-        Specify either the `account_output` property or the `utxo_outputs` property. You can transfer tokens to multiple addresses only if you use MPC Wallets as the transaction source. You should use the `utxo_outputs` property to specify the destination addresses.
+        **You need to specify either the `account_output` property or the `utxo_outputs` property.**
+
+        You can transfer tokens to multiple addresses only if you use MPC Wallets as the transaction source. To do this, you should use the `utxo_outputs` property to specify the destination addresses.
 
         Switch between the tabs to display the properties for different transaction destinations.
       title: Transfer to Address
@@ -6303,15 +6305,7 @@ components:
         fee:
           $ref: '#/components/schemas/TransactionRequestFee'
         transaction_process_type:
-          type: string
-          enum:
-            - AutoProcess
-            - BuildOnly
-          example: AutoProcess
-          description: |
-            Transaction processing type. Possible values are:
-            - `AutoProcess` (default): After the transaction is constructed, it will be automatically signed and broadcast.  
-            - `BuildOnly`: Set to this value if you want to build the transaction first without automatically signing and broadcasting it. You can manually call the [Sign and broadcast transaction](https://www.cobo.com/developers/v2/api-references/transactions/sign-and-broadcast-transaction) operation to complete the signing and broadcasting process.
+          $ref: '#/components/schemas/TransactionProcessType'
         auto_fuel:
           $ref: '#/components/schemas/AutoFuelType'
     EstimateFeeRequestType:
@@ -6592,9 +6586,19 @@ components:
         fee:
           $ref: '#/components/schemas/TransactionRequestFee'
         transaction_process_type:
-          $ref: '#/components/schemas/TransferParams/properties/transaction_process_type'
+          $ref: '#/components/schemas/TransactionProcessType'
         auto_fuel:
           $ref: '#/components/schemas/AutoFuelType'
+    TransactionProcessType:
+      type: string
+      enum:
+        - AutoProcess
+        - BuildOnly
+      example: AutoProcess
+      description: |
+        Transaction processing type. Possible values are:
+        - `AutoProcess` (default): After the transaction is constructed, it will be automatically signed and broadcast.  
+        - `BuildOnly`: Set to this value if you want to build the transaction first without automatically signing and broadcasting it. You can manually call the [Sign and broadcast transaction](https://www.cobo.com/developers/v2/api-references/transactions/sign-and-broadcast-transaction) operation to complete the signing and broadcasting process.
     MpcMessageSignSource:
       title: Message Signing from MPC Wallet
       type: object
