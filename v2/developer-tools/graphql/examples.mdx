@@ -1,0 +1,74 @@
+---
+title: "Tools and examples"
+---
+
+Here are some examples of using Cobo GraphQL API:
+
+```graphql
+query GetWalletDetails {
+  wallets(first: 3) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      node {
+        walletId
+        walletSubtype
+        transactions(first: 3) {
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          edges {
+            node {
+              id
+              initiator {
+                initiator
+              }
+              failedReason
+              description
+              createdTimestamp
+              confirmingThreshold
+              coboId
+              confirmedNum
+            }
+          }
+        }
+        tokenBalances {
+          edges {
+            node {
+              balance {
+                available
+                locked
+                pending
+                total
+              }
+              token {
+                assetId
+                canDeposit
+                canWithdraw
+                chain {
+                  confirmingThreshold
+                  chainId
+                  explorerAddressUrl
+                  explorerTxUrl
+                }
+                custodialMinimumDepositThreshold
+                decimal
+                dustThreshold
+                feeTokenId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```

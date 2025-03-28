@@ -1,0 +1,147 @@
+---
+title: "Get started"
+lang: "en"
+description: "Step-by-step guide to getting started with the Cobo GraphQL API, including authentication and permissions."
+---
+
+This section provides a step-by-step guide to help you get started with the Cobo GraphQL API.
+
+## Authentication
+
+To start using the Cobo GraphQL API, you need to:
+
+1. Generate an API key pair and calculate the API signature. For more instructions, refer to [Authentication](/v2/guides/overview/cobo-auth).
+2. Register the API key on Developer Console. For more instructions, see [Register an API key](https://manuals.cobo.com/en/portal/developer-console/create-api-key).
+3. Authenticate using an API key in the request header.
+
+<Note>If you are using Cobo’s WaaS SDKs, you only need to provide your API secret because the SDKs handles the remaining steps for you.</Note>
+
+## Permissions
+
+Some queries requires permissions. For more details, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+## API endpoint
+
+- Production environment: `https://api.cobo.com/v2/graphql`
+- Development environment: `https://api.dev.cobo.com/v2/graphql`
+
+For more details about environments, refer to [Environment](/v2/guides/overview/environments).
+
+## Query example
+
+Below is an example of getting the information about a specific wallet with wallet ID of `wallet_123`, including its basic details and the transaction ID and transaction status of the latest 3 transactions.
+
+```curl
+curl --location --request POST "https://api.dev.cobo.com/v2/graphql" \
+  --header "Content-Type: application/json" \
+  --header "BIZ-API-KEY: {YOUR_API_KEY}" \
+  --header "Biz-Api-Nonce: {NONCE}" \
+  --header "Biz-Api-Signature: {YOUR_API_SIGNATURE}" \
+  --data-raw '{
+    "query": "query { walletById(id: \"wallet_123\") { walletId name transactions(first: 3) { edges { node { transactionId status } } } } }"
+  }'
+```  
+
+You will get a response similar to the following:
+
+```json
+{
+  "data": {
+    "walletById": {
+      "walletId": "wallet_123",
+      "name": "My Custodial Wallet",
+      "transactions": {
+        "edges": [
+          {
+            "node": {
+              "transactionId": "tx_001",
+              "status": "SUCCESS"
+            }
+          },
+          {
+            "node": {
+              "transactionId": "tx_002",
+              "status": "PENDING"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```  
+
+The following is a more complex example of querying wallets' details:
+
+```graphql
+query GetWalletDetails {
+  wallets(first: 3) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      node {
+        walletId
+        walletSubtype
+        transactions(first: 3) {
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          edges {
+            node {
+              id
+              initiator {
+                initiator
+              }
+              failedReason
+              description
+              createdTimestamp
+              confirmingThreshold
+              coboId
+              confirmedNum
+            }
+          }
+        }
+        tokenBalances {
+          edges {
+            node {
+              balance {
+                available
+                locked
+                pending
+                total
+              }
+              token {
+                assetId
+                canDeposit
+                canWithdraw
+                chain {
+                  confirmingThreshold
+                  chainId
+                  explorerAddressUrl
+                  explorerTxUrl
+                }
+                custodialMinimumDepositThreshold
+                decimal
+                dustThreshold
+                feeTokenId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+## Error code
+
+For common error codes and HTTP status codes, refer to [Error codes](/v2/api-references/error-codes).

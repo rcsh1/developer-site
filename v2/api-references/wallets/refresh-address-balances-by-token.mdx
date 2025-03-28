@@ -1,12 +1,16 @@
 ---
-openapi: post /transactions/estimate_fee
+openapi: put /wallets/{wallet_id}/tokens/{token_id}/refresh_address_balances
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.estimate_fee_params import EstimateFeeParams
-from cobo_waas2.models.estimated_fee import EstimatedFee
+from cobo_waas2.models.refresh_address_balances_by_token200_response import (
+    RefreshAddressBalancesByToken200Response,
+)
+from cobo_waas2.models.refresh_address_balances_by_token_request import (
+    RefreshAddressBalancesByTokenRequest,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -20,18 +24,27 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.TransactionsApi(api_client)
-    estimate_fee_params = cobo_waas2.EstimateFeeParams()
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    token_id = "ETH_USDT"
+    refresh_address_balances_by_token_request = (
+        cobo_waas2.RefreshAddressBalancesByTokenRequest()
+    )
 
     try:
-        # Estimate transaction fee
-        api_response = api_instance.estimate_fee(
-            estimate_fee_params=estimate_fee_params
+        # Refresh address balances by token
+        api_response = api_instance.refresh_address_balances_by_token(
+            wallet_id,
+            token_id,
+            refresh_address_balances_by_token_request=refresh_address_balances_by_token_request,
         )
-        print("The response of TransactionsApi->estimate_fee:\n")
+        print("The response of WalletsApi->refresh_address_balances_by_token:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling TransactionsApi->estimate_fee: %s\n" % e)
+        print(
+            "Exception when calling WalletsApi->refresh_address_balances_by_token: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -40,7 +53,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.api.WalletsApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -52,13 +65,18 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    TransactionsApi apiInstance = new TransactionsApi();
-    EstimateFeeParams estimateFeeParams = new EstimateFeeParams();
+    WalletsApi apiInstance = new WalletsApi();
+    UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    String tokenId = "ETH_USDT";
+    RefreshAddressBalancesByTokenRequest refreshAddressBalancesByTokenRequest =
+        new RefreshAddressBalancesByTokenRequest();
     try {
-      EstimatedFee result = apiInstance.estimateFee(estimateFeeParams);
+      RefreshAddressBalancesByToken200Response result =
+          apiInstance.refreshAddressBalancesByToken(
+              walletId, tokenId, refreshAddressBalancesByTokenRequest);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling TransactionsApi#estimateFee");
+      System.err.println("Exception when calling WalletsApi#refreshAddressBalancesByToken");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -80,26 +98,9 @@ import (
 )
 
 func main() {
-	estimateFeeParams := coboWaas2.EstimateFeeParams{
-		EstimateContractCallFeeParams: coboWaas2.NewEstimateContractCallFeeParams(
-			coboWaas2.EstimateFeeRequestType("Transfer"),
-			"ETH",
-			coboWaas2.ContractCallSource{
-				CustodialWeb3ContractCallSource: coboWaas2.NewCustodialWeb3ContractCallSource(
-					coboWaas2.ContractCallSourceType("Web3"),
-					"f47ac10b-58cc-4372-a567-0e02b2c3d479",
-					"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-				),
-			},
-			coboWaas2.ContractCallDestination{
-				EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(
-					coboWaas2.ContractCallDestinationType("EVM_Contract"),
-					"0x0406db8351aa6839169bb363f63c2c808fee8f99",
-					"0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO",
-				),
-			},
-		),
-	}
+	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	tokenId := "ETH_USDT"
+	refreshAddressBalancesByTokenRequest := *coboWaas2.NewRefreshAddressBalancesByTokenRequest([]string{"3HYV6ta67197syD1ZVFganpmL2wLz4RyoC"})
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -112,15 +113,19 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.EstimateFee(ctx).
-		EstimateFeeParams(estimateFeeParams).
+	resp, r, err := apiClient.WalletsAPI.RefreshAddressBalancesByToken(ctx, walletId, tokenId).
+		RefreshAddressBalancesByTokenRequest(refreshAddressBalancesByTokenRequest).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.EstimateFee``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `WalletsAPI.RefreshAddressBalancesByToken``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `EstimateFee`: EstimatedFee
-	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.EstimateFee`: %v\n", resp)
+	// response from `RefreshAddressBalancesByToken`: RefreshAddressBalancesByToken200Response
+	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.RefreshAddressBalancesByToken`: %v\n", resp)
 }
 
 ```
@@ -133,11 +138,14 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.TransactionsApi();
+const apiInstance = new CoboWaas2.WalletsApi();
+const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+const token_id = "ETH_USDT";
 const opts = {
-  EstimateFeeParams: new CoboWaas2.EstimateFeeParams(),
+  RefreshAddressBalancesByTokenRequest:
+    new CoboWaas2.RefreshAddressBalancesByTokenRequest(),
 };
-apiInstance.estimateFee(opts).then(
+apiInstance.refreshAddressBalancesByToken(wallet_id, token_id, opts).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

@@ -1,0 +1,102 @@
+---
+title: "Overview"
+lang: "en"
+description: "Overview of the Cobo GraphQL API, its features, and benefits for efficient data retrieval."
+---
+
+This guide provides an overview of the Cobo GraphQL API.
+
+## About GraphQL
+
+GraphQL is a powerful query language for APIs that enables clients to request exactly the data they need in a single request, reducing over-fetching and under-fetching of data. For more details, refer to the official website [GraphQL](https://graphql.org).
+
+## About Cobo GraphQL API
+Cobo's GraphQL API provides real-time access to blockchain, wallet, and transaction data from WaaS 2.0. Compared with REST APIs, GraphQL enables clients to define responses dynamically, optimizing performance and reducing API calls for faster and more efficient data retrieval.
+
+## Key features
+
+The Cobo GraphQL API supports the following features:
+
+### Pagination  
+The API supports cursor-based pagination and page-based pagination (connection queries) for efficient data retrieval.
+
+- Uses `first`, `last`, `before`, and `after` for navigation.  
+- `first` and `last` values must be in the range [1, 100].  
+- Some schemas may apply to stricter limits.
+
+**Example: Fetching the next 10 wallets after a given cursor**
+```graphql
+query {
+  wallets(first: 10, after: "cursor_value") {
+    edges {
+      node {
+        walletId
+        name
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+```
+
+### Sorting  
+Clients can sort query results by specifying sorting parameters. Available sorting fields include `createdTimestamp`, `TotalValue`, `Name`, `TradingTime`.
+
+**Example: Sorting transactions by `createdTimestamp`**
+```graphql
+query {
+  transactions(walletId: "123", sort: { field: CREATED_TIMESTAMP, order: DESC }) {
+    edges {
+      node {
+        transactionId
+        createdTimestamp
+      }
+    }
+  }
+}
+```
+
+### Field selection  
+GraphQL allows users to retrieve only the necessary fields, reducing unnecessary data transfer and improving efficiency.
+
+**Example: Requesting only `walletId` and `name` for a wallet**
+```graphql
+query {
+  walletById(id: "wallet_123") {
+    walletId
+    name
+  }
+}
+```
+
+### Nested queries  
+Clients can fetch related objects in a single request, reducing multiple API calls and improving efficiency.
+
+**Example: Retrieving a wallet’s transactions and token balances**
+```graphql
+query {
+  walletById(id: "wallet_123") {
+    walletId
+    transactions(first: 5) {
+      edges {
+        node {
+          transactionId
+          status
+        }
+      }
+    }
+    tokenBalances {
+      edges {
+        node {
+          balance
+          token {
+            symbol
+          }
+        }
+      }
+    }
+  }
+}

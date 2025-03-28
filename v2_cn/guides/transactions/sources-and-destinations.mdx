@@ -19,9 +19,9 @@ description: "WaaS 2.0 API 中交易来源和目的地的概述，详细说明�
 | Deposit - 交易所钱包之间转账       | DepositFromWallet                                                                              | DepositToWallet          |
 | Deposit - 其他充币交易               | DepositFromAddress                                                                            | DepositToAddress         |
 | Withdrawal - 交易所钱包之间转账    | Main<br />Sub                                                                                    | ExchangeWallet           |
-| Withdrawal - 其他提币交易         | Asset<br />Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Main<br />Sub                      | Address                  |
-| ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}                                               | EVM_Contract<br />SOL_Contract             |
-| MessageSign                                       | Org-Controlled<br />User-Controlled                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature<br />Raw_Message_Signature<br />BTC_EIP_191_Signature |
+| Withdrawal - 其他提币交易         | Asset<br />Web3<br />Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Main<br />Sub                      | Address                  |
+| ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Web3                                               | EVM_Contract<br />SOL_Contract             |
+| MessageSign                                       | Org-Controlled<br />User-Controlled<br />Web3                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature<br />Raw_Message_Signature<br />BTC_EIP_191_Signature |
 | ExternalSafeTx                                    | Safe\{Wallet\}                                                                                   |       EVM_Contract        |
 | Stake                                   | Org-Controlled                                                                                  |    Address          |
 | Unstake                                    | Org-Controlled                                                                                   |    Address          |
@@ -29,9 +29,10 @@ description: "WaaS 2.0 API 中交易来源和目的地的概述，详细说明�
 ## 交易来源类型
 
 交易来源类型如下：
-- `Asset`：托管钱包（资产钱包）。
+- `Asset`：全托管钱包（资产钱包）。
+- `Web3`：全托管钱包（Web3 钱包）。
 - `Org-Controlled`：MPC 钱包（机构钱包）。
-- `User-Controlled`：MPC 钱包（用户控制钱包）。
+- `User-Controlled`：MPC 钱包（终端用户钱包）。
 - `Safe{Wallet}`：智能合约钱包（Safe{Wallet}）。
 - `Main`：交易所钱包（主账户）。
 - `Sub`：交易所钱包（子账户）。

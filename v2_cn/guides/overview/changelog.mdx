@@ -7,7 +7,46 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
-## v1.11
+## v1.12.0
+
+此版本于 2025 年 3 月 27 日发布。
+
+### 新功能
+现在您可以使用以下操作查询 Fee Station 信息：
+  - [Get Fee Station transaction information](/v2/api-references/feestation/get-fee-station-transaction-information)
+  - [List all Fee Station transactions](/v2/api-references/feestation/list-all-fee-station-transactions)
+  - [List Fee Station addresses](/v2/api-references/feestation/list-fee-station-addresses)
+  - [List Fee Station token balances](/v2/api-references/feestation/list-fee-station-token-balances)
+
+此外，我们还引入了一个新的 Operation 来更新钱包余额：
+  - [Refresh address balances by token](/v2/api-references/wallets/refresh-address-balances-by-token)
+
+### 改进
+
+- 在关键交易操作中添加了对全托管钱包（Web3 钱包）的支持。
+  - 您可以在以下操作中将 `Web3` 设置为交易来源：
+    - [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee)
+    - [Transfer token](/v2/api-references/transactions/transfer-token)
+    - [Call smart contract](/v2/api-references/transactions/call-smart-contract)
+    - [Sign message](/v2/api-references/transactions/sign-message)
+
+  - 您还可以在以下查询操作中查询源自 `Web3` 交易来源的交易：
+    - [List all transactions](/v2/api-references/transactions/list-all-transactions)
+    - [Get transaction information](/v2/api-references/transactions/get-transaction-information)
+
+- 添加了新的 Webhook 事件类型 `wallet.token.enabled` 和 `wallet.chain.enabled`，以及新的数据类型 `Tokens` 和 `Chains`。有关更多详细信息，请参阅 [Webhook 事件类型和数据类型](/v2/guides/webhooks-callbacks/webhook-event-type)。
+
+- 扩展了以下 Schema：
+  - `TransactionMessageSignEIP712Destination`：添加了 `safe_tx_extra_data` 和 `raw_structured_data`，以增强 Safe 交易上下文信息
+  - `BabylonStakingActivityDetailExtra`：添加了 `withdraw_from_type` 和 `slash_from_type`，以改进 Babylon 质押活动信息
+  - `Transaction`：添加了 `cobo_category`，用于 Cobo 定义的交易分类
+  - `TransactionSelectedUtxo`：添加了 `redeem_script` 和 `revealed_script`，以提供详细的 UTXO 交易信息
+
+- 优化了 `TransactionUtxoFee` Schema，将 `fee_rate` 设为可选字段
+
+- [List all transactions](/v2/api-references/transactions/list-all-transactions) 操作现在支持按方向排序。
+
+## v1.11.0
 
 此版本发布于 2025 年 3 月 12 日。
 
@@ -15,7 +54,7 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 - 在 [调用智能合约](/v2/api-references/transactions/call-smart-contract) 操作中添加了对 Solana (SOL) 合约的支持。
 - 在 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应中添加了 `reserved_fee` 属性，用于表示提交交易 calldata 到 L1（Layer 1）的估计费用。
 
-## v1.10
+## v1.10.0
 
 此版本发布于 2025 年 3 月 3 日。
 

@@ -1,5 +1,5 @@
 ---
-openapi: get /transactions
+openapi: get /fee_station/transactions
 ---
 
 <RequestExample>
@@ -19,7 +19,7 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.TransactionsApi(api_client)
+    api_instance = cobo_waas2.FeeStationApi(api_client)
     request_id = "web_send_by_user_327_1610444045047"
     cobo_ids = "20231213122855000000000000000000,20231213122955000000000000000000"
     transaction_ids = (
@@ -30,14 +30,9 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     )
     types = "Deposit,Withdrawal"
     statuses = "Completed,Failed"
-    wallet_ids = (
-        "f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868"
-    )
     chain_ids = "BTC,ETH"
     token_ids = "ETH_USDT,ETH_USDC"
     asset_ids = "USDT,USDC"
-    vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    project_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
     min_created_timestamp = 1635744000000
     max_created_timestamp = 1635744000000
     limit = 10
@@ -46,20 +41,17 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     direction = ""
 
     try:
-        # List all transactions
-        api_response = api_instance.list_transactions(
+        # List all Fee Station transactions
+        api_response = api_instance.list_fee_station_transactions(
             request_id=request_id,
             cobo_ids=cobo_ids,
             transaction_ids=transaction_ids,
             transaction_hashes=transaction_hashes,
             types=types,
             statuses=statuses,
-            wallet_ids=wallet_ids,
             chain_ids=chain_ids,
             token_ids=token_ids,
             asset_ids=asset_ids,
-            vault_id=vault_id,
-            project_id=project_id,
             min_created_timestamp=min_created_timestamp,
             max_created_timestamp=max_created_timestamp,
             limit=limit,
@@ -67,10 +59,13 @@ with cobo_waas2.ApiClient(configuration) as api_client:
             after=after,
             direction=direction,
         )
-        print("The response of TransactionsApi->list_transactions:\n")
+        print("The response of FeeStationApi->list_fee_station_transactions:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling TransactionsApi->list_transactions: %s\n" % e)
+        print(
+            "Exception when calling FeeStationApi->list_fee_station_transactions: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -79,7 +74,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.api.FeeStationApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -91,7 +86,7 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    TransactionsApi apiInstance = new TransactionsApi();
+    FeeStationApi apiInstance = new FeeStationApi();
     String requestId = "web_send_by_user_327_1610444045047";
     String coboIds = "20231213122855000000000000000000,20231213122955000000000000000000";
     String transactionIds =
@@ -99,12 +94,9 @@ public class Example {
     String transactionHashes = "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28";
     String types = "Deposit,Withdrawal";
     String statuses = "Completed,Failed";
-    String walletIds = "f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868";
     String chainIds = "BTC,ETH";
     String tokenIds = "ETH_USDT,ETH_USDC";
     String assetIds = "USDT,USDC";
-    UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    UUID projectId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     Long minCreatedTimestamp = 1635744000000L;
     Long maxCreatedTimestamp = 1635744000000L;
     Integer limit = 10;
@@ -113,19 +105,16 @@ public class Example {
     String direction = "ASC";
     try {
       ListTransactions200Response result =
-          apiInstance.listTransactions(
+          apiInstance.listFeeStationTransactions(
               requestId,
               coboIds,
               transactionIds,
               transactionHashes,
               types,
               statuses,
-              walletIds,
               chainIds,
               tokenIds,
               assetIds,
-              vaultId,
-              projectId,
               minCreatedTimestamp,
               maxCreatedTimestamp,
               limit,
@@ -134,7 +123,7 @@ public class Example {
               direction);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling TransactionsApi#listTransactions");
+      System.err.println("Exception when calling FeeStationApi#listFeeStationTransactions");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -162,12 +151,9 @@ func main() {
 	transactionHashes := "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28"
 	types := "Deposit,Withdrawal"
 	statuses := "Completed,Failed"
-	walletIds := "f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868"
 	chainIds := "BTC,ETH"
 	tokenIds := "ETH_USDT,ETH_USDC"
 	assetIds := "USDT,USDC"
-	vaultId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-	projectId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 	minCreatedTimestamp := int64(1635744000000)
 	maxCreatedTimestamp := int64(1635744000000)
 	limit := int32(10)
@@ -186,19 +172,16 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.ListTransactions(ctx).
+	resp, r, err := apiClient.FeeStationAPI.ListFeeStationTransactions(ctx).
 		RequestId(requestId).
 		CoboIds(coboIds).
 		TransactionIds(transactionIds).
 		TransactionHashes(transactionHashes).
 		Types(types).
 		Statuses(statuses).
-		WalletIds(walletIds).
 		ChainIds(chainIds).
 		TokenIds(tokenIds).
 		AssetIds(assetIds).
-		VaultId(vaultId).
-		ProjectId(projectId).
 		MinCreatedTimestamp(minCreatedTimestamp).
 		MaxCreatedTimestamp(maxCreatedTimestamp).
 		Limit(limit).
@@ -207,11 +190,15 @@ func main() {
 		Direction(direction).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.ListTransactions``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `FeeStationAPI.ListFeeStationTransactions``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListTransactions`: ListTransactions200Response
-	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.ListTransactions`: %v\n", resp)
+	// response from `ListFeeStationTransactions`: ListTransactions200Response
+	fmt.Fprintf(os.Stdout, "Response from `FeeStationAPI.ListFeeStationTransactions`: %v\n", resp)
 }
 
 ```
@@ -224,7 +211,7 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.TransactionsApi();
+const apiInstance = new CoboWaas2.FeeStationApi();
 const opts = {
   request_id: "web_send_by_user_327_1610444045047",
   cobo_ids: "20231213122855000000000000000000,20231213122955000000000000000000",
@@ -234,13 +221,9 @@ const opts = {
     "239861be9a4afe080c359b7fe4a1d035945ec46256b1a0f44d1267c71de8ec28",
   types: "Deposit,Withdrawal",
   statuses: "Completed,Failed",
-  wallet_ids:
-    "f47ac10b-58cc-4372-a567-0e02b2c3d479,1ddca562-8434-41c9-8809-d437bad9c868",
   chain_ids: "BTC,ETH",
   token_ids: "ETH_USDT,ETH_USDC",
   asset_ids: "USDT,USDC",
-  vault_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
-  project_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   min_created_timestamp: 1635744000000,
   max_created_timestamp: 1635744000000,
   limit: 10,
@@ -248,7 +231,7 @@ const opts = {
   after: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk",
   direction: "ASC",
 };
-apiInstance.listTransactions(opts).then(
+apiInstance.listFeeStationTransactions(opts).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

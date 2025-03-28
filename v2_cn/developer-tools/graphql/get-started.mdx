@@ -1,0 +1,149 @@
+---
+title: "快速入门"
+lang: "zh-hans"
+description: "逐步指南，帮助您开始使用 Cobo GraphQL API，包括身份验证和权限。"
+---
+
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本节提供了一个逐步指南，帮助您开始使用 Cobo GraphQL API。
+
+## 身份验证
+
+要开始使用 Cobo GraphQL API，您需要：
+
+1. 生成 API 密钥对并计算 API 签名。有关更多说明，请参阅[身份验证](/v2_cn/guides/overview/cobo-auth)。
+2. 在开发者控制台中注册 API 密钥。有关更多说明，请参阅[注册 API 密钥](https://manuals.cobo.com/zh/portal/developer-console/create-api-key)。
+3. 在请求头中使用 API 密钥进行身份验证。
+
+<Note>如果您使用 Cobo 的 WaaS SDK，您只需提供 API 密钥，因为 SDK 会为您处理其余步骤。</Note>
+
+## 权限
+
+某些查询需要权限。有关更多详细信息，请参阅[权限和钱包范围](/v2_cn/guides/overview/permissions-and-scopes)。
+
+## API 端点
+
+- 生产环境：`https://api.cobo.com/v2/graphql`
+- 开发环境：`https://api.dev.cobo.com/v2/graphql`
+
+有关环境的更多详细信息，请参阅[环境](/v2_cn/guides/overview/environments)。
+
+## 查询示例
+
+下面是一个获取特定钱包信息的示例，钱包 ID 为 `wallet_123`，包括其基本详细信息以及最近 3 笔交易的交易 ID 和交易状态。
+
+```curl
+curl --location --request POST "https://api.dev.cobo.com/v2/graphql" \
+  --header "Content-Type: application/json" \
+  --header "BIZ-API-KEY: {YOUR_API_KEY}" \
+  --header "Biz-Api-Nonce: {NONCE}" \
+  --header "Biz-Api-Signature: {YOUR_API_SIGNATURE}" \
+  --data-raw '{
+    "query": "query { walletById(id: \"wallet_123\") { walletId name transactions(first: 3) { edges { node { transactionId status } } } } }"
+  }'
+```
+
+您将获得类似于以下的响应：
+
+```json
+{
+  "data": {
+    "walletById": {
+      "walletId": "wallet_123",
+      "name": "我的托管钱包",
+      "transactions": {
+        "edges": [
+          {
+            "node": {
+              "transactionId": "tx_001",
+              "status": "SUCCESS"
+            }
+          },
+          {
+            "node": {
+              "transactionId": "tx_002",
+              "status": "PENDING"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+以下是一个更复杂的查询钱包详细信息的示例：
+
+```graphql
+query GetWalletDetails {
+  wallets(first: 3) {
+    pageInfo {
+      endCursor
+      hasNextPage
+      hasPreviousPage
+      startCursor
+    }
+    edges {
+      node {
+        walletId
+        walletSubtype
+        transactions(first: 3) {
+          pageInfo {
+            endCursor
+            hasNextPage
+            hasPreviousPage
+            startCursor
+          }
+          edges {
+            node {
+              id
+              initiator {
+                initiator
+              }
+              failedReason
+              description
+              createdTimestamp
+              confirmingThreshold
+              coboId
+              confirmedNum
+            }
+          }
+        }
+        tokenBalances {
+          edges {
+            node {
+              balance {
+                available
+                locked
+                pending
+                total
+              }
+              token {
+                assetId
+                canDeposit
+                canWithdraw
+                chain {
+                  confirmingThreshold
+                  chainId
+                  explorerAddressUrl
+                  explorerTxUrl
+                }
+                custodialMinimumDepositThreshold
+                decimal
+                dustThreshold
+                feeTokenId
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+```
+
+## 错误代码
+
+有关常见错误代码和 HTTP 状态代码，请参阅[错误代码](/v2_cn/api-references/error-codes)。
