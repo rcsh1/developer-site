@@ -1,0 +1,192 @@
+---
+title: "Queries"
+sidebarTitle: "Queries"
+lang: "en"
+description: "Learn how to use queries with Cobo GraphQL API"
+---
+
+This section provides a list of available queries and their descriptions.
+
+## addressConnection
+Retrieve a paginated list of addresses.
+
+Returns [AddressConnection](/v2/developer-tools/graphql/schema#addressconnection).
+
+**Permissions**
+
+| Resource  | Operation |
+|-----------|-----------|
+| wallet    | read      |
+
+For more details about permissions, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+**Arguments**
+
+| Name       | Type      | Description |
+|------------|----------|-------------|
+| `walletId` | `String!` | The wallet ID. |
+| `addresses` | `String` | A list of wallet addresses, separated by comma. For addresses requiring a memo, append the memo after the address using the `\|` separator (e.g., `address\|memo`). |
+| `chainIds` | `[String]` | A list of chain IDs, which are the unique identifiers of blockchains. |
+
+## chain
+Retrieve details of a specific blockchain.
+
+Returns [Chain](/v2/developer-tools/graphql/schema#chain).
+
+**Permissions**
+
+This query does not require any permission.
+
+**Arguments**
+| Name     | Type     | Description |
+|---------|---------|-------------|
+| `chainId` | `String!` | The chain ID, which is the unique identifier of a blockchain. |
+
+## chainConnection
+Retrieve a paginated list of blockchain networks.
+
+Returns [ChainConnection](/v2/developer-tools/graphql/schema#chainconnection).
+
+**Permissions**
+
+This query does not require any permission.
+
+**Arguments**
+| Name            | Type        | Description |
+|---------------|------------|-------------|
+| `walletSubtype` | [WalletSubtype](/v2/developer-tools/graphql/schema#walletsubtype) | The wallet subtype. |
+| `walletType` | [WalletType](/v2/developer-tools/graphql/schema#wallettype) | The wallet type. |
+
+## tokenConnection
+Retrieve a paginated list of tokens.
+
+Returns [TokenConnection](/v2/developer-tools/graphql/schema#tokenconnection).
+
+**Permissions**
+
+This query does not require any permission.
+
+**Arguments**
+
+| Name            | Type            | Description |
+|---------------|----------------|-------------|
+| `chainIds`     | `[String]`      | A list of chain IDs, which are the unique identifiers of blockchains. |
+| `tokenIds`     | `[String]`      | A list of token IDs, which are the unique identifiers of tokens. |
+| `walletSubtype` | [WalletSubtype](/v2/developer-tools/graphql/schema#walletsubtype) | The wallet subtype. |
+| `walletType`   | [WalletType](/v2/developer-tools/graphql/schema#wallettype)    | The wallet type.  |
+
+## transaction
+Retrieve details of a specific transaction.
+
+Returns [Transaction](/v2/developer-tools/graphql/schema#transaction).
+
+**Permissions**
+
+| Resource     | Operation |
+|--------------|-----------|
+| transaction  | read      |
+
+For more details about permissions, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+**Arguments**
+| Name           | Type     | Description                         |
+|---------------|---------|-------------------------------------|
+| `transactionId` | `String!` | The transaction ID.|
+
+## transactionConnection
+Retrieve a paginated list of transactions.
+
+Returns [TransactionConnection](/v2/developer-tools/graphql/schema#transactionconnection).
+
+**Permissions**
+
+| Resource     | Operation |
+|--------------|-----------|
+| transaction  | read      |
+
+For more details about permissions, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+**Arguments**
+
+| Name               | Type               | Description |
+|--------------------|-------------------|-------------|
+| `coboIds`         | `[String]`         | The Cobo ID. |
+| `requestId`       | `String`           | The request ID. |
+| `transactionHashes` | `[String]`       | The transaction hash. |
+| `transactionIds`  | `[String]`         | A list of transaction IDs. |
+| `transactionTypes` | [`[TransactionType]`](/v2/developer-tools/graphql/schema#transactiontype) | The transaction type. |
+
+## wallet
+Retrieve details of a specific wallet.
+
+Returns [Wallet](/v2/developer-tools/graphql/schema#wallet).
+
+**Permissions**
+
+| Resource | Operation |
+|----------|-----------|
+| wallet   | read      |
+
+For more details about permissions, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+**Arguments**
+| Name       | Type     | Description |
+|------------|---------|-------------|
+| `walletId` | `String!` | The wallet ID. |
+
+## walletConnection
+Retrieve a paginated list of wallets.
+
+Returns [WalletConnection](/v2/developer-tools/graphql/schema#walletconnection).
+
+**Permissions**
+
+| Resource | Operation |
+|----------|-----------|
+| wallet   | read      |
+
+For more details about permissions, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+**Arguments**
+
+| Name            | Type             | Description |
+|----------------|-----------------|-------------|
+| `walletSubtype` | [WalletSubtype](/v2/developer-tools/graphql/schema#walletsubtype)  | The wallet subtype.|
+| `walletType`    | [WalletType](/v2/developer-tools/graphql/schema#wallettype)     | The wallet type. |
+
+## walletSummary
+Retrieve summary information of a specific wallet.
+
+Returns [WalletSummary](/v2/developer-tools/graphql/schema#walletsummary).
+
+**Permissions**
+
+| Resource | Operation |
+|----------|-----------|
+| wallet   | read      |
+
+For more details about permissions, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+**Arguments**
+| Name       | Type     | Description |
+|------------|---------|-------------|
+| `walletId` | `String!` | The wallet ID. |
+
+## walletsSummary
+Retrieve aggregated summary data for multiple wallets.
+
+Returns [WalletsSummary](/v2/developer-tools/graphql/schema#walletssummary).
+
+**Permissions**
+
+| Resource | Operation |
+|----------|-----------|
+| wallet   | read      |
+
+For more details about permissions, refer to [Permissions and wallet scopes](/v2/guides/overview/permissions-and-scopes).
+
+**Arguments**
+
+| Name            | Type             | Description |
+|----------------|-----------------|-------------|
+| `walletType`    | [WalletType](/v2/developer-tools/graphql/schema#wallettype)     | The wallet type.  |

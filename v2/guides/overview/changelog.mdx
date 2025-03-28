@@ -6,7 +6,48 @@ description: "Detailed changelog of all additions and changes to the WaaS 2.0 AP
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
-## v1.11
+## v1.12.0
+
+This version was released on March 27, 2025.
+
+### New Features
+Now you can query Fee Station information with the following operations:
+  - [Get Fee Station transaction information](/v2/api-references/feestation/get-fee-station-transaction-information)
+  - [List all Fee Station transactions](/v2/api-references/feestation/list-all-fee-station-transactions)
+  - [List Fee Station addresses](/v2/api-references/feestation/list-fee-station-addresses)
+  - [List Fee Station token balances](/v2/api-references/feestation/list-fee-station-token-balances)
+
+Additionally, we've introduced a new operation to update wallet balances:
+  - [Refresh address balances by token](/v2/api-references/wallets/refresh-address-balances-by-token)
+
+### Improvements
+
+- Added support for Custodial Wallets (Web3 Wallets) across key transaction operations. 
+  - You can set `Web3` as the transaction source in the following operations:
+    - [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee)
+    - [Transfer token](/v2/api-references/transactions/transfer-token)
+    - [Call smart contract](/v2/api-references/transactions/call-smart-contract)
+    - [Sign message](/v2/api-references/transactions/sign-message)
+
+  - You can also query transactions originating from the `Web3` transaction source in the following query operations:
+    - [List all transactions](/v2/api-references/transactions/list-all-transactions)
+    - [Get transaction information](/v2/api-references/transactions/get-transaction-information)
+
+- Added new webhook event types `wallet.token.enabled` and `wallet.chain.enabled`, along with new data types `Tokens` and `Chains`. For more details, refer to [Webhook event types and data types](/v2/guides/webhooks-callbacks/webhook-event-type).
+
+
+- Extended schema properties:
+  - `TransactionMessageSignEIP712Destination`: Added `safe_tx_extra_data` and `raw_structured_data` for enhanced Safe transaction context
+  - `BabylonStakingActivityDetailExtra`: Added `withdraw_from_type` and `slash_from_type` for improved Babylon staking activity information
+  - `Transaction`: Added `cobo_category` for Cobo-defined transaction categorization
+  - `TransactionSelectedUtxo`: Added `redeem_script` and `revealed_script` for detailed UTXO transaction information
+
+- Optimized `TransactionUtxoFee` schema by making `fee_rate` an optional field
+
+- The [List all transactions](/v2/api-references/transactions/list-all-transactions) operation now supports sorting by direction.
+
+
+## v1.11.0
 
 This version was released on March 12, 2025.
 
@@ -14,7 +55,7 @@ This version was released on March 12, 2025.
 - Added support for Solana (SOL) contracts in the [Call smart contract](/v2/api-references/transactions/call-smart-contract) operation.
 - Added the `reserved_fee` property to the response of the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) operation for both EIP-1559 and legacy fee models, which represents the estimated fee for submitting transaction calldata to L1 (Layer 1).
 
-## v1.10
+## v1.10.0
 
 This version was released on March 3, 2025.
 

@@ -1,0 +1,2349 @@
+---
+title: "Schema and types"
+---
+
+## Object
+
+### CustodialWallet
+
+Represents a custodial wallet managed by Cobo.
+
+#### Implements
+
+`CustodialWallet` implements the following interfaces:
+
+- `Wallet`
+- `Node`
+
+#### Fields
+
+| Field Name              | Type                     | Description                                      |
+| ----------------------- | ------------------------ | ------------------------------------------------ |
+| `id`                    | `ID`                    | Unique identifier of the wallet.                 |
+| `walletId`              | `String`                | Wallet ID assigned by the platform.              |
+| `walletType`            | `WalletType`            | Type of the wallet (e.g., HOT, COLD).            |
+| `walletSubtype`         | `WalletSubtype`         | Subtype of the wallet (e.g., MPC).               |
+| `name`                  | `String`                 | Wallet name.                                     |
+| `addresses`             | `AddressConnection`      | List of addresses associated with this wallet.   |
+| `transactions`          | `TransactionConnection`  | List of transactions related to this wallet.     |
+| `tokenBalances`         | `TokenBalanceConnection` | Token balances stored in the wallet.             |
+| `walletSummary`         | `WalletSummary`          | Summary of assets and tokens in the wallet.      |
+| `recent`                | `Boolean`                | Indicates if the wallet has recent transactions. |
+| `lastActivityTimestamp` | `Int`                    | Timestamp of the last wallet activity.           |
+
+### AddressConnection
+
+Represents the connection type for [Address]().
+
+#### Fields
+
+| Field Name | Type | Description |
+| ---------- | ---- | ----------- |
+| `pageInfo` | `PageInfo` | Pagination data for this connection. |
+| `edges` | `[AddressEdge]` | Contains the nodes in this connection. |
+
+### Chain
+
+Represents a blockchain network.
+
+#### Fields
+
+| Field Name                  | Type              | Description                                                |
+| --------------------------- | ----------------- | ---------------------------------------------------------- |
+| `id`                        | `ID!`             | The unique identifier for the blockchain.                  |
+| `chainId`                   | `String`          | The blockchain ID.                                         |
+| `symbol`                    | `String`          | The blockchain symbol (e.g., ETH, BTC).                    |
+| `iconUrl`                   | `String`          | The URL of the blockchain icon.                            |
+| `explorerTxUrl`             | `String`          | Blockchain explorer transaction URL template.              |
+| `explorerAddressUrl`        | `String`          | Blockchain explorer address URL template.                  |
+| `requireMemo`               | `Boolean`         | Whether a memo is required for transactions.               |
+| `confirmingThreshold`       | `Int`             | Number of confirmations required for transactions.         |
+| `supportedAddressEncodings` | `[Int]`           | Supported address encoding formats (e.g., Base58, Bech32). |
+| `isSupportedContract`       | `Boolean`         | Whether smart contracts are supported on this blockchain.  |
+| `tokens`                    | `TokenConnection` | Tokens associated with this blockchain.                    |
+
+### Token
+
+Represents a token or cryptocurrency.
+
+#### Fields
+
+| Field Name                | Type      | Description                                          |
+| ------------------------- | --------- | ---------------------------------------------------- |
+| `id`                      | `ID!`     | Unique token identifier.                             |
+| `tokenId`                 | `String!` | The token ID, which is the unique identifier of a token.                                      |
+| `assetId`                 | `String`  | The asset ID (applies to Exchange Wallets).          |
+| `symbol`                  | `String`  | The token symbol (e.g., ETH, BTC).                   |
+| `name`                    | `String`  | The full name of the token.                          |
+| `decimal`                 | `Int`     | The number of decimal places the token supports.     |
+| `iconUrl`                 | `String`  | The URL of the token icon.                           |
+| `tokenAddress`            | `String`  | The contract address of the token.                   |
+| `feeTokenId`              | `String`  | The ID of the token used to pay transaction fees.    |
+| `canDeposit`              | `Boolean` | Whether deposits are enabled for this token.         |
+| `canWithdraw`             | `Boolean` | Whether withdrawals are enabled for this token.      |
+| `dustThreshold`           | `String`  | The minimum withdrawal amount for custodial wallets. |
+| `minimumDepositThreshold` | `String`  | The minimum deposit amount.                          |
+| `chain`                   | `Chain`   | The blockchain this token belongs to.                |
+
+### TokenBalanceConnection
+
+Represents a paginated connection of token balances.
+
+#### Fields
+
+| Field Name | Type                  | Description                  |
+| ---------- | --------------------- | ---------------------------- |
+| `pageInfo` | `PageInfo!`           | Pagination metadata.         |
+| `edges`    | `[TokenBalanceEdge!]` | List of token balance edges. |
+
+### TokenBalanceEdge
+
+Represents an edge containing a token balance and its pagination cursor.
+
+#### Fields
+
+| Field Name | Type           | Description                          |
+| ---------- | -------------- | ------------------------------------ |
+| `node`     | `TokenBalance` | The token balance at the edge.       |
+| `cursor`   | `String!`      | The pagination cursor for this edge. |
+
+### TokenBalance
+
+Represents the balance details for a token.
+
+#### Fields
+
+| Field Name | Type      | Description                       |
+| ---------- | --------- | --------------------------------- |
+| `balance`  | `Balance` | Token balance details.            |
+| `token`    | `Token`   | The associated token information. |
+
+### Balance
+
+Represents different types of balances for a token.
+
+#### Fields
+
+| Field Name  | Type     | Description                                     |
+| ----------- | -------- | ----------------------------------------------- |
+| `total`     | `String` | The total token balance in an address.          |
+| `available` | `String` | The spendable balance.                          |
+| `pending`   | `String` | The amount being sent in a transaction.         |
+| `locked`    | `String` | The locked balance, applicable for UTXO chains. |
+
+### TransactionConnection
+
+Represents a paginated connection of transactions.
+
+#### Fields
+
+| Field Name | Type                 | Description                |
+| ---------- | -------------------- | -------------------------- |
+| `pageInfo` | `PageInfo!`          | Pagination metadata.       |
+| `edges`    | `[TransactionEdge!]` | List of transaction edges. |
+
+### TransactionEdge
+
+Represents an edge containing a transaction and its pagination cursor.
+
+#### Fields
+
+| Field Name | Type          | Description                          |
+| ---------- | ------------- | ------------------------------------ |
+| `node`     | `Transaction` | The transaction at the edge.         |
+| `cursor`   | `String!`     | The pagination cursor for this edge. |
+
+### Transaction
+
+Represents details of a blockchain transaction.
+
+#### Fields
+
+| Field Name         | Type                        | Description                                      |
+| ------------------ | --------------------------- | ------------------------------------------------ |
+| `id`               | `ID!`                       | Unique identifier for the transaction.           |
+| `transactionId`    | `String!`                   | The transaction ID.                              |
+| `coboId`           | `String`                    | The Cobo ID used for tracking.                   |
+| `orgId`            | `String`                    | The organization ID related to this transaction. |
+| `wallet`           | `Wallet!`                   | The wallet associated with the transaction.      |
+| `type`             | `TransactionType!`          | The type of transaction.                         |
+| `status`           | `TransactionStatus!`        | The current status of the transaction.           |
+| `subStatus`        | `QueryTransactionSubStatus` | The sub-status of the transaction.               |
+| `failedReason`     | `String`                    | Reason for failure (if applicable).              |
+| `chain`            | `Chain`                     | The blockchain associated with this transaction. |
+| `token`            | `Token`                     | The token involved in the transaction.           |
+| `transactionHash`  | `String`                    | The blockchain transaction hash.                 |
+| `createdTimestamp` | `BigInt`                    | Transaction creation time (milliseconds).        |
+| `updatedTimestamp` | `BigInt`                    | Last updated timestamp (milliseconds).           |
+
+### TransactionDetailFee
+
+Provides details about transaction fees.
+
+#### Fields
+
+| Field Name     | Type    | Description |
+|--------------|--------|-------------|
+| `code`        | `String` | Fee code identifier. |
+| `amount`      | `String` | Fee amount. |
+| `displayCode` | `String` | Display-friendly fee code. |
+| `iconUrl`     | `String` | URL of the fee icon. |
+| `description` | `String` | Description of the fee. |
+
+### TransactionInitiator
+
+Represents the initiator of a transaction.
+
+#### Fields
+
+| Field Name     | Type                          | Description |
+|--------------|------------------------------|-------------|
+| `initiatorType` | `TransactionInitiatorType` | The type of initiator. |
+| `initiator`     | `String`                    | Identifier of the initiator. |
+
+### TransactionAddress
+
+Represents an address involved in a transaction.
+
+#### Fields
+
+| Field Name  | Type    | Description |
+|------------|--------|-------------|
+| `address`  | `String` | The blockchain address. |
+| `memo`     | `String` | Optional memo field. |
+| `label`    | `String` | Label associated with the address. |
+
+### Exchange
+
+Represents an exchange platform.
+
+#### Fields
+
+| Field Name               | Type      | Description |
+|--------------------------|----------|-------------|
+| `id`                     | `ID!`    | Unique identifier of the exchange. |
+| `iconUrl`                | `String` | URL of the exchange icon. |
+| `subaccountSupported`     | `Boolean` | Indicates if subaccounts are supported. |
+| `apiManagementUrl`        | `String` | URL for managing API settings. |
+
+### TransactionDetailApproverType
+
+Represents an approver for a transaction.
+
+#### Fields
+
+| Field Name   | Type        | Description |
+|-------------|------------|-------------|
+| `name`    | `String`      | Name of the approver. |
+| `status`  | `TransactionApprovalStatus` | Approval status. |
+
+### TransactionDetailSignerType
+
+Represents a signer of a transaction.
+
+#### Fields
+
+| Field Name     | Type                         | Description |
+|--------------|-----------------------------|-------------|
+| `signer`     | `String`                     | Identifier of the signer. |
+| `status`     | `TransactionSigningStatus` | Signing status. |
+| `failedReason` | `String`                  | Reason for failure (if applicable). |
+| `signerType`  | `Int`                      | Type of signer. |
+| `online`      | `Boolean`                   | Indicates if the signer is online. |
+| `nodeId`      | `String`                    | Identifier of the node associated with the signer. |
+
+### WalletSummary
+
+Provides an overview of a wallet's contents.
+
+#### Fields
+
+| Field Name       | Type     | Description |
+|------------------|---------|-------------|
+| `tokenCount`     | `Int`   | Number of tokens in the wallet. |
+| `assetCount`     | `Int`   | Number of assets in the wallet. |
+| `addressCount`   | `Int`   | Number of addresses in the wallet. |
+| `currencyValue`  | `Decimal` | Value of the wallet's holdings. |
+| `currencyUnit`   | `String`  | Unit of the wallet's valuation. |
+| `currencySymbol` | `String`  | Symbol of the currency (e.g., `$`). |
+
+### WalletExtra
+
+Represents additional metadata about a wallet.
+
+#### Fields
+
+| Field Name             | Type                   | Description |
+|------------------------|-----------------------|-------------|
+| `recent`              | `Boolean`             | Indicates whether the wallet contains recent transactions (within the last 7 days). |
+| `lastActivityTimestamp` | `BigInt`             | The timestamp of the last token-related activity in the wallet. |
+| `label`               | `String`              | A user-defined label for the wallet. |
+| `noZeroBalanceTokens` | `[TokenBalanceWrapper]` | List of tokens with non-zero balances in the wallet. |
+| `currencyUnit`        | `String`              | The unit of the wallet’s currency. |
+| `currencySymbol`      | `String`              | The currency symbol of the wallet’s valuation. |
+| `tokenCount`         | `Int`                 | The number of tokens associated with the wallet. |
+| `addressCount`       | `Int`                 | The number of addresses linked to the wallet. |
+| `currencyValue`      | `Decimal`             | The total value of the wallet in the specified currency. |
+
+### TokenBalanceWrapper
+
+Contains a token balance, token details, and associated blockchain information.
+
+#### Fields
+
+| Field Name      | Type                | Description |
+|----------------|--------------------|-------------|
+| `tokenBalance` | `TokenBalanceExtend` | Detailed balance of the token. |
+| `token`        | `TokenWrapper`       | Token details. |
+| `chain`        | `Chain`              | Blockchain details for the token. |
+
+### TokenBalanceExtend
+
+Represents extended balance details for a token in a wallet.
+
+#### Fields
+
+| Field Name             | Type       | Description |
+|------------------------|-----------|-------------|
+| `tokenId`             | `String`  | Unique identifier of the token. |
+| `chainId`            | `String`  | Blockchain ID where the token exists. |
+| `balance`            | `String`  | Token balance in raw units (e.g., wei for ETH). |
+| `transferableBalance` | `String`  | The balance available for transfer. |
+| `absBalance`         | `String`  | Absolute token balance in standard units (e.g., ETH). |
+| `currencyBalance`    | `String`  | Token balance converted to fiat currency. |
+| `currencyUnit`       | `String`  | Fiat currency unit (e.g., USD). |
+| `currencySymbol`     | `String`  | Currency symbol (e.g., `$`). |
+| `lastActivityTimestamp` | `BigInt` | Timestamp of the last transaction involving the token. |
+| `symbol`             | `String`  | The token symbol (e.g., ETH). |
+| `token`              | `TokenWrapper` | Associated token details. |
+| `chain`              | `Chain`   | Blockchain details associated with the token. |
+| `collectionAddress`  | `String`  | MPC wallet address for automatic fund collection. |
+| `autoSweepBalance`   | `TokenAutoSweepBalance` | Details of auto-swept balance for the token. |
+
+### TokenWrapper
+
+Represents additional metadata for a token.
+
+#### Fields
+
+| Field Name             | Type       | Description |
+|------------------------|-----------|-------------|
+| `tokenId`             | `String!` | Unique identifier for the token. |
+| `assetId`            | `String`  | Asset ID (for exchange wallets only). |
+| `symbol`            | `String`  | Token symbol (e.g., ETH, BTC). |
+| `name`              | `String`  | Full name of the token. |
+| `decimal`          | `Int`     | Number of decimal places supported by the token. |
+| `iconUrl`          | `String`  | URL of the token's icon. |
+| `tokenAddress`     | `String`  | Contract address of the token (if applicable). |
+| `feeTokenId`       | `String`  | ID of the token used for transaction fees. |
+| `canDeposit`       | `Boolean` | Whether deposits are enabled for this token. |
+| `canWithdraw`      | `Boolean` | Whether withdrawals are enabled for this token. |
+| `dustThreshold`    | `String`  | Minimum withdrawal amount for custodial wallets. |
+| `assetModelType`   | `AssetModelType` | Asset model type (either `Account` or `UTXO`). |
+| `minimumDepositThreshold` | `String` | Minimum deposit amount. |
+| `chain`            | `Chain`   | Blockchain details for this token. |
+| `confirmingThreshold` | `Int`  | Number of confirmations required for transactions. |
+| `requireMemo`      | `Boolean` | Indicates if a memo is required for transactions. |
+| `usdRate`         | `Float`   | USD exchange rate for this token. |
+| `reservedBalance`  | `String`  | Reserved balance of the token. |
+| `isUtxo`          | `Boolean` | Whether the token follows the UTXO model. |
+| `chainIdentifier` | `String`  | Identifier of the blockchain this token belongs to. |
+| `explorerUrl`     | `String`  | URL for exploring transactions related to this token. |
+| `curve`          | `Int`      | Curve type used by the token. |
+| `enabled`        | `Boolean`  | Whether the token is available for transactions. |
+| `offline`        | `Boolean`  | Whether the token is currently offline. |
+
+### TokenAutoSweepBalance
+
+Represents the auto-swept balance details for a token.
+
+#### Fields
+
+| Field Name            | Type     | Description |
+|-----------------------|---------|-------------|
+| `unsweptCurrencyValue` | `Decimal` | Value of unswept funds in fiat currency. |
+| `sweptCurrencyValue`   | `Decimal` | Value of swept funds in fiat currency. |
+| `currencyUnit`        | `String`  | Fiat currency unit (e.g., USD). |
+| `currencySymbol`      | `String`  | Symbol of the fiat currency (e.g., `$`). |
+| `unsweptTokenCount`   | `Int`     | Number of unswept tokens. |
+| `sweptTokenCount`     | `Int`     | Number of swept tokens. |
+
+### MPCWallet
+
+Represents a Multi-Party Computation (MPC) Wallet, which provides enhanced security through cryptographic techniques.
+
+#### Fields
+
+| Field Name             | Type                      | Description |
+|------------------------|--------------------------|-------------|
+| `id`                  | `ID!`                     | Unique identifier for the wallet. |
+| `walletId`            | `String!`                 | The unique wallet ID. |
+| `walletType`          | `WalletType`              | Type of wallet (Custodial, MPC, Smart Contract, etc.). |
+| `walletSubtype`       | `WalletSubtype`           | Sub-type of the wallet. |
+| `name`                | `String!`                 | Name assigned to the wallet. |
+| `addresses`           | `AddressConnection`       | List of associated addresses. Supports pagination. |
+| `transactions`        | `TransactionConnection`   | List of transactions related to this wallet. Supports pagination. |
+| `tokenBalances`       | `TokenBalanceConnection`  | Token balances in the wallet. Supports pagination. |
+| `addressConnection`   | `AddressConnection`       | Connection for addresses. Supports pagination. |
+| `transactionConnection` | `TransactionConnection`  | Connection for transactions. Supports pagination. |
+| `tokenBalanceConnection` | `TokenBalanceConnection` | Connection for token balances. Supports pagination. |
+| `walletSummary`       | `WalletSummary`           | Summary of wallet's token and asset holdings. |
+| `walletExtra`         | `WalletExtra`             | Additional metadata including recent activity, last transaction timestamp, and label. |
+| `chain`              | `Chain`                    | Blockchain associated with the wallet. |
+| `topAssets`          | `[WaaS2CustodialTopAsset]` | List of top assets held in the wallet. |
+| `createTime`         | `String`                   | Creation time of the MPC wallet. |
+| `enableAutoSweep`    | `Boolean`                  | Indicates whether auto-sweep is enabled for this wallet. |
+
+## Enum
+
+### AssetModelType
+
+Defines the asset model type.
+
+#### Values
+
+| Name      | Description                              |
+| --------- | ---------------------------------------- |
+| `Account` | Represents an account-based asset model. |
+| `UTXO`    | Represents a UTXO-based asset model.     |
+
+### TransactionType
+
+Defines the different types of transactions.
+
+#### Values
+
+| Name                | Description                        |
+| ------------------- | ---------------------------------- |
+| `DEPOSIT`           | A deposit transaction.             |
+| `WITHDRAW`          | A withdrawal transaction.          |
+| `CONTRACT_CALL`     | A smart contract interaction.      |
+| `MESSAGE_SIGN`      | A message signing operation.       |
+| `STAKE`             | A staking transaction.             |
+| `UNSTAKE`           | An unstaking transaction.          |
+| `AutoFuel`          | Automatic transaction fee payment. |
+| `AutoFuelingRefund` | Refund for automatic fee payments. |
+
+### TransactionStatus
+
+Defines the possible statuses of a transaction.
+
+#### Values
+
+| Name                | Description                        |
+| ------------------- | ---------------------------------- |
+| `SUBMITTED`         | Transaction has been submitted.    |
+| `PENDING_SCREENING` | Awaiting screening approval.       |
+| `PENDING_CHECK`     | Under verification.                |
+| `PENDING_SIGNATURE` | Awaiting signature.                |
+| `BROADCASTING`      | Being broadcast to the blockchain. |
+| `CONFIRMING`        | Awaiting confirmations.            |
+| `COMPLETED`         | Transaction is confirmed.          |
+| `FAILED`            | Transaction failed.                |
+| `REJECTED`          | Transaction was rejected.          |
+
+### TransactionInitiatorType
+
+Defines different types of transaction initiators.
+
+#### Values
+
+| Name      | Description |
+|----------|-------------|
+| `API`    | The transaction was initiated via API. |
+| `Web`    | The transaction was initiated via the web interface. |
+| `App`    | The transaction was initiated via a mobile app. |
+| `External` | The transaction was initiated externally. |
+
+### TransactionDestinationType
+
+Defines different possible transaction destinations.
+
+#### Values
+
+| Name                | Description |
+|---------------------|-------------|
+| `Address`          | A standard blockchain address. |
+| `ExchangeWallet`   | A wallet associated with an exchange. |
+| `EVM_Contract`     | A contract deployed on an Ethereum Virtual Machine (EVM) chain. |
+| `SOL_Contract`     | A contract deployed on Solana. |
+| `Cosmos_Contract`  | A contract deployed on Cosmos. |
+| `EVM_EIP_191`      | An EIP-191 signed transaction. |
+| `BTC_EIP_191`      | A Bitcoin-based EIP-191 signed transaction. |
+| `EVM_EIP_712`      | An EIP-712 signed transaction. |
+| `Raw_Message`      | A raw message transaction. |
+| `DepositToAddress` | A deposit transaction to an address. |
+| `DepositToWallet`  | A deposit transaction to a wallet. |
+| `COSMOS_ADR_36`    | A Cosmos ADR-36 signed message. |
+| `BTC_BIP_322`      | A Bitcoin BIP-322 signed message. |
+
+### TransactionApprovalStatus
+
+Defines the possible statuses of a transaction approval.
+
+#### Values
+
+| Name      | Description |
+|----------|-------------|
+| `Pending` | Awaiting approval. |
+| `Approved` | Approved successfully. |
+| `Rejected` | Approval was rejected. |
+
+### TransactionSigningStatus
+
+Defines possible statuses for transaction signing.
+
+#### Values
+
+| Name       | Description |
+|-----------|-------------|
+| `Pending`  | Awaiting signing. |
+| `Signed`   | Successfully signed. |
+| `Timeout`  | Signing process timed out. |
+| `Rejected` | Signing was rejected. |
+| `Approving` | Pending approval. |
+| `Approved` | Approved successfully. |
+| `Failed`   | Signing failed. |
+| `Binding`  | Awaiting binding. |
+| `Bound`    | Successfully bound. |
+
+### FeeType
+
+Defines different fee structures.
+
+#### Values
+
+| Name          | Description |
+|--------------|-------------|
+| `FIXED`      | A fixed transaction fee. |
+| `EVM_EIP_1559` | An Ethereum EIP-1559 fee structure. |
+| `EVM_LEGACY`  | A legacy Ethereum transaction fee. |
+| `UTXO`        | A fee structure for UTXO-based transactions. |
+
+## Interface
+
+### Address
+
+Represents an on-chain address linked to a wallet.
+
+#### Fields
+
+| Field Name               | Type                     | Description                                                  |
+| ------------------------ | ------------------------ | ------------------------------------------------------------ |
+| `address`                | `String!`                | The blockchain address string.                               |
+| `memo`                   | `String`                 | Optional memo for the address.                               |
+| `path`                   | `String`                 | Derivation path (for MPC wallets).                           |
+| `encoding`               | `String`                 | Encoding format of the address.                              |
+| `pubkey`                 | `String`                 | Public key associated with the address.                      |
+| `wallet`                 | `Wallet`                 | The wallet that owns this address.                           |
+| `chain`                  | `Chain`                  | The blockchain network where the address exists.             |
+| `balance`                | `TokenBalanceConnection` | Token balance for this address.                              |
+| `taprootInternalAddress` | `String`                 | The Taproot address before tweaking.                         |
+| `taprootScriptTreeHash`  | `String`                 | The hash of the script tree for Taproot transactions.        |
+| `xOnlyPubkey`            | `String`                 | The 32-byte x-only public key in hexadecimal format after tweaking. |
+| `token`                  | `Token`                  | The token associated with this address.                      |
+| `currencyValue`          | `Decimal`                | Value in USD.                                                |
+| `currencySymbol`         | `String`                 | Currency symbol.                                             |
+| `label`                  | `String`                 | The label of the address.                                    |
+
+### Wallet
+
+Defines the basic structure for all wallet types.
+
+#### Implements
+
+- `Node`
+
+#### Fields
+
+| Field Name      | Type                     | Description                                                |
+| --------------- | ------------------------ | ---------------------------------------------------------- |
+| `id`            | `ID!`                    | The unique identifier of the wallet object.                |
+| `walletId`      | `String!`                | The wallet ID assigned by the platform.                    |
+| `walletType`    | `WalletType`             | The type of wallet (e.g., `Custodial`, `MPC`).             |
+| `walletSubtype` | `WalletSubtype`          | The sub-type of the wallet.                                |
+| `name`          | `String!`                | The name of the wallet.                                    |
+| `addresses`     | `AddressConnection`      | A paginated list of addresses associated with this wallet. |
+| `transactions`  | `TransactionConnection`  | A paginated list of transactions related to the wallet.    |
+| `tokenBalances` | `TokenBalanceConnection` | A paginated list of token balances stored in the wallet.   |
+| `walletSummary` | `WalletSummary`          | A summary of assets and tokens in the wallet.              |
+| `walletExtra`   | `WalletExtra`            | Additional metadata about the wallet.                      |
+| `chain`         | `Chain`                  | The blockchain network associated with this wallet.        |
+
+### Node
+
+A generic interface that defines objects with a unique `id`.
+
+#### Fields
+
+| Field Name | Type  | Description                          |
+| ---------- | ----- | ------------------------------------ |
+| `id`       | `ID!` | The unique identifier of the object. |
+
+#### Possible Implementations
+
+- `CustodialWallet`
+- `MPCWallet`
+- `SmartContractWallet`
+- `ExchangeWallet`
+- `Chain`
+- `Token`
+- `Transaction`
+- `Exchange`
+- `Coin`
+- `Vault`
+- `Project`
+- `TransactionPolicyType`
+- `PolicyCoreData`
+- `AddressBook`
+
+### TransactionSource
+
+Defines different sources for transactions.
+
+#### Fields
+
+| Field Name   | Type                     | Description                         |
+| ------------ | ------------------------ | ----------------------------------- |
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+
+### TransactionResult
+
+Defines the possible results of a transaction.
+
+#### Fields
+
+| Field Name   | Type        | Description |
+|-------------|------------|-------------|
+| `resultType` | `ResultType!` | The type of result generated by the transaction. |
+
+#### Possible Implementations
+
+- `TransactionSignatureResult`
+
+### TransactionFee
+
+Defines the fee structure for transactions.
+
+#### Fields
+
+| Field Name | Type    | Description |
+|------------|--------|-------------|
+| `feeType`  | `FeeType!` | The type of transaction fee. |
+
+#### Possible Implementations
+
+- `TransactionFixedFee`
+- `TransactionEvmEip1559Fee`
+- `TransactionEvmLegacyFee`
+- `TransactionUtxoFee`
+
+### Object: WaaS2CustodialTopAsset  
+Description: GraphQL representation of WaaS2CustodialTopAssetBO.
+
+| Field Name   | Type      | Description |
+|-------------|----------|-------------|
+| `code`      | `String`  | The asset code, e.g., USDT, BTC. |
+| `totalBalance` | `Decimal` | The total balance of the asset. |
+| `totalValue` | `Decimal` | The total value of the asset in the selected currency. |
+| `iconUrl`   | `String`  | The URL of the asset icon. |
+
+---
+
+### Object: AutoSweepBalance  
+Description: Represents the balance information related to auto-sweep.
+
+| Field Name   | Type      | Description |
+|-------------|----------|-------------|
+| `unsweptCurrencyValue` | `Decimal` | The unswept currency value. |
+| `sweptCurrencyValue`   | `Decimal` | The swept currency value. |
+| `currencyUnit`         | `String`  | The currency unit, e.g., USD. |
+| `currencySymbol`       | `String`  | The currency symbol, e.g., $. |
+
+---
+
+### Object: AutoSweepAddressSummary  
+Description: Represents the summary of auto-sweep addresses.
+
+| Field Name   | Type   | Description |
+|-------------|-------|-------------|
+| `depositAddressCount`    | `Int` | The number of deposit addresses. |
+| `collectionAddressCount` | `Int` | The number of collection addresses. |
+
+---
+
+### Object: WalletForbidden  
+Description: Represents the forbidden status of a wallet for withdrawals.
+
+| Field Name | Type    | Description |
+|-----------|--------|-------------|
+| `reason`  | `String` | The reason why the wallet is forbidden from withdrawing. |
+
+---
+
+### Object: SmartContractWallet  
+Description: Smart contract-based wallet representation.
+
+| Field Name                 | Type                      | Description |
+|----------------------------|--------------------------|-------------|
+| `id`                       | `ID!`                     | The ID of the object. |
+| `walletId`                 | `String!`                 | The wallet ID. |
+| `walletType`               | `WalletType`              | The wallet type. |
+| `walletSubtype`            | `WalletSubtype`           | The wallet sub-type. |
+| `name`                     | `String!`                 | The wallet name. |
+| `addresses`                | `AddressConnection`       | A connection to wallet addresses. |
+| `transactions`             | `TransactionConnection`   | A connection to wallet transactions. |
+| `tokenBalances`            | `TokenBalanceConnection`  | A connection to wallet token balances. |
+| `addressConnection`        | `AddressConnection`       | A connection to wallet addresses. |
+| `transactionConnection`    | `TransactionConnection`   | A connection to wallet transactions. |
+| `tokenBalanceConnection`   | `TokenBalanceConnection`  | A connection to wallet token balances. |
+| `walletSummary`            | `WalletSummary`           | Summary of wallet activity. |
+| `walletExtra`              | `WalletExtra`             | Additional metadata about the wallet. |
+| `chain`                    | `Chain`                   | Related blockchain information. |
+| `contractAddress`          | `String`                  | The contract address of the smart contract wallet. |
+| `coboSafeEnabled`          | `Boolean`                 | Indicates if Cobo Safe is enabled. |
+| `threshold`                | `Int`                     | The signing threshold for multisig wallets. |
+| `signers`                  | `[Signer]`                | List of signers associated with the wallet. |
+| `status`                   | `SmartContractWalletStatus` | The current status of the smart contract wallet. |
+| `coboSafeAddress`          | `String`                  | The Cobo Safe address of the wallet. |
+| `hasPendingOperation`      | `Boolean`                 | Indicates if there are pending operations. |
+| `hasUnapprovedOnchainPolicy` | `Boolean`              | Indicates if there is an unapproved on-chain policy. |
+| `hasCoboDelegateKey`       | `Boolean`                 | Indicates if the wallet has a Cobo delegate key. |
+| `createRequestId`          | `String`                  | The request ID associated with the wallet creation process. |
+| `initiatorWallet`          | `InitiatorWallet`         | Details of the initiator wallet. |
+| `isMainWallet`             | `Boolean`                 | Indicates if the wallet is the main wallet. |
+
+### Object: Signer  
+Description: Represents a signer in a smart contract wallet.
+
+| Field Name       | Type      | Description |
+|-----------------|----------|-------------|
+| `address`       | `String`  | The address of the signer. |
+| `label`         | `String`  | The label of the signer. |
+| `walletName`    | `String`  | The name of the wallet associated with the signer. |
+| `isPortalWallet` | `Boolean` | Indicates if the wallet is a portal wallet. |
+| `walletId`      | `String`  | The wallet ID associated with the signer. |
+| `walletType`    | `String`  | The type of wallet associated with the signer. |
+| `walletSubtype` | `String`  | The subtype of the wallet associated with the signer. |
+
+---
+
+### Enum: SmartContractWalletStatus  
+Description: Represents the different statuses of a smart contract wallet.
+
+| Enum Name       | Description |
+|---------------|-------------|
+| `CREATED`       | Wallet has been created. |
+| `UNDERREVIEW`   | Wallet is under review. |
+| `FAILED`        | Wallet creation failed. |
+| `SETUPREQUIRED` | Additional setup is required. |
+
+---
+
+### Object: InitiatorWallet  
+Description: Represents the initiator wallet in a smart contract transaction.
+
+| Field Name       | Type      | Description |
+|-----------------|----------|-------------|
+| `address`       | `String`  | The address of the initiator wallet. |
+| `label`         | `String`  | The label of the initiator wallet, if any. |
+| `walletName`    | `String`  | The name of the initiator wallet. |
+| `isPortalWallet` | `Boolean` | Indicates whether the wallet is a portal wallet. |
+| `walletId`      | `String`  | The unique identifier of the initiator wallet. |
+| `walletType`    | `String`  | The type of the initiator wallet. |
+| `walletSubtype` | `String`  | The subtype of the initiator wallet. |
+
+---
+
+### Object: ExchangeWallet  
+Description: Represents a wallet connected to an exchange.
+
+| Field Name             | Type                   | Description |
+|-----------------------|----------------------|-------------|
+| `id`                 | `ID!`                 | The ID of the object. |
+| `walletId`           | `String!`             | The wallet ID. |
+| `walletType`         | `WalletType`          | The wallet type. |
+| `walletSubtype`      | `WalletSubtype`       | The wallet sub-type. |
+| `name`               | `String!`             | The wallet name. |
+| `addresses`          | `AddressConnection`   | A connection to wallet addresses. |
+| `transactions`       | `TransactionConnection` | A connection to wallet transactions. |
+| `tokenBalances`      | `TokenBalanceConnection` | A connection to wallet token balances. |
+| `walletSummary`      | `WalletSummary`       | Summary of wallet activity. |
+| `walletExtra`        | `WalletExtra`         | Additional metadata about the wallet. |
+| `chain`              | `Chain`               | Related blockchain information. |
+| `exchangeId`         | `String!`             | The unique identifier of the exchange. |
+| `apikey`            | `String!`             | The API key associated with the exchange wallet. |
+| `mainWalletId`       | `String`              | The main wallet ID of the exchange wallet (UUID). |
+| `lastUpdateTimestamp` | `BigInt`             | The last update timestamp of the exchange wallet. |
+| `status`            | `String`              | The status of the exchange wallet. |
+| `failReason`        | `String`              | The reason for failure, if the wallet is in a failed state. |
+| `observation`       | `Boolean`             | Indicates whether the wallet is in observation mode. |
+
+---
+
+### Object: TransactionCustodialAssetWalletSource  
+Description: Represents the source of a custodial asset wallet transaction.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+| `wallet` | `Wallet!` | The wallet associated with the transaction. |
+
+---
+
+### Object: TransactionMPCWalletSource  
+Description: Represents the source of an MPC wallet transaction.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+| `wallet` | `Wallet!` | The wallet associated with the transaction. |
+| `address` | `String` | The address associated with the transaction. |
+
+---
+
+### Object: TransactionExchangeWalletSource  
+Description: Represents the source of an exchange wallet transaction.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+| `wallet` | `Wallet!` | The wallet associated with the transaction. |
+
+---
+
+### Object: TransactionSmartContractWalletSource  
+Description: Represents the source of a smart contract wallet transaction.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+| `wallet` | `Wallet!` | The wallet associated with the transaction. |
+
+---
+
+### Object: TransactionDepositFromAddressSource  
+Description: Represents a deposit transaction originating from an address.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+| `addresses` | `[String]` | List of addresses involved in the transaction. |
+| `wallet` | `Wallet` | The wallet associated with the transaction. |
+
+---
+
+### Object: TransactionDepositFromWalletSource  
+Description: Represents a deposit transaction originating from a wallet.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+| `wallet` | `Wallet!` | The wallet associated with the transaction. |
+
+---
+
+### Object: TransactionDepositFromLoopSource  
+Description: Represents a deposit transaction originating from a Loop transaction.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `sourceType` | `TransactionSourceType!` | The source type of the transaction. |
+
+---
+
+### Object: TransactionAddressesDestination  
+Description: Represents the destination of a transaction involving addresses.
+
+| Field Name | Type                 | Description |
+|-----------|----------------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of the transaction destination. |
+| `accountOutput` | `TransactionAccountOutput` | Details of the account-based transaction output. |
+| `utxoOutputs` | `[TransactionUtxoOutput]` | Details of the UTXO-based transaction outputs. |
+| `changeAddress` | `String` | The change address for UTXO transactions. |
+| `forceInternal` | `Boolean` | Indicates if the transaction is forced to be internal. |
+| `forceExternal` | `Boolean` | Indicates if the transaction is forced to be external. |
+
+### Object: TransactionAccountOutput  
+Description: Represents an account-based transaction output.
+
+| Field Name | Type     | Description |
+|------------|---------|-------------|
+| `address`  | `String!` | The address receiving the output. |
+| `amount`   | `String`  | The amount of the transaction. |
+| `memo`     | `String`  | Additional memo attached to the transaction. |
+
+---
+
+### Object: TransactionUtxoOutput  
+Description: Represents a UTXO-based transaction output.
+
+| Field Name | Type     | Description |
+|------------|---------|-------------|
+| `address`  | `String`  | The recipient address of the UTXO output. |
+| `amount`   | `String`  | The amount being transferred. |
+| `memo`     | `String`  | Additional transaction memo. |
+
+---
+
+### Object: TransactionExchangeWalletDestination  
+Description: Represents a transaction destination to an exchange wallet.
+
+| Field Name | Type                      | Description |
+|------------|---------------------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of transaction destination. |
+
+---
+
+### Object: TransactionEVMContractDestination  
+Description: Represents a transaction destination to an EVM contract.
+
+| Field Name | Type                      | Description |
+|------------|---------------------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of transaction destination. |
+
+---
+
+### Object: TransactionEIP191SignatureDestination  
+Description: Represents a destination where an EIP-191 signature is required.
+
+| Field Name       | Type                      | Description |
+|-----------------|---------------------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of transaction destination. |
+| `message`       | `String`                   | The message that needs to be signed. |
+
+---
+
+### Object: TransactionEIP712SignatureDestination  
+Description: Represents a destination where an EIP-712 structured signature is required.
+
+| Field Name         | Type          | Description |
+|-------------------|--------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of transaction destination. |
+| `structuredData`  | `JSONString`  | Structured data that needs to be signed. |
+| `safeTxExtraData` | `JSONString`  | Additional transaction data for Safe contract. |
+
+---
+
+### Object: TransactionRawMessageSignatureDestination  
+Description: Represents a transaction destination for raw message signing.
+
+| Field Name | Type                      | Description |
+|------------|---------------------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of transaction destination. |
+
+---
+
+### Object: TransactionDepositToAddressesDestination  
+Description: Represents a transaction destination where assets are deposited to specific addresses.
+
+| Field Name       | Type                      | Description |
+|-----------------|---------------------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of transaction destination. |
+| `amount`        | `String`                   | The amount being deposited. |
+| `address`       | `String`                   | The recipient address. |
+| `memo`          | `String`                   | Additional memo for the transaction. |
+| `wallet`        | `Wallet`                   | The associated wallet for the deposit. |
+
+---
+
+### Object: TransactionDepositToWalletsDestination  
+Description: Represents a transaction destination where assets are deposited to wallets.
+
+| Field Name       | Type                      | Description |
+|-----------------|---------------------------|-------------|
+| `destinationType` | `TransactionDestinationType!` | The type of transaction destination. |
+| `amount`        | `String`                   | The amount being deposited. |
+| `wallet`        | `Wallet!`                  | The wallet receiving the deposit. |
+
+---
+
+### Object: TransactionSignatureResult  
+Description: Represents the result of a signed transaction.
+
+| Field Name | Type       | Description |
+|------------|-----------|-------------|
+| `resultType` | `ResultType!` | The type of the transaction result. |
+| `signature`  | `String`     | The generated signature for the transaction. |
+
+---
+
+### Object: TransactionFixedFee  
+Description: Represents a fixed fee for a transaction.
+
+| Field Name  | Type       | Description |
+|------------|-----------|-------------|
+| `feeType`  | `FeeType!` | The type of transaction fee. |
+| `token`    | `Token`   | The token used for fee payment. |
+| `feeUsed`  | `String`  | The actual fee amount used. |
+| `maxFeeAmount` | `String` | The maximum fee amount set. |
+
+---
+
+### Object: TransactionEvmEip1559Fee  
+Description: Represents the EIP-1559 fee structure for an Ethereum-based transaction.
+
+| Field Name            | Type       | Description |
+|----------------------|-----------|-------------|
+| `feeType`           | `FeeType!` | The type of fee. |
+| `token`             | `Token`   | The token used for paying fees. |
+| `feeUsed`          | `String`  | The actual fee amount used. |
+| `maxFeeAmount`     | `String`  | The maximum fee limit. |
+| `effectiveGasPrice` | `String`  | The actual gas price paid. |
+| `gasUsed`          | `String`  | The amount of gas used. |
+| `maxFeePerGas`     | `String`  | The maximum gas fee per unit of gas. |
+| `maxPriorityFeePerGas` | `String` | The maximum priority fee per gas unit. |
+| `gasLimit`         | `String`  | The total gas limit for the transaction. |
+
+### Object: TransactionEvmLegacyFee  
+Description: Represents the legacy fee structure for EVM-based transactions.
+
+| Field Name   | Type       | Description |
+|-------------|-----------|-------------|
+| `feeType`   | `FeeType!` | The type of transaction fee. |
+| `token`     | `Token`   | The token used for paying fees. |
+| `feeUsed`   | `String`  | The actual fee amount used. |
+| `maxFeeAmount` | `String`  | The maximum fee limit. |
+| `gasUsed`   | `String`  | The amount of gas used. |
+| `gasPrice`  | `String`  | The price per unit of gas. |
+| `gasLimit`  | `String`  | The total gas limit for the transaction. |
+
+---
+
+### Object: TransactionUtxoFee  
+Description: Represents the UTXO-based transaction fee structure.
+
+| Field Name   | Type       | Description |
+|-------------|-----------|-------------|
+| `feeType`   | `FeeType!` | The type of transaction fee. |
+| `token`     | `Token`   | The token used for paying fees. |
+| `feeUsed`   | `String`  | The actual fee amount used. |
+| `maxFeeAmount` | `String`  | The maximum fee limit. |
+| `feeRate`   | `String`  | The fee rate used in the transaction. |
+
+---
+
+### Object: TransactionBlockInfo  
+Description: Represents blockchain information related to a transaction.
+
+| Field Name      | Type     | Description |
+|---------------|---------|-------------|
+| `blockNumber`  | `BigInt`  | The block number where the transaction was included. |
+| `blockTimestamp` | `BigInt`  | The timestamp of the block. |
+| `blockHash`    | `String`  | The hash of the block containing the transaction. |
+
+---
+
+### Object: TransactionUtxo  
+Description: Represents a UTXO (Unspent Transaction Output) used in a transaction.
+
+| Field Name | Type  | Description |
+|-----------|------|-------------|
+| `txHash`  | `String`  | The transaction hash associated with the UTXO. |
+| `voutN`   | `Int`  | The output index of the UTXO in the transaction. |
+
+---
+
+### Object: TransactionRawTxInfo  
+Description: Represents raw transaction data.
+
+| Field Name        | Type         | Description |
+|-----------------|-------------|-------------|
+| `usedNonce`      | `Int`       | The nonce used in the transaction. |
+| `selectedUtxos`  | `[TransactionUtxo]` | List of selected UTXOs for the transaction. |
+| `rawTx`          | `String`    | The raw transaction data. |
+
+---
+
+### Object: TransactionReplacement  
+Description: Represents the replacement details of a transaction.
+
+| Field Name                | Type                        | Description |
+|--------------------------|---------------------------|-------------|
+| `replacedByType`         | `TransactionActionType`    | The type of replacement action performed. |
+| `replacedByTransactionId` | `String`                   | The ID of the transaction that replaced this transaction. |
+| `replacedByTransactionHash` | `String`                | The hash of the replacement transaction. |
+| `replacedType`           | `TransactionActionType`    | The type of transaction that was replaced. |
+| `replacedTransactionId`  | `String`                   | The ID of the replaced transaction. |
+| `replacedTransactionHash` | `String`                  | The hash of the replaced transaction. |
+
+---
+
+### Enum: TransactionActionType  
+Description: Enumeration of possible transaction actions.
+
+| Name      | Description |
+|----------|-------------|
+| `CANCEL` | The transaction was canceled. |
+| `DROP`   | The transaction was dropped. |
+| `RESEND` | The transaction was resent. |
+| `SPEEDUP` | The transaction was replaced to speed up execution. |
+
+---
+
+### Object: BasicAsset  
+Description: Represents a basic asset with its details.
+
+| Field Name      | Type         | Description |
+|---------------|-------------|-------------|
+| `code`        | `String`      | The unique identifier of the asset. |
+| `displayCode` | `String`      | The display name of the asset. |
+| `iconUrl`     | `String`      | The URL of the asset icon. |
+| `coins`       | `[Coin]`      | A list of supported coins under this asset. |
+| `totalBalance` | `Decimal`     | The total balance of the asset. |
+| `totalValue`   | `Decimal`     | The total value of the asset. |
+| `totalAmount`  | `Decimal`     | The total amount of this asset held. |
+| `lastActivityTimestamp` | `BigInt` | The timestamp of the last recorded activity. |
+| `description` | `String`      | Additional details about the asset. |
+
+---
+
+### Object: ExchangeAsset  
+Description: Represents an asset held in an exchange.
+
+| Field Name      | Type         | Description |
+|---------------|-------------|-------------|
+| `code`        | `String`      | The unique identifier of the asset. |
+| `displayCode` | `String`      | The display name of the asset. |
+| `iconUrl`     | `String`      | The URL of the asset icon. |
+| `coins`       | `[Coin]`      | A list of supported coins under this asset. |
+| `totalBalance` | `Decimal`     | The total balance of the asset. |
+| `totalValue`   | `Decimal`     | The total value of the asset. |
+| `totalAmount`  | `Decimal`     | The total amount of this asset held. |
+| `lastActivityTimestamp` | `BigInt` | The timestamp of the last recorded activity. |
+| `description` | `String`      | Additional details about the asset. |
+| `exchangeCode` | `String!`    | The unique identifier of the asset on the exchange. |
+| `canTransfer` | `Boolean`     | Indicates if the asset can be transferred. |
+| `canWithdraw` | `Boolean`     | Indicates if the asset can be withdrawn. |
+| `canDeposit`  | `Boolean`     | Indicates if the asset can be deposited. |
+| `exchangeAccountTag` | `String` | An optional tag for the exchange account. |
+| `requireMemo` | `Boolean`     | Indicates if a memo is required for transactions. |
+| `availableAmount` | `Decimal`  | The available amount of the asset for trading or withdrawal. |
+| `availableValue` | `Decimal`   | The estimated value of the available asset. |
+| `tokens`      | `[String]`    | List of token identifiers associated with the asset. |
+
+---
+
+### Object: ExchangeAccountBasic  
+Description: Represents a basic exchange account.
+
+| Field Name | Type     | Description |
+|------------|---------|-------------|
+| `walletId` | `String`  | The wallet ID of the exchange account. |
+| `name`     | `String`  | The name of the exchange account. |
+| `wallet`   | `Wallet`  | Related wallet information. |
+
+---
+
+### Interface: ExchangeAccountInterface  
+Description: Represents the interface for exchange accounts.
+
+| Field Name | Type     | Description |
+|------------|---------|-------------|
+| `walletId` | `String`  | The wallet ID of the exchange account. |
+| `name`     | `String`  | The name of the exchange account. |
+| `wallet`   | `Wallet`  | Related wallet information. |
+
+Possible Implementations:  
+- `ExchangeAccountBasic`  
+- `ExchangeAccountDetail`  
+
+---
+
+### Object: ExchangeAccountDetail  
+Description: Represents detailed information about an exchange account.
+
+| Field Name         | Type         | Description |
+|-------------------|-------------|-------------|
+| `walletId`       | `String`      | The wallet ID of the exchange account. |
+| `name`           | `String`      | The name of the exchange account. |
+| `wallet`         | `Wallet`      | Related wallet information. |
+| `assets`         | `[Asset]`     | List of assets in the exchange account. |
+| `availableValue` | `Decimal`     | The estimated available value of assets. |
+| `totalValue`     | `Decimal`     | The total value of assets. |
+| `subAccounts`    | `[ExchangeAccountDetail]` | Sub-accounts under this exchange account. |
+| `mainAccountName` | `String`     | The name of the main exchange account. |
+| `walletType`     | `WalletType`  | The type of the wallet. |
+| `exchange`       | `Exchange`    | The exchange where the account is held. |
+| `status`         | `String`      | The status of the exchange account. |
+| `lastUpdateTimestamp` | `BigInt`  | The last update timestamp of the exchange account. |
+
+### Object: CustodialWalletAddress  
+Description: Represents a custodial wallet address.
+
+| Field Name                  | Type                         | Description |
+|-----------------------------|-----------------------------|-------------|
+| `address`                   | `String!`                   | The wallet address. |
+| `memo`                      | `String`                    | The memo code. |
+| `path`                      | `String`                    | The derivation path (MPC Wallets only). |
+| `encoding`                  | `String`                    | The encoding type. |
+| `pubkey`                    | `String`                    | The public key of the address (MPC Wallets only). |
+| `taprootInternalAddress`     | `String`                    | The Taproot address before tweaking. |
+| `taprootScriptTreeHash`      | `String`                    | The Taproot script tree hash. |
+| `xOnlyPubkey`               | `String`                    | The x-only public key in hex format. |
+| `wallet`                    | `Wallet`                    | Related wallet information. |
+| `chain`                     | `Chain`                     | Related chain information. |
+| `balance`                   | `TokenBalanceConnection`    | Balance details of the address. |
+| `token`                     | `Token`                     | The token associated with this address. |
+| `currencyValue`             | `Decimal`                   | Value in USD. |
+| `currencySymbol`            | `String`                    | Currency symbol. |
+| `label`                     | `String`                    | The label of the address. |
+| `createTime`                | `String`                    | The creation time of the address. |
+| `source`                    | `Int`                       | The source of the address. |
+| `lastActivityTimestamp`      | `BigInt`                    | The last activity timestamp. |
+| `createTimestamp`           | `BigInt`                    | The create timestamp. |
+| `topAssets`                 | `[WaaS2CustodialTopAsset]`  | List of top assets in the wallet. |
+| `tokenCount`                | `Int`                       | The number of tokens associated with this address. |
+| `tokenAbsBalance`           | `Float`                     | The absolute balance of the tokens. |
+| `tokenBalance`              | `Int`                       | The balance of tokens (possibly rounded/formatted). |
+
+---
+
+### Object: MPCWalletAddress  
+Description: Represents an MPC Wallet address.
+
+| Field Name                  | Type                         | Description |
+|-----------------------------|-----------------------------|-------------|
+| `address`                   | `String!`                   | The wallet address. |
+| `memo`                      | `String`                    | The memo code. |
+| `path`                      | `String`                    | The derivation path (MPC Wallets only). |
+| `encoding`                  | `String`                    | The encoding type. |
+| `pubkey`                    | `String`                    | The public key of the address (MPC Wallets only). |
+| `taprootInternalAddress`     | `String`                    | The Taproot address before tweaking. |
+| `taprootScriptTreeHash`      | `String`                    | The Taproot script tree hash. |
+| `xOnlyPubkey`               | `String`                    | The x-only public key in hex format. |
+| `wallet`                    | `Wallet`                    | Related wallet information. |
+| `chain`                     | `Chain`                     | Related chain information. |
+| `balance`                   | `TokenBalanceConnection`    | Balance details of the address. |
+| `token`                     | `Token`                     | The token associated with this address. |
+| `currencyValue`             | `Decimal`                   | Value in USD. |
+| `currencySymbol`            | `String`                    | Currency symbol. |
+| `label`                     | `String`                    | The label of the address. |
+| `labelEntryId`              | `String`                    | The label entry ID. |
+| `lastActivityTimestamp`      | `BigInt`                    | The last activity timestamp. |
+| `createTimestamp`           | `BigInt`                    | The create timestamp. |
+| `source`                    | `Int`                       | The source of the address. |
+| `createdBy`                 | `String`                    | The creator of the address. |
+| `isMain`                    | `Boolean`                   | Whether this is the main address. |
+| `autoSweepBalance`          | `AutoSweepBalance`          | Balance details of the auto-sweep feature. |
+| `topAssets`                 | `[WaaS2CustodialTopAsset]`  | List of top assets in the wallet. |
+| `tokenCount`                | `Int`                       | The number of tokens associated with this address. |
+| `tokenAbsBalance`           | `Float`                     | The absolute balance of the tokens. |
+| `tokenBalance`              | `Int`                       | The balance of tokens (possibly rounded/formatted). |
+
+---
+
+### Object: SmartContractWalletAddress  
+Description: Represents a Smart Contract Wallet address.
+
+| Field Name                  | Type                         | Description |
+|-----------------------------|-----------------------------|-------------|
+| `address`                   | `String!`                   | The wallet address. |
+| `memo`                      | `String`                    | The memo code. |
+| `path`                      | `String`                    | The derivation path (MPC Wallets only). |
+| `encoding`                  | `String`                    | The encoding type. |
+| `pubkey`                    | `String`                    | The public key of the address (MPC Wallets only). |
+| `taprootInternalAddress`     | `String`                    | The Taproot address before tweaking. |
+| `taprootScriptTreeHash`      | `String`                    | The Taproot script tree hash. |
+| `xOnlyPubkey`               | `String`                    | The x-only public key in hex format. |
+| `wallet`                    | `Wallet`                    | Related wallet information. |
+| `chain`                     | `Chain`                     | Related chain information. |
+| `balance`                   | `TokenBalanceConnection`    | Balance details of the address. |
+| `token`                     | `Token`                     | The token associated with this address. |
+| `currencyValue`             | `Decimal`                   | Value in USD. |
+| `currencySymbol`            | `String`                    | Currency symbol. |
+| `label`                     | `String`                    | The label of the address. |
+| `safeAddress`               | `String`                    | The Safe contract address. |
+| `coboSafeAddress`           | `String`                    | The Cobo Safe contract address. |
+| `coboSafeEnabled`           | `Boolean`                   | Whether Cobo Safe is enabled. |
+| `owners`                    | `[OwnerInfo]`               | List of owners with details. |
+| `threshold`                 | `Int`                       | The multisig threshold. |
+| `status`                    | `String`                    | Wallet status. |
+| `safeMultisigDetails`       | `SafeWalletMultiSigDetail`  | Safe multisig security details. |
+
+---
+
+### Object: OwnerInfo  
+Description: Represents an owner in a multisig wallet.
+
+| Field Name     | Type     | Description |
+|---------------|---------|-------------|
+| `address`     | `String`  | Owner's wallet address. |
+| `label`       | `String`  | Owner's label. |
+| `walletName`  | `String`  | Name of the owner's wallet. |
+| `isPortalWallet` | `Boolean` | Whether this is a portal wallet. |
+| `walletId`    | `String`  | Wallet ID. |
+| `walletType`  | `String`  | Type of the wallet. |
+| `walletSubtype` | `String` | Subtype of the wallet. |
+
+---
+
+### Object: SafeWalletMultiSigDetail  
+Description: Represents security details for a Safe multisig wallet.
+
+| Field Name                     | Type      | Description |
+|--------------------------------|---------|-------------|
+| `hasPendingOperation`         | `Boolean` | Whether there is a pending multisig operation. |
+| `hasUnapprovedOnchainPolicy`  | `Boolean` | Whether there is an unapproved on-chain policy. |
+| `hasCoboDelegateKey`          | `Boolean` | Whether there is a Cobo delegate key. |
+
+---
+
+### Object: ExchangeWalletAddress  
+Description: Represents an Exchange Wallet address.
+
+| Field Name                  | Type                         | Description |
+|-----------------------------|-----------------------------|-------------|
+| `address`                   | `String!`                   | The wallet address. |
+| `memo`                      | `String`                    | The memo code. |
+| `path`                      | `String`                    | The derivation path (MPC Wallets only). |
+| `encoding`                  | `String`                    | The encoding type. |
+| `pubkey`                    | `String`                    | The public key of the address (MPC Wallets only). |
+| `chain`                     | `Chain`                     | Related chain information. |
+| `balance`                   | `TokenBalanceConnection`    | Balance details of the address. |
+| `token`                     | `Token`                     | The token associated with this address. |
+| `currencyValue`             | `Decimal`                   | Value in USD. |
+| `currencySymbol`            | `String`                    | Currency symbol. |
+| `label`                     | `String`                    | The label of the address. |
+| `lastActivityTime`          | `String`                    | The last activity time of the asset. |
+
+
+### Object: QueryAll  
+Description: Provides a set of queries to fetch various blockchain-related data.
+
+| Field Name                  | Type                            | Description |
+|-----------------------------|--------------------------------|-------------|
+| `chains`                    | `ChainConnection`              | List supported chains. |
+| `chainById`                 | `Chain`                        | Get chain information by `chainId`. |
+| `tokens`                    | `TokenConnection`              | Fetch token information with filters. |
+| `wallets`                   | `WalletConnection`             | Retrieve a list of wallets with optional filters. |
+| `walletById`                | `Wallet`                       | Retrieve a wallet by its `walletId`. |
+| `walletsByPage`             | `PaginatedResponseType_Wallet` | Paginated list of wallets. |
+| `tokenBalanceByPage`        | `PaginatedResponseType_TokenBalanceExtend` | Fetch paginated token balances. |
+| `keyVerificationRequest`    | `KeyVerificationRequest`       | Query a specific key verification request. |
+| `keyVerificationRequests`   | `[KeyVerificationRequest]`     | Query all key verification requests. |
+| `thresholdKeyGroup`         | `ThresholdKeyGroup`            | Fetch details of a specific threshold key group. |
+| `thresholdKeyGroups`        | `[ThresholdKeyGroup]`          | Query all threshold key groups. |
+| `vaults`                    | `[Vault]`                      | Retrieve a list of vaults. |
+| `vault`                     | `Vault`                        | Get vault details by `vaultId`. |
+| `keyVerifications`          | `[KeyVerification]`            | Retrieve all key verification records. |
+| `project`                   | `Project`                      | Retrieve project by `projectId`. |
+| `projects`                  | `[Project]`                    | Retrieve a list of projects. |
+| `projectConnection`         | `ProjectConnection`            | Retrieve project connection with pagination. |
+| `transactionPolicyPaginated` | `PaginatedResponseType_TransactionPolicyType` | Paginated list of transaction policies. |
+| `transactionPolicyDetail`   | `TransactionPolicyType`        | Fetch details of a transaction policy. |
+| `riskAddressListPaginated`  | `PaginatedResponseType_RiskAddressList` | Paginated list of risk addresses. |
+| `riskAddressPaginated`      | `PaginatedResponseType_RiskAddress` | Paginated list of risk addresses for specific criteria. |
+| `onchainPolicyPaginated`    | `PaginatedResponseType_PolicyCoreData` | Paginated on-chain policy data. |
+| `onchainPolicyHistoryPaginated` | `PaginatedResponseType_PolicyHistory` | Paginated history of on-chain policy changes. |
+| `onchainPolicyOperationPaginated` | `PaginatedResponseType_OnchainPolicyOperation` | Paginated list of on-chain policy operations. |
+| `assetPaginated`            | `PaginatedResponseType_Asset`  | Retrieve assets for a wallet with filters. |
+| `assetsSupported`           | `[AssetSupport]`               | Retrieve supported assets of a wallet. |
+| `addressBookPaginated`      | `PaginatedResponseType_AddressBook` | Fetch paginated address book entries. |
+| `transactionConnection`     | `TransactionConnection`        | Fetch a list of transactions with filters. |
+| `transaction`               | `Transaction`                  | Retrieve transaction details by `transactionId`. |
+| `transactionPaginated`      | `PaginatedResponseType_Transaction` | Fetch paginated transaction data. |
+| `exchangeAccountPaginated`  | `PaginatedResponseType_ExchangeAccountInterface` | Retrieve exchange account data with filters. |
+| `exchangeSummary`           | `[ExchangeSummary]`            | Fetch an exchange summary. |
+| `exchange`                  | `Exchange`                     | Retrieve information about an exchange. |
+| `tokenConnection`           | `TokenConnection`              | Fetch a list of tokens with pagination. |
+| `walletSummary`             | `WalletSummary`                | Retrieve wallet summary data. |
+| `walletsSummary`            | `WalletsSummary`               | Retrieve summary data for all wallets. |
+| `walletConnection`          | `WalletConnection`             | Fetch a list of wallets with pagination. |
+| `walletPaginated`           | `PaginatedResponseType_Wallet` | Fetch paginated wallet data. |
+| `tokenBalancePaginated`     | `PaginatedResponseType_TokenBalanceExtend` | Fetch paginated token balance data. |
+| `chainByOrgId`              | `[Chain]`                      | Fetch supported chains based on `orgId`. |
+| `chainByWalletType`         | `[Chain]`                      | Fetch supported chains based on wallet type. |
+| `chainConnection`           | `ChainConnection`              | List supported chains with pagination. |
+| `chain`                     | `Chain`                        | Retrieve details of a specific blockchain. |
+| `addressConnection`         | `AddressConnection`            | Fetch a list of addresses with filters. |
+| `addressPaginated`          | `PaginatedResponseType_Address` | Fetch paginated address data. |
+
+---
+
+### Object: ChainConnection  
+Description: Represents a paginated connection of blockchain networks.
+
+| Field Name  | Type         | Description |
+|------------|-------------|-------------|
+| `pageInfo` | `PageInfo!`  | Pagination metadata for the result set. |
+| `edges`    | `[ChainEdge]!` | Contains the nodes (chains) in this connection. |
+
+---
+
+### Object: ChainEdge  
+Description: Represents an edge in the paginated ChainConnection.
+
+| Field Name | Type   | Description |
+|------------|--------|-------------|
+| `node`    | `Chain` | The blockchain network at the end of the edge. |
+| `cursor`  | `String!` | Cursor used for pagination. |
+
+### Object: WalletConnection  
+Description: Represents a paginated list of wallets.
+
+| Field Name | Type              | Description |
+|------------|-------------------|-------------|
+| `pageInfo` | `PageInfo!`       | Pagination metadata for the wallet list. |
+| `edges`    | `[WalletEdge]!`   | Contains individual wallet nodes and their cursors. |
+
+---
+
+### Object: WalletEdge  
+Description: Represents an edge in the paginated WalletConnection.
+
+| Field Name | Type       | Description |
+|------------|-----------|-------------|
+| `node`    | `Wallet`   | The wallet at the end of the edge. |
+| `cursor`  | `String!`  | Cursor used for pagination. |
+
+---
+
+### Object: PaginatedResponseType_Wallet  
+Description: Represents a paginated response of wallets.
+
+| Field Name  | Type                  | Description |
+|-------------|-----------------------|-------------|
+| `data`      | `[Wallet]`             | List of wallets in the response. |
+| `pagination`| `PaginationInfo`       | Pagination details. |
+
+---
+
+### Object: PaginationInfo  
+Description: Encapsulates pagination details.
+
+| Field Name      | Type  | Description |
+|-----------------|------|-------------|
+| `totalRecords`  | `Int` | Total number of records available. |
+| `currentPage`   | `Int` | Current page number. |
+| `pageSize`      | `Int` | Number of records per page. |
+| `totalPages`    | `Int` | Total number of pages. |
+
+---
+
+### Input Object: WalletListParams  
+Description: Represents parameters for fetching a paginated list of wallets.
+
+| Field Name             | Type           | Description |
+|------------------------|---------------|-------------|
+| `walletType`          | `WalletType!`  | Type of wallet to filter. |
+| `assets`             | `[String]`     | List of asset codes to filter by. |
+| `tokenIds`          | `[String]`     | A list of token IDs, which are the unique identifiers of tokens. |
+| `minValue`         | `Decimal`      | Minimum value of assets. |
+| `maxValue`         | `Decimal`      | Maximum value of assets. |
+| `sortBy`          | `SortBy`       | Sorting criteria. |
+| `direction`       | `SortDirection`| Sorting direction (`ASC` or `DESC`). |
+| `chainId`         | `String`       | Blockchain network ID to filter by. |
+| `vaultId`         | `String`       | Vault ID to filter by. |
+| `keyword`         | `String`       | Search keyword. |
+| `currentPage`     | `Int`          | Page number (default: `1`). |
+| `pageSize`        | `Int`          | Number of results per page (default: `10`). |
+| `status`          | `SmartContractWalletStatus` | Status of the wallet. |
+| `minActivityTimestamp` | `BigInt`   | Minimum last activity timestamp. |
+| `maxActivityTimestamp` | `BigInt`   | Maximum last activity timestamp. |
+
+---
+
+### Enum: SortBy  
+Description: Defines sorting options.
+
+| Name                     | Description |
+|--------------------------|-------------|
+| `Code`                   | Sort by wallet code. |
+| `Name`                   | Sort by wallet name. |
+| `TradingTime`            | Sort by last trading time. |
+| `AvailableValue`         | Sort by available asset value. |
+| `TotalValue`             | Sort by total asset value. |
+| `Token`                  | Sort by token. |
+| `LastActivityTimestamp`  | Sort by last activity timestamp. |
+| `LastUpdateTimestamp`    | Sort by last update timestamp. |
+| `CreateTime`             | Sort by wallet creation time. |
+| `UpdateTime`             | Sort by wallet update time. |
+| `CustodialWalletType`    | Sort by custodial wallet type. |
+| `TokenEnabled`           | Sort by whether the token is enabled. |
+| `TokenKeyword`           | Sort by token keyword. |
+| `Withdrawable`           | Sort by whether the wallet is withdrawable. |
+| `Unswept`                | Sort by whether the wallet is unswept. |
+
+---
+
+### Enum: SortDirection  
+Description: Defines sorting direction.
+
+| Name  | Description |
+|-------|-------------|
+| `ASC`  | Ascending order. |
+| `DESC` | Descending order. |
+
+---
+
+### Object: PaginatedResponseType_TokenBalanceExtend  
+Description: Represents a paginated response for token balances.
+
+| Field Name  | Type                  | Description |
+|-------------|-----------------------|-------------|
+| `data`      | `[TokenBalanceExtend]` | List of token balances. |
+| `pagination`| `PaginationInfo`       | Pagination details. |
+
+---
+
+### Input Object: TokenBalanceListParams  
+Description: Represents parameters for fetching token balances.
+
+| Field Name                 | Type        | Description |
+|----------------------------|------------|-------------|
+| `walletId`                 | `String!`  | Wallet ID. |
+| `keyword`                  | `String`   | Search keyword. |
+| `chainId`                  | `String`   | Blockchain network ID. |
+| `tokenIds`                 | `[String]` | A list of token IDs, which are the unique identifiers of tokens. |
+| `minValue`                 | `Decimal`  | Minimum token value. |
+| `maxValue`                 | `Decimal`  | Maximum token value. |
+| `minLastActivityTimestamp` | `BigInt`   | Minimum last activity timestamp. |
+| `maxLastActivityTimestamp` | `BigInt`   | Maximum last activity timestamp. |
+| `tradingAccounts`          | `[String]` | List of trading account IDs. |
+| `sortBy`                   | `TokenBalanceSortBy` | Sorting criteria. |
+| `sortDirection`            | `SortDirection` | Sorting direction (`ASC` or `DESC`). |
+| `currentPage`              | `Int`       | Page number (default: `1`). |
+| `pageSize`                 | `Int`       | Number of results per page (default: `10`). |
+| `hideZeroBalance`          | `Boolean`   | Hide tokens with zero balance. |
+| `address`                  | `String`    | Address filter. |
+
+---
+
+### Enum: TokenBalanceSortBy  
+Description: Defines sorting options for token balances.
+
+| Name                    | Description |
+|-------------------------|-------------|
+| `Token`                 | Sort by token. |
+| `TradingTime`           | Sort by last trading time. |
+| `TotalValue`            | Sort by total value. |
+| `LastActivityTimestamp` | Sort by last activity timestamp. |
+
+---
+
+### Object: KeyVerificationRequest  
+Description: Represents a key verification request.
+
+| Field Name               | Type                        | Description |
+|--------------------------|---------------------------|-------------|
+| `id`                     | `String!`                 | Unique verification request identifier. |
+| `requestType`            | `String!`                 | Verification request type. |
+| `status`                 | `String!`                 | Verification request status. |
+| `participantResponses`   | `[ParticipantConfirmation]` | List of participant confirmations. |
+| `failureDetail`          | `KeyGenerationFailure`     | Details of any failure. |
+
+---
+
+### Object: ThresholdKeyGroup  
+Description: Represents a threshold key group.
+
+| Field Name            | Type                         | Description |
+|-----------------------|----------------------------|-------------|
+| `id`                  | `ID!`                       | Unique identifier for the key group. |
+| `type`                | `String!`                   | Type of the key group. |
+| `totalParticipants`   | `Int!`                      | Total number of participants. |
+| `requiredSigners`     | `Int!`                      | Minimum number of required signatures. |
+| `participants`        | `[ThresholdParticipant]`    | List of active participants. |
+| `cryptographicMaterials` | `[CryptographicMaterial]` | List of cryptographic materials associated. |
+| `status`              | `String`                    | Current status of the key group. |
+| `createdAt`           | `BigInt`                    | Timestamp of creation. |
+
+---
+
+### Object: Vault  
+Description: Represents a digital vault.
+
+| Field Name           | Type                     | Description |
+|----------------------|------------------------|-------------|
+| `id`                | `ID!`                    | Unique identifier. |
+| `type`              | `String!`                | Vault type. |
+| `rootKeys`          | `[PublicKey]`            | List of root public keys. |
+| `projectId`         | `String`                 | Associated project ID. |
+| `linkedWallets`     | `Int`                    | Number of linked wallets. |
+| `activeAssets`      | `[String]!`              | List of active assets. |
+| `assetBalances`     | `AssetBalance!`          | Balances of assets within the vault. |
+| `hasMainKeyGroup`   | `Boolean`                | Whether the vault has a main key group. |
+| `lastAccessed`      | `BigInt`                 | Last accessed timestamp. |
+| `createdAt`         | `BigInt`                 | Creation timestamp. |
+
+
+### Object: PublicKey  
+Description: Represents a public key used in cryptographic operations.
+
+| Field Name | Type     | Description |
+|------------|---------|-------------|
+| `value`    | `String!` | Public key value in string format. |
+| `algorithm` | `String!` | The cryptographic algorithm used (e.g., RSA, ECDSA). |
+
+---
+
+### Object: AssetBalance  
+Description: Represents an asset balance in a vault or wallet.
+
+| Field Name | Type     | Description |
+|------------|---------|-------------|
+| `currency` | `String` | Currency code of the asset (e.g., USD, BTC, ETH). |
+| `symbol`   | `String` | Symbol representing the asset. |
+| `value`    | `Decimal!` | Balance amount of the asset. |
+
+### Object: KeyVerification  
+Description: Represents a complete verification process record.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `verificationId` | `String!` | Unique audit identifier (format: `AUDIT-{uuid}`). |
+| `keyGroupType` | `String!` | Target key group category. |
+| `materialIdentifiers` | `[CryptographicMaterial]!` | List of validated cryptographic materials. |
+| `verificationRecords` | `[VerificationResult]!` | List of individual verification outcomes. |
+
+---
+
+### Object: VerificationResult  
+Description: Outcome of a security verification process.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `participant` | `ThresholdParticipant!` | The verified participant entity. |
+| `latestVerification` | `VerificationRecord!` | The most recent verification data. |
+| `verificationState` | `String!` | Overall compliance status (e.g., `PASS` or `FAIL`). |
+| `detailedState` | `String!` | JSON-formatted validation details. |
+| `policy` | `VerificationPolicy!` | Applicable verification rules. |
+
+---
+
+### Object: VerificationRecord  
+Description: Cryptographic proof of system integrity verification.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `ID!` | Audit trail identifier. |
+| `description` | `String!` | Human-readable audit log entry. |
+| `associatedKeys` | `[PublicKey]!` | Validated public keys. |
+| `createdAt` | `BigInt!` | Verification timestamp. |
+| `expiresAt` | `BigInt!` | Expiration timestamp. |
+| `materialIdentifiers` | `[CryptographicMaterial]!` | List of validated cryptographic materials. |
+| `digitalSignatures` | `[DigitalSignature]!` | List of attestation signatures. |
+| `rawData` | `[RawDataBlock]!` | Raw verification evidence packets. |
+
+---
+
+### Object: DigitalSignature  
+Description: Represents a digital signature for cryptographic attestation.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `algorithm` | `String!` | Cryptographic algorithm used (e.g., `ECDSA`). |
+| `signature` | `String!` | The signature bytes. |
+| `signedMessage` | `String!` | The original message digest. |
+| `hashValue` | `String!` | The hash of the full transaction data. |
+
+---
+
+### Object: RawDataBlock  
+Description: Represents raw verification evidence data.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `algorithm` | `String!` | Cryptographic algorithm used. |
+| `message` | `String!` | Serialized data payload. |
+
+---
+
+### Object: VerificationPolicy  
+Description: Rules governing security attestation frequency.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `createdAt` | `BigInt` | Timestamp of policy creation. |
+| `timezone` | `String` | Timezone name (e.g., `America/New_York`). |
+| `repeatedType` | `String` | Recurrence pattern (`per_day`, `per_week`, `per_month`). |
+
+### Object: Project  
+Description: Represents project-related information.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `ID!` | Unique identifier for the project. |
+| `name` | `String` | Name of the project. |
+| `orgId` | `String` | Organization ID associated with the project. |
+| `nodeCount` | `Int` | Number of nodes in the project. |
+| `threshold` | `Int` | The threshold value, possibly related to security settings. |
+| `currencyValue` | `Decimal` | Value of the currency in USD. |
+| `currencyUnit` | `String` | Unit of the currency. |
+| `currencySymbol` | `String` | Symbol of the currency. |
+| `vaults` | `Int` | Number of vaults in the project. |
+| `tokens` | `Int` | Number of tokens associated with the project. |
+| `lastActivityTimestamp` | `BigInt` | Timestamp of the last activity in the project. |
+| `createTimestamp` | `BigInt` | Timestamp when the project was created. |
+
+---
+
+### Object: ProjectConnection  
+Description: Represents paginated data for projects.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `pageInfo` | `PageInfo!` | Pagination information for the query result. |
+| `edges` | `[ProjectEdge]!` | A list of project edges containing nodes. |
+
+---
+
+### Object: ProjectEdge  
+Description: Represents an edge that contains a `Project` and its cursor.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `node` | `Project` | The project object. |
+| `cursor` | `String!` | Cursor used for pagination. |
+
+---
+
+### Object: TransactionPolicyType  
+Description: Defines transaction policies and their conditions.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `ID!` | Unique ID of the policy object. |
+| `policyId` | `String!` | Unique identifier for the policy. |
+| `policyType` | `String` | Type or category of the policy. |
+| `name` | `String` | Name of the policy. |
+| `effectWallet` | `EffectWallet` | Wallets affected by this policy. |
+| `conditions` | `[Condition]` | List of conditions governing the policy. |
+| `action` | `Action` | Action executed when policy conditions are met. |
+| `status` | `String` | Status of the policy. |
+| `version` | `Int` | Version of the policy. |
+| `priority` | `Int` | Priority of the policy. |
+| `lastModifiedTime` | `BigInt` | Timestamp of the last modification. |
+| `creator` | `User` | Information about the policy creator. |
+| `modifiedBy` | `User` | Information about the last person who modified the policy. |
+| `alertedBy` | `User` | Information about who set up policy alerts. |
+| `effectChain` | `String` | Chain information affected by the policy. |
+| `delegateAddresses` | `JSONString` | Mapping of delegate addresses. |
+| `effectAddresses` | `[EffectAddress]` | List of affected addresses. |
+| `tokenRates` | `JSONString` | Mapping of token rates. |
+
+---
+
+### Object: EffectWallet  
+Description: Represents wallets affected by a policy.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `wallets` | `[Wallet]` | List of affected wallets. |
+| `type` | `String` | Type of effect on wallets (e.g., `PartWallets`). |
+
+---
+
+### Object: Condition  
+Description: Represents a condition applied to a policy.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `type` | `String` | Type of condition applied (e.g., `TransferSpendingLimit`). |
+| `content` | `String` | JSON string with detailed configuration. |
+
+---
+
+### Object: Action  
+Description: Represents an action executed when policy conditions are met.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `type` | `String` | Type of action (e.g., `Accept`). |
+| `content` | `String` | JSON string detailing the action. |
+
+---
+
+### Object: User  
+Description: Represents a user.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `String` | Unique identifier for the user. |
+| `name` | `String` | Name of the user. |
+| `email` | `String` | Email address of the user. |
+| `logo` | `String` | Logo URL or identifier for the user. |
+
+---
+
+### Object: EffectAddress  
+Description: Represents addresses affected by a policy.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `walletName` | `String` | Name of the wallet. |
+| `walletId` | `String` | Unique identifier for the wallet. |
+| `type` | `String` | Type of effect on the address. |
+| `options` | `[String]` | List of options. |
+| `address` | `[String]` | List of affected addresses. |
+
+### Enums: TransactionPolicyTypeEnum, TransactionPolicyConditionTypeEnum, TransactionPolicyActionEnum, TransactionPolicyStatusEnum, TransactionPolicySortEnum  
+These enums define different types of policies, conditions, actions, statuses, and sorting methods.
+
+---
+
+### Enum: TransactionPolicyTypeEnum  
+Description: Represents the type/category of a transaction policy.
+
+| Name | Description |
+|------|-------------|
+| `SYSTEM` | Policies related to the system. |
+| `TRANSFER` | Policies governing asset transfers. |
+| `SIGN_TRANSACTION` | Policies related to signing transactions. |
+| `SIGN_MESSAGE` | Policies for message signing. |
+| `MEMBER` | Policies related to organization members. |
+| `ORGANIZATION` | Policies affecting the organization as a whole. |
+| `WALLET` | Policies related to wallets and their operations. |
+| `DEVELOPER` | Policies for developer-level operations. |
+| `ROLE` | Policies for role-based permissions and management. |
+| `CONTRACT_CALL` | Policies controlling contract calls. |
+| `EMERGENCY_TIGHTENING` | Emergency security measures or restrictions. |
+| `APP` | Policies related to application-level access and controls. |
+
+---
+
+### Enum: TransactionPolicyConditionTypeEnum  
+Description: Represents different conditions that can be applied to transaction policies.
+
+| Name | Description |
+|------|-------------|
+| `SYSTEM` | System-wide conditions. |
+| `TRANSFER_INITIATOR` | Condition based on the initiator of a transfer. |
+| `TRANSFER_SPENDING_LIMIT` | Condition limiting the amount that can be spent in a transfer. |
+| `TRANSFER_RECEIVING_ADDRESS` | Condition restricting transfers to certain receiving addresses. |
+| `TRANSFER_TOKEN` | Condition specifying which tokens can be transferred. |
+| `SIGN_TRANSACTION_TOKEN_TRANSFER` | Condition for signing transactions related to token transfers. |
+| `SIGN_TRANSACTION_TOKEN_APPROVAL` | Condition for signing token approval transactions. |
+| `SIGN_TRANSACTION_INITIATOR` | Condition based on the initiator of a transaction. |
+| `SIGN_TRANSACTION_CONTRACT_CALL` | Condition for signing contract call transactions. |
+| `SIGN_MESSAGE` | Condition for signing messages. |
+| `INVITE_MEMBER` | Condition for inviting a new member to an organization. |
+| `DELETE_MEMBER` | Condition for removing a member from an organization. |
+| `FREEZE_MEMBER` | Condition to freeze a member's access. |
+| `UNFREEZE_MEMBER` | Condition to unfreeze a member's access. |
+| `CHANGE_MEMBER_ROLE` | Condition for changing a member's role. |
+| `EDIT_POLICY` | Condition for modifying policies. |
+| `FREEZE_ORG` | Condition for freezing an organization. |
+| `UNFREEZE_ORG` | Condition for unfreezing an organization. |
+| `CREATE_WALLET` | Condition for creating a new wallet. |
+| `MANAGE_ADDRESS_BOOK` | Condition for managing the address book. |
+| `MANAGE_RISK_POLICY` | Condition for handling risk policies. |
+| `MANAGE_RISK_ADDRESS_LIST` | Condition for managing risk-related address lists. |
+| `MANAGE_API_KEY` | Condition for handling API keys. |
+| `MANAGE_WEBHOOK` | Condition for managing webhooks. |
+| `CREATE_CUSTOM_ROLE` | Condition for creating custom roles. |
+| `EDIT_CUSTOM_ROLE` | Condition for modifying custom roles. |
+| `DEFAULT_CONDITION` | General default condition. |
+| `ORG_TOKEN_OAUTH` | Condition related to organizational OAuth tokens. |
+| `CHANGE_ORG_TOKEN_PERMISSION` | Condition for modifying OAuth token permissions. |
+| `CONTRACT_INITIATOR` | Condition based on the initiator of a contract. |
+| `CONTRACT_TOKEN_TRANSFERS` | Condition for token transfers within a contract. |
+| `CONTRACT_TOKEN_APPROVAL` | Condition for approving tokens within a contract. |
+| `CONTRACT_CALL` | Condition for calling contracts. |
+| `SIGN_MESSAGE_INITIATOR` | Condition based on the initiator of a signed message. |
+| `SIGN_MESSAGE_TYPE` | Condition specifying the type of message to be signed. |
+| `SIGN_MESSAGE_SAFE_SIGNER` | Condition for safe message signing. |
+| `CHANGE_APP_WORKFLOW` | Condition for modifying an application's workflow. |
+| `APP_DEFINITION` | Condition for defining application settings. |
+
+---
+
+### Enum: TransactionPolicyActionEnum  
+Description: Represents actions that can be executed when policy conditions are met.
+
+| Name | Description |
+|------|-------------|
+| `REJECT` | Rejects the transaction or action. |
+| `ACCEPT` | Approves and allows the transaction or action. |
+| `QUORUM` | Requires a quorum (a specified number of approvals) to proceed. |
+| `CUSTOMIZED_WORKFLOW` | Uses a customized workflow for approvals. |
+| `HALF_ADMIN` | Requires half of the administrators to approve the action. |
+
+---
+
+### Enum: TransactionPolicyStatusEnum  
+Description: Represents different statuses of transaction policies.
+
+| Name | Description |
+|------|-------------|
+| `CREATING_PENDING_APPROVAL` | The policy is in the process of being created and is awaiting approval. |
+| `CREATION_FAILED` | The policy creation has failed. |
+| `ACTIVE` | The policy is currently active and in effect. |
+| `EDITING` | The policy is being edited. |
+| `EDITING_PENDING_APPROVAL` | Changes to the policy are awaiting approval. |
+| `DELETING_PENDING_APPROVAL` | The policy is pending deletion approval. |
+| `DELETED` | The policy has been deleted. |
+| `CREATING_PENDING_2FA` | Policy creation is pending two-factor authentication (2FA). |
+| `EDITING_PENDING_2FA` | Editing the policy requires two-factor authentication (2FA). |
+| `DELETING_PENDING_2FA` | Deleting the policy requires two-factor authentication (2FA). |
+
+---
+
+### Enum: TransactionPolicySortEnum  
+Description: Defines the sorting method for transaction policies.
+
+| Name | Description |
+|------|-------------|
+| `CREATED_TIME` | Sorts policies based on the time they were created. |
+
+### Risk Address List and Onchain Policy Data
+
+---
+
+### Object: PaginatedResponseType_RiskAddressList  
+Description: Paginated response type for risk address lists.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[RiskAddressList]` | List of risk address lists. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Object: RiskAddressList  
+Description: Represents a list of risk addresses.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `ID!` | Unique identifier for the risk address list. |
+| `orgId` | `Int!` | Organization ID associated with the risk address list. |
+| `name` | `String!` | Name of the risk address list. |
+| `addressNumber` | `Int!` | Number of addresses in the list. |
+| `creator` | `User!` | Creator of the risk address list. |
+| `createdTime` | `Float!` | Timestamp when the list was created. |
+| `addresses` | `[RiskAddress]` | List of risk addresses. |
+
+---
+
+### Object: RiskAddress  
+Description: Represents an individual risk address.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `ID!` | Unique identifier for the risk address. |
+| `address` | `String!` | Blockchain address marked as risky. |
+| `status` | `String!` | Status of the risk address. |
+| `createdTime` | `Float!` | Timestamp when the address was added. |
+| `lastModifiedUser` | `User!` | Last user who modified the entry. |
+| `label` | `String` | Label associated with the risk address. |
+
+---
+
+### Input Object: AddressListsInput  
+Description: Parameters for querying risk address lists.
+
+| Field Name | Type | Description | Default Value |
+|------------|------|-------------|--------------|
+| `currentPage` | `Int` | Current page number for pagination. | `1` |
+| `pageSize` | `Int` | Number of records per page. | `20` |
+| `nameSearch` | `String` | Search query for list names. | `null` |
+| `sortBy` | `TransactionPolicySortEnum` | Field to sort by. | `CREATED_TIME` |
+| `direction` | `SortDirection` | Sorting direction. | `ASC` |
+
+---
+
+### Object: PaginatedResponseType_RiskAddress  
+Description: Paginated response type for individual risk addresses.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[RiskAddress]` | List of risk addresses. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Input Object: AddressOfListInput  
+Description: Parameters for querying addresses within a risk address list.
+
+| Field Name | Type | Description | Default Value |
+|------------|------|-------------|--------------|
+| `currentPage` | `Int` | Current page number. | `1` |
+| `pageSize` | `Int` | Number of records per page. | `20` |
+| `addressListId` | `String!` | ID of the address list. | `null` |
+| `addressSearch` | `String` | Search query for addresses. | `null` |
+| `labelSearch` | `[String]` | Search query for labels. | `null` |
+| `maxCreatedTimestamp` | `BigInt` | Maximum creation timestamp filter. | `null` |
+| `minCreatedTimestamp` | `BigInt` | Minimum creation timestamp filter. | `null` |
+| `statuses` | `[Int]` | Filter by status keywords. | `null` |
+| `sortBy` | `TransactionPolicySortEnum` | Field to sort by. | `CREATED_TIME` |
+| `direction` | `SortDirection` | Sorting direction. | `ASC` |
+
+---
+
+### Object: PaginatedResponseType_PolicyCoreData  
+Description: Paginated response type for core policy data.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[PolicyCoreData]` | List of onchain policy data. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Object: PolicyCoreData  
+Description: Represents an onchain policy object.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `ID!` | Unique identifier for the policy. |
+| `policyId` | `String!` | Global unique policy identifier. |
+| `policyName` | `String` | Name of the policy. |
+| `conditions` | `[Condition]` | List of policy conditions in JSON format. |
+| `action` | `Action` | Action associated with the policy in JSON format. |
+| `delegateAddresses` | `JSONString` | Delegate addresses in JSON format. |
+
+---
+
+### Object: PaginatedResponseType_PolicyHistory  
+Description: Paginated response type for policy history.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[PolicyHistory]` | List of policy history entries. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Object: PolicyHistory  
+Description: Represents a historical record of policy operations.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `historyId` | `String!` | Unique identifier for the history entry. |
+| `nonce` | `String` | Nonce value of the operation. |
+| `safeTxHash` | `String` | Hash of the safe transaction. |
+| `createTimestamp` | `String` | Timestamp when the operation occurred. |
+| `status` | `String` | Status of the operation. |
+
+---
+
+### Object: PaginatedResponseType_OnchainPolicyOperation  
+Description: Paginated response type for onchain policy operations.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[OnchainPolicyOperation]` | List of onchain policy operations. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Object: OnchainPolicyOperation  
+Description: Represents an onchain policy operation.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `operationId` | `String!` | Unique identifier for the operation. |
+| `status` | `String` | Status of the operation. |
+| `policy` | `PolicyCoreData` | Associated policy object. |
+
+---
+
+### Object: PaginatedResponseType_Asset  
+Description: Paginated response type for assets.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[Asset]` | List of assets. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+### Asset and Address Book Data
+
+---
+
+### Enum: AssetsSortBy  
+Description: Defines sorting options for assets.
+
+| Name | Description |
+|------|-------------|
+| `Token` | Sort by token type. |
+| `AvailableValue` | Sort by available value of the asset. |
+| `TotalValue` | Sort by total value of the asset. |
+| `Code` | Sort by asset code. |
+| `LastActivityTimestamp` | Sort by last activity timestamp. |
+
+---
+
+### Object: AssetSupport  
+Description: Represents an asset, including its metadata, supported coins, and balances.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `code` | `String` | Unique identifier of the asset. |
+| `displayCode` | `String` | Display name of the asset. |
+| `iconUrl` | `String` | URL of the asset icon. |
+| `coins` | `[Coin]` | List of supported coins under this asset. |
+
+---
+
+### Object: PaginatedResponseType_AddressBook  
+Description: Paginated response type for address book entries.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[AddressBook]` | List of address book entries. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Object: AddressBook  
+Description: Represents an address book entry.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `id` | `ID!` | Unique identifier for the entry. |
+| `entryId` | `String` | Unique identifier for the address book entry. |
+| `memo` | `String` | Memo associated with the entry. |
+| `label` | `String` | Label for the entry. |
+| `walletType` | `String` | Type of wallet associated with the entry. |
+| `walletSubtype` | `String` | Sub-type of the wallet. |
+| `email` | `String` | Email associated with the entry. |
+| `address` | `String` | Blockchain address of the entry. |
+| `modifiedTime` | `String` | Last modified timestamp. |
+| `chains` | `[AddressToChainRelation]` | Related chain information. |
+| `walletName` | `String` | Name of the wallet associated with the entry. |
+
+---
+
+### Object: AddressToChainRelation  
+Description: Represents the relation between an address and a blockchain.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `chain` | `String` | Name of the blockchain. |
+| `symbol` | `String` | Symbol of the asset on the chain. |
+| `requireMemo` | `Boolean` | Indicates if a memo is required. |
+| `chainType` | `String` | Type of the blockchain. |
+| `iconUrl` | `String` | URL of the blockchain icon. |
+
+---
+
+### Input Object: AddressBookListParams  
+Description: Parameters for querying the address book.
+
+| Field Name | Type | Description | Default Value |
+|------------|------|-------------|--------------|
+| `chainIds` | `[String]` | Filter by chain IDs. | `null` |
+| `minModifiedTimestamp` | `BigInt` | Minimum modified timestamp filter. | `null` |
+| `maxModifiedTimestamp` | `BigInt` | Maximum modified timestamp filter. | `null` |
+| `addressSearch` | `String` | Search query for addresses. | `null` |
+| `labelSearch` | `String` | Search query for labels. | `null` |
+| `memoSearch` | `String` | Search query for memos. | `null` |
+| `walletType` | `WalletType` | Wallet type filter. | `null` |
+| `nonPortal` | `Boolean` | Filter non-portal wallets. | `false` |
+| `sortBy` | `AddressBookSortBy` | Field to sort by. | `null` |
+| `direction` | `SortDirection` | Sorting direction. | `null` |
+| `currentPage` | `Int` | Current page number. | `1` |
+| `pageSize` | `Int` | Number of records per page. | `20` |
+| `memoContainSearch` | `String` | Search within memos. | `null` |
+
+---
+
+### Enum: AddressBookSortBy  
+Description: Sorting options for address book entries.
+
+| Name | Description |
+|------|-------------|
+| `ModifiedTime` | Sort by the last modified time. |
+| `Label` | Sort by the label of the entry. |
+
+---
+
+### Object: PaginatedResponseType_Transaction  
+Description: Paginated response type for transactions.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[Transaction]` | List of transactions. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Object: TransactionsByPageParams  
+Description: Parameters for querying transactions.
+
+| Field Name | Type | Description | Default Value |
+|------------|------|-------------|--------------|
+| `currentPage` | `Int` | Current page number. | `1` |
+| `pageSize` | `Int` | Number of records per page. | `20` |
+| `walletId` | `String` | Filter by wallet ID. | `null` |
+| `policyId` | `String` | Filter by policy ID. | `null` |
+| `policyVersion` | `String` | Filter by policy version. | `null` |
+| `vaultId` | `String` | Filter by vault ID. | `null` |
+| `projectId` | `String` | Filter by project ID. | `null` |
+| `keyword` | `String` | Search keyword. | `null` |
+| `searchFields` | `[TransactionSearchField]` | Fields to search. | `null` |
+| `networks` | `[String]` | Filter by transaction networks. | `null` |
+| `statuses` | `[TransactionStatus]` | Filter by transaction statuses. | `null` |
+| `types` | `[TransactionType]` | Filter by transaction types. | `null` |
+| `sourceType` | `[QueryTransactionWalletType]` | Filter by source wallet type. | `null` |
+| `targetType` | `[QueryTransactionWalletType]` | Filter by target wallet type. | `null` |
+| `initiatorType` | `[QueryTransactionInitiatorType]` | Filter by transaction initiator type. | `null` |
+| `minCreatedTime` | `BigInt` | Filter by minimum creation time. | `null` |
+| `maxCreatedTime` | `BigInt` | Filter by maximum creation time. | `null` |
+| `sortBy` | `SortBy` | Field to sort by. | `null` |
+| `sortDirection` | `SortDirection` | Sorting direction. | `null` |
+
+---
+
+### Enum: TransactionSearchField  
+Description: Defines searchable fields for transactions.
+
+| Name | Description |
+|------|-------------|
+| `WalletName` | Search by wallet name. |
+| `CoboID` | Search by Cobo ID. |
+| `RequestID` | Search by request ID. |
+| `TxnHash` | Search by transaction hash. |
+| `From` | Search by sender address. |
+| `To` | Search by recipient address. |
+| `Delegate` | Search by delegate address. |
+| `Category` | Search by category. |
+| `Description` | Search by transaction description. |
+| `TransactionId` | Search by transaction ID. |
+
+---
+
+### Enum: QueryTransactionInitiatorType  
+Description: Defines transaction initiator types.
+
+| Name | Description |
+|------|-------------|
+| `API` | Transaction initiated via API. |
+| `Web` | Transaction initiated via web. |
+| `App` | Transaction initiated via mobile or desktop app. |
+| `External` | Transaction initiated externally. |
+
+
+### Object: TransactionAssetFilter  
+Description: Filters transactions based on asset attributes.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `assetCode` | `String` | The unique code identifying the asset. |
+| `minAmount` | `Decimal` | Minimum asset amount threshold. Transactions must have at least this amount. |
+| `maxAmount` | `Decimal` | Maximum asset amount threshold. Transactions must not exceed this amount. |
+
+---
+
+### Enum: QueryTransactionAggregationType  
+Description: Defines aggregation types for transaction queries.
+
+| Name | Description |
+|------|-------------|
+| `ExcludeAutoSweep` | Exclude auto-sweep transactions from the query. |
+| `IncludeAutoSweep` | Include auto-sweep transactions in the query. |
+| `OnlyAutoSweep` | Query only auto-sweep transactions. |
+
+---
+
+### Object: PaginatedResponseType_ExchangeAccountInterface  
+Description: Paginated response type for exchange accounts.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[ExchangeAccountInterface]` | List of exchange accounts. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Enum: ExchangeEnum  
+Description: Lists supported cryptocurrency exchanges.
+
+| Name | Description |
+|------|-------------|
+| `BINANCE` | Binance exchange. |
+| `OKX` | OKX exchange. |
+| `DERIBIT` | Deribit exchange. |
+| `BYBIT` | Bybit exchange. |
+| `GATE` | Gate.io exchange. |
+| `BITGET` | Bitget exchange. |
+| `BITMART` | BitMart exchange. |
+| `BITFINEX` | Bitfinex exchange. |
+| `BITGET_TEST` | Bitget test environment. |
+| `BITMART_TEST` | BitMart test environment. |
+
+---
+
+### Enum: ExchangeAccountSortBy  
+Description: Defines sorting options for exchange accounts.
+
+| Name | Description |
+|------|-------------|
+| `TotalValue` | Sort by total value of assets. |
+| `LastActivityTimestamp` | Sort by last activity timestamp. |
+
+---
+
+### Enum: ExchangeAccountsApiFormat  
+Description: Defines response format options for exchange account APIs.
+
+| Name | Description |
+|------|-------------|
+| `BASIC_IN_FLAT` | Basic details in a flat structure. |
+| `DETAIL_IN_FLAT` | Detailed account information in a flat structure. |
+| `DETAIL_GROUP_BY_MAIN` | Detailed account information grouped by main accounts. |
+
+---
+
+### Object: ExchangeSummary  
+Description: Provides a summary of an exchange's assets and accounts.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `exchange` | `Exchange!` | The exchange associated with this summary. |
+| `totalValue` | `Decimal` | Total asset value in the exchange (USD). |
+| `accountCount` | `Int` | Number of accounts linked to the exchange. |
+| `assets` | `[Asset]` | List of assets available in the exchange. |
+
+---
+
+### Object: WalletsSummary  
+Description: Provides a summary of wallet-related assets and balances.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `tokenCount` | `Int` | Count of tokens. |
+| `assetCount` | `Int` | Count of assets. |
+| `addressCount` | `Int` | Count of addresses. |
+| `currencyValue` | `Decimal` | Total currency value in wallets. |
+| `currencyUnit` | `String` | Unit of currency. |
+| `currencySymbol` | `String` | Currency symbol. |
+| `walletCount` | `Int` | Count of wallets. |
+| `walletSubtypeSummary` | `[WalletSubtypeSummary]` | Breakdown of wallet types and subtypes. |
+
+---
+
+### Object: WalletSubtypeSummary  
+Description: Provides details of a specific wallet subtype.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `walletType` | `String` | Subtype of the wallet. |
+| `walletCount` | `Int` | Number of wallets of this subtype. |
+| `assetCount` | `Int` | Number of assets held in this subtype. |
+| `tokenCount` | `Int` | Number of tokens held in this subtype. |
+| `addressCount` | `Int` | Number of addresses associated with this subtype. |
+| `currencyValue` | `Decimal` | Total currency value for this subtype. |
+| `currencyUnit` | `String` | Unit of the currency. |
+| `currencySymbol` | `String` | Symbol of the currency. |
+
+---
+
+### Object: PaginatedResponseType_Address  
+Description: Paginated response type for addresses.
+
+| Field Name | Type | Description |
+|------------|------|-------------|
+| `data` | `[Address]` | List of addresses. |
+| `pagination` | `PaginationInfo` | Pagination metadata. |
+
+---
+
+### Enum: AddressesByPageSortBy  
+Description: Defines sorting options for paginated address queries.
+
+| Name | Description |
+|------|-------------|
+| `CreateTime` | Sort addresses by creation time. |
+

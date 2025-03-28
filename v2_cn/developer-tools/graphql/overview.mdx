@@ -1,0 +1,104 @@
+---
+title: "概述"
+lang: "zh-hans"
+description: "Cobo GraphQL API 的概述，其功能和高效数据检索的优势。"
+---
+
+<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+本指南提供了 Cobo GraphQL API 的概述。
+
+## 关于 GraphQL
+
+GraphQL 是一种强大的 API 查询语言，使客户端能够在单个请求中请求所需的数据，从而减少数据的过度获取和不足获取。有关更多详细信息，请参阅官方网站 [GraphQL](https://graphql.org)。
+
+## 关于 Cobo GraphQL API
+Cobo 的 GraphQL API 提供对 WaaS 2.0 的区块链、钱包和交易数据的实时访问。与 REST API 相比，GraphQL 允许客户端动态定义响应，优化性能并减少 API 调用以实现更快和更高效的数据检索。
+
+## 关键功能
+
+Cobo GraphQL API 支持以下功能：
+
+### 分页
+API 支持基于游标的分页和基于页面的分页（连接查询），以实现高效的数据检索。
+
+- 使用 `first`、`last`、`before` 和 `after` 进行导航。
+- `first` 和 `last` 值必须在 [1, 100] 范围内。
+- 某些模式可能适用更严格的限制。
+
+**示例：在给定游标后获取下 10 个钱包**
+```graphql
+query {
+  wallets(first: 10, after: "cursor_value") {
+    edges {
+      node {
+        walletId
+        name
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+```
+
+### 排序
+客户端可以通过指定排序参数来对查询结果进行排序。可用的排序字段包括 `createdTimestamp`、`TotalValue`、`Name`、`TradingTime`。
+
+**示例：按 `createdTimestamp` 排序交易**
+```graphql
+query {
+  transactions(walletId: "123", sort: { field: CREATED_TIMESTAMP, order: DESC }) {
+    edges {
+      node {
+        transactionId
+        createdTimestamp
+      }
+    }
+  }
+}
+```
+
+### 字段选择
+GraphQL 允许用户仅检索必要的字段，从而减少不必要的数据传输并提高效率。
+
+**示例：仅请求钱包的 `walletId` 和 `name`**
+```graphql
+query {
+  walletById(id: "wallet_123") {
+    walletId
+    name
+  }
+}
+```
+
+### 嵌套查询
+客户端可以在单个请求中获取相关对象，从而减少多个 API 调用并提高效率。
+
+**示例：检索钱包的交易和代币余额**
+```graphql
+query {
+  walletById(id: "wallet_123") {
+    walletId
+    transactions(first: 5) {
+      edges {
+        node {
+          transactionId
+          status
+        }
+      }
+    }
+    tokenBalances {
+      edges {
+        node {
+          balance
+          token {
+            symbol
+          }
+        }
+      }
+    }
+  }
+}

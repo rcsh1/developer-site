@@ -1,12 +1,13 @@
 ---
-openapi: post /transactions/estimate_fee
+openapi: get /transactions/approval_details
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.estimate_fee_params import EstimateFeeParams
-from cobo_waas2.models.estimated_fee import EstimatedFee
+from cobo_waas2.models.list_transaction_approval_details200_response import (
+    ListTransactionApprovalDetails200Response,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -21,17 +22,23 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.TransactionsApi(api_client)
-    estimate_fee_params = cobo_waas2.EstimateFeeParams()
+    transaction_ids = (
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3"
+    )
+    cobo_ids = "20231213122855000000000000000000,20231213122955000000000000000000"
 
     try:
-        # Estimate transaction fee
-        api_response = api_instance.estimate_fee(
-            estimate_fee_params=estimate_fee_params
+        # List transaction approval details
+        api_response = api_instance.list_transaction_approval_details(
+            transaction_ids=transaction_ids, cobo_ids=cobo_ids
         )
-        print("The response of TransactionsApi->estimate_fee:\n")
+        print("The response of TransactionsApi->list_transaction_approval_details:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling TransactionsApi->estimate_fee: %s\n" % e)
+        print(
+            "Exception when calling TransactionsApi->list_transaction_approval_details: %s\n"
+            % e
+        )
 
 ```
 ```java Java
@@ -53,12 +60,15 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
-    EstimateFeeParams estimateFeeParams = new EstimateFeeParams();
+    String transactionIds =
+        "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3";
+    String coboIds = "20231213122855000000000000000000,20231213122955000000000000000000";
     try {
-      EstimatedFee result = apiInstance.estimateFee(estimateFeeParams);
+      ListTransactionApprovalDetails200Response result =
+          apiInstance.listTransactionApprovalDetails(transactionIds, coboIds);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling TransactionsApi#estimateFee");
+      System.err.println("Exception when calling TransactionsApi#listTransactionApprovalDetails");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -80,26 +90,8 @@ import (
 )
 
 func main() {
-	estimateFeeParams := coboWaas2.EstimateFeeParams{
-		EstimateContractCallFeeParams: coboWaas2.NewEstimateContractCallFeeParams(
-			coboWaas2.EstimateFeeRequestType("Transfer"),
-			"ETH",
-			coboWaas2.ContractCallSource{
-				CustodialWeb3ContractCallSource: coboWaas2.NewCustodialWeb3ContractCallSource(
-					coboWaas2.ContractCallSourceType("Web3"),
-					"f47ac10b-58cc-4372-a567-0e02b2c3d479",
-					"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-				),
-			},
-			coboWaas2.ContractCallDestination{
-				EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(
-					coboWaas2.ContractCallDestinationType("EVM_Contract"),
-					"0x0406db8351aa6839169bb363f63c2c808fee8f99",
-					"0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO",
-				),
-			},
-		),
-	}
+	transactionIds := "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3"
+	coboIds := "20231213122855000000000000000000,20231213122955000000000000000000"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -112,15 +104,24 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.EstimateFee(ctx).
-		EstimateFeeParams(estimateFeeParams).
+	resp, r, err := apiClient.TransactionsAPI.ListTransactionApprovalDetails(ctx).
+		TransactionIds(transactionIds).
+		CoboIds(coboIds).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `TransactionsAPI.EstimateFee``: %v\n", err)
+		fmt.Fprintf(
+			os.Stderr,
+			"Error when calling `TransactionsAPI.ListTransactionApprovalDetails``: %v\n",
+			err,
+		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `EstimateFee`: EstimatedFee
-	fmt.Fprintf(os.Stdout, "Response from `TransactionsAPI.EstimateFee`: %v\n", resp)
+	// response from `ListTransactionApprovalDetails`: ListTransactionApprovalDetails200Response
+	fmt.Fprintf(
+		os.Stdout,
+		"Response from `TransactionsAPI.ListTransactionApprovalDetails`: %v\n",
+		resp,
+	)
 }
 
 ```
@@ -135,9 +136,11 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  EstimateFeeParams: new CoboWaas2.EstimateFeeParams(),
+  transaction_ids:
+    "f47ac10b-58cc-4372-a567-0e02b2c3d479,557918d2-632a-4fe1-932f-315711f05fe3",
+  cobo_ids: "20231213122855000000000000000000,20231213122955000000000000000000",
 };
-apiInstance.estimateFee(opts).then(
+apiInstance.listTransactionApprovalDetails(opts).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },
