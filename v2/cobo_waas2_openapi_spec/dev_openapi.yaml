@@ -196,7 +196,6 @@ paths:
       summary: Create wallet
       description: |
         This operation creates a wallet with the provided information.
-
         <Note>This operation is not applicable to Smart Contract Wallets.</Note>
       security:
         - CoboAuth: []
@@ -10591,7 +10590,7 @@ components:
       example: 'Deposit,Withdrawal'
   requestBodies:
     createWalletBody:
-      description: The request body to create a wallet
+      description: The request body to create a wallet.
       content:
         application/json:
           schema:
