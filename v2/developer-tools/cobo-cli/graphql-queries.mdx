@@ -1,100 +1,65 @@
 ---
 title: "GraphQL queries"
+description: "Cobo CLI supports GraphQL query that allows you to execute complex queries and retrieve specific data by using the Cobo GraphQL API."
 lang: "en"
 ---
 
-Cobo CLI supports GraphQL query that allows you to execute complex queries and retrieve specific data from the WaaS 2.0 API.
+Cobo CLI supports GraphQL query that allows you to execute complex queries and retrieve specific data by using the Cobo GraphQL API.
 
-For more details about GraphQL, please refer to [GraphQL's official website](https://graphql.org/).
+For more details about GraphQL, please refer to the [Cobo GraphQL API documentation](/v2/developer-tools/graphql/overview).
+
+- Always validate your queries before executing them in a production environment to avoid potential issues.
+- Escape special characters in your query.
 
 <Note>To make API requests, you need to authenticate your requests by logging in and setting up your API keys.</Note>
 
 ## Usage
 
 ```shell
-cobo graphql -q <query>
+cobo graphql -q <query>   # Use inline query
+cobo graphql -f <file> # Load query from file
 ```
 
 ## Options
 
-- `-q, --query`: The GraphQL query to execute, a JSON string containing a `query` key.
-  <Info>If your query is a simple string rather than a JSON string, Cobo CLI will automatically wrap it in the required JSON structure.</Info>
-- `-v, --variables`: Include variables in your GraphQL query using a JSON string.
-- `--raw`: Output the raw JSON response without formatting.
+- `-q, --query`: The GraphQL query to execute. Can be a raw query string or a JSON string with a query key.
+- `-f, --file`: Execute a query defined in a local file. The file must be a JSON file containing a query field.
 
 ## Example
 
-### Retrieve transactions information about a specified wallet
+### Run a query directly
 
 ```shell
-cobo graphql -q '{
-  "query": "
-    {
-      transactions(walletId: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", limit: 5) {
-        id
-        type
-        status
-        amount {
-          tokenId
-          value
-        }
+cobo graphql -q 'query MyQuery {
+  transactionPaginated(params: {currentPage: 1, pageSize: 10}) {
+    data {
+      assets {
+        code
+        description
+        displayCode
       }
+      assetId
     }
-  "
+  }
 }'
 ```
 
-This command retrieves the last 5 transactions for a specific wallet whose wallet ID is `f47ac10b-58cc-4372-a567-0e02b2c3d479`.
+This query retrieves the first 10 transactions, including their asset IDs and associated asset details such as code, description, and display code.
 
-### Get MPC vault information with variables
-
-```shell
-cobo graphql -q '{
-  "query": "
-    query($vaultId: ID!) {
-      mpcVault(id: $vaultId) {
-        id
-        name
-        type
-        rootPubkeys {
-          rootPubkey
-          curve
-        }
-      }
-    }
-  "
-}' -v '{
-  "vaultId": "YPdbyVaVGqXXjkUsohHw"
-}'
-```
-
-This command retrieves information about an MPC vault using vault ID as a variable.
-
-### Get wallet information in the raw JSON format
+### Run a query from a local file
 
 ```shell
-cobo graphql -q "{ wallets { id name } }" --raw
+cobo graphql -f query.json
 ```
 
-This command retrieves information of specified wallets in the raw JSON format.
+Contents of `query.json` can be as follows:
 
-## Tips for Using GraphQL with Cobo CLI
+```json
+{
+  "query": "query MyQuery { transactionPaginated(params: {currentPage: 1, pageSize: 10}) { data { assets { code description displayCode } assetId } } }"
+}
+```
 
-- Always validate your queries before executing them in a production environment to avoid potential issues.
-- For complex queries, consider writing your query in a separate file and using command substitution to pass it to Cobo CLI. You can refer to the following command for example: 
-
-   ```shell
-   cobo graphql -q "$(cat your_query.graphql)"
-   ```
-
-- Escape special characters in your query.
-
-## Related Commands
-
-- [`get`](/v2/developer-tools/cobo-cli/get-requests): Execute GET requests to the WaaS 2.0 API.
-- [`post`](/v2/developer-tools/cobo-cli/post-requests): Execute POST requests to the WaaS 2.0 API.
-- [`put`](/v2/developer-tools/cobo-cli/put-requests): Execute PUT requests to the WaaS 2.0 API.
-- [`delete`](/v2/developer-tools/cobo-cli/delete-requests): Execute DELETE requests to the WaaS 2.0 API.
-
+This command executes the same query as the above example, but the query is defined in a JSON file.
 
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

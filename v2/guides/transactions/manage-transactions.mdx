@@ -18,7 +18,7 @@ A transaction can be cancelled if its status is either of the following:
 - `Submitted`
 - `PendingScreening`
 - `PendingAuthorization`
-- `PendingSignature` 
+- `PendingSignature` (Only when the sub-status is `Queue`, `InsufficientBalance`, `InsufficientBalanceFundLocked`, `PendingSignerApproval`, `PendingSystemProcessing`, or `Built`)
     
 To cancel a transaction via the WaaS 2.0 API, use the [Cancel transaction](/v2/api-references/transactions/cancel-transaction) operation. This requires the transaction ID of the transaction you wish to cancel.
 
