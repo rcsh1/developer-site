@@ -16,10 +16,10 @@ description: "使用 WaaS 2.0 API 管理交易的综合指南，涵盖取消，�
 <Note>此操作仅适用于 MPC 钱包和智能合约钱包的交易。</Note>
 
 如果交易的状态是以下之一，则可以取消：
-- `已提交`
-- `待审查`
-- `待授权`
-- `待签名` 
+- `Submitted`
+- `PendingScreening`
+- `PendingAuthorization`
+- `PendingSignature`（仅当子状态为 `Queue`, `InsufficientBalance`, `InsufficientBalanceFundLocked`, `PendingSignerApproval`, `PendingSystemProcessing`, 或 `Built` 时）
     
 要通过 WaaS 2.0 API 取消交易，请使用 [取消交易](/v2/api-references/transactions/cancel-transaction) 操作。这需要您希望取消的交易的交易 ID。
 
@@ -29,7 +29,7 @@ description: "使用 WaaS 2.0 API 管理交易的综合指南，涵盖取消，�
 
 <Note>此操作仅适用于 SOL 代币的 MPC 钱包的交易。</Note>
 
-只有当交易状态为 `失败` 时，才能重发交易。
+只有当交易状态为 `Failed` 时，才能重发交易。
 
 要重发交易，请使用 [重发交易](/v2/api-references/transactions/resend-transaction) 操作。这需要您希望重发的交易的交易 ID。
 
@@ -49,9 +49,9 @@ RBF 的两个最常见用例是加速和放弃交易。
 
 如果交易因费用低而需要很长时间才能确认，您可能希望加速交易。这在网络拥堵时特别有用。
 
-<Note>此操作仅适用于 MPC 钱包和智能合约钱包的交易。它不适用于以下链上的交易：VET、TRON、TVET、SOL 和 TON。</Note>
+<Note>此操作仅适用于全托管钱包（Web3 钱包），MPC 钱包和智能合约钱包的交易。它不适用于以下链上的交易：VET、TRON、TVET、SOL 和 TON。</Note>
 
-只有当交易状态为 `广播中` 时，才能加速交易。
+只有当交易状态为 `Broadcasting` 时，才能加速交易。
 
 要加速交易，请使用 [加速交易](/v2/api-references/transactions/speed-up-transaction) 操作。这需要您希望加速的交易的交易 ID。
 
@@ -65,9 +65,9 @@ RBF 的两个最常见用例是加速和放弃交易。
 
 如果交易是错误发起的、需要修改其详细信息或不再需要执行但无法取消，您可能希望放弃交易。
 
-<Note>此操作仅适用于 MPC 钱包和智能合约钱包的交易。它不适用于以下链上的交易：VET、TRON、TVET、SOL 和 TON。</Note>
+<Note>此操作仅适用于全托管钱包（Web3 钱包），MPC 钱包和智能合约钱包的交易。它不适用于以下链上的交易：VET、TRON、TVET、SOL 和 TON。</Note>
 
-只有当交易状态为 `广播中` 时，才能放弃交易。
+只有当交易状态为 `Broadcasting` 时，才能放弃交易。
 
 要放弃交易，请使用 [放弃交易](/v2/api-references/transactions/drop-transaction) 操作。这需要您希望放弃的交易的交易 ID。
 

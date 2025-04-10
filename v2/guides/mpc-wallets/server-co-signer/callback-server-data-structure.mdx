@@ -42,7 +42,7 @@ Used for key share generation.
 | Field | Type | Description |
 |-------|------|-------------|
 | threshold | `int` | The number of key share holders required to approve operations in this key share holder group. |
-| node_ids | `array[string]` | The TSS node IDs of the key share holders in this key share holder group. |
+| node_ids | `array[string]` | The TSS Node IDs of the key share holders in this key share holder group. |
 | curve | `int` | The elliptic curve type of the root extended public key. Possible values: <br/>`0`: Secp256k1<br/>`2`: Ed25519. |
 | task_id | `string` | The unique identifier for this key generation task. |
 | biz_task_id | `string` | For this request type, this field contains the TSS request ID. |
@@ -67,7 +67,7 @@ Used for transaction or message signing operations.
 |-------|------|-------------|
 | group_id | `string` | The ID of the key share holder group. |
 | root_pub_key | `string` | The root extended public key of the group. |
-| used_node_ids | `array[string]` | The list of TSS node IDs participating in signing. |
+| used_node_ids | `array[string]` | The list of TSS Node IDs participating in signing. |
 | bip32_path_list | `array[string]` | The BIP32 derivation paths. |
 | msg_hash_list | `array[string]` | The list of message hashes to sign. |
 | tweak_list | `array[string]` | The list of tweaks to apply. |
@@ -87,7 +87,6 @@ Used for transaction or message signing operations.
 | signer_key_share_holder_group | `object` | The information of the key share holder group that signs the transaction. For details, see the response of the [Get key share holder group information](/v2/api-references/wallets--mpc-wallets/get-key-share-holder-group-information) operation. |
 | source_addresses | `array[object]` | The information of the source addresses of the transaction. For details, see the response of the [List wallet addresses](/v2/api-references/wallets/list-wallet-addresses) operation. |
 | transaction | `object` | The information of the transaction to sign. For details, see the response of the [Get transaction information](/v2/api-references/transactions/get-transaction-information) operation. |
-| staking_activity | `object` | The information of the staking activity, if the transaction is a staking activity. For details, see the response of the [Get staking activity details](/v2/api-references/stakings/get-staking-activity-details) operation.  |
 
 ### TypeKeyReshare request
 
@@ -100,10 +99,10 @@ Used for [key resharing](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/mana
 | old_group_id | `string` | The ID of the existing key share holder group. |
 | root_pub_key | `string` | The root extended public key of the vault. |
 | curve | `int` | The elliptic curve type of the root extended public key. <br/>`0`: Secp256k1<br/>`2`: Ed25519. |
-| used_node_ids | `array[string]` | The TSS node IDs of the existing key share holder group. |
+| used_node_ids | `array[string]` | The TSS Node IDs of the existing key share holder group. |
 | old_threshold | `int` | The threshold value of the existing key share holder group used.  |
 | new_threshold | `int` | The threshold value of the new key share holder group. |
-| new_node_ids | `array[string]` | The TSS node IDs of the new key share holder group. |
+| new_node_ids | `array[string]` | The TSS Node IDs of the new key share holder group. |
 | task_id | `string` | The unique identifier for this resharing task. |
 | biz_task_id | `string` | For this request type, this field contains the TSS request ID. |
 

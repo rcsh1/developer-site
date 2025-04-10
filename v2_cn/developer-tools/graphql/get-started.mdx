@@ -44,6 +44,14 @@ curl --location --request POST "https://api.dev.cobo.com/v2/graphql" \
   }'
 ```
 
+您也可以使用 [Cobo CLI](/v2_cn/developer-tools/cobo-cli/graphql-queries) 直接运行查询，而不必编写 curl 命令。
+
+例如：
+
+```shell
+cobo graphql -q 'query { wallets(first: 3) { edges { node { walletId name } } } }'
+
+
 您将获得类似于以下的响应：
 
 ```json

@@ -4,7 +4,11 @@ lang: "zh-hans"
 description: "WaaS 2.0 API 中交易状态的指南，包括状态类型及其含义。"
 ---
 
-下表提供了WaaS 2.0中各种交易状态及其对应的子状态的概述。
+WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶段。本页面提供了所有状态的完整列表，并描述了根据每个状态可以执行的操作。
+
+## 交易状态表格
+
+下表提供了 WaaS 2.0 中各种交易状态及其对应的子状态的概述。
 
 <table>
   <tr>
@@ -44,28 +48,52 @@ description: "WaaS 2.0 API 中交易状态的指南，包括状态类型及其�
     <td>交易正在等待审批员的批准。</td>
   </tr>
   <tr>
-    <td rowspan="5">PendingSignature</td>
-    <td>Built</td>
-    <td>交易已构建但尚未签名。</td>
+    <td rowspan="11">PendingSignature</td>
+    <td>Queue</td>
+    <td>交易正在排队等待 Cobo Portal 处理。</td>
   </tr>
   <tr>
     <td>PendingWaitSigner</td>
     <td>交易正在等待签名。</td>
   </tr>
   <tr>
+    <td>InsufficientBalance</td>
+    <td>由于余额不足，交易无法继续。请存入所需的代币或取消交易。</td>
+  </tr>
+  <tr>
+    <td>InsufficientBalanceFundLocked</td>
+    <td>由于可用余额当前被锁定，交易无法继续。请等待可用余额解锁。</td>
+  </tr>
+  <tr>
+    <td>PendingSystemProcessing</td>
+    <td>交易已提交，正在等待区块链系统处理。</td>
+  </tr>
+  <tr>
+    <td>SystemProcessingOngoing</td>
+    <td>区块链系统正在处理交易。</td>
+  </tr>
+  <tr>
+    <td>Built</td>
+    <td>交易已构建但尚未签名。</td>
+  </tr>
+  <tr>
+    <td>PendingSignerApproval</td>
+    <td>交易正在等待签名人的批准。</td>
+  </tr>
+  <tr>
     <td>PendingApprovalStart</td>
     <td>交易审批正在等待开始。<ul><li>对于<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction">MPC 钱包（终端用户钱包）</a>，您需要使用客户端 App 并调用 UCW SDK 以开始交易审批流程。</li><li>对于<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction">MPC 钱包（机构控制钱包）</a>：<ul><li>如果您使用<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">服务器端签名人</a>，此状态表示 TSS Node将很快请求回调服务器开始<a href="https://manuals.cobo.com/en/portal/risk-controls/introduction">风控策略</a>检查。在此阶段无需您采取进一步行动。</li><li>如果您使用<a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">移动端签名人</a>，私钥分片持有者需要使用他们的<a href="https://manuals.cobo.com/en/guard/introduction">Cobo Guard</a>批准交易并参与签名过程。</li></ul></li></ul></td>
   </tr>
   <tr>
-    <td>Queue</td>
-    <td>交易正在排队等待 Cobo Portal 处理。</td>
+    <td>PendingSignerProcessing</td>
+    <td>交易正在签名中。</td>
   </tr>
   <tr>
     <td>SignatureVerificationSuccess</td>
     <td>交易的签名已成功验证。</td>
   </tr>
   <tr>
-    <td rowspan="1">Broadcasting</td>
+    <td>Broadcasting</td>
     <td>FailedBroadcasting</td>
     <td>交易未能广播到区块链网络。</td>
   </tr>
@@ -84,7 +112,7 @@ description: "WaaS 2.0 API 中交易状态的指南，包括状态类型及其�
     <td>交易已完成。</td>
   </tr>
   <tr>
-    <td rowspan="4">Failed</td>
+    <td rowspan="6">Failed</td>
     <td>FailedBySigner</td>
     <td>交易在签名过程中失败。</td>
   </tr>
@@ -101,7 +129,15 @@ description: "WaaS 2.0 API 中交易状态的指南，包括状态类型及其�
     <td>交易的签名验证失败。</td>
   </tr>
   <tr>
-    <td rowspan="14">Rejected</td>
+    <td>FailedSignerTimeout</td>
+    <td>交易由于签名超时而失败。</td>
+  </tr>
+  <tr>
+    <td>ReOrged</td>
+    <td>交易因区块链重组而失败。</td>
+  </tr>
+  <tr>
+    <td rowspan="15">Rejected</td>
     <td>RejectedWhiteList</td>
     <td>交易被拒绝，因为发起者的 IP 地址不在白名单中。</td>
   </tr>
@@ -146,6 +182,10 @@ description: "WaaS 2.0 API 中交易状态的指南，包括状态类型及其�
     <td>交易被拒绝，因为未通过 Travel Rule 的交叉检查。</td>
   </tr>
   <tr>
+    <td>RejectedBySigner</td>
+    <td>交易被拒绝，因为被签名人拒绝。</td>
+  </tr>
+  <tr>
     <td>CanceledBySpender</td>
     <td>交易被提币员取消。</td>
   </tr>
@@ -163,3 +203,17 @@ description: "WaaS 2.0 API 中交易状态的指南，包括状态类型及其�
     <td>交易正在等待被包含在区块中。</td>
   </tr>
 </table>
+
+## 可用操作
+
+您可以根据交易状态执行以下操作：
+
+- 如果交易状态是以下之一，您可以取消交易：
+  - `Submitted`
+  - `PendingScreening`
+  - `PendingAuthorization`
+  - `PendingSignature`（仅当子状态为 `Queue`, `InsufficientBalance`, `InsufficientBalanceFundLocked`, `PendingSignerApproval`, `PendingSystemProcessing`, 或 `Built` 时）
+- 如果交易状态是 `Failed`，您可以重发交易。
+- 如果交易状态是 `Broadcasting`，您可以加速或放弃交易。
+
+有关详细信息，请参阅[管理交易](/v2_cn/guides/transactions/manage-transactions)。

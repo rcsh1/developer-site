@@ -7,6 +7,39 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
+
+## v1.13.0
+
+本版本于 2025 年 4 月 9 日发布。
+
+### 重大变更
+
+- 在 [更新钱包](/v2/api-references/wallets/update-wallet) 接口中，`name` 属性现在为必填项。
+- `AddressEncoding` 字段现在返回 `ENCODING_DEFAULT` 而不是空字符串（""）作为默认值。
+
+### 改进
+
+- 新增了 `CustodialWeb3TransferSource` Schema，以支持来自全托管钱包（Web3 钱包）的 Replace-By-Fee（RBF）交易。现在你可以通过[撤销交易](/v2/api-references/transactions/drop-transaction)和[加速交易](/v2/api-references/transactions/speed-up-transaction) 接口从全托管钱包（Web3 钱包）发起 RBF 交易。
+
+- 新增了以下交易 [子状态](/v2/guides/transactions/status)，用于更精细地追踪交易进度和状态变化：
+  - `PendingSignerApproval`
+  - `PendingSignerProcessing`
+  - `RejectedBySigner`
+  - `FailedSignerTimeout`
+  - `InsufficientBalance`
+  - `InsufficientBalanceFundLocked`
+  - `PendingSystemProcessing`
+  - `SystemProcessingOngoing`
+  - `ReOrged`
+
+- 新增了以下消息签名相关的 Schema：`TransactionBIP137Destination`、`TransactionBIP322Destination`、`TransactionCosmosAdr36Destination` 和 `TransactionMessageSignBTCEIP191Destination`。现在你可以使用这些类型 [签署消息](/v2/api-references/transactions/sign-message)，并通过这些目标类型 [查看交易记录](/v2/api-references/transactions/list-all-transactions)。
+
+- 在 `AddressEncoding` Schema 中新增了枚举值：`ENCODING_ADA_BYRON`、`ENCODING_ADA_SHELLEY` 和 `ENCODING_DEFAULT`，以支持更多地址编码格式。
+
+- 在 `Transaction` Schema 中引入了新的 `extra` 字段，用于承载结构化、可扩展的业务相关信息。该字段以 JSON 字符串形式返回，代表某一种具体的数据结构类型。
+
+- 从 `BabylonStakingActivityDetailExtra` Schema 中移除了字段：`param_version`、`withdraw_from_type`、`slash_from_type` 和 `stake_amount`。
+
 ## v1.12.0
 
 此版本于 2025 年 3 月 27 日发布。

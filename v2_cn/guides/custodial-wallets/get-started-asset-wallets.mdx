@@ -1,204 +1,31 @@
 ---
 title: "集成全托管钱包（资产钱包）"
 lang: "zh-hans"
-description: "使用全托管钱包（资产钱包）的入门指南，包括设置和管理。"
+og:description: "使用全托管钱包（资产钱包）的入门指南，包括设置和管理。"
 sidebarTitle: "全托管钱包（资产钱包）"
 ---
 <Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
 
-本指南将帮助您快速上手[全托管钱包（资产钱包）](https://manuals.cobo.com/zh/portal/custodial-wallets/introduction)。通过本指南，您将能够使用 WaaS 2.0 API 完成以下操作：
+在您通过 [Cobo Portal 快速入门指南](https://manuals.cobo.com/cn/portal/quick-start-guide-custodial-wallets)熟悉全托管钱包的基本操作后，本指南将帮助您使用 WaaS 2.0 API 将全托管钱包（资产钱包）功能无缝集成到您的应用程序中。
 
-1. 查询可以使用的链和代币
-2. 创建资产钱包
-3. 在钱包中生成充币地址
-4. 向钱包存入代币并跟踪交易状态
-5. 从钱包提取代币
-6. 查询钱包余额
+通过本指南，您将了解如何：
+1. 创建钱包
+2. 在钱包中生成充币地址
+3. 向钱包存入代币并跟踪交易状态
+4. 从钱包提取代币
+5. 查询钱包余额
 
 <Note>本指南在所有代码示例中都使用[开发环境](/v2_cn/guides/overview/environments)。建议您先在开发环境中测试新功能，然后再将其部署到生产环境。</Note>
 
 ## 前提条件
 
-- 按照[钱包即服务 (WaaS) 2.0 入门](/v2_cn/guides/get-started/get-started-with-waas)中的说明设置您的账户，并向 WaaS 2.0 服务发送第一个 API 请求。
+- 按照[发送您的第一个 API 请求](/v2_cn/guides/get-started/get-started-with-waas)中的说明设置您的账户，并向 WaaS 2.0 服务发送第一个 API 请求。
 - 如果您选择使用 WaaS SDK 而不是手动编写 API 请求，请参阅相应编程语言的 SDK 指南（[Python](/v2_cn/developer-tools/quickstart-python)、[Java](/v2_cn/developer-tools/quickstart-java)、[Go](/v2_cn/developer-tools/quickstart-go)、[JavaScript](/v2_cn/developer-tools/quickstart-javascript)），将 SDK 集成到您的项目中。
-- 准备一些测试代币，因为您将需要它们来测试充币功能。要了解可以使用哪些测试代币，请参阅[查询链和代币信息](#1-query-chain-and-token-information)。在大多数情况下，您可以使用 XTN 作为测试代币。
-- 强烈建议您设置一个 Callback Endpoint 来接收和批准提币请求，以及一个 Webhook Endpoint 来接收有关交易状态更新和其他重要事件的实时通知。要了解如何设置和注册 Webhook 和 Callback Endpoint，请参阅[Webhook 和 Callback 简介](/v2_cn/guides/webhooks-callbacks/introduction)。
 
-## 1. 查询链和代币信息
 
-在开始设置钱包并生成充币地址之前，您需要先了解可用的区块链和代币。
+## 1. 创建钱包
 
-### 查询启用的链
-
-要检索可以用于资产钱包的链及其对应的链 ID，请调用 [List enabled chains](/v2/api-references/wallets/list-enabled-chains) 并指定以下查询参数：
-
-- `wallet_type`：`Custodial`。
-- `wallet_subtype`：`Asset`。
-
-<Accordion title="Python 示例代码">
-```python
-import json
-
-import cobo_waas2
-from cobo_waas2 import (
-   WalletType,
-   WalletSubtype,
-)
-
-configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_API_SECRET>` with your API secret
-   api_private_key="<YOUR_API_SECRET>",
-   # Use the development environment
-   host="https://api.dev.cobo.com/v2"
-)
-
-# Enter a context with an instance of the API client
-with cobo_waas2.ApiClient(configuration) as api_client:
-   # Create an instance of the API class
-   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
-   try:
-       # Query enabled chains
-       api_response = wallet_api_instance.list_enabled_chains(
-           wallet_type=WalletType.CUSTODIAL,
-           wallet_subtype=WalletSubtype.ASSET
-       )
-       print(f"The response of WalletsApi->list_enabled_chains:")
-       print(json.dumps(api_response.to_dict(), indent=2))
-
-   except Exception as e:
-       print("Exception when calling WalletsApi->list_enabled_chains, %s\n", e)
-```
-</Accordion>
-
-<Accordion title="Java 示例代码">
-```java
-import com.cobo.waas2.ApiClient;
-import com.cobo.waas2.ApiException;
-import com.cobo.waas2.Configuration;
-import com.cobo.waas2.Env;
-import com.cobo.waas2.api.WalletsApi;
-import com.cobo.waas2.model.ListSupportedChains200Response;
-import com.cobo.waas2.model.WalletSubtype;
-import com.cobo.waas2.model.WalletType;
-
-public class ListEnabledChainsExample {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Use the development environment
-        defaultClient.setEnv(Env.DEV);
-        // Replace `<YOUR_API_SECRET>` with your API secret
-        defaultClient.setPrivKey("<YOUR_API_SECRET>");
-        WalletsApi apiInstance = new WalletsApi();
-        try {
-            Integer limit = 50;
-            String before = null;
-            String after = null;
-            // Query enabled chains
-            ListSupportedChains200Response result = apiInstance.listEnabledChains(WalletType.CUSTODIAL, WalletSubtype.ASSET, limit, before, after);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WalletsApi#listEnabledChains");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-</Accordion>
-
-如果您想使用的链不在查询到的列表上，请先启用该链。要启用新的区块链，请登陆 Cobo Portal， 并在**套餐**页面的**可用公链数**配置中添加公链。
-
-如果您已达到可用链的数量限制，请考虑升级您的[套餐](https://manuals.cobo.com/en/portal/bills-and-payments/introduction)。
-
-### 查询启用的代币
-
-要检索可以用于全托管钱包的代币及其对应的代币 ID，请调用 [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens)并指定以下查询参数：
-
-- `wallet_type`：`Custodial`。
-- `wallet_subtype`：`Asset`。
-- `chain_ids`：指定所需的链 ID。您也可以将此参数留空以查询所有链。
-
-<Accordion title="Python 示例代码">
-```python
-import json
-
-import cobo_waas2
-from cobo_waas2 import (
-   WalletType,
-   WalletSubtype,
-)
-
-configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_API_SECRET>` with your API secret
-   api_private_key="<YOUR_API_SECRET>",
-   # Use the development environment
-   host="https://api.dev.cobo.com/v2"
-)
-
-# Enter a context with an instance of the API client
-with cobo_waas2.ApiClient(configuration) as api_client:
-   # Create an instance of the API class
-   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
-   try:
-       # Query enabled tokens
-       api_response = wallet_api_instance.list_enabled_tokens(
-           wallet_type=WalletType.CUSTODIAL,
-           wallet_subtype=WalletSubtype.ASSET
-       )
-       print(f"The response of WalletsApi->list_enabled_tokens:")
-       print(json.dumps(api_response.to_dict(), indent=2))
-
-   except Exception as e:
-       print("Exception when calling WalletsApi->list_enabled_tokens, %s\n", e)
-```
-</Accordion>
-
-<Accordion title="Java 示例代码">
-```java
-import com.cobo.waas2.ApiClient;
-import com.cobo.waas2.ApiException;
-import com.cobo.waas2.Configuration;
-import com.cobo.waas2.Env;
-import com.cobo.waas2.api.WalletsApi;
-import com.cobo.waas2.model.ListSupportedTokens200Response;
-import com.cobo.waas2.model.WalletSubtype;
-import com.cobo.waas2.model.WalletType;
-
-public class ListEnabledTokensExample {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Use the development environment
-        defaultClient.setEnv(Env.DEV);
-        // Replace `<YOUR_API_SECRET>` with your API secret
-        defaultClient.setPrivKey("<YOUR_API_SECRET>");
-        WalletsApi apiInstance = new WalletsApi();
-        try {
-            String chainIds = null;
-            Integer limit = 50;
-            String before = null;
-            String after = null;
-            // Query enabled tokens
-            ListSupportedTokens200Response result = apiInstance.listEnabledTokens(WalletType.CUSTODIAL, WalletSubtype.ASSET, chainIds, limit, before, after);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WalletsApi#listEnabledTokens");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-</Accordion>
-
-如果您想使用的代币不在查询到的列表上，请先启用该代币。要启用新的代币，请登陆 Cobo Portal， 并在您的钱包页面点击**添加代币**进行添加。
-
-## 2. 创建钱包
-
-现在您已经确认可以使用哪些链和代币，下一步是设置钱包。要创建资产钱包，请调用 [Create wallet](/v2/api-references/wallets/create-wallet)，并在请求包体中指定以下属性：
+要创建资产钱包，请调用 [Create wallet](/v2/api-references/wallets/create-wallet)，并在请求包体中指定以下属性：
 
 - `wallet_type`：`Custodial`。
 - `wallet_subtype`：`Asset`。
@@ -284,7 +111,7 @@ public class CreateWalletExample {
 ```
 </Accordion>
 
-## 3. 生成充币地址
+## 2. 生成充币地址
 
 创建钱包后，您现在需要在钱包中生成充币地址来接收代币。要在刚刚创建的资产钱包中生成充币地址，请调用 [Create addresses in wallet](/v2/api-references/wallets/create-addresses-in-wallet)，并指定以下参数和属性：
 
@@ -378,7 +205,7 @@ public class CreateAddressExample {
 ```
 </Accordion>
 
-## 4. 处理充币
+## 3. 处理充币
 
 在将代币存入生成的地址后，您可以通过以下两种方式跟踪充币状态。我们推荐使用 Webhook，因为它能提供实时通知，相比定期使用 API 查询交易状态更为高效和实时。
 
@@ -502,7 +329,7 @@ public class ListTransactionsExample {
 ```
 </Accordion>
 
-## 5. 提取代币
+## 4. 提取代币
 
 现在您的钱包中已经有了代币，让我们来学习如何提取它们。
 
@@ -736,7 +563,7 @@ public class GetTransactionExample {
 ```
 </Accordion>
 
-## 6. 查询钱包余额
+## 5. 查询钱包余额
 
 在成功提取代币后，您可以调用 [List token balances by wallet](/v2/api-references/wallets/list-token-balances-by-wallet) 来查询钱包余额。指定以下路径和查询参数：
 

@@ -4,7 +4,11 @@ lang: "en"
 description: "Guide to understanding transaction statuses in WaaS 2.0."
 ---
 
-The following table provides an overview of the various transaction statuses and their corresponding sub-statuses in WaaS 2.0.
+WaaS 2.0 defines a range of transaction statuses and sub-statuses to reflect different processing stages. This page provides a complete list of statuses and describes the actions you can perform based on each status.
+
+##  Status reference table
+
+The table below provides a complete overview of all transaction statuses and their corresponding sub-statuses in WaaS 2.0.
 
 <table>
   <tr>
@@ -44,28 +48,52 @@ The following table provides an overview of the various transaction statuses and
     <td>The transaction is pending approval from the approver.</td>
   </tr>
   <tr>
-    <td rowspan="5">PendingSignature</td>
-    <td>Built</td>
-    <td>The transaction has been built but not signed yet.</td>
+    <td rowspan="11">PendingSignature</td>
+    <td>Queue</td>
+    <td>The transaction is queued to be processed by Cobo Portal.</td>
   </tr>
   <tr>
     <td>PendingWaitSigner</td>
     <td>The transaction is pending signature.</td>
   </tr>
   <tr>
+    <td>InsufficientBalance</td>
+    <td>The transaction cannot proceed due to insufficient balance. Please deposit required tokens or cancel the transaction.</td>
+  </tr>
+  <tr>
+    <td>InsufficientBalanceFundLocked</td>
+    <td>The transaction cannot proceed because the available balance is currently locked. Please wait until the balance is unlocked.</td>
+  </tr>
+  <tr>
+    <td>PendingSystemProcessing</td>
+    <td>The transaction has been submitted and is awaiting processing by the blockchain system.</td>
+  </tr>
+  <tr>
+    <td>SystemProcessingOngoing</td>
+    <td>The blockchain system is currently processing the transaction.</td>
+  </tr>
+  <tr>
+    <td>Built</td>
+    <td>The transaction has been built but not signed yet.</td>
+  </tr>
+  <tr>
+    <td>PendingSignerApproval</td>
+    <td>The transaction is pending approval from the signer.</td>
+  </tr>
+  <tr>
     <td>PendingApprovalStart</td>
     <td>The transaction approval is waiting to be started.<ul><li>For <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ucw/introduction">MPC Wallets (User-Controlled Wallets)</a>, you need to use the Client App and call the UCW SDK to start the transaction approval process.</li><li>For <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/introduction">MPC Wallets (Organization-Controlled Wallets)</a>:<ul><li>If you are using the <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">server co-signer</a>, this status indicates that the TSS Node will soon request the callback server to start the <a href="https://manuals.cobo.com/en/portal/risk-controls/introduction">risk controls</a> check. No further action is required from you at this stage.</li><li>If you are using the <a href="https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups">mobile co-signer</a>, key share holders need to use their <a href="https://manuals.cobo.com/en/guard/introduction">Cobo Guard</a> to approve the transaction and participate in the signing process.</li></ul></li></ul></td>
   </tr>
   <tr>
-    <td>Queue</td>
-    <td>The transaction is queued to be processed by Cobo Portal.</td>
+    <td>PendingSignerProcessing</td>
+    <td>The transaction is currently being signed.</td>
   </tr>
   <tr>
     <td>SignatureVerificationSuccess</td>
     <td>The transaction's signature has been successfully verified.</td>
   </tr>
   <tr>
-    <td rowspan="1">Broadcasting</td>
+    <td>Broadcasting</td>
     <td>FailedBroadcasting</td>
     <td>The transaction failed to be broadcast to the blockchain network.</td>
   </tr>
@@ -84,7 +112,7 @@ The following table provides an overview of the various transaction statuses and
     <td>The transaction is completed.</td>
   </tr>
   <tr>
-    <td rowspan="4">Failed</td>
+    <td rowspan="6">Failed</td>
     <td>FailedBySigner</td>
     <td>The transaction failed during the signing process.</td>
   </tr>
@@ -101,7 +129,15 @@ The following table provides an overview of the various transaction statuses and
     <td>The transaction's signature failed verification.</td>
   </tr>
   <tr>
-    <td rowspan="14">Rejected</td>
+    <td>FailedSignerTimeout</td>
+    <td>The transaction failed due to signature timeout.</td>
+  </tr>
+  <tr>
+    <td>ReOrged</td>
+    <td>The transaction failed due to a blockchain reorganization.</td>
+  </tr>
+  <tr>
+    <td rowspan="15">Rejected</td>
     <td>RejectedWhiteList</td>
     <td>The transaction is rejected because the IP address of the initiator is not in the whitelist.</td>
   </tr>
@@ -146,6 +182,10 @@ The following table provides an overview of the various transaction statuses and
     <td>The transaction is rejected because it failed the cross-check of the Travel Rule.</td>
   </tr>
   <tr>
+    <td>RejectedBySigner</td>
+    <td>The transaction was rejected by the signer.</td>
+  </tr>
+  <tr>
     <td>CanceledBySpender</td>
     <td>The transaction is canceled by a spender.</td>
   </tr>
@@ -163,3 +203,17 @@ The following table provides an overview of the various transaction statuses and
     <td>The transaction is waiting to be included in a block.</td>
   </tr>
 </table>
+
+## Available actions
+
+You can perform the following actions based on the transaction status:
+
+- Cancel a transaction if its status is one of the following:
+  - `Submitted`
+  - `PendingScreening`
+  - `PendingAuthorization`
+  - `PendingSignature` (Only when the sub-status is `Queue`, `InsufficientBalance`, `InsufficientBalanceFundLocked`, `PendingSignerApproval`, `PendingSystemProcessing`, or `Built`)
+- Resend a transaction if its status is `Failed`.
+- Speed up or drop a transaction if its status is `Broadcasting`.
+
+For more details, refer to [Manage transactions](/v2/guides/transactions/manage-transactions).

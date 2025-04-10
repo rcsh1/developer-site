@@ -1,204 +1,31 @@
 ---
 title: "Integrate Custodial Wallets (Asset Wallets)"
-sidebarTitle: "Custodial Wallets (Asset Wallets)"
+sidebarTitle: "Custodial Wallets (Asset)"
 lang: "en"
-description: "Learn to use Custodial Wallets with WaaS 2.0 API, such as querying chains, creating wallets, depositing, withdrawing, and more."
+og:description: "Learn to use Custodial Wallets with WaaS 2.0 API, such as querying chains, creating wallets, depositing, withdrawing, and more."
 ---
 
-This guide gets you started with using [Custodial Wallets (Asset Wallets)](https://manuals.cobo.com/en/portal/custodial-wallets/introduction). By following this guide, you will be able to use the WaaS 2.0 API to:
+After you have familiarized yourself with Custodial Wallets through the [Cobo Portal quick start guide](https://manuals.cobo.com/en/portal/quick-start-guide-custodial-wallets), this guide will help you seamlessly integrate Custodial Wallet (Asset Wallets) functionality into your application using the WaaS 2.0 API.
 
-1. Query the chains and tokens you can use
-2. Create an Asset Wallet
-3. Generate a deposit address within the wallet
-4. Deposit tokens into the wallet and track the transaction status
-5. Withdraw tokens from the wallet
-6. Query wallet balances
+Following this guide, you'll learn how to:
+
+1. Create a wallet
+2. Generate a deposit address within the wallet
+3. Deposit tokens into the wallet and track the transaction status
+4. Withdraw tokens from the wallet
+5. Query wallet balances
 
 <Note>This guide uses the [development environment](/v2/guides/overview/environments) in all its code samples. It is recommended that you use the development environment to test your new features first before deploying them to the production environment. </Note>
 
 ## Prerequisites
 
-- Follow the instructions in [Get started with WaaS 2.0](/v2/guides/get-started/get-started-with-waas) to set up your account and send your first API request to the WaaS 2.0 service.
+- Follow the instructions in [Send your first request](/v2/guides/get-started/get-started-with-waas) to set up your account and send your first API request to the WaaS 2.0 service.
 - If you choose to use a WaaS SDK instead of manually writing the API requests, refer to the SDK guide corresponding to the programming language of your choice ([Python](/v2/developer-tools/quickstart-python), [Java](/v2/developer-tools/quickstart-java), [Go](/v2/developer-tools/quickstart-go), [JavaScript](/v2/developer-tools/quickstart-javascript)) to integrate the SDK into your project.
-- Prepare some test tokens as you will need them when testing the deposit feature. To know which test tokens you can use, refer to [Query chain and token information](#1-query-chain-and-token-information). In most cases, you can use XTN as the test token.
-- It is highly recommended that you set up a callback endpoint to receive and approve withdrawal requests and a webhook endpoint to receive real-time notifications regarding transaction status updates and other events of your concern. To learn how to set up and register webhook and callback endpoints, refer to [Introduction to webhooks and callbacks](/v2/guides/webhooks-callbacks/introduction).
 
-## 1. Query chain and token information
 
-Before you begin setting up your wallet and generating deposit addresses, it's important to know which chains and tokens you can use.
+## 1. Create a wallet
 
-### Query enabled chains
-
-To retrieve the chains you can use for Asset Wallets and their corresponding chain IDs, call [List enabled chains](/v2/api-references/wallets/list-enabled-chains) and specify the query parameters as follows:
-
-- `wallet_type`: `Custodial`.
-- `wallet_subtype`: `Asset`.
-
-<Accordion title="Sample code in Python">
-```python
-import json
-
-import cobo_waas2
-from cobo_waas2 import (
-   WalletType,
-   WalletSubtype,
-)
-
-configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_API_SECRET>` with your API secret
-   api_private_key="<YOUR_API_SECRET>",
-   # Use the development environment
-   host="https://api.dev.cobo.com/v2"
-)
-
-# Enter a context with an instance of the API client
-with cobo_waas2.ApiClient(configuration) as api_client:
-   # Create an instance of the API class
-   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
-   try:
-       # Query enabled chains
-       api_response = wallet_api_instance.list_enabled_chains(
-           wallet_type=WalletType.CUSTODIAL,
-           wallet_subtype=WalletSubtype.ASSET
-       )
-       print(f"The response of WalletsApi->list_enabled_chains:")
-       print(json.dumps(api_response.to_dict(), indent=2))
-
-   except Exception as e:
-       print("Exception when calling WalletsApi->list_enabled_chains, %s\n", e)
-```
-</Accordion>
-
-<Accordion title="Sample code in Java">
-```java
-import com.cobo.waas2.ApiClient;
-import com.cobo.waas2.ApiException;
-import com.cobo.waas2.Configuration;
-import com.cobo.waas2.Env;
-import com.cobo.waas2.api.WalletsApi;
-import com.cobo.waas2.model.ListSupportedChains200Response;
-import com.cobo.waas2.model.WalletSubtype;
-import com.cobo.waas2.model.WalletType;
-
-public class ListEnabledChainsExample {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Use the development environment
-        defaultClient.setEnv(Env.DEV);
-        // Replace `<YOUR_API_SECRET>` with your API secret
-        defaultClient.setPrivKey("<YOUR_API_SECRET>");
-        WalletsApi apiInstance = new WalletsApi();
-        try {
-            Integer limit = 50;
-            String before = null;
-            String after = null;
-            // Query enabled chains
-            ListSupportedChains200Response result = apiInstance.listEnabledChains(WalletType.CUSTODIAL, WalletSubtype.ASSET, limit, before, after);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WalletsApi#listEnabledChains");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-</Accordion>
-
-If you want to use a chain that is not already on the list, you need to enable the chain first. Log into Cobo Portal, go to the **Pricing Plans** page, navigate to the **Supported Chains** card and click the configuration icon, and add your desired chain.
-
-If you have reached the limit on the number of chains you can use, consider upgrading your [pricing plan](https://manuals.cobo.com/en/portal/bills-and-payments/introduction).
-
-### Query enabled tokens
-
-To retrieve the tokens you can use for Asset Wallets and their corresponding token IDs, call [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens) and specify the query parameters as follows:
-
-- `wallet_type`: `Custodial`.
-- `wallet_subtype`: `Asset`.
-- `chain_ids`: Specify the chain of your choice. You can also leave this parameter empty to query all chains.
-
-<Accordion title="Sample code in Python">
-```python
-import json
-
-import cobo_waas2
-from cobo_waas2 import (
-   WalletType,
-   WalletSubtype,
-)
-
-configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_API_SECRET>` with your API secret
-   api_private_key="<YOUR_API_SECRET>",
-   # Use the development environment
-   host="https://api.dev.cobo.com/v2"
-)
-
-# Enter a context with an instance of the API client
-with cobo_waas2.ApiClient(configuration) as api_client:
-   # Create an instance of the API class
-   wallet_api_instance = cobo_waas2.WalletsApi(api_client)
-   try:
-       # Query enabled tokens
-       api_response = wallet_api_instance.list_enabled_tokens(
-           wallet_type=WalletType.CUSTODIAL,
-           wallet_subtype=WalletSubtype.ASSET
-       )
-       print(f"The response of WalletsApi->list_enabled_tokens:")
-       print(json.dumps(api_response.to_dict(), indent=2))
-
-   except Exception as e:
-       print("Exception when calling WalletsApi->list_enabled_tokens, %s\n", e)
-
-```
-</Accordion>
-
-<Accordion title="Sample code in Java">
-```java
-import com.cobo.waas2.ApiClient;
-import com.cobo.waas2.ApiException;
-import com.cobo.waas2.Configuration;
-import com.cobo.waas2.Env;
-import com.cobo.waas2.api.WalletsApi;
-import com.cobo.waas2.model.ListSupportedTokens200Response;
-import com.cobo.waas2.model.WalletSubtype;
-import com.cobo.waas2.model.WalletType;
-
-public class ListEnabledTokensExample {
-    public static void main(String[] args) {
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
-        // Use the development environment
-        defaultClient.setEnv(Env.DEV);
-        // Replace `<YOUR_API_SECRET>` with your API secret
-        defaultClient.setPrivKey("<YOUR_API_SECRET>");
-        WalletsApi apiInstance = new WalletsApi();
-        try {
-            String chainIds = null;
-            Integer limit = 50;
-            String before = null;
-            String after = null;
-            // Query enabled tokens
-            ListSupportedTokens200Response result = apiInstance.listEnabledTokens(WalletType.CUSTODIAL, WalletSubtype.ASSET, chainIds, limit, before, after);
-            System.out.println(result);
-        } catch (ApiException e) {
-            System.err.println("Exception when calling WalletsApi#listEnabledTokens");
-            System.err.println("Status code: " + e.getCode());
-            System.err.println("Reason: " + e.getResponseBody());
-            System.err.println("Response headers: " + e.getResponseHeaders());
-            e.printStackTrace();
-        }
-    }
-}
-```
-</Accordion>
-
-If the token you want to use is not on the list, you need to enable it first. To enable a new token, log into Cobo Portal and click **Add Tokens** on your wallet page to add it.
-
-## 2. Create a wallet
-
-Now that you have confirmed which chains and tokens you can use, the next step is to set up a wallet. To create an Asset Wallet, call the [Create wallet](/v2/api-references/wallets/create-wallet) operation and specify the properties in the request body as follows:
+To create an Asset Wallet, call the [Create wallet](/v2/api-references/wallets/create-wallet) operation and specify the properties in the request body as follows:
 
 - `wallet_type`: `Custodial`.
 - `wallet_subtype`: `Asset`.
@@ -284,7 +111,7 @@ public class CreateWalletExample {
 ```
 </Accordion>
 
-## 3. Generate deposit addresses
+## 2. Generate deposit addresses
 
 After setting up a wallet, you now need to generate deposit addresses within the wallet to receive tokens. To generate deposit addresses within the Asset Wallet you have just created, call the [Create addresses in wallet](/v2/api-references/wallets/create-addresses-in-wallet) operation and specify the parameters and properties as follows:
 
@@ -377,7 +204,7 @@ public class CreateAddressExample {
 ```
 </Accordion>
 
-## 4. Process deposit
+## 3. Process deposit
 
 After depositing tokens to the addresses you have generated, you can track the status of your deposit using one of the following two options. Compared with using API to query the transaction status, webhooks can give you real-time notifications and are thus the recommended option.
 
@@ -500,7 +327,7 @@ public class ListTransactionsExample {
 ```
 </Accordion>
 
-## 5. Withdraw tokens
+## 4. Withdraw tokens
 
 Now that you have tokens in your wallet, it's time to try withdrawing them. 
 
@@ -731,7 +558,7 @@ public class GetTransactionExample {
 ```
 </Accordion>
 
-## 6. Query wallet balances
+## 5. Query wallet balances
 
 After successfully withdrawing tokens from your wallet, you can call [List token balances by wallet](/v2/api-references/wallets/list-token-balances-by-wallet) to query the wallet balances. Specify the path and query parameters as follows:
 
