@@ -5,11 +5,81 @@ description: "了解在服务端签名人中配置风控机制的基本安全实
 ---
 <Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
 
-本指南概述了在服务端签名人中实施风控的安全最佳实践，以确保交易签名的安全性。
+服务端签名人有两种风控机制：嵌入式风控和 TSS Node 回调。本指南介绍了实施这两种机制的安全最佳实践。
 
-## 内置风控规则
+- 嵌入式风控提供基础的、预定义的规则，这些规则不能自定义。您可以在 `configs/cobo-tss-node-config.yaml` 文件中配置风控规则。
 
-您可以通过 `configs/cobo-tss-node-config.yaml` 文件配置内置风控规则，如下所示：
+- 对于 TSS Node 回调，您需要在回调服务器中实现自定义的风控逻辑，根据您的特定规则检查回调请求。回调请求中需要检查的关键字段：
+     - `request_detail`：包含私钥生成、私钥 Resharing 和交易签名的关键信息。
+     - `extra_info`：提供额外的上下文信息；应与 `request_detail` 交叉验证。
+
+## 私钥生成
+
+我们建议对私钥生成请求使用嵌入式风控。通常不需要为此操作使用回调服务器逻辑。
+
+按如下方式配置私钥生成的嵌入式风控：
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_gen:
+    reject_all: false
+    allow_list:
+      - threshold: 2
+        node_ids:
+          - <Cobo TSS Node ID>
+          - <ThirdParty TSS Node ID>
+          - <Customer TSS Node ID>
+  key_sign:
+    reject_all: true
+  key_reshare:
+    reject_all: true
+  key_share_sign:
+    reject_all: true
+```
+
+此配置：
+- 允许使用指定阈值和 TSS Node ID 的私钥生成
+- 拒绝所有其他请求
+
+## 私钥 Resharing 
+
+我们建议对私钥 Resharing 请求使用嵌入式风控。通常不需要为此操作使用回调服务器逻辑。
+
+按如下方式配置私钥 Resharing 的嵌入式风控：
+
+```yaml
+embedded_risk_control_rules:
+  enable: true
+  key_gen:
+    reject_all: true
+  key_sign:
+    reject_all: true
+  key_reshare:
+    reject_all: false
+    allow_list:
+      - xpubkey: <EXTENDED_ROOT_PUBKEY>
+        new_threshold: 2
+        new_node_ids:
+          - <Cobo TSS Node ID>
+          - <ThirdParty TSS Node ID>
+          - <Customer TSS Node ID>
+  key_share_sign:
+    reject_all: true
+```
+
+此配置：
+- 允许来自指定私钥分片持有者组、阈值和 TSS Node ID 的私钥 Resharing 请求。
+- 拒绝所有其他请求
+
+
+## 交易签名
+
+我们建议对交易签名请求同时使用嵌入式风控和回调服务器逻辑。
+
+### 嵌入式风控
+
+配置交易签名的嵌入式风控规则：
 
 ```yaml
 embedded_risk_control_rules:
@@ -24,38 +94,57 @@ embedded_risk_control_rules:
     reject_all: true
 ```
 
-此配置仅允许签名任务，并拒绝所有其他任务。
+此配置仅允许签名请求，同时拒绝所有其他请求。
 
-## TSS 节点回调服务器安全性
+### 回调风控
 
-为确保交易安全和真实性，在 TSS 节点回调服务器中实施以下安全检查：
+在您的 TSS Node 回调服务器中实现以下安全检查：
 
 1. 验证交易哈希以防止交易被篡改：
-   1. 从 `extra_info.Transaction.RawTxInfo.UnsignedRawTx` 中提取原始交易数据
+   1. 从 `extra_info.Transaction.RawTxInfo.UnsignedRawTx` 提取原始交易数据
    2. 计算此原始交易数据的哈希值
    3. 将其与 `request_detail.msg_hash_list` 中提供的哈希值进行比较
    4. 如果哈希值不匹配，则拒绝交易
 
-2. 验证关键交易参数以防止未经授权或恶意交易：
-   - Gas 费用：确保在可接受范围内
-   - 目标地址：验证是否为允许的地址
+2. 验证关键的交易参数以防止未经授权或恶意的交易：
+   - Gas 费用：确保在可接受的范围内
+   - 目标地址：验证是否在允许的地址列表中
    - 交易金额：检查是否符合配置的限制
-   - 链 ID：确认是否匹配预期网络
+   - 链 ID：确认是否匹配您预期的网络
    - 根据需要验证其他特定参数
 
-<a name="auto-sweeping-implementation"></a>
+需要验证的其他信息（非关键安全问题）：
 
-### 自动归集
+- 验证签名私钥分片：
+   - `tweak_list`：要应用的调整。
+   - `bip32_path_list`：BIP32 派生路径。
+   - `root_pub_key`：私钥分片持有者组的根扩展公钥。
 
-对于启用了自动归集的 MPC 钱包，实施白名单配置，以便在验证交易哈希且目标地址在白名单内时自动批准交易。
+   使用这些信息派生签名私钥的地址或公钥，确保其正确性。不正确的私钥可能导致从非预期地址提币。
 
-您可以访问我们的[示例项目](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/blob/master/cobo-mpc-callback-server-v2-golang/internal/verifier/sign.go)，其中演示了：
-   - 交易内容解析
-   - 哈希值与签名消息的验证
-   - 基于白名单的交易审批
+- 检查 `signature_type` 是否与目标区块链兼容，因为不同链的签名类型各不相同。
+
+
+
+## 自动归集实现
+
+对于启用了自动归集的 MPC 钱包，实现基于白名单的审批系统，该系统应：
+
+1. 验证交易哈希以确保交易完整性。
+2. 检查目标地址是否在预先批准的白名单中。
+3. 自动批准满足这两个条件的交易。
+
+[TSS Node 回调服务器模板](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template)提供了此白名单逻辑的示例实现：
+
+1. 在 [callback-server-config.yaml](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/blob/master/cobo-mpc-callback-server-v2-golang/configs/callback-server-config.yaml) 中配置目标地址的白名单。
+
+2. 参考 [sign.go](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/blob/master/cobo-mpc-callback-server-v2-golang/internal/verifier/sign.go) 了解以下示例：
+   - 解析交易内容
+   - 验证哈希与已签名消息是否匹配
+   - 基于白名单批准交易
 
 <Note>
-示例实现目前使用 Go 语言编写，仅适用于 EVM 链。您可以通过 [token_adapter](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/tree/master/cobo-mpc-callback-server-v2-golang/pkg/token_adapter) 扩展到其他链。
+未来我们将扩展示例项目以支持更多区块链网络。您也可以使用代码库中的 [token_adapter](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/tree/master/cobo-mpc-callback-server-v2-golang/pkg/token_adapter) 模块来扩展对更多代币的支持。
 </Note>
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

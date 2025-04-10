@@ -21,7 +21,7 @@ description: "WaaS 2.0 API 中交易来源和目的地的概述，详细说明�
 | Withdrawal - 交易所钱包之间转账    | Main<br />Sub                                                                                    | ExchangeWallet           |
 | Withdrawal - 其他提币交易         | Asset<br />Web3<br />Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Main<br />Sub                      | Address                  |
 | ContractCall                                      | Org-Controlled<br />User-Controlled<br />Safe\{Wallet\}<br />Web3                                               | EVM_Contract<br />SOL_Contract             |
-| MessageSign                                       | Org-Controlled<br />User-Controlled<br />Web3                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature<br />Raw_Message_Signature<br />BTC_EIP_191_Signature |
+| MessageSign                                       | Org-Controlled<br />User-Controlled<br />Web3                                                                | EVM_EIP_191_Signature<br />EVM_EIP_712_Signature<br />BTC_BIP_137_Signature<br />BTC_EIP_191_Signature<br />BTC_BIP_322_Signature<br />COSMOS_ADR_36_Signature<br />Raw_Message_Signature |
 | ExternalSafeTx                                    | Safe\{Wallet\}                                                                                   |       EVM_Contract        |
 | Stake                                   | Org-Controlled                                                                                  |    Address          |
 | Unstake                                    | Org-Controlled                                                                                   |    Address          |
@@ -49,8 +49,11 @@ description: "WaaS 2.0 API 中交易来源和目的地的概述，详细说明�
 - `SOL_Contract`：Solana 智能合约。
 - `EVM_EIP_191_Signature`：EVM EIP-191 签名。更多详情，请参阅 [签名数据标准](https://eips.ethereum.org/EIPS/eip-191)。
 - `EVM_EIP_712_Signature`：EVM EIP-712 签名。更多详情，请参阅 [类型化结构数据哈希和签名](https://eips.ethereum.org/EIPS/eip-712)。
-- `Raw_Message_Signature`：原始消息签名。
+- `BTC_BIP_137_Signature`：BTC BIP-137 签名。更多详情，请参阅 [BIP-137](https://github.com/bitcoin/bips/blob/master/bip-0137.mediawiki)。
 - `BTC_EIP_191_Signature`：BTC EIP-191 签名。
+- `BTC_BIP_322_Signature`：BTC BIP-322 签名。更多详情，请参阅 [BIP-322](https://github.com/bitcoin/bips/blob/master/bip-0322.mediawiki)。
+- `COSMOS_ADR_36_Signature`：COSMOS ADR-36 签名。更多详情，请参阅 [ADR-36](https://github.com/cosmos/cosmos-sdk/blob/main/docs/architecture/adr-036-arbitrary-signature.md)。
+- `Raw_Message_Signature`：原始消息签名。
 - `DepositToAddress`：钱包地址。
 - `DepositToWallet`：交易所钱包。
 

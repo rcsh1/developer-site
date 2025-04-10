@@ -133,8 +133,7 @@
             "v2_cn/guides/overview/permission-list"
           ]
         },
-        "v2_cn/guides/overview/changelog",
-        "v2_cn/guides/overview/upgrade-guide"
+        "v2_cn/guides/overview/error-codes"
       ],
       "version": "Version 2.0 中文版"
     },
@@ -228,6 +227,14 @@
       "group": "智能合约钱包",
       "pages": [
         "v2_cn/guides/smart-contract-wallets/automate-farming-rewards-collection"
+      ],
+      "version": "Version 2.0 中文版"
+    },
+    {
+      "group": "资源文档",
+      "pages": [
+        "v2_cn/guides/overview/changelog",
+        "v2_cn/guides/overview/upgrade-guide"
       ],
       "version": "Version 2.0 中文版"
     },
@@ -379,8 +386,7 @@
             "v2/guides/overview/permission-list"
           ]
         },
-        "v2/guides/overview/changelog",
-        "v2/guides/overview/upgrade-guide"
+        "v2/guides/overview/error-codes"
       ],
       "version": "Version 2.0 EN"
     },
@@ -474,6 +480,14 @@
       "group": "Smart Contract Wallets",
       "pages": [
         "v2/guides/smart-contract-wallets/automate-farming-rewards-collection"
+      ],
+      "version": "Version 2.0 EN"
+    },
+    {
+      "group": "Resources",
+      "pages": [
+        "v2/guides/overview/changelog",
+        "v2/guides/overview/upgrade-guide"
       ],
       "version": "Version 2.0 EN"
     },
@@ -826,6 +840,59 @@
         "v2/developer-tools/quickstart-java",
         "v2/developer-tools/quickstart-go",
         "v2/developer-tools/quickstart-javascript"
+      ],
+      "version": "Version 2.0 EN"
+    },
+    {
+      "group": "Payment operations",
+      "pages": [
+        {
+          "group": "Exchange rates",
+          "pages": [
+            "v2/api-references/payment/get-exchange-rate"
+          ]
+        },
+        {
+          "group": "Payment orders",
+          "pages": [
+            "v2/api-references/payment/create-payment-order",
+            "v2/api-references/payment/update-payment-order",
+            "v2/api-references/payment/get-payment-order-information",
+            "v2/api-references/payment/list-all-payment-orders"
+          ]
+        },
+        {
+          "group": "Refund orders",
+          "pages": [
+            "v2/api-references/payment/create-refund-order",
+            "v2/api-references/payment/get-refund-order-information",
+            "v2/api-references/payment/list-all-refund-orders"
+          ]
+        },
+        {
+          "group": "Settlements",
+          "pages": [
+            "v2/api-references/payment/get-withdrawable-balances",
+            "v2/api-references/payment/create-settlement-request",
+            "v2/api-references/payment/list-all-settlement-requests"
+          ]
+        },
+        {
+          "group": "Merchants",
+          "pages": [
+            "v2/api-references/payment/create-merchant",
+            "v2/api-references/payment/update-merchant",
+            "v2/api-references/payment/list-all-merchants"
+          ]
+        },
+        {
+          "group": "Bank accounts",
+          "pages": [
+            "v2/api-references/payment/create-bank-account",
+            "v2/api-references/payment/update-bank-account",
+            "v2/api-references/payment/list-all-bank-accounts"
+          ]
+        }
       ],
       "version": "Version 2.0 EN"
     },
@@ -1350,76 +1417,6 @@
             "v1/api-references/mpc-wallet/mpc_estimate_fee",
             "v1/api-references/mpc-wallet/mpc_get_max_send_amount",
             "v1/api-references/mpc-wallet/mpc_get_supported_nft_collections"
-          ],
-          "version": "Version 1.0"
-        },
-        {
-          "group": "Transaction",
-          "pages": [
-            "v1/api-references/mpc-wallet/mpc_list_transactions",
-            "v1/api-references/mpc-wallet/mpc_transactions_by_request_ids",
-            "v1/api-references/mpc-wallet/mpc_transactions_by_cobo_ids",
-            "v1/api-references/mpc-wallet/mpc_transactions_by_tx_hash",
-            "v1/api-references/mpc-wallet/mpc_get_approval_details"
-          ],
-          "version": "Version 1.0"
-        },
-        {
-          "group": "Withdraw",
-          "pages": [
-            "v1/api-references/mpc-wallet/mpc_create_transaction",
-            "v1/api-references/mpc-wallet/mpc_speedup_transaction",
-            "v1/api-references/mpc-wallet/mpc_drop_transaction",
-            "v1/api-references/mpc-wallet/mpc_retry_double_check"
-          ],
-          "version": "Version 1.0"
-        },
-        {
-          "group": "Tss Node",
-          "pages": [
-            "v1/api-references/mpc-wallet/mpc_list_tss_node_requests",
-            "v1/api-references/mpc-wallet/mpc_list_tss_node"
-          ],
-          "version": "Version 1.0"
-        },
-        {
-          "group": "Bind Auth",
-          "pages": [
-            "v1/api-references/mpc-wallet/auth_create_binding",
-            "v1/api-references/mpc-wallet/auth_query_binding",
-            "v1/api-references/mpc-wallet/auth_query_user_auth",
-            "v1/api-references/mpc-wallet/auth_bind_addresses",
-            "v1/api-references/mpc-wallet/auth_change_binding",
-            "v1/api-references/mpc-wallet/auth_unbind_binding",
-            "v1/api-references/mpc-wallet/auth_query_statement"
-          ],
-          "version": "Version 1.0"
-        },
-        {
-          "group": "Gas Station",
-          "pages": [
-            "v1/api-references/custody-wallet/get_gas_station_balance",
-            "v1/api-references/custody-wallet/coin_info",
-            "v1/api-references/custody-wallet/transaction",
-            "v1/api-references/custody-wallet/transactions_by_request_ids",
-            "v1/api-references/custody-wallet/transaction_by_txid",
-            "v1/api-references/custody-wallet/transactions_by_time",
-            "v1/api-references/custody-wallet/transactions_by_id"
-          ]
-        },
-        {
-          "group": "Babylon Staking",
-          "pages": [
-            "v1/api-references/mpc-wallet/babylon_prepare_staking",
-            "v1/api-references/mpc-wallet/babylon_replace_staking_fee",
-            "v1/api-references/mpc-wallet/babylon_drop_staking",
-            "v1/api-references/mpc-wallet/babylon_broadcast_staking_transaction",
-            "v1/api-references/mpc-wallet/babylon_batch_broadcast_staking_transaction",
-            "v1/api-references/mpc-wallet/babylon_unbonding",
-            "v1/api-references/mpc-wallet/babylon_withdraw",
-            "v1/api-references/mpc-wallet/babylon_get_staking_info",
-            "v1/api-references/mpc-wallet/babylon_list_transactions_by_status",
-            "v1/api-references/mpc-wallet/babylon_list_waiting_broadcast_transactions"
           ]
         }
       ],

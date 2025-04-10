@@ -12,6 +12,7 @@ Cobo supports withdraw to any BTC address type)</Note>
 #### Request
 <ParamField body="coin" type="String" required>Cryptocurrency for which the address needs to be generated.</ParamField>
 <ParamField body="native_segwit" type="Bool">Flag indicating whether the address should be generated using native segwit format.</ParamField>
+<ParamField body="encoding" type="Int">The address encoding formats. This property only applies to coin of ADA. Available options:9、10.For more information, please [refer to](/v1/api-references/development/address-encoding) the enum value corresponding to each encoding</ParamField>
 
 
 #### Response

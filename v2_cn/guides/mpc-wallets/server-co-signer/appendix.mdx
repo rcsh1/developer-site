@@ -47,9 +47,11 @@ description: "服务器端签名人指南的附录部分。"
 | db.path | 数据库文件的路径。您绝对不能修改此文件。 |
 | callback | TSS Node Callback 服务器的配置。详情请参阅 [配置 TSS Node 设置](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-configure#configure-tss-node-settings) |
 | websocket.url | 无需配置。WebSocket 服务器将根据环境连接。如果配置了 URL，将默认连接。 |
-| log.std.enable | 是否输出日志。 |
-| log.file.enable | 是否保存日志。 |
-| log.file.filename | 日志文件名。 |
+| log.std.enable | 是否输出终端日志。 |
+| log.std.level | 终端日志的输出级别。可以是 `error`、`warn`、`info` 或 `debug`。|
+| log.file.enable | 是否保存日志文件。|
+| log.file.level | 日志文件的输出级别。 |
+| log.file.filename | 日志文件的路径。|
 | log.file.maxsize | 日志文件的最大大小。 |
 | log.file.max_backups | 每个日志文件的备份数量。 |
 | metrics.job | 全局标签，用于所有指标。默认值为 "tss-node"。 |

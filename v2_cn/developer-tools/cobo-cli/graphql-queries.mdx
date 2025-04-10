@@ -1,101 +1,66 @@
 ---
 title: "GraphQL 查询"
 lang: "zh-hans"
-description: "Cobo CLI 支持 GraphQL 查询，用于执行复杂查询并从 WaaS 2.0 API 检索特定数据。"
+description: "Cobo CLI 支持 GraphQL 查询，用于执行复杂查询并从 Cobo GraphQL API 检索特定数据。"
 ---
 <Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
 
-Cobo CLI 支持 GraphQL 查询，允许您执行复杂查询并从 WaaS 2.0 API 检索特定数据。
+Cobo CLI 支持 GraphQL 查询，允许您执行复杂查询并从 Cobo GraphQL API 检索特定数据。
 
-有关 GraphQL 的更多详细信息，请参阅 [GraphQL 官方网站](https://graphql.org/)。
+更多详情，请参考 [Cobo GraphQL API 文档](/v2_cn/developer-tools/graphql/overview)。
 
-<Note>要发起 API 请求，您需要通过登录并设置 API Key来验证您的请求。</Note>
+- 在生产环境中执行查询之前，始终验证您的查询以避免潜在问题。
+- 转义查询中的特殊字符。
+
+<Note>要发送 API 请求，您需要通过登录和设置 API Key 进行身份验证。</Note>
 
 ## 用法
 
 ```shell
-cobo graphql -q <query>
+cobo graphql -q <query>   # 使用内联查询
+cobo graphql -f <file> # 从文件加载查询
 ```
 
 ## 选项
 
-- `-q, --query`：要执行的 GraphQL 查询，一个包含 `query` 键的 JSON 字符串。
-  <Info>如果您的查询是简单字符串而不是 JSON 字符串，Cobo CLI 将自动将其包装在所需的 JSON 结构中。</Info>
-- `-v, --variables`：使用 JSON 字符串在 GraphQL 查询中包含变量。
-- `--raw`：输出未格式化的原始 JSON 响应。
+- `-q, --query`: 执行的 GraphQL 查询。可以是原始查询字符串或包含查询字段的 JSON 字符串。
+- `-f, --file`: 执行本地文件中定义的查询。文件必须是包含查询字段的 JSON 文件。
 
 ## 示例
 
-### 检索指定钱包的交易信息
+### 直接运行查询
 
 ```shell
-cobo graphql -q '{
-  "query": "
-    {
-      transactions(walletId: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", limit: 5) {
-        id
-        type
-        status
-        amount {
-          tokenId
-          value
-        }
+cobo graphql -q 'query MyQuery {
+  transactionPaginated(params: {currentPage: 1, pageSize: 10}) {
+    data {
+      assets {
+        code
+        description
+        displayCode
       }
+      assetId
     }
-  "
+  }
 }'
 ```
 
-此命令检索钱包 ID 为 `f47ac10b-58cc-4372-a567-0e02b2c3d479` 的特定钱包的最后 5 笔交易。
+此查询检索前 10 个交易，包括它们的资产 ID 和关联的资产详情，如代码、描述和显示代码。
 
-### 使用变量获取 MPC Vault 信息
-
-```shell
-cobo graphql -q '{
-  "query": "
-    query($vaultId: ID!) {
-      mpcVault(id: $vaultId) {
-        id
-        name
-        type
-        rootPubkeys {
-          rootPubkey
-          curve
-        }
-      }
-    }
-  "
-}' -v '{
-  "vaultId": "YPdbyVaVGqXXjkUsohHw"
-}'
-```
-
-此命令使用 Vault ID 作为变量检索 MPC Vault 的信息。
-
-### 以原始 JSON 格式获取钱包信息
+### 从本地文件运行查询
 
 ```shell
-cobo graphql -q "{ wallets { id name } }" --raw
+cobo graphql -f query.json
 ```
 
-此命令以原始 JSON 格式检索指定钱包的信息。
+`query.json` 的内容可以如下所示：
 
-## 使用 Cobo CLI 的 GraphQL 的提示
+```json
+{
+  "query": "query MyQuery { transactionPaginated(params: {currentPage: 1, pageSize: 10}) { data { assets { code description displayCode } assetId } } }"
+}
+```
 
-- 在生产环境中执行查询之前，始终验证您的查询以避免潜在问题。
-- 对于复杂查询，考虑在单独的文件中编写查询，并使用命令替换将其传递给 Cobo CLI。您可以参考以下命令示例：
-
-   ```shell
-   cobo graphql -q "$(cat your_query.graphql)"
-   ```
-
-- 转义查询中的特殊字符。
-
-## 相关命令
-
-- [`get`](/v2_cn/developer-tools/cobo-cli/get-requests)：对 WaaS 2.0 API 执行 GET 请求。
-- [`post`](/v2_cn/developer-tools/cobo-cli/post-requests)：对 WaaS 2.0 API 执行 POST 请求。
-- [`put`](/v2_cn/developer-tools/cobo-cli/put-requests)：对 WaaS 2.0 API 执行 PUT 请求。
-- [`delete`](/v2_cn/developer-tools/cobo-cli/delete-requests)：对 WaaS 2.0 API 执行 DELETE 请求。
+此命令执行与上述示例相同的查询，但查询定义在 JSON 文件中。
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
