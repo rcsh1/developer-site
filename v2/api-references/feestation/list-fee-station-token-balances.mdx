@@ -5,8 +5,8 @@ openapi: get /fee_station/tokens
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.list_token_balances_for_address200_response import (
-    ListTokenBalancesForAddress200Response,
+from cobo_waas2.models.list_token_balances_for_fee_station200_response import (
+    ListTokenBalancesForFeeStation200Response,
 )
 from cobo_waas2.rest import ApiException
 from pprint import pprint
@@ -65,7 +65,7 @@ public class Example {
     String before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1";
     String after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk";
     try {
-      ListTokenBalancesForAddress200Response result =
+      ListTokenBalancesForFeeStation200Response result =
           apiInstance.listTokenBalancesForFeeStation(tokenIds, limit, before, after);
       System.out.println(result);
     } catch (ApiException e) {
@@ -121,7 +121,7 @@ func main() {
 		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ListTokenBalancesForFeeStation`: ListTokenBalancesForAddress200Response
+	// response from `ListTokenBalancesForFeeStation`: ListTokenBalancesForFeeStation200Response
 	fmt.Fprintf(
 		os.Stdout,
 		"Response from `FeeStationAPI.ListTokenBalancesForFeeStation`: %v\n",
