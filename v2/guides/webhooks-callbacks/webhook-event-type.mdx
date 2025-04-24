@@ -10,7 +10,7 @@ sidebarTitle: "Webhook event types and data types"
 The available webhook event types are as follows:
 
 <Info>Here, transaction refers to all types of transactions, including transfers, contract calls, and message signing.</Info>
-<table border="1">
+<table class="table-three-cols">
   <thead>
     <tr>
       <th>Event Type</th>
@@ -21,12 +21,12 @@ The available webhook event types are as follows:
   <tbody>
     <tr>
       <td><code>wallets.transaction.created</code></td>
-      <td rowspan="4"><code>Transaction</code></td>
+      <td rowspan="11"><code>Transaction</code></td>
       <td>A transaction has been detected on the blockchain, generating a transaction record. This event does not indicate that the transaction was successful.</td>
     </tr>
     <tr>
       <td><code>wallets.transaction.updated</code></td>
-      <td>There are changes to a transaction's status or confirmation numbers.<Note>The `wallets.transaction.updated` event covers the entire lifecycle of a transaction, including creation, completion, and failure. If you want to track every status change, you can subscribe to this event.</Note></td>
+      <td>There are changes to a transaction's status or confirmation numbers.<Note>The <code>wallets.transaction.updated</code> event covers the entire lifecycle of a transaction, including creation, completion, and failure. If you want to track every status change, you can subscribe to this event.</Note></td>
     </tr>
     <tr>
       <td><code>wallets.transaction.succeeded</code></td>
@@ -35,6 +35,34 @@ The available webhook event types are as follows:
     <tr>
       <td><code>wallets.transaction.failed</code></td>
       <td>A transaction failed.</td>
+    </tr>
+    <tr>
+      <td><code>fee_station.transaction.created</code></td>
+      <td>A Fee Station transaction has been created.</td>
+    </tr>
+    <tr>
+      <td><code>fee_station.transaction.updated</code></td>
+      <td>There are changes to the status of a Fee Station transaction.</td>
+    </tr>
+    <tr>
+      <td><code>fee_station.transaction.failed</code></td>
+      <td>A Fee Station transaction failed.</td>
+    </tr>
+    <tr>
+      <td><code>fee_station.transaction.succeeded</code></td>
+      <td>A Fee Station transaction has been successfully completed.</td>
+    </tr>
+        <tr>
+      <td><code>payment.transaction.created</code></td>
+      <td>A new payment transaction has been created.</td>
+    </tr>
+    <tr>
+      <td><code>payment.transaction.late</code></td>
+      <td>A payment transaction is overdue and has not been completed within the expected time.</td>
+    </tr>
+    <tr>
+      <td><code>payment.transaction.held</code></td>
+      <td>A payment transaction has been held due to review or processing issues.</td>
     </tr>
     <tr>
       <td><code>wallets.mpc.tss_request.created</code></td>
@@ -78,8 +106,33 @@ The available webhook event types are as follows:
       <td><code>Chains</code></td>
       <td>One or more chains have been enabled.</td>
     </tr>
+    <tr>
+      <td><code>wallets.token_listing.failed</code></td>
+      <td rowspan="2"><code>TokenListing</code></td>
+      <td>A token listing request failed.</td>
+    </tr>
+    <tr>
+      <td><code>wallets.token_listing.succeeded</code></td>
+      <td>A token listing request has been successfully processed and the token is now available.</td>
+    </tr>
+    <tr>
+      <td><code>payment.status.updated</code></td>
+      <td><code>PaymentOrder</code></td>
+      <td>The status of a payment order has changed.</td>
+    </tr>
+    <tr>
+      <td><code>payment.refund.status.updated</code></td>
+      <td><code>PaymentRefund</code></td>
+      <td>The status of a refund request has changed.</td>
+    </tr>
+    <tr>
+      <td><code>payment.settlement.status.updated</code></td>
+      <td><code>PaymentSettlement</code></td>
+      <td>The status of a settlement has changed.</td>
+    </tr>
   </tbody>
 </table>
+
 
 ## Data structure of webhook events           
 For a complete introduction of the webhook event data and its data structure, refer to the [data](/v2/api-references/developers--webhooks/retrieve-event-information#response-data) property in the response of the Retrieve event information operation or the [data.data](/v2/api-references/developers--webhooks/list-all-webhook-events#response-data-data) property in the response of the List all webhook event operation. 

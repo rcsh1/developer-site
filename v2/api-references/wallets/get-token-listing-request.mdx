@@ -1,14 +1,11 @@
 ---
-openapi: post /transactions/message_sign
+openapi: get /wallets/tokens/listing_requests/{request_id}
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.create_transfer_transaction201_response import (
-    CreateTransferTransaction201Response,
-)
-from cobo_waas2.models.message_sign_params import MessageSignParams
+from cobo_waas2.models.token_listing import TokenListing
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -22,19 +19,17 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.TransactionsApi(api_client)
-    message_sign_params = cobo_waas2.MessageSignParams()
+    api_instance = cobo_waas2.WalletsApi(api_client)
+    request_id = "123e4567e89b12d3a456426614174000"
 
     try:
-        # Sign message
-        api_response = api_instance.create_message_sign_transaction(
-            message_sign_params=message_sign_params
-        )
-        print("The response of TransactionsApi->create_message_sign_transaction:\n")
+        # Get token listing request
+        api_response = api_instance.get_token_listing_request_by_request_id(request_id)
+        print("The response of WalletsApi->get_token_listing_request_by_request_id:\n")
         pprint(api_response)
     except Exception as e:
         print(
-            "Exception when calling TransactionsApi->create_message_sign_transaction: %s\n"
+            "Exception when calling WalletsApi->get_token_listing_request_by_request_id: %s\n"
             % e
         )
 
@@ -45,7 +40,7 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.TransactionsApi;
+import com.cobo.waas2.api.WalletsApi;
 import com.cobo.waas2.model.*;
 
 public class Example {
@@ -57,14 +52,13 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    TransactionsApi apiInstance = new TransactionsApi();
-    MessageSignParams messageSignParams = new MessageSignParams();
+    WalletsApi apiInstance = new WalletsApi();
+    String requestId = "123e4567e89b12d3a456426614174000";
     try {
-      CreateTransferTransaction201Response result =
-          apiInstance.createMessageSignTransaction(messageSignParams);
+      TokenListing result = apiInstance.getTokenListingRequestByRequestId(requestId);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling TransactionsApi#createMessageSignTransaction");
+      System.err.println("Exception when calling WalletsApi#getTokenListingRequestByRequestId");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -86,7 +80,7 @@ import (
 )
 
 func main() {
-	messageSignParams := *coboWaas2.NewMessageSignParams("f47ac10b-58cc-4372-a567-0e02b2c3d479", "ETH", coboWaas2.MessageSignSource{CustodialWeb3MessageSignSource: coboWaas2.NewCustodialWeb3MessageSignSource(coboWaas2.MessageSignSourceType("Web3"), "f47ac10b-58cc-4372-a567-0e02b2c3d479", "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku")}, coboWaas2.MessageSignDestination{BTCBIP137MessageSignDestination: coboWaas2.NewBTCBIP137MessageSignDestination(coboWaas2.MessageSignDestinationType("EVM_EIP_191_Signature"), "MessageBip137_example")})
+	requestId := "123e4567e89b12d3a456426614174000"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -99,21 +93,19 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.TransactionsAPI.CreateMessageSignTransaction(ctx).
-		MessageSignParams(messageSignParams).
-		Execute()
+	resp, r, err := apiClient.WalletsAPI.GetTokenListingRequestByRequestId(ctx, requestId).Execute()
 	if err != nil {
 		fmt.Fprintf(
 			os.Stderr,
-			"Error when calling `TransactionsAPI.CreateMessageSignTransaction``: %v\n",
+			"Error when calling `WalletsAPI.GetTokenListingRequestByRequestId``: %v\n",
 			err,
 		)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateMessageSignTransaction`: CreateTransferTransaction201Response
+	// response from `GetTokenListingRequestByRequestId`: TokenListing
 	fmt.Fprintf(
 		os.Stdout,
-		"Response from `TransactionsAPI.CreateMessageSignTransaction`: %v\n",
+		"Response from `WalletsAPI.GetTokenListingRequestByRequestId`: %v\n",
 		resp,
 	)
 }
@@ -128,11 +120,9 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.TransactionsApi();
-const opts = {
-  MessageSignParams: new CoboWaas2.MessageSignParams(),
-};
-apiInstance.createMessageSignTransaction(opts).then(
+const apiInstance = new CoboWaas2.WalletsApi();
+const request_id = "123e4567e89b12d3a456426614174000";
+apiInstance.getTokenListingRequestByRequestId(request_id).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

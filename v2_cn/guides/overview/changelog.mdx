@@ -7,6 +7,34 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
+## v1.14.0
+
+本版本于 2025 年 4 月 23 日发布。
+
+### 新功能
+
+- 添加了支付场景的一系列操作，包括支付订单、退款、结算、商户、银行账户和汇率，以支持完整的支付流程。
+- 添加了[估算 Fee Station 交易费用](/v2/api-references/feestation/estimate-fee-for-fee-station-transaction) 操作，用于估算 [Fee Station](https://manuals.cobo.com/cn/portal/fee-station/introduction) 发起的充值交易的 Gas 费。
+- 添加了以下操作以支持通过自助提交上币请求：
+  - [创建上币请求](/v2/api-references/wallets/create-token-listing-request)
+  - [列出所有上币请求](/v2/api-references/wallets/list-token-listing-requests)
+  - [获取上币请求](/v2/api-references/wallets/get-token-listing-request)
+
+### 改进
+
+- 新增了 [Webhook 事件类型](/v2_cn/guides/webhooks-callbacks/webhook-event-type#webhook)，支持更多实时更新：
+  - `wallets.token_listing.failed`
+  - `wallets.token_listing.succeeded`
+  - `payment.transaction.created`
+  - `payment.transaction.late`
+  - `payment.transaction.held`
+  - `payment.status.updated`
+  - `payment.refund.status.updated`
+  - `payment.settlement.status.updated`
+
+- 新增了 `wallet_type` 和 `wallet_sub_type` 字段到 `wallet.token.enabled` 和 `wallet.chain.enabled` Webhook 事件，用于指明支持的钱包类型和子类型。
+
+- 优化了[列出 Fee Station 代币余额](/v2/api-references/feestation/list-fee-station-token-balances)操作，添加了 `chain_id` 字段到响应。
 
 ## v1.13.0
 

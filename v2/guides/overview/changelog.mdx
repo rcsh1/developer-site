@@ -6,6 +6,35 @@ description: "Detailed changelog of all additions and changes to the WaaS 2.0 AP
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.14.0
+
+This version was released on April 23, 2025.
+
+### New Features
+
+- Added a batch of operations for payment scenarios, including pay-in orders, refund, settlements, merchants, bank accounts, and exchange rates, to support comprehensive payment workflows.
+- Added the [Estimate fee for Fee Station transaction](/v2/api-references/feestation/estimate-fee-for-fee-station-transaction) operation to estimate the gas fee for top-up transactions sent by [Fee Station](https://manuals.cobo.com/en/portal/fee-station/introduction).
+- Added the following operations to support token listing via self-service submission:
+  - [Create token listing request](/v2/api-references/wallets/create-token-listing-request)
+  - [List token listing requests](/v2/api-references/wallets/list-token-listing-requests)
+  - [Get token listing request](/v2/api-references/wallets/get-token-listing-request)
+
+### Improvements
+
+- Added new [webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types) to support more real-time updates:
+  - `wallets.token_listing.failed`
+  - `wallets.token_listing.succeeded`
+  - `payment.transaction.created`
+  - `payment.transaction.late`
+  - `payment.transaction.held`
+  - `payment.status.updated`
+  - `payment.refund.status.updated`
+  - `payment.settlement.status.updated`
+
+- Added new fields `wallet_type` and `wallet_sub_type` to the `wallet.token.enabled` and `wallet.chain.enabled` webhook events to indicate supported wallet types and sub-types.
+
+- Enhanced the [List Fee Station token balances](/v2/api-references/feestation/list-fee-station-token-balances) operation by adding the `chain_id` field to the response.
+
 ## v1.13.0
 
 This version was released on April 9, 2025.
