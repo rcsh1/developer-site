@@ -36,6 +36,8 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 - 优化了[列出 Fee Station 代币余额](/v2/api-references/feestation/list-fee-station-token-balances)操作，添加了 `chain_id` 字段到响应。
 
+- 优化了[列出所有交易](/v2/api-references/transactions/list-all-transactions)操作。现在，如果未指定 `min_created_timestamp` 和 `max_created_timestamp`，它将默认返回过去 90 天内的交易。
+
 ## v1.13.0
 
 本版本于 2025 年 4 月 9 日发布。
