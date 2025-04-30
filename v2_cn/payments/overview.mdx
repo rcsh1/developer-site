@@ -1,0 +1,21 @@
+---
+title: "Cobo 支付解决方案概述"
+lang: "zh-hans"
+---
+
+本文介绍 Cobo 支付解决方案的整体业务流程，主要包含以下核心模块：收单、资金归集与合规扫描、异常资金处理、以及多种结算通道选择。
+
+<img src="/v2_cn/images/payments/overview.png" className="diagram" alt="Cobo 支付解决方案的整体业务流程"></img>
+* **收单**：当用户选择使用加密货币进行支付时，您可以调用 Payment API 创建一笔加密货币支付订单，并获取收币地址和应付金额。在订单有效期内，所有转入该地址的资金在通过合规扫描后都会被认为是该订单的实付金额。  
+* **资金处理**：  
+  * **归集**：在您发起结算时，Cobo 会将分散在各个收币地址的资金归集到统一的归集地址中，方便统一管理和使用。  
+  * **AML/KYT 扫描**：取决于您所选取的钱包类型，Cobo 可能会主动对资金进行合规扫描。您也可以使用 Cobo 提供的 Screening App 对资金进行合规扫描。  
+  * **异常处理和退款**：当遇到多付、少付等异常情况时，您可以向客户发起退款或采用其他处理方式。  
+  * **兑换和跨链**：您可以使用 [Swap App](https://manuals.cobo.com/cn/apps/bridge/introduction)，将一种加密货币兑换成另一种，或转移到不同的公链。  
+  * **理财/DeFi**: 如果您希望投资一部分闲置资金以获取收益，您可以使用 Cobo 的 [Earn App](https://manuals.cobo.com/cn/apps/earn/introduction) 和 [Staking App](https://manuals.cobo.com/cn/apps/staking/introduction) 购买稳健的理财产品或参与质押。您也可以将闲置资金投入到不同的 DeFi 协议中。  
+* **结算**：取决于实际业务需要，您可以选择以下三种结算方式。  
+  * 转账：通过链上转账，直接将资金转到外部钱包地址。  
+  * 法币出金：通过 Cobo 提供的出金服务商，将加密货币兑换为法币，并转入指定的银行账户。  
+  * 稳定币借记卡/信用卡：将资金转入稳定币借记卡/信用卡。
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

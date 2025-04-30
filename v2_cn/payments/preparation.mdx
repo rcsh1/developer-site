@@ -1,0 +1,125 @@
+---
+title: "前置准备"
+lang: "zh-hans"
+description: ""
+---
+
+在开始集成之前，您需要完成一系列初始配置，如开通钱包服务、创建 API Key、导入商户信息等。
+
+## 开通钱包服务
+
+取决您所选择的钱包类型，钱包服务的开通过程将略有不同。
+
+* 如果您选择使用全托管钱包，请参考[全托管钱包快速入门](https://manuals.cobo.com/cn/portal/quick-start-guide-custodial-wallets)，完成以下步骤：  
+  1. 设置账户和团队。  
+  2. 参考[安全检查清单](https://manuals.cobo.com/cn/portal/security-checklist)，根据实际业务需要，实施安全最佳实践。  
+* 如果您选择使用 MPC 钱包，请参考 [MPC 钱包快速入门](https://manuals.cobo.com/cn/portal/quick-start-guide-mpc)，完成以下步骤：  
+  1. 设置账户和团队。  
+  2. 配置一个 MPC Vault。由于结算之前可能会发生大量归集交易且交易时间集中，请确保您已设置至少一个[服务端签名人](https://www.cobo.com/developers/v2_cn/guides/mpc-wallets/server-co-signer/tss-node-overview)作为您的[主控组](https://manuals.cobo.com/cn/portal/mpc-wallets/ocw/holder-group-main-group)或[签名组](https://manuals.cobo.com/cn/portal/mpc-wallets/ocw/holder-group-signing-group)，以实现自动化签名。  
+  3. 参考[安全检查清单](https://manuals.cobo.com/cn/portal/security-checklist)，根据实际业务需要，实施安全最佳实践。
+
+## 开通 Fee Station
+
+在您日常开展业务过程中，可通过 [Fee Station](https://manuals.cobo.com/cn/portal/fee-station/introduction) 管理在 Cobo 产生的各类费用。如需使用该功能，请联系 Cobo 销售团队申请开通。
+
+## 确认独立地址阈值
+
+在默认情况下，支付订单所使用的收币地址是循环复用的——即某一地址在用于一笔订单后，在该订单有效期结束后，可能会被分配给其他订单使用。为规避因地址复用带来的合规风险，建议大额订单使用独立的收币地址。
+
+您可以为订单金额设置一个**独立地址阈值**，当订单的应收金额大于或等于该阈值时，Cobo 将自动为该订单分配一个独立收币地址。如需设置该阈值，请联系 Cobo 销售团队。
+
+## Payment API 调用准备
+
+在后续的集成过程中，您需要调用 Payment API 完成创建订单、发起结算等步骤。
+
+1. 参考[开发者指南](https://www.cobo.com/developers/v2_cn/guides/get-started/get-started-with-waas)，生成一对 API Key 和 API Secret，并在 Cobo Portal 注册该 API Key：  
+   * **用户角色**：可以选择 **Payment\_Operator** 或 **Payment\_Viewer。**  
+   * **钱包范围**： 妥善配置，尽量避免选择**任何类型钱包**。  
+2. 如果您选择使用 SDK 而不是手动编写 API 请求，则需要安装[对应编程语言的 SDK](https://www.cobo.com/developers/v2_cn/developer-tools/quickstart-python)。
+
+## 订阅 Webhook 事件
+
+* 参考[开发者指南](https://www.cobo.com/developers/v2_cn/guides/webhooks-callbacks/set-up-endpoint)，搭建 Webhook Endpoint。  
+* 在 Cobo Portal [注册该 Webhook Endpoint](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create)，并订阅[支付相关的 Webhook 事件](?tab=t.0#heading=h.iesi2e7yooag)。
+
+## 录入商户信息
+
+调用 Payment API 录入商户名称，并将商户与钱包关联。在您为某商户创建订单时，Cobo 会在其关联钱包下创建订单的收币地址。每个商户需对应唯一钱包，同一个钱包可以关联一个或多个商户。
+
+1. 新建一个钱包：  
+   * 您可以直接在 Cobo Portal 上创建钱包。创建后，您可以在钱包列表页获取钱包 ID。将鼠标悬停在钱包名称上，钱包 ID 将自动显示。  
+   * 如果您需要创建大量钱包，可以调用 [Create wallet](https://www.cobo.com/developers/v2/api-references/wallets/create-wallet) 接口进行创建。您可以在 API 返回中获取钱包 ID。  
+2. 调用 [Create merchant](https://www.cobo.com/developers/v2/api-references/payment/create-merchant) 创建商户，在请求中传入以下信息：  
+   * 商户名称（`name`）  
+   * 钱包 ID（`wallet_id`）：您在上一步中所创建钱包的钱包 ID。
+
+**调用示例**
+
+以下为调用 [Create merchant](https://www.cobo.com/developers/v2/api-references/payment/create-merchant) 创建商户的示例代码：
+
+<Accordion title="Sample code in Python">
+```py
+import cobo_waas2
+from cobo_waas2 import PaymentApi
+# See configuration.py for a list of all supported configurations.
+configuration = cobo_waas2.Configuration(
+   # Replace `<YOUR_PRIVATE_KEY>` with your private key
+   api_private_key="<YOUR_PRIVATE_KEY>",
+   # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+   host="https://api.dev.cobo.com/v2",
+)
+# Enter a context with an instance of the API client
+with cobo_waas2.ApiClient(configuration) as api_client:
+   # Create an instance of the API class
+   api_instance = cobo_waas2.PaymentApi(api_client)
+   create_merchant_request = cobo_waas2.CreateMerchantRequest(wallet_id="", name="")
+
+
+   try:
+       # Estimate transaction fee
+       api_response = api_instance.create_merchant(
+           create_merchant_request=create_merchant_request
+       )
+       print("The response of PaymentApi->create_merchant:\n")
+       print(api_response)
+   except Exception as e:
+       print("Exception when calling PaymentApi->create_merchant: %s\n" % e)
+```
+</Accordion>
+
+<Accordion title="Sample code in Java">
+```java
+import com.cobo.waas2.ApiClient;
+import com.cobo.waas2.ApiException;
+import com.cobo.waas2.Configuration;
+import com.cobo.waas2.Env;
+import com.cobo.waas2.api.PaymentApi;
+import com.cobo.waas2.model.*;
+
+
+public class Example {
+ public static void main(String[] args) {
+   ApiClient defaultClient = Configuration.getDefaultApiClient();
+   // Select the development environment. To use the production environment, replace `Env.DEV` with
+   // `Env.PROD
+   defaultClient.setEnv(Env.DEV);
+
+
+   // Replace `<YOUR_PRIVATE_KEY>` with your private key
+   defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+   PaymentApi apiInstance = new PaymentApi(defaultClient);
+   CreateMerchantRequest createMerchantRequest = new CreateMerchantRequest();
+   createMerchantRequest.setName("");
+   createMerchantRequest.setWalletId("");
+   try {
+          Merchant merchant = apiInstance.createMerchant(createMerchantRequest);
+         System.out.println(merchant);
+   } catch (ApiException e) {
+     System.err.println("Exception when calling PaymentApi#createMerchant");
+   }
+ }
+}
+```
+</Accordion>
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

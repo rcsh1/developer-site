@@ -66,7 +66,7 @@ callback:
 
 | 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| group_id | `string` | 私钥分片持有者组的 ID。 |
+| group_id | `string` | TSS 私钥分片组 ID。 |
 | root_pub_key | `string` | 该组的根扩展公钥。 |
 | used_node_ids | `array[string]` | 参与签名的 TSS Node ID 列表。 |
 | bip32_path_list | `array[string]` | BIP32 派生路径。 |
@@ -97,7 +97,7 @@ callback:
 
 | 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| old_group_id | `string` | 现有私钥分片持有者组的 ID。 |
+| old_group_id | `string` | 现有 TSS 私钥分片组的 ID。 |
 | root_pub_key | `string` | Vault的根扩展公钥。 |
 | curve | `int` | 根扩展公钥的椭圆曲线类型。<br/>`0`：Secp256k1<br/>`2`：Ed25519。 |
 | used_node_ids | `array[string]` | 现有私钥分片持有者组的 TSS Node ID。 |
