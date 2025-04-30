@@ -65,7 +65,7 @@ Used for transaction or message signing operations.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| group_id | `string` | The ID of the key share holder group. |
+| group_id | `string` | The ID of the TSS key share group. |
 | root_pub_key | `string` | The root extended public key of the group. |
 | used_node_ids | `array[string]` | The list of TSS Node IDs participating in signing. |
 | bip32_path_list | `array[string]` | The BIP32 derivation paths. |
@@ -96,7 +96,7 @@ Used for [key resharing](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/mana
 
 | Field | Type | Description |
 |-------|------|-------------|
-| old_group_id | `string` | The ID of the existing key share holder group. |
+| old_group_id | `string` | The ID of the existing TSS key share group. |
 | root_pub_key | `string` | The root extended public key of the vault. |
 | curve | `int` | The elliptic curve type of the root extended public key. <br/>`0`: Secp256k1<br/>`2`: Ed25519. |
 | used_node_ids | `array[string]` | The TSS Node IDs of the existing key share holder group. |

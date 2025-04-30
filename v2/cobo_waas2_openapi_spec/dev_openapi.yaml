@@ -710,6 +710,8 @@ paths:
       summary: Check address validity across chains
       description: |
         This operation verifies if a given address is valid for a list of chains.
+
+        <Note>You can specify up to 20 chain IDs in a single request.</Note>
       parameters:
         - $ref: '#/components/parameters/requiredAddressParam'
         - $ref: '#/components/parameters/requiredChainIdListParam'
@@ -5400,6 +5402,7 @@ components:
           example: '1.5'
     TransactionCategory:
       type: string
+      description: A custom transaction category for you to identify your transfers more easily.
       example: Payment
     TransactionDetails:
       allOf:
@@ -11399,10 +11402,7 @@ components:
       name: min_created_timestamp
       in: query
       required: false
-      description: |
-        The time when the transaction was created, in Unix timestamp format, measured in milliseconds. You can use this parameter to filter transactions created on or after the specified time.
-
-        If not provided, the default value is 90 days before the current time. This default value is subject to change.
+      description: 'The time when the transaction was created, in Unix timestamp format, measured in milliseconds. You can use this parameter to filter transactions created on or after the specified time.'
       schema:
         type: integer
         format: int64
@@ -11411,10 +11411,7 @@ components:
       name: max_created_timestamp
       in: query
       required: false
-      description: |
-        The time when the transaction was created, in Unix timestamp format, measured in milliseconds. You can use this parameter to filter transactions created on or before the specified time.
-
-        If not provided, the default value is the current time. This default value is subject to change.
+      description: 'The time when the transaction was created, in Unix timestamp format, measured in milliseconds. You can use this parameter to filter transactions created on or before the specified time.'
       schema:
         type: integer
         format: int64
