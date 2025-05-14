@@ -593,11 +593,6 @@ Represents detailed information about a blockchain transaction.
 | `calldataInfo`                        | [`CalldataInfoType`](#calldatainfotype)                                           | The calldata details. |
 | `timeline`                            | [`[TransactionTimeline]`](#transactiontimeline)                                   | The timeline information of the transaction. |
 | `rawTxInfo`                           | [`TransactionRawTxInfo`](#transactionrawtxinfo)                                   | The raw transaction data. |
-| `assets`                              | [`[Asset]`](#asset)                                                               | The assets involved in the transaction (only appears in paginated queries). |
-| `useLoopNetwork`                      | `Boolean`                                                                         | Indicates whether the transaction was executed on the Loop network (only appears in paginated queries). |
-| `confirmingThreshold`                 | `Int`                                                                             | The number of confirmations required for the transaction to be considered final (only appears in paginated queries). |
-| `confirmedNum`                        | `Int`                                                                             | The number of confirmations received by the transaction (only appears in paginated queries). |
-| `addresses` | `String` | A list of wallet addresses, separated by comma. For addresses requiring a memo, append the memo after the address using the `\|` separator (e.g., `address\|memo`).  |
 
 ### TransactionAddress
 

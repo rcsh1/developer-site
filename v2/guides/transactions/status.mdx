@@ -6,11 +6,11 @@ description: "Guide to understanding transaction statuses in WaaS 2.0."
 
 WaaS 2.0 defines a range of transaction statuses and sub-statuses to reflect different processing stages. This page provides a complete list of statuses and describes the actions you can perform based on each status.
 
-##  Status reference table
+## Status reference table
 
-The table below provides a complete overview of all transaction statuses and their corresponding sub-statuses in WaaS 2.0.
+The table below provides a complete overview of all transaction statuses and their corresponding sub-statuses in the WaaS 2.0 service.
 
-<table>
+<table className="table-three-cols">
   <tr>
     <th>Status</th>
     <th>Sub-Status</th>
@@ -22,7 +22,7 @@ The table below provides a complete overview of all transaction statuses and the
     <td>The transaction is submitted.</td>
   </tr>
   <tr>
-    <td rowspan="2">PendingScreening</td>
+    <td rowspan="3">PendingScreening</td>
     <td>PendingTravelRuleCheck</td>
     <td>The transaction is undergoing a Travel Rule check.</td>
   </tr>
@@ -31,7 +31,11 @@ The table below provides a complete overview of all transaction statuses and the
     <td>The transaction is awaiting users to provide information related to the Travel Rule.</td>
   </tr>
   <tr>
-    <td rowspan="4">PendingAuthorization</td>
+    <td>PendingScreeningAppCheck</td>
+    <td>The transaction is under review by the [Screening app](https://manuals.cobo.com/en/apps/screening/introduction).</td>
+  </tr>
+  <tr>
+    <td rowspan="5">PendingAuthorization</td>
     <td>PendingDoubleCheck</td>
     <td>The transaction is pending a double check.</td>
   </tr>
@@ -46,6 +50,10 @@ The table below provides a complete overview of all transaction statuses and the
   <tr>
     <td>PendingApproverCheck</td>
     <td>The transaction is pending approval from the approver.</td>
+  </tr>
+  <tr>
+    <td>PendingCoboCheck</td>
+    <td>The transaction is pending an internal check by Cobo.</td>
   </tr>
   <tr>
     <td rowspan="11">PendingSignature</td>
@@ -137,7 +145,7 @@ The table below provides a complete overview of all transaction statuses and the
     <td>The transaction failed due to a blockchain reorganization.</td>
   </tr>
   <tr>
-    <td rowspan="15">Rejected</td>
+    <td rowspan="18">Rejected</td>
     <td>RejectedWhiteList</td>
     <td>The transaction is rejected because the IP address of the initiator is not in the whitelist.</td>
   </tr>
@@ -169,6 +177,10 @@ The table below provides a complete overview of all transaction statuses and the
     <td>RejectedCoboCheck</td>
     <td>The transaction is rejected because it failed the internal check by Cobo.</td>
   </tr>
+    <tr>
+    <td>RejectedByScreeningApp</td>
+    <td>The transaction is rejected because it failed the screening check by the [Screening app](https://manuals.cobo.com/en/apps/screening/introduction).</td>
+  </tr>
   <tr>
     <td>RejectedTravelRuleDueToUnsupportedToken</td>
     <td>The transaction is rejected because the token is not supported by the Travel Rule.</td>
@@ -180,6 +192,10 @@ The table below provides a complete overview of all transaction statuses and the
   <tr>
     <td>RejectedTravelRuleDueToCompliance</td>
     <td>The transaction is rejected because it failed the cross-check of the Travel Rule.</td>
+  </tr>
+  <tr>
+    <td>RejectedTransactionPolicy</td>
+    <td>The transaction is rejected due to it failed the transaction policies.</td>
   </tr>
   <tr>
     <td>RejectedBySigner</td>
@@ -217,3 +233,5 @@ You can perform the following actions based on the transaction status:
 - Speed up or drop a transaction if its status is `Broadcasting`.
 
 For more details, refer to [Manage transactions](/v2/guides/transactions/manage-transactions).
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

@@ -6,11 +6,11 @@ description: "WaaS 2.0 API 中交易状态的指南，包括状态类型及其�
 
 WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶段。本页面提供了所有状态的完整列表，并描述了根据每个状态可以执行的操作。
 
-## 交易状态表格
+## 状态参考表格
 
 下表提供了 WaaS 2.0 中各种交易状态及其对应的子状态的概述。
 
-<table>
+<table className="table-three-cols">
   <tr>
     <th>状态</th>
     <th>子状态</th>
@@ -22,7 +22,7 @@ WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶�
     <td>交易已提交。</td>
   </tr>
   <tr>
-    <td rowspan="2">PendingScreening</td>
+    <td rowspan="3">PendingScreening</td>
     <td>PendingTravelRuleCheck</td>
     <td>交易正在进行 Travel Rule 检查。</td>
   </tr>
@@ -31,7 +31,11 @@ WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶�
     <td>交易正在等待用户提供与 Travel Rule 相关的信息。</td>
   </tr>
   <tr>
-    <td rowspan="4">PendingAuthorization</td>
+    <td>PendingScreeningAppCheck</td>
+    <td>交易正在由 [Screening App](https://manuals.cobo.com/cn/apps/screening/introduction) 审核。</td>
+  </tr>
+  <tr>
+    <td rowspan="5">PendingAuthorization</td>
     <td>PendingDoubleCheck</td>
     <td>交易正在等待双重检查。</td>
   </tr>
@@ -41,14 +45,18 @@ WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶�
   </tr>
   <tr>
     <td>PendingRiskControlCheck</td>
-    <td>交易正在等待风控策略检查。</td>
+    <td>交易正在等待风控检查。</td>
   </tr>
   <tr>
     <td>PendingApproverCheck</td>
     <td>交易正在等待审批员的批准。</td>
   </tr>
   <tr>
-    <td rowspan="11">PendingSignature</td>
+    <td>PendingTransactionPolicyCheck</td>
+    <td>交易正在等待交易风控检查。</td>
+  </tr>
+  <tr>
+    <td rowspan="18">PendingSignature</td>
     <td>Queue</td>
     <td>交易正在排队等待 Cobo Portal 处理。</td>
   </tr>
@@ -93,9 +101,41 @@ WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶�
     <td>交易的签名已成功验证。</td>
   </tr>
   <tr>
-    <td>Broadcasting</td>
+    <td>PendingSignerTimeout</td>
+    <td>交易签名超时。</td>
+  </tr>
+  <tr>
+    <td>SignatureVerificationFailed</td>
+    <td>交易的签名验证失败。</td>
+  </tr>
+  <tr>
+    <td>ReplacedByNewTransaction</td>
+    <td>交易已被新交易替换。</td>
+  </tr>
+  <tr>
+    <td>FailedOnChain</td>
+    <td>交易在区块链上失败。</td>
+  </tr>
+  <tr>
+    <td>ReOrged</td>
+    <td>交易因区块链重组而失败。</td>
+  </tr>
+  <tr>
+    <td>FailedBySigner</td>
+    <td>交易在签名过程中失败。</td>
+  </tr>
+  <tr>
+    <td>OnchainRejection</td>
+    <td>交易被拒绝添加到区块链中。</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Broadcasting</td>
     <td>FailedBroadcasting</td>
     <td>交易未能广播到区块链网络。</td>
+  </tr>
+  <tr>
+    <td>Queued</td>
+    <td>交易已排队等待广播到区块链网络。</td>
   </tr>
   <tr>
     <td rowspan="2">Confirming</td>
@@ -137,7 +177,7 @@ WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶�
     <td>交易因区块链重组而失败。</td>
   </tr>
   <tr>
-    <td rowspan="15">Rejected</td>
+    <td rowspan="18">Rejected</td>
     <td>RejectedWhiteList</td>
     <td>交易被拒绝，因为发起者的 IP 地址不在白名单中。</td>
   </tr>
@@ -170,6 +210,10 @@ WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶�
     <td>交易被拒绝，因为未通过Cobo的内部检查。</td>
   </tr>
   <tr>
+    <td>RejectedByScreeningApp</td>
+    <td>交易被 [Screening App](https://manuals.cobo.com/cn/apps/screening/introduction) 拒绝。</td>
+  </tr>
+  <tr>
     <td>RejectedTravelRuleDueToUnsupportedToken</td>
     <td>交易被拒绝，因为该代币不支持 Travel Rule。</td>
   </tr>
@@ -196,6 +240,10 @@ WaaS 2.0 定义了各种交易状态和子状态，以反映不同的处理阶�
   <tr>
     <td>OnchainRejection</td>
     <td>交易被拒绝添加到区块链中。</td>
+  </tr>
+  <tr>
+    <td>RejectedTransactionPolicy</td>
+    <td>交易被拒绝，因为未通过交易策略检查。</td>
   </tr>
   <tr>
     <td rowspan="1">Pending</td>
