@@ -6,6 +6,22 @@ description: "Detailed changelog of all additions and changes to the WaaS 2.0 AP
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## 1.15.0
+
+This version was released on May 14, 2025.
+
+### Improvements
+
+- Added the following new [transaction sub-statuses](/v2/guides/transactions/status#status-reference-table) to support more granular tracking in transaction screening scenarios:
+  - `PendingCoboCheck`
+  - `RejectedTransactionPolicy`
+  - `RejectedByScreeningApp`
+  - `PendingScreeningAppCheck`
+- Added the `estimated_fee_used` property to the schemas `TransactionEvmEip1559Fee`, `TransactionEvmLegacyFee`, `TransactionUtxoFee`, and `TransactionFixedFee` for MPC Wallets and Custodial Wallets (Web3 Wallets) transactions, to indicate the estimated transaction fee when retrieving transaction information.
+- Added the query parameters `wallet_type` and `wallet_subtype` to the [List all transactions](/v2/api-references/transactions/list-all-transactions) operation, allowing you to filter transactions by wallet classification.
+- Added the properties `wallet_subtype` and `encoding` to the response of the [List address book entries](/v2/api-references/addressbooks/list-address-book-entries) operation, providing more context for address usage.
+- Added data structures for TSS request events and callback payloads.
+
 ## v1.14.0
 
 This version was released on April 23, 2025.

@@ -1476,6 +1476,8 @@ paths:
         - $ref: '#/components/parameters/optionalTokenListIdParam'
         - $ref: '#/components/parameters/optionalAssetIdListParam'
         - $ref: '#/components/parameters/optionalVaultIdQueryParam'
+        - $ref: '#/components/parameters/optionalWalletTypeParam'
+        - $ref: '#/components/parameters/optionalWalletSubtypeParam'
         - $ref: '#/components/parameters/optionalProjectIdQueryParam'
         - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
         - $ref: '#/components/parameters/optionalMaxCreatedTimestampParam'
@@ -3259,6 +3261,28 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
+  /payments/orders/address_info:
+    get:
+      tags:
+        - Payment
+      operationId: get_payment_order_address_info
+      summary: Get pay-in order's receiving address info
+      description: |
+        This operation retrieves the detailed information about a specific pay-in address.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_orders_payin.read
+      parameters:
+        - $ref: '#/components/parameters/TokenIdOptionalParam'
+        - $ref: '#/components/parameters/AddressOptionalParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getPaymentOrderAddressInfoResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   '/payments/exchange_rates/{token_id}/{currency}':
     get:
       tags:
@@ -4552,7 +4576,7 @@ components:
           $ref: '#/components/schemas/CurveType'
     TSSGroups:
       type: object
-      description: The data for the TSS key share group ID.
+      description: The data for the TSS key share group.
       properties:
         tss_key_share_group_id:
           type: string
@@ -5551,6 +5575,11 @@ components:
         - RejectedTravelRuleDueToUnsupportedToken
         - SignatureVerificationSuccess
         - SignatureVerificationFailed
+        - PendingCoboCheck
+        - RejectedTransactionPolicy
+        - RejectedByScreeningApp
+        - PendingScreeningAppCheck
+        - PendingCoboTravelRuleCheck
       example: PendingDoubleCheck
       description: |
         The transaction sub-status. For more details, please refer to [Transaction statuses and sub-statuses](https://www.cobo.com/developers/v2/guides/transactions/status).
@@ -9584,6 +9613,8 @@ components:
           example: Example Wallet
         wallet_type:
           $ref: '#/components/schemas/WalletType'
+        wallet_subtype:
+          $ref: '#/components/schemas/WalletSubtype'
         label:
           type: string
           description: The address label.
@@ -9598,6 +9629,8 @@ components:
           type: string
           description: The email of the address owner.
           example: help@cobo.com
+        encoding:
+          $ref: '#/components/schemas/AddressEncoding'
     TravelRuleDepositExchangesOrVASP:
       type: object
       title: VASPs (Deposit)
@@ -10122,11 +10155,11 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174001
         pay_token_id:
           type: string
-          description: The token symbol to swap from.
+          description: The token ID to pay.
           example: BTC
         receive_token_id:
           type: string
-          description: The token symbol to swap to.
+          description: The token ID to receive.
           example: ETH_WBTC
         pay_amount:
           type: string
@@ -10138,7 +10171,7 @@ components:
           example: '100'
         fee_token_id:
           type: string
-          description: The fee token symbol.
+          description: The fee token ID.
           example: BTC
         fee_amount:
           type: string
@@ -10197,18 +10230,21 @@ components:
           example: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
         min_amount:
           type: string
-          description: The minimum amount to swap.
+          description: The minimum amount.
           example: '1000'
         max_amount:
           type: string
-          description: The maximum amount to swap.
+          description: The maximum amount.
           example: '100000'
     SwapQuote:
       type: object
       required:
         - quote_id
+        - pay_token_id
         - pay_amount
+        - receive_token_id
         - receive_amount
+        - fee_token_id
         - fee_amount
         - quote_expired_timestamp
       properties:
@@ -10216,14 +10252,26 @@ components:
           type: string
           description: The unique id of quote.
           example: 2ec094034044ffa50f4294d48363fef31eb5755fc783ba3837a03c91b4904659
+        pay_token_id:
+          type: string
+          description: The token ID to pay.
+          example: BTC
         pay_amount:
           type: string
           description: The amount of tokens to pay.
           example: '100'
+        receive_token_id:
+          type: string
+          description: The token ID to receive.
+          example: ETH_WBTC
         receive_amount:
           type: string
           description: The amount of tokens to receive.
           example: '100'
+        fee_token_id:
+          type: string
+          description: The fee token ID.
+          example: BTC
         fee_amount:
           type: string
           description: The amount of tokens to pay for fee.
@@ -10392,8 +10440,17 @@ components:
             beneficiary_address: '123 Main St, Anytown, USA'
             account_number: '4111111111111111'
             bank_name: ABC Bank
+            bank_country: USA
             bank_address: '456 Bank Ave, Cityville, USA'
             swift_or_bic: ABCDEFGH
+        created_timestamp:
+          type: integer
+          description: 'The created time of the bank account, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the bank account, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
     CreateSettlement:
       type: object
       required:
@@ -10447,6 +10504,14 @@ components:
           format: uuid
           description: The ID of the linked wallet.
           example: 123e4567-e89b-12d3-a456-426614174001
+        created_timestamp:
+          type: integer
+          description: 'The created time of the merchant, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the merchant, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
     Order:
       type: object
       required:
@@ -10521,6 +10586,19 @@ components:
           type: string
           description: 'The total cryptocurrency amount received for this order. Updates until the expiration time. Precision matches the token standard (e.g., 6 decimals for USDT).'
           example: '103.0305'
+        created_timestamp:
+          type: integer
+          description: 'The created time of the order, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the order, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        transactions:
+          type: array
+          description: An array of transactions associated with this pay-in order. Each transaction represents a separate blockchain operation related to the settlement process.
+          items:
+            $ref: '#/components/schemas/PaymentTransaction'
     OrderStatus:
       type: string
       enum:
@@ -10537,6 +10615,31 @@ components:
         - `Completed`: The payment has been fully received and is now complete.
         - `Expired`: The order has reached its expiration time without receiving any payment, or the order has been cancelled by the [Update pay-in order](https://www.cobo.com/developers/v2/api-references/payment/update-pay-in-order) operation.
         - `Underpaid`: The order has reached its expiration time. A payment was received but the amount is less than the order's required amount.
+    OrderAddressInfo:
+      type: object
+      required:
+        - wallet_id
+        - amount
+        - created_timestamp
+        - updated_timestamp
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+          description: The ID of the linked wallet.
+          example: 123e4567-e89b-12d3-a456-426614174001
+        amount:
+          type: string
+          description: The amount of cryptocurrency received by the order's receiving address.
+          example: '0.000001'
+        created_timestamp:
+          type: integer
+          description: 'The created time of the address, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the address, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
     Refund:
       type: object
       required:
@@ -10555,6 +10658,10 @@ components:
           type: string
           description: The refund order ID.
           example: R20250304-M1001-1001
+        order_id:
+          type: string
+          description: The order ID corresponding to this refund.
+          example: O20250304-M1001-1001
         merchant_id:
           type: string
           description: The merchant ID.
@@ -10577,6 +10684,20 @@ components:
           example: '0x9876543210abcdef1234567890abcdef12345678'
         status:
           $ref: '#/components/schemas/RefundStatus'
+        refund_type:
+          $ref: '#/components/schemas/RefundType'
+        created_timestamp:
+          type: integer
+          description: 'The created time of the refund order, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the refund order, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        initiator:
+          type: string
+          description: 'The initiator of this refund order, usually the user''s API key.'
+          example: b2ae1b5aaade686c968ef2bbd31cc75ba94e5a85fd9cb0b85b81dcc15f920e9d
         transactions:
           type: array
           description: An array of transactions associated with this refund order. Each transaction represents a separate blockchain operation related to the refund process.
@@ -10662,6 +10783,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SettlementDetail'
+        created_timestamp:
+          type: integer
+          description: 'The created time of the settlement request, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the settlement request, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        initiator:
+          type: string
+          description: 'The initiator of this settlement request, usually the user''s API key.'
+          example: b2ae1b5aaade686c968ef2bbd31cc75ba94e5a85fd9cb0b35b81dcc15f520e9d
     SettlementDetail:
       type: object
       properties:
@@ -10677,6 +10810,10 @@ components:
           type: string
           description: The ID of the blockchain network on which the settlement occurred.
           example: ETH
+        merchant_id:
+          type: string
+          description: The Merchant ID associated with this settlement.
+          example: M1001
         amount:
           type: string
           description: |
@@ -10685,6 +10822,15 @@ components:
             - If `token_id` is specified, this represents the settlement amount in the specified cryptocurrency.
 
             - If `token_id` is not specified, this represents the settlement amount in the specified fiat currency.
+          example: '500.00'
+        settled_amount:
+          type: string
+          description: |
+            The settled amount of this settlement detail.
+
+            - If `token_id` is specified, this represents the actual settled amount in the specified cryptocurrency.
+
+            - If `token_id` is not specified, this represents the actual settled amount in the specified fiat currency.
           example: '500.00'
         status:
           $ref: '#/components/schemas/SettleStatus'
@@ -10695,6 +10841,14 @@ components:
           description: An array of transactions associated with this settlement request. Each transaction represents a separate blockchain operation related to the settlement process.
           items:
             $ref: '#/components/schemas/PaymentTransaction'
+        created_timestamp:
+          type: integer
+          description: 'The created time of the settlement, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the settlement, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
     SettlementInfo:
       type: object
       required:
@@ -10725,6 +10879,18 @@ components:
           type: string
           description: 'The amount unavailable for settlement or refund, in the specified fiat currency.'
           example: '500.00'
+        settled_amount:
+          type: string
+          description: 'The amount already settled, in the specified cryptocurrency.'
+          example: '500.00'
+        created_timestamp:
+          type: integer
+          description: 'The created time of the settlement, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the settlement, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
     SettlementType:
       type: string
       enum:
@@ -10754,6 +10920,10 @@ components:
           type: string
           description: The transaction hash.
           example: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
+        token_id:
+          type: string
+          description: The ID of the cryptocurrency.
+          example: ETH_USDT
         from_address:
           type: string
           description: The source address of the transaction.
@@ -10778,6 +10948,646 @@ components:
           format: int64
           description: 'The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.'
           example: 1610445878970
+    TSSKeyGenRequest:
+      type: object
+      properties:
+        threshold:
+          type: integer
+          description: The number of key share holders required to approve each operation in TSS key share group.
+          example: 2
+        node_ids:
+          type: array
+          items:
+            type: string
+            description: The node IDs of the key share holder.
+            example:
+              - coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+              - coboBTGDvjJG99pABegvPYmavrcTU3SkjTLHVdsko8dWBga4w
+        curve:
+          $ref: '#/components/schemas/TSSCurve'
+        task_id:
+          type: string
+          description: The task ID.
+          example: '20231213122855000000000000000000'
+        biz_task_id:
+          type: string
+          description: The business task ID. This field contains the TSS request ID.
+          example: '20231213122855000000000000000000'
+    TSSKeyReshareRequest:
+      type: object
+      properties:
+        old_group_id:
+          type: string
+          description: The old TSS key share group ID.
+          example: mMedDioOKhTlhGyQRzMv
+        root_pub_key:
+          type: string
+          description: The The old TSS key share group's root extended public key.
+          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
+        curve:
+          $ref: '#/components/schemas/TSSCurve'
+        used_node_ids:
+          type: array
+          items:
+            type: string
+            description: The node IDs of used key share holder.
+            example:
+              - coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+              - coboBTGDvjJG99pABegvPYmavrcTU3SkjTLHVdsko8dWBga4w
+        old_threshold:
+          type: integer
+          description: The number of key share holders required to approve each operation in the old TSS key share group.
+          example: 2
+        new_threshold:
+          type: integer
+          description: The number of key share holders required to approve each operation in the new TSS key share group.
+          example: 2
+        new_node_ids:
+          type: array
+          items:
+            type: string
+            description: The node IDs of new key share holder.
+            example:
+              - coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+              - coboBTGDvjJG99pABegvPYmavrcTU3SkjTLHVdsko8dWBga4w
+        task_id:
+          type: string
+          description: The task ID.
+          example: '20231213122855000000000000000000'
+        biz_task_id:
+          type: string
+          description: The business task ID. This field contains the TSS request ID.
+          example: '20231213122855000000000000000000'
+    TSSKeySignRequest:
+      type: object
+      properties:
+        group_id:
+          type: string
+          description: The TSS key share group ID.
+          example: mMedDioOKhTlhGyQRzMv
+        root_pub_key:
+          type: string
+          description: The The old TSS key share group's root extended public key.
+          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
+        used_node_ids:
+          type: array
+          items:
+            type: string
+            description: The node IDs of the key share holder.
+            example:
+              - coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+              - coboBTGDvjJG99pABegvPYmavrcTU3SkjTLHVdsko8dWBga4w
+        bip32_path_list:
+          type: array
+          items:
+            type: string
+            description: The BIP32 derivation paths.
+            example:
+              - m/44/0/2/0/0
+        msg_hash_list:
+          type: array
+          items:
+            type: string
+            description: The list of message hashes to sign.
+            example:
+              - '0x10ED43C718714eb63d5aA57B78B54704E256024EFFFFFFFFFFFFFFFFFFFFFFFF'
+        tweak_list:
+          type: array
+          items:
+            type: string
+            description: The list of tweaks to apply.
+            example:
+              - '0x00'
+        signature_type:
+          $ref: '#/components/schemas/TSSSignatureType'
+        tss_protocol:
+          $ref: '#/components/schemas/TSSProtocol'
+        task_id:
+          type: string
+          description: The task ID.
+          example: '20231213122855000000000000000000'
+        biz_task_id:
+          type: string
+          description: The business task ID. This field contains the transaction ID.
+          example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
+    TSSKeyShareSignRequest:
+      type: object
+      properties:
+        node_id:
+          type: string
+          description: The node ID of the key share holder.
+          example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+        task_id:
+          type: string
+          description: The task ID.
+          example: '20231213122855000000000000000000'
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/TSSKeyShareSignDetail'
+        biz_task_id:
+          type: string
+          description: The business task ID. This field contains the key share sign request ID.
+          example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
+    TSSKeyShareSignDetail:
+      type: object
+      properties:
+        group_id:
+          type: string
+          description: The TSS key share group ID.
+          example: mMedDioOKhTlhGyQRzMv
+        message:
+          type: string
+          description: The message to sign by key share.
+    TSSKeyGenExtra:
+      type: object
+      properties:
+        org:
+          $ref: '#/components/schemas/OrgInfo'
+        project:
+          $ref: '#/components/schemas/MPCProject'
+        vault:
+          $ref: '#/components/schemas/MPCVault'
+        target_key_share_holder_group:
+          $ref: '#/components/schemas/KeyShareHolderGroup'
+        tss_request:
+          $ref: '#/components/schemas/TSSRequest'
+    TSSKeyReshareExtra:
+      type: object
+      properties:
+        org:
+          $ref: '#/components/schemas/OrgInfo'
+        project:
+          $ref: '#/components/schemas/MPCProject'
+        vault:
+          $ref: '#/components/schemas/MPCVault'
+        source_key_share_holder_group:
+          $ref: '#/components/schemas/KeyShareHolderGroup'
+        target_key_share_holder_group:
+          $ref: '#/components/schemas/KeyShareHolderGroup'
+        tss_request:
+          $ref: '#/components/schemas/TSSRequest'
+    TSSKeySignExtra:
+      type: object
+      properties:
+        org:
+          $ref: '#/components/schemas/OrgInfo'
+        project:
+          $ref: '#/components/schemas/MPCProject'
+        vault:
+          $ref: '#/components/schemas/MPCVault'
+        wallet:
+          $ref: '#/components/schemas/MPCWalletInfo'
+        signer_key_share_holder_group:
+          $ref: '#/components/schemas/KeyShareHolderGroup'
+        source_addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressInfo'
+        transaction:
+          $ref: '#/components/schemas/Transaction'
+    TSSKeyShareSignExtra:
+      type: object
+      properties:
+        org:
+          $ref: '#/components/schemas/OrgInfo'
+        project:
+          $ref: '#/components/schemas/MPCProject'
+        vault:
+          $ref: '#/components/schemas/MPCVault'
+        wallet:
+          $ref: '#/components/schemas/MPCWalletInfo'
+        validity_key_share_holder_groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyShareHolderGroup'
+    TSSGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The TSS key share group ID.
+          example: mMedDioOKhTlhGyQRzMv
+        canonical_group_id:
+          type: string
+          description: The canonical group ID.
+        protocol_group_id:
+          type: string
+          description: The protocol group ID.
+        protocol_type:
+          type: string
+          description: The protocol type.
+        created_timestamp:
+          description: 'The group creation timestamp, in Unix timestamp format, measured in milliseconds.'
+          type: integer
+          format: int64
+          example: 1701396866000
+        type:
+          $ref: '#/components/schemas/TSSGroupType'
+        root_extended_public_key:
+          type: string
+          description: The root extended public key.
+          example: xpub661MyMwAqRbcG4vPNi58VQJrXW8D9VzmauuRq2rTY3oUVnKGuLTxQxvvoEXgLvZ7N9GQXQkWVgKn1rzEUUEm4NdvrBKUqjpNJEnn2UL4rYq
+        chaincode:
+          type: string
+          description: The chaincode.
+        curve:
+          $ref: '#/components/schemas/TSSCurveType'
+        threshold:
+          type: integer
+          description: The threshold.
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/TSSParticipant'
+    TSSGroupType:
+      type: integer
+      enum:
+        - 1
+        - 2
+      x-enum-varnames:
+        - ECDSA
+        - EdDSA
+      example: 1
+      description: |
+        The elliptic curve type. Possible values include:
+
+        - 1 : The `ECDSA` group.
+        - 2 : The `EdDSA` group.
+    TSSCurve:
+      type: integer
+      enum:
+        - 0
+        - 2
+      x-enum-varnames:
+        - SECP256K1
+        - ED25519
+      example: 0
+      description: |
+        The elliptic curve type. Possible values include:
+
+        - 0 : The `SECP256K1` elliptic curve.
+        - 2 : The `ED25519` elliptic curve.
+    TSSCurveType:
+      type: string
+      enum:
+        - secp256k1
+        - ed25519
+      example: secp256k1
+      description: |
+        The elliptic curve type. Possible values include:
+
+        - `secp256k1` : The `SECP256K1` elliptic curve.
+        - `ed25519` : The `ED25519` elliptic curve.
+    TSSParticipant:
+      type: object
+      properties:
+        node_id:
+          type: string
+          description: The node ID.
+          example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+        share_id:
+          type: string
+          description: The share ID.
+          example: '619693302942100684578205955442284626185'
+        share_public_key:
+          type: string
+          description: The share public key.
+          example: '0x217223cdea6b19af34131447763a269d1dbef580bc85272a5bdfc59fa4940cca'
+    TSSRequestTypeEenum:
+      type: string
+      enum:
+        - KeyGen
+        - KeyReshare
+        - KeySign
+        - KeyShareSign
+      description: |-
+
+        The request type. - `KeyGen`: The key gen request. - `KeyReshare`: The key reshare request. - `KeySign`: The key sign request. - `KeyShareSign`: The key share sign request.
+      example: KeyGen
+    TSSStatus:
+      type: integer
+      enum:
+        - 100
+        - 110
+        - 120
+        - 130
+        - 140
+        - 160
+        - 170
+        - 180
+        - 190
+      x-enum-varnames:
+        - UNDEFINED
+        - SCHEDULING
+        - INITIALIZING
+        - APPROVING
+        - PROCESSING
+        - DECLINED
+        - FAILED
+        - CANCELED
+        - COMPLETED
+      example: 190
+      description: |
+        The status of the request. Possible values include:
+
+        - 100 : Undefined.
+        - 110 : Scheduling.
+        - 120 : Initializing.
+        - 130 : Approving.
+        - 140 : Processing.
+        - 160 : Declined.
+        - 170 : Failed.
+        - 180 : Canceled.
+        - 190 : Completed.
+    TSSKeyShareSignSignature:
+      type: object
+      properties:
+        group_id:
+          type: string
+          description: The TSS key share group ID.
+          example: mMedDioOKhTlhGyQRzMv
+        signed_msg:
+          type: string
+          description: The hexadecimal encoded signed message.
+          example: '0x10ED43C718714eb63d5aA57B78B54704E256024EFFFFFFFFFFFFFFFFFFFFFFFF'
+        msg_hash:
+          type: string
+          description: The message hash.
+          example: '0x10ED43C718714eb63d5aA57B78B54704E256024EFFFFFFFFFFFFFFFFFFFFFFFF'
+        signature:
+          type: string
+          description: The signature.
+          example: '0x10ED43C718714eb63d5aA57B78B54704E256024EFFFFFFFFFFFFFFFFFFFFFFFF'
+    TSSKeyShareSignSignatures:
+      type: object
+      properties:
+        signatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/TSSKeyShareSignSignature'
+    TSSSignatures:
+      type: object
+      properties:
+        signatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/TSSSignature'
+        signature_type:
+          $ref: '#/components/schemas/TSSSignatureType'
+        tss_protocol:
+          $ref: '#/components/schemas/TSSProtocol'
+    TSSSignature:
+      type: object
+      properties:
+        bip32_path:
+          type: string
+          description: The BIP32 path.
+          example: m/44/0/2/0/0
+        msg_hash:
+          type: string
+          description: The message hash.
+          example: '0x10ED43C718714eb63d5aA57B78B54704E256024EFFFFFFFFFFFFFFFFFFFFFFFF'
+        tweak:
+          type: string
+          description: The tweak.
+          example: '0x00'
+        signature:
+          type: string
+          description: The signature.
+          example: '0x10ED43C718714eb63d5aA57B78B54704E256024EFFFFFFFFFFFFFFFFFFFFFFFF'
+        signature_recovery:
+          type: string
+          description: The signature recovery.
+          example: '0x00'
+    TSSSignatureType:
+      type: integer
+      enum:
+        - 1
+        - 2
+        - 3
+      x-enum-varnames:
+        - ECDSA
+        - EdDSA
+        - Schnorr
+      example: 1
+      description: |
+        The type of signature. Possible values include:
+
+        - 1 : ECDSA signature
+        - 2 : EdDSA signature
+        - 3 : Schnorr signature
+    TSSProtocol:
+      type: integer
+      enum:
+        - 1
+        - 2
+        - 3
+      x-enum-varnames:
+        - GG18
+        - Lindell
+        - EddsaTSS
+      example: 1
+      description: |
+        The type of TSS protocol. Possible values include:
+
+        - 1 : GG18
+        - 2 : Lindell
+        - 3 : EddsaTSS
+    TSSEvent:
+      type: object
+      description: The TSS Node event payload.
+      required:
+        - event_type
+      properties:
+        event_id:
+          description: The event ID.
+          type: string
+          format: uuid
+          example: 8f2e919a-6a7b-4a9b-8c1a-4c0b3f5b8b1f
+        created_timestamp:
+          description: 'The time when the event occurred, in Unix timestamp format, measured in milliseconds.'
+          type: integer
+          format: int64
+          example: 1701396866000
+        node_id:
+          type: string
+          description: The event publisher's TSS Node ID.
+          example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
+        event_type:
+          $ref: '#/components/schemas/TSSEventType'
+        data:
+          $ref: '#/components/schemas/TSSEventData'
+    TSSEventType:
+      type: string
+      enum:
+        - ping
+        - request.keygen.created
+        - request.keygen.updated
+        - request.keygen.failed
+        - request.keygen.succeeded
+        - request.keyreshare.created
+        - request.keyreshare.updated
+        - request.keyreshare.failed
+        - request.keyreshare.succeeded
+        - request.keysign.created
+        - request.keysign.updated
+        - request.keysign.failed
+        - request.keysign.succeeded
+        - request.keysharesign.created
+        - request.keysharesign.updated
+        - request.keysharesign.failed
+        - request.keysharesign.succeeded
+      example: request.keygen.succeeded
+      description: The event type.
+    TSSEventData:
+      oneOf:
+        - $ref: '#/components/schemas/TSSKeyGenEventData'
+        - $ref: '#/components/schemas/TSSKeyReshareEventData'
+        - $ref: '#/components/schemas/TSSKeySignEventData'
+        - $ref: '#/components/schemas/TSSKeyShareSignEventData'
+      discriminator:
+        propertyName: data_type
+        mapping:
+          KeyGen: '#/components/schemas/TSSKeyGenEventData'
+          KeyReshare: '#/components/schemas/TSSKeyReshareEventData'
+          KeySign: '#/components/schemas/TSSKeySignEventData'
+          KeyShareSign: '#/components/schemas/TSSKeyShareSignEventData'
+    TSSEventDataType:
+      type: string
+      enum:
+        - KeyGen
+        - KeyReshare
+        - KeySign
+        - KeyShareSign
+      description: |-
+
+        The data type of the event. - `KeyGen`: The key gen event data. - `KeyReshare`: The key reshare event data. - `KeySign`: The key sign event data. - `KeyShareSign`: The key share sign event data.
+      example: KeyGen
+    TSSBaseRequestEventData:
+      type: object
+      required:
+        - data_type
+      properties:
+        data_type:
+          $ref: '#/components/schemas/TSSEventDataType'
+        request_id:
+          type: string
+          description: The request ID.
+          example: '20231213122855000000000000000000:1'
+        request_type:
+          $ref: '#/components/schemas/TSSRequestTypeEenum'
+        request_status:
+          $ref: '#/components/schemas/TSSStatus'
+        extra_info:
+          type: string
+          description: The extra info.
+          example: '{"org": {"org_id": "1234567890"}}'
+        failed_reason:
+          type: string
+          description: The failed reason.
+    TSSKeyGenEventData:
+      allOf:
+        - $ref: '#/components/schemas/TSSBaseRequestEventData'
+        - type: object
+          properties:
+            request_detail:
+              $ref: '#/components/schemas/TSSKeyGenRequest'
+            result:
+              $ref: '#/components/schemas/TSSGroup'
+    TSSKeyReshareEventData:
+      allOf:
+        - $ref: '#/components/schemas/TSSBaseRequestEventData'
+        - type: object
+          properties:
+            request_detail:
+              $ref: '#/components/schemas/TSSKeyReshareRequest'
+            result:
+              $ref: '#/components/schemas/TSSGroup'
+    TSSKeySignEventData:
+      allOf:
+        - $ref: '#/components/schemas/TSSBaseRequestEventData'
+        - type: object
+          properties:
+            request_detail:
+              $ref: '#/components/schemas/TSSKeySignRequest'
+            result:
+              $ref: '#/components/schemas/TSSSignatures'
+    TSSKeyShareSignEventData:
+      allOf:
+        - $ref: '#/components/schemas/TSSBaseRequestEventData'
+        - type: object
+          properties:
+            request_detail:
+              $ref: '#/components/schemas/TSSKeyShareSignRequest'
+            result:
+              $ref: '#/components/schemas/TSSKeyShareSignSignatures'
+    TSSCallbackRequest:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: he unique ID of the callback request.
+          example: '20231213122855000000000000000000:1'
+        request_type:
+          $ref: '#/components/schemas/TSSCallbackRequestType'
+        request_detail:
+          type: string
+          description: Details specific to the request type. The structure varies depending on the request type.  The content is a JSON-serialized string.
+        extra_info:
+          type: string
+          description: Additional contextual information.  The structure varies depending on the request type. The content is a JSON-serialized string.
+    TSSCallbackRequestType:
+      type: integer
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 5
+      x-enum-varnames:
+        - PING
+        - KEYGEN
+        - KEYSIGN
+        - KEYRESHARE
+        - KEYSHARESIGN
+      example: 1
+      description: |
+        The type of the request. Possible values include:
+
+        - 0 : Ping. Used for heartbeat monitoring.
+        - 1 : KeyGen. Creating new key shares for your MPC Wallets.
+        - 2 : KeySign. Signing transactions or messages.
+        - 3 : KeyReshare. Redistributing key shares among participants.
+        - 5 : KeyShareSign. Signing messages with key shares.
+    TSSCallbackResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+          description: The unique ID of the callback request.
+          example: '20231213122855000000000000000000:1'
+        status:
+          type: integer
+          description: The response status code. 0 indicates success.  Any other value indicates that an error occurred while processing the request in the callback server.
+          example: 0
+        action:
+          $ref: '#/components/schemas/TSSCallbackActionType'
+        error:
+          type: string
+          description: 'The error message. - When status is not 0, Contains internal error messages from the callback server. - When status is 0 and action is REJECT, Contains the specific reason for the rejection.'
+          example: internal error
+    TSSCallbackActionType:
+      type: string
+      enum:
+        - APPROVE
+        - REJECT
+      example: APPROVE
+      description: |
+        The action to take. Possible values include:
+
+        - `APPROVE` : Approve the request and proceed with the operation.
+        - `REJECT` : Deny the request and stop the operation.
   parameters:
     sortByParam:
       name: sort_by
@@ -11874,7 +12684,7 @@ components:
       required: true
       schema:
         type: string
-      description: The amount of pay token to swap.
+      description: The amount of pay token.
       example: '1.5'
     payAmountOptionalParam:
       name: pay_amount
@@ -11882,7 +12692,7 @@ components:
       required: false
       schema:
         type: string
-      description: The amount of pay token to swap.
+      description: The amount of pay token.
       example: '1.5'
     receiveAmountRequiredParam:
       name: receive_amount
@@ -12048,6 +12858,17 @@ components:
       schema:
         type: string
       example: ETH_USDT
+    TokenIdOptionalParam:
+      name: token_id
+      in: query
+      required: false
+      description: |
+        The token ID, which identifies the cryptocurrency. Supported values: 
+          - USDC: `ETH_USDC`, `ARBITRUM_USDC`, `SOL_USDC`, `BASE_USDC`, `MATIC_USDC`, `BSC_USDC`
+          - USDT: `TRON_USDT`, `ETH_USDT`, `ARBITRUM_USDT`, `SOL_USDT`, `BASE_USDT`, `MATIC_USDT`, `BSC_USDT`
+      schema:
+        type: string
+      example: ETH_USDT
     WalletIdOptionalParam:
       name: wallet_id
       in: query
@@ -12091,6 +12912,15 @@ components:
       schema:
         type: string
       example: random_request_id
+    AddressOptionalParam:
+      name: address
+      in: query
+      required: false
+      description: |
+        The receiving address.
+      schema:
+        type: string
+      example: '0x9876543210abcdef1234567890abcdef12345678'
   requestBodies:
     createWalletBody:
       description: The request body to create a wallet
@@ -14264,6 +15094,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Order'
+    getPaymentOrderAddressInfoResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OrderAddressInfo'
     createRefundResponse:
       description: Refund transaction created successfully.
       content:
