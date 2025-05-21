@@ -23,7 +23,18 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.TransactionsApi(api_client)
-    transfer_params = cobo_waas2.TransferParams()
+    transfer_params = cobo_waas2.TransferParams(
+        request_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        source=cobo_waas2.TransferSource(
+            cobo_waas2.CustodialTransferSource(
+                source_type="Asset", wallet_id="f47ac10b-58cc-4372-a567-0e02b2c3d479"
+            )
+        ),
+        token_id="ETH_USDT",
+        destination=cobo_waas2.TransferDestination(
+            cobo_waas2.AddressTransferDestination(destination_type="Address")
+        ),
+    )
 
     try:
         # Transfer token
@@ -47,6 +58,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.TransactionsApi;
 import com.cobo.waas2.model.*;
+import java.util.UUID;
 
 public class Example {
   public static void main(String[] args) {
@@ -58,7 +70,19 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
-    TransferParams transferParams = new TransferParams();
+    TransferParams transferParams =
+        new TransferParams()
+            .requestId("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .source(
+                new TransferSource(
+                    new CustodialTransferSource()
+                        .sourceType(WalletSubtype.ASSET)
+                        .walletId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"))))
+            .tokenId("ETH_USDT")
+            .destination(
+                new TransferDestination(
+                    new AddressTransferDestination()
+                        .destinationType(TransferDestinationType.ADDRESS)));
     try {
       CreateTransferTransaction201Response result =
           apiInstance.createTransferTransaction(transferParams);
@@ -126,7 +150,15 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  TransferParams: new CoboWaas2.TransferParams(),
+  TransferParams: new CoboWaas2.TransferParams({
+    request_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    source: {
+      source_type: "Asset",
+      wallet_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    },
+    token_id: "ETH_USDT",
+    destination: { destination_type: "Address" },
+  }),
 };
 apiInstance.createTransferTransaction(opts).then(
   (data) => {

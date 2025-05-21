@@ -125,7 +125,7 @@ Your callback server must respond to all callback requests with the following st
 |-------|------|-------------|
 | status | `int` | The response status code. `0` indicates success. Any other value indicates that an error occurred while processing the request in the callback server. |
 | request_id | `string` | The unique ID of the callback request.|
-| action | `string` | Action to take. Possible values:<br/>- `ACCEPT`: Approve the request and proceed with the operation<br/>- `REJECT`: Deny the request and stop the operation |
+| action | `string` | Action to take. Possible values:<br/>- `APPROVE`: Approve the request and proceed with the operation<br/>- `REJECT`: Deny the request and stop the operation |
 | error | `string` | The error message:<br/>- When `status` is not `0`: Contains internal error messages from the callback server.<br/>- When `status` is `0` and action is `REJECT`: Contains the specific reason for the rejection. |
 
 ### Important notes

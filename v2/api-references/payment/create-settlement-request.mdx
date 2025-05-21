@@ -23,7 +23,9 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
-    create_settlement_request_request = cobo_waas2.CreateSettlementRequestRequest()
+    create_settlement_request_request = cobo_waas2.CreateSettlementRequestRequest(
+        request_id="SETTLEMENT123", settlements=["example_string"]
+    )
 
     try:
         # Create settlement request
@@ -44,6 +46,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.PaymentApi;
 import com.cobo.waas2.model.*;
+import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -56,7 +59,9 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     PaymentApi apiInstance = new PaymentApi();
     CreateSettlementRequestRequest createSettlementRequestRequest =
-        new CreateSettlementRequestRequest();
+        new CreateSettlementRequestRequest()
+            .requestId("SETTLEMENT123")
+            .settlements(Arrays.asList());
     try {
       Settlement result = apiInstance.createSettlementRequest(createSettlementRequestRequest);
       System.out.println(result);
@@ -123,8 +128,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreateSettlementRequestRequest:
-    new CoboWaas2.CreateSettlementRequestRequest(),
+  CreateSettlementRequestRequest: new CoboWaas2.CreateSettlementRequestRequest({
+    request_id: "SETTLEMENT123",
+    settlements: ["example_string"],
+  }),
 };
 apiInstance.createSettlementRequest(opts).then(
   (data) => {

@@ -25,7 +25,9 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.DevelopersWebhooksApi(api_client)
-    trigger_test_webhook_event_request = cobo_waas2.TriggerTestWebhookEventRequest()
+    trigger_test_webhook_event_request = cobo_waas2.TriggerTestWebhookEventRequest(
+        event_type="wallets.transaction.created"
+    )
 
     try:
         # Trigger test event
@@ -61,7 +63,8 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     DevelopersWebhooksApi apiInstance = new DevelopersWebhooksApi();
     TriggerTestWebhookEventRequest triggerTestWebhookEventRequest =
-        new TriggerTestWebhookEventRequest();
+        new TriggerTestWebhookEventRequest()
+            .eventType(WebhookEventType.WALLETS.TRANSACTION.CREATED);
     try {
       TriggerTestWebhookEvent201Response result =
           apiInstance.triggerTestWebhookEvent(triggerTestWebhookEventRequest);
@@ -133,8 +136,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.DevelopersWebhooksApi();
 const opts = {
-  TriggerTestWebhookEventRequest:
-    new CoboWaas2.TriggerTestWebhookEventRequest(),
+  TriggerTestWebhookEventRequest: new CoboWaas2.TriggerTestWebhookEventRequest({
+    event_type: "wallets.transaction.created",
+  }),
 };
 apiInstance.triggerTestWebhookEvent(opts).then(
   (data) => {

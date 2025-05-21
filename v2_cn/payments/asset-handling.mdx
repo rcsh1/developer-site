@@ -62,22 +62,28 @@ sequenceDiagram
 
 <Accordion title="Sample code in Python">
 ```py
-import cobo_waas2
-from cobo_waas2 import PaymentApi
+from cobo_waas2 import PaymentApi, CreateRefundRequest, ApiClient, Configuration, RefundType
 # See configuration.py for a list of all supported configurations.
-configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
-   # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
-   host="https://api.dev.cobo.com/v2",
+configuration = Configuration(
+  # Replace `<YOUR_PRIVATE_KEY>` with your private key
+  api_private_key="<YOUR_PRIVATE_KEY>",
+  # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+  host="https://api.dev.cobo.com/v2",
 )
 # Enter a context with an instance of the API client
-with cobo_waas2.ApiClient(configuration) as api_client:
+with ApiClient(configuration) as api_client:
    # Create an instance of the API class
-   api_instance = cobo_waas2.PaymentApi(api_client)
-   create_refund_request = cobo_waas2.CreateRefundRequest()
+   api_instance = PaymentApi(api_client)
+   create_refund_request = CreateRefundRequest(
+       request_id="<YOUR_REQUEST_ID>",
+       merchant_id="<YOUR_MERCHANT_ID>",
+       payable_amount="10",
+       to_address="<YOUR_REFUND_ADDRESS>",
+       token_id="TRON_USDT",
+       refund_type=RefundType.MERCHANT,   
+   )
    try:
-       # Estimate transaction fee
+       # Create refund
        api_response = api_instance.create_refund(
            create_refund_request=create_refund_request
        )
@@ -97,7 +103,6 @@ import com.cobo.waas2.Env;
 import com.cobo.waas2.api.PaymentApi;
 import com.cobo.waas2.model.*;
 
-
 public class Example {
  public static void main(String[] args) {
    ApiClient defaultClient = Configuration.getDefaultApiClient();
@@ -105,13 +110,20 @@ public class Example {
    // `Env.PROD
    defaultClient.setEnv(Env.DEV);
 
-
    // Replace `<YOUR_PRIVATE_KEY>` with your private key
    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+
    PaymentApi apiInstance = new PaymentApi(defaultClient);
    CreateRefundRequest createRefundRequest = new CreateRefundRequest();
+   createRefundRequest.setRequestId("<YOUR_REQUEST_ID>");
+   createRefundRequest.setMerchantId("<YOUR_MERCHANT_ID>");
+   createRefundRequest.setPayableAmount("10");
+   createRefundRequest.setToAddress("<YOUR_REFUND_ADDRESS>");
+   createRefundRequest.setTokenId("TRON_USDT");
+   createRefundRequest.setRefundType(RefundType.MERCHANT);
+
    try {
-          Refund refund = apiInstance.createRefund(orderId, createRefundRequest);
+          Refund refund = apiInstance.createRefund(createRefundRequest);
           System.out.println(refund);
    } catch (ApiException e) {
      System.err.println("Exception when calling PaymentApi#createRefund");

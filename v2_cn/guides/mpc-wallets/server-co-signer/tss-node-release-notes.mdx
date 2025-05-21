@@ -6,6 +6,13 @@ description: "了解 TSS Node 包的版本更新与变化。"
 ---
 <Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
 
+## v0.11.1
+
+- 升级依赖，解决安全问题。
+- 增加 TSS event publish 的功能。
+- 修复问题：当回调的 `retry_time` 设置为 `0` 时，会一直重试。
+- TSS Node 注册时上报配置信息。
+
 ## v0.10.0
 - 您现在可以在 Cobo Portal 中验证密钥份额。有关详细信息，请参阅 [验证密钥份额](https://manuals.cobo.com/zh/portal/mpc-wallets/ocw/key-share-verification)。
 - 更新了 TSS Node Callback 请求的数据结构。

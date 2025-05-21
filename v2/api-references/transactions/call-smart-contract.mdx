@@ -23,7 +23,24 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.TransactionsApi(api_client)
-    contract_call_params = cobo_waas2.ContractCallParams()
+    contract_call_params = cobo_waas2.ContractCallParams(
+        request_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        chain_id="ETH",
+        source=cobo_waas2.ContractCallSource(
+            cobo_waas2.MpcContractCallSource(
+                source_type="Org-Controlled",
+                wallet_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                address="0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+            )
+        ),
+        destination=cobo_waas2.ContractCallDestination(
+            cobo_waas2.EvmContractCallDestination(
+                destination_type="EVM_Contract",
+                address="0x0406db8351aa6839169bb363f63c2c808fee8f99",
+                calldata="0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO",
+            )
+        ),
+    )
 
     try:
         # Call smart contract
@@ -47,6 +64,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.TransactionsApi;
 import com.cobo.waas2.model.*;
+import java.util.UUID;
 
 public class Example {
   public static void main(String[] args) {
@@ -58,7 +76,23 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
-    ContractCallParams contractCallParams = new ContractCallParams();
+    ContractCallParams contractCallParams =
+        new ContractCallParams()
+            .requestId("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .chainId("ETH")
+            .source(
+                new ContractCallSource(
+                    new MpcContractCallSource()
+                        .sourceType(ContractCallSourceType.ORG_CONTROLLED)
+                        .walletId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"))
+                        .address("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")))
+            .destination(
+                new ContractCallDestination(
+                    new EvmContractCallDestination()
+                        .destinationType(ContractCallDestinationType.EVM_CONTRACT)
+                        .address("0x0406db8351aa6839169bb363f63c2c808fee8f99")
+                        .calldata(
+                            "0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO")));
     try {
       CreateTransferTransaction201Response result =
           apiInstance.createContractCallTransaction(contractCallParams);
@@ -130,7 +164,21 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  ContractCallParams: new CoboWaas2.ContractCallParams(),
+  ContractCallParams: new CoboWaas2.ContractCallParams({
+    request_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    chain_id: "ETH",
+    source: {
+      source_type: "Org-Controlled",
+      wallet_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      address: "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+    },
+    destination: {
+      destination_type: "EVM_Contract",
+      address: "0x0406db8351aa6839169bb363f63c2c808fee8f99",
+      calldata:
+        "0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO",
+    },
+  }),
 };
 apiInstance.createContractCallTransaction(opts).then(
   (data) => {

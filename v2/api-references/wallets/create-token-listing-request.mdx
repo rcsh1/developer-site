@@ -25,7 +25,12 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsApi(api_client)
-    create_token_listing_request_request = cobo_waas2.CreateTokenListingRequestRequest()
+    create_token_listing_request_request = cobo_waas2.CreateTokenListingRequestRequest(
+        wallet_type="Custodial",
+        wallet_subtype="Asset",
+        chain_id="ETH",
+        contract_address="0x6B175474E89094C44Da98b954EedeAC495271d0F",
+    )
 
     try:
         # Create token listing request
@@ -60,7 +65,11 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsApi apiInstance = new WalletsApi();
     CreateTokenListingRequestRequest createTokenListingRequestRequest =
-        new CreateTokenListingRequestRequest();
+        new CreateTokenListingRequestRequest()
+            .walletType(WalletType.CUSTODIAL)
+            .walletSubtype(WalletSubtype.ASSET)
+            .chainId("ETH")
+            .contractAddress("0x6B175474E89094C44Da98b954EedeAC495271d0F");
     try {
       CreateTokenListingRequest201Response result =
           apiInstance.createTokenListingRequest(createTokenListingRequestRequest);

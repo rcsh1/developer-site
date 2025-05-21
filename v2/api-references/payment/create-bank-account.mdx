@@ -21,7 +21,16 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
-    create_bank_account_request = cobo_waas2.CreateBankAccountRequest()
+    create_bank_account_request = cobo_waas2.CreateBankAccountRequest(
+        info={
+            "beneficiary_name": "John Doe",
+            "beneficiary_address": "123 Main St, Anytown, USA",
+            "account_number": "4111111111111111",
+            "bank_name": "ABC Bank",
+            "bank_address": "456 Bank Ave, Cityville, USA",
+            "swift_or_bic": "ABCDEFGH",
+        }
+    )
 
     try:
         # Create bank account
@@ -116,7 +125,16 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreateBankAccountRequest: new CoboWaas2.CreateBankAccountRequest(),
+  CreateBankAccountRequest: new CoboWaas2.CreateBankAccountRequest({
+    info: {
+      beneficiary_name: "John Doe",
+      beneficiary_address: "123 Main St, Anytown, USA",
+      account_number: "4111111111111111",
+      bank_name: "ABC Bank",
+      bank_address: "456 Bank Ave, Cityville, USA",
+      swift_or_bic: "ABCDEFGH",
+    },
+  }),
 };
 apiInstance.createBankAccount(opts).then(
   (data) => {

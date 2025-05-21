@@ -21,7 +21,9 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
-    create_mpc_project_request = cobo_waas2.CreateMpcProjectRequest()
+    create_mpc_project_request = cobo_waas2.CreateMpcProjectRequest(
+        name="Project name", participants=3, threshold=2
+    )
 
     try:
         # Create project
@@ -55,7 +57,8 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
-    CreateMpcProjectRequest createMpcProjectRequest = new CreateMpcProjectRequest();
+    CreateMpcProjectRequest createMpcProjectRequest =
+        new CreateMpcProjectRequest().name("Project name").participants(3).threshold(2);
     try {
       MPCProject result = apiInstance.createMpcProject(createMpcProjectRequest);
       System.out.println(result);
@@ -122,7 +125,11 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const opts = {
-  CreateMpcProjectRequest: new CoboWaas2.CreateMpcProjectRequest(),
+  CreateMpcProjectRequest: new CoboWaas2.CreateMpcProjectRequest({
+    name: "Project name",
+    participants: 3,
+    threshold: 2,
+  }),
 };
 apiInstance.createMpcProject(opts).then(
   (data) => {

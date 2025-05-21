@@ -21,7 +21,7 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.FeeStationApi(api_client)
-    fee_station_transfer = cobo_waas2.FeeStationTransfer()
+    fee_station_transfer = cobo_waas2.FeeStationTransfer(token_id="ETH_USDT")
 
     try:
         # Estimate fee for Fee Station transaction
@@ -55,7 +55,7 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     FeeStationApi apiInstance = new FeeStationApi();
-    FeeStationTransfer feeStationTransfer = new FeeStationTransfer();
+    FeeStationTransfer feeStationTransfer = new FeeStationTransfer().tokenId("ETH_USDT");
     try {
       EstimatedFixedFee result = apiInstance.estimateFeeStationFee(feeStationTransfer);
       System.out.println(result);
@@ -122,7 +122,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.FeeStationApi();
 const opts = {
-  FeeStationTransfer: new CoboWaas2.FeeStationTransfer(),
+  FeeStationTransfer: new CoboWaas2.FeeStationTransfer({
+    token_id: "ETH_USDT",
+  }),
 };
 apiInstance.estimateFeeStationFee(opts).then(
   (data) => {

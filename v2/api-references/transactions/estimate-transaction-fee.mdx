@@ -21,7 +21,18 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.TransactionsApi(api_client)
-    estimate_fee_params = cobo_waas2.EstimateFeeParams()
+    estimate_fee_params = cobo_waas2.EstimateFeeParams(
+        cobo_waas2.EstimateTransferFeeParams(
+            request_type="Transfer",
+            source=cobo_waas2.TransferSource(
+                cobo_waas2.CustodialTransferSource(
+                    source_type="Asset",
+                    wallet_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                )
+            ),
+            token_id="ETH_USDT",
+        )
+    )
 
     try:
         # Estimate transaction fee
@@ -42,6 +53,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.TransactionsApi;
 import com.cobo.waas2.model.*;
+import java.util.UUID;
 
 public class Example {
   public static void main(String[] args) {
@@ -53,7 +65,16 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
-    EstimateFeeParams estimateFeeParams = new EstimateFeeParams();
+    EstimateFeeParams estimateFeeParams =
+        new EstimateFeeParams(
+            new EstimateTransferFeeParams()
+                .requestType(EstimateFeeRequestType.TRANSFER)
+                .source(
+                    new TransferSource(
+                        new CustodialTransferSource()
+                            .sourceType(WalletSubtype.ASSET)
+                            .walletId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"))))
+                .tokenId("ETH_USDT"));
     try {
       EstimatedFee result = apiInstance.estimateFee(estimateFeeParams);
       System.out.println(result);
@@ -135,7 +156,15 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  EstimateFeeParams: new CoboWaas2.EstimateFeeParams(),
+  EstimateFeeParams: new CoboWaas2.EstimateFeeParams({
+    request_type: "Transfer",
+    source: {
+      source_type: "Asset",
+      wallet_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    },
+    token_id: "ETH_USDT",
+    fee_type: "EVM_EIP_1559",
+  }),
 };
 apiInstance.estimateFee(opts).then(
   (data) => {

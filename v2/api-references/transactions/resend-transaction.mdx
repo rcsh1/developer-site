@@ -24,7 +24,9 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.TransactionsApi(api_client)
     transaction_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    transaction_resend = cobo_waas2.TransactionResend()
+    transaction_resend = cobo_waas2.TransactionResend(
+        request_id="f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    )
 
     try:
         # Resend transaction
@@ -59,7 +61,8 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
     UUID transactionId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    TransactionResend transactionResend = new TransactionResend();
+    TransactionResend transactionResend =
+        new TransactionResend().requestId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     try {
       CreateTransferTransaction201Response result =
           apiInstance.resendTransactionById(transactionId, transactionResend);
@@ -129,7 +132,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.TransactionsApi();
 const transaction_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  TransactionResend: new CoboWaas2.TransactionResend(),
+  TransactionResend: new CoboWaas2.TransactionResend({
+    request_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  }),
 };
 apiInstance.resendTransactionById(transaction_id, opts).then(
   (data) => {
