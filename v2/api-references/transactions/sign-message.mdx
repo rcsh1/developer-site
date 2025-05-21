@@ -23,7 +23,22 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.TransactionsApi(api_client)
-    message_sign_params = cobo_waas2.MessageSignParams()
+    message_sign_params = cobo_waas2.MessageSignParams(
+        request_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        chain_id="ETH",
+        source=cobo_waas2.MessageSignSource(
+            cobo_waas2.MpcMessageSignSource(
+                source_type="Org-Controlled",
+                wallet_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+                address="19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku",
+            )
+        ),
+        destination=cobo_waas2.MessageSignDestination(
+            cobo_waas2.EvmEIP191MessageSignDestination(
+                destination_type="EVM_EIP_191_Signature", message="YWFhYQ=="
+            )
+        ),
+    )
 
     try:
         # Sign message
@@ -47,6 +62,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.TransactionsApi;
 import com.cobo.waas2.model.*;
+import java.util.UUID;
 
 public class Example {
   public static void main(String[] args) {
@@ -58,7 +74,21 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
-    MessageSignParams messageSignParams = new MessageSignParams();
+    MessageSignParams messageSignParams =
+        new MessageSignParams()
+            .requestId("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .chainId("ETH")
+            .source(
+                new MessageSignSource(
+                    new MpcMessageSignSource()
+                        .sourceType(MessageSignSourceType.ORG_CONTROLLED)
+                        .walletId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"))
+                        .address("19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku")))
+            .destination(
+                new MessageSignDestination(
+                    new EvmEIP191MessageSignDestination()
+                        .destinationType(MessageSignDestinationType.EVM_EIP_191_SIGNATURE)
+                        .message("YWFhYQ==")));
     try {
       CreateTransferTransaction201Response result =
           apiInstance.createMessageSignTransaction(messageSignParams);
@@ -130,7 +160,19 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  MessageSignParams: new CoboWaas2.MessageSignParams(),
+  MessageSignParams: new CoboWaas2.MessageSignParams({
+    request_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    chain_id: "ETH",
+    source: {
+      source_type: "Org-Controlled",
+      wallet_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      address: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku",
+    },
+    destination: {
+      destination_type: "EVM_EIP_191_Signature",
+      message: "YWFhYQ==",
+    },
+  }),
 };
 apiInstance.createMessageSignTransaction(opts).then(
   (data) => {

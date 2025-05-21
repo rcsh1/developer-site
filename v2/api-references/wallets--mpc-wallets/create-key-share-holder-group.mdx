@@ -24,8 +24,18 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
     vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    create_key_share_holder_group_request = (
-        cobo_waas2.CreateKeyShareHolderGroupRequest()
+    create_key_share_holder_group_request = cobo_waas2.CreateKeyShareHolderGroupRequest(
+        key_share_holder_group_type="MainGroup",
+        participants=3,
+        threshold=2,
+        key_share_holders=[
+            cobo_waas2.CreateKeyShareHolder(
+                name="Key share holder name",
+                type="API",
+                tss_node_id="coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi",
+                signer=True
+            )
+        ]
     )
 
     try:
@@ -51,6 +61,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.WalletsMpcWalletsApi;
 import com.cobo.waas2.model.*;
+import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -64,7 +75,18 @@ public class Example {
     WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
     UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     CreateKeyShareHolderGroupRequest createKeyShareHolderGroupRequest =
-        new CreateKeyShareHolderGroupRequest();
+          new CreateKeyShareHolderGroupRequest()
+                .keyShareHolderGroupType(KeyShareHolderGroupType.MAINGROUP)
+                .participants(3)
+                .threshold(2)
+                .keyShareHolders(
+                  Arrays.asList(
+                    new CreateKeyShareHolder()
+                    .name("Key share holder name")
+                    .type(KeyShareHolderType.API)
+                    .tssNodeId("coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi")
+                    .signer(true)
+                ));
     try {
       KeyShareHolderGroup result =
           apiInstance.createKeyShareHolderGroup(vaultId, createKeyShareHolderGroupRequest);
@@ -139,7 +161,19 @@ const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
   CreateKeyShareHolderGroupRequest:
-    new CoboWaas2.CreateKeyShareHolderGroupRequest(),
+    new CoboWaas2.CreateKeyShareHolderGroupRequest({
+      key_share_holder_group_type: "MainGroup",
+      participants: 3,
+      threshold: 2,
+      key_share_holders: [
+        {
+          name: "Key share holder name",
+          type: "API",
+          tss_node_id: "coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi",
+          signer: true
+        }
+      ],
+    }),
 };
 apiInstance.createKeyShareHolderGroup(vault_id, opts).then(
   (data) => {

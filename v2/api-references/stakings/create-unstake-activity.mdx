@@ -25,7 +25,9 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.StakingsApi(api_client)
-    create_unstake_activity_request = cobo_waas2.CreateUnstakeActivityRequest()
+    create_unstake_activity_request = cobo_waas2.CreateUnstakeActivityRequest(
+        staking_id="0011039d-27fb-49ba-b172-6e0aa80e37ec"
+    )
 
     try:
         # Create unstake activity
@@ -57,7 +59,8 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     StakingsApi apiInstance = new StakingsApi();
-    CreateUnstakeActivityRequest createUnstakeActivityRequest = new CreateUnstakeActivityRequest();
+    CreateUnstakeActivityRequest createUnstakeActivityRequest =
+        new CreateUnstakeActivityRequest().stakingId("0011039d-27fb-49ba-b172-6e0aa80e37ec");
     try {
       CreateStakeActivity201Response result =
           apiInstance.createUnstakeActivity(createUnstakeActivityRequest);
@@ -121,7 +124,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
-  CreateUnstakeActivityRequest: new CoboWaas2.CreateUnstakeActivityRequest(),
+  CreateUnstakeActivityRequest: new CoboWaas2.CreateUnstakeActivityRequest({
+    staking_id: "0011039d-27fb-49ba-b172-6e0aa80e37ec",
+  }),
 };
 apiInstance.createUnstakeActivity(opts).then(
   (data) => {

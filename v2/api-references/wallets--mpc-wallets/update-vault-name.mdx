@@ -22,7 +22,9 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
     vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    update_mpc_vault_by_id_request = cobo_waas2.UpdateMpcVaultByIdRequest()
+    update_mpc_vault_by_id_request = cobo_waas2.UpdateMpcVaultByIdRequest(
+        name="The new name of the vault"
+    )
 
     try:
         # Update vault name
@@ -58,7 +60,8 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
     UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    UpdateMpcVaultByIdRequest updateMpcVaultByIdRequest = new UpdateMpcVaultByIdRequest();
+    UpdateMpcVaultByIdRequest updateMpcVaultByIdRequest =
+        new UpdateMpcVaultByIdRequest().name("The new name of the vault");
     try {
       MPCVault result = apiInstance.updateMpcVaultById(vaultId, updateMpcVaultByIdRequest);
       System.out.println(result);
@@ -127,7 +130,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  UpdateMpcVaultByIdRequest: new CoboWaas2.UpdateMpcVaultByIdRequest(),
+  UpdateMpcVaultByIdRequest: new CoboWaas2.UpdateMpcVaultByIdRequest({
+    name: "The new name of the vault",
+  }),
 };
 apiInstance.updateMpcVaultById(vault_id, opts).then(
   (data) => {

@@ -25,7 +25,14 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.StakingsApi(api_client)
-    create_withdraw_activity_request = cobo_waas2.CreateWithdrawActivityRequest()
+    create_withdraw_activity_request = cobo_waas2.CreateWithdrawActivityRequest(
+        staking_id="0011039d-27fb-49ba-b172-6e0aa80e37ec",
+        fee=cobo_waas2.TransactionRequestFee(
+            cobo_waas2.TransactionRequestFixedFee(
+                fee_type="EVM_EIP_1559", token_id="TRON"
+            )
+        ),
+    )
 
     try:
         # Create withdraw activity
@@ -58,7 +65,13 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     StakingsApi apiInstance = new StakingsApi();
     CreateWithdrawActivityRequest createWithdrawActivityRequest =
-        new CreateWithdrawActivityRequest();
+        new CreateWithdrawActivityRequest()
+            .stakingId("0011039d-27fb-49ba-b172-6e0aa80e37ec")
+            .fee(
+                new TransactionRequestFee(
+                    new TransactionRequestFixedFee()
+                        .feeType(FeeType.EVM_EIP_1559)
+                        .tokenId("TRON")));
     try {
       CreateStakeActivity201Response result =
           apiInstance.createWithdrawActivity(createWithdrawActivityRequest);
@@ -126,7 +139,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
-  CreateWithdrawActivityRequest: new CoboWaas2.CreateWithdrawActivityRequest(),
+  CreateWithdrawActivityRequest: new CoboWaas2.CreateWithdrawActivityRequest({
+    staking_id: "0011039d-27fb-49ba-b172-6e0aa80e37ec",
+    fee: { fee_type: "EVM_EIP_1559", token_id: "TRON" },
+  }),
 };
 apiInstance.createWithdrawActivity(opts).then(
   (data) => {

@@ -24,7 +24,14 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.TransactionsApi(api_client)
     transaction_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    transaction_rbf = cobo_waas2.TransactionRbf()
+    transaction_rbf = cobo_waas2.TransactionRbf(
+        request_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        fee=cobo_waas2.TransactionRequestFee(
+            cobo_waas2.TransactionRequestFixedFee(
+                fee_type="EVM_EIP_1559", token_id="TRON"
+            )
+        ),
+    )
 
     try:
         # Speed up transaction
@@ -60,7 +67,14 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     TransactionsApi apiInstance = new TransactionsApi();
     UUID transactionId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    TransactionRbf transactionRbf = new TransactionRbf();
+    TransactionRbf transactionRbf =
+        new TransactionRbf()
+            .requestId("f47ac10b-58cc-4372-a567-0e02b2c3d479")
+            .fee(
+                new TransactionRequestFee(
+                    new TransactionRequestFixedFee()
+                        .feeType(FeeType.EVM_EIP_1559)
+                        .tokenId("TRON")));
     try {
       CreateTransferTransaction201Response result =
           apiInstance.speedupTransactionById(transactionId, transactionRbf);
@@ -130,7 +144,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.TransactionsApi();
 const transaction_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  TransactionRbf: new CoboWaas2.TransactionRbf(),
+  TransactionRbf: new CoboWaas2.TransactionRbf({
+    request_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    fee: { fee_type: "EVM_EIP_1559", token_id: "TRON" },
+  }),
 };
 apiInstance.speedupTransactionById(transaction_id, opts).then(
   (data) => {

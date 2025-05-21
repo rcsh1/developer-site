@@ -22,7 +22,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
     order_id = "O20250304-M1001-1001"
-    update_payment_order_request = cobo_waas2.UpdatePaymentOrderRequest()
+    update_payment_order_request = cobo_waas2.UpdatePaymentOrderRequest(expired=True)
 
     try:
         # Update pay-in order
@@ -55,7 +55,8 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     PaymentApi apiInstance = new PaymentApi();
     String orderId = "O20250304-M1001-1001";
-    UpdatePaymentOrderRequest updatePaymentOrderRequest = new UpdatePaymentOrderRequest();
+    UpdatePaymentOrderRequest updatePaymentOrderRequest =
+        new UpdatePaymentOrderRequest().expired(true);
     try {
       Order result = apiInstance.updatePaymentOrder(orderId, updatePaymentOrderRequest);
       System.out.println(result);
@@ -120,7 +121,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.PaymentApi();
 const order_id = "O20250304-M1001-1001";
 const opts = {
-  UpdatePaymentOrderRequest: new CoboWaas2.UpdatePaymentOrderRequest(),
+  UpdatePaymentOrderRequest: new CoboWaas2.UpdatePaymentOrderRequest({
+    expired: true,
+  }),
 };
 apiInstance.updatePaymentOrder(order_id, opts).then(
   (data) => {

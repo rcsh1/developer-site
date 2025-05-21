@@ -28,7 +28,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
     token_id = "ETH_USDT"
     refresh_address_balances_by_token_request = (
-        cobo_waas2.RefreshAddressBalancesByTokenRequest()
+        cobo_waas2.RefreshAddressBalancesByTokenRequest(addresses=["3HYV6ta67197syD1ZVFganpmL2wLz4RyoC"])
     )
 
     try:
@@ -55,6 +55,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.WalletsApi;
 import com.cobo.waas2.model.*;
+import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -69,7 +70,7 @@ public class Example {
     UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     String tokenId = "ETH_USDT";
     RefreshAddressBalancesByTokenRequest refreshAddressBalancesByTokenRequest =
-        new RefreshAddressBalancesByTokenRequest();
+        new RefreshAddressBalancesByTokenRequest().addresses(Arrays.asList("3HYV6ta67197syD1ZVFganpmL2wLz4RyoC"));
     try {
       RefreshAddressBalancesByToken200Response result =
           apiInstance.refreshAddressBalancesByToken(
@@ -143,7 +144,9 @@ const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const token_id = "ETH_USDT";
 const opts = {
   RefreshAddressBalancesByTokenRequest:
-    new CoboWaas2.RefreshAddressBalancesByTokenRequest(),
+    new CoboWaas2.RefreshAddressBalancesByTokenRequest({
+      addresses: ["3HYV6ta67197syD1ZVFganpmL2wLz4RyoC"],
+    }),
 };
 apiInstance.refreshAddressBalancesByToken(wallet_id, token_id, opts).then(
   (data) => {

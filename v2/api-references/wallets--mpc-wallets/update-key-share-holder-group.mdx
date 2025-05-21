@@ -26,7 +26,9 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
     key_share_holder_group_id = "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce"
     update_key_share_holder_group_by_id_request = (
-        cobo_waas2.UpdateKeyShareHolderGroupByIdRequest()
+        cobo_waas2.UpdateKeyShareHolderGroupByIdRequest(
+            update_key_share_holder_group_action="UpgradeToMainGroup"
+        )
     )
 
     try:
@@ -69,7 +71,8 @@ public class Example {
     UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     String keyShareHolderGroupId = "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce";
     UpdateKeyShareHolderGroupByIdRequest updateKeyShareHolderGroupByIdRequest =
-        new UpdateKeyShareHolderGroupByIdRequest();
+        new UpdateKeyShareHolderGroupByIdRequest()
+            .updateKeyShareHolderGroupAction(UpdateGroupAction.UPGRADETOMAINGROUP);
     try {
       KeyShareHolderGroup result =
           apiInstance.updateKeyShareHolderGroupById(
@@ -148,7 +151,9 @@ const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const key_share_holder_group_id = "e8257ac8-76b8-4d1e-a1f9-eec4cb931dce";
 const opts = {
   UpdateKeyShareHolderGroupByIdRequest:
-    new CoboWaas2.UpdateKeyShareHolderGroupByIdRequest(),
+    new CoboWaas2.UpdateKeyShareHolderGroupByIdRequest({
+      update_key_share_holder_group_action: "UpgradeToMainGroup",
+    }),
 };
 apiInstance
   .updateKeyShareHolderGroupById(vault_id, key_share_holder_group_id, opts)

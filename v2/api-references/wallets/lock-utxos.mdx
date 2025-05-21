@@ -22,7 +22,12 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsApi(api_client)
     wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    lock_utxos_request = cobo_waas2.LockUtxosRequest()
+    lock_utxos_request = cobo_waas2.LockUtxosRequest(utxos = [
+        cobo_waas2.LockUtxosRequestUtxosInner(
+            token_id = "BTC",
+            tx_hash = "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
+            vout_n = 0)
+    ])
 
     try:
         # Lock UTXOs
@@ -43,6 +48,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.WalletsApi;
 import com.cobo.waas2.model.*;
+import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -55,7 +61,13 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsApi apiInstance = new WalletsApi();
     UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    LockUtxosRequest lockUtxosRequest = new LockUtxosRequest();
+    LockUtxosRequest lockUtxosRequest = new LockUtxosRequest()
+                      .utxos(Arrays.asList(
+                          new LockUtxosRequestUtxosInner()
+                          .tokenId("BTC")
+                          .txHash("9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb")
+                          .voutN(0))
+                      );
     try {
       LockUtxos201Response result = apiInstance.lockUtxos(walletId, lockUtxosRequest);
       System.out.println(result);
@@ -120,7 +132,16 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsApi();
 const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  LockUtxosRequest: new CoboWaas2.LockUtxosRequest(),
+  LockUtxosRequest: new CoboWaas2.LockUtxosRequest({
+    utxos: [
+      {
+        token_id: "BTC",
+        tx_hash:
+          "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
+        vout_n: 0,
+      },
+    ],
+  }),
 };
 apiInstance.lockUtxos(wallet_id, opts).then(
   (data) => {

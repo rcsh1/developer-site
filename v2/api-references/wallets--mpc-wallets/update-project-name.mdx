@@ -24,7 +24,9 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
     project_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    update_mpc_project_by_id_request = cobo_waas2.UpdateMpcProjectByIdRequest()
+    update_mpc_project_by_id_request = cobo_waas2.UpdateMpcProjectByIdRequest(
+        name="New project name"
+    )
 
     try:
         # Update project name
@@ -61,7 +63,8 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
     UUID projectId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    UpdateMpcProjectByIdRequest updateMpcProjectByIdRequest = new UpdateMpcProjectByIdRequest();
+    UpdateMpcProjectByIdRequest updateMpcProjectByIdRequest =
+        new UpdateMpcProjectByIdRequest().name("New project name");
     try {
       MPCProject result = apiInstance.updateMpcProjectById(projectId, updateMpcProjectByIdRequest);
       System.out.println(result);
@@ -130,7 +133,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const project_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  UpdateMpcProjectByIdRequest: new CoboWaas2.UpdateMpcProjectByIdRequest(),
+  UpdateMpcProjectByIdRequest: new CoboWaas2.UpdateMpcProjectByIdRequest({
+    name: "New project name",
+  }),
 };
 apiInstance.updateMpcProjectById(project_id, opts).then(
   (data) => {
