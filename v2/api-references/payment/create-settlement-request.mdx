@@ -24,7 +24,10 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
     create_settlement_request_request = cobo_waas2.CreateSettlementRequestRequest(
-        request_id="SETTLEMENT123", settlements=["example_string"]
+        request_id="SETTLEMENT123", settlements=[cobo_waas2.CreateSettlement(
+                    amount="500.00",
+                    bank_account_id="123e457-e89b-12d3-a456-426614174004",
+                )]
     )
 
     try:
@@ -47,6 +50,7 @@ import com.cobo.waas2.Env;
 import com.cobo.waas2.api.PaymentApi;
 import com.cobo.waas2.model.*;
 import java.util.Arrays;
+import java.util.UUID;
 
 public class Example {
   public static void main(String[] args) {
@@ -61,7 +65,11 @@ public class Example {
     CreateSettlementRequestRequest createSettlementRequestRequest =
         new CreateSettlementRequestRequest()
             .requestId("SETTLEMENT123")
-            .settlements(Arrays.asList());
+            .settlements(Arrays.asList(
+              new CreateSettlement()
+              .amount("500.00")
+              .bankAccountId(UUID.fromString("123e457-e89b-12d3-a456-426614174004"))
+            ));
     try {
       Settlement result = apiInstance.createSettlementRequest(createSettlementRequestRequest);
       System.out.println(result);
@@ -130,7 +138,10 @@ const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
   CreateSettlementRequestRequest: new CoboWaas2.CreateSettlementRequestRequest({
     request_id: "SETTLEMENT123",
-    settlements: ["example_string"],
+    settlements: [{
+      amount: "500.00",
+      bank_account_id: "123e457-e89b-12d3-a456-426614174004",
+    }],
   }),
 };
 apiInstance.createSettlementRequest(opts).then(
