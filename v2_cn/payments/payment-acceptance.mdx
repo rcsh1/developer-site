@@ -62,6 +62,7 @@ sequenceDiagram
 ```py
 import cobo_waas2
 from cobo_waas2 import PaymentApi
+
 # See configuration.py for a list of all supported configurations.
 configuration = cobo_waas2.Configuration(
    # Replace `<YOUR_PRIVATE_KEY>` with your private key
@@ -72,10 +73,19 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
    # Create an instance of the API class
-   api_instance = cobo_waas2.PaymentApi(api_client)
-   create_payment_order_request = cobo_waas2.CreatePaymentOrderRequest()
+   api_instance = PaymentApi(api_client)
+   create_payment_order_request = cobo_waas2.CreatePaymentOrderRequest(
+       merchant_id="<YOUR_MERCHANT_ID>",
+       token_id="TRON_USDT",
+       currency="USD",
+       order_amount="10",
+       fee_amount="0.3",
+       merchant_order_code="<YOUR_MERCHANT_ORDER_CODE>",
+       psp_order_code="<YOUR_PSP_ORDER_CODE>",
+       expired_at=1742563968
+   )
    try:
-       # Estimate transaction fee
+       # Create payment order
        api_response = api_instance.create_payment_order(
            create_payment_order_request=create_payment_order_request
        )
@@ -95,7 +105,6 @@ import com.cobo.waas2.Env;
 import com.cobo.waas2.api.PaymentApi;
 import com.cobo.waas2.model.*;
 
-
 public class Example {
  public static void main(String[] args) {
    ApiClient defaultClient = Configuration.getDefaultApiClient();
@@ -103,11 +112,20 @@ public class Example {
    // `Env.PROD
    defaultClient.setEnv(Env.DEV);
 
-
    // Replace `<YOUR_PRIVATE_KEY>` with your private key
    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
+   
    PaymentApi apiInstance = new PaymentApi(defaultClient);
    CreatePaymentOrderRequest createPaymentOrderRequest = new CreatePaymentOrderRequest();
+   createPaymentOrderRequest.setMerchantId("<YOUR_MERCHANT_ID>");
+   createPaymentOrderRequest.setTokenId("TRON_USDT");
+   createPaymentOrderRequest.setCurrency("USD");
+   createPaymentOrderRequest.setOrderAmount("10");
+   createPaymentOrderRequest.setFeeAmount("0.3");
+   createPaymentOrderRequest.setMerchantOrderCode("<YOUR_MERCHANT_ORDER_CODE>");
+   createPaymentOrderRequest.setPspOrderCode("<YOUR_PSP_ORDER_CODE>");
+   createPaymentOrderRequest.setExpiredAt("1742563968");
+
    try {
           Order paymentOrder = apiInstance.createPaymentOrder(createPaymentOrderRequest);
           System.out.println(paymentOrder);
@@ -115,7 +133,6 @@ public class Example {
      System.err.println("Exception when calling PaymentApi#createPaymentOrder");
    }
  }
-}
 ```
 </Accordion>
 
@@ -130,29 +147,30 @@ public class Example {
 
 <Accordion title="Sample code in Python">
 ```py
-import cobo_waas2
+from cobo_waas2 import PaymentApi, UpdatePaymentOrderRequest, ApiClient, Configuration
 from cobo_waas2 import PaymentApi
 # See configuration.py for a list of all supported configurations.
-configuration = cobo_waas2.Configuration(
-   # Replace `<YOUR_PRIVATE_KEY>` with your private key
-   api_private_key="<YOUR_PRIVATE_KEY>",
-   # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
-   host="https://api.dev.cobo.com/v2",
+configuration = Configuration(
+  # Replace `<YOUR_PRIVATE_KEY>` with your private key
+  api_private_key="<YOUR_PRIVATE_KEY>",
+  # Select the development environment. To use the production environment, change the URL to https://api.cobo.com/v2.
+  host="https://api.dev.cobo.com/v2",
 )
 # Enter a context with an instance of the API client
-with cobo_waas2.ApiClient(configuration) as api_client:
-   # Create an instance of the API class
-   api_instance = cobo_waas2.PaymentApi(api_client)
-   update_payment_order_request = cobo_waas2.UpdatePaymentOrderRequest()
-   try:
-       # Estimate transaction fee
-       api_response = api_instance.update_payment_order(
-           update_payment_order_request=update_payment_order_request
-       )
-       print("The response of PaymentApi->update_payment_order:\n")
-       print(api_response)
-   except Exception as e:
-       print("Exception when calling PaymentApi->update_payment_order: %s\n" % e)
+with ApiClient(configuration) as api_client:
+  # Create an instance of the API class
+  api_instance = PaymentApi(api_client)
+  update_payment_order_request = UpdatePaymentOrderRequest(expired=True)
+  try:
+      # Cancel payment order
+      api_response = api_instance.update_payment_order(
+          order_id="<YOUR_ORDER_ID>",
+          update_payment_order_request=update_payment_order_request
+      )
+      print("The response of PaymentApi->update_payment_order:\n")
+      print(api_response)
+  except Exception as e:
+      print("Exception when calling PaymentApi->update_payment_order: %s\n" % e)
 ```
 </Accordion>
 
@@ -165,7 +183,6 @@ import com.cobo.waas2.Env;
 import com.cobo.waas2.api.PaymentApi;
 import com.cobo.waas2.model.*;
 
-
 public class Example {
  public static void main(String[] args) {
    ApiClient defaultClient = Configuration.getDefaultApiClient();
@@ -173,20 +190,16 @@ public class Example {
    // `Env.PROD
    defaultClient.setEnv(Env.DEV);
 
-
    // Replace `<YOUR_PRIVATE_KEY>` with your private key
    defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
    PaymentApi apiInstance = new PaymentApi(defaultClient);
-   String orderId = "";
    UpdatePaymentOrderRequest updatePaymentOrderRequest = new UpdatePaymentOrderRequest();
+   updatePaymentOrderRequest.setExpired(true)
    try {
-          Order order = apiInstance.updatePaymentOrder(orderId, updatePaymentOrderRequest);
+          Order order = apiInstance.updatePaymentOrder("<YOUR_ORDER_ID>", updatePaymentOrderRequest);
           System.out.println(order);
    } catch (ApiException e) {
      System.err.println("Exception when calling PaymentApi#updatePaymentOrder");
-   }
- }
-}
 ```
 </Accordion>
 

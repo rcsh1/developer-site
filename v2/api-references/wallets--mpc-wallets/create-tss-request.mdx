@@ -22,7 +22,10 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
     vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    create_tss_request_request = cobo_waas2.CreateTssRequestRequest()
+    create_tss_request_request = cobo_waas2.CreateTssRequestRequest(
+        type="Recovery",
+        target_key_share_holder_group_id="a1bf161f-8b60-4f61-9c35-6434b8654437",
+    )
 
     try:
         # Create TSS request
@@ -57,7 +60,10 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
     UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    CreateTssRequestRequest createTssRequestRequest = new CreateTssRequestRequest();
+    CreateTssRequestRequest createTssRequestRequest =
+        new CreateTssRequestRequest()
+            .type(TSSRequestType.RECOVERY)
+            .targetKeyShareHolderGroupId("a1bf161f-8b60-4f61-9c35-6434b8654437");
     try {
       TSSRequest result = apiInstance.createTssRequest(vaultId, createTssRequestRequest);
       System.out.println(result);
@@ -126,7 +132,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  CreateTssRequestRequest: new CoboWaas2.CreateTssRequestRequest(),
+  CreateTssRequestRequest: new CoboWaas2.CreateTssRequestRequest({
+    type: "Recovery",
+    target_key_share_holder_group_id: "a1bf161f-8b60-4f61-9c35-6434b8654437",
+  }),
 };
 apiInstance.createTssRequest(vault_id, opts).then(
   (data) => {

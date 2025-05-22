@@ -22,7 +22,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsApi(api_client)
     wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    create_address_request = cobo_waas2.CreateAddressRequest()
+    create_address_request = cobo_waas2.CreateAddressRequest(chain_id="ETH", count=1)
 
     try:
         # Create addresses in wallet
@@ -55,7 +55,7 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsApi apiInstance = new WalletsApi();
     UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    CreateAddressRequest createAddressRequest = new CreateAddressRequest();
+    CreateAddressRequest createAddressRequest = new CreateAddressRequest().chainId("ETH").count(1);
     try {
       List<AddressInfo> result = apiInstance.createAddress(walletId, createAddressRequest);
       System.out.println(result);
@@ -120,7 +120,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsApi();
 const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  CreateAddressRequest: new CoboWaas2.CreateAddressRequest(),
+  CreateAddressRequest: new CoboWaas2.CreateAddressRequest({
+    chain_id: "ETH",
+    count: 1,
+  }),
 };
 apiInstance.createAddress(wallet_id, opts).then(
   (data) => {

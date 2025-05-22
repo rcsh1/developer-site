@@ -22,7 +22,11 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsApi(api_client)
     wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    update_wallet_params = cobo_waas2.UpdateWalletParams()
+    update_wallet_params = cobo_waas2.UpdateWalletParams(
+        cobo_waas2.UpdateCustodialWalletParams(
+            wallet_type="Custodial", name="My WaaS 2.0 Wallet"
+        )
+    )
 
     try:
         # Update wallet
@@ -55,7 +59,11 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsApi apiInstance = new WalletsApi();
     UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    UpdateWalletParams updateWalletParams = new UpdateWalletParams();
+    UpdateWalletParams updateWalletParams =
+        new UpdateWalletParams(
+            new UpdateCustodialWalletParams()
+                .walletType(WalletType.CUSTODIAL)
+                .name("My WaaS 2.0 Wallet"));
     try {
       WalletInfo result = apiInstance.updateWalletById(walletId, updateWalletParams);
       System.out.println(result);
@@ -125,7 +133,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsApi();
 const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  UpdateWalletParams: new CoboWaas2.UpdateWalletParams(),
+  UpdateWalletParams: new CoboWaas2.UpdateWalletParams({
+    wallet_type: "Custodial",
+    name: "My WaaS 2.0 Wallet",
+  }),
 };
 apiInstance.updateWalletById(wallet_id, opts).then(
   (data) => {

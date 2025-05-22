@@ -21,7 +21,11 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsApi(api_client)
-    create_wallet_params = cobo_waas2.CreateWalletParams()
+    create_wallet_params = cobo_waas2.CreateWalletParams(
+        cobo_waas2.CreateCustodialWalletParams(
+            name="My WaaS 2.0 Wallet", wallet_type="Custodial", wallet_subtype="Asset"
+        )
+    )
 
     try:
         # Create wallet
@@ -53,7 +57,12 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsApi apiInstance = new WalletsApi();
-    CreateWalletParams createWalletParams = new CreateWalletParams();
+    CreateWalletParams createWalletParams =
+        new CreateWalletParams(
+            new CreateCustodialWalletParams()
+                .name("My WaaS 2.0 Wallet")
+                .walletType(WalletType.CUSTODIAL)
+                .walletSubtype(WalletSubtype.ASSET));
     try {
       CreatedWalletInfo result = apiInstance.createWallet(createWalletParams);
       System.out.println(result);
@@ -122,7 +131,11 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsApi();
 const opts = {
-  CreateWalletParams: new CoboWaas2.CreateWalletParams(),
+  CreateWalletParams: new CoboWaas2.CreateWalletParams({
+    name: "My WaaS 2.0 Wallet",
+    wallet_type: "Custodial",
+    wallet_subtype: "Asset",
+  }),
 };
 apiInstance.createWallet(opts).then(
   (data) => {

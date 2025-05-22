@@ -21,7 +21,13 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
-    create_refund_request = cobo_waas2.CreateRefundRequest()
+    create_refund_request = cobo_waas2.CreateRefundRequest(
+        request_id="123e4567-e89b-12d3-a456-426614174004",
+        payable_amount="0.0025",
+        to_address="0x9876543210abcdef1234567890abcdef12345678",
+        token_id="ETH_USDT",
+        refund_type="Merchant",
+    )
 
     try:
         # Create refund order
@@ -53,7 +59,13 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     PaymentApi apiInstance = new PaymentApi();
-    CreateRefundRequest createRefundRequest = new CreateRefundRequest();
+    CreateRefundRequest createRefundRequest =
+        new CreateRefundRequest()
+            .requestId("123e4567-e89b-12d3-a456-426614174004")
+            .payableAmount("0.0025")
+            .toAddress("0x9876543210abcdef1234567890abcdef12345678")
+            .tokenId("ETH_USDT")
+            .refundType(RefundType.MERCHANT);
     try {
       Refund result = apiInstance.createRefund(createRefundRequest);
       System.out.println(result);
@@ -116,7 +128,13 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreateRefundRequest: new CoboWaas2.CreateRefundRequest(),
+  CreateRefundRequest: new CoboWaas2.CreateRefundRequest({
+    request_id: "123e4567-e89b-12d3-a456-426614174004",
+    payable_amount: "0.0025",
+    to_address: "0x9876543210abcdef1234567890abcdef12345678",
+    token_id: "ETH_USDT",
+    refund_type: "Merchant",
+  }),
 };
 apiInstance.createRefund(opts).then(
   (data) => {

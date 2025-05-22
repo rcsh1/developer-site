@@ -23,7 +23,15 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.StakingsApi(api_client)
-    create_stake_activity_request = cobo_waas2.CreateStakeActivityRequest()
+    create_stake_activity_request = cobo_waas2.CreateStakeActivityRequest(
+        pool_id="babylon_btc_signet",
+        amount="100.00",
+        fee=cobo_waas2.TransactionRequestFee(
+            cobo_waas2.TransactionRequestFixedFee(
+                fee_type="EVM_EIP_1559", token_id="TRON"
+            )
+        ),
+    )
 
     try:
         # Create stake activity
@@ -55,7 +63,15 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     StakingsApi apiInstance = new StakingsApi();
-    CreateStakeActivityRequest createStakeActivityRequest = new CreateStakeActivityRequest();
+    CreateStakeActivityRequest createStakeActivityRequest =
+        new CreateStakeActivityRequest()
+            .poolId(StakingPoolId.BABYLON_BTC_SIGNET)
+            .amount("100.00")
+            .fee(
+                new TransactionRequestFee(
+                    new TransactionRequestFixedFee()
+                        .feeType(FeeType.EVM_EIP_1559)
+                        .tokenId("TRON")));
     try {
       CreateStakeActivity201Response result =
           apiInstance.createStakeActivity(createStakeActivityRequest);
@@ -119,7 +135,11 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
-  CreateStakeActivityRequest: new CoboWaas2.CreateStakeActivityRequest(),
+  CreateStakeActivityRequest: new CoboWaas2.CreateStakeActivityRequest({
+    pool_id: "babylon_btc_signet",
+    amount: "100.00",
+    fee: { fee_type: "EVM_EIP_1559", token_id: "TRON" },
+  }),
 };
 apiInstance.createStakeActivity(opts).then(
   (data) => {

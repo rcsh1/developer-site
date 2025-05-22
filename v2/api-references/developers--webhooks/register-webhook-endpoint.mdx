@@ -23,7 +23,9 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.DevelopersWebhooksApi(api_client)
-    create_webhook_endpoint_request = cobo_waas2.CreateWebhookEndpointRequest()
+    create_webhook_endpoint_request = cobo_waas2.CreateWebhookEndpointRequest(
+        url="https://example.com/webhook", subscribed_events=["wallets.transaction.created"]
+    )
 
     try:
         # Register webhook endpoint
@@ -47,6 +49,7 @@ import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
 import com.cobo.waas2.api.DevelopersWebhooksApi;
 import com.cobo.waas2.model.*;
+import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -58,7 +61,10 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     DevelopersWebhooksApi apiInstance = new DevelopersWebhooksApi();
-    CreateWebhookEndpointRequest createWebhookEndpointRequest = new CreateWebhookEndpointRequest();
+    CreateWebhookEndpointRequest createWebhookEndpointRequest =
+        new CreateWebhookEndpointRequest()
+            .url("https://example.com/webhook")
+            .subscribedEvents(Arrays.asList(WebhookEventType.WALLETS_TRANSACTION_CREATED));
     try {
       WebhookEndpoint result = apiInstance.createWebhookEndpoint(createWebhookEndpointRequest);
       System.out.println(result);
@@ -129,7 +135,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.DevelopersWebhooksApi();
 const opts = {
-  CreateWebhookEndpointRequest: new CoboWaas2.CreateWebhookEndpointRequest(),
+  CreateWebhookEndpointRequest: new CoboWaas2.CreateWebhookEndpointRequest({
+    url: "https://example.com/webhook",
+    subscribed_events: ["wallets.transaction.created"],
+  }),
 };
 apiInstance.createWebhookEndpoint(opts).then(
   (data) => {

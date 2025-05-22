@@ -21,7 +21,9 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.WalletsMPCWalletsApi(api_client)
-    create_mpc_vault_request = cobo_waas2.CreateMpcVaultRequest()
+    create_mpc_vault_request = cobo_waas2.CreateMpcVaultRequest(
+        name="My vault", vault_type="Org-Controlled"
+    )
 
     try:
         # Create vault
@@ -53,7 +55,8 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     WalletsMpcWalletsApi apiInstance = new WalletsMpcWalletsApi();
-    CreateMpcVaultRequest createMpcVaultRequest = new CreateMpcVaultRequest();
+    CreateMpcVaultRequest createMpcVaultRequest =
+        new CreateMpcVaultRequest().name("My vault").vaultType(MPCVaultType.ORG_CONTROLLED);
     try {
       MPCVault result = apiInstance.createMpcVault(createMpcVaultRequest);
       System.out.println(result);
@@ -120,7 +123,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const opts = {
-  CreateMpcVaultRequest: new CoboWaas2.CreateMpcVaultRequest(),
+  CreateMpcVaultRequest: new CoboWaas2.CreateMpcVaultRequest({
+    name: "My vault",
+    vault_type: "Org-Controlled",
+  }),
 };
 apiInstance.createMpcVault(opts).then(
   (data) => {

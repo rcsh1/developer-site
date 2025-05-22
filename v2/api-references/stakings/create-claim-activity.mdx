@@ -23,7 +23,9 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.StakingsApi(api_client)
-    create_claim_activity_request = cobo_waas2.CreateClaimActivityRequest()
+    create_claim_activity_request = cobo_waas2.CreateClaimActivityRequest(
+        staking_id="f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    )
 
     try:
         # Create claim activity
@@ -55,7 +57,8 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     StakingsApi apiInstance = new StakingsApi();
-    CreateClaimActivityRequest createClaimActivityRequest = new CreateClaimActivityRequest();
+    CreateClaimActivityRequest createClaimActivityRequest =
+        new CreateClaimActivityRequest().stakingId("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     try {
       CreateStakeActivity201Response result =
           apiInstance.createClaimActivity(createClaimActivityRequest);
@@ -119,7 +122,9 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
-  CreateClaimActivityRequest: new CoboWaas2.CreateClaimActivityRequest(),
+  CreateClaimActivityRequest: new CoboWaas2.CreateClaimActivityRequest({
+    staking_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  }),
 };
 apiInstance.createClaimActivity(opts).then(
   (data) => {

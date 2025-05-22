@@ -23,7 +23,16 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.StakingsApi(api_client)
-    get_staking_estimation_fee_request = cobo_waas2.GetStakingEstimationFeeRequest()
+    get_staking_estimation_fee_request = cobo_waas2.GetStakingEstimationFeeRequest(
+        activity_type="Stake",
+        pool_id="babylon_btc_signet",
+        amount="100.00",
+        fee=cobo_waas2.TransactionRequestFee(
+            cobo_waas2.TransactionRequestFixedFee(
+                fee_type="EVM_EIP_1559", token_id="TRON"
+            )
+        ),
+    )
 
     try:
         # Estimate staking fees v2
@@ -59,7 +68,15 @@ public class Example {
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     StakingsApi apiInstance = new StakingsApi();
     GetStakingEstimationFeeRequest getStakingEstimationFeeRequest =
-        new GetStakingEstimationFeeRequest();
+        new GetStakingEstimationFeeRequest()
+            .activityType(ActivityType.STAKE)
+            .poolId(StakingPoolId.BABYLON_BTC_SIGNET)
+            .amount("100.00")
+            .fee(
+                new TransactionRequestFee(
+                    new TransactionRequestFixedFee()
+                        .feeType(FeeType.EVM_EIP_1559)
+                        .tokenId("TRON")));
     try {
       EthStakeEstimatedFee result =
           apiInstance.getStakingEstimationFeeV2(getStakingEstimationFeeRequest);
@@ -129,8 +146,12 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
-  GetStakingEstimationFeeRequest:
-    new CoboWaas2.GetStakingEstimationFeeRequest(),
+  GetStakingEstimationFeeRequest: new CoboWaas2.GetStakingEstimationFeeRequest({
+    activity_type: "Stake",
+    pool_id: "babylon_btc_signet",
+    amount: "100.00",
+    fee: { fee_type: "EVM_EIP_1559", token_id: "TRON" },
+  }),
 };
 apiInstance.getStakingEstimationFeeV2(opts).then(
   (data) => {

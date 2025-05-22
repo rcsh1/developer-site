@@ -21,7 +21,13 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
-    create_payment_order_request = cobo_waas2.CreatePaymentOrderRequest()
+    create_payment_order_request = cobo_waas2.CreatePaymentOrderRequest(
+        merchant_id="1001",
+        token_id="ETH_USDT",
+        order_amount="100.00",
+        fee_amount="2.00",
+        psp_order_code="P20240201001",
+    )
 
     try:
         # Create pay-in order
@@ -53,7 +59,13 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     PaymentApi apiInstance = new PaymentApi();
-    CreatePaymentOrderRequest createPaymentOrderRequest = new CreatePaymentOrderRequest();
+    CreatePaymentOrderRequest createPaymentOrderRequest =
+        new CreatePaymentOrderRequest()
+            .merchantId("1001")
+            .tokenId("ETH_USDT")
+            .orderAmount("100.00")
+            .feeAmount("2.00")
+            .pspOrderCode("P20240201001");
     try {
       Order result = apiInstance.createPaymentOrder(createPaymentOrderRequest);
       System.out.println(result);
@@ -116,7 +128,14 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreatePaymentOrderRequest: new CoboWaas2.CreatePaymentOrderRequest(),
+  CreatePaymentOrderRequest: new CoboWaas2.CreatePaymentOrderRequest({
+    merchant_id: "1001",
+    token_id: "ETH_USDT",
+    currency: "USD",
+    order_amount: "100.00",
+    fee_amount: "2.00",
+    psp_order_code: "P20240201001",
+  }),
 };
 apiInstance.createPaymentOrder(opts).then(
   (data) => {

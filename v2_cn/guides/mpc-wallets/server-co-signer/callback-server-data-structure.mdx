@@ -126,7 +126,7 @@ callback:
 |-------|------|-------------|
 | status | `int` | 响应状态码。`0` 表示成功。任何其他值表示在回调服务器处理请求时发生错误。 |
 | request_id | `string` | 回调请求的唯一 ID。|
-| action | `string` | 要采取的操作。可能的值：<br/>- `ACCEPT`：批准请求并继续操作<br/>- `REJECT`：拒绝请求并停止操作 |
+| action | `string` | 要采取的操作。可能的值：<br/>- `APPROVE`：批准请求并继续操作<br/>- `REJECT`：拒绝请求并停止操作 |
 | error | `string` | 错误消息：<br/>- 当 `status` 不为 `0` 时：包含回调服务器的内部错误消息。<br/>- 当 `status` 为 `0` 且 action 为 `REJECT` 时：包含拒绝的具体原因。 |
 
 ### 重要说明
