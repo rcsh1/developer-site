@@ -1,0 +1,26 @@
+---
+title: "Payment Solution Overview"
+lang: "en"
+---
+<Note>This document is an AI-assisted translation provided for reference purposes only.</Note>
+
+This article introduces the overall business process of the Cobo payment solution, which mainly includes the following core modules: payment acceptance, fund sweeping and compliance scanning, abnormal fund handling, and settlement.
+
+<img src="/v2/images/payments/overview.png" className="diagram" alt="Cobo Payment Solution Business Process"></img>
+* **Payment acceptance**：When the user chooses to pay with digital assets, you can call the Payment API to create a digital asset payment order and obtain the receiving address and the amount to be paid. All funds transferred to this address will be considered as the actual payment amount for the order after passing the compliance scan.  
+* **Fund Handling**：  
+  * **Sweeping**：When you initiate settlement, Cobo will sweep the funds scattered in various receiving addresses into a unified aggregation address, making it convenient for unified management and use.  
+  * **AML/KYT Scanning**：Depending on the wallet type you choose, Cobo may actively perform compliance scanning on the funds. You can also use the Screening App provided by Cobo to perform compliance scanning on the funds.  
+  * **Abnormal Handling and Refund**：When encountering abnormal situations such as overpayment or underpayment, you can initiate a refund to the customer or adopt other handling methods.  
+  * **Exchange and Cross-Chain**：You can use the [Swap App](https://manuals.cobo.com/en/apps/bridge/introduction) to exchange one digital asset for another or transfer it to a different public chain.  
+  * **Investment/DeFi**: If you want to invest a portion of idle funds to earn returns, you can use Cobo's [Earn App](https://manuals.cobo.com/en/apps/earn/introduction) and [Staking App](https://manuals.cobo.com/en/apps/staking/introduction) to purchase stable investment products or participate in staking. You can also invest idle funds in different DeFi protocols.  
+* **Settlement**：Depending on the actual business needs, you can choose from the following three settlement methods.  
+  * Transfer: Transfer funds directly to an external wallet address through on-chain transfer.  
+  * Fiat Withdrawal: Convert digital assets into fiat currency through Cobo's withdrawal service providers and transfer them to a designated bank account.  
+  * Stablecoin Debit/Credit Card: Transfer funds to a stablecoin debit/credit card.
+* **Settlement**: Depending on actual business needs, you can choose from the following three settlement methods.  
+  * Transfer: Transfer funds directly to an external wallet address through on-chain transfer.  
+  * Fiat Withdrawal: Convert cryptocurrency into fiat currency through Cobo's withdrawal service providers and transfer it to a designated bank account.
+  * Stablecoin Debit/Credit Card: Transfer funds to a stablecoin debit or credit card.
+
+<Tip>You are welcome to [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to help us improve our documentation!</Tip>

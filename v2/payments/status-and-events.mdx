@@ -1,0 +1,57 @@
+---
+title: "Order Status and Events"
+lang: "en"
+description: ""
+---
+
+<Note>This document is an AI-assisted translation provided for reference purposes only.</Note>
+
+This section introduces the main statuses of payment orders and their corresponding event notifications.
+
+## Payment
+
+
+**Payment Order Status**
+
+* `Pending`: Initial state, no payment detected from the user.
+* `Processing`: Payment detected, waiting for confirmation.
+* `Completed`: Full payment received and confirmed.
+* `Expired`: Order expired, cannot continue payment.
+* `Underpaid`: Order underpaid and expired, cannot continue payment.
+
+**Webhook Events**
+
+* `payment.order.status.updated`: Triggered when the order status changes. The event content includes the payment order details.
+* `payment.transaction.created`: Triggered when a payment transaction is detected. The event content includes the payment order details and the transaction details.
+* `payment.transaction.late`: Triggered when funds are transferred in after the order has expired. The event content includes the payment order details and the transaction details.
+* `payment.transaction.hold`: Triggered when a payment transaction is held due to non-compliance. The event content includes the payment order details and the transaction details.
+
+## Refund
+
+**Refund Order Status**
+
+* `Pending`: Refund order created, waiting for processing.
+* `Processing`: Refund order being processed.
+* `Completed`: Refund order completed.
+* `PartiallyCompleted`: Partial refund completed, partial refund failed.
+* `Failed`: Refund order failed.
+
+**Webhook Events**
+
+* `payment.refund.status.updated`: Triggered when the refund order status changes. The event content includes the refund order details.
+
+## Settlement
+
+**Settlement Request Status**
+
+* `Pending`: Settlement request created, waiting for processing.
+* `Processing`: Settlement request being processed.
+* `Completed`: Settlement request completed.
+* `PartiallyCompleted`: Partial settlement completed, partial settlement failed.
+* `Failed`: Settlement request failed.
+
+**Webhook Events**
+
+* `payment.settlement.status.updated`: Triggered when the settlement request status changes. The event content includes the settlement request details.
+
+<Tip>You are welcome to [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to help us improve our documentation!</Tip>
