@@ -6,6 +6,8 @@ openapi: get /transactions
 ```python Python
 import cobo_waas2
 from cobo_waas2.models.list_transactions200_response import ListTransactions200Response
+from cobo_waas2.models.wallet_subtype import WalletSubtype
+from cobo_waas2.models.wallet_type import WalletType
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -37,6 +39,8 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     token_ids = "ETH_USDT,ETH_USDC"
     asset_ids = "USDT,USDC"
     vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+    wallet_type = cobo_waas2.WalletType("Custodial")
+    wallet_subtype = cobo_waas2.WalletSubtype("Asset")
     project_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
     min_created_timestamp = 1635744000000
     max_created_timestamp = 1635744000000
@@ -59,6 +63,8 @@ with cobo_waas2.ApiClient(configuration) as api_client:
             token_ids=token_ids,
             asset_ids=asset_ids,
             vault_id=vault_id,
+            wallet_type=wallet_type,
+            wallet_subtype=wallet_subtype,
             project_id=project_id,
             min_created_timestamp=min_created_timestamp,
             max_created_timestamp=max_created_timestamp,
@@ -104,6 +110,8 @@ public class Example {
     String tokenIds = "ETH_USDT,ETH_USDC";
     String assetIds = "USDT,USDC";
     UUID vaultId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
+    WalletType walletType = WalletType.fromValue("Custodial");
+    WalletSubtype walletSubtype = WalletSubtype.fromValue("Asset");
     UUID projectId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     Long minCreatedTimestamp = 1635744000000L;
     Long maxCreatedTimestamp = 1635744000000L;
@@ -125,6 +133,8 @@ public class Example {
               tokenIds,
               assetIds,
               vaultId,
+              walletType,
+              walletSubtype,
               projectId,
               minCreatedTimestamp,
               maxCreatedTimestamp,
@@ -167,6 +177,8 @@ func main() {
 	tokenIds := "ETH_USDT,ETH_USDC"
 	assetIds := "USDT,USDC"
 	vaultId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+	walletType := coboWaas2.WalletType("Custodial")
+	walletSubtype := coboWaas2.WalletSubtype("Asset")
 	projectId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
 	minCreatedTimestamp := int64(1635744000000)
 	maxCreatedTimestamp := int64(1635744000000)
@@ -198,6 +210,8 @@ func main() {
 		TokenIds(tokenIds).
 		AssetIds(assetIds).
 		VaultId(vaultId).
+		WalletType(walletType).
+		WalletSubtype(walletSubtype).
 		ProjectId(projectId).
 		MinCreatedTimestamp(minCreatedTimestamp).
 		MaxCreatedTimestamp(maxCreatedTimestamp).
@@ -240,6 +254,8 @@ const opts = {
   token_ids: "ETH_USDT,ETH_USDC",
   asset_ids: "USDT,USDC",
   vault_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  wallet_type: new CoboWaas2.WalletType(),
+  wallet_subtype: new CoboWaas2.WalletSubtype(),
   project_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
   min_created_timestamp: 1635744000000,
   max_created_timestamp: 1635744000000,
