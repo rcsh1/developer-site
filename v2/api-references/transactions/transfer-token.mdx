@@ -32,7 +32,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
         ),
         token_id="ETH_USDT",
         destination=cobo_waas2.TransferDestination(
-            cobo_waas2.AddressTransferDestination(destination_type="Address")
+            cobo_waas2.AddressTransferDestination(destination_type="Address", account_output=cobo_waas2.AddressTransferDestinationAccountOutput(address="19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku",amount="1.5"))
         ),
     )
 
@@ -82,7 +82,11 @@ public class Example {
             .destination(
                 new TransferDestination(
                     new AddressTransferDestination()
-                        .destinationType(TransferDestinationType.ADDRESS)));
+                        .destinationType(TransferDestinationType.ADDRESS)
+                        .accountOutput(
+                            new AddressTransferDestinationAccountOutput()
+                                .address("19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku")
+                                .amount("1.5"))));
     try {
       CreateTransferTransaction201Response result =
           apiInstance.createTransferTransaction(transferParams);
@@ -157,7 +161,7 @@ const opts = {
       wallet_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     },
     token_id: "ETH_USDT",
-    destination: { destination_type: "Address" },
+    destination: { destination_type: "Address", account_output: { address: "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku", amount: "1.5" } },
   }),
 };
 apiInstance.createTransferTransaction(opts).then(
