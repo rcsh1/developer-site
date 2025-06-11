@@ -3282,7 +3282,7 @@ paths:
       operationId: list_bank_accounts
       summary: List all bank accounts
       description: |
-        This operation retrieves the information of all bank accounts registered.
+        This operation retrieves the information of all bank accounts you have registered for payment settlement. Contact our support team at [help@cobo.com](mailto:help@cobo.com) to register a new bank account.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -11058,11 +11058,19 @@ components:
           example: '1001'
         token_id:
           type: string
-          description: The ID of the cryptocurrency used for payment.
+          description: |
+
+            The ID of the cryptocurrency used for payment. Supported tokens: 
+            - USDC: `ETH_USDC`, `ARBITRUM_USDC`, `SOL_USDC`, `BASE_USDC`, `MATIC_USDC`, `BSC_USDC`
+            - USDT: `TRON_USDT`, `ETH_USDT`, `ARBITRUM_USDT`, `SOL_USDT`, `BASE_USDT`, `MATIC_USDT`, `BSC_USDT`
           example: ETH_USDT
         chain_id:
           type: string
-          description: The ID of the blockchain network where the payment transaction should be made.
+          description: |
+
+            The ID of the blockchain network where the payment transaction should be made. Supported chains: 
+            - USDC: `ETH`, `ARBITRUM`, `SOL`, `BASE`, `MATIC`, `BSC`
+            - USDT: `TRON`, `ETH`, `ARBITRUM`, `SOL`, `BASE`, `MATIC`, `BSC`
           example: ETH
         payable_amount:
           type: string
