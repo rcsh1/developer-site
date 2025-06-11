@@ -75,7 +75,7 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
    # Create an instance of the API class
    api_instance = cobo_waas2.PaymentApi(api_client)
-   create_merchant_request = cobo_waas2.CreateMerchantRequest(wallet_id="<YOUR_WALLET_ID>", name="<YOUR_WALLET_NAME>")
+   create_merchant_request = cobo_waas2.CreateMerchantRequest(wallet_id="<YOUR_WALLET_ID>", name="<YOUR_MERCHANT_NAME>")
 
 
    try:
@@ -113,7 +113,7 @@ public class Example {
    PaymentApi apiInstance = new PaymentApi(defaultClient);
    CreateMerchantRequest createMerchantRequest = new CreateMerchantRequest();
    createMerchantRequest.setWalletId("<YOUR_WALLET_ID>");
-   createMerchantRequest.setName("<YOUR_WALLET_NAME>");
+   createMerchantRequest.setName("<YOUR_MERCHANT_NAME>");
    try {
           Merchant merchant = apiInstance.createMerchant(createMerchantRequest);
          System.out.println(merchant);
