@@ -1792,6 +1792,44 @@ paths:
           $ref: '#/components/responses/oauthErrorResponse'
         5XX:
           $ref: '#/components/responses/internalServerError'
+  /oauth/permission_token/exchange:
+    post:
+      tags:
+        - OAuth
+      operationId: exchange_permission_token
+      summary: Get Access Token
+      description: |
+        This operation acquires an Access Token and a Refresh Token for the Checkout SDK.
+
+        For security purposes, an Access Token expires after a certain period. Once it expires, you need to call the [Refresh Access Token](/v2/api-references/oauth/refresh-access-token) operation to get a new Access Token and a new Refresh Token.
+      requestBody:
+        $ref: '#/components/requestBodies/permissionTokenExchangeBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/permissionTokenResponse'
+        4XX:
+          $ref: '#/components/responses/oauthErrorResponse'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /oauth/permission_token/refresh:
+    post:
+      tags:
+        - OAuth
+      operationId: refresh_permission_token
+      summary: Refresh Access Token
+      description: |
+        This operation refreshes the Access Token and Refresh Token for the Checkout SDK.
+
+        For security purposes, an Access Token expires after a certain period. Once it expires, you need to call this operation to get a new Access Token and Refresh Token.
+      requestBody:
+        $ref: '#/components/requestBodies/permissionTokenRefreshBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/permissionTokenResponse'
+        4XX:
+          $ref: '#/components/responses/oauthErrorResponse'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /webhooks/endpoints:
     get:
       tags:
@@ -3254,28 +3292,6 @@ paths:
         5XX:
           $ref: '#/components/responses/internalServerError'
   /payments/bank_accounts:
-    post:
-      tags:
-        - Payment
-      operationId: create_bank_account
-      summary: Create bank account
-      description: |
-        This operation registers a bank account for payment settlement.
-
-        Upon successful registration, the bank account details can be retrieved using the assigned bank account ID.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_merchant.create
-      requestBody:
-        $ref: '#/components/requestBodies/createBankAccountBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/createBankAccountResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
     get:
       tags:
         - Payment
@@ -3290,29 +3306,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/listBankAccountsResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/bank_accounts/{bank_account_id}':
-    put:
-      tags:
-        - Payment
-      operationId: update_bank_account_by_id
-      summary: Update bank account
-      description: |
-        This operation updates the information of an existing bank account.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_merchant.update
-      parameters:
-        - $ref: '#/components/parameters/BankIdPathParam'
-      requestBody:
-        $ref: '#/components/requestBodies/updateBankAccountBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/createBankAccountResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -3354,6 +3347,7 @@ paths:
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
         - $ref: '#/components/parameters/MerchantIdOptionalParam'
+        - $ref: '#/components/parameters/PspOrderIdOptionalParam'
       responses:
         '200':
           $ref: '#/components/responses/listPaymentOrdersResponse'
@@ -3507,6 +3501,48 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/getSettlementReqeustDetailResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /payments/crypto_addresses:
+    get:
+      tags:
+        - Payment
+      operationId: list_crypto_addresses
+      summary: List crypto addresses
+      description: |
+        This operation retrieves a list of crypto addresses registered for crypto withdrawal. 
+
+        Contact our support team at [help@cobo.com](mailto:help@cobo.com) to register a new crypto address.
+      parameters:
+        - $ref: '#/components/parameters/TokenIdOptionalParam'
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_merchant.read
+      responses:
+        '200':
+          $ref: '#/components/responses/listCryptoAddressesResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /payments/supported_tokens:
+    get:
+      tags:
+        - Payment
+      operationId: list_payment_supported_tokens
+      summary: List all supported tokens
+      description: |
+        This operation retrieves the information of all supported tokens.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_merchant.read
+      responses:
+        '200':
+          $ref: '#/components/responses/listSupportedTokensResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -5407,6 +5443,7 @@ components:
             propertyName: destination_type
             mapping:
               Address: '#/components/schemas/TransactionTransferToAddressDestination'
+              CustodialWallet: '#/components/schemas/TransactionTransferToWalletDestination'
               ExchangeWallet: '#/components/schemas/TransactionTransferToWalletDestination'
               EVM_Contract: '#/components/schemas/TransactionEvmContractDestination'
               SOL_Contract: '#/components/schemas/TransactionSolContractDestination'
@@ -6036,6 +6073,7 @@ components:
       type: string
       enum:
         - Address
+        - CustodialWallet
         - ExchangeWallet
         - EVM_Contract
         - SOL_Contract
@@ -6461,10 +6499,10 @@ components:
     TransactionTransferToWalletDestination:
       type: object
       description: |
-        Information about the transaction destination type `ExchangeWallet`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+        Information about the transaction destination type `CustodialWallet` or `ExchangeWallet`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
 
         Switch between the tabs to display the properties for different transaction destinations.
-      title: ExchangeWallet
+      title: Wallet
       required:
         - destination_type
         - wallet_id
@@ -6479,7 +6517,7 @@ components:
           example: f47ac10b-58cc-4372-a567-0e02b2c3d479
         trading_account_type:
           type: string
-          description: The trading account type.
+          description: The trading account type. This field is only applicable when `destination_type` is `ExchangeWallet`.
           example: Asset
         exchange_id:
           $ref: '#/components/schemas/ExchangeId'
@@ -7567,6 +7605,32 @@ components:
 
             Please do not set both `force_internal` and `force_external` as `true`.
           example: false
+    CustodialTransferDestination:
+      type: object
+      description: |
+        The information about the transaction destination type `CustodialWallet`. Refer to [Transaction sources and destinations](https://www.cobo.com/developers/v2/guides/transactions/sources-and-destinations) for a detailed introduction about the supported sources and destinations for each transaction type.
+
+        A Custodial Wallet (Asset Wallet) can only receive transfers from another Custodial Wallet (Asset Wallet) by using [Cobo Loop](https://manuals.cobo.com/en/portal/custodial-wallets/cobo-loop).
+
+        Switch between the tabs to display the properties for different transaction destinations.
+      title: CustodialWallet
+      required:
+        - destination_type
+        - wallet_id
+        - amount
+      properties:
+        destination_type:
+          $ref: '#/components/schemas/TransferDestinationType'
+        wallet_id:
+          type: string
+          description: The wallet ID.
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+        amount:
+          type: string
+          description: |
+            The transfer amount. For example, if you trade 1.5 BTC, then the value is `1.5`.
+          example: '1.5'
     ExchangeTransferDestination:
       type: object
       description: |
@@ -7602,6 +7666,7 @@ components:
       type: string
       enum:
         - Address
+        - CustodialWallet
         - ExchangeWallet
       example: Address
       description: |
@@ -7611,11 +7676,13 @@ components:
     TransferDestination:
       oneOf:
         - $ref: '#/components/schemas/AddressTransferDestination'
+        - $ref: '#/components/schemas/CustodialTransferDestination'
         - $ref: '#/components/schemas/ExchangeTransferDestination'
       discriminator:
         propertyName: destination_type
         mapping:
           Address: '#/components/schemas/AddressTransferDestination'
+          CustodialWallet: '#/components/schemas/CustodialTransferDestination'
           ExchangeWallet: '#/components/schemas/ExchangeTransferDestination'
     TransferParams:
       type: object
@@ -10968,11 +11035,11 @@ components:
             swift_or_bic: ABCDEFGH
         created_timestamp:
           type: integer
-          description: 'The created time of the bank account, represented as a UNIX timestamp in seconds.'
+          description: 'The creation time of the bank account, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         updated_timestamp:
           type: integer
-          description: 'The updated time of the bank account, represented as a UNIX timestamp in seconds.'
+          description: 'The last update time of the bank account, represented as a UNIX timestamp in seconds.'
           example: 1744689600
     CreateSettlement:
       type: object
@@ -11000,10 +11067,33 @@ components:
         bank_account_id:
           type: string
           format: uuid
-          description: The ID of the bank account where the settled funds will be deposited.
+          description: |
+
+            The ID of the bank account where the settled funds will be deposited. This field is only applicable when `payout_channel` is set to `OffRamp`.
+
+            Call [List all bank accounts](/v2/api-references/payment/list-all-bank-accounts) to retrieve the IDs of registered bank accounts.
           example: 123e457-e89b-12d3-a456-426614174004
         settlement_type:
           $ref: '#/components/schemas/SettlementType'
+        crypto_address_id:
+          type: string
+          description: |
+            The ID of the crypto address used for crypto withdrawal. This field is only applicable when `payout_channel` is set to `Crypto`. 
+
+            Call [List crypto addresses](/v2/api-references/payment/list-crypto-addresses) to retrieve the IDs of registered crypto addresses.
+          example: addr_ethusdt_20250506T123456_ab12cd
+        payout_channel:
+          $ref: '#/components/schemas/PayoutChannel'
+        order_ids:
+          type: array
+          description: |
+            A list of order IDs to be included in this settlement. If provided, the settlement request will settle the merchant funds received from the specified orders, and the `amount` field will be ignored. 
+
+            This field is only applicable when `settlement_type` is set to `Merchant`. 
+          items:
+            type: string
+            description: The order ID.
+            example: O20250304-M1001-1001
     Merchant:
       type: object
       required:
@@ -11026,11 +11116,11 @@ components:
           example: 123e4567-e89b-12d3-a456-426614174001
         created_timestamp:
           type: integer
-          description: 'The created time of the merchant, represented as a UNIX timestamp in seconds.'
+          description: 'The creation time of the merchant, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         updated_timestamp:
           type: integer
-          description: 'The updated time of the merchant, represented as a UNIX timestamp in seconds.'
+          description: 'The last update time of the merchant, represented as a UNIX timestamp in seconds.'
           example: 1744689600
     Order:
       type: object
@@ -11116,15 +11206,15 @@ components:
           example: '103.0305'
         created_timestamp:
           type: integer
-          description: 'The created time of the order, represented as a UNIX timestamp in seconds.'
+          description: 'The creation time of the order, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         updated_timestamp:
           type: integer
-          description: 'The updated time of the order, represented as a UNIX timestamp in seconds.'
+          description: 'The last update time of the order, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         transactions:
           type: array
-          description: An array of transactions associated with this pay-in order. Each transaction represents a separate blockchain operation related to the settlement process.
+          description: An array of transactions associated with this pay-in order. Each transaction represents a separate blockchain operation related to the pay-in process.
           items:
             $ref: '#/components/schemas/PaymentTransaction'
     OrderStatus:
@@ -11163,7 +11253,7 @@ components:
           example: R20250304-M1001-1001
         order_id:
           type: string
-          description: The order ID corresponding to this refund.
+          description: The ID of the pay-in order corresponding to this refund.
           example: O20250304-M1001-1001
         merchant_id:
           type: string
@@ -11191,11 +11281,11 @@ components:
           $ref: '#/components/schemas/RefundType'
         created_timestamp:
           type: integer
-          description: 'The created time of the refund order, represented as a UNIX timestamp in seconds.'
+          description: 'The creation time of the refund order, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         updated_timestamp:
           type: integer
-          description: 'The updated time of the refund order, represented as a UNIX timestamp in seconds.'
+          description: 'The last update time of the refund order, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         initiator:
           type: string
@@ -11288,16 +11378,20 @@ components:
             $ref: '#/components/schemas/SettlementDetail'
         created_timestamp:
           type: integer
-          description: 'The created time of the settlement request, represented as a UNIX timestamp in seconds.'
+          description: 'The creation time of the settlement request, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         updated_timestamp:
           type: integer
-          description: 'The updated time of the settlement request, represented as a UNIX timestamp in seconds.'
+          description: 'The last update time of the settlement request, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         initiator:
           type: string
-          description: 'The initiator of this settlement request, usually the user''s API key.'
-          example: b2ae1b5aaade686c968ef2bbd31cc75ba94e5a85fd9cb0b35b81dcc15f520e9d
+          description: |
+
+            The initiator of this settlement request. Can return either an API key or the Payment Management App's ID. 
+            - Format `api_key_<API_KEY>`: Indicates the settlement request was initiated via the Payment API using the API key.
+            - Format `app_<APP_ID>`: Indicates the settlement request was initiated through the Payment Management App using the App ID.
+          example: api_key_b2ae1b5aaade686c968ef2bbd31cc75ba94e5a85fd9cb0b35b81dcc15f520e9d
     SettlementDetail:
       type: object
       properties:
@@ -11315,7 +11409,7 @@ components:
           example: ETH
         merchant_id:
           type: string
-          description: The Merchant ID associated with this settlement.
+          description: The ID of the merchant associated with this settlement.
           example: M1001
         amount:
           type: string
@@ -11346,16 +11440,18 @@ components:
             $ref: '#/components/schemas/PaymentTransaction'
         created_timestamp:
           type: integer
-          description: 'The created time of the settlement, represented as a UNIX timestamp in seconds.'
+          description: 'The creation time of the settlement, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         updated_timestamp:
           type: integer
-          description: 'The updated time of the settlement, represented as a UNIX timestamp in seconds.'
+          description: 'The last update time of the settlement, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         crypto_address_id:
           type: string
-          description: 'Unique identifier for the pre-approved crypto address, used to reference the address securely in requests.'
+          description: The ID of the crypto address used for crypto withdrawal.
           example: addr_ethusdt_20250429T134512_a8c31f
+        payout_channel:
+          $ref: '#/components/schemas/PayoutChannel'
     SettlementInfo:
       type: object
       required:
@@ -11392,11 +11488,11 @@ components:
           example: '500.00'
         created_timestamp:
           type: integer
-          description: 'The created time of the settlement, represented as a UNIX timestamp in seconds.'
+          description: 'The creation time of the settlement, represented as a UNIX timestamp in seconds.'
           example: 1744689600
         updated_timestamp:
           type: integer
-          description: 'The updated time of the settlement, represented as a UNIX timestamp in seconds.'
+          description: 'The last update time of the settlement, represented as a UNIX timestamp in seconds.'
           example: 1744689600
     SettlementType:
       type: string
@@ -11455,6 +11551,102 @@ components:
           format: int64
           description: 'The time when the transaction was updated, in Unix timestamp format, measured in milliseconds.'
           example: 1610445878970
+    CryptoAddress:
+      type: object
+      required:
+        - token_id
+        - address_id
+        - address
+      properties:
+        token_id:
+          type: string
+          description: 'The token identifier (e.g., ETH_USDT, TRON_USDT) that this address is associated with.'
+          example: ETH_USDT
+        address_id:
+          type: string
+          description: |
+            A unique identifier for this crypto address, automatically generated by Cobo. Use this ID (not the raw blockchain address) when submitting a settlement request.
+          example: addr_ethusdt_20250429T134512_a8c31f
+        address:
+          type: string
+          description: |
+            The blockchain address in its native format. This is the actual destination address where funds will be sent.
+            Note: When submitting a settlement request, use the address ID rather than this raw address.
+          example: '0xabc123456789def0000000000000000000000000'
+        label:
+          type: string
+          description: A label to help identify the address's purpose.
+          example: Main Withdrawal Address
+        created_timestamp:
+          type: integer
+          description: 'The creation time of the crypto address, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The last update time of the crypto address, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+    PayoutChannel:
+      type: string
+      enum:
+        - Crypto
+        - OffRamp
+      example: Crypto
+      description: |
+        The channel through which settlement funds will be transferred. Available options:
+
+        - `Crypto`: Direct withdrawal to a registered crypto address.
+        - `OffRamp`: Settle to a registered bank account.
+    SupportedToken:
+      type: object
+      required:
+        - token_id
+        - name
+        - symbol
+        - decimal
+        - token_address
+        - chain_id
+        - chain_symbol
+      properties:
+        token_id:
+          type: string
+          description: Unique identifier of the token
+          example: ETH_USDT
+        name:
+          type: string
+          description: Full name of the token
+          example: Tether USD
+        symbol:
+          type: string
+          description: Symbol representation of the token
+          example: USDT
+        decimal:
+          type: integer
+          description: Number of decimal places for the token
+          example: 6
+        token_address:
+          type: string
+          description: Contract address of the token (may be null for native coins)
+          example: '0xdac17f958d2ee523a2206206994597c13d831ec7'
+          nullable: true
+        chain_id:
+          type: string
+          description: Identifier of the blockchain where the token exists
+          example: ETH
+        chain_symbol:
+          type: string
+          description: Symbol of the underlying blockchain
+          example: ETH
+          nullable: true
+        chain_icon_url:
+          type: string
+          description: URL to the blockchain's icon image
+          example: 'https://example.com/icons/eth.png'
+          nullable: true
+        token_icon_url:
+          type: string
+          description: URL to the token's icon image
+          example: 'https://example.com/icons/usdt.png'
+          nullable: true
     TSSKeyGenRequest:
       type: object
       properties:
@@ -13431,6 +13623,14 @@ components:
       schema:
         type: string
       example: random_request_id
+    PspOrderIdOptionalParam:
+      name: psp_order_id
+      in: query
+      required: false
+      description: A unique reference code assigned by the developer to identify this order in their system.
+      schema:
+        type: string
+      example: P20240201001
   requestBodies:
     createWalletBody:
       description: The request body to create a wallet
@@ -13942,6 +14142,34 @@ components:
                 type: string
                 description: The Refresh Token of the current Org Access Token.
                 example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
+    permissionTokenExchangeBody:
+      description: The request body to acquire an Access Token.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - permission_type
+            properties:
+              permission_type:
+                type: string
+                description: Set the value to `payment_orders_payin`.
+                example: payment_orders_payin
+    permissionTokenRefreshBody:
+      description: The request body to refresh the Access Token and the Refresh Token.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - refresh_token
+            properties:
+              refresh_token:
+                type: string
+                description: The Refresh Token of the current Access Token.
+                example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
     createPrimeBrokerUserAddressBody:
       description: The request body to bind addresses to a broker user.
       content:
@@ -14125,15 +14353,15 @@ components:
                 type: string
                 description: A unique reference code assigned by the developer to identify this order in their system.
                 example: P20240201001
-              expired_at:
+              expired_in:
                 type: integer
                 description: |
-                  The expiration time of the pay-in order, represented as a UNIX timestamp in seconds. After this time:
+                  The number of seconds after which the pay-in order will expire.
                   - The order status becomes final and cannot be changed
                   - The `received_token_amount` field will no longer be updated
                   - Funds received after expiration will be categorized as late payments and can only be settled from the developer balance.
                   - A late payment will trigger a `transactionLate` webhook event.
-                example: 1711324800
+                example: 1800
     updatePaymentOrderBody:
       description: The request body to update a pay-in order.
       content:
@@ -14170,8 +14398,8 @@ components:
                 example: M1001
               payable_amount:
                 type: string
-                description: The amount to refund in cryptocurrency.
-                example: '0.0025'
+                description: The amount to refund in cryptocurrency. The amount must be a positive integer with up to two decimal places.
+                example: '0.25'
               to_address:
                 type: string
                 description: The address where the refunded cryptocurrency will be sent.
@@ -14189,6 +14417,28 @@ components:
                 type: string
                 description: The ID of the original pay-in order associated with this refund. Use this to track refunds against specific payments.
                 example: R20250304-M1001-1001
+              charge_merchant_fee:
+                type: boolean
+                description: |
+                  Whether to charge developer fee to the merchant.
+                    - `true`: The fee amount (specified in `merchant_fee_amount`) will be deducted from the merchant's balance and added to the developer's balance
+                    - `false`: The merchant is not charged any developer fee
+                  When enabled, ensure both `merchant_fee_amount` and `merchant_fee_token_id` are properly specified.
+                example: false
+              merchant_fee_amount:
+                type: string
+                description: |
+                  The developer fee amount to charge the merchant, denominated in the cryptocurrency specified by `merchant_fee_token_id`. Required when `charge_merchant_fee` is `true`. Must be:
+                    - A positive integer with up to two decimal places.
+                    - Less than the refund amount
+                example: '0.01'
+              merchant_fee_token_id:
+                type: string
+                description: |
+                  The ID of the cryptocurrency used for the developer fee. It must be the same as `token_id`. Supported values:
+                    - USDC: `ETH_USDC`, `ARBITRUM_USDC`, `SOL_USDC`, `BASE_USDC`, `MATIC_USDC`, `BSC_USDC`
+                    - USDT: `TRON_USDT`, `ETH_USDT`, `ARBITRUM_USDT`, `SOL_USDT`, `BASE_USDT`, `MATIC_USDT`, `BSC_USDT`
+                example: ETH_USDT
     createSettlementBody:
       description: The request body to create a settlement request.
       content:
@@ -14207,6 +14457,37 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/CreateSettlement'
+    createCryptoAddressBody:
+      description: The request body to create a crypto address.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - token_id
+              - address
+            properties:
+              token_id:
+                type: string
+                description: |
+                  The token ID that identifies the cryptocurrency and its corresponding blockchain.
+
+                  **Supported values**:
+                    - **USDC**: `ETH_USDC`, `ARBITRUM_USDC`, `SOL_USDC`, `BASE_USDC`, `MATIC_USDC`, `BSC_USDC`
+                    - **USDT**: `TRON_USDT`, `ETH_USDT`, `ARBITRUM_USDT`, `SOL_USDT`, `BASE_USDT`, `MATIC_USDT`, `BSC_USDT`
+                example: ETH_USDT
+              address:
+                type: string
+                description: |
+                  The blockchain address where crypto withdrawals will be sent. Must be a valid address format for the blockchain specified by `token_id`. For example:
+                  - For `SOL_USDC`: Provide a Solana address.
+                  - For `ETH_USDT`: Provide an Ethereum address.
+                example: '0xabc123456789def0000000000000000000000000'
+              label:
+                type: string
+                description: |
+                  A label to help identify the address's purpose.
+                example: Main Withdrawal Address
     estimateFeeStationFeeBody:
       description: The information about a Fee Station top-up transaction.
       content:
@@ -15252,6 +15533,27 @@ components:
               error_description:
                 type: string
                 description: The error description.
+    permissionTokenResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                description: The Access Token.
+                example: AnCEPEp5Q8qjAOA1Lb6kVd2OlkCyJnMTeMPdLbPOM8cz176Eb5y7EJoUjJJ0vkzz
+              token_type:
+                type: string
+                description: The token type. This is always `Bearer`.
+              expires_in:
+                type: integer
+                description: 'The time in seconds until the Access Token expires. This is always `3600`, indicating the token expires 1 hour after issuance.'
+              refresh_token:
+                type: string
+                description: The Refresh Token. Use it to obtain a new Access Token when the current one expires. The Refresh Token is valid for 7 days.
+                example: rK49jI0zt49gsttzscscik15Asmlpu1TdcxqguJJS8B9f6ilJEC0y3PbVqwsEAw5
     createUserAdressResponse:
       description: The request was successful.
       content:
@@ -15746,6 +16048,22 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Settlement'
+    listCryptoAddressesResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/CryptoAddress'
+    listSupportedTokensResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/SupportedToken'
     getFeeStationTokenBalancesResponse:
       description: The request was successful.
       content:

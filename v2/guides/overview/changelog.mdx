@@ -6,6 +6,20 @@ description: "Detailed changelog of all additions and changes to the WaaS 2.0 AP
 
 This changelog details all additions and changes to the WaaS 2.0 API. You can download the WaaS 2.0 API specification from [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml).
 
+## v1.17.0
+
+This version was released on June 18, 2025.
+
+### New Features
+- Enhanced [Create settlement request](/v2/api-references/payment/create-settlement-request) to support crypto withdrawals, enabling direct settlement to crypto addresses. Also, added [List crypto addresses](/v2/api-references/payment/list-crypto-addresses) operation to view all registered withdrawal addresses
+- Added developer fee support to [Create refund order](/v2/api-references/payment/create-refund-order).
+- Added new OAuth operations for secure SDK authentication:
+  - [Get Access Token](/v2/api-references/oauth/get-access-token): Obtain the initial Access Token and Refresh Token
+  - [Refresh Access Token](/v2/api-references/oauth/refresh-access-token): Renew the Access Token
+
+### Improvements
+- Enhanced [Transfer token](/v2/api-references/transactions/transfer-token) operation to support Custodial Wallet (Asset Wallet) transfers using a wallet ID.
+
 ## v1.16.0
 
 This version was released on May 28, 2025.
