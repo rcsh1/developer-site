@@ -1,12 +1,11 @@
 ---
-openapi: post /wallets/{wallet_id}/utxos/lock
+openapi: get /payments/crypto_addresses
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.lock_utxos201_response import LockUtxos201Response
-from cobo_waas2.models.lock_utxos_request import LockUtxosRequest
+from cobo_waas2.models.crypto_address import CryptoAddress
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -20,27 +19,16 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.WalletsApi(api_client)
-    wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    lock_utxos_request = cobo_waas2.LockUtxosRequest(
-        utxos=[
-            cobo_waas2.LockUtxosRequestUtxosInner(
-                token_id="BTC",
-                tx_hash="9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
-                vout_n=0,
-            )
-        ]
-    )
+    api_instance = cobo_waas2.PaymentApi(api_client)
+    token_id = "ETH_USDT"
 
     try:
-        # Lock UTXOs
-        api_response = api_instance.lock_utxos(
-            wallet_id, lock_utxos_request=lock_utxos_request
-        )
-        print("The response of WalletsApi->lock_utxos:\n")
+        # List crypto addresses
+        api_response = api_instance.list_crypto_addresses(token_id=token_id)
+        print("The response of PaymentApi->list_crypto_addresses:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling WalletsApi->lock_utxos: %s\n" % e)
+        print("Exception when calling PaymentApi->list_crypto_addresses: %s\n" % e)
 
 ```
 ```java Java
@@ -49,9 +37,8 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.api.PaymentApi;
 import com.cobo.waas2.model.*;
-import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -62,21 +49,13 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    WalletsApi apiInstance = new WalletsApi();
-    UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    LockUtxosRequest lockUtxosRequest =
-        new LockUtxosRequest()
-            .utxos(
-                Arrays.asList(
-                    new LockUtxosRequestUtxosInner()
-                        .tokenId("BTC")
-                        .txHash("9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb")
-                        .voutN(0)));
+    PaymentApi apiInstance = new PaymentApi();
+    String tokenId = "ETH_USDT";
     try {
-      LockUtxos201Response result = apiInstance.lockUtxos(walletId, lockUtxosRequest);
+      List<CryptoAddress> result = apiInstance.listCryptoAddresses(tokenId);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WalletsApi#lockUtxos");
+      System.err.println("Exception when calling PaymentApi#listCryptoAddresses");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -98,8 +77,7 @@ import (
 )
 
 func main() {
-	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-	lockUtxosRequest := *coboWaas2.NewLockUtxosRequest([]coboWaas2.LockUtxosRequestUtxosInner{*coboWaas2.NewLockUtxosRequestUtxosInner("BTC", "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb", int32(0))})
+	tokenId := "ETH_USDT"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -112,15 +90,13 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.WalletsAPI.LockUtxos(ctx, walletId).
-		LockUtxosRequest(lockUtxosRequest).
-		Execute()
+	resp, r, err := apiClient.PaymentAPI.ListCryptoAddresses(ctx).TokenId(tokenId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.LockUtxos``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.ListCryptoAddresses``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `LockUtxos`: LockUtxos201Response
-	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.LockUtxos`: %v\n", resp)
+	// response from `ListCryptoAddresses`: []CryptoAddress
+	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.ListCryptoAddresses`: %v\n", resp)
 }
 
 ```
@@ -133,21 +109,11 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.WalletsApi();
-const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
+const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  LockUtxosRequest: new CoboWaas2.LockUtxosRequest({
-    utxos: [
-      {
-        token_id: "BTC",
-        tx_hash:
-          "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
-        vout_n: 0,
-      },
-    ],
-  }),
+  token_id: "ETH_USDT",
 };
-apiInstance.lockUtxos(wallet_id, opts).then(
+apiInstance.listCryptoAddresses(opts).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

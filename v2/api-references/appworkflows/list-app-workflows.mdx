@@ -22,7 +22,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.AppWorkflowsApi(api_client)
 
     try:
-        # list app workflows
+        # List app workflows
         api_response = api_instance.list_app_workflows()
         print("The response of AppWorkflowsApi->list_app_workflows:\n")
         pprint(api_response)

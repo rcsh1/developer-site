@@ -1,12 +1,16 @@
 ---
-openapi: post /wallets/{wallet_id}/utxos/lock
+openapi: post /oauth/permission_token/exchange
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.lock_utxos201_response import LockUtxos201Response
-from cobo_waas2.models.lock_utxos_request import LockUtxosRequest
+from cobo_waas2.models.exchange_permission_token201_response import (
+    ExchangePermissionToken201Response,
+)
+from cobo_waas2.models.exchange_permission_token_request import (
+    ExchangePermissionTokenRequest,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -20,27 +24,20 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.WalletsApi(api_client)
-    wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-    lock_utxos_request = cobo_waas2.LockUtxosRequest(
-        utxos=[
-            cobo_waas2.LockUtxosRequestUtxosInner(
-                token_id="BTC",
-                tx_hash="9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
-                vout_n=0,
-            )
-        ]
+    api_instance = cobo_waas2.OAuthApi(api_client)
+    exchange_permission_token_request = cobo_waas2.ExchangePermissionTokenRequest(
+        permission_type="payment_orders_payin"
     )
 
     try:
-        # Lock UTXOs
-        api_response = api_instance.lock_utxos(
-            wallet_id, lock_utxos_request=lock_utxos_request
+        # Get Access Token
+        api_response = api_instance.exchange_permission_token(
+            exchange_permission_token_request
         )
-        print("The response of WalletsApi->lock_utxos:\n")
+        print("The response of OAuthApi->exchange_permission_token:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling WalletsApi->lock_utxos: %s\n" % e)
+        print("Exception when calling OAuthApi->exchange_permission_token: %s\n" % e)
 
 ```
 ```java Java
@@ -49,9 +46,8 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.WalletsApi;
+import com.cobo.waas2.api.OAuthApi;
 import com.cobo.waas2.model.*;
-import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -62,21 +58,15 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    WalletsApi apiInstance = new WalletsApi();
-    UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
-    LockUtxosRequest lockUtxosRequest =
-        new LockUtxosRequest()
-            .utxos(
-                Arrays.asList(
-                    new LockUtxosRequestUtxosInner()
-                        .tokenId("BTC")
-                        .txHash("9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb")
-                        .voutN(0)));
+    OAuthApi apiInstance = new OAuthApi();
+    ExchangePermissionTokenRequest exchangePermissionTokenRequest =
+        new ExchangePermissionTokenRequest().permissionType("payment_orders_payin");
     try {
-      LockUtxos201Response result = apiInstance.lockUtxos(walletId, lockUtxosRequest);
+      ExchangePermissionToken201Response result =
+          apiInstance.exchangePermissionToken(exchangePermissionTokenRequest);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling WalletsApi#lockUtxos");
+      System.err.println("Exception when calling OAuthApi#exchangePermissionToken");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -98,8 +88,7 @@ import (
 )
 
 func main() {
-	walletId := "f47ac10b-58cc-4372-a567-0e02b2c3d479"
-	lockUtxosRequest := *coboWaas2.NewLockUtxosRequest([]coboWaas2.LockUtxosRequestUtxosInner{*coboWaas2.NewLockUtxosRequestUtxosInner("BTC", "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb", int32(0))})
+	exchangePermissionTokenRequest := *coboWaas2.NewExchangePermissionTokenRequest("payment_orders_payin")
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -112,15 +101,15 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.WalletsAPI.LockUtxos(ctx, walletId).
-		LockUtxosRequest(lockUtxosRequest).
+	resp, r, err := apiClient.OAuthAPI.ExchangePermissionToken(ctx).
+		ExchangePermissionTokenRequest(exchangePermissionTokenRequest).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `WalletsAPI.LockUtxos``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `OAuthAPI.ExchangePermissionToken``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `LockUtxos`: LockUtxos201Response
-	fmt.Fprintf(os.Stdout, "Response from `WalletsAPI.LockUtxos`: %v\n", resp)
+	// response from `ExchangePermissionToken`: ExchangePermissionToken201Response
+	fmt.Fprintf(os.Stdout, "Response from `OAuthAPI.ExchangePermissionToken`: %v\n", resp)
 }
 
 ```
@@ -133,21 +122,10 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.WalletsApi();
-const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
-const opts = {
-  LockUtxosRequest: new CoboWaas2.LockUtxosRequest({
-    utxos: [
-      {
-        token_id: "BTC",
-        tx_hash:
-          "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
-        vout_n: 0,
-      },
-    ],
-  }),
-};
-apiInstance.lockUtxos(wallet_id, opts).then(
+const apiInstance = new CoboWaas2.OAuthApi();
+const ExchangePermissionTokenRequest =
+  new CoboWaas2.ExchangePermissionTokenRequest();
+apiInstance.exchangePermissionToken(ExchangePermissionTokenRequest).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

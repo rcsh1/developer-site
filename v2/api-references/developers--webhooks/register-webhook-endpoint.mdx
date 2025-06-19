@@ -24,7 +24,8 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.DevelopersWebhooksApi(api_client)
     create_webhook_endpoint_request = cobo_waas2.CreateWebhookEndpointRequest(
-        url="https://example.com/webhook", subscribed_events=["wallets.transaction.created"]
+        url="https://example.com/webhook",
+        subscribed_events=["wallets.transaction.created"],
     )
 
     try:

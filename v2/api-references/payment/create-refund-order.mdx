@@ -23,7 +23,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.PaymentApi(api_client)
     create_refund_request = cobo_waas2.CreateRefundRequest(
         request_id="123e4567-e89b-12d3-a456-426614174004",
-        payable_amount="0.0025",
+        payable_amount="0.25",
         to_address="0x9876543210abcdef1234567890abcdef12345678",
         token_id="ETH_USDT",
         refund_type="Merchant",
@@ -62,7 +62,7 @@ public class Example {
     CreateRefundRequest createRefundRequest =
         new CreateRefundRequest()
             .requestId("123e4567-e89b-12d3-a456-426614174004")
-            .payableAmount("0.0025")
+            .payableAmount("0.25")
             .toAddress("0x9876543210abcdef1234567890abcdef12345678")
             .tokenId("ETH_USDT")
             .refundType(RefundType.MERCHANT);
@@ -92,7 +92,7 @@ import (
 )
 
 func main() {
-	createRefundRequest := *coboWaas2.NewCreateRefundRequest("123e4567-e89b-12d3-a456-426614174004", "0.0025", "0x9876543210abcdef1234567890abcdef12345678", "ETH_USDT", coboWaas2.RefundType("Merchant"))
+	createRefundRequest := *coboWaas2.NewCreateRefundRequest("123e4567-e89b-12d3-a456-426614174004", "0.25", "0x9876543210abcdef1234567890abcdef12345678", "ETH_USDT", coboWaas2.RefundType("Merchant"))
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -130,7 +130,7 @@ const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
   CreateRefundRequest: new CoboWaas2.CreateRefundRequest({
     request_id: "123e4567-e89b-12d3-a456-426614174004",
-    payable_amount: "0.0025",
+    payable_amount: "0.25",
     to_address: "0x9876543210abcdef1234567890abcdef12345678",
     token_id: "ETH_USDT",
     refund_type: "Merchant",

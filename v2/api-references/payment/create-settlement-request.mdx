@@ -96,7 +96,7 @@ import (
 )
 
 func main() {
-	createSettlementRequestRequest := *coboWaas2.NewCreateSettlementRequestRequest("SETTLEMENT123", []coboWaas2.CreateSettlement{*coboWaas2.NewCreateSettlement("500.00", "0123e457-e89b-12d3-a456-426614174004")})
+	createSettlementRequestRequest := *coboWaas2.NewCreateSettlementRequestRequest("SETTLEMENT123", []coboWaas2.CreateSettlement{*coboWaas2.NewCreateSettlement()})
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
