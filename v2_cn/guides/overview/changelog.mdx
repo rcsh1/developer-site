@@ -7,6 +7,20 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
+## v1.17.0
+
+本版本于 2025 年 6 月 18 日发布。
+
+### 新功能
+- [Create settlement request](/v2/api-references/payment/create-settlement-request) 接口新增支持加密货币提现，实现直接结算到加密货币地址。同时，新增了 [List crypto addresses](/v2/api-references/payment/list-crypto-addresses) 操作，用于查看所有已注册的提现地址。
+- 在 [Create refund order](/v2/api-references/payment/create-refund-order) 操作中支持指定开发者费用。
+- 新增了用于安全 SDK 认证的 OAuth 操作：
+  - [Get Access Token](/v2/api-references/oauth/get-access-token)：获取初始 Access Token 和 Refresh Token。
+  - [Refresh Access Token](/v2/api-references/oauth/refresh-access-token)：更新 Access Token。
+
+### 改进
+- [Transfer token](/v2/api-references/transactions/transfer-token) 操作新增支持使用钱包 ID 进行全托管钱包（资产钱包）转账。该功能需要白名单访问权限。您需要联系 [help@cobo.com](mailto:help@cobo.com) 申请白名单。实现该功能可能需要更新您现有的交易历史记录数据处理。
+
 ## v1.16.0
 
 本版本于 2025 年 5 月 28 日发布。

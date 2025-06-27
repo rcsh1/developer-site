@@ -23,16 +23,14 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.AppWorkflowsApi(api_client)
-            request_approval = cobo_waas2.RequestApproval(
-                operation_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                request_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
-                initiator_email="johnsmith@example.com",
-                fields=[cobo_waas2.AppWorkflowField(
-                    field="amount",
-                    value_type="INT",
-                    value="11.23"
-                )],
-                guard_template="example_string",
+    request_approval = cobo_waas2.RequestApproval(
+        operation_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        request_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        initiator_email="johnsmith@example.com",
+        fields=[
+            cobo_waas2.AppWorkflowField(field="amount", value_type="INT", value="11.23")
+        ],
+        guard_template="example_string",
     )
 
     try:
@@ -68,17 +66,17 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     AppWorkflowsApi apiInstance = new AppWorkflowsApi();
-    RequestApproval requestApproval =  
-          new RequestApproval()
+    RequestApproval requestApproval =
+        new RequestApproval()
             .operationId("f47ac10b-58cc-4372-a567-0e02b2c3d479")
             .requestId("f47ac10b-58cc-4372-a567-0e02b2c3d479")
             .initiatorEmail("johnsmith@example.com")
-            .fields(Arrays.asList(
-                new AppWorkflowField()
-                .field("amount")
-                .valueType(PolicyFieldValueType.INT)
-                .value("11.23")
-            ))
+            .fields(
+                Arrays.asList(
+                    new AppWorkflowField()
+                        .field("amount")
+                        .valueType(PolicyFieldValueType.INT)
+                        .value("11.23")))
             .guardTemplate("example_string");
     try {
       CreateApprovalRequest201Response result = apiInstance.createApprovalRequest(requestApproval);
@@ -150,13 +148,7 @@ const opts = {
     operation_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     request_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     initiator_email: "johnsmith@example.com",
-    fields: [
-      {
-        field: "amount",
-        value_type: "INT",
-        value: "11.23",
-      },
-    ],
+    fields: [{ field: "amount", value_type: "INT", value: "11.23" }],
     guard_template: "example_string",
   }),
 };
