@@ -27,6 +27,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     wallet_type = cobo_waas2.WalletType()
     wallet_subtype = cobo_waas2.WalletSubtype()
     chain_ids = "BTC,ETH"
+    token_ids = "ETH_USDT,ETH_USDC"
     limit = 10
     before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
     after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
@@ -37,6 +38,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
             wallet_type=wallet_type,
             wallet_subtype=wallet_subtype,
             chain_ids=chain_ids,
+            token_ids=token_ids,
             limit=limit,
             before=before,
             after=after,
@@ -69,12 +71,14 @@ public class Example {
     WalletType walletType = WalletType.fromValue("Custodial");
     WalletSubtype walletSubtype = WalletSubtype.fromValue("Asset");
     String chainIds = "BTC,ETH";
+    String tokenIds = "ETH_USDT,ETH_USDC";
     Integer limit = 10;
     String before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1";
     String after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk";
     try {
       ListSupportedTokens200Response result =
-          apiInstance.listEnabledTokens(walletType, walletSubtype, chainIds, limit, before, after);
+          apiInstance.listEnabledTokens(
+              walletType, walletSubtype, chainIds, tokenIds, limit, before, after);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling WalletsApi#listEnabledTokens");
@@ -102,6 +106,7 @@ func main() {
 	walletType := coboWaas2.WalletType("Custodial")
 	walletSubtype := coboWaas2.WalletSubtype("Asset")
 	chainIds := "BTC,ETH"
+	tokenIds := "ETH_USDT,ETH_USDC"
 	limit := int32(10)
 	before := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
 	after := "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
@@ -121,6 +126,7 @@ func main() {
 		WalletType(walletType).
 		WalletSubtype(walletSubtype).
 		ChainIds(chainIds).
+		TokenIds(tokenIds).
 		Limit(limit).
 		Before(before).
 		After(after).
@@ -148,6 +154,7 @@ const opts = {
   wallet_type: new CoboWaas2.WalletType(),
   wallet_subtype: new CoboWaas2.WalletSubtype(),
   chain_ids: "BTC,ETH",
+  token_ids: "ETH_USDT,ETH_USDC",
   limit: 10,
   before: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
   after: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk",

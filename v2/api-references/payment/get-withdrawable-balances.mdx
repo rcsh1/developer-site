@@ -5,6 +5,7 @@ openapi: get /payments/settlement_info
 <RequestExample>
 ```python Python
 import cobo_waas2
+from cobo_waas2.models.acquiring_type import AcquiringType
 from cobo_waas2.models.get_settlement_info_by_ids200_response import (
     GetSettlementInfoByIds200Response,
 )
@@ -24,11 +25,12 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.PaymentApi(api_client)
     merchant_ids = "M1001,M1002,M1003"
     currency = "USD"
+    acquiring_type = cobo_waas2.AcquiringType()
 
     try:
         # Get withdrawable balances
         api_response = api_instance.get_settlement_info_by_ids(
-            merchant_ids=merchant_ids, currency=currency
+            merchant_ids=merchant_ids, currency=currency, acquiring_type=acquiring_type
         )
         print("The response of PaymentApi->get_settlement_info_by_ids:\n")
         pprint(api_response)
@@ -57,9 +59,10 @@ public class Example {
     PaymentApi apiInstance = new PaymentApi();
     String merchantIds = "M1001,M1002,M1003";
     String currency = "USD";
+    AcquiringType acquiringType = AcquiringType.fromValue("Order");
     try {
       GetSettlementInfoByIds200Response result =
-          apiInstance.getSettlementInfoByIds(merchantIds, currency);
+          apiInstance.getSettlementInfoByIds(merchantIds, currency, acquiringType);
       System.out.println(result);
     } catch (ApiException e) {
       System.err.println("Exception when calling PaymentApi#getSettlementInfoByIds");
@@ -86,6 +89,7 @@ import (
 func main() {
 	merchantIds := "M1001,M1002,M1003"
 	currency := "USD"
+	acquiringType := coboWaas2.AcquiringType("Order")
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -101,6 +105,7 @@ func main() {
 	resp, r, err := apiClient.PaymentAPI.GetSettlementInfoByIds(ctx).
 		MerchantIds(merchantIds).
 		Currency(currency).
+		AcquiringType(acquiringType).
 		Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.GetSettlementInfoByIds``: %v\n", err)
@@ -124,6 +129,7 @@ const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
   merchant_ids: "M1001,M1002,M1003",
   currency: "USD",
+  acquiring_type: new CoboWaas2.AcquiringType(),
 };
 apiInstance.getSettlementInfoByIds(opts).then(
   (data) => {

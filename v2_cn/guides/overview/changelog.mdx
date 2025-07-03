@@ -7,6 +7,25 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
+## v1.18.0
+
+本版本于 2025 年 7 月 2 日发布。
+
+### 新功能
+- 添加了以下支付者和充值地址管理操作：
+  - [Get top-up address](/v2/api-references/payment/get-top-up-address)
+  - [List payers](/v2/api-references/payment/list-payers)
+- 添加了以下退款订单管理操作：
+  - [Update refund order information](/v2/api-references/payment/update-refund-order-information)
+  - [Cancel refund order](/v2/api-references/payment/cancel-refund-order)
+- 添加了 [Get organization information](/v2/api-references/organizations/get-organization-information) 操作，用于获取与当前 API Key 关联的团队的详细信息。
+
+### 改进
+- 优化了 [List enabled tokens](/v2/api-references/wallets/list-enabled-tokens) 操作，支持按 token ID 进行过滤。
+- 引入了新的 [webhook event types](/v2/guides/webhooks-callbacks/webhook-event-type#webhook-event-types) 以支持更精细的余额更新通知：
+  - `wallets.mpc.balance.updated`
+  - `wallets.web3.balance.updated`
+
 ## v1.17.0
 
 本版本于 2025 年 6 月 18 日发布。
@@ -14,7 +33,7 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 ### 新功能
 - [Create settlement request](/v2/api-references/payment/create-settlement-request) 接口新增支持加密货币提现，实现直接结算到加密货币地址。同时，新增了 [List crypto addresses](/v2/api-references/payment/list-crypto-addresses) 操作，用于查看所有已注册的提现地址。
 - 在 [Create refund order](/v2/api-references/payment/create-refund-order) 操作中支持指定开发者费用。
-- 新增了用于安全 SDK 认证的 OAuth 操作：
+- 增加了用于 Checkout SDK 认证的 OAuth 操作：
   - [Get Access Token](/v2/api-references/oauth/get-access-token)：获取初始 Access Token 和 Refresh Token。
   - [Refresh Access Token](/v2/api-references/oauth/refresh-access-token)：更新 Access Token。
 
