@@ -1,12 +1,11 @@
 ---
-openapi: post /payments/refunds
+openapi: get /payments/topup/address
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.create_refund_request import CreateRefundRequest
-from cobo_waas2.models.refund import Refund
+from cobo_waas2.models.top_up_address import TopUpAddress
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -21,22 +20,19 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
-    create_refund_request = cobo_waas2.CreateRefundRequest(
-        request_id="123e4567-e89b-12d3-a456-426614174004",
-        payable_amount="0.25",
-        token_id="ETH_USDT",
-        refund_type="Merchant",
-    )
+    merchant_id = "M1001"
+    token_id = "ETH_USDT"
+    custom_payer_id = "payer_0001"
 
     try:
-        # Create refund order
-        api_response = api_instance.create_refund(
-            create_refund_request=create_refund_request
+        # Get top-up address
+        api_response = api_instance.get_top_up_address(
+            merchant_id, token_id, custom_payer_id
         )
-        print("The response of PaymentApi->create_refund:\n")
+        print("The response of PaymentApi->get_top_up_address:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PaymentApi->create_refund: %s\n" % e)
+        print("Exception when calling PaymentApi->get_top_up_address: %s\n" % e)
 
 ```
 ```java Java
@@ -58,17 +54,14 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     PaymentApi apiInstance = new PaymentApi();
-    CreateRefundRequest createRefundRequest =
-        new CreateRefundRequest()
-            .requestId("123e4567-e89b-12d3-a456-426614174004")
-            .payableAmount("0.25")
-            .tokenId("ETH_USDT")
-            .refundType(RefundType.MERCHANT);
+    String merchantId = "M1001";
+    String tokenId = "ETH_USDT";
+    String customPayerId = "payer_0001";
     try {
-      Refund result = apiInstance.createRefund(createRefundRequest);
+      TopUpAddress result = apiInstance.getTopUpAddress(merchantId, tokenId, customPayerId);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling PaymentApi#createRefund");
+      System.err.println("Exception when calling PaymentApi#getTopUpAddress");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -90,7 +83,9 @@ import (
 )
 
 func main() {
-	createRefundRequest := *coboWaas2.NewCreateRefundRequest("123e4567-e89b-12d3-a456-426614174004", "0.25", "ETH_USDT", coboWaas2.RefundType("Merchant"))
+	merchantId := "M1001"
+	tokenId := "ETH_USDT"
+	customPayerId := "payer_0001"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -103,15 +98,17 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.PaymentAPI.CreateRefund(ctx).
-		CreateRefundRequest(createRefundRequest).
+	resp, r, err := apiClient.PaymentAPI.GetTopUpAddress(ctx).
+		MerchantId(merchantId).
+		TokenId(tokenId).
+		CustomPayerId(customPayerId).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.CreateRefund``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.GetTopUpAddress``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateRefund`: Refund
-	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.CreateRefund`: %v\n", resp)
+	// response from `GetTopUpAddress`: TopUpAddress
+	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.GetTopUpAddress`: %v\n", resp)
 }
 
 ```
@@ -125,15 +122,10 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
-const opts = {
-  CreateRefundRequest: new CoboWaas2.CreateRefundRequest({
-    request_id: "123e4567-e89b-12d3-a456-426614174004",
-    payable_amount: "0.25",
-    token_id: "ETH_USDT",
-    refund_type: "Merchant",
-  }),
-};
-apiInstance.createRefund(opts).then(
+const merchant_id = "M1001";
+const token_id = "ETH_USDT";
+const custom_payer_id = "payer_0001";
+apiInstance.getTopUpAddress(merchant_id, token_id, custom_payer_id).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

@@ -1,11 +1,10 @@
 ---
-openapi: post /payments/refunds
+openapi: put /payments/refunds/{refund_id}/cancel
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.create_refund_request import CreateRefundRequest
 from cobo_waas2.models.refund import Refund
 from cobo_waas2.rest import ApiException
 from pprint import pprint
@@ -21,22 +20,15 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
-    create_refund_request = cobo_waas2.CreateRefundRequest(
-        request_id="123e4567-e89b-12d3-a456-426614174004",
-        payable_amount="0.25",
-        token_id="ETH_USDT",
-        refund_type="Merchant",
-    )
+    refund_id = "R20250304-M1001-1001"
 
     try:
-        # Create refund order
-        api_response = api_instance.create_refund(
-            create_refund_request=create_refund_request
-        )
-        print("The response of PaymentApi->create_refund:\n")
+        # Cancel refund order
+        api_response = api_instance.cancel_refund_by_id(refund_id)
+        print("The response of PaymentApi->cancel_refund_by_id:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling PaymentApi->create_refund: %s\n" % e)
+        print("Exception when calling PaymentApi->cancel_refund_by_id: %s\n" % e)
 
 ```
 ```java Java
@@ -58,17 +50,12 @@ public class Example {
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
     PaymentApi apiInstance = new PaymentApi();
-    CreateRefundRequest createRefundRequest =
-        new CreateRefundRequest()
-            .requestId("123e4567-e89b-12d3-a456-426614174004")
-            .payableAmount("0.25")
-            .tokenId("ETH_USDT")
-            .refundType(RefundType.MERCHANT);
+    String refundId = "R20250304-M1001-1001";
     try {
-      Refund result = apiInstance.createRefund(createRefundRequest);
+      Refund result = apiInstance.cancelRefundById(refundId);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling PaymentApi#createRefund");
+      System.err.println("Exception when calling PaymentApi#cancelRefundById");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -90,7 +77,7 @@ import (
 )
 
 func main() {
-	createRefundRequest := *coboWaas2.NewCreateRefundRequest("123e4567-e89b-12d3-a456-426614174004", "0.25", "ETH_USDT", coboWaas2.RefundType("Merchant"))
+	refundId := "R20250304-M1001-1001"
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -103,15 +90,13 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.PaymentAPI.CreateRefund(ctx).
-		CreateRefundRequest(createRefundRequest).
-		Execute()
+	resp, r, err := apiClient.PaymentAPI.CancelRefundById(ctx, refundId).Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.CreateRefund``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.CancelRefundById``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `CreateRefund`: Refund
-	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.CreateRefund`: %v\n", resp)
+	// response from `CancelRefundById`: Refund
+	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.CancelRefundById`: %v\n", resp)
 }
 
 ```
@@ -125,15 +110,8 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
-const opts = {
-  CreateRefundRequest: new CoboWaas2.CreateRefundRequest({
-    request_id: "123e4567-e89b-12d3-a456-426614174004",
-    payable_amount: "0.25",
-    token_id: "ETH_USDT",
-    refund_type: "Merchant",
-  }),
-};
-apiInstance.createRefund(opts).then(
+const refund_id = "R20250304-M1001-1001";
+apiInstance.cancelRefundById(refund_id).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

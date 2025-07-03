@@ -11,6 +11,7 @@ description: "WaaS 2.0 中 Webhook 事件类型的综合列表，详细说明每
 可用的 webhook 事件类型如下：
 
 <Info>本文所指交易为所有类型的交易，包括转账，合约调用和消息签名。</Info>
+<Note>支付相关的 Webhook 事件，请参考[事件与状态](/v2_cn/payments/status-and-events)。</Note>
 
 <table class="table-three-cols">
   <thead>
@@ -23,7 +24,7 @@ description: "WaaS 2.0 中 Webhook 事件类型的综合列表，详细说明每
   <tbody>
     <tr>
       <td><code>wallets.transaction.created</code></td>
-      <td rowspan="11"><code>Transaction</code></td>
+      <td rowspan="8"><code>Transaction</code></td>
       <td>在区块链上检测到交易，生成交易记录。此事件不代表交易已成功。</td>
     </tr>
     <tr>
@@ -53,18 +54,6 @@ description: "WaaS 2.0 中 Webhook 事件类型的综合列表，详细说明每
     <tr>
       <td><code>fee_station.transaction.succeeded</code></td>
       <td>Fee Station 交易已成功完成。</td>
-    </tr>
-    <tr>
-      <td><code>payment.transaction.created</code></td>
-      <td>新支付交易已创建。</td>
-    </tr>
-    <tr>
-      <td><code>payment.transaction.late</code></td>
-      <td>支付交易已逾期，未在预期时间内完成。</td>
-    </tr>
-    <tr>
-      <td><code>payment.transaction.held</code></td>
-      <td>支付交易因审核或处理问题被暂缓。</td>
     </tr>
     <tr>
       <td><code>wallets.mpc.tss_request.created</code></td>
@@ -118,19 +107,13 @@ description: "WaaS 2.0 中 Webhook 事件类型的综合列表，详细说明每
       <td>上币请求已成功处理，代币当前已可用。</td>
     </tr>
     <tr>
-      <td><code>payment.status.updated</code></td>
-      <td><code>PaymentOrder</code></td>
-      <td>支付订单状态已更新。</td>
+      <td><code>wallet.mpc.balance.updated</code></td>
+      <td rowspan="2"><code>BalanceUpdateInfo</code></td>
+      <td>MPC 钱包余额更新。</td>
     </tr>
     <tr>
-      <td><code>payment.refund.status.updated</code></td>
-      <td><code>PaymentRefund</code></td>
-      <td>退款请求状态已更新。</td>
-    </tr>
-    <tr>
-      <td><code>payment.settlement.status.updated</code></td>
-      <td><code>PaymentSettlement</code></td>
-      <td>结算状态已更新。</td>
+      <td><code>wallet.web3.balance.updated</code></td>
+      <td>全托管钱包（Web3 钱包）余额更新。</td>
     </tr>
   </tbody>
 </table>

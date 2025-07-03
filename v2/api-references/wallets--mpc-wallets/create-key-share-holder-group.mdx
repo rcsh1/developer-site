@@ -29,13 +29,13 @@ with cobo_waas2.ApiClient(configuration) as api_client:
         participants=3,
         threshold=2,
         key_share_holders=[
-            cobo_waas2.CreateKeyShareHolder(
-                name="Key share holder name",
-                type="API",
-                tss_node_id="coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi",
-                signer=True
-            )
-        ]
+                    cobo_waas2.CreateKeyShareHolder(
+                        name="Key share holder name",
+                        type="API",
+                        tss_node_id="coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi",
+                        signer=True
+                    )
+                ]
     )
 
     try:

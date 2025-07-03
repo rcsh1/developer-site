@@ -31,7 +31,7 @@ Cobo 目前支持四种类型的费用模型交易：
 | 费用模型 | 计算方法 | 使用此模型的典型区块链 | 可自定义参数 | 
 |-----------|--------------------|---------------------------------|-------------------------|
 | 传统模型    | 交易费用 = gas 价格 * 使用的 gas 单位<ul><li>Gas 价格：以 wei 为单位的 gas 价格，代表每使用一个 gas 单位处理交易需支付给验证者的 ETH 数量。</li><li>Gas 单位：在以太坊网络上执行操作所需的计算工作量的度量。</li></ul>   |      以太坊和其他 EVM 兼容链      |           Gas 限制。参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。          | 
-| [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)  | 交易费用 = (基础费用 + 优先费用) * 使用的 gas 单位<ul><li>基础费用：每使用一个 gas 单位在链上执行交易所需的基础费用，根据网络需求动态调整。</li><li>优先费用：向矿工支付的额外费用，以优先处理交易，单位为 gas 单位。</li><li>Gas 单位：在以太坊网络上执行操作所需的计算工作量的度量。</li></ul>  | 以太坊和其他 EVM 兼容链  | <ul><li>最大 gas 价格</li><li>最大优先费用</li><li>Gas 限制</li></ul>参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。  | 
+| [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)  | 交易费用 = (基础费用 + 优先费用) * 使用的 gas 单位<ul><li>基础费用：每使用一个 gas 单位在链上执行交易所需的基础费用，根据网络需求动态调整。</li><li>优先费用：向矿工支付的额外费用，以优先处理交易，单位为 gas 单位。</li><li>Gas 单位：在以太坊网络上执行操作所需的计算工作量的度量。</li></ul>  | 当前支持的链为 Ethereum Mainnet（`ETH`），Sepolia Testnet（`SETH`）和 Scroll Sepolia Testnet（`SCROLL_ETH`）。 | <ul><li>最大 gas 价格</li><li>最大优先费用</li><li>Gas 限制</li></ul>参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。  | 
 | UTXO 模型      | 交易费用 = 费率 * 交易大小<ul><li>费率：以 sat/vByte 为单位的费率，代表每字节数据在区块链上占用的空间所需支付的 satoshis 数量。</li><li>交易大小：交易在区块链上占用的空间大小，影响 UTXO 模型中的总费用。</li></ul> | 比特币和其他 UTXO 基于链  | 最大费用金额。参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。             |
 | 固定模型     | 交易费用为固定金额。  | TRON                            | 最大费用金额。参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。                   |
 
@@ -41,13 +41,9 @@ Cobo 目前支持四种类型的费用模型交易：
 
 ## 费用等级
 
-对于传统、EIP-1559 和 UTXO 费用模型，Cobo 还支持三种不同的交易速度等级：慢速、推荐和快速。交易速度越快，交易费用越高。
-
-此外，交易费用还受网络状况的影响，例如网络拥堵。
-
 交易费用受速度级别的影响。用户可以选择慢速、推荐和快速交易速度，速度越快费用越高。
 
-Cobo 支持 Legacy、EIP-1559 和 UTXO 模型的三种费用级别：
+Cobo 支持 Legacy、EIP-1559、UTXO、Solana 和 Filecoin 模型的三种费用级别：
 
 - 慢速：费用最低，确认时间较长。
 - 推荐：费用和确认时间平衡。
@@ -59,7 +55,7 @@ Replace-By-Fee (RBF) 是一种允许您用新版本替换未确认交易的功�
 
 估算 RBF 交易费用的逻辑与正常交易类似，但增加了 RBF 交易的费用。根据不同的费用模型，估算 RBF 交易费用的关键点如下：
 - 传统模型：增加 gas 价格。RBF 交易的 gas 价格必须高于被替换交易的 gas 价格。
-- EIP-1559：增加最大 gas 价格和最大优先费用。
+- EIP-1559 模型：增加最大 gas 价格和最大优先费用。
 - UTXO 模型：增加费率，并确保费率与交易大小的乘积大于原始交易的乘积。如果不满足此条件，节点可能会拒绝广播交易。
 - 固定模型：增加固定金额。
 
