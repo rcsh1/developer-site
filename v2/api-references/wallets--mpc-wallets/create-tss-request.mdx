@@ -132,10 +132,11 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  CreateTssRequestRequest: new CoboWaas2.CreateTssRequestRequest({
-    type: "Recovery",
-    target_key_share_holder_group_id: "a1bf161f-8b60-4f61-9c35-6434b8654437",
-  }),
+  CreateTssRequestRequest:
+    new CoboWaas2.CreateTssRequestRequest.constructFromObject({
+      type: "Recovery",
+      target_key_share_holder_group_id: "a1bf161f-8b60-4f61-9c35-6434b8654437",
+    }),
 };
 apiInstance.createTssRequest(vault_id, opts).then(
   (data) => {

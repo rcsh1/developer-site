@@ -156,7 +156,7 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  EstimateFeeParams: new CoboWaas2.EstimateFeeParams({
+  EstimateFeeParams: new CoboWaas2.EstimateFeeParams.constructFromObject({
     request_type: "Transfer",
     source: {
       source_type: "Asset",

@@ -130,9 +130,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const vault_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  UpdateMpcVaultByIdRequest: new CoboWaas2.UpdateMpcVaultByIdRequest({
-    name: "The new name of the vault",
-  }),
+  UpdateMpcVaultByIdRequest:
+    new CoboWaas2.UpdateMpcVaultByIdRequest.constructFromObject({
+      name: "The new name of the vault",
+    }),
 };
 apiInstance.updateMpcVaultById(vault_id, opts).then(
   (data) => {

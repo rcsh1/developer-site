@@ -64,7 +64,7 @@ public class Example {
     DevelopersWebhooksApi apiInstance = new DevelopersWebhooksApi();
     TriggerTestWebhookEventRequest triggerTestWebhookEventRequest =
         new TriggerTestWebhookEventRequest()
-            .eventType(WebhookEventType.WALLETS.TRANSACTION.CREATED);
+            .eventType(WebhookEventType.WALLETS_TRANSACTION_CREATED);
     try {
       TriggerTestWebhookEvent201Response result =
           apiInstance.triggerTestWebhookEvent(triggerTestWebhookEventRequest);
@@ -136,9 +136,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.DevelopersWebhooksApi();
 const opts = {
-  TriggerTestWebhookEventRequest: new CoboWaas2.TriggerTestWebhookEventRequest({
-    event_type: "wallets.transaction.created",
-  }),
+  TriggerTestWebhookEventRequest:
+    new CoboWaas2.TriggerTestWebhookEventRequest.constructFromObject({
+      event_type: "wallets.transaction.created",
+    }),
 };
 apiInstance.triggerTestWebhookEvent(opts).then(
   (data) => {

@@ -23,12 +23,12 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.WalletsApi(api_client)
     wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479"
     batch_check_utxo_request = cobo_waas2.BatchCheckUtxoRequest(
-        token_id="BTC", utxos=[
+        token_id="BTC",
+        utxos=[
             cobo_waas2.BatchUTXOParam(
-                tx_hash="123e457-e89b-12d3-a456-426614174004",
-                vout_ns=[0],
+                tx_hash="9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb"
             )
-        ]
+        ],
     )
 
     try:
@@ -64,12 +64,13 @@ public class Example {
     WalletsApi apiInstance = new WalletsApi();
     UUID walletId = UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479");
     BatchCheckUtxoRequest batchCheckUtxoRequest =
-        new BatchCheckUtxoRequest().tokenId("BTC").utxos(
-          Arrays.asList(
-                new BatchUTXOParam()
-                      .txHash("9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb")
-                      .voutNs(Arrays.asList(0))
-          ));
+        new BatchCheckUtxoRequest()
+            .tokenId("BTC")
+            .utxos(
+                Arrays.asList(
+                    new BatchUTXOParam()
+                        .txHash(
+                            "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb")));
     try {
       BatchCheckUtxo201Response result =
           apiInstance.batchCheckUtxo(walletId, batchCheckUtxoRequest);
@@ -135,16 +136,16 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.WalletsApi();
 const wallet_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  BatchCheckUtxoRequest: new CoboWaas2.BatchCheckUtxoRequest({
-    token_id: "BTC",
-    utxos: [
-      {
-        tx_hash:
-          "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
-        vout_ns: [0],
-      },
-    ],
-  }),
+  BatchCheckUtxoRequest:
+    new CoboWaas2.BatchCheckUtxoRequest.constructFromObject({
+      token_id: "BTC",
+      utxos: [
+        {
+          tx_hash:
+            "9bdf8e7ae03c237e115f09543fbdb40f8efa600106e78b67ce4d5adfadda2dbb",
+        },
+      ],
+    }),
 };
 apiInstance.batchCheckUtxo(wallet_id, opts).then(
   (data) => {

@@ -136,10 +136,11 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.DevelopersWebhooksApi();
 const opts = {
-  CreateWebhookEndpointRequest: new CoboWaas2.CreateWebhookEndpointRequest({
-    url: "https://example.com/webhook",
-    subscribed_events: ["wallets.transaction.created"],
-  }),
+  CreateWebhookEndpointRequest:
+    new CoboWaas2.CreateWebhookEndpointRequest.constructFromObject({
+      url: "https://example.com/webhook",
+      subscribed_events: ["wallets.transaction.created"],
+    }),
 };
 apiInstance.createWebhookEndpoint(opts).then(
   (data) => {

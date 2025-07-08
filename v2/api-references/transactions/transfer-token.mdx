@@ -154,7 +154,7 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.TransactionsApi();
 const opts = {
-  TransferParams: new CoboWaas2.TransferParams({
+  TransferParams: new CoboWaas2.TransferParams.constructFromObject({
     request_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     source: {
       source_type: "Asset",
