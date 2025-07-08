@@ -126,7 +126,7 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreateRefundRequest: new CoboWaas2.CreateRefundRequest({
+  CreateRefundRequest: new CoboWaas2.CreateRefundRequest.constructFromObject({
     request_id: "123e4567-e89b-12d3-a456-426614174004",
     payable_amount: "0.25",
     token_id: "ETH_USDT",

@@ -125,11 +125,12 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsMPCWalletsApi();
 const opts = {
-  CreateMpcProjectRequest: new CoboWaas2.CreateMpcProjectRequest({
-    name: "Project name",
-    participants: 3,
-    threshold: 2,
-  }),
+  CreateMpcProjectRequest:
+    new CoboWaas2.CreateMpcProjectRequest.constructFromObject({
+      name: "Project name",
+      participants: 3,
+      threshold: 2,
+    }),
 };
 apiInstance.createMpcProject(opts).then(
   (data) => {

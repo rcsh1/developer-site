@@ -128,14 +128,15 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreatePaymentOrderRequest: new CoboWaas2.CreatePaymentOrderRequest({
-    merchant_id: "1001",
-    token_id: "ETH_USDT",
-    currency: "USD",
-    order_amount: "100.00",
-    fee_amount: "2.00",
-    psp_order_code: "P20240201001",
-  }),
+  CreatePaymentOrderRequest:
+    new CoboWaas2.CreatePaymentOrderRequest.constructFromObject({
+      merchant_id: "1001",
+      token_id: "ETH_USDT",
+      currency: "USD",
+      order_amount: "100.00",
+      fee_amount: "2.00",
+      psp_order_code: "P20240201001",
+    }),
 };
 apiInstance.createPaymentOrder(opts).then(
   (data) => {

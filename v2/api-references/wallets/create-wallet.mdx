@@ -131,7 +131,7 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsApi();
 const opts = {
-  CreateWalletParams: new CoboWaas2.CreateWalletParams({
+  CreateWalletParams: new CoboWaas2.CreateWalletParams.constructFromObject({
     name: "My WaaS 2.0 Wallet",
     wallet_type: "Custodial",
     wallet_subtype: "Asset",

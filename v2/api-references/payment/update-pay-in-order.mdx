@@ -121,9 +121,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.PaymentApi();
 const order_id = "O20250304-M1001-1001";
 const opts = {
-  UpdatePaymentOrderRequest: new CoboWaas2.UpdatePaymentOrderRequest({
-    expired: true,
-  }),
+  UpdatePaymentOrderRequest:
+    new CoboWaas2.UpdatePaymentOrderRequest.constructFromObject({
+      expired: true,
+    }),
 };
 apiInstance.updatePaymentOrder(order_id, opts).then(
   (data) => {

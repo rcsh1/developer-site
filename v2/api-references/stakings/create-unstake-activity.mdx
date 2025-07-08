@@ -124,9 +124,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
-  CreateUnstakeActivityRequest: new CoboWaas2.CreateUnstakeActivityRequest({
-    staking_id: "0011039d-27fb-49ba-b172-6e0aa80e37ec",
-  }),
+  CreateUnstakeActivityRequest:
+    new CoboWaas2.CreateUnstakeActivityRequest.constructFromObject({
+      staking_id: "0011039d-27fb-49ba-b172-6e0aa80e37ec",
+    }),
 };
 apiInstance.createUnstakeActivity(opts).then(
   (data) => {

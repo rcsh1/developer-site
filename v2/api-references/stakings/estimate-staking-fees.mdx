@@ -147,12 +147,13 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
-  GetStakingEstimationFeeRequest: new CoboWaas2.GetStakingEstimationFeeRequest({
-    activity_type: "Stake",
-    pool_id: "babylon_btc_signet",
-    amount: "100.00",
-    fee: { fee_type: "EVM_EIP_1559", token_id: "TRON" },
-  }),
+  GetStakingEstimationFeeRequest:
+    new CoboWaas2.GetStakingEstimationFeeRequest.constructFromObject({
+      activity_type: "Stake",
+      pool_id: "babylon_btc_signet",
+      amount: "100.00",
+      fee: { fee_type: "EVM_EIP_1559", token_id: "TRON" },
+    }),
 };
 apiInstance.getStakingEstimationFee(opts).then(
   (data) => {

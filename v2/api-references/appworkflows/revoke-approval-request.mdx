@@ -134,9 +134,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.AppWorkflowsApi();
 const approval_id = "f47ac10b-58cc-4372-a567-0e02b2c3d479";
 const opts = {
-  RevokeApprovalRequestRequest: new CoboWaas2.RevokeApprovalRequestRequest({
-    initiator_email: "johnsmith@example.com",
-  }),
+  RevokeApprovalRequestRequest:
+    new CoboWaas2.RevokeApprovalRequestRequest.constructFromObject({
+      initiator_email: "johnsmith@example.com",
+    }),
 };
 apiInstance.revokeApprovalRequest(approval_id, opts).then(
   (data) => {

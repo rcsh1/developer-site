@@ -136,13 +136,14 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreateSettlementRequestRequest: new CoboWaas2.CreateSettlementRequestRequest({
-    request_id: "SETTLEMENT123",
-    settlements: [{
-      amount: "500.00",
-      bank_account_id: "123e457-e89b-12d3-a456-426614174004",
-    }],
-  }),
+  CreateSettlementRequestRequest: 
+    new CoboWaas2.CreateSettlementRequestRequest.constructFromObject({
+      request_id: "SETTLEMENT123",
+      settlements: [{
+        amount: "500.00",
+        bank_account_id: "123e457-e89b-12d3-a456-426614174004",
+      }],
+    }),
 };
 apiInstance.createSettlementRequest(opts).then(
   (data) => {
