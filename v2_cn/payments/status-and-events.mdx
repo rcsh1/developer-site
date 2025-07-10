@@ -10,17 +10,23 @@ description: ""
 | 事件名称 | 触发条件 | 事件内容 |
 |---------|---------|----------|
 | `payment.status.updated` | 支付订单状态发生变更。支付订单状态包括：<br></br>- `Pending`: 订单已创建，等待付款。尚未检测到充币交易。<br></br>- `Processing`: 在收币地址检测到首笔充币交易。<br></br>- `Completed`: 在订单有效期内收到全额付款<br></br>- `Expired`: 订单有效期内没有已完成的充币交易，或者订单已被取消。<br></br>- `Underpaid`: 订单有效期内存在已完成的充币交易，但实收金额少于应付金额。 | 支付订单详情 |
-| `payment.transaction.created` | 检测到收币地址有新的充币交易 | 支付订单详情和充币交易详情 |
-| `payment.transaction.late` | 检测到充币交易，但订单已处于终态<br/>（`Underpaid`、`Expired` 或 `Completed`） | 支付订单详情和充币交易详情 |
-| `payment.transaction.held` | 充币交易未通过合规扫描 | 支付订单详情和充币交易详情 |
+| `payment.transaction.created` | 检测到订单的收币地址或充值地址上有新的充币交易 | - 支付订单详情或充值详情<br></br>- 充币交易详情 |
+| `payment.transaction.late` | 检测到充币交易，但订单已处于终态<br/>（`Underpaid`、`Expired` 或 `Completed`） | - 支付订单详情<br></br>- 充币交易详情 |
+| `payment.transaction.held` | 充币交易未通过合规扫描 | - 支付订单详情或充值详情<br></br>- 充币交易详情 |
+| `payment.transaction.complete` | 充值模式下，充币交易通过合规扫描，资金已成功入账并计入实收金额。 | - 充值详情<br></br>- 充币交易详情 |
 | `payment.refund.status.updated` | 退款订单状态发生变更。退款订单状态包括：<br></br>- `Pending`：已创建退款订单，但尚未发起交易。<br></br>- `Processing`: 至少有一笔退款交易正在进行中。<br></br>- `Completed`: 所有退款交易均已完成。<br></br>- `PartiallyCompleted`: 部分退款交易已完成，部分退款交易失败。<br></br>- `Failed`: 所有退款交易均失败。 | 退款订单详情 |
 | `payment.settlement.status.updated` | 结算请求状态变更。结算请求状态包括：<br></br>- `Pending`: 已创建结算请求，等待处理。<br></br>- `Processing`: 结算请求处理中，至少有一笔结算正在进行。<br></br>- `Completed`: 所有结算已完成。<br></br>- `PartiallyCompleted`: 部分结算已完成，部分结算失败。<br></br>- `Failed`: 所有结算均失败。| 结算请求详情 |
 
 **事件详情**
-- **支付订单详情**：参考 [Get pay-in order information](/v2/api-references/payment/get-pay-in-order-information) 的响应参数说明
+- **支付订单详情**：参考 [Get pay-in order information](/v2/api-references/payment/get-pay-in-order-information) 的响应参数说明。除上述响应参数外，事件内容中还包含 `acquiring_type` 字段，表示收单类型，在支付订单详情中该字段为 `Order`，表示订单模式。
+- **充值详情**：
+    - `payer_id`：用户 ID
+    - `custom_payer_id`: 自定义用户 ID
+    - `acquiring_type`: 收单类型，在充值详情中该字段为 `TopUp`，表示充值模式。
 - **充币交易详情**：参考 [Get transaction information](/v2/api-references/transactions/get-transaction-information) 的响应参数说明
 - **退款订单详情**：参考 [Get refund order information](/v2/api-references/payment/get-refund-order-information) 的响应参数说明
 - **结算请求详情**：参考 [Get settlement request information](/v2/api-references/payment/get-settlement-request-information) 的响应参数说明
+
 
 
 ## 状态流转

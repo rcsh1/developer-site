@@ -4,58 +4,89 @@ lang: "zh-hans"
 description: ""
 ---
 
-在开始集成之前，您需要完成一系列初始配置，如开通钱包服务、创建 API Key、导入商户信息等。
+在开始集成支付功能之前，请按照以下步骤完成必要的前置配置。
 
-## 开通钱包服务
+## 基础准备
 
-取决您所选择的钱包类型，钱包服务的开通过程将略有不同。
+### 选择钱包类型
+
+Cobo 提供两种钱包类型，您可以根据实际业务需求选择适合的钱包类型。
+
+| 钱包类型 | 私钥管理模式 | Cobo KYT 合规扫描 | 适用场景 |
+| --- | --- | --- | --- |
+| [全托管钱包](/v2_cn/payments/glossary#custodial-wallet（全托管钱包）) | Cobo 代管[私钥](/v2_cn/payments/glossary#private-key（私钥）)<br/>无需担心私钥安全风险 | ✅ 自动启用<br/>强制合规，满足监管要求 | • 追求便捷管理的客户<br/>• 对合规有强制要求的业务&nbsp;&nbsp;|
+| [MPC 钱包](/v2_cn/payments/glossary#mpc-wallet（mpc-钱包）) | 您自行管理私钥<br/>实现资产自托管 (Self-Custody) | ⚙️ 可选配置<br/>根据业务需求灵活启用 | • 需要完全控制私钥的客户<br/>• 对合规要求较为灵活的业务&nbsp;&nbsp;|
+
+### 开通钱包服务
+
+取决于您所选择的钱包类型，钱包服务的开通过程将略有不同。
 
 * 如果您选择使用全托管钱包，请参考[全托管钱包快速入门](https://manuals.cobo.com/cn/portal/quick-start-guide-custodial-wallets)，完成以下步骤：  
   1. 设置账户和团队。  
   2. 参考[安全检查清单](https://manuals.cobo.com/cn/portal/security-checklist)，根据实际业务需要，实施安全最佳实践。  
 * 如果您选择使用 MPC 钱包，请参考 [MPC 钱包快速入门](https://manuals.cobo.com/cn/portal/quick-start-guide-mpc)，完成以下步骤：  
   1. 设置账户和团队。  
-  2. 配置一个 MPC Vault。由于结算之前可能会发生大量归集交易且交易时间集中，请确保您已设置至少一个[服务端签名人](https://www.cobo.com/developers/v2_cn/guides/mpc-wallets/server-co-signer/tss-node-overview)作为您的[主控组](https://manuals.cobo.com/cn/portal/mpc-wallets/ocw/holder-group-main-group)或[签名组](https://manuals.cobo.com/cn/portal/mpc-wallets/ocw/holder-group-signing-group)，以实现自动化签名。  
+  2. 配置一个 MPC Vault。由于结算之前可能会发生大量归集交易且交易时间集中，请确保您已设置至少一个[服务端签名人](/v2_cn/guides/mpc-wallets/server-co-signer/tss-node-overview)作为您的[主控组](https://manuals.cobo.com/cn/portal/mpc-wallets/ocw/holder-group-main-group)或[签名组](https://manuals.cobo.com/cn/portal/mpc-wallets/ocw/holder-group-signing-group)，以实现自动化签名。  
   3. 参考[安全检查清单](https://manuals.cobo.com/cn/portal/security-checklist)，根据实际业务需要，实施安全最佳实践。
 
-## 开通 Fee Station
 
-在您日常开展业务过程中，可通过 [Fee Station](https://manuals.cobo.com/cn/portal/fee-station/introduction) 管理在 Cobo 产生的各类费用。如需使用该功能，请联系 Cobo 销售团队申请开通。
+## 技术配置
 
-## 确认独立地址阈值
-
-在默认情况下，支付订单所使用的收币地址是循环复用的——即某一地址在用于一笔订单后，在该订单有效期结束后，可能会被分配给其他订单使用。为规避因地址复用带来的合规风险，建议大额订单使用独立的收币地址。
-
-您可以为订单金额设置一个**独立地址阈值**，当订单的应收金额大于或等于该阈值时，Cobo 将自动为该订单分配一个独立收币地址。如需设置该阈值，请联系 Cobo 销售团队。
-
-## Payment API 调用准备
+### Payment API 调用准备
 
 在后续的集成过程中，您需要调用 Payment API 完成创建订单、发起结算等步骤。
 
-1. 参考[开发者指南](https://www.cobo.com/developers/v2_cn/guides/get-started/get-started-with-waas)，生成一对 API Key 和 API Secret，并在 Cobo Portal 注册该 API Key：  
-   * **用户角色**：可以选择 **Payment\_Operator** 或 **Payment\_Viewer。**  
-   * **钱包范围**： 妥善配置，尽量避免选择**任何类型钱包**。  
-2. 如果您选择使用 SDK 而不是手动编写 API 请求，则需要安装[对应编程语言的 SDK](https://www.cobo.com/developers/v2_cn/developer-tools/quickstart-python)。
+1. 参考[开发者指南](/v2_cn/guides/get-started/get-started-with-waas)，生成一对 API Key 和 API Secret，并在 Cobo Portal 注册该 API Key：  
+   * **用户角色**：根据业务需求，选择 **Payment Admin** 或 **Payment Member**。  
+   * **钱包范围**：根据您的业务需求和安全策略选择合适的钱包范围：
+     - 测试阶段：可以选择**任何类型钱包**以便快速验证集成功能
+     - 生产环境：建议仅选择您实际需要访问的特定钱包类型，例如，如果您只使用全托管钱包，则仅选择**全托管钱包**。您可以在后续根据业务发展需要随时调整钱包范围，以确保 API 访问权限遵循最小权限原则。
+2. 如果您选择使用 SDK 而不是手动编写 API 请求，则需要安装对应编程语言的 SDK：
+   - [Python SDK 快速入门](/v2_cn/developer-tools/quickstart-python)
+   - [Java SDK 快速入门](/v2_cn/developer-tools/quickstart-java) 
+   - [Go SDK 快速入门](/v2_cn/developer-tools/quickstart-go)
+   - [JavaScript SDK 快速入门](/v2_cn/developer-tools/quickstart-javascript)
 
-## 订阅 Webhook 事件
+<Note>通过官方发布渠道可获取正式版本 SDK。如果您想要充分利用最新的 API 功能，可以联系 Cobo 销售团队获取 Beta 版本 SDK。</Note>
 
-* 参考[开发者指南](https://www.cobo.com/developers/v2_cn/guides/webhooks-callbacks/set-up-endpoint)，搭建 Webhook Endpoint。  
-* 在 Cobo Portal [注册该 Webhook Endpoint](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create)，并订阅[支付相关的 Webhook 事件](?tab=t.0#heading=h.iesi2e7yooag)。
+### 订阅 Webhook 事件
 
-## 录入商户信息
+* 参考[开发者指南](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)，搭建 Webhook Endpoint。  
+* 在 Cobo Portal [注册该 Webhook Endpoint](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create)，并订阅[支付相关的 Webhook 事件](/v2_cn/payments/status-and-events)。
 
-调用 Payment API 录入商户名称，并将商户与钱包关联。在您为某商户创建订单时，Cobo 会在其关联钱包下创建订单的收币地址。每个商户需对应唯一钱包，同一个钱包可以关联一个或多个商户。
+## 业务配置
 
-1. 新建一个钱包：  
-   * 您可以直接在 Cobo Portal 上创建钱包。创建后，您可以在钱包列表页获取钱包 ID。将鼠标悬停在钱包名称上，钱包 ID 将自动显示。  
-   * 如果您需要创建大量钱包，可以调用 [Create wallet](https://www.cobo.com/developers/v2/api-references/wallets/create-wallet) 接口进行创建。您可以在 API 返回中获取钱包 ID。  
-2. 调用 [Create merchant](https://www.cobo.com/developers/v2/api-references/payment/create-merchant) 创建商户，在请求中传入以下信息：  
+
+### 录入商户并关联钱包
+
+调用 Payment API 录入商户名称，并将商户与钱包关联。在您为该商户创建订单或者充值地址时，Cobo 均会在该钱包下创建相应的收币地址。每个商户需对应唯一钱包，同一个钱包可以关联一个或多个商户。
+
+<Note>如果您是商户（直接服务付款方），则仅需创建一个商户，且无需配置开发者费率。开发者费率仅适用于商户平台（如 PSP、电商平台）向其下游商户收取手续费。</Note>
+
+1. 在 Cobo Portal 上创建钱包。
+     
+     - 对于全托管钱包，您需要点击**钱包**->**全托管钱包**->**Web3 钱包**进入创建钱包的页面。在该页面中，您可以点击右上角的**创建钱包**按钮来创建新的钱包。
+     <img src="/v2_cn/images/payments/web3_wallet_entry.png" className="screenshot_modal" alt="Entry to Web3 Wallet" />
+     - 对于 MPC 钱包，您需要点击**钱包**->**MPC 钱包**，默认会进入您在开通钱包服务时创建的 MPC Vault。在该页面中，您可以点击右上角的**创建钱包**按钮来创建新的钱包。
+   
+2. 创建后，您可以在钱包列表页获取钱包 ID。将鼠标悬停在钱包名称上，钱包 ID 将自动显示。 
+     <img src="/v2_cn/images/payments/wallet_name_hoverover.png" className="screenshot_modal" alt="Entry to Web3 Wallet" />
+   
+
+3. 调用 [Create merchant](/v2/api-references/payment/create-merchant) 创建商户，在请求中传入以下信息：  
    * 商户名称（`name`）  
    * 钱包 ID（`wallet_id`）：您在上一步中所创建钱包的钱包 ID。
+   * 开发者费率（`developer_fee_rate`）：
+     - 充值模式：通过该字段设置开发者费率，用于计算每笔充值的开发者费用。例如，设置为 0.01 表示收取 1% 的费用。
+     - 订单模式：您无需设置该字段。订单模式下，商户无固定费率，需在[创建订单](/v2_cn/payments/create-orders)时单独指定每笔订单的开发者费用。
+     
+     详细的费用计算方式请参考[金额定义与余额计算说明](/v2_cn/payments/amounts-and-balances)。
+
+   调用后，您将获取到商户 ID (`merchant_id`)，作为该商户在 Cobo 系统中的唯一标识符，用于后续 API 调用中标识该商户。
 
 **调用示例**
 
-以下为调用 [Create merchant](https://www.cobo.com/developers/v2/api-references/payment/create-merchant) 创建商户的示例代码：
+以下为调用 [Create merchant](/v2/api-references/payment/create-merchant) 创建商户的示例代码：
 
 <Accordion title="Sample code in Python">
 ```py
@@ -72,7 +103,8 @@ configuration = cobo_waas2.Configuration(
 with cobo_waas2.ApiClient(configuration) as api_client:
    # Create an instance of the API class
    api_instance = cobo_waas2.PaymentApi(api_client)
-   create_merchant_request = cobo_waas2.CreateMerchantRequest(wallet_id="<YOUR_WALLET_ID>", name="<YOUR_MERCHANT_NAME>")
+   create_merchant_request = cobo_waas2.CreateMerchantRequest(wallet_id="<YOUR_WALLET_ID>", name="<YOUR_MERCHANT_NAME>, developer_fee_rate="<YOUR_DEVELOPER_FEE_RATE>"
+")
 
 
    try:
@@ -110,7 +142,8 @@ public class Example {
    PaymentApi apiInstance = new PaymentApi(defaultClient);
    CreateMerchantRequest createMerchantRequest = new CreateMerchantRequest();
    createMerchantRequest.setWalletId("<YOUR_WALLET_ID>");
-   createMerchantRequest.setName("<YOUR_MERCHANT_NAME>");
+   createMerchantRequest.setName("<YOUR_WALLET_NAME>");
+   createMerchantRequest.setDeveloperFeeRate("<YOUR_DEVELOPER_FEE_RATE>");
    try {
           Merchant merchant = apiInstance.createMerchant(createMerchantRequest);
          System.out.println(merchant);
@@ -121,5 +154,28 @@ public class Example {
 }
 ```
 </Accordion>
+
+
+### 配置结算账户
+
+根据您的资金结算需求，请联系 Cobo 销售团队录入相应的结算账户：
+
+| 结算账户类型 | 说明 | API 查询接口 |
+| --- | --- | --- |
+| **加密货币地址** | 录入外部加密货币地址。资金将直接转账至该钱包地址。 | [List crypto addresses](/v2/api-references/payment/list-crypto-addresses)&nbsp;&nbsp;|
+| **银行账户** | 录入银行账户信息。资金将被兑换为法币并结算至账户。 | [List all bank accounts](/v2/api-references/payment/list-all-bank-accounts)&nbsp;&nbsp;|
+
+
+### 开通 Fee Station
+
+在您日常开展业务过程中，需要通过 [Fee Station](https://manuals.cobo.com/cn/portal/fee-station/introduction) 管理在 Cobo 产生的各类费用。请联系 Cobo 销售团队开通该功能。
+
+### 确认独立地址阈值 (订单模式)
+
+在默认情况下，支付订单所使用的收币地址是循环复用的，即某一地址在用于一笔订单后，在该订单有效期结束后，可能会被分配给其他订单使用。为规避因地址复用带来的合规风险，建议大额订单使用独立的收币地址。
+
+您可以为订单金额设置一个**独立地址阈值**，当订单的应收金额大于或等于该阈值时，Cobo 将自动为该订单分配一个独立收币地址。如需设置该阈值，请联系 Cobo 销售团队。
+
+
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

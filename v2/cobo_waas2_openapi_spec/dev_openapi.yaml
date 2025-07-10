@@ -1819,7 +1819,7 @@ paths:
       description: |
         This operation acquires an Access Token and a Refresh Token for the Checkout SDK.
 
-        For security purposes, an Access Token expires after a certain period. Once it expires, you need to call the [Refresh Access Token](/v2/api-references/oauth/refresh-access-token) operation to get a new Access Token and a new Refresh Token.
+        For security purposes, an Access Token expires after a certain period. Once it expires, you need to call the [Refresh Access Token](https://www.cobo.com/developers/v2/api-references/oauth/refresh-access-token) operation to get a new Access Token and a new Refresh Token.
       requestBody:
         $ref: '#/components/requestBodies/permissionTokenExchangeBody'
       responses:
@@ -11597,7 +11597,7 @@ components:
         amount:
           type: string
           description: |
-            The settlement amount.
+            The settlement amount. When settling merchant balance from orders (`acquiring_type` is `Order` and `settlement_type` is `Merchant`), do not specify this field as the settlement amount will be automatically calculated based on the order amounts.
             - If `payout_channel` is set to `Crypto`, this represents the settlement amount in the specified cryptocurrency.
             - If `payout_channel` is set to `OffRamp`, this represents the settlement amount in the specified fiat currency.
           example: '500.00'
@@ -11617,13 +11617,15 @@ components:
           example: addr_ethusdt_20250506T123456_ab12cd
         order_ids:
           type: array
-          description: |
-            A list of order IDs to be included in this settlement. If provided, the settlement request will settle the merchant funds received from the specified orders, and the `amount` field will be ignored. 
-
-            This field is only applicable when `settlement_type` is set to `Merchant`. 
           items:
             type: string
-            description: The order ID.
+            description: |
+
+              The order ID to be included in this settlement.
+
+              This field is only applicable when `settlement_type` is set to `Merchant`. If provided, the settlement request will settle the merchant funds received from the specified orders. You should not specify both `order_ids` and `amount`. 
+                  
+                  
             example: O20250304-M1001-1001
     Merchant:
       type: object
@@ -12326,7 +12328,7 @@ components:
           example: '0.01'
         min_amount:
           type: string
-          description: 'The minimum top-up amount allowed for this address. Top-ups below this threshold will not be credited to merchant funds, but to developer funds instead.'
+          description: The minimum top-up amount allowed for this address. Top-ups below this threshold will not be credited to merchant or developer funds.
           example: '0.1'
         created_timestamp:
           type: integer
@@ -15133,7 +15135,7 @@ components:
                 example: ETH_USDT
               currency:
                 type: string
-                description: The fiat currency of the order.
+                description: 'The fiat currency of the order. Currently, only `USD` is supported.'
                 default: USD
                 example: USD
               order_amount:
@@ -15146,20 +15148,22 @@ components:
                 example: '2.00'
               merchant_order_code:
                 type: string
-                description: A unique reference code assigned by the merchant to identify this order in their system.
+                description: A unique reference code assigned by the merchant to identify this order in their system. The code should have a maximum length of 128 characters.
                 example: M20240201001
               psp_order_code:
                 type: string
-                description: A unique reference code assigned by the developer to identify this order in their system.
+                description: |
+                  A unique reference code assigned by you as a developer to identify this order in your system. This code must be unique across all orders in your system. The code should have a maximum length of 128 characters.
                 example: P20240201001
               expired_in:
                 type: integer
                 description: |
-                  The number of seconds after which the pay-in order will expire. After expiration:
+                  The number of seconds until the pay-in order expires, counted from when the request is sent. For example, if set to `1800`, the order will expire in 30 minutes. After expiration:
                   - The order status becomes final and cannot be changed
                   - The `received_token_amount` field will no longer be updated
                   - Funds received after expiration will be categorized as late payments and can only be settled from the developer balance.
                   - A late payment will trigger a `transactionLate` webhook event.
+                default: 1800
                 example: 1800
               use_dedicated_address:
                 type: boolean
