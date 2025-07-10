@@ -11,6 +11,7 @@ This article explains the common error codes and HTTP status codes you may encou
 | 12002          | The specified token is not supported by Cobo.                                                     | Choose a supported token. Call the [List supported tokens](/v2/api-references/wallets/list-supported-tokens) operation to get the full list of supported tokens.          |
 | 12007, 30012        | Insufficient balance to perform the requested operation.                                                 | Ensure the source address has sufficient balance to cover the transferred amount.                                                 |
 | 12009          | Duplicate request ID.                                       | Use a unique request ID.                                     |
+| 12025          | The UTXOs specified in `included_utxos` or `excluded_utxos` are invalid.                                                  | Verify the UTXOs specified in `included_utxos` or `excluded_utxos`.                                                 |
 | 2000                | Internal error occurred during processing.                                                              | Please try again later.                                                                                                           |
 | 2010                | Rate limit exceeded. Too many requests in a short time.                                                  | Please try again later.                                                                                                           |
 | 2021                | The request handler is missing or not implemented.                                                      | Provide a valid handler for the request.                                                                                          |
@@ -32,6 +33,7 @@ This article explains the common error codes and HTTP status codes you may encou
 | 30013               | Insufficient balance to cover the required transaction fee.                             | Ensure the source address has enough balance to cover transaction fees.                                       |
 | 30014               | The destination address is invalid.                                                    | Provide a valid destination address.                                                                                |
 | 30023               | (This error only applies to Exchange Wallets) Invalid trading account type.                                                                           |  Provide a valid trading account type.                                                                      |
+| 30032               | (This error only applies to MPC Wallets) Invalid key share holder group.                                                                          |  Check if a valid Main Group or Signing Group has been configured.                                                                     |
 | 60010          | The specified token has not been enabled for this organization.                                   | Enable the token for your organization.                    |
 
 
