@@ -140,7 +140,7 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 const apiInstance = new CoboWaas2.StakingsApi();
 const opts = {
   CreateWithdrawActivityRequest:
-    new CoboWaas2.CreateWithdrawActivityRequest.constructFromObject({
+    CoboWaas2.CreateWithdrawActivityRequest.constructFromObject({
       staking_id: "0011039d-27fb-49ba-b172-6e0aa80e37ec",
       fee: { fee_type: "EVM_EIP_1559", token_id: "TRON" },
     }),
