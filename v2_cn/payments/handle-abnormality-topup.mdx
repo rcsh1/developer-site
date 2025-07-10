@@ -1,0 +1,22 @@
+---
+title: "异常处理"
+lang: "zh-hans"
+description: ""
+---
+在充值模式下，您可能要处理以下几种异常情况。
+
+## 充值地址更换
+
+当某一充值地址出现多次充币交易无法通过合规扫描的情况时，Cobo 会自动废弃该地址，并为该用户生成新的充值地址。地址更换后，请务必及时通知用户使用新地址进行充值。废弃地址的任何后续入账资金都不会被计入实收金额，也不会触发充值事件。
+
+## 合规扫描不通过
+
+* 对于全托管钱包，Cobo 将对每笔转入收币地址的交易进行合规扫描（如 KYT/AML 扫描）。若交易未通过合规检查，请通过 [help@cobo.com](mailto:help@cobo.com) 联系 Cobo 的支持团队进行人工处理。  
+* 对于 MPC 钱包，您可通过 [Screening App](https://manuals.cobo.com/cn/apps/screening/introduction) 自行对资金进行合规扫描，并处理未通过的交易。
+
+若某笔交易初次未通过合规扫描，但在后续人工审核后通过，则该笔资金仍然会计入实收金额中。
+
+若某笔交易最终未通过人工审核，并被隔离或冻结，则该笔资金将不会被计入实收金额。
+
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

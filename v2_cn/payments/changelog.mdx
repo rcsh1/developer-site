@@ -1,0 +1,43 @@
+---
+title: "发布历史"
+lang: "zh-hans"
+---
+
+本文记录了 Cobo 支付解决方案的所有重要更新。
+
+
+## 2025 年 07 月
+
+| 产品 | 变更说明 | 发布时间 |
+|------|----------|----------|
+| **Payment Management App** | - 新增支持充值模式，您可在 Web 界面：<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 创建和管理充值地址<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 监控充值交易状态<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 导出充值记录 | 2025-07-10 |
+| **Payment API** | API SDK v1.18.0 发版。变更如下：<br/><br/>- 新增充值模式相关操作：<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [Get top-up address](/v2/api-references/payment/get-top-up-address)<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [List payers](/v2/api-references/payment/list-payers)<br/>&nbsp;&nbsp;具体集成步骤请参考[获取充值地址](/v2_cn/payments/get-topup-addresses)<br/><br/>- 为 [Create pay-in order](/v2/api-references/payment/create-pay-in-order) 新增 `use_dedicated_address` 参数，支持指定使用独立收款地址<br/><br/>- 新增与充值模式相关的多个 [Webhook 事件](/v2_cn/payments/status-and-events) | 2025-07-02 |
+
+
+## 2025 年 06 月
+
+| 产品 | 变更说明 | 发布时间 |
+|------|----------|----------|
+| **Payment Management App** | - 新增仪表盘、余额查询、报表导出功能 | 2025-06-27 |
+| **Payment Management App** | - 新增支持全托管钱包 | 2025-06-19 |
+| **Payment API** | API SDK v1.17.0 发版。变更如下：<br/><br/>- 新增支持加密货币提现的结算方式。相关操作：<br/>&nbsp;&nbsp;&nbsp;&nbsp;-[Create settlement request](/v2/api-references/payment/create-settlement-request)<br/>&nbsp;&nbsp;&nbsp;&nbsp;-[List crypto addresses](/v2/api-references/payment/list-crypto-addresses)<br/><br/>- [Create refund order](/v2/api-references/payment/create-refund-order) 新增开发者费用相关字段。您可以在退款时向商家收取开发者费用。更多信息可参考[处理退款申请](/v2_cn/payments/handle-abnormality-order#处理退款申请)。<br/><br/>- 新增以下接口，用于完成 Checkout SDK 的 OAuth 认证：<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [Get Access Token](/v2/api-references/oauth/get-access-token)<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [Refresh Access Token](/v2/api-references/oauth/refresh-access-token)| 2025-06-18 |
+| **Payment Management App** | - 新增支持加密货币出金的结算方式 | 2025-06-10 |
+| **Checkout SDK** | - Checkout SDK v1.1.0 发版。Checkout SDK 提供开箱即用的收单前端组件，支持 iframe 嵌入方式快速集成 | 2025-06-09 |
+
+## 2025 年 05 月
+| 产品 | 变更说明 | 发布时间 |
+|------|----------|----------|
+| **Payment Management App** | - App 发布，提供 Web 界面进行订单管理、结算管理和商户管理 | 2025-05-22 |
+
+## 2025 年 04 月
+
+| 产品 | 变更说明 | 发布时间 |
+|------|----------|----------|
+| **Payment API** | API SDK v1.14.0 发版。变更如下：<br/><br/>- 新增支付相关的核心操作：<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 创建和管理收款订单<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 处理退款申请<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 执行结算操作<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 商户信息管理<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 银行账户管理<br/>&nbsp;&nbsp;&nbsp;&nbsp;- 实时汇率查询<br/><br/>- 新增支付相关的 [Webhook 事件](/v2_cn/payments/status-and-events)，用于实时通知订单、退款和结算状态变更。 | 2025-04-23 |
+
+
+
+
+
+
+<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
