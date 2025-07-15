@@ -13,15 +13,15 @@ description: "从 WaaS 1.0 升级到 2.0 的指南，阐明优势并提供分步
 
 WaaS 2.0 是 Cobo 初始 WaaS 产品的全面升级。通过升级到 2.0，您可以获得以下关键功能：
 
-- 通过统一的 API 访问 Cobo 的全部四种[钱包类型](https://manuals.cobo.com/zh/portal/introduction#an-all-in-one-wallet-platform)，提供更全面的钱包技术访问方式。
+- 通过统一的 API 访问 Cobo 的全部四种[钱包类型](https://manuals.cobo.com/cn/portal/introduction#an-all-in-one-wallet-platform)，提供更全面的钱包技术访问方式。
 - 更多的 webhook 事件类型，包括交易和 TSS 请求相关事件，未来还会有更多。
 - MPC 钱包的灵活使用模式，包括机构钱包和用户控制钱包。
 - 对 Safe{Wallet} 等智能合约钱包的程序化控制，具有细粒度的访问控制。
 - 在包括币安、OKX、Bybit、Deribit 等多个交易所之间无缝转移资金。
 
-通过升级到 2.0，您还可以享受 [Cobo Portal](https://manuals.cobo.com/zh/portal/introduction) 的全部功能，包括功能强大的开发者控制台，您可以在其中监控 API 活动、查看日志以及监督 webhook 事件和回调消息。
+通过升级到 2.0，您还可以享受 [Cobo Portal](https://manuals.cobo.com/cn/portal/introduction) 的全部功能，包括功能强大的开发者控制台，您可以在其中监控 API 活动、查看日志以及监督 webhook 事件和回调消息。
 
-使用 WaaS 2.0 API，您不仅可以将 Cobo 强大的钱包功能直接集成到您的 App 中，还可以构建 [Cobo Portal Apps](https://manuals.cobo.com/zh/portal/portal-apps/introduction)，显著扩展 Cobo Portal 的功能。
+使用 WaaS 2.0 API，您不仅可以将 Cobo 强大的钱包功能直接集成到您的 App 中，还可以构建 [Cobo Portal Apps](https://manuals.cobo.com/cn/portal/portal-apps/introduction)，显著扩展 Cobo Portal 的功能。
 
 有关 WaaS 2.0 的完整介绍，请参阅 [WaaS 2.0 简介](/v2_cn/guides/overview/introduction)。
 
@@ -32,10 +32,10 @@ WaaS 2.0 是 Cobo 初始 WaaS 产品的全面升级。通过升级到 2.0，您�
 |                            | WaaS 1.0                                                     | WaaS 2.0                                                     |
 | -------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | API 设计                   | 支持 GET 和 POST 方法的 HTTP 端点。          | RESTful API 按不同领域（如钱包、交易和 webhook）进行结构化。API 遵循面向资源的设计原则进行端点定义，支持包括 GET、POST、PUT 和 DELETE 在内的标准 HTTP 方法。 |
-| API Key和认证             | <ul><li>API Key是钱包特定的，意味着它只能用于访问关联的钱包。</li><li>使用 SECP256k1 签名进行 API 请求认证。</li></ul> | <ul><li>API Key是团队特定的，可用于访问多个钱包。更多信息请参阅[注册 API Key](https://manuals.cobo.com/zh/portal/developer-console/create-api-key)。</li><li>使用 ED25519 签名进行 API 请求认证。</li></ul> |
+| API Key和认证             | <ul><li>API Key是钱包特定的，意味着它只能用于访问关联的钱包。</li><li>使用 SECP256k1 签名进行 API 请求认证。</li></ul> | <ul><li>API Key是团队特定的，可用于访问多个钱包。更多信息请参阅[注册 API Key](https://manuals.cobo.com/cn/portal/developer-console/create-api-key)。</li><li>使用 ED25519 签名进行 API 请求认证。</li></ul> |
 | 交易通知                   | 仅支持交易状态相关事件。             | <ul><li>此功能在 2.0 中称为"Webhook"。</li><li>支持[交易状态和 TSS 请求相关事件](/v2_cn/guides/webhooks-callbacks/webhook-event-type)，且列表仍在增长。</li><li>webhook 事件的数据结构与 1.0 不同。</li></ul> |
 | 提币确认                   | 用于确认通过 WaaS API 发起的提币的机制。 | <ul><li>此功能在 2.0 中称为"回调"。</li><li>回调消息的数据结构与 1.0 不同。</li></ul> |
-| 支持的钱包类型             | <ul><li>托管钱包</li><li>MPC 钱包</li></ul>                   | <ul><li>[托管钱包](https://manuals.cobo.com/zh/portal/custodial-wallets/introduction)</li><li>[MPC 钱包](https://manuals.cobo.com/zh/portal/mpc-wallets/introduction)</li><li>[智能合约钱包](https://manuals.cobo.com/zh/portal/smart-contract-wallets/introduction)</li><li>[交易所钱包](https://manuals.cobo.com/zh/portal/exchange-wallets/introduction)</li></ul>|
+| 支持的钱包类型             | <ul><li>托管钱包</li><li>MPC 钱包</li></ul>                   | <ul><li>[托管钱包](https://manuals.cobo.com/cn/portal/custodial-wallets/introduction)</li><li>[MPC 钱包](https://manuals.cobo.com/cn/portal/mpc-wallets/introduction)</li><li>[智能合约钱包](https://manuals.cobo.com/cn/portal/smart-contract-wallets/introduction)</li><li>[交易所钱包](https://manuals.cobo.com/cn/portal/exchange-wallets/introduction)</li></ul>|
 | 资产模型                   | <ul><li>币种被视为唯一的资产类型。</li><li>币种代表链和加密货币的特定配对，如 ETH_USDT。</li></ul> | <ul><li>代币被视为唯一的资产类型，交易所钱包除外，后者将"资产"视为唯一的资产类型。</li><li>代币代表链和加密货币的特定配对，如 ETH_USDT。</li><li>资产代表存储在您链接的交易所账户中的加密货币，如 USDT。</li></ul>|
 | 余额模型                   | <ul><li>**[托管钱包]** 可以计算整个钱包的币种余额，但不能计算每个地址的余额。</li><li>**[MPC 钱包]** 可以计算钱包内每个地址的币种余额，但不能计算整个钱包的余额。</li></ul> | <ul><li>**[托管钱包]** 可以计算整个钱包的代币余额，但不能计算每个地址的余额。</li><li>**[MPC 钱包]** 可以计算整个钱包或每个地址的代币余额。</li></ul> |
 | 余额和金额                 | <ul><li>余额和金额以加密货币的最小单位计价。例如，比特币余额和金额以聪为单位。</li><li>`abs_balance` 和 `abs_amount` 参数以加密货币的主要单位计价，如比特币的 BTC。</li></ul>| <ul><li>余额和金额以加密货币的主要单位计价，如比特币的 BTC。</li><li>例如，对于 1.2 BTC 的充币，在 1.0 中充币金额记录为 `120,000,000`，在 2.0 中记录为 `1.2`。</li></ul>|
@@ -66,7 +66,7 @@ WaaS 2.0 是 Cobo 初始 WaaS 产品的全面升级。通过升级到 2.0，您�
 
 要了解 webhook 事件、回调消息以及 WaaS 1.0 和 WaaS 2.0 之间的 webhook/回调机制差异，请参阅 [webhook 和回调简介](/v2_cn/guides/webhooks-callbacks/introduction)。
 
-要了解设置的详细步骤，请参阅[设置回调或 webhook 端点](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)。要注册端点，请参阅[注册 webhook 端点](https://manuals.cobo.com/zh/portal/developer-console/webhooks-create)和[注册回调端点](https://manuals.cobo.com/zh/portal/developer-console/callbacks-register)。
+要了解设置的详细步骤，请参阅[设置回调或 webhook 端点](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)。要注册端点，请参阅[注册 webhook 端点](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create)和[注册回调端点](https://manuals.cobo.com/cn/portal/developer-console/callbacks-register)。
 
 <Note>为 WaaS 1.0 设置的端点将不会收到来自 WaaS 2.0 服务的任何消息。</Note>
 
