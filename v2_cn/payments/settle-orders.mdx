@@ -130,7 +130,7 @@ with ApiClient(configuration) as api_client:
         )
         print(settlement.status)
     except Exception as e:
-        print("Exception when calling PaymentApi->create_refund: %s\n" % e)
+        print("Exception when calling PaymentApi->create_settlement: %s\n" % e)
 ```
 </Accordion>
 
@@ -189,7 +189,7 @@ public class Example {
             settlement = apiInstance.getSettlementById(settlement.getSettlementRequestId());
             System.out.println(settlement.getStatus());
         } catch (ApiException e) {
-            System.err.println("Exception when calling PaymentApi#createPaymentOrder");
+            System.err.println("Exception when calling PaymentApi#createPaymentSettlement");
         }
     }
 }
