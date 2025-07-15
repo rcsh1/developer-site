@@ -15,7 +15,7 @@ description: "使用 WaaS 2.0 API 的入门指南，包括帐户设置、API Key
 
 ## 设置账户
 
-按照[快速入门](https://manuals.cobo.com/zh/portal/quick-start-guide)中的说明设置您的 Cobo 账户并创建您的团队。如果团队已经创建，请让您的团队管理员邀请您加入团队。
+按照[快速入门](https://manuals.cobo.com/cn/portal/quick-start-guide)中的说明设置您的 Cobo 账户并创建您的团队。如果团队已经创建，请让您的团队管理员邀请您加入团队。
 
 <Note>本指南的所有示例都使用开发环境。请在开发环境 https://portal.dev.cobo.com/ 中创建您的团队。</Note>
 
@@ -47,7 +47,7 @@ openssl pkey -pubin -in public_key.pem -text | grep 'pub:' -A 3 | tail -n +2 | t
 
 ## 注册 API Key
 
-在 Cobo Portal 上注册您的 API Key 并配置相关权限。要了解有关注册 API Key 的更多信息，请参阅[注册 API Key](https://manuals.cobo.com/zh/portal/developer-console/create-api-key)。
+在 Cobo Portal 上注册您的 API Key 并配置相关权限。要了解有关注册 API Key 的更多信息，请参阅[注册 API Key](https://manuals.cobo.com/cn/portal/developer-console/create-api-key)。
 
 1. 登录 [Cobo Portal](https://portal.dev.cobo.com/login)（开发环境）。
 2. 在左侧导航菜单中，点击 **开发者** > **API Keys**。
@@ -85,7 +85,7 @@ headers = {
 
 <Note>如果您选择[使用 WaaS SDK](/v2_cn/developer-tools/quickstart-python)，则可以跳过此步骤，因为 SDK 已经包含了处理该逻辑的现成函数。</Note>
 
-本指南使用 [List supported chains](/v2/api-references/wallets/list-supported-chains) 操作作为示例来演示如何发送 API 请求。此操作检索特定钱包类型或子类型支持的所有链。在以下示例中，我们检索[全托管钱包](https://manuals.cobo.com/zh/portal/custodial-wallets/introduction)支持的所有链。
+本指南使用 [List supported chains](/v2/api-references/wallets/list-supported-chains) 操作作为示例来演示如何发送 API 请求。此操作检索特定钱包类型或子类型支持的所有链。在以下示例中，我们检索[全托管钱包](https://manuals.cobo.com/cn/portal/custodial-wallets/introduction)支持的所有链。
 
 ```shell
 curl --location --request GET 'https://api.dev.cobo.com/v2/wallets/chains?wallet_type=Custodial&wallet_subtype=&chain_ids=&limit=10&before=&after='
@@ -165,17 +165,17 @@ with cobo_waas2.ApiClient(configuration) as api_client:
 
 您已成功发送 API 请求并接收响应。但是，在您创建钱包、进行交易或实现其他功能之前，还有一些事情要做。
 
-- 要开始使用钱包，您必须购买付费套餐或激活免费版套餐（如有）。要了解定价计划、账单与付款的详细信息，请参阅[账单与支付简介](https://manuals.cobo.com/zh/portal/bills-and-payments/introduction)。
+- 要开始使用钱包，您必须购买付费套餐或激活免费版套餐（如有）。要了解定价计划、账单与付款的详细信息，请参阅[账单与支付简介](https://manuals.cobo.com/cn/portal/bills-and-payments/introduction)。
 - 要从您的钱包中提取代币，您必须首先设置 Callback Endpoint 以接收和批准提币请求。强烈建议您同时设置 Webhook Endpoint 以接收有关交易状态更新和其他重要事件的实时通知。要了解如何设置和注册 Webhook 和 Callback Endpoint，请参阅 [Webhook 和 Callback 介绍](/v2_cn/guides/webhooks-callbacks/introduction)。
 
 ## 另请参阅
 
-- 要了解 Cobo Portal 提供的功能，包括如何选择钱包类型，请参阅 [Cobo Portal 简介](https://manuals.cobo.com/zh/portal/introduction)。
+- 要了解 Cobo Portal 提供的功能，包括如何选择钱包类型，请参阅 [Cobo Portal 简介](https://manuals.cobo.com/cn/portal/introduction)。
 
 - 要了解 WaaS 2.0 API 的具体内容，请参阅 [API 参考](/v2/api-references)或从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
 - 要了解如何通过 WaaS API 使用全托管钱包（资产钱包），请参阅[全托管钱包（资产钱包）入门](/v2_cn/guides/custodial-wallets/get-started-asset-wallets)。
 
-- 要了解如何查看 API 相关数据和日志，请参阅[开发者控制台简介](https://manuals.cobo.com/zh/portal/developer-console/introduction)。
+- 要了解如何查看 API 相关数据和日志，请参阅[开发者控制台简介](https://manuals.cobo.com/cn/portal/developer-console/introduction)。
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
