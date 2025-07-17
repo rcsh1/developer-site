@@ -7,6 +7,22 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 本更新日志详细记录了 WaaS 2.0 API 的所有新增和变更内容。您可以从 [GitHub](https://github.com/CoboGlobal/developer-site/blob/master/v2/cobo_waas2_openapi_spec/dev_openapi.yaml) 下载 WaaS 2.0 API 规范。
 
+## v1.19.0
+
+本版本于 2025 年 7 月 16 日发布。
+
+### 改进
+
+- 增加了当创建交易和获取交易信息时对 Solana 和 Filecoin 费用模型的支持，详情请参阅 [费用模型](/v2/guides/transactions/estimate-fees#fee-models)。
+
+- 引入了新的 [webhook event types](/v2_cn/guides/webhooks-callbacks/webhook-event-type#webhook-event-types) 用于 token 或 chain 状态变化
+  - `wallet.token.disabled`
+  - `wallet.chain.disabled`
+  - `token.suspended.deposit`
+  - `token.suspended.withdraw`
+
+- 添加了新的 [交易子状态](/v2_cn/guides/transactions/status#状态参考表格)，`RejectedByCobo`，用于指示交易因未满足合规要求而被拒绝。
+
 ## v1.18.0
 
 本版本于 2025 年 7 月 2 日发布。
