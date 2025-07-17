@@ -36,7 +36,7 @@ Callback 和 webhook 在您的业务操作中具有不同的用途。
 
 要创建Endpoint并实现处理逻辑，请参阅 [设置Callback或 Webhook Endpoint](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)。
 
-要注册Endpoint，请参阅 [注册 Webhook Endpoint](https://manuals.cobo.com/zh/portal/developer-console/webhooks-create) 和 [注册Callback Endpoint](https://manuals.cobo.com/zh/portal/developer-console/callbacks-register)。
+要注册Endpoint，请参阅 [注册 Webhook Endpoint](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create) 和 [注册Callback Endpoint](https://manuals.cobo.com/cn/portal/developer-console/callbacks-register)。
 
 要了解更多关于事件类型和事件数据类型的信息，请参阅 [Webhook 事件类型和数据类型](/v2_cn/guides/webhooks-callbacks/webhook-event-type)。
 
@@ -61,7 +61,7 @@ WaaS 1.0 服务使用 API Callback进行交易通知和提币确认，类似于 
 
 当升级到 WaaS 2.0 时，您需要执行以下操作：
 - 按照 [设置Callback或 Webhook Endpoint](/v2_cn/guides/webhooks-callbacks/set-up-endpoint) 中的说明设置您的 webhook 或 Callback Endpoint。
-- 按照 [注册 Webhook Endpoint](https://manuals.cobo.com/zh/portal/developer-console/webhooks-create) 或 [注册 Callback Endpoint](https://manuals.cobo.com/zh/portal/developer-console/callbacks-register) 中的说明在 Cobo Portal 上注册Endpoint。
+- 按照 [注册 Webhook Endpoint](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create) 或 [注册 Callback Endpoint](https://manuals.cobo.com/cn/portal/developer-console/callbacks-register) 中的说明在 Cobo Portal 上注册Endpoint。
 
 <Note>WaaS 1.0 API Callback使用的签名算法与 WaaS 2.0 webhook 和Callback不同。请勿直接在 Cobo Portal 上注册您的 WaaS 1.0 Endpoint。否则，由于 WaaS 1.0 和 WaaS 2.0 之间的签名算法和 webhook/Callback数据结构的差异，您的Endpoint将收到错误。请确保参考提供的 [示例代码](/v2_cn/guides/webhooks-callbacks/set-up-endpoint#code-samples) 正确配置您的 WaaS 2.0 Endpoint。</Note>
 
