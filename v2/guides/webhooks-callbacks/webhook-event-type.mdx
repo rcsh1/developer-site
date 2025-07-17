@@ -87,13 +87,21 @@ The available webhook event types are as follows:
     </tr>
     <tr>
       <td><code>wallet.token.enabled</code></td>
-      <td><code>Tokens</code></td>
+      <td rowspan="2"><code>Tokens</code></td>
       <td>One or more tokens have been enabled.</td>
     </tr>
     <tr>
+      <td><code>wallet.token.disabled</code></td>
+      <td>One or more tokens have been disabled.</td>
+    </tr>
+    <tr>
       <td><code>wallet.chain.enabled</code></td>
-      <td><code>Chains</code></td>
+      <td rowspan="2"><code>Chains</code></td>
       <td>One or more chains have been enabled.</td>
+    </tr>
+    <tr>
+      <td><code>wallet.chain.disabled</code></td>
+      <td>One or more chains have been disabled.</td>
     </tr>
     <tr>
       <td><code>wallets.token_listing.failed</code></td>
@@ -112,6 +120,15 @@ The available webhook event types are as follows:
     <tr>
       <td><code>wallet.web3.balance.updated</code></td>
       <td>The balance of a Custodial Wallet (Web3 Wallet) has been updated.</td>
+    </tr>
+    <tr>
+      <td><code>token.suspended.deposit</code></td>
+      <td rowspan="2"><code>SuspendedToken</code></td>
+      <td>A token deposit has been suspended.</td>
+    </tr>
+    <tr>
+      <td><code>token.suspended.withdraw</code></td>
+      <td>A token withdrawal has been suspended.</td>
     </tr>
   </tbody>
 </table>

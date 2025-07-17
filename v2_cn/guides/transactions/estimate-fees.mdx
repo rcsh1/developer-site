@@ -26,7 +26,7 @@ description: "使用 WaaS 2.0 API 估算交易费用的指南，包括影响费�
 
 每个区块链可能采用多种费用模型来计算交易费用，形成与其费用结构的一对多关系。例如，以太坊支持传统模型和 EIP-1559 模型。
 
-Cobo 目前支持四种类型的费用模型交易：
+Cobo 目前支持以下类型的费用模型交易：
 
 | 费用模型 | 计算方法 | 使用此模型的典型区块链 | 可自定义参数 | 
 |-----------|--------------------|---------------------------------|-------------------------|
@@ -34,8 +34,12 @@ Cobo 目前支持四种类型的费用模型交易：
 | [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)  | 交易费用 = (基础费用 + 优先费用) * 使用的 gas 单位<ul><li>基础费用：每使用一个 gas 单位在链上执行交易所需的基础费用，根据网络需求动态调整。</li><li>优先费用：向矿工支付的额外费用，以优先处理交易，单位为 gas 单位。</li><li>Gas 单位：在以太坊网络上执行操作所需的计算工作量的度量。</li></ul>  | 当前支持的链为 Ethereum Mainnet（`ETH`），Sepolia Testnet（`SETH`）和 Scroll Sepolia Testnet（`SCROLL_ETH`）。 | <ul><li>最大 gas 价格</li><li>最大优先费用</li><li>Gas 限制</li></ul>参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。  | 
 | UTXO 模型      | 交易费用 = 费率 * 交易大小<ul><li>费率：以 sat/vByte 为单位的费率，代表每字节数据在区块链上占用的空间所需支付的 satoshis 数量。</li><li>交易大小：交易在区块链上占用的空间大小，影响 UTXO 模型中的总费用。</li></ul> | 比特币和其他 UTXO 基于链  | 最大费用金额。参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。             |
 | 固定模型     | 交易费用为固定金额。  | TRON                            | 最大费用金额。参考 [估算交易费用](/v2/api-references/transactions/estimate-transaction-fee) 操作的响应获取详细信息。                   |
+| [Solana](https://solana.com/docs/core/fees) | 交易费用 = Base Fee + Compute Unit Limit * Compute Unit Price<ul><li>Base Fee：每个签名固定收取的费用（默认每个签名 5,000 Lamports）。</li><li>Compute Unit Limit：交易可消耗的最大计算单元数量。</li><li>Compute Unit Price：每个计算单元的单价，单位为 Lamports，用于提升交易的优先级。</li><li>Rent（如适用）：适用于未达到租金豁免条件的账户，网络会定期扣除该费用以补偿链上存储资源。该费用不属于交易手续费的一部分，但当账户余额低于豁免门槛时可能产生。</li></ul> | Solana | <ul><li>Compute Unit Limit</li><li>Compute Unit Price</li></ul>请参考 [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) 接口返回值。 |
+| [Filecoin](https://spec.filecoin.io/systems/filecoin_vm/gas_fee/#section-systems.filecoin_vm.gas_fee.summary) | 交易费用 = min(Gas Fee Cap, Base Fee + Gas Premium) * Gas Limit<Note>链上实际费用计算方式为：<code>Base Fee * Gas Used + Gas Premium * Gas Limit</code>。</Note><ul><li>Gas Fee Cap：你愿意为每单位 Gas 支付的最高价格。</li><li>Base Fee：交易打包所需的最低费用，随网络拥堵动态调整，并在支付后销毁，从而减少 FIL 总供应量。</li><li>Gas Premium：用户指定的矿工小费，用于提升交易优先级。</li><li>Gas Limit：交易可消耗的最大 Gas 数量。</li></ul> | Filecoin | <ul><li>Gas Limit</li><li>Gas Premium</li><li>Gas Fee Cap</li></ul>请参考 [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) 接口返回值。 |
 
-大多数交易都遵循区块链的原生费用模型，但从全托管钱包（资产钱包）和交易所钱包发起的交易总是使用固定费用模型。
+<Note>Solana 和 Filecoin 均支持两种费用模型：其原生模型和 Legacy 模型。调用交易相关 API 时，你可以自行选择使用哪种模型。但对于 Replace-By-Fee（RBF）交易，必须使用与原始交易相同的费用模型。</Note>
+
+大多数交易都遵循区块链的原生费用模型，但从全托管钱包（资产钱包）和交易所钱包发起的交易总是使用固定费用模型。如果使用这些钱包发起交易时指定使用其他费用模型，API 请求将会报错。
 
 <Note>对于传统和 EIP-1559 费用模型，提交交易 calldata 到 L1（Layer 1）时会额外收取 `reserved_fee`。</Note>
 
@@ -58,6 +62,7 @@ Replace-By-Fee (RBF) 是一种允许您用新版本替换未确认交易的功�
 - EIP-1559 模型：增加最大 gas 价格和最大优先费用。
 - UTXO 模型：增加费率，并确保费率与交易大小的乘积大于原始交易的乘积。如果不满足此条件，节点可能会拒绝广播交易。
 - 固定模型：增加固定金额。
+- Filecoin 模型：Gas Premium 和 Gas Fee Cap 建议提升 25%。
 
 ## Cobo 如何估算费用
 

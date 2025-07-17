@@ -89,13 +89,21 @@ description: "WaaS 2.0 中 Webhook 事件类型的综合列表，详细说明每
     </tr>
     <tr>
       <td><code>wallet.token.enabled</code></td>
-      <td><code>Tokens</code></td>
-      <td>一个或多个代币已启用。</td>
+      <td rowspan="2"><code>Tokens</code></td>
+      <td>一种或多种代币已被启用。</td>
+    </tr>
+    <tr>
+      <td><code>wallet.token.disabled</code></td>
+      <td>一种或多种代币已被禁用。</td>
     </tr>
     <tr>
       <td><code>wallet.chain.enabled</code></td>
-      <td><code>Chains</code></td>
-      <td>一个或多个链已启用。</td>
+      <td rowspan="2"><code>Chains</code></td>
+      <td>一条或多条链已被启用。</td>
+    </tr>
+    <tr>
+      <td><code>wallet.chain.disabled</code></td>
+      <td>一条或多条链已被禁用。</td>
     </tr>
     <tr>
       <td><code>wallets.token_listing.failed</code></td>
@@ -114,6 +122,15 @@ description: "WaaS 2.0 中 Webhook 事件类型的综合列表，详细说明每
     <tr>
       <td><code>wallet.web3.balance.updated</code></td>
       <td>全托管钱包（Web3 钱包）余额更新。</td>
+    </tr>
+    <tr>
+      <td><code>token.suspended.deposit</code></td>
+      <td rowspan="2"><code>SuspendedToken</code></td>
+      <td>充币已暂停。</td>
+    </tr>
+    <tr>
+      <td><code>token.suspended.withdraw</code></td>
+      <td>提币已暂停。</td>
     </tr>
   </tbody>
 </table>
