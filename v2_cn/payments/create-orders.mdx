@@ -4,7 +4,7 @@ lang: "zh-hans"
 description: ""
 ---
 
-本文交代使用 Payment API 创建支付订单的过程。在实际开发过程中，您也可以使用 Checkout SDK 快速搭建收单页面。
+本文交代使用 Payment API 创建支付订单的过程。在实际开发过程中，您也可以使用 [Checkout SDK](/v2_cn/payments/checkout-sdk) 快速搭建收单页面。
 
 下图展示了收单环节中，用户、开发者、商户、以及 Cobo 之间的交互流程。
 
@@ -56,7 +56,7 @@ sequenceDiagram
 
    * **应付金额**（`payable_amount`）：用户最终需要支付的金额。该金额由商品订单金额、开发者费用和汇率共同决定。由于汇率波动的关系，该金额可能与您预估的应付金额存在差异。  
    * **收币地址**（`receive_address`）：Cobo 根据用户选择的币种和链，为该订单生成的收币地址。 
-3. 用户向指定的收币地址转入代币。Cobo 会通过轮询检测到存入收币地址的所有交易。  
+3. 用户向指定的收币地址转入代币。Cobo 会通过轮询检测存入收币地址的所有交易。  
    * 您可以订阅 Webhook 事件，以获取订单状态和交易状态的实时更新通知。请参考 [Webhook reference](/v2_cn/payments/status-and-events) 了解每个事件的触发时间和返回的数据结构。  
    * 您也可以通过调用 [Get pay-in order information](/v2/api-references/payment/get-pay-in-order-information) 查询单个支付订单状态，或调用 [List all pay-in orders](/v2/api-references/payment/list-all-pay-in-orders) 查询所有订单状态。
 
