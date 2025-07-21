@@ -84,8 +84,7 @@ public class Example {
 | **少付** | 在订单有效期内，用户实付金额少于应付金额 | 订单状态为 `Underpaid`（终态）。用户后续的付款会被归为晚付金额。|
 | **晚付** | 用户在订单过期后进行首次或再次付款 | 不会改变订单状态。每次晚付都会触发一次 `payment.transaction.late` Webhook 事件。|
 
-
-对于上述异常情况，您可以选择如下的处理方式：
+在上述情况下，如果相关交易通过合规扫描，Cobo 会将相关资金按照同样的比例划分为商户资金和开发者资金。您可以根据业务需求选择以下处理方式：
 * 通过 API / Payments App / Checkout SDK 将多余资金退还给用户。  
 * 将多余资金转移到其他钱包，等待处理。  
 * 不单独处理，资金将保留在钱包中。
@@ -207,14 +206,21 @@ public class Example {
 
 ## 合规扫描不通过
 
-* 对于全托管钱包或者启用了 Cobo KYC 的 MPC 钱包，Cobo 将对每笔转入收币地址的交易进行合规扫描（如 KYT/AML 扫描）。若交易未通过合规检查，请通过 [help@cobo.com](mailto:help@cobo.com) 联系 Cobo 的支持团队进行人工处理。  
+* 对于全托管钱包或者启用了 Cobo KYC 的 MPC 钱包，Cobo 将对每笔转入收币地址的交易进行合规扫描（如 KYT/AML 扫描）。
 * 对于未启用 Cobo KYC 的 MPC 钱包，您可通过 [Screening App](https://manuals.cobo.com/cn/apps/screening/introduction) 自行对资金进行合规扫描，并处理未通过的交易。
 
-若某笔交易初次未通过合规扫描，但在后续人工审核后通过，则按以下规则处理：
 
-* **订单仍在有效期内：** 系统将更新订单状态，并将该笔资金计入订单的实付金额。  
-* **订单已过期：** 系统将该笔资金记录为该订单的晚付金额。
+当某笔交易初次未通过合规扫描时，系统会触发 `payment.transaction.held` 事件，后续处理流程如下：
 
-若某笔交易最终未通过人工审核，并被隔离或冻结，则该笔资金仍会与订单关联，但不会计入订单的实付金额。
+- 若该笔交易后续通过人工审核：
+    - 如果订单未过期：该笔资金将计入订单实收金额，订单状态将根据实收金额相应更新
+    - 如果订单已过期：系统将触发 `payment.transaction.late` 事件，该笔资金将计入订单的晚付金额
+
+- 若该笔交易最终未通过人工审核：
+    - 资金将被隔离或冻结，不会被计入订单实收金额
+    - 订单状态将保持不变
+    - 您需要通过 [help@cobo.com](mailto:help@cobo.com) 联系 Cobo 的支持团队处理被隔离/冻结的资金
+    - 用户需要在订单有效期内重新充入足额资金并通过合规扫描，订单才能转为 `Completed` 状态
+
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
