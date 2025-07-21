@@ -11,12 +11,23 @@ description: ""
 
 ## 合规扫描不通过
 
-* 对于全托管钱包，Cobo 将对每笔转入收币地址的交易进行合规扫描（如 KYT/AML 扫描）。若交易未通过合规检查，请通过 [help@cobo.com](mailto:help@cobo.com) 联系 Cobo 的支持团队进行人工处理。  
+不同的钱包类型，合规扫描的流程不同：
+
+* 对于全托管钱包，Cobo 将对每笔转入收币地址的交易进行合规扫描（如 KYT/AML 扫描）。  
 * 对于 MPC 钱包，您可通过 [Screening App](https://manuals.cobo.com/cn/apps/screening/introduction) 自行对资金进行合规扫描，并处理未通过的交易。
 
-若某笔交易初次未通过合规扫描，但在后续人工审核后通过，则该笔资金仍然会计入实收金额中。
+如果某笔交易初次未通过合规扫描，会首先触发 `payment.transaction.held` 事件。后续处理流程如下：
 
-若某笔交易最终未通过人工审核，并被隔离或冻结，则该笔资金将不会被计入实收金额。
+- 若该笔交易后续通过人工审核：
+    - 系统将触发 `payment.transaction.complete` 事件
+    - 该笔资金会被计入充值金额
+    - 资金可用于后续提现或结算
+
+- 若该笔交易最终未通过人工审核：
+    - 资金将被隔离或冻结
+    - 不会被计入充值金额
+    - 不会触发任何后续事件
+    - 您需要通过 [help@cobo.com](mailto:help@cobo.com) 联系 Cobo 的支持团队进行人工处理。
 
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
