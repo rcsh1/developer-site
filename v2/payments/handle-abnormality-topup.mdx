@@ -1,0 +1,35 @@
+---
+title: "Exception handling"
+lang: "en"
+description: ""
+---
+
+<Note>**Disclaimer: This article contains AI translations and should only be used as reference.** Contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) if you have any questions.</Note>
+
+In top-up mode, you may need to handle the following exception situations.
+
+## Top-up address replacement
+
+When a top-up address has multiple deposit transactions that fail compliance screening, Cobo will automatically deprecate that address and generate a new top-up address for that user. After address replacement, please ensure to promptly notify the user to use the new address for deposits. Any subsequent funds credited to deprecated addresses will not be included in actual received amounts and will not trigger top-up events.
+
+## Compliance screening failure
+
+Different wallet types have different compliance screening processes:
+
+* For Custodial Wallets, Cobo will perform compliance screening (such as KYT/AML screening) on every transaction transferred to receiving addresses.
+* For MPC Wallets, you can perform compliance screening on funds yourself through [Screening App](https://manuals.cobo.com/en/apps/screening/introduction) and handle transactions that fail.
+
+If a transaction initially fails compliance screening, it will first trigger a `payment.transaction.held` event. The subsequent processing workflow is as follows:
+
+- If the transaction subsequently passes manual review:
+    - The system will trigger a `payment.transaction.complete` event
+    - The funds will be included in the top-up amount
+    - Funds can be used for subsequent withdrawals or settlements
+
+- If the transaction ultimately fails manual review:
+    - Funds will be isolated or frozen
+    - Will not be included in the top-up amount
+    - Will not trigger any subsequent events
+    - You need to contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) for manual processing.
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

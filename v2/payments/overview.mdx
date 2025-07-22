@@ -1,26 +1,83 @@
 ---
-title: "Payment Solution Overview"
+title: "Overview"
 lang: "en"
 ---
-<Note>This document is an AI-assisted translation provided for reference purposes only.</Note>
 
-This article introduces the overall business process of the Cobo payment solution, which mainly includes the following core modules: payment acceptance, fund sweeping and compliance scanning, abnormal fund handling, and settlement.
+<Note>**Disclaimer: This article contains AI translations and should only be used as reference.** Contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) if you have any questions.</Note>
 
-<img src="/v2/images/payments/overview.png" className="diagram" alt="Cobo Payment Solution Business Process"></img>
-* **Payment acceptance**：When the user chooses to pay with digital assets, you can call the Payment API to create a digital asset payment order and obtain the receiving address and the amount to be paid. All funds transferred to this address will be considered as the actual payment amount for the order after passing the compliance scan.  
-* **Fund Handling**：  
-  * **Sweeping**：When you initiate settlement, Cobo will sweep the funds scattered in various receiving addresses into a unified aggregation address, making it convenient for unified management and use.  
-  * **AML/KYT Scanning**：Depending on the wallet type you choose, Cobo may actively perform compliance scanning on the funds. You can also use the Screening App provided by Cobo to perform compliance scanning on the funds.  
-  * **Abnormal Handling and Refund**：When encountering abnormal situations such as overpayment or underpayment, you can initiate a refund to the customer or adopt other handling methods.  
-  * **Exchange and Cross-Chain**：You can use the [Swap App](https://manuals.cobo.com/en/apps/bridge/introduction) to exchange one digital asset for another or transfer it to a different public chain.  
-  * **Investment/DeFi**: If you want to invest a portion of idle funds to earn returns, you can use Cobo's [Earn App](https://manuals.cobo.com/en/apps/earn/introduction) and [Staking App](https://manuals.cobo.com/en/apps/staking/introduction) to purchase stable investment products or participate in staking. You can also invest idle funds in different DeFi protocols.  
-* **Settlement**：Depending on the actual business needs, you can choose from the following three settlement methods.  
-  * Transfer: Transfer funds directly to an external wallet address through on-chain transfer.  
-  * Fiat Withdrawal: Convert digital assets into fiat currency through Cobo's withdrawal service providers and transfer them to a designated bank account.  
-  * Stablecoin Debit/Credit Card: Transfer funds to a stablecoin debit/credit card.
-* **Settlement**: Depending on actual business needs, you can choose from the following three settlement methods.  
-  * Transfer: Transfer funds directly to an external wallet address through on-chain transfer.  
-  * Fiat Withdrawal: Convert cryptocurrency into fiat currency through Cobo's withdrawal service providers and transfer it to a designated bank account.
-  * Stablecoin Debit/Credit Card: Transfer funds to a stablecoin debit or credit card.
+The Cobo Payment Solution is a comprehensive cryptocurrency payment solution that provides one-stop cryptocurrency payment services for payment service providers (PSPs), e-commerce platforms, gaming platforms, direct-to-consumer (DTC) websites, and other organizations. The solution covers the full process of merchant onboarding, top-up management, order management, fund sweeping, compliance screening, and multi-channel settlement, helping you quickly build a secure and reliable crypto payment system.
 
-<Tip>You are welcome to [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to help us improve our documentation!</Tip>
+## Business process
+
+The overall business process of the Cobo Payment Solution is as follows:
+
+<img src="/v2/images/payments/overview.png" className="diagram" alt="Overall business process of the Cobo Payment Solution"></img>
+
+**Payment collection**
+
+You can complete payment collection operations by calling [Payment API](/v2/payments/api-reference) or using [Checkout SDK](/v2/payments/checkout-sdk). If you are an institution such as a PSP or e-commerce platform that needs to serve downstream merchants, you can charge handling fees to merchants by specifying developer fees.
+
+- In top-up mode, Cobo generates a dedicated top-up address for each user, and users can top up any amount to that address at any time. For details, see [Get top-up addresses](/v2/payments/get-topup-addresses).
+- In order mode, Cobo creates a payment order with a specified amount and expiration date, and users need to complete payment within the specified time. For details, see [Create orders](/v2/payments/create-orders).
+
+**Fund processing**
+
+- **Sweeping**: When you initiate settlement, Cobo will sweep funds scattered across various receiving addresses to a unified sweep address for convenient centralized management and usage.
+- **AML/KYT screening**: According to the wallet type you choose, Cobo provides different compliance screening solutions:
+  - Custodial Wallets: Mandatory use of Cobo KYT for fund compliance screening to ensure secure and compliant transactions
+  - MPC Wallets: You can flexibly choose to use Cobo KYT or [Screening App](https://manuals.cobo.com/en/apps/screening/introduction) for compliance screening to meet different compliance needs
+- **Exception handling and refunds**: When encountering abnormal situations such as overpayment or underpayment, you can initiate refunds to customers or adopt other processing methods.
+- **Exchange and cross-chain**: You can use [Token Swap App](https://manuals.cobo.com/en/apps/token-swap/introduction) to exchange one cryptocurrency for another or transfer to different blockchains.
+- **Investment/DeFi**: If you want to invest a portion of idle funds to generate returns, you can use Cobo's [Earn App](https://manuals.cobo.com/en/apps/earn/introduction) to purchase stable investment products. You can also invest idle funds in different DeFi protocols.
+
+**Settlement**
+
+You can flexibly manage fund settlement through Payment API or Payment Management App. For each settlement, you can choose any of the following methods:
+  - **Crypto withdrawal**: Directly transfer cryptocurrency to specified external wallet addresses for quick fund extraction
+  - **Fiat off-ramp**: Convert cryptocurrency to fiat currency through OTC channels and transfer to specified bank accounts
+
+Funds from top-up mode and order mode will be settled separately. During settlement, you need to specify the fund source for settlement, and you can choose to settle merchant balance or developer balance.
+  - [Top-up mode settlement process](/v2/payments/settle-topup)
+  - [Order mode settlement process](/v2/payments/settle-orders)
+  - [Amount definitions and balance calculation explanations](/v2/payments/amounts-and-balances)
+
+## Product forms
+
+The Cobo Payment Solution provides multiple product forms to meet different customer integration needs:
+
+* **[Payment API](/v2/payments/api-reference)**: Provides complete payment business process API interfaces, supporting SDKs for mainstream programming languages such as Python, Java, Go, and JavaScript, allowing you to flexibly integrate payment functions into existing systems.
+* **Payment Management App**: Provides an intuitive web interface for convenient merchant management, order queries, settlement processing, exception handling, and other daily operational work.
+* **[Checkout SDK](/v2/payments/checkout-sdk)**: Provides ready-to-use payment collection frontend components that embed in your application as iframes, quickly implementing standardized payment processes and significantly reducing development costs.
+
+The support for payment business processes by various product forms is as follows:
+
+| Module | Details | Payment API | Payment Management App | Checkout SDK |
+|------|------|-------------|----------------------|--------------|
+| Basic information management | Account and merchant management | ✅ | ✅ | - |
+| Payment collection management | Top-up address and order management | ✅ | - | ✅ |
+| Settlement management | Fund sweeping, fiat off-ramp, crypto withdrawal | ✅ | ✅ | - |
+| Payment exception handling | Overpayment/underpayment/late payment processing, refunds, compliance screening exception handling | ✅ | ✅ | ✅ |
+
+You can flexibly choose the following product form combinations based on business needs:
+- **Pure API solution**: Use all functions completely through API integration.
+- **Hybrid solution**: Integrate Checkout SDK to handle payment collection processes and use Payment Management App for daily management.
+
+## Business model selection
+
+The Cobo Payment Solution provides multiple business models to meet various actual business needs.
+
+- **Payment collection mode**: The same account can support both modes simultaneously
+  - **Order mode**: Each order is allocated a specified receiving address, users need to pay the specified amount within the validity period, suitable for scenarios requiring precise order tracking. Additionally, in order mode, you can choose independent addresses or recycling address pools, with support for setting independent address thresholds to achieve automatic allocation:
+    - **Recycling address pool**: Addresses are recycled and reused after order completion, with low fees, suitable for small payments
+    - **Independent address**: Addresses are not reused, with high security, suitable for large payment collections
+  - **Top-up mode**: Each user has a fixed receiving address and can top up any amount at any time, suitable for account balance management scenarios
+
+- **Settlement methods**: Support switching at any time, different methods can be chosen for each settlement
+  - **Crypto settlement**: Directly extract cryptocurrency to specified external wallet addresses
+  - **Fiat settlement**: Convert through OTC and transfer to bank accounts
+
+- **Wallet types**: Selected when creating accounts, determining fund management mode
+  - **Custodial Wallets**: No need to manage private keys, convenient operation, suitable for quick integration
+  - **MPC Wallets**: Self-managed private keys, complete fund control
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip> 
