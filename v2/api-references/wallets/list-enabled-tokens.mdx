@@ -151,8 +151,8 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.WalletsApi();
 const opts = {
-  wallet_type: new CoboWaas2.WalletType(),
-  wallet_subtype: new CoboWaas2.WalletSubtype(),
+  wallet_type: "Custodial",
+  wallet_subtype: "Asset",
   chain_ids: "BTC,ETH",
   token_ids: "ETH_USDT,ETH_USDC",
   limit: 10,
