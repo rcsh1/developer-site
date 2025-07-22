@@ -42,6 +42,21 @@ Cobo 提供两种钱包类型，您可以根据实际业务需求选择适合的
 
 ## 技术配置
 
+### 安装 Payment Management App
+
+Payment Management App 提供 Web 界面，让您可以便捷地进行商户管理、订单查询、结算处理和异常处理等日常运营工作。安装步骤如下：
+
+1. 登录 Cobo Portal：
+      * 如需测试，请使用[开发环境](https://portal.dev.cobo.com/login)。
+      * 如需正式使用，请使用[正式环境](https://portal.cobo.com/login)。
+
+2. 在首页点击 **Payment Management** 卡片。
+<img src="/v2_cn/images/payments/install-payment-app.png" className="screenshot_modal" alt="Payment Management App Intro" />
+
+3. 点击**安装**按钮并按页面指引完成安装。此过程可能需要管理员审批。
+
+
+
 ### Payment API 调用准备
 
 在后续的集成过程中，您需要调用 Payment API 完成创建订单、发起结算等步骤。
@@ -64,6 +79,9 @@ Cobo 提供两种钱包类型，您可以根据实际业务需求选择适合的
 * 参考[开发者指南](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)，搭建 Webhook Endpoint。  
 * 在 Cobo Portal [注册该 Webhook Endpoint](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create)，并订阅[支付相关的 Webhook 事件](/v2_cn/payments/status-and-events)。
 
+
+
+
 ## 业务配置
 
 
@@ -74,11 +92,13 @@ Cobo 提供两种钱包类型，您可以根据实际业务需求选择适合的
 <Note>如果您是商户（直接服务付款方），则仅需创建一个商户，且无需配置开发者费率。开发者费率仅适用于商户平台（如 PSP、电商平台）向其下游商户收取手续费。</Note>
 
 1. 在 Cobo Portal 上创建钱包。
-     <Note>创建时，请务必勾选**自动归集**，以确保后续结算和退款操作的顺利进行。</Note>
-     
-     - 对于全托管钱包，您需要点击**钱包**->**全托管钱包**->**Web3 钱包**进入创建钱包的页面。在该页面中，您可以点击右上角的**创建钱包**按钮来创建新的钱包。
-     <img src="/v2_cn/images/payments/web3_wallet_entry.png" className="screenshot_modal" alt="Entry to Web3 Wallet" />
-     - 对于 MPC 钱包，您需要点击**钱包**->**MPC 钱包**，默认会进入您在开通钱包服务时创建的 MPC Vault。在该页面中，您可以点击右上角的**创建钱包**按钮来创建新的钱包。
+     1. 点击**创建钱包**按钮。
+        - 对于全托管钱包，您需要点击**钱包**->**全托管钱包**->**Web3 钱包**进入创建钱包的页面。在该页面中，您可以点击右上角的**创建钱包**按钮来创建新的钱包。
+        <img src="/v2_cn/images/payments/web3_wallet_entry.png" className="screenshot_modal" alt="Entry to Web3 Wallet" />
+        - 对于 MPC 钱包，您需要点击**钱包**->**MPC 钱包**，默认会进入您在开通钱包服务时创建的 MPC Vault。在该页面中，您可以点击右上角的**创建钱包**按钮来创建新的钱包。
+     2. 填写钱包名称，并勾选**自动归集**，以确保后续结算和退款操作的顺利进行。
+       <img src="/v2_cn/images/payments/create-wallet-auto-sweep.png" className="screenshot_modal" alt="Entry to Web3 Wallet" />
+
    
 2. 创建后，您可以在钱包列表页获取钱包 ID。将鼠标悬停在钱包名称上，钱包 ID 将自动显示。 
      <img src="/v2_cn/images/payments/wallet_name_hoverover.png" className="screenshot_modal" alt="Entry to Web3 Wallet" />

@@ -1,73 +1,38 @@
 ---
-title: "Order Status and Events"
+title: "Events and statuses"
 lang: "en"
 description: ""
 ---
 
-<Note>This document is an AI-assisted translation provided for reference purposes only.</Note>
+<Note>**Disclaimer: This article contains AI translations and should only be used as reference.** Contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) if you have any questions.</Note>
 
-This article describes the order statuses, settlement request statuses, and webhook events involved in the pay-in, refund, and settlement processes.
+This document explains all webhook events involved in the payment collection, refund, and settlement processes, as well as status change workflows.
 
-## Pay-in
-
-### Pay-in Order Status
-
-* `Pending`: Order created and awaiting payment. No incoming transactions detected yet.
-* `Processing`: First incoming transaction detected at the receiving address.
-* `Completed`: Full payment received within the order's validity period.
-* `Expired`: No completed incoming transactions within the validity period, or the order has been cancelled.
-* `Underpaid`: Completed incoming transactions exist within the validity period, but the received amount is less than the required amount.
-
-### Webhook Events
+## Webhook events
 
 | Event Name | Trigger Condition | Event Content |
-|------------|------------------|---------------|
-| `payment.status.updated` | Pay-in order status changes | Pay-in order details |
-| `payment.transaction.created` | New incoming transaction detected at receiving address | Pay-in order details and transaction details |
-| `payment.transaction.late` | Transaction detected but order is in final state<br/>(status is `Underpaid`, `Expired`, or `Completed`) | Pay-in order details and transaction details |
-| `payment.transaction.held` | Transaction failed compliance screening | Pay-in order details and transaction details |
+|---------|---------|----------|
+| `payment.status.updated` | Pay-in order status changes. Pay-in order statuses include:<br></br>- `Pending`: Order created, awaiting payment. No deposit transactions detected yet.<br></br>- `Processing`: First deposit transaction detected at the receiving address.<br></br>- `Completed`: Full payment received within the order validity period<br></br>- `Expired`: No completed deposit transactions within the order validity period, or order has been cancelled.<br></br>- `Underpaid`: Completed deposit transactions exist within the order validity period, but actual received amount is less than the required payment amount. | Pay-in order details |
+| `payment.transaction.created` | New deposit transaction detected on the order's receiving address or top-up address | - Pay-in order details or top-up details<br></br>- Deposit transaction details |
+| `payment.transaction.late` | Deposit transaction detected, but order is already in terminal state<br/>(`Underpaid`, `Expired`, or `Completed`) | - Pay-in order details<br></br>- Deposit transaction details |
+| `payment.transaction.held` | Deposit transaction failed compliance screening | - Pay-in order details or top-up details<br></br>- Deposit transaction details |
+| `payment.transaction.complete` | In top-up mode, deposit transaction passed compliance screening, funds successfully credited and included in actual received amount. | - Top-up details<br></br>- Deposit transaction details |
+| `payment.refund.status.updated` | Refund order status changes. Refund order statuses include:<br></br>- `Pending`: Refund order created but transaction not yet initiated.<br></br>- `Processing`: At least one refund transaction is in progress.<br></br>- `Completed`: All refund transactions completed.<br></br>- `PartiallyCompleted`: Some refund transactions completed, some failed.<br></br>- `Failed`: All refund transactions failed. | Refund order details |
+| `payment.settlement.status.updated` | Settlement request status changes. Settlement request statuses include:<br></br>- `Pending`: Settlement request created, awaiting processing.<br></br>- `Processing`: Settlement request processing, at least one settlement in progress.<br></br>- `Completed`: All settlements completed.<br></br>- `PartiallyCompleted`: Some settlements completed, some failed.<br></br>- `Failed`: All settlements failed.| Settlement request details |
 
-**Event Details**
-- **Pay-in order details**: Refer to response parameters in [Get pay-in order information](/v2/api-references/payment/get-pay-in-order-information)
-- **Transaction details**: Refer to response parameters in [Get transaction information](/v2/api-references/transactions/get-transaction-information)
+**Event details**
+- **Pay-in order details**: Refer to the response parameter descriptions for [Get pay-in order information](/v2/api-references/payment/get-pay-in-order-information). In addition to the above response parameters, the event content also includes the `acquiring_type` field, indicating the acquiring type. In pay-in order details, this field is `Order`, representing order mode.
+- **Top-up details**:
+    - `payer_id`: User ID
+    - `custom_payer_id`: Custom user ID
+    - `acquiring_type`: Acquiring type. In top-up details, this field is `TopUp`, representing top-up mode.
+- **Deposit transaction details**: Refer to the response parameter descriptions for [Get transaction information](/v2/api-references/transactions/get-transaction-information)
+- **Refund order details**: Refer to the response parameter descriptions for [Get refund order information](/v2/api-references/payment/get-refund-order-information)
+- **Settlement request details**: Refer to the response parameter descriptions for [Get settlement request information](/v2/api-references/payment/get-settlement-request-information)
 
-## Refund
+## Status transitions
 
-### Refund Order Status
+The diagram below shows the status transitions of pay-in orders and the trigger timing of various webhook events.
+<img src="/v2/images/payments/order_status.png" className="diagram" alt="Overall business process of the Cobo Payment Solution"></img>
 
-* `Pending`: Refund order created but no transaction initiated yet.
-* `Processing`: At least one refund transaction is in progress.
-* `Completed`: All refund transactions completed.
-* `PartiallyCompleted`: Some refund transactions completed, others failed.
-* `Failed`: All refund transactions failed.
-
-### Webhook Events
-
-| Event Name | Trigger Condition | Event Content |
-|------------|------------------|---------------|
-| `payment.refund.status.updated` | Refund order status changes | Refund order details |
-
-**Event Details**
-- **Refund order details**: Refer to response parameters in [Get refund order information](/v2/api-references/payment/get-refund-order-information)
-
-## Settlement
-
-### Settlement Request Status
-
-* `Pending`: Settlement request created and awaiting processing.
-* `Processing`: Settlement request processing, at least one settlement in progress.
-* `Completed`: All settlements completed.
-* `PartiallyCompleted`: Some settlements completed, others failed.
-* `Failed`: All settlements failed.
-
-### Webhook Events
-
-| Event Name | Trigger Condition | Event Content |
-|------------|------------------|---------------|
-| `Payment.settlement.status.updated` | Settlement request status changes | Settlement request details |
-
-**Event Details**
-- **Settlement request details**: Refer to response parameters in [Get settlement request information](/v2/api-references/payment/get-settlement-request-information)
-
-
-<Tip>You are welcome to [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to help us improve our documentation!</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
