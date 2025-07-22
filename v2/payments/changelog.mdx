@@ -1,0 +1,38 @@
+---
+title: "Release history"
+lang: "en"
+---
+
+<Note>**Disclaimer: This article contains AI translations and should only be used as reference.** Contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) if you have any questions.</Note>
+
+This document records all important updates to the Cobo Payment Solution.
+
+## July 2025
+
+| Product | Change Description | Release Date |
+|------|----------|----------|
+| **Payment Management App** | - Added support for top-up mode. You can now use the web interface to:<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Create and manage top-up addresses<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Monitor top-up transaction status<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Export top-up records | 2025-07-10 |
+| **Payment API** | API SDK v1.18.0 release. Changes include:<br/><br/>- Added top-up mode related operations:<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [Get top-up address](/v2/api-references/payment/get-top-up-address)<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [List payers](/v2/api-references/payment/list-payers)<br/>&nbsp;&nbsp;For specific integration steps, refer to [Get top-up addresses](/v2/payments/get-topup-addresses)<br/><br/>- Added `use_dedicated_address` parameter to [Create pay-in order](/v2/api-references/payment/create-pay-in-order), supporting specification of independent receiving addresses<br/><br/>- Added multiple [webhook events](/v2/payments/status-and-events) related to top-up mode | 2025-07-02 |
+
+## June 2025
+
+| Product | Change Description | Release Date |
+|------|----------|----------|
+| **Payment Management App** | - Added dashboard, balance query, and report export features | 2025-06-27 |
+| **Payment Management App** | - Added support for Custodial Wallets | 2025-06-19 |
+| **Payment API** | API SDK v1.17.0 release. Changes include:<br/><br/>- Added support for crypto withdrawal settlement method. Related operations:<br/>&nbsp;&nbsp;&nbsp;&nbsp;-[Create settlement request](/v2/api-references/payment/create-settlement-request)<br/>&nbsp;&nbsp;&nbsp;&nbsp;-[List crypto addresses](/v2/api-references/payment/list-crypto-addresses)<br/><br/>- [Create refund order](/v2/api-references/payment/create-refund-order) added developer fee related fields. You can charge developer fees to merchants during refunds. For more information, refer to [Handle refund requests](/v2/payments/handle-abnormality-order#handle-refund-requests).<br/><br/>- Added the following interfaces for completing Checkout SDK OAuth authentication:<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [Get Access Token](/v2/api-references/oauth/get-access-token)<br/>&nbsp;&nbsp;&nbsp;&nbsp;- [Refresh Access Token](/v2/api-references/oauth/refresh-access-token)| 2025-06-18 |
+| **Payment Management App** | - Added support for crypto withdrawal settlement method | 2025-06-10 |
+| **Checkout SDK** | - Checkout SDK v1.1.0 release. Checkout SDK provides ready-to-use payment collection frontend components with iframe embedding for quick integration | 2025-06-09 |
+
+## May 2025
+| Product | Change Description | Release Date |
+|------|----------|----------|
+| **Payment Management App** | - App release, providing web interface for order management, settlement management, and merchant management | 2025-05-22 |
+
+## April 2025
+
+| Product | Change Description | Release Date |
+|------|----------|----------|
+| **Payment API** | API SDK v1.14.0 release. Changes include:<br/><br/>- Added core payment-related operations:<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Create and manage payment orders<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Handle refund requests<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Execute settlement operations<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Merchant information management<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Bank account management<br/>&nbsp;&nbsp;&nbsp;&nbsp;- Real-time exchange rate queries<br/><br/>- Added payment-related [webhook events](/v2/payments/status-and-events) for real-time notifications of order, refund, and settlement status changes. | 2025-04-23 |
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

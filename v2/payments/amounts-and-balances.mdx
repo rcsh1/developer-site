@@ -1,60 +1,56 @@
 ---
-title: "Amount Definitions and Balance Calculation Guide"
+title: "Amount definitions and balance calculation explanations"
 lang: "en"
 ---
 
-<Note>This document is an AI-assisted translation provided for reference purposes only.</Note>
+<Note>**Disclaimer: This article contains AI translations and should only be used as reference.** Contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) if you have any questions.</Note>
 
-This document explains the definitions of various amounts and the formulas for calculating balances during payment acceptance, refunds, and settlements.
+This document explains the definitions of various amounts in the payment collection, refund, and settlement processes, as well as balance calculation formulas.
 
-## Merchant Funds and Developer Funds
+## Merchant funds and developer funds
 
-Cobo maintains separate records for two types of funds: merchant funds and developer funds.
+Cobo maintains separate income and expense records for two types of funds: merchant funds and developer funds.
 
-* Merchant funds: Funds belonging to each merchant, mainly sourced from the portion of the order's received amount attributed to the merchant.  
-* Developer funds: Funds belonging to the developer (you), mainly including:  
-  * The portion of the order's received amount attributed to the developer (you);  
-  * Fees collected from merchants during refunds;  
-  * Funds transferred from external wallets into Cobo Portal.
+* Merchant funds: Funds belonging to various merchants, mainly derived from the merchant portion of top-up amounts and order actual received amounts.
+* Developer funds: Funds belonging to developers, mainly including the following sources:
+  * The developer portion of top-up amounts and order actual received amounts
+  * Developer fees collected from merchants during the refund process
+  * Funds transferred from external wallets to Cobo Portal
 
-During payment acceptance, Cobo automatically splits the received order amount into merchant received amount and developer fee based on the ratio between the `order_amount` and `fee_amount` you provide when creating the order.
+In top-up mode, Cobo will automatically divide each incoming top-up amount into merchant funds and developer funds based on the developer fee rate (`developer_fee_rate`) you set when creating the merchant. For example, when you set the developer fee rate to 1%, Cobo will divide a 100 USDT top-up amount into 99 USDT of merchant funds and 1 USDT of developer funds.
 
+In order mode, Cobo will automatically divide the order actual received amount into merchant actual received amount and developer fees based on the ratio between the order amount (`order_amount`) and developer fee (`fee_amount`) you pass in when creating the order. For example, when `order_amount` is 99 USDT and `fee_amount` is 1 USDT, Cobo will divide a 100 USDT order actual received amount into 99 USDT of merchant actual received amount and 1 USDT of developer fees.
 
-* **Order Received Amount**: The actual amount received for a payment order within its validity period, available in the `received_token_amount` field in order details.  
-  * Any funds transferred to the order's receiving address during the validity period are counted in the order received amount.  
-  * Funds transferred after the order expires are not included in the received amount, but are marked as transactions associated with the order.  
-* **Merchant Received Amount**: The portion of the order received amount attributed to merchant funds.  
-* **Developer Fee**: The portion of the order received amount attributed to developer funds.
+<Note>In cases of [overpayment, underpayment, and late payment](/v2/payments/handle-abnormality-order#abnormal-payment-situations-explanation), Cobo will divide related funds into merchant funds and developer funds at the same ratio.</Note>
 
-## Merchant Withdrawable Balance
+## Merchant withdrawable balance
 
-**Merchant withdrawable balance** refers to the total amount of funds available for settlement by a merchant at a specific point in time. You can query this via [Get withdrawable balances](https://www.cobo.com/developers/v2/api-references/payment/get-withdrawable-balances).
+**Merchant withdrawable balance** refers to the total amount of funds available for a specific merchant to initiate settlement at a specific moment. Cobo calculates merchant withdrawable balances separately for top-up mode and order mode, and this balance can be queried through [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances).
 
-The calculation formula is: **Total merchant received amount** \- **Merchant non-withdrawable amount** \- **Merchant settled amount** \- **Merchant refunded amount** \- **Merchant under review/isolated/frozen amount**.
+The calculation formula for this amount is: **Total merchant received amount** - **Merchant non-withdrawable amount** - **Merchant settled amount** - **Merchant refunded amount** - **Merchant under review/isolated/frozen amount**.
 
+* **Total merchant received amount**: In top-up mode, this amount is the total merchant funds from all top-ups received by the merchant; in order mode, this amount is the total merchant funds from the actual received amounts of all pay-in orders for the merchant.
+* **Merchant non-withdrawable amount**: If the balance on a certain address is below the minimum sweep amount specified by Cobo, this portion of the balance will be considered non-withdrawable. If you need to settle non-withdrawable amounts, you must contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) to initiate a manual sweep request, and then initiate settlement after completion.
+* **Merchant settled amount**: The total amount of merchant funds that have been settled.
+* **Merchant refunded amount**: The total amount of merchant funds that have been refunded to users.
+* **Under review/isolated/frozen amount**: The total amount of merchant funds that have been included in actual received amounts but have not passed compliance screening and are currently in manual review, isolated, or frozen status.
 
-* **Total merchant received amount**: The sum of merchant received amounts for all payment orders of the merchant.  
-* **Merchant non-withdrawable amount**: If the balance on a receiving address is below Cobo's minimum consolidation threshold, this portion is considered non-withdrawable. If the address is not a dedicated one, the balance will gradually increase with more orders until it surpasses the threshold. To settle non-withdrawable amounts, please contact Cobo support at [help@cobo.com](mailto:help@cobo.com) to request a manual consolidation before initiating settlement.  
-* **Merchant settled amount**: The total amount of merchant funds that have been settled.  
-* **Merchant refunded amount**: The total amount of merchant funds that have been refunded to users.  
-* **Merchant under review/isolated/frozen amount**: The total amount of merchant funds included in order received amounts but currently under manual review, isolated, or frozen due to compliance checks.
+## Developer withdrawable balance
 
-## Developer Withdrawable Balance
+**Developer withdrawable balance** refers to the total amount of funds available for developers to initiate settlement at a specific moment. Cobo calculates developer withdrawable balances separately for top-up mode and order mode, and this balance can be queried through [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances).
 
-**Developer withdrawable balance** refers to the total amount of funds available for settlement by the developer (you) at a specific point in time. You can query this via [Get withdrawable balances](https://www.cobo.com/developers/v2/api-references/payment/get-withdrawable-balances).
+**Developer withdrawable balance** includes the following fund sources:
 
-**Developer withdrawable balance** includes the following sources of funds:
+* **Developer fees**: In top-up mode, this amount is the developer fees from all top-ups received by the merchant; in order mode, this amount is the developer fees from the actual received amounts of all pay-in orders for the merchant.
+* **Refund handling fees**: Developer fees you collect from merchants in refund orders.
+* Funds you transfer from external wallets to Cobo Portal
 
-* **Developer fee**: The portion of the order received amount (`received_token_amount`) attributed to the developer (you). Cobo automatically calculates merchant received amount and developer fee based on the ratio between `order_amount` and `fee_amount` in the order details.  
-* **Refund fee**: Fees you collect from merchants in refund orders.  
-* Funds you transfer from external wallets into Cobo Portal.
+The following amounts will be deducted during calculation:
 
-The following amounts are deducted during calculation:
+* **Non-withdrawable amount**: If the balance on a certain address is below the minimum sweep amount specified by Cobo, this portion of the balance will be considered non-withdrawable. If you need to settle non-withdrawable amounts, you must contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com).
+* **Settled amount**: The total amount of developer funds that have been settled
+* **Refunded amount**: The total amount of developer funds that have been refunded to users
+* Funds transferred to external wallets: Funds you transfer from Cobo Portal to external wallets
+* **Under review/isolated/frozen amount**: The total amount of developer funds that have been included in actual received amounts but have not passed compliance screening and are currently in manual review, isolated, or frozen status
 
-* **Settled amount**: The total amount of developer funds that have been settled.  
-* **Refunded amount**: The total amount of developer funds that have been refunded to users.  
-* Funds transferred out to external wallets: Funds you transfer from Cobo Portal to external wallets.  
-* **Under review/isolated/frozen amount**: Developer fees included in order received amounts but currently under manual review, isolated, or frozen due to compliance checks.  
-* **Non-withdrawable amount**: If the balance on a receiving address is below Cobo's minimum consolidation threshold, this portion is considered non-withdrawable. If the address is not a dedicated one, the balance will gradually increase with more orders until it surpasses the threshold. To settle non-withdrawable amounts, please contact Cobo support at [help@cobo.com](mailto:help@cobo.com).
-
-<Tip>You are welcome to [submit feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to help us improve our documentation!</Tip>
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip> 
