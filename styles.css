@@ -132,7 +132,7 @@ table {
 
 table th, table td {
   width: auto;
-  min-width: 130px; /*Ajustable, avoid columns to be too narrow */
+  min-width: 150px; /*Ajustable, avoid columns to be too narrow */
   border: 1px solid #ddd;
   padding: 12px;
   text-align: left;
@@ -140,32 +140,129 @@ table th, table td {
   word-wrap: break-word;
 }
 
+.six-columns th, .six-columns td {
+  min-width: 100px; /* for six-column tables */
+}
+
+.six-columns-fixed-first-row-cn {
+  display: block;
+  max-height: 500px; /* Adjust this value based on your needs */
+  width: fit-content; /* Changed from 100% to fit-content */
+  max-width: 100%; /* Ensure it doesn't exceed container width */
+  font-size: 11px;  /* Reduced font size from 13px to 11px */
+}
+
+.six-columns-fixed-first-row-cn table {
+  width: 100%;
+  table-layout: auto;  /* Changed to auto for more flexible layout */
+}
+
+.six-columns-fixed-first-row-cn thead,
+.six-columns-fixed-first-row-cn tr:first-child {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.six-columns-fixed-first-row-cn th, .six-columns-fixed-first-row-cn td {
+  min-width: 50px;   /* Further reduced minimum width */
+  padding: 6px;      /* Further reduced padding */
+  white-space: normal;
+  word-wrap: break-word;
+  background-color: inherit;
+  font-size: inherit;
+  text-align: left;
+}
+
+.six-columns-fixed-first-row-cn td:first-child,
+.six-columns-fixed-first-row-cn th:first-child,
+.six-columns-fixed-first-row-cn td:nth-child(2),
+.six-columns-fixed-first-row-cn th:nth-child(2),
+.six-columns-fixed-first-row-cn td:nth-child(3),
+.six-columns-fixed-first-row-cn th:nth-child(3) {
+  min-width: 60px;  /* Make first three columns narrower */
+  max-width: 70px;
+}
+
+.six-columns-fixed-first-row-cn td:nth-child(n+4),
+.six-columns-fixed-first-row-cn th:nth-child(n+4) {
+  min-width: 71px;  /* Make the remaining columns wider */
+  max-width: 90px;
+}
+
+.six-columns-fixed-first-row-cn td,
+.six-columns-fixed-first-row-cn th {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.six-columns-fixed-first-row-cn tr:first-child th {
+  background-color: #1F32D6; /* Cobo Blue */
+}
+
+.four-columns th, .four-columns td {
+  min-width: 150px; /* for four-column tables */
+}
+
 /* Style the header */
 table th {
   height: 37px;
-  background-color: #1F32D6;
+  background-color: #1F32D6; /* Cobo Blue */ 
   color: white !important;
   font-weight: bold;
   vertical-align: middle;
 }
 
 /* Add left padding to the first column */
-table th:first-child, table td:first-child {
+table:not(.six-columns-fixed-first-row-cn):not(.six-columns-fixed-first-row) th:first-child, 
+table:not(.six-columns-fixed-first-row-cn):not(.six-columns-fixed-first-row) td:first-child {
   padding-left: 8px;
 }
 
-.table-three-cols {
-  width: 100%; /* Make the table take the full width of its container */
-  border-collapse: collapse; /* Collapse borders for a cleaner look */
-  table-layout: fixed; /* Use fixed table layout */
+.six-columns-fixed-first-row {
+  display: block;
+  max-height: 500px; /* Adjust this value based on your needs */
+  width: fit-content; /* Changed from 100% to fit-content */
+  max-width: 100%; /* Ensure it doesn't exceed container width */
+  font-size: 11px;  /* Further reduced font size */
+  overflow-x: auto; /* Add horizontal scroll when needed */
 }
 
-.table-three-cols th, .table-three-cols td {
-  width: 33.33%; /* Each column takes up one-third of the table's width */
-  text-align: left; /* Align text to the left */
-  padding: 8px; /* Add some padding for better spacing */
-  border: 1px solid #ddd; /* Add a border to the cells */
-  overflow: hidden; /* Prevent overflow of content */
-  text-overflow: ellipsis; /* Add ellipsis for overflowed text */
-  max-width: 240px; /* Set a maximum width for the columns */
+.six-columns-fixed-first-row table {
+  width: 100%;
+  table-layout: fixed;  /* Changed back to fixed for better control */
+}
+
+.six-columns-fixed-first-row thead,
+.six-columns-fixed-first-row tr:first-child {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.six-columns-fixed-first-row th, .six-columns-fixed-first-row td {
+  min-width: 40px;   /* Further reduced minimum width */
+  max-width: 100px;  /* Reduced maximum width */
+  padding: 4px;      /* Further reduced padding */
+  white-space: normal;
+  word-wrap: break-word;
+  background-color: inherit;
+  font-size: inherit;
+  text-align: left;
+}
+
+.six-columns-fixed-first-row td:first-child,
+.six-columns-fixed-first-row th:first-child {
+  min-width: 80px;  /* Reduced first column width */
+  max-width: 120px; /* Added max-width for first column */
+}
+
+.six-columns-fixed-first-row td,
+.six-columns-fixed-first-row th {
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.six-columns-fixed-first-row tr:first-child th {
+  background-color: #1F32D6; /* Cobo Blue */
 }
