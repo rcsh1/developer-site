@@ -1,0 +1,301 @@
+---
+title: "Roles and permissions"
+---
+This document lists the user roles and their corresponding permissions involved in Cobo's payment solution.
+
+
+<Note>In a production environment, you need to configure at least 2 Admins to serve as backups for each other. Other roles should be properly configured according to actual needs. It is not recommended to assign multiple roles to the same member.</Note>
+
+<table class="six-columns-fixed-first-row-cn">
+  <tr>
+    <th colspan="3">Permissions</th>
+    <th>Admin</th>
+    <th>Payment Admin</th>
+      <th>Payment Member</th>
+  </tr>
+  <tr>
+    <td>Primary Function</td>
+    <td>Secondary Function</td>
+    <td>Tertiary Function</td>
+    <td>Highest Permission</td>
+    <td>Payment Management</td>
+    <td>Payment Operations</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Wallet Management</td>
+    <td rowspan="2">Wallets</td>
+    <td>Create Wallet</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>View Wallets</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="21">Payments</td>
+    <td rowspan="3">Payment Orders</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Refunds</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Settlement</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Merchants</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Bank Accounts</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>Not supported yet</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>✔️</td>
+    <td>Not supported yet</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>✔️</td>
+    <td>Not supported yet</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Delete</td>
+    <td>✔️</td>
+    <td>Not supported yet</td>
+    <td>Not supported yet</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Top-up Addresses</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>Not supported yet</td>
+    <td>Not supported yet</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>✔️</td>
+    <td>Not supported yet</td>
+    <td>Not supported yet</td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>✔️</td>
+    <td>Not supported yet</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Forced sweep</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Balance</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+</table>
+
+## Token Swap and Screening App Permissions
+
+
+<table class="six-columns-fixed-first-row-cn">
+  <tr>
+    <th>Permissions</th>
+    <th></th>
+    <th></th>
+    <th>Viewer</th>
+    <th>Spender</th>
+    <th>Approver</th>
+    <th>Operator</th>
+    <th>Manager</th>
+    <th>Admin</th>
+    <th>Payment Management</th>
+    <th>Payment Member</th>
+  </tr>
+  <tr>
+    <td>Primary Function</td>
+    <td>Secondary Function</td>
+    <td>Tertiary Function</td>
+    <td>View Only</td>
+    <td>Initiate Withdrawal</td>
+    <td>Approve Transactions</td>
+    <td>Configure Wallets</td>
+    <td>Assist Organization Management</td>
+    <td>Highest Permission</td>
+    <td>Payment Management</td>
+    <td>Payment Operations</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Token Swap APP</td>
+    <td rowspan="2">Swap Orders</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>-</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Bridge Orders</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td>Create</td>
+    <td>-</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+    <td>-</td>
+    <td>✔️</td>
+    <td>-</td>
+    <td>-</td>
+  </tr>
+  <tr>
+    <td rowspan="4">Screening App</td>
+    <td>Screening Results</td>
+    <td>View</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Screened Funds</td>
+    <td>Refund</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Isolate</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+  <tr>
+    <td>Unfreeze</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+    <td>✔️</td>
+  </tr>
+</table>
+
+<Tip>We welcome your [feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to help improve our documentation!</Tip> 

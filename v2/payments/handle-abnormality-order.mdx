@@ -209,19 +209,19 @@ public class Example {
 
 ## Compliance screening failure
 
-* For Custodial Wallets or MPC Wallets with Cobo KYC enabled, Cobo will perform compliance screening (such as KYT/AML screening) on every transaction transferred to receiving addresses.
-* For MPC Wallets without Cobo KYC enabled, you can perform compliance screening on funds yourself through [Screening App](https://manuals.cobo.com/en/apps/screening/introduction) and handle transactions that fail.
-
-When a transaction initially fails compliance screening, the system will trigger a `payment.transaction.held` event. The subsequent processing workflow is as follows:
+When a transaction fails compliance screening by Cobo KYT or the Screening App, the system will trigger a `payment.transaction.held` event. The subsequent processing flow is as follows:
 
 - If the transaction subsequently passes manual review:
-    - If the order has not expired: The funds will be included in the order received amount, and the order status will be updated accordingly based on the received amount
-    - If the order has expired: The system will trigger a `payment.transaction.late` event, and the funds will be included in the order's late payment amount
+    - If the order has not expired: The funds will be counted towards the order's actual received amount, and the order status will be updated accordingly based on the actual received amount
+    - If the order has already expired: The system will trigger a `payment.transaction.late` event, and the funds will be counted towards the order's late payment amount
 
 - If the transaction ultimately fails manual review:
-    - Funds will be isolated or frozen and will not be included in the order received amount
+    - The funds will be frozen and will not be counted towards the order's actual received amount
     - The order status will remain unchanged
-    - You need to contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) to handle the isolated/frozen funds
-    - Users need to redeposit sufficient funds and pass compliance screening within the order validity period for the order to change to `Completed` status
+    - The user needs to deposit sufficient funds again within the order's validity period and pass compliance screening for the order to transition to `Completed` status
+  
+For isolated or frozen funds:
+- Cobo KYT: Please contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) for handling
+- Screening App: You can evaluate and handle this within the app yourself
 
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

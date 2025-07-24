@@ -11837,8 +11837,13 @@ components:
 
               The order ID to be included in this settlement.
 
-              This field is only applicable when `settlement_type` is set to `Merchant`. If provided, the settlement request will settle the merchant funds received from the specified orders. You should not specify both `order_ids` and `amount`. 
-                  
+              - If provided: Settles merchant funds received from this specific order
+              - If empty: Settles merchant funds received from all unsettled orders of the specified merchant
+
+              **Usage conditions**
+              - Only applicable when `settlement_type` is set to `Merchant`
+              - Cannot be used together with `order_ids` or `amount` parameters
+
                   
             example: O20250304-M1001-1001
     Merchant:
