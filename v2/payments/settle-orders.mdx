@@ -53,7 +53,7 @@ Depending on different fund sources and settlement methods, you need to specify 
 
 **Parameter descriptions:**
 - `merchant_id`: Merchant ID, multiple merchants can be specified through the `settlements` array
-- `order_ids`: Array of order IDs to be settled
+- `order_ids`: Array of order IDs to be settled. If this parameter is empty, all unsettled orders of the specified merchant will be settled.
 - `amount`: Settlement amount (only required for developer balance settlement, automatically calculated for merchant balance settlement)
 - `token_id`: Cryptocurrency ID (such as `ETH_USDT`, `TRON_USDT`)
 - `crypto_address_id`: Target crypto address ID, can be obtained by calling [List crypto addresses](/v2/api-references/payment/list-crypto-addresses)

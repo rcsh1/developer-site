@@ -41,6 +41,31 @@ description: "WaaS 2.0 API 中交易来源和目的地的概述，详细说明�
 - `DepositFromWallet`：交易所钱包。
 - `DepositFromLoop`：通过 [Cobo Loop](https://manuals.cobo.com/cn/portal/custodial-wallets/cobo-loop) 转账网络发送的转账。
 
+### `address` 和 `included_utxos` 使用说明
+
+本章将说明当 `source_type` 为 `Web3`、`Org-Controlled` 或 `User-Controlled` 时，在不同链与不同交易类型下需要指定哪些 `source` 属性（`address` 和 `included_utxos`），以及在指定这些属性后系统会如何处理。
+
+#### UTXO 链
+
+- **普通交易**
+  - 如果仅指定 `included_utxos`：交易只会使用这些指定的 UTXO。
+  - 如果仅指定 `address`：系统会只从该地址选择 UTXO。
+  - 如果同时指定 `address` 和 `included_utxos`：系统会检查这些 UTXO 是否属于该地址，并且只会使用这些 UTXO。
+  - 如果既不指定 `address` 也不指定 `included_utxos`：系统会自动从 `wallet_id` 对应钱包下的所有地址选择 UTXO。
+- **RBF 交易**
+  <br />RBF 交易中的 `address` 或 `included_utxos` 可以与原交易不同。<br />
+  - 如果仅指定 `included_utxos`：交易只会使用这些指定的 UTXO。
+  - 如果仅指定 `address`：系统会只从该地址选择 UTXO。
+  - 如果同时指定 `address` 和 `included_utxos`：系统会检查这些 UTXO 是否属于该地址，并且只会使用这些 UTXO。
+  - 如果未指定 `address` 也未指定 `included_utxos`：
+    - 如果原交易指定了 `included_utxos`：交易只会使用原交易的 UTXO。
+    - 如果原交易未指定 `included_utxos`：系统会自动从原交易 `wallet_id` 对应钱包下的所有地址选择 UTXO。
+
+#### 账户模型链
+
+- 交易必须指定 `address`，否则代币转账会失败。
+- 在估算转账手续费时，只提供 `wallet_id` 即可，`address` 不是必填项。
+
 ## 交易目的地类型
 
 交易目的地类型如下：
