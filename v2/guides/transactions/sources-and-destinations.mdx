@@ -42,6 +42,32 @@ The transaction source types are as follows:
 - `DepositFromWallet`: An Exchange Wallet.
 - `DepositFromLoop`: A transfer sent through the [Cobo Loop](https://manuals.cobo.com/en/portal/custodial-wallets/cobo-loop) transfer network. 
 
+### `address` and `included_utxos` usage
+
+This section explains, when the `source_type` is `Web3`, `Org-Controlled`, or `User-Controlled`, which `source` properties (`address` and `included_utxos`) need to be specified for different chains and transaction types, and how the system processes them.
+
+#### UTXO-based chains
+
+- **Regular transactions**
+  - If only `included_utxos` is specified: The transaction will use only these specified UTXOs.
+  - If only `address` is specified: The system will select UTXOs only from this address.
+  - If both `address` and `included_utxos` are specified: The system will verify that the UTXOs belong to the specified address, and only these UTXOs will be used.
+  - If neither `address` nor `included_utxos` is specified: The system will automatically select UTXOs from all addresses under the wallet associated with `wallet_id`.
+
+- **RBF transactions**
+  <br />`address` or `included_utxos` in an RBF transaction can be different from those in the original transaction.<br />
+  - If only `included_utxos` is specified: The transaction will use only these specified UTXOs.
+  - If only `address` is specified: The system will select UTXOs only from this address.
+  - If both `address` and `included_utxos` are specified: The system will verify that the UTXOs belong to the specified address, and only these UTXOs will be used.
+  - If neither `address` nor `included_utxos` is specified:
+    - If the original transaction specified `included_utxos`: The transaction will use the UTXOs specified in the original transaction.
+    - If the original transaction did not specify `included_utxos`: The system will automatically select UTXOs from all addresses under the wallet associated with `wallet_id` in the original transaction.
+
+#### Account-based chains
+
+- The transaction must specify `address`, otherwise the token transfer will fail.
+- When estimating transfer fees, providing only `wallet_id` is sufficient; `address` is not required.
+
 ## Transaction destination types
 
 The transaction destination types are as follows:
