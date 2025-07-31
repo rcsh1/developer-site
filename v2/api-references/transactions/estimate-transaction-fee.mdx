@@ -30,7 +30,17 @@ with cobo_waas2.ApiClient(configuration) as api_client:
                     wallet_id="f47ac10b-58cc-4372-a567-0e02b2c3d479",
                 )
             ),
-            token_id="ETH_USDT",
+            token_id="TRON_USDT",
+            destination = cobo_waas2.TransferDestination(
+                cobo_waas2.AddressTransferDestination(
+                    destination_type = "Address",
+                    account_output = cobo_waas2.AddressTransferDestinationAccountOutput(
+                        address = "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku",
+                        amount = "1.5"
+                    )
+                )
+            ),
+            fee_type = "Fixed"
         )
     )
 
@@ -74,7 +84,20 @@ public class Example {
                         new CustodialTransferSource()
                             .sourceType(WalletSubtype.ASSET)
                             .walletId(UUID.fromString("f47ac10b-58cc-4372-a567-0e02b2c3d479"))))
-                .tokenId("ETH_USDT"));
+                .tokenId("TRON_USDT")
+                .destination(
+                    new TransferDestination(
+                        new AddressTransferDestination()
+                            .destinationType(TransferDestinationType.ADDRESS)
+                            .accountOutput(
+                              new AddressTransferDestinationAccountOutput()
+                                  .address("19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku")
+                                  .amount("1.5")
+                        )
+                    )
+                )
+                .feeType(FeeType.FIXED)
+          );
     try {
       EstimatedFee result = apiInstance.estimateFee(estimateFeeParams);
       System.out.println(result);
@@ -110,13 +133,6 @@ func main() {
 					coboWaas2.ContractCallSourceType("Web3"),
 					"f47ac10b-58cc-4372-a567-0e02b2c3d479",
 					"0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-				),
-			},
-			coboWaas2.ContractCallDestination{
-				EvmContractCallDestination: coboWaas2.NewEvmContractCallDestination(
-					coboWaas2.ContractCallDestinationType("EVM_Contract"),
-					"0x0406db8351aa6839169bb363f63c2c808fee8f99",
-					"0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO",
 				),
 			},
 		),
@@ -163,7 +179,15 @@ const opts = {
       wallet_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479",
     },
     token_id: "ETH_USDT",
-    fee_type: "EVM_EIP_1559",
+    "destination": {
+      "destination_type": "Address",
+      "account_output": {
+        "address": "19AR6YWEGbSoY8UT9Ksy9WrmrZPD5sL4Ku",
+        "memo": "",
+        "amount": "0.1"
+      }
+    },
+    "fee_type": "Fixed"
   }),
 };
 apiInstance.estimateFee(opts).then(

@@ -3511,7 +3511,7 @@ paths:
       operationId: get_settlement_info_by_ids
       summary: Get withdrawable balances
       description: |
-        This operation retrieves the current withdrawable balances of specified merchants or the developer.
+        This operation retrieves the balances of specified merchants or the developer.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -3657,6 +3657,26 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
+    put:
+      tags:
+        - Payment
+      operationId: update_top_up_address
+      summary: Update top-up address
+      description: |
+        This operation updates the dedicated top-up address assigned to a specific payer under a merchant on a specified chain.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_merchant.update
+      requestBody:
+        $ref: '#/components/requestBodies/updateTopUpAddressBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/updateTopUpAddressResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /payments/topup/payers:
     get:
       tags:
@@ -3680,6 +3700,50 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/listPaymentPayersResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /payments/force_sweep_requests:
+    post:
+      tags:
+        - Payment
+      operationId: create_forced_sweep_request
+      summary: Create forced sweep request
+      description: |
+        This operation creates a forced sweep request to transfer funds from addresses within a specified wallet to its designated sweep-to address.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_forced_sweep.create
+      requestBody:
+        $ref: '#/components/requestBodies/createForceSweepBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createForcedSweepResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    get:
+      tags:
+        - Payment
+      operationId: list_forced_sweep_requests
+      summary: List forced sweep requests
+      description: |
+        This operation retrieves the information of all forced sweep requests.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_forced_sweep.read
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+        - $ref: '#/components/parameters/RequestIdOptionalParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listForcedSweepsResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -4608,7 +4672,7 @@ components:
         calldata:
           type: string
           description: |
-            The data that is used to invoke a specific function or method within the specified contract at the destination address.
+            The data used to invoke a specific function or method within the specified contract at the destination address, with a maximum length of 65,000 characters.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
     SafeWalletDelegatesTransfer:
       title: Transfer by Delegates
@@ -6616,7 +6680,7 @@ components:
         calldata:
           type: string
           description: |
-            The data that is used to invoke a specific function or method within the specified contract at the destination address.
+            The data used to invoke a specific function or method within the specified contract at the destination address, with a maximum length of 65,000 characters.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
         calldata_info:
           $ref: '#/components/schemas/TransactionEvmCalldataInfo'
@@ -7313,7 +7377,7 @@ components:
         The mode of transaction fee payment using Fee Station. Currently, Fee Station supports EVM-compatible and TRON transactions initiated from MPC Wallets (Organization-Controlled) and Custodial Wallets (Web3 Wallets). For more details, refer to [Fee Station](https://manuals.cobo.com/en/portal/fee-station/introduction).
         - `ProActiveAutoFuel`: Always use Fee Station to pay transaction fees.
         - `PassiveAutoFuel`: Use Fee Station only when the source address balance is insufficient to cover the transaction fees.
-        - `UsePortalPreference`: Use fueling strategy based on Portal configuration.
+        - `UsePortalPreference`: Use payment preferences set on Cobo Portal.
 
         Please note that the TRON chain does not support `PassiveAutoFuel` due to its fee delegation mechanism.
     TransactionApprovalDetail:
@@ -8348,7 +8412,6 @@ components:
         - request_type
         - chain_id
         - source
-        - destination
       properties:
         request_id:
           type: string
@@ -8474,7 +8537,7 @@ components:
         calldata:
           type: string
           description: |
-            The data that is used to invoke a specific function or method within the specified contract at the destination address.
+            The data used to invoke a specific function or method within the specified contract at the destination address, with a maximum length of 65,000 characters.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
     CosmosContractCallMessage:
       title: Cosmos Message
@@ -8922,6 +8985,8 @@ components:
             - PaymentOrder
             - PaymentRefund
             - PaymentSettlement
+            - PaymentTransaction
+            - PaymentAddressUpdate
             - BalanceUpdateInfo
             - SuspendedToken
           description: |-
@@ -8939,6 +9004,8 @@ components:
             - `PaymentOrder`: The payment order event data.
             - `PaymentRefund`: The payment refund event data.
             - `PaymentSettlement`: The payment settlement event data.
+            - `PaymentTransaction`: The payment transaction event data.
+            - `PaymentAddressUpdate`: The top-up address update event data.
             - `BalanceUpdateInfo`: The balance update event data.
             - `SuspendedToken`: The token suspension event data.
           example: Transaction
@@ -8957,6 +9024,8 @@ components:
         - $ref: '#/components/schemas/PaymentOrderEventData'
         - $ref: '#/components/schemas/PaymentRefundEventData'
         - $ref: '#/components/schemas/PaymentSettlementEvent'
+        - $ref: '#/components/schemas/PaymentTransactionEventData'
+        - $ref: '#/components/schemas/PaymentAddressUpdateEventData'
       discriminator:
         propertyName: data_type
         mapping:
@@ -8973,6 +9042,8 @@ components:
           PaymentOrder: '#/components/schemas/PaymentOrderEventData'
           PaymentRefund: '#/components/schemas/PaymentRefundEventData'
           PaymentSettlement: '#/components/schemas/PaymentSettlementEvent'
+          PaymentTransaction: '#/components/schemas/PaymentTransactionEventData'
+          PaymentAddressUpdate: '#/components/schemas/PaymentAddressUpdateEventData'
     TransactionWebhookEventData:
       title: Transaction
       allOf:
@@ -9138,20 +9209,79 @@ components:
         - $ref: '#/components/schemas/WebhookEventDataType'
         - $ref: '#/components/schemas/BalanceUpdateInfo'
     PaymentOrderEventData:
-      title: Payment order Event Data
+      title: Pay-In Order
       allOf:
         - $ref: '#/components/schemas/WebhookEventDataType'
         - $ref: '#/components/schemas/Order'
     PaymentRefundEventData:
-      title: Payment refund Event Data
+      title: Refund
       allOf:
         - $ref: '#/components/schemas/WebhookEventDataType'
         - $ref: '#/components/schemas/Refund'
     PaymentSettlementEvent:
-      title: Payment refund Event Data
+      title: Settlement
       allOf:
         - $ref: '#/components/schemas/WebhookEventDataType'
         - $ref: '#/components/schemas/Settlement'
+    PaymentTransactionEventData:
+      title: Payment Transaction
+      allOf:
+        - $ref: '#/components/schemas/WebhookEventDataType'
+        - $ref: '#/components/schemas/Transaction'
+        - type: object
+          required:
+            - acquiring_type
+          properties:
+            acquiring_type:
+              $ref: '#/components/schemas/AcquiringType'
+            order_id:
+              type: string
+              description: The pay-in order ID.
+              example: O20250304-M1001-1001
+            psp_order_code:
+              type: string
+              description: A unique reference code assigned by the developer to identify this order in their system.
+              example: P20240201001
+            payer_id:
+              type: string
+              description: A unique identifier assigned by Cobo to track and identify individual payers.
+              example: P20250619T0310056d7aa
+            custom_payer_id:
+              type: string
+              description: A unique identifier assigned by the developer to track and identify individual payers in their system.
+              example: user_abc_10001
+    PaymentAddressUpdateEventData:
+      title: Top-Up Address Update
+      allOf:
+        - $ref: '#/components/schemas/WebhookEventDataType'
+        - type: object
+          required:
+            - custom_payer_id
+            - payer_id
+            - chain
+            - previous_address
+            - updated_address
+          properties:
+            custom_payer_id:
+              type: string
+              description: A unique identifier assigned by the developer to track and identify individual payers in their system.
+              example: user_abc_10001
+            payer_id:
+              type: string
+              description: A unique identifier assigned by Cobo to track and identify individual payers.
+              example: P20250619T0310056d7aa
+            chain:
+              type: string
+              description: The chain ID.
+              example: ETH
+            previous_address:
+              type: string
+              description: The previous top-up address that was assigned to the payer.
+              example: 0xAbC123...DEF
+            updated_address:
+              type: string
+              description: The new top-up address that has been assigned to the payer.
+              example: 0x789xyz...456
     WebhookEventType:
       type: string
       enum:
@@ -9187,6 +9317,7 @@ components:
         - payment.status.updated
         - payment.refund.status.updated
         - payment.settlement.status.updated
+        - payment.address.updated
       example: wallets.transaction.created
       description: 'The event type. To learn the trigger condition of each event type, refer to [Webhook event types and event data](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type).'
     WebhookEventStatus:
@@ -12247,23 +12378,35 @@ components:
           example: ETH_USDT
         available_amount:
           type: string
-          description: 'The amount available for settlement or refund, in the specified cryptocurrency.'
+          description: This field is no longer in use and can be ignored.
           example: '500.00'
         available_currency_balance:
           type: string
-          description: 'The amount available for settlement or refund, in the specified fiat currency.'
+          description: This field is no longer in use and can be ignored.
           example: '500.00'
         pending_amount:
           type: string
-          description: 'The amount unavailable for settlement or refund, in the specified cryptocurrency.'
+          description: This field is no longer in use and can be ignored.
           example: '500.00'
         pending_currency_balance:
           type: string
-          description: 'The amount unavailable for settlement or refund, in the specified fiat currency.'
+          description: This field is no longer in use and can be ignored.
           example: '500.00'
         settled_amount:
           type: string
           description: 'The amount already settled, in the specified cryptocurrency.'
+          example: '500.00'
+        available_balance:
+          type: string
+          description: 'The balance available for settlement or refund, in the specified cryptocurrency.'
+          example: '500.00'
+        total_balance:
+          type: string
+          description: |
+
+            The total unsettled balance in the specified cryptocurrency, including:
+            - Available balance that can be settled immediately
+            - Amounts below the minimum sweep threshold that require forced sweep before settlement
           example: '500.00'
         acquiring_type:
           $ref: '#/components/schemas/AcquiringType'
@@ -12506,7 +12649,6 @@ components:
             $ref: '#/components/schemas/Account'
     TopUpAddress:
       type: object
-      description: The details of a top-up address
       required:
         - address
         - payer_id
@@ -12557,7 +12699,7 @@ components:
           example: 1744689600
     UpdateTopUpAddress:
       type: object
-      description: The request body to update top up address.
+      description: The request body to update top-up address.
       required:
         - merchant_id
         - token_id
@@ -12576,9 +12718,84 @@ components:
           example: ETH_USDT
         custom_payer_id:
           type: string
-          description: |
-            Unique customer identifier on the merchant side, used to allocate a dedicated top-up address
+          description: A unique identifier assigned by the developer to track and identify individual payers in their system.
           example: payer_0001
+    ForcedSweepRequest:
+      type: object
+      required:
+        - request_id
+        - wallet_id
+        - token_id
+        - amount
+      properties:
+        request_id:
+          type: string
+          description: The request ID that is used to track a forced sweep request. The request ID is provided by you and must be unique.
+          example: 123e4567-e89b-12d3-a456-426614174002
+        wallet_id:
+          type: string
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: The ID of the wallet in which the funds will be forcefully swept.
+        token_id:
+          type: string
+          description: The ID of the token to be forcefully swept.
+          example: ETH_USDT
+        amount:
+          type: string
+          description: The amount of the token to be forcefully swept.
+          example: '10.5'
+    ForcedSweep:
+      type: object
+      required:
+        - forced_sweep_id
+        - request_id
+        - status
+      properties:
+        forced_sweep_id:
+          type: string
+          description: The forced sweep request ID generated by Cobo.
+          format: uuid
+          example: aff0e1cb-15b2-4e1f-9b9d-a9133715986f
+        request_id:
+          type: string
+          description: The request ID provided by you when creating the forced sweep request.
+          example: 123e4567-e89b-12d3-a456-426614174002
+        wallet_id:
+          type: string
+          format: uuid
+          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          description: The ID of the wallet in which the funds have been forcefully swept.
+        token_id:
+          type: string
+          description: The ID of the token that has been forcefully swept.
+          example: ETH_USDT
+        amount:
+          type: string
+          description: The amount of token that has been forcefully swept.
+          example: '10.5'
+        status:
+          $ref: '#/components/schemas/ForcedSweepStatus'
+        created_timestamp:
+          type: integer
+          description: 'The creation time of the forced sweep request, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The update time of the forced sweep request, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+    ForcedSweepStatus:
+      type: string
+      enum:
+        - Pending
+        - Processing
+        - Completed
+      example: Pending
+      description: |
+        The current status of the forced sweep request:
+        - `Pending`: The forced sweep request has been created and is awaiting processing.
+        - `Processing`: The forced sweep request is currently being processed.
+        - `Completed`: The requested forced sweep has been completed.
     TSSKeyGenRequest:
       type: object
       properties:
@@ -13991,7 +14208,7 @@ components:
         calldata:
           type: string
           description: |
-            The data that is used to invoke a specific function or method within the specified contract at the destination address.
+            The data used to invoke a specific function or method within the specified contract at the destination address, with a maximum length of 65,000 characters.
           example: 0xa22cb4650000000000000000000000001e0049783f008a0085193e00003d00cd54003c71000000000000000000000000000000000000000000000000000000000000DEMO
         value:
           type: string
@@ -16393,16 +16610,32 @@ components:
                 example: ETH_USDT
               currency:
                 type: string
-                description: 'The fiat currency of the order. Currently, only `USD` is supported.'
-                default: USD
+                description: |
+                  The fiat currency for the base order amount and the developer fee. Currently, only `USD` is supported.
+
+                  If left empty, both `order_amount` and `fee_amount` will be denominated in the cryptocurrency specified by `token_id`
+                default: ''
                 example: USD
               order_amount:
                 type: string
-                description: 'The base amount of the order in fiat currency, excluding the developer fee (specified in `fee_amount`). Values must be greater than `0` and contain two decimal places.'
+                description: |
+
+                  The base amount of the order, excluding the developer fee (specified in `fee_amount`), in the currency specified by `currency`. If `currency` is not specified, the amount is in the cryptocurrency specified by `token_id`. 
+
+                  Values must be greater than `0` and contain two decimal places. 
                 example: '100.00'
               fee_amount:
                 type: string
-                description: 'The developer fee for the order in fiat currency. It is added to the base amount (`order_amount`) to determine the final charge. For example, if order_amount is "100.00" and fee_amount is "2.00", the customer will be charged "102.00" in total, with "100.00" being settled to the merchant and "2.00" settled to the developer. Values must be greater than 0 and contain two decimal places.'
+                description: |
+
+                  The developer fee for the order, in the currency specified by `currency`. If `currency` is not specified, the fee is in the cryptocurrency specified by `token_id`.
+
+                  The developer fee is added to the base amount (`order_amount`) to determine the final charge. For example:
+                  - Base amount (`order_amount`): "100.00"
+                  - Developer fee (`fee_amount`): "2.00" 
+                  - Total charged to customer: "102.00"
+
+                  Values must be greater than 0 and contain two decimal places.
                 example: '2.00'
               merchant_order_code:
                 type: string
@@ -16578,35 +16811,11 @@ components:
                   A label to help identify the address's purpose.
                 example: Main Withdrawal Address
     createForceSweepBody:
-      description: The request body to force sweep.
+      description: The request body for forced sweep.
       content:
         application/json:
           schema:
-            type: object
-            description: The information about the request to force sweep.
-            required:
-              - request_id
-              - wallet_id
-              - token_id
-              - amount
-            properties:
-              request_id:
-                type: string
-                description: The request id of the force sweep.
-                example: 123e4567-e89b-12d3-a456-426614174002
-              wallet_id:
-                type: string
-                format: uuid
-                example: f47ac10b-58cc-4372-a567-0e02b2c3d479
-                description: 'The wallet ID to force sweep, which is the unique identifier of a wallet.'
-              token_id:
-                type: string
-                description: 'The token ID to force sweep, which is the unique identifier of a token.'
-                example: ETH_USDT
-              amount:
-                type: string
-                description: The amount of needing force sweep.
-                example: '10.5'
+            $ref: '#/components/schemas/ForcedSweepRequest'
     estimateFeeStationFeeBody:
       description: The information about a Fee Station top-up transaction.
       content:
@@ -16696,7 +16905,7 @@ components:
           schema:
             $ref: '#/components/schemas/TokenizationContractCallRequest'
     updateTopUpAddressBody:
-      description: The request body to update top up address.
+      description: The request body to update top-up address.
       content:
         application/json:
           schema:
@@ -18352,6 +18561,25 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/PayerAccount'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
+    createForcedSweepResponse:
+      description: Forced sweep request created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ForcedSweep'
+    listForcedSweepsResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForcedSweep'
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getFeeStationTokenBalancesResponse:

@@ -20,7 +20,7 @@ description: "了解如何配置 Cobo Portal Apps 的审批工作流。"
         "operation_id": "25cbb115-82a1-4474-9993-538bb439ad33",
         // 将在 UI 上显示的审批工作流的名称。
         "operation_name": "批量付款",
-        // 审批工作流的详细信息。
+        // 审批工作流的详细信息。该字段的长度不得超过 3,000 个字符。
         "default_approval_policies": [
             {
                 // 一旦满足条件就触发的审批操作。
@@ -32,17 +32,13 @@ description: "了解如何配置 Cobo Portal Apps 的审批工作流。"
                     "type": "Quorum",
                     // `Quorum` 操作的详细信息。
                     // 此字段仅适用于 `type` 为 `Quorum` 时。
-                    "content": {
-                        // 需要批准的用户角色。必须为小写。
-                        "roles": ["管理员"],
-                        // 审批阈值。仅适用于 `type` 为 `PART_APPROVAL` 时。
-                        // 如果未达到阈值，操作将保持待批准状态，直到获得所需的审批。
-                        "threshold": 2,
-                        // 审批类型。可能的值包括：
-                        // `PART_APPROVAL`：需要部分用户角色批准。
-                        // `FULL_APPROVAL`：需要所有用户角色批准。
-                        "type": "PART_APPROVAL"
-                    }
+                    // - roles: 需要批准的用户角色。必须为小写。
+                    // - threshold: 审批阈值。仅适用于 `type` 为 `PART_APPROVAL` 时。
+                    // 如果未达到阈值，操作将保持待批准状态，直到获得所需的审批。
+                    // - type: 审批类型。可能的值包括：
+                    // - `PART_APPROVAL`：需要部分用户角色批准。
+                    // - `FULL_APPROVAL`：需要所有用户角色批准。
+                    "content": "{\"roles\": [\"admin\"], \"threshold\": 2, \"type\": \"PART_APPROVAL\"}"
                 },
                 // 触发审批操作的条件。
                 "conditions": [

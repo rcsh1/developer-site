@@ -122,11 +122,10 @@ apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
 const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  CreateMerchantRequest:
-    CoboWaas2.CreateMerchantRequest.constructFromObject({
-      name: "Merchant A",
-      wallet_id: "123e4567-e89b-12d3-a456-426614174001",
-    }),
+  CreateMerchantRequest: CoboWaas2.CreateMerchantRequest.constructFromObject({
+    name: "Merchant A",
+    wallet_id: "123e4567-e89b-12d3-a456-426614174001",
+  }),
 };
 apiInstance.createMerchant(opts).then(
   (data) => {
