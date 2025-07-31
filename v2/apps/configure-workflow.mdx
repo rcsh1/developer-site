@@ -19,7 +19,7 @@ You can configure the default approval workflow for your app in the `operation_a
         "operation_id": "25cbb115-82a1-4474-9993-538bb439ad33",
         // The name of the approval workflow that will be displayed on the UI.
         "operation_name": "Make Batch Payout",
-        // The details of the approval workflow.
+        // The details of the approval workflow. The maximum length of this field is 3,000 characters.
         "default_approval_policies": [
             {
                 // The approval actions triggered once the conditions are met.
@@ -31,17 +31,13 @@ You can configure the default approval workflow for your app in the `operation_a
                     "type": "Quorum",
                     // The details of the `Quorum` action.
                     // This field is applicable only when `type` is `Quorum`.
-                    "content": {
-                        // The user roles that can approve. It must be lowercase.
-                        "roles": ["admin"],
-                        // Approval threshold. Applicable only when `type` is `PART_APPROVAL`.
-                        // If the threshold is not met, the operation will remain in a pending state until the required approvals are obtained.
-                        "threshold": 2,
-                        // Approval type. Possible values include: 
-                        // `PART_APPROVAL`: Need part of user roles to approve.
-                        // `FULL_APPROVAL`: Need all user roles to approve.
-                        "type": "PART_APPROVAL"
-                    }
+                    // - roles: The user roles that can approve. It must be lowercase.
+                    // - threshold: Approval threshold. Applicable only when `type` is `PART_APPROVAL`.
+                    // If the threshold is not met, the operation will remain in a pending state until the required approvals are obtained.
+                    // - type: Approval type. Possible values include:
+                    // - `PART_APPROVAL`: Need part of user roles to approve.
+                    // - `FULL_APPROVAL`: Need all user roles to approve.
+                    "content": "{\"roles\": [\"admin\"], \"threshold\": 2, \"type\": \"PART_APPROVAL\"}"
                 },
                 // Conditions that will trigger the approval actions.
                 "conditions": [
