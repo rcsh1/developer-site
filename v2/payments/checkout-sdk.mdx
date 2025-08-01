@@ -33,15 +33,13 @@ Checkout SDK interface display (mobile example):
 
 ## Prerequisites
 
-1. Contact Cobo through [support@cobo.com](mailto:support@cobo.com) to add your organization to the Checkout SDK usage whitelist.
-
-2. Complete all steps mentioned in [Preparation](/v2/payments/preparation). During the preparation process, please ensure you have:
+Before SDK integration, make sure you have completed all steps mentioned in [Preparation](/v2/payments/preparation). During the preparation process, please ensure you have:
 
    - Obtained API Key and API Secret
    - Completed merchant registration and obtained merchant ID
    - Configured webhook endpoint for receiving payment status notifications
 
-   Please properly save the above API Key, merchant ID, and other key information, which will be used in the subsequent SDK integration process.
+Please properly save the above API Key, merchant ID, and other key information, which will be used in the subsequent SDK integration process.
 
 ## Integration steps
 
@@ -119,6 +117,7 @@ const initializeCheckout = async () => {
       merchantOrderCode: merchantOrderCode.value, // A unique reference code assigned by the merchant to identify this order in their system.
       pspOrderCode: pspOrderCode.value, // A unique reference code assigned by you (the developer) to identify this order in your system.
       expiredIn: 30 * 60, // The expiration time of the pay-in order, represented as a UNIX timestamp in seconds.
+      developerName: 'xxx', // Optional text to display as "Powered by [your text]" at the bottom of the checkout page. Can only contain letters and @ symbol, with maximum length of 20 characters. This footer text will not appear if the parameter is omitted or invalid.
       locale: locale.value,
       supportToken: ['USDT', 'USDC'],
       supportChain: ['ARBITRUM_ETH', 'BASE_ETH', 'BSC_BNB', 'ETH', 'MATIC', 'SOL', 'TRON'],

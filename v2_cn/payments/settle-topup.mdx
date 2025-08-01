@@ -22,7 +22,15 @@ description: ""
 
 ### 1. 查询可结算余额
 
-调用 [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) 查询指定商户余额或开发者余额，确定您可以结算的最高金额。
+调用 [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) 查询指定商户余额或开发者余额，确定您可以结算的最大金额。API 返回以下两个关键余额字段：
+
+- `available_balance`：可结算余额，即已达到归集阈值且可立即用于结算的资金
+- `total_balance`：总余额，包括可结算余额和未达到归集阈值的资金
+
+当 `available_balance` 小于 `total_balance` 时，说明部分资金尚未达到[归集阈值](/v2_cn/payments/glossary#sweep-threshold（归集阈值）)。您有两种处理方式：
+
+- 等待该地址上的余额增加至归集阈值。
+- 调用 [Create forced sweep request](/v2/api-references/payment/create-forced-sweep-request) 进行强制归集：Cobo 会立即将未达到归集阈值的资金归集到归集地址。归集完成后，您可以将这部分资金用于结算。
 
 ### 2. 创建结算请求
 
