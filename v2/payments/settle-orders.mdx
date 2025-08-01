@@ -22,9 +22,17 @@ You can settle merchant balances or developer balances in order mode through Pay
 
 ## API call process
 
-### 1. Query withdrawable balance
+### 1. Query available balance
 
-Call [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) to query specified merchant balance or developer balance and determine the maximum amount you can settle.
+Call [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) to query specified merchant balance or developer balance and determine the maximum amount you can settle. The API operation returns two key balances:
+
+- `available_balance`: Available balance, which refers to funds that have reached the sweep threshold and can be used for settlement immediately
+- `total_balance`: Total balance, including both available balance and funds that have not reached the sweep threshold
+
+When `available_balance` is less than `total_balance`, it means some funds have not reached the [sweep threshold](/v2/payments/glossary#sweep-threshold). You have two options:
+
+- Wait for the balance on that address to increase to the sweep threshold.
+- Call [Create forced sweep request](/v2/api-references/payment/create-forced-sweep-request) to perform forced sweep: Cobo will immediately sweep funds that have not reached the threshold to the sweep-to address. After sweeping is complete, you can use these funds for settlement.
 
 ### 2. Create settlement request
 

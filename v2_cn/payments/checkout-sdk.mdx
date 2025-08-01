@@ -31,15 +31,13 @@ Checkout SDK 界面展示（以移动端为例）：
 
 ## 前提条件
 
-1. 通过 [support@cobo.com](mailto:support@cobo.com) 联系 Cobo，将您的团队加入 Checkout SDK 使用白名单中。
-
-2. 完成[前置准备](/v2_cn/payments/preparation)中提到的所有步骤。在前置准备过程中，请确保您已：
+集成 SDK 前，请您完成[前置准备](/v2_cn/payments/preparation)中提到的所有步骤。在前置准备过程中，请确保您已：
 
    - 获取了 API Key 和 API Secret
    - 完成了商户录入并获取了商户 ID
    - 配置了 Webhook Endpoint 用于接收支付状态通知
 
-   请妥善保存上述 API Key、商户 ID 等关键信息，这些信息将用于后续的 SDK 集成流程。
+请妥善保存上述 API Key、商户 ID 等关键信息，这些信息将用于后续的 SDK 集成流程。
 
 ## 集成步骤
 
@@ -121,6 +119,7 @@ const initializeCheckout = async () => {
       merchantOrderCode: merchantOrderCode.value, // A unique reference code assigned by the merchant to identify this order in their system.
       pspOrderCode: pspOrderCode.value, // A unique reference code assigned by you (the developer) to identify this order in your system.
       expiredIn: 30 * 60, // The expiration time of the pay-in order, represented as a UNIX timestamp in seconds.
+      developerName: 'xxx', // Optional text to display as "Powered by [your text]" at the bottom of the checkout page. Can only contain letters and @ symbol, with maximum length of 20 characters. This footer text will not appear if the parameter is omitted or invalid.
       locale: locale.value,
       supportToken: ['USDT', 'USDC'],
       supportChain: ['ARBITRUM_ETH', 'BASE_ETH', 'BSC_BNB', 'ETH', 'MATIC', 'SOL', 'TRON'],
