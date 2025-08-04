@@ -24,7 +24,9 @@ You can settle merchant balances or developer balances in order mode through Pay
 
 ### 1. Query available balance
 
-Call [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) to query specified merchant balance or developer balance and determine the maximum amount you can settle. The API operation returns two key balances:
+Call [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) to query specified merchant balance or developer balance and determine the maximum amount you can settle. In order mode, you need to set the `acquiring_type` field to `Order`.
+
+The API returns two key balance fields:
 
 - `available_balance`: Available balance, which refers to funds that have reached the sweep threshold and can be used for settlement immediately
 - `total_balance`: Total balance, including both available balance and funds that have not reached the sweep threshold
@@ -52,7 +54,7 @@ Call [Create settlement request](/v2/api-references/payment/create-settlement-re
 
 Depending on different fund sources and settlement methods, you need to specify different parameter combinations.
 
-| Fund Source | Settlement Method | Required Parameters |
+| Fund Source | Settlement Method | Related Parameters |
 |---------|---------|---------|
 | **Merchant balance** | Crypto transfer | `merchant_id`, `order_ids`, `token_id`, `crypto_address_id` |
 | **Merchant balance** | Fiat off-ramp | `merchant_id`, `order_ids`, `currency`, `bank_account_id` |
@@ -76,7 +78,7 @@ After creating a settlement request, based on your wallet type, submission metho
 - Risk control review: If you have set up transaction risk controls, reviewers may need to approve the settlement request on Cobo Guard.
 - Transaction signing: If you are using MPC Wallets, Mobile Co-Signers or Server Co-Signers need to sign to finally complete the withdrawal operation from your wallet. The system will automatically select a signer to sign the transaction based on online status and other conditions. You need to ensure at least one signer is online. Transactions will remain in Pending status until necessary signatures are received. You can view whether signers are online through Cobo Portal:
    1. Log in to Cobo Portal.
-      - Test environment: https://portal.dev.cobo.com/login
+      - Development environment: https://portal.dev.cobo.com/login
       - Production environment: https://portal.cobo.com/login
    2. Click <img src="/v2/images/guides/wallets-icon.svg" className="icon"></img> > **MPC Wallets**.
    3. Select your Vault, then click the <img src="/v2/images/guides/manage-key-share-group.svg" className="icon"></img> icon in the upper right corner.

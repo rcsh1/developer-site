@@ -49,7 +49,10 @@ sequenceDiagram
    * **是否独立地址** (`use_dedicated_address`): 该订单是否分配独立的收币地址。
      - `true`: 为该订单分配独立的收币地址，不与其他订单共享。推荐用于大额交易以及其他需要严格资金隔离的场景。
      - `false` (默认): 使用地址池中的共享地址。
-   * **过期时间**（`expired_in`）：支付订单过期的秒数，从请求创建订单的时间开始计算。过期后，订单状态变为最终状态且无法更改，`received_token_amount` 字段不再更新，过期后收到的资金将被归类为逾期付款，只能从开发者余额中结算，逾期付款会触发 `transactionLate` webhook 事件。
+   * **过期时间**（`expired_in`）：支付订单过期的秒数，从请求创建订单的时间开始计算。过期后：
+     - 订单状态变为最终状态且无法更改
+     - `received_token_amount` 字段不再更新
+     - 如果再次收到资金，将触发 `transactionLate` webhook 事件，且该资金不会计入该笔订单的实收资金
    * **开发者订单号**（`psp_order_code`）：开发者分配的用于在其系统中标识此订单的唯一参考代码。如果您是商户，请将此字段设置为您系统中该订单的唯一编号。
 
    创建订单后，Cobo 会返回包括以下字段在内的订单信息：
@@ -140,5 +143,9 @@ public class Example {
 ```
 </Accordion>
 
+## 下一步
+
+- 您可以参考[结算](/v2_cn/payments/settle-orders)，对订单模式下的商户余额或开发者余额进行结算。
+- 如需处理多付、少付、退款等异常情况，请参考[异常处理](/v2_cn/payments/handle-abnormality-order)。
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

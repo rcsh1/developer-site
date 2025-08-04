@@ -1,13 +1,13 @@
 ---
-title: "测试环境前置准备"
+title: "开发环境前置准备"
 lang: "zh-hans"
 description: ""
 ---
 
-本文介绍如何在测试环境下完成支付功能集成前的准备工作，帮助您验证功能并确保集成正常运行。
+本文介绍如何在开发环境下完成支付功能集成前的准备工作，帮助您验证功能并确保集成正常运行。
 
 **后续步骤：**
-完成测试环境验证后，当您准备将支付功能部署到生产环境时，请参考[生产环境前置准备](/v2_cn/payments/preparation-prod)获取相关指引。
+完成开发环境验证后，当您准备将支付功能部署到生产环境时，请参考[生产环境前置准备](/v2_cn/payments/preparation-prod)获取相关指引。
 
 ## 基础准备
 
@@ -61,9 +61,11 @@ Payment Management App 提供 Web 界面，让您可以便捷地进行商户管�
 
 在后续的集成过程中，您需要调用 Payment API 完成创建订单、发起结算等步骤。
 
-1. 参考[开发者指南](/v2_cn/guides/get-started/get-started-with-waas)，生成一对 API Key 和 API Secret，并在 Cobo Portal 注册该 API Key：  
+1. 参考[开发者指南](/v2_cn/guides/get-started/get-started-with-waas)，生成一对 API Key 和 API Secret，并在 Cobo Portal 注册该 API Key。请注意以下配置：
    * **用户角色**：选择**支付管理员**
    * **钱包范围**：选择**任何类型钱包**
+   * 无需配置 Callback Endpoint
+   * **密钥类型**：选择**临时**
 
 2. 如果您选择使用 SDK 而不是手动编写 API 请求，则需要安装对应编程语言的 SDK：
    - [Python SDK 快速入门](/v2_cn/developer-tools/quickstart-python)
@@ -213,6 +215,18 @@ public class Example {
 
 您可以为订单金额设置一个**独立地址阈值**，当订单的应收金额大于或等于该阈值时，Cobo 将自动为该订单分配一个独立收币地址。如需设置该阈值，请联系 Cobo 销售团队。
 
+## 下一步
 
+根据您选择的收单模式，您可以参考以下文档完成后续集成步骤：
+
+### 订单模式
+- [创建订单](/v2_cn/payments/create-orders)：了解如何创建支付订单
+- [结算](/v2_cn/payments/settle-orders)：了解如何结算商户余额和开发者余额
+- [异常处理](/v2_cn/payments/handle-abnormality-order)：了解如何处理多付、少付、退款等异常情况
+
+### 充值模式  
+- [获取充值地址](/v2_cn/payments/get-topup-addresses)：了解如何创建充值地址
+- [结算](/v2_cn/payments/settle-topup)：了解如何结算充值模式下的资金
+- [异常处理](/v2_cn/payments/handle-abnormality-topup)：了解如何处理地址更换、合规异常等情况
 
 <Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
