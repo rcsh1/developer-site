@@ -15,14 +15,8 @@ When a top-up address has multiple deposit transactions that fail compliance scr
 ## Compliance screening failure
 When a transaction fails compliance screening by Cobo KYT or the Screening App, the system will trigger a `payment.transaction.held` event. The subsequent processing flow is as follows:
 
-- If the transaction subsequently passes manual review:
-    - If the order has not expired: The funds will be counted towards the order's actual received amount, and the order status will be updated accordingly based on the actual received amount
-    - If the order has already expired: The system will trigger a `payment.transaction.late` event, and the funds will be counted towards the order's late payment amount
-
-- If the transaction ultimately fails manual review:
-    - The funds will be frozen and will not be counted towards the order's actual received amount
-    - The order status will remain unchanged
-    - The user needs to deposit sufficient funds again within the order's validity period and pass compliance screening for the order to transition to `Completed` status
+- If the transaction passes manual review: The funds will be counted towards the top-up amount.
+- If the transaction ultimately fails manual review: The funds will be frozen and will not be counted towards the top-up amount
   
 For isolated or frozen funds:
 - Cobo KYT: Please contact Cobo's support team through [help@cobo.com](mailto:help@cobo.com) for handling

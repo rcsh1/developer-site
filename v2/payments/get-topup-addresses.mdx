@@ -42,7 +42,7 @@ You have completed all steps mentioned in [Preparation](/v2/payments/preparation
 2. **Configure top-up event listening**: Receive top-up related event notifications through webhooks, including:
    - `payment.transaction.created`: New deposit transaction detected at the receiving address
    - `payment.transaction.held`: Deposit transaction failed compliance screening
-- `payment.transaction.complete`: In top-up mode, deposit transaction passed compliance screening, funds successfully credited and included in actual received amount.
+   - `payment.transaction.complete`: In top-up mode, deposit transaction passed compliance screening, funds successfully credited and included in actual received amount.
 
 ## Call example
 
@@ -116,5 +116,10 @@ public class Example {
 } 
 ```
 </Accordion>
+
+## Next steps
+
+- You can refer to [Settlement](/v2/payments/settle-topup) to settle merchant balance or developer balance in top-up mode.
+- To handle situations such as address changes and compliance abnormalities, please refer to [Handle abnormality](/v2/payments/handle-abnormality-topup).
 
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

@@ -22,12 +22,14 @@ description: ""
 
 ### 1. 查询可结算余额
 
-调用 [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) 查询指定商户余额或开发者余额，确定您可以结算的最大金额。API 返回以下两个关键余额字段：
+调用 [Get withdrawable balances](/v2/api-references/payment/get-withdrawable-balances) 查询指定商户余额或开发者余额，确定您可以结算的最大金额。充值模式下，您需要将`acquiring_type` 字段设置为 `TopUp`。
 
-- `available_balance`：可结算余额，即已达到归集阈值且可立即用于结算的资金
+API 返回以下两个关键余额字段：
+
+- `available_balance`：可结算余额，即已达到[归集阈值](/v2_cn/payments/glossary#sweep-threshold（归集阈值）)且可立即用于结算的资金
 - `total_balance`：总余额，包括可结算余额和未达到归集阈值的资金
 
-当 `available_balance` 小于 `total_balance` 时，说明部分资金尚未达到[归集阈值](/v2_cn/payments/glossary#sweep-threshold（归集阈值）)。您有两种处理方式：
+当 `available_balance` 小于 `total_balance` 时，说明部分资金尚未达到归集阈值。您有两种处理方式：
 
 - 等待该地址上的余额增加至归集阈值。
 - 调用 [Create forced sweep request](/v2/api-references/payment/create-forced-sweep-request) 进行强制归集：Cobo 会立即将未达到归集阈值的资金归集到归集地址。归集完成后，您可以将这部分资金用于结算。
@@ -73,7 +75,7 @@ description: ""
 - 风控审核：如果您设置了交易风控，则可能需要审核人在 Cobo Guard 上批准该结算请求。
 - 交易签名：如果您使用的是 MPC 钱包，则需要移动端签名人或服务端签名人签名，方可最终完成从您的钱包提币的操作。系统将根据在线状态和其他条件自动选择一个签名人来签署交易。您需要确保至少有一个签名人在线。交易将保持 Pending 状态，直到收到必要的签名。您可以通过 Cobo Portal 查看签名人是否在线：
    1. 登录 Cobo Portal。
-      - 测试环境：https://portal.dev.cobo.com/login
+      - 开发环境：https://portal.dev.cobo.com/login
       - 生产环境：https://portal.cobo.com/login
    2. 点击 <img src="/v2_cn/images/guides/wallets-icon.svg" className="icon"></img> > **MPC 钱包**。
    3. 选择您的 Vault，然后点击右上角的 <img src="/v2_cn/images/guides/manage-key-share-group.svg" className="icon"></img> 图标。

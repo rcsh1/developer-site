@@ -62,6 +62,8 @@ During the subsequent integration process, you will need to call the Payment API
 1. Refer to the [Developer Guide](/v2/guides/get-started/get-started-with-waas) to generate an API Key and API Secret pair, and register the API Key in Cobo Portal:  
    * **User Role**: Select **Payment Administrator**
    * **Wallet Scope**: Select **Any Wallet Type**
+   * You do not need to configure a Callback Endpoint.
+   * **Key Type**: Select **Temporary**
 
 2. If you choose to use an SDK instead of manually writing API requests, you need to install the SDK for your programming language:
    - [Python SDK Quick Start](/v2/developer-tools/quickstart-python)
@@ -211,5 +213,18 @@ By default, receiving addresses used for payment orders are recycled, meaning th
 
 You can set an **independent address threshold** for order amounts. When the receivable amount of an order is greater than or equal to this threshold, Cobo will automatically assign an independent receiving address for that order. To set this threshold, please contact the Cobo sales team.
 
+## Next Steps
+
+Based on your chosen acquiring mode, you can refer to the following documents to complete the subsequent integration steps:
+
+### Order Mode
+- [Create orders](/v2/payments/create-orders)：Learn how to create payment orders
+- [Settle orders](/v2/payments/settle-orders)：Learn how to settle merchant and developer balances
+- [Handle exceptions](/v2/payments/handle-abnormality-order)：Learn how to handle exceptions such as overpayment, underpayment, and refunds
+
+### Top-up Mode  
+- [Get top-up addresses](/v2/payments/get-topup-addresses)：Learn how to create top-up addresses
+- [Settle top-up](/v2/payments/settle-topup)：Learn how to settle top-up mode funds
+- [Handle exceptions](/v2/payments/handle-abnormality-topup)：Learn how to handle exceptions such as address replacement and compliance exceptions
 
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip> 

@@ -51,7 +51,10 @@ You have completed all steps mentioned in [Preparation](/v2/payments/preparation
    * **Use dedicated address** (`use_dedicated_address`): Whether to allocate an independent receiving address for this order.
      - `true`: Allocate an independent receiving address for this order, not shared with other orders. Recommended for large transactions and other scenarios requiring strict fund isolation.
      - `false` (default): Use shared addresses from the address pool.
-   * **Expiration time** (`expired_in`): The number of seconds for the pay-in order to expire, calculated from the time the order creation request is made. After expiration, the order status becomes final and cannot be changed, the `received_token_amount` field will no longer be updated, and funds received after expiration will be classified as late payments, which can only be settled from developer balance and will trigger `transactionLate` webhook events.
+   * **Expired time** (`expired_in`): The number of seconds for the pay-in order to expire, starting from the time the order is created. After expiration:
+     - The order status becomes final and cannot be changed
+     - The `received_token_amount` field will no longer be updated
+     - If the order is expired and the user makes a payment again, the system will trigger a `transactionLate` webhook event, and the funds will not be counted towards the order's actual received amount
    * **Developer order code** (`psp_order_code`): A unique reference code assigned by the developer to identify this order in their system. If you are a merchant, please set this field to the unique number of this order in your system.
 
    After creating the order, Cobo will return order information including the following fields:
@@ -141,5 +144,10 @@ public class Example {
  }
 ```
 </Accordion>
+
+## Next steps
+
+- You can refer to [Settlement](/v2/payments/settle-orders) to settle merchant balance or developer balance in order mode.
+- To handle abnormal situations such as overpayment, underpayment, and refunds, please refer to [Handle abnormality](/v2/payments/handle-abnormality-order).
 
 <Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

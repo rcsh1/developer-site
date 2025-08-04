@@ -86,9 +86,10 @@ Recommended combinations include:
 
 When registering API Keys in the production environment, please note:
 
-   * **API Key Type**: Use long-term API Keys and set IP whitelisting. **You do not need to configure a Callback Endpoint.**
    * **User Role**: Based on business needs, choose either **Payment Administrator** or **Payment Member**. You can refer to [User Roles and Permissions](/v2/payments/roles-and-permissions) to understand the permissions for different roles.
    * **Wallet Scope**: It is recommended to only select the specific wallet types you actually need to access. For example, if you only use custodial wallets, only select **Custodial Wallet**. You can adjust the wallet scope anytime based on business development needs to ensure API access permissions follow the principle of least privilege.
+   * You do not need to configure a Callback Endpoint.
+   * **Key Type**: Select **Permanent (Static IP Required)** and set IP whitelisting.
 
 ### MPC Wallet Configuration
 
