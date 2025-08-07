@@ -1,4 +1,6 @@
 openapi: 3.0.3
+x-mcp:
+  enabled: true
 info:
   title: Cobo Wallet as a Service 2.0
   description: |
@@ -18564,7 +18566,7 @@ components:
               pagination:
                 $ref: '#/components/schemas/Pagination'
     createForcedSweepResponse:
-      description: forced sweep created successfully.
+      description: Forced sweep created successfully.
       content:
         application/json:
           schema:
