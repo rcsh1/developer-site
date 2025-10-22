@@ -73,6 +73,12 @@ Payments App 提供 Web 界面，让您可以便捷地进行收款查询、资�
 * 参考[开发者指南](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)，搭建 Webhook Endpoint。  
 * 在 Cobo Portal [注册该 Webhook Endpoint](https://manuals.cobo.com/cn/portal/developer-console/webhooks-create)，并订阅[支付相关的 Webhook 事件](/v2_cn/payments/status-and-events)。
 
+### (可选) 配置 Callback Endpoint
+
+为了提供额外的资金安全保障，您可以配置 Callback Endpoint 来审批资金转出请求。配置后，当发生法币出金或加密货币转账时，Cobo 会向您的 Callback Endpoint 发送包含完整交易信息的请求。只有在您的 Callback Endpoint 返回响应进行批准后，交易才会继续进行。
+* 参考[开发者指南](/v2_cn/guides/webhooks-callbacks/set-up-endpoint)，搭建 Callback Endpoint，并实现处理逻辑。  
+* 在 Cobo Portal [注册该 Callback Endpoint](https://manuals.cobo.com/cn/portal/developer-console/callbacks-register)。
+
 
 ## 业务配置
 

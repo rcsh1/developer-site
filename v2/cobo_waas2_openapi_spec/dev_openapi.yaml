@@ -3846,7 +3846,9 @@ paths:
       operationId: get_exchange_rate
       summary: Get exchange rate
       description: |
-        This operation retrieves the current exchange rate between a specified currency pair.
+        This operation retrieves the current exchange rate between a specified currency pair. The exchange rate is updated approximately every 10 minutes.
+
+        <Note>This operation returns the exchange rate for reference only. The actual exchange rate may vary due to market fluctuations and other factors.</Note>
       parameters:
         - $ref: '#/components/parameters/TokenIdRequiredParam'
         - $ref: '#/components/parameters/CurrencyRequiredParam'
@@ -4073,9 +4075,9 @@ paths:
       description: |
         This operation retrieves the information of the dedicated top-up address assigned to a specific payer under a merchant on a specified chain.
       parameters:
-        - $ref: '#/components/parameters/MerchantIdOptionalParam'
         - $ref: '#/components/parameters/TokenIdQueryRequiredParam'
         - $ref: '#/components/parameters/CustomPayerIdRequiredParam'
+        - $ref: '#/components/parameters/MerchantIdOptionalParam'
       security:
         - CoboAuth: []
         - OAuth2:
