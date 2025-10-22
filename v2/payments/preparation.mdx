@@ -75,6 +75,12 @@ If you need to receive real-time notifications of payment-related events, you ca
 * Refer to the [Developer guide](/v2/guides/webhooks-callbacks/set-up-endpoint) to set up a webhook endpoint.  
 * [Register the webhook endpoint](https://manuals.cobo.com/en/portal/developer-console/webhooks-create) in Cobo Portal and subscribe to [payment-related webhook events](/v2/payments/status-and-events).
 
+### (Optional) Configure callback endpoint
+
+To provide additional security for your funds, you can configure a callback endpoint to approve payout requests. After configuration, when a fiat payout or cryptocurrency transfer occurs, Cobo will send a request containing complete transaction information to your callback endpoint. The transaction will only proceed after your callback endpoint returns a response to approve it.
+* Refer to the [Developer guide](/v2/guides/webhooks-callbacks/set-up-endpoint) to set up a callback endpoint and implement the processing logic.  
+* [Register the callback endpoint](https://manuals.cobo.com/en/portal/developer-console/callbacks-register) in Cobo Portal.
+
 
 ## Business configuration
 
