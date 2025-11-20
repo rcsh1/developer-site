@@ -2060,7 +2060,7 @@ paths:
 
         You only need to provide the event type. By default, the payload contains dummy data with no impact on your real business transactions or activities. You can optionally provide the `override_data` property to customize the payload.
 
-        <Note>Currently, you can only trigger test webhook events with the event data types `Transaction` and `TSSRequest`.</Note>
+        <Note>Currently, you can only trigger test webhook events with the event data types [`Transaction`](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#transaction-events-deposits%2Fwithdrawals%2Fcontract-calls%2Fmessage-signing) and [`TSSRequest`](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type#mpc-tss-request-events).</Note>
       operationId: trigger_test_webhook_event
       requestBody:
         $ref: '#/components/requestBodies/triggerTestEventBody'
@@ -6277,7 +6277,7 @@ components:
           $ref: '#/components/schemas/KeyShareHolderType'
         tss_node_id:
           type: string
-          description: 'Key share holder''s TSS Node ID. You can obtain the TSS Node ID using either mobile co-signer or server co-signer. See the "Primary Purposes" row on the table in [Create a Main Group](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/create-key-share-groups#create-a-main-group).'
+          description: 'Key share holder''s TSS Node ID. For detailed information about signer types and their setup, see the [**Signer Type** table](https://manuals.cobo.com/en/portal/mpc-wallets/ocw/holder-group-main-group). Mobile signers can view their TSS Node ID in the [Cobo Guard app](https://manuals.cobo.com/en/guard/manage).'
           example: coboAbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdefghi
         signer:
           type: boolean
@@ -7411,15 +7411,7 @@ components:
             type: string
             example: AutoFueling
           description: |
-            The transaction category defined by Cobo. Possible values include: 
-            - `AutoSweep`: An auto-sweep transaction.
-            - `AutoFueling`: A transaction where Fee Station pays transaction fees to an address within your wallet.
-            - `AutoFuelingRefund`: A refund for an auto-fueling transaction.
-            - `SafeTxMessage`: A message signing transaction to authorize a Smart Contract Wallet (Safe\{Wallet\}) transaction.
-            - `BillPayment`: A transaction to pay Cobo bills through Fee Station.
-            - `BillRefund`: A refund for a previously made bill payment.
-            - `CommissionFeeCharge`: A transaction to charge commission fees via Fee Station.
-            - `CommissionFeeRefund`: A refund of previously charged commission fees.
+            The transaction category defined by Cobo. For more details, refer to [Cobo-defined categories](/v2/guides/transactions/manage-transactions#cobo-defined-categories).
         extra:
           type: array
           items:
@@ -9546,7 +9538,7 @@ components:
           type: string
           description: The wallet ID.
           format: uuid
-          example: f47ac10b-58cc-4372-a567-0e02b2c3d479
+          example: d3fcfaef-f415-4210-9e5c-fbed0e090495
     CustodialWeb3TransferSource:
       type: object
       description: |
@@ -10973,8 +10965,6 @@ components:
       example: wallets.transaction.created
       description: |
         The event type. To learn the trigger condition of each event type, refer to [Webhook event types and event data](https://www.cobo.com/developers/v2/guides/webhooks-callbacks/webhook-event-type). 
-
-        **Currently, you can only trigger test webhook events with the event data types `Transaction` and `TSSRequest`.**
     WebhookEventStatus:
       type: string
       enum:
