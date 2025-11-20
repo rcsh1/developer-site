@@ -4075,9 +4075,16 @@ paths:
       tags:
         - Payment
       operationId: get_top_up_address
-      summary: Get top-up address
+      summary: Create/Get top-up address
       description: |
-        This operation retrieves the information of the dedicated top-up address assigned to a specific payer under a merchant on a specified chain.
+        This operation creates or retrieves a unique top-up address for a payer. 
+
+        In the request, you need to provide the `custom_payer_id` parameter to identify the payer in your system and link them to the top-up address.
+
+        - If no address exists for the payer on the specified chain, a new address will be created and returned.
+        - If an address already exists for the payer on the specified chain, the existing address details will be returned.
+
+        You can also provide the `merchant_id` parameter to specify the merchant to which the payer belongs. If not provided, the default merchant will be used.
       parameters:
         - $ref: '#/components/parameters/TokenIdQueryRequiredParam'
         - $ref: '#/components/parameters/CustomPayerIdRequiredParam'
@@ -4365,7 +4372,7 @@ paths:
 
         Once the address is submitted, Cobo will automatically create a refund order and initiate the refund process according to your configuration.
 
-        For details, see [Create refund link](/v2/payments/create-refund-link).
+        For details, see [Create refund link](https://www.cobo.com/developers/v2/payments/create-refund-link).
       requestBody:
         $ref: '#/components/requestBodies/createPaymentRefundLinkRequest'
       responses:
@@ -13969,7 +13976,7 @@ components:
 
         **Usage conditions**
         - Only applicable when `settlement_type` is set to `Merchant`
-        - Cannot be used together with `order_ids` or `amount` parameters
+        - Cannot be used together with `amount` parameter
 
             
       example: O20250304-M1001-1001
@@ -19064,7 +19071,7 @@ components:
       name: custom_payer_id
       in: query
       required: true
-      description: A unique identifier assigned by the developer to track and identify individual payers in their system.
+      description: A unique identifier to track and identify individual payers in your system.
       schema:
         type: string
       example: payer_0001
