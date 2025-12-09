@@ -432,9 +432,11 @@ paths:
       operationId: list_utxos
       summary: List UTXOs
       description: |
-        The operation retrieves a list of unspent transaction outputs (UTXOs) for a specified wallet and token.
+        The operation retrieves a list of **unspent** transaction outputs (UTXOs) for a specified wallet and token.
 
-        <Note>This operation is applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) only.</Note>
+        <Note>This operation returns only UTXOs that are not used by any transaction. It does not return all UTXOs.</Note>
+
+        <Info>This operation is applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) only.</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -462,8 +464,11 @@ paths:
       operationId: batch_check_utxo
       summary: Batch check UTXOs
       description: |
-        This operation verifies the existence and details of specified unspent transaction outputs (UTXOs) for a given wallet and token. A maximum of 100 UTXOs can be verified per request.
-        <Note>This operation is applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) only.</Note>
+        This operation verifies the existence and details of specified **unspent** transaction outputs (UTXOs) for a given wallet and token. A maximum of 100 UTXOs can be verified per request.
+
+        <Note>This operation returns only UTXOs that are not used by any transaction. It does not return all UTXOs.</Note>
+
+        <Info>This operation is applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) only.</Info>
       security:
         - CoboAuth: []
         - OAuth2:
@@ -1708,7 +1713,7 @@ paths:
       description: |
         This operation drops a specified transaction. Dropping a transaction leverages RBF to replace the original transaction with a version that effectively cancels it. For more details about dropping a transaction, refer to [Drop a transaction](https://www.cobo.com/developers/v2/guides/transactions/manage-transactions#drop-a-transaction).
 
-        A transaction can be sped up only if its status is `Broadcasting`.
+        A transaction can be dropped only if its status is `Broadcasting`.
 
         <Note>This operation only applies to transactions from Custodial Wallets (Web3 Wallets), MPC Wallets and Smart Contract Wallets. It does not apply to transactions on the following chains: VET, TRON, TVET, SOL, and TON.</Note>
 
