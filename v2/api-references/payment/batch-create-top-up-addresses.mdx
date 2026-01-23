@@ -1,12 +1,14 @@
 ---
-openapi: post /graphql
+openapi: post /payments/topup/address
 ---
 
 <RequestExample>
 ```python Python
 import cobo_waas2
-from cobo_waas2.models.graph_ql_request import GraphQLRequest
-from cobo_waas2.models.graph_ql_response import GraphQLResponse
+from cobo_waas2.models.create_top_up_addresses import CreateTopUpAddresses
+from cobo_waas2.models.create_top_up_addresses201_response import (
+    CreateTopUpAddresses201Response,
+)
 from cobo_waas2.rest import ApiException
 from pprint import pprint
 
@@ -20,18 +22,20 @@ configuration = cobo_waas2.Configuration(
 # Enter a context with an instance of the API client
 with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = cobo_waas2.GraphQLApi(api_client)
-    graph_ql_request = cobo_waas2.GraphQLRequest(
-        query="query { wallets { edges { node { id name } } } }"
+    api_instance = cobo_waas2.PaymentApi(api_client)
+    create_top_up_addresses = cobo_waas2.CreateTopUpAddresses(
+        token_id="ETH_USDT", custom_payer_ids=["O20250304-P1001-1001"]
     )
 
     try:
-        # Execute a GraphQL query or mutation
-        api_response = api_instance.execute_graphql(graph_ql_request=graph_ql_request)
-        print("The response of GraphQLApi->execute_graphql:\n")
+        # Batch create top-up addresses
+        api_response = api_instance.create_top_up_addresses(
+            create_top_up_addresses=create_top_up_addresses
+        )
+        print("The response of PaymentApi->create_top_up_addresses:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling GraphQLApi->execute_graphql: %s\n" % e)
+        print("Exception when calling PaymentApi->create_top_up_addresses: %s\n" % e)
 
 ```
 ```java Java
@@ -40,8 +44,9 @@ import com.cobo.waas2.ApiClient;
 import com.cobo.waas2.ApiException;
 import com.cobo.waas2.Configuration;
 import com.cobo.waas2.Env;
-import com.cobo.waas2.api.GraphQlApi;
+import com.cobo.waas2.api.PaymentApi;
 import com.cobo.waas2.model.*;
+import java.util.Arrays;
 
 public class Example {
   public static void main(String[] args) {
@@ -52,14 +57,17 @@ public class Example {
 
     // Replace `<YOUR_PRIVATE_KEY>` with your private key
     defaultClient.setPrivKey("<YOUR_PRIVATE_KEY>");
-    GraphQlApi apiInstance = new GraphQlApi();
-    GraphQLRequest graphQLRequest =
-        new GraphQLRequest().query("query { wallets { edges { node { id name } } } }");
+    PaymentApi apiInstance = new PaymentApi();
+    CreateTopUpAddresses createTopUpAddresses =
+        new CreateTopUpAddresses()
+            .tokenId("ETH_USDT")
+            .customPayerIds(Arrays.asList("O20250304-P1001-1001"));
     try {
-      GraphQLResponse result = apiInstance.executeGraphql(graphQLRequest);
+      CreateTopUpAddresses201Response result =
+          apiInstance.createTopUpAddresses(createTopUpAddresses);
       System.out.println(result);
     } catch (ApiException e) {
-      System.err.println("Exception when calling GraphQlApi#executeGraphql");
+      System.err.println("Exception when calling PaymentApi#createTopUpAddresses");
       System.err.println("Status code: " + e.getCode());
       System.err.println("Reason: " + e.getResponseBody());
       System.err.println("Response headers: " + e.getResponseHeaders());
@@ -81,7 +89,7 @@ import (
 )
 
 func main() {
-	graphQLRequest := *coboWaas2.NewGraphQLRequest("query { wallets { edges { node { id name } } } }")
+	createTopUpAddresses := *coboWaas2.NewCreateTopUpAddresses("ETH_USDT", []string{"O20250304-P1001-1001"})
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -94,15 +102,15 @@ func main() {
 	ctx = context.WithValue(ctx, coboWaas2.ContextPortalSigner, crypto.Ed25519Signer{
 		Secret: "<YOUR_PRIVATE_KEY>",
 	})
-	resp, r, err := apiClient.GraphQLAPI.ExecuteGraphql(ctx).
-		GraphQLRequest(graphQLRequest).
+	resp, r, err := apiClient.PaymentAPI.CreateTopUpAddresses(ctx).
+		CreateTopUpAddresses(createTopUpAddresses).
 		Execute()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error when calling `GraphQLAPI.ExecuteGraphql``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error when calling `PaymentAPI.CreateTopUpAddresses``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ExecuteGraphql`: GraphQLResponse
-	fmt.Fprintf(os.Stdout, "Response from `GraphQLAPI.ExecuteGraphql`: %v\n", resp)
+	// response from `CreateTopUpAddresses`: CreateTopUpAddresses201Response
+	fmt.Fprintf(os.Stdout, "Response from `PaymentAPI.CreateTopUpAddresses`: %v\n", resp)
 }
 
 ```
@@ -115,13 +123,14 @@ apiClient.setEnv(CoboWaas2.Env.DEV);
 // Replace `<YOUR_PRIVATE_KEY>` with your private key
 apiClient.setPrivateKey("<YOUR_PRIVATE_KEY>");
 // Call the API
-const apiInstance = new CoboWaas2.GraphQLApi();
+const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
-  GraphQLRequest: CoboWaas2.GraphQLRequest.constructFromObject({
-    query: "query { wallets { edges { node { id name } } } }",
+  CreateTopUpAddresses: CoboWaas2.CreateTopUpAddresses.constructFromObject({
+    token_id: "ETH_USDT",
+    custom_payer_ids: ["O20250304-P1001-1001"],
   }),
 };
-apiInstance.executeGraphql(opts).then(
+apiInstance.createTopUpAddresses(opts).then(
   (data) => {
     console.log("API called successfully. Returned data: " + data);
   },

@@ -51,6 +51,8 @@ tags:
     description: Operations related to address books.
   - name: TravelRule
     description: Operations related to travel rule.
+  - name: GraphQL
+    description: Operations related to executing GraphQL queries and mutations.
   - name: PrimeBroker
     description: Operations related to prime broker.
   - name: AppWorkflows
@@ -59,6 +61,8 @@ tags:
     description: Operations related to fee station.
   - name: Payment
     description: Operations related to payment.
+  - name: Batch Payouts
+    description: Operations related to batch payouts.
   - name: Tokenization
     description: Operations related to tokenization.
   - name: AutoSweep
@@ -96,8 +100,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalChainIdListParam'
-        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/optionalChainIdListWithLimitParam'
+        - $ref: '#/components/parameters/limit500Param'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
       responses:
@@ -139,9 +143,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalChainIdListParam'
-        - $ref: '#/components/parameters/optionalTokenListIdParam'
-        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/optionalChainIdListWithLimitParam'
+        - $ref: '#/components/parameters/optionalTokenListIdWithLimitParam'
+        - $ref: '#/components/parameters/limit500Param'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
       responses:
@@ -181,7 +185,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/limit500Param'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
       responses:
@@ -204,9 +208,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/optionalWalletTypeParam'
         - $ref: '#/components/parameters/optionalWalletSubtypeParam'
-        - $ref: '#/components/parameters/optionalChainIdListParam'
-        - $ref: '#/components/parameters/optionalTokenListIdParam'
-        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/optionalChainIdListWithLimitParam'
+        - $ref: '#/components/parameters/optionalTokenListIdWithLimitParam'
+        - $ref: '#/components/parameters/limit500Param'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
       responses:
@@ -3154,6 +3158,28 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
+  /graphql:
+    post:
+      tags:
+        - GraphQL
+      operationId: execute_graphql
+      summary: Execute a GraphQL query or mutation
+      description: |
+        This endpoint executes a GraphQL query or mutation. The request body must include a valid GraphQL query string.
+      security:
+        - CoboAuth: []
+          CoboSignature: []
+          CoboNonce: []
+        - OAuth2: []
+      requestBody:
+        $ref: '#/components/requestBodies/graphQLRequestBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/graphqlResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
   /fee_station/addresses:
     get:
       tags:
@@ -3328,6 +3354,7 @@ paths:
         This operation retrieves a list of swap activities. You can filter the results by swap type, status, initiator, and time range.
       operationId: list_swap_activities
       parameters:
+        - $ref: '#/components/parameters/optionalRequestIdParam'
         - $ref: '#/components/parameters/swapTypeOptionalParam'
         - $ref: '#/components/parameters/swapActivityStatusOptionalParam'
         - $ref: '#/components/parameters/swapActivityMinUpdatedTimestampOptionalParam'
@@ -3767,9 +3794,8 @@ paths:
       operationId: list_bank_accounts
       summary: List all bank accounts
       description: |
-
-        <Note>This operation has been deprecated.</Note>
-        This operation retrieves the information of all bank accounts you have registered for payment settlement. Contact our support team at [help@cobo.com](mailto:help@cobo.com) to register a new bank account.
+        <Note>This operation has been deprecated. Please use [List counterparty entries](https://www.cobo.com/payments/en/api-references/payment/list-counterparty-entries) instead.</Note>
+        This operation retrieves the information of all bank accounts registered.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -3788,6 +3814,7 @@ paths:
       operationId: update_bank_account_by_id
       summary: Update bank account
       description: |
+        <Note>This operation has been deprecated.</Note>
         This operation updates the information of an existing bank account.
       security:
         - CoboAuth: []
@@ -3980,7 +4007,9 @@ paths:
       operationId: create_settlement_request
       summary: Create settlement request
       description: |
-        This operation creates a settlement request to withdraw available balances.
+        <Note>This operation has been deprecated. Please use [Create payout](https://www.cobo.com/payments/en/api-references/payment/create-payout) instead.</Note>
+
+        You can include multiple merchants and cryptocurrencies in a single settlement request.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -4000,6 +4029,8 @@ paths:
       operationId: list_settlement_requests
       summary: List all settlement requests
       description: |
+        <Note>This operation has been deprecated. Please use [List all payouts](https://www.cobo.com/payments/en/api-references/payment/list-all-payouts) instead.</Note>
+
         This operation retrieves the information of all settlement requests.
       security:
         - CoboAuth: []
@@ -4051,6 +4082,8 @@ paths:
       operationId: get_settlement_by_id
       summary: Get settlement request information
       description: |
+        <Note>This operation has been deprecated. Please use [Get payout information](https://www.cobo.com/payments/en/api-references/payment/get-payout-information) instead.</Note>
+
         This operation retrieves the information of a specific settlement request.
       security:
         - CoboAuth: []
@@ -4072,6 +4105,7 @@ paths:
       operationId: create_crypto_address
       summary: Create crypto address
       description: |
+        <Note>This operation has been deprecated.</Note>
         This operation registers a crypto address for crypto payouts.
 
         The registered address can later be referenced by its ID when creating settlement requests.
@@ -4098,6 +4132,7 @@ paths:
       operationId: list_crypto_addresses
       summary: List crypto addresses
       description: |
+        <Note>This operation has been deprecated.</Note>
         This operation retrieves a list of crypto addresses registered for crypto payouts. 
 
         Contact our support team at [help@cobo.com](mailto:help@cobo.com) to register a new crypto address.
@@ -4121,6 +4156,7 @@ paths:
       operationId: delete_crypto_address
       summary: Delete crypto address
       description: |
+        <Note>This operation has been deprecated.</Note>
         This operation unregisters a crypto address from being used for crypto payouts.
       security:
         - CoboAuth: []
@@ -4206,6 +4242,28 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/updateTopUpAddressResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    post:
+      tags:
+        - Payment
+      summary: Batch create top-up addresses
+      description: |
+        This operation creates top-up addresses for multiple payers under a specific merchant and token in a single request.
+
+        <Note>This operation supports batch processing of up to 50 payers per request.</Note>
+      operationId: create_top_up_addresses
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_topup_address.create
+      requestBody:
+        $ref: '#/components/requestBodies/createTopUpAddressesBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createTopUpAddressesResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -4389,6 +4447,8 @@ paths:
       operationId: list_settlement_details
       summary: List all settlement details
       description: |
+        <Note>This operation has been deprecated.</Note>
+
         This operation retrieves the information of all settlement details. You can filter the result by merchant ID or status.
       security:
         - CoboAuth: []
@@ -4554,7 +4614,18 @@ paths:
         - $ref: '#/components/parameters/CounterpartyIdPathParam'
       responses:
         '200':
-          $ref: '#/components/responses/deleteCounterpartyByIdResponse'
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - deleted_counterparty_id
+                properties:
+                  deleted_counterparty_id:
+                    type: string
+                    description: The deleted counterparty ID.
+                    example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -4651,7 +4722,18 @@ paths:
         - $ref: '#/components/parameters/EntryTypeOptionalParam'
       responses:
         '200':
-          $ref: '#/components/responses/deleteCounterpartyEntryResponse'
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - deleted_counterparty_entry_id
+                properties:
+                  deleted_counterparty_entry_id:
+                    type: string
+                    description: The deleted counterparty entry ID.
+                    example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -4902,7 +4984,18 @@ paths:
         - $ref: '#/components/parameters/DestinationIdPathParam'
       responses:
         '200':
-          $ref: '#/components/responses/deleteDestinationByIdResponse'
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - deleted_destination_id
+                properties:
+                  deleted_destination_id:
+                    type: string
+                    description: The deleted destination ID.
+                    example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -5021,7 +5114,18 @@ paths:
         - $ref: '#/components/parameters/EntryTypeRequiredParam'
       responses:
         '200':
-          $ref: '#/components/responses/deleteDestinationEntryResponse'
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - deleted_destination_entry_id
+                properties:
+                  deleted_destination_entry_id:
+                    type: string
+                    description: The deleted destination entry ID.
+                    example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
         '400':
           $ref: '#/components/responses/badRequestError'
         '401':
@@ -5404,16 +5508,14 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
-  /payments/allocation_records:
+  /payments/allocation_items:
     get:
       tags:
         - Payment
-      operationId: list_allocations
-      summary: List all allocation records
+      operationId: list_allocation_items
+      summary: List all allocation items
       description: |
-        This operation retrieves the information of all allocation records. 
-
-        One allocation record corresponds to one allocation request in a batch allocation.
+        This operation retrieves the information of all allocations.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -5428,7 +5530,53 @@ paths:
         - $ref: '#/components/parameters/BatchAllocationIdOptionalParam'
       responses:
         '200':
-          $ref: '#/components/responses/listAllocationRecordsResponse'
+          $ref: '#/components/responses/listAllocationItemsResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /payments/reports:
+    post:
+      tags:
+        - Payment
+      operationId: create_report
+      summary: Generate reports
+      description: |
+
+        This operation generates reports for a variety of payment activities, including pay-ins, payouts, and commission fees.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_reports.create
+      requestBody:
+        $ref: '#/components/requestBodies/createReportBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createReportResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    get:
+      tags:
+        - Payment
+      operationId: get_reports
+      summary: List all reports
+      description: |
+        This operation retrieves the information of all reports.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_reports.read
+      parameters:
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+        - $ref: '#/components/parameters/ReportTypeOptionalParam'
+        - $ref: '#/components/parameters/ReportStatusOptionalParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listReportsResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -5440,7 +5588,7 @@ paths:
       operationId: create_payout
       summary: Create payout
       description: |
-        This operation initiates a payout, distributing funds either to cryptocurrency addresses or to bank accounts as fiat currency.
+        This operation creates a payout to withdraw available balances.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -5498,14 +5646,58 @@ paths:
           $ref: '#/components/responses/badRequestError'
         5XX:
           $ref: '#/components/responses/internalServerError'
-  /payments/payout_items:
+  /payments/bulk_sends:
+    post:
+      tags:
+        - Payment
+      operationId: create_bulk_send
+      summary: Create bulk send
+      description: |
+        This operation creates a bulk send to transfer funds to multiple recipients in a single request.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_settlement.create
+      requestBody:
+        $ref: '#/components/requestBodies/createPaymentBulkSendBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createPaymentBulkSendResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/payments/bulk_sends/{bulk_send_id}':
+    parameters:
+      - $ref: '#/components/parameters/PaymentBulkSendIdPathParam'
     get:
       tags:
         - Payment
-      operationId: list_payout_items
-      summary: List all payout items
+      operationId: get_bulk_send_by_id
+      summary: Get bulk send information
       description: |
-        This operation retrieves the information of all payout items. You can filter the result by source account or status.
+        This operation retrieves the information of a specific bulk send.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - payment_settlement.read
+      responses:
+        '200':
+          $ref: '#/components/responses/paymentBulkSendDetailResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/payments/bulk_sends/{bulk_send_id}/items':
+    parameters:
+      - $ref: '#/components/parameters/PaymentBulkSendIdPathParam'
+    get:
+      tags:
+        - Payment
+      operationId: list_bulk_send_items
+      summary: List bulk send items
+      description: |
+        This operation retrieves the list of items for a specific bulk send.
       security:
         - CoboAuth: []
         - OAuth2:
@@ -5514,176 +5706,9 @@ paths:
         - $ref: '#/components/parameters/limitParam'
         - $ref: '#/components/parameters/beforeParam'
         - $ref: '#/components/parameters/afterParam'
-        - $ref: '#/components/parameters/PaymentSourceAccountOptionalParam'
-        - $ref: '#/components/parameters/PaymentStatusesParam'
       responses:
         '200':
-          $ref: '#/components/responses/listPaymentPayoutItemResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  /payments/reports:
-    post:
-      tags:
-        - Payment
-      operationId: create_report
-      summary: Generate reports
-      description: |
-
-        This operation generates reports for a variety of payment activities, including pay-ins, payouts, and commission fees.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_reports.create
-      requestBody:
-        $ref: '#/components/requestBodies/createReportBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/createReportResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-    get:
-      tags:
-        - Payment
-      operationId: get_reports
-      summary: List all reports
-      description: |
-        This operation retrieves the information of all reports.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_reports.read
-      parameters:
-        - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/beforeParam'
-        - $ref: '#/components/parameters/afterParam'
-        - $ref: '#/components/parameters/ReportTypeOptionalParam'
-        - $ref: '#/components/parameters/ReportStatusOptionalParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/listReportsResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  /auto_sweep/sweep_to_addresses:
-    get:
-      tags:
-        - AutoSweep
-      operationId: list_wallet_sweep_to_addresses
-      summary: List sweep-to addresses
-      description: |
-        This operation retrieves a list of sweep-to addresses within your wallet.
-
-        <Note>Sweep-to addresses are only applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) with the auto-sweep feature enabled.</Note>
-
-        <Info>For EVM-compatible chains (such as Ethereum and BNB Smart Chain), the same address is used across chains. As a result, when listing sweep-to addresses, only one address entry (shown under Ethereum) is returned for all EVM-compatible chains. Separate entries are not returned for each individual EVM chain.</Info>
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - wallet.read
-      parameters:
-        - $ref: '#/components/parameters/requiredWalletIdParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/getSweepToAddressesResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-    post:
-      tags:
-        - AutoSweep
-      operationId: create_wallet_sweep_to_addresses
-      summary: Create sweep-to address
-      description: |
-        This operation creates a new sweep-to address for the specified wallet. The previously sweep-to address for the same token becomes invalid once the new one is created.
-
-        Use this operation to change the sweep-to address when your setup changes, you switch networks, or the current address is compromised or tainted by suspicious funds. You can withdraw any remaining balances from the old sweep-to addresses to the new address or another designated destination.
-
-        <Note>Sweep-to addresses are only applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) with the auto-sweep feature enabled.</Note>
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - wallet.create
-      requestBody:
-        $ref: '#/components/requestBodies/createSweepAddressBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/createSweepToAddressResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  /auto_sweep/tasks:
-    get:
-      tags:
-        - AutoSweep
-      operationId: list_auto_sweep_task
-      summary: List auto-sweep tasks
-      description: |
-        This operation retrieves a list of auto-sweep tasks for the specified wallet. You can filter the results by token ID, task IDs, or a created-time range.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - wallet.read
-      parameters:
-        - $ref: '#/components/parameters/requiredWalletIdParam'
-        - $ref: '#/components/parameters/optionalTokenIdParam'
-        - $ref: '#/components/parameters/optionalTaskIdListParam'
-        - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
-        - $ref: '#/components/parameters/optionalMaxCreatedTimestampParam'
-        - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/beforeParam'
-        - $ref: '#/components/parameters/afterParam'
-        - $ref: '#/components/parameters/directionParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/listAutoSweepTasksResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-    post:
-      tags:
-        - AutoSweep
-      operationId: create_auto_sweep_task
-      summary: Create auto-sweep task
-      description: |
-        This operation creates an auto-sweep task for the specified wallet and token. The task triggers transactions to sweep the full balance of the specified token to the configured sweep-to address.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - wallet.create
-      requestBody:
-        $ref: '#/components/requestBodies/createAutoSweepTaskBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/createAutoSweepTaskResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/auto_sweep/tasks/{task_id}':
-    parameters:
-      - $ref: '#/components/parameters/taskIdParam'
-    get:
-      tags:
-        - AutoSweep
-      operationId: get_auto_sweep_task_by_id
-      summary: Get auto-sweep task details
-      description: |
-        This operation retrieves detailed information about a specified auto-sweep task.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - wallet.read
-      responses:
-        '200':
-          $ref: '#/components/responses/getAutoSweepTaskResponse'
+          $ref: '#/components/responses/listPaymentBulkSendItemsResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -6165,6 +6190,125 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/listTokenizationSupportedChainsResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /auto_sweep/sweep_to_addresses:
+    get:
+      tags:
+        - AutoSweep
+      operationId: list_wallet_sweep_to_addresses
+      summary: List sweep-to addresses
+      description: |
+        This operation retrieves a list of sweep-to addresses within your wallet.
+
+        <Note>Sweep-to addresses are only applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) with the auto-sweep feature enabled.</Note>
+
+        <Info>For EVM-compatible chains (such as Ethereum and BNB Smart Chain), the same address is used across chains. As a result, when listing sweep-to addresses, only one address entry (shown under Ethereum) is returned for all EVM-compatible chains. Separate entries are not returned for each individual EVM chain.</Info>
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
+      parameters:
+        - $ref: '#/components/parameters/requiredWalletIdParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getSweepToAddressesResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    post:
+      tags:
+        - AutoSweep
+      operationId: create_wallet_sweep_to_addresses
+      summary: Create sweep-to address
+      description: |
+        This operation creates a new sweep-to address for the specified wallet. The previously sweep-to address for the same token becomes invalid once the new one is created.
+
+        Use this operation to change the sweep-to address when your setup changes, you switch networks, or the current address is compromised or tainted by suspicious funds. You can withdraw any remaining balances from the old sweep-to addresses to the new address or another designated destination.
+
+        <Note>Sweep-to addresses are only applicable to MPC Wallets and Custodial Wallets (Web3 Wallets) with the auto-sweep feature enabled.</Note>
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - wallet.create
+      requestBody:
+        $ref: '#/components/requestBodies/createSweepAddressBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createSweepToAddressResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  /auto_sweep/tasks:
+    get:
+      tags:
+        - AutoSweep
+      operationId: list_auto_sweep_task
+      summary: List auto-sweep tasks
+      description: |
+        This operation retrieves a list of auto-sweep tasks for the specified wallet. You can filter the results by token ID, task IDs, or a created-time range.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
+      parameters:
+        - $ref: '#/components/parameters/requiredWalletIdParam'
+        - $ref: '#/components/parameters/optionalTokenIdParam'
+        - $ref: '#/components/parameters/optionalTaskIdListParam'
+        - $ref: '#/components/parameters/optionalMinCreatedTimestampParam'
+        - $ref: '#/components/parameters/optionalMaxCreatedTimestampParam'
+        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/beforeParam'
+        - $ref: '#/components/parameters/afterParam'
+        - $ref: '#/components/parameters/directionParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/listAutoSweepTasksResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+    post:
+      tags:
+        - AutoSweep
+      operationId: create_auto_sweep_task
+      summary: Create auto-sweep task
+      description: |
+        This operation creates an auto-sweep task for the specified wallet and token. The task triggers transactions to sweep the full balance of the specified token to the configured sweep-to address.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - wallet.create
+      requestBody:
+        $ref: '#/components/requestBodies/createAutoSweepTaskBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/createAutoSweepTaskResponse'
+        4XX:
+          $ref: '#/components/responses/badRequestError'
+        5XX:
+          $ref: '#/components/responses/internalServerError'
+  '/auto_sweep/tasks/{task_id}':
+    parameters:
+      - $ref: '#/components/parameters/taskIdParam'
+    get:
+      tags:
+        - AutoSweep
+      operationId: get_auto_sweep_task_by_id
+      summary: Get auto-sweep task details
+      description: |
+        This operation retrieves detailed information about a specified auto-sweep task.
+      security:
+        - CoboAuth: []
+        - OAuth2:
+            - wallet.read
+      responses:
+        '200':
+          $ref: '#/components/responses/getAutoSweepTaskResponse'
         4XX:
           $ref: '#/components/responses/badRequestError'
         5XX:
@@ -10362,6 +10506,7 @@ components:
         - FeePayerSign
         - GasFeeSponsor
         - GasFeeSponsorRefund
+        - WalletConnect
       example: AutoSweep
       description: |
         The transaction category defined by Cobo. Possible values include: 
@@ -10380,10 +10525,10 @@ components:
           - `StakingBabylonStake`: A transaction for staking assets in the Babylon platform.
           - `StakingBabylonUnstake`: A transaction for unstaking assets from the Babylon platform.
           - `StakingBabylonWithdraw`: A transaction for withdrawing assets from Babylon staking.
-          - `StakingBithiveClaim`: A transaction for claiming rewards from BitHive staking.
-          - `StakingBithiveStake`: A transaction for staking assets in the BitHive platform.
-          - `StakingBithiveUnstake`: A transaction for unstaking assets from the BitHive platform.
-          - `StakingBithiveWithdraw`: A transaction for withdrawing assets from BitHive staking.
+          - `StakingBithiveClaim`: A transaction for claiming rewards from Bithive staking.
+          - `StakingBithiveStake`: A transaction for staking assets in the Bithive platform.
+          - `StakingBithiveUnstake`: A transaction for unstaking assets from the Bithive platform.
+          - `StakingBithiveWithdraw`: A transaction for withdrawing assets from Bithive staking.
           - `StakingCoreStake`: A transaction for staking assets in the Core staking platform.
           - `StakingCoreWithdraw`: A transaction for withdrawing assets from Core staking.
           - `StakingEthClaim`: A transaction for claiming rewards from ETH staking.
@@ -10392,18 +10537,15 @@ components:
           - `StakingSkyfarmClaim`: A transaction for claiming rewards from Skyfarm staking.
           - `StakingSkyfarmStake`: A transaction for staking assets in the Skyfarm platform.
           - `StakingSkyfarmUnstake`: A transaction for unstaking assets from the Skyfarm platform.
-          - `ScreenAppRefund`: A refund transaction initiated through the Screening App.
-          - `ScreenAppIsolate`: An isolation transaction initiated through the Screening App.
-          - `ComplianceRefund`: A refund transaction initiated by Cobo KYT.
-          - `ComplianceIsolate`: An isolation transaction initiated by Cobo KYT.
-          - `StellarChangeTrust`: A transaction for establishing a trustline on the Stellar network.
+          - `StellarChangeTrust`: A transaction for establishing a trustline on the Stellar network..
           - `Tokenization`: A transaction for managing tokenized assets, such as minting or wrapping tokens.
           - `TokenizationGasSponsor`: A transaction where gas fees are sponsored for tokenization-related operations, ensuring the transaction proceeds even if the source address lacks sufficient balance.
           - `TokenSwap`: A transaction for token swapping or cross-chain bridging.
-          - `NonceAccountSign`: A transaction signed using a **Solana nonce account**, enabling deterministic and replay-safe transaction execution on the Solana network.
+          - `NonceAccountSign`: A transaction signed using a **Solana nonce account**, enabling deterministic and replay-safe transaction execution on the Solana network.  
           - `FeePayerSign`: A transaction where a **designated Solana fee payer account** covers the transaction fees, separating the fee payment from the main signer or source account.
           - `GasFeeSponsor`: A transaction where Fee Station pays the on-chain gas fee in USD stablecoin.
           - `GasFeeSponsorRefund`: A transaction that refunds gas fees previously sponsored and paid by Fee Station.
+          - `WalletConnect`: A transaction initiated by walletconnect.
     SafeTxExtraData:
       type: object
       description: 'The information used to construct and sign Safe{Wallet} transactions using the EIP-712 standard.'
@@ -10571,12 +10713,14 @@ components:
         - BabylonBusinessInfo
         - BabylonTxParameters
         - CoreStakeInfo
+        - WalletConnectInfo
       example: BabylonBusinessInfo
       description: |
         The transaction extra information type. Possible values include:
-          - `BabylonBusinessInfo`: The extra information related to Babylon business logic.
-          - `BabylonTxParameters`: The extra information for Babylon transaction parameters.
-          - `CoreStakeInfo`: The extra information related to core staking operations.
+          - `BabylonBusinessInfo`: The extra information of Babylon business.
+          - `BabylonTxParameters`: The extra information of Babylon transaction parameters.
+          - `CoreStakeInfo`: The extra information of core stake.
+          - `WalletConnectInfo`: The extra information of transaction initiated by walletconnect.
     TransactionBabylonBusinessInfo:
       type: object
       description: The extra information related to Babylon business logic.
@@ -10651,6 +10795,24 @@ components:
         reward_address:
           type: string
           description: The EVM address used to receive staking rewards.
+    TransactionWalletConnectInfo:
+      type: object
+      description: The extra information of transaction initiated by walletconnect.
+      title: Wallet Connect Information
+      required:
+        - extra_type
+      properties:
+        extra_type:
+          $ref: '#/components/schemas/TransactionExtraType'
+        dapp_name:
+          type: string
+          description: The dapp name that initiated this transaction.
+        dapp_domain:
+          type: string
+          description: The dapp domain that initiated this transaction
+        session_id:
+          type: string
+          description: The session id that initiated this transaction
     ApprovalDetail:
       type: object
       description: Details of the transaction approval.
@@ -11933,6 +12095,7 @@ components:
             - PaymentTransaction
             - PaymentAddressUpdate
             - PaymentPayout
+            - PaymentBulkSend
             - BalanceUpdateInfo
             - SuspendedToken
             - ComplianceDisposition
@@ -11956,6 +12119,7 @@ components:
             - `PaymentTransaction`: The payment transaction event data.
             - `PaymentAddressUpdate`: The top-up address update event data.
             - `PaymentPayout`: The payment payout event data.
+            - `PaymentBulkSend`: The payment bulk send event data.
             - `BalanceUpdateInfo`: The balance update event data.
             - `SuspendedToken`: The token suspension event data.
             - `ComplianceDisposition`: The compliance disposition event data.
@@ -11980,6 +12144,7 @@ components:
         - $ref: '#/components/schemas/PaymentTransactionEventData'
         - $ref: '#/components/schemas/PaymentAddressUpdateEventData'
         - $ref: '#/components/schemas/PaymentPayoutEvent'
+        - $ref: '#/components/schemas/PaymentBulkSendEvent'
         - $ref: '#/components/schemas/ComplianceDispositionUpdateEventData'
         - $ref: '#/components/schemas/ComplianceKytScreeningsUpdateEventData'
         - $ref: '#/components/schemas/ComplianceKyaScreeningsUpdateEventData'
@@ -12002,6 +12167,7 @@ components:
           PaymentTransaction: '#/components/schemas/PaymentTransactionEventData'
           PaymentAddressUpdate: '#/components/schemas/PaymentAddressUpdateEventData'
           PaymentPayout: '#/components/schemas/PaymentPayoutEvent'
+          PaymentBulkSend: '#/components/schemas/PaymentBulkSendEvent'
           ComplianceDisposition: '#/components/schemas/ComplianceDispositionUpdateEventData'
           ComplianceKytScreenings: '#/components/schemas/ComplianceKytScreeningsUpdateEventData'
           ComplianceKyaScreenings: '#/components/schemas/ComplianceKyaScreeningsUpdateEventData'
@@ -12248,6 +12414,11 @@ components:
       allOf:
         - $ref: '#/components/schemas/WebhookEventDataType'
         - $ref: '#/components/schemas/PaymentPayoutDetail'
+    PaymentBulkSendEvent:
+      title: Payment Bulk Send Event Data
+      allOf:
+        - $ref: '#/components/schemas/WebhookEventDataType'
+        - $ref: '#/components/schemas/PaymentBulkSend'
     ComplianceDispositionUpdateEventData:
       title: Compliance Disposition Event Data
       allOf:
@@ -12302,6 +12473,8 @@ components:
         - payment.payout.status.updated
         - payment.address.updated
         - payment.subscription.status.updated
+        - payment.charge.status.updated
+        - payment.bulk_send.status.updated
         - compliance.disposition.status.updated
         - compliance.kyt.screenings.status.updated
         - compliance.kya.screenings.status.updated
@@ -14574,17 +14747,7 @@ components:
         query:
           type: string
           description: The GraphQL query or mutation as a string.
-          example: |
-            query {
-              wallets {
-                edges {
-                  node {
-                    id
-                    name
-                  }
-                }
-              }
-            }
+          example: "query { wallets { edges { node { id name } } } }"
         variables:
           type: object
           description: Variables to use in the GraphQL operation. Can include dynamic values required for the query or mutation.
@@ -15925,9 +16088,9 @@ components:
         - OffRamp
       example: Crypto
       description: |
-        The channel through which payouts will be processed. Available options:
-        - `Crypto`: Direct withdrawal to a crypto address.
-        - `OffRamp`: Settle to a registered bank account.
+        The channel through which the payout will be processed. Possible values include:
+        - `Crypto`: The payout will be processed as a cryptocurrency transfer to a crypto address.
+        - `OffRamp`: The payout will be processed as a fiat currency transfer to a registered bank account.
     AcquiringType:
       type: string
       enum:
@@ -16265,13 +16428,13 @@ components:
         fee_amount:
           type: string
           description: |
-            The fee charged for bridging tokens to another blockchain during an off-ramp operation. Bridging fees apply when tokens are on a blockchain not directly supported by the off-ramp service.
+            The fee charged for bridging tokens to another chain.
         received_token_id:
           type: string
           description: The ID of the destination token received after bridging.
         received_amount:
           type: string
-          description: The final amount of destination tokens received after bridging.
+          description: The final amount of the token received after bridging.
     CommissionFee:
       type: object
       required:
@@ -16335,13 +16498,19 @@ components:
         - Refund
         - CryptoSettlement
         - OffRampSettlement
+        - CryptoPayout
+        - CryptoPayoutBridge
+        - OffRampPayout
       example: Order
       description: |
-        The type of fee to estimate:
-        - `Order`: Fee for accepting a payment.
-        - `Refund`: Fee for processing a refund.
-        - `CryptoSettlement`: Fee for crypto payouts.
-        - `OffRampSettlement`: Fee for fiat off-ramp.
+        The fee type. Possible values include:
+        - `Order`: Fees for order processing.
+        - `Refund`: Fees for refund processing.
+        - `CryptoSettlement`: This fee type is deprecated. Please use `CryptoPayout` instead.
+        - `OffRampSettlement`: This fee type is deprecated. Please use `OffRampPayout` instead.
+        - `CryptoPayout`: Fees for crypto payouts.
+        - `CryptoPayoutBridge`: Fees for crypto payouts with cross-chain bridging.
+        - `OffRampPayout`: Fees for fiat off-ramp payouts.
     WalletSetup:
       type: string
       enum:
@@ -16406,6 +16575,9 @@ components:
         - fee_amount
         - merchant_id
         - psp_order_code
+        - pricing_currency
+        - pricing_amount
+        - payable_currencies
       properties:
         merchant_id:
           type: string
@@ -17213,18 +17385,18 @@ components:
           type: string
           description: 'The current exchange rate between the specified currency pair. Expressed as the amount of fiat currency per one unit of cryptocurrency. For example, if the cryptocurrency is USDT and the fiat currency is USD, a rate of "0.99" means 1 USDT = 0.99 USD.'
           example: '1.00'
-    AllocationRecord:
+    AllocationItem:
       type: object
       required:
-        - allocation_record_id
+        - allocation_item_id
         - batch_allocation_id
         - token_id
         - amount
         - description
       properties:
-        allocation_record_id:
+        allocation_item_id:
           type: string
-          description: The allocation record ID generated by Cobo.
+          description: The allocation item ID generated by Cobo.
           example: 123e457-e89b-12d3-a456-426614174004
         batch_allocation_id:
           type: string
@@ -17233,25 +17405,31 @@ components:
         token_id:
           type: string
           description: |
-            The ID of the cryptocurrency to allocate. Supported values: 
+            The ID of the cryptocurrency you want to allocation. Supported values: 
             - USDC: `ETH_USDC`, `ARBITRUM_USDC`, `SOL_USDC`, `BASE_USDC`, `MATIC_USDC`, `BSC_USDC`
             - USDT: `TRON_USDT`, `ETH_USDT`, `ARBITRUM_USDT`, `SOL_USDT`, `BASE_USDT`, `MATIC_USDT`, `BSC_USDT`
           example: ETH_USDT
         amount:
           type: string
           description: |
-            The amount of the cryptocurrency to allocate.
+            The allocation amount.
           example: '500.00'
         source_account:
+          description: |
+            The source account from which the allocation will be deducted.
+            - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
+            - If the source account is the developer account, use the string `"developer"`.
           type: string
-          description: The source account.
         destination_account:
+          description: |
+            The destination account to which the allocation will be credited.
+            - If the destination account is a merchant account, provide the merchant's ID (e.g., "M1001").
+            - If the destination account is the developer account, use the string `"developer"`.
           type: string
-          description: The destination account.
         description:
           type: string
-          description: The description of the allocation record.
-    AllocationRequest:
+          description: The description of the allocation item.
+    AllocationParam:
       type: object
       required:
         - token_id
@@ -17263,41 +17441,35 @@ components:
         token_id:
           type: string
           description: |
-            The ID of the cryptocurrency you want to allocate. Supported values: 
+            The ID of the cryptocurrency you want to allocation. Supported values: 
             - USDC: `ETH_USDC`, `ARBITRUM_USDC`, `SOL_USDC`, `BASE_USDC`, `MATIC_USDC`, `BSC_USDC`
             - USDT: `TRON_USDT`, `ETH_USDT`, `ARBITRUM_USDT`, `SOL_USDT`, `BASE_USDT`, `MATIC_USDT`, `BSC_USDT`
           example: ETH_USDT
         amount:
           type: string
           description: |
-            The amount of the cryptocurrency you want to allocate.
+            The allocation amount.
           example: '500.00'
         source_account:
-          type: string
           description: |
-            The source account.
-
+            The source account from which the allocation will be deducted.
             - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
             - If the source account is the developer account, use the string `"developer"`.
-          example: M1001
-        destination_account:
           type: string
+        destination_account:
           description: |
-            The destination account.
-
+            The destination account to which the allocation will be credited.
             - If the destination account is a merchant account, provide the merchant's ID (e.g., "M1001").
             - If the destination account is the developer account, use the string `"developer"`.
-          example: M1001
+          type: string
         description:
           type: string
-          description: The description of the allocation request.
-          example: Allocation for merchant M1001
+          description: The description of the allocation.
     BatchAllocation:
       type: object
       required:
         - batch_allocation_id
         - request_id
-        - allocation_items
         - created_timestamp
         - updated_timestamp
       properties:
@@ -17309,10 +17481,10 @@ components:
           type: string
           description: The request ID provided by you when creating the batch allocation.
           example: 123e457-e89b-12d3-a456-426614174004
-        allocation_requests:
+        allocation_params:
           type: array
           items:
-            $ref: '#/components/schemas/AllocationRequest'
+            $ref: '#/components/schemas/AllocationParam'
         initiator:
           type: string
           description: 'The initiator of this batch allocation, usually the API key you used to create the batch allocation.'
@@ -17330,7 +17502,6 @@ components:
       required:
         - batch_allocation_id
         - request_id
-        - allocation_records
       properties:
         batch_allocation_id:
           type: string
@@ -17340,10 +17511,10 @@ components:
           type: string
           description: The request ID provided by you when creating the batch allocation.
           example: 123e457-e89b-12d3-a456-426614174004
-        allocation_records:
+        allocation_items:
           type: array
           items:
-            $ref: '#/components/schemas/AllocationRecord'
+            $ref: '#/components/schemas/AllocationItem'
         initiator:
           type: string
           description: 'The initiator of this batch allocation, usually the user''s API key.'
@@ -17373,6 +17544,8 @@ components:
         - request_id
         - payout_channel
         - status
+        - created_timestamp
+        - updated_timestamp
       properties:
         payout_id:
           type: string
@@ -17384,239 +17557,99 @@ components:
           example: 123e457-e89b-12d3-a456-426614174004
         payout_channel:
           $ref: '#/components/schemas/PayoutChannel'
-        payout_items:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentPayoutItem'
-        status:
-          $ref: '#/components/schemas/PaymentPayoutStatus'
-        created_timestamp:
-          type: integer
-          description: 'The created time of the payout, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        updated_timestamp:
-          type: integer
-          description: 'The updated time of the payout, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        initiator:
-          type: string
-          description: 'The initiator of this payout, usually the API key used to create the payout.'
-          example: b2ae1b5aaade686c968ef2bbd31cc75ba94e5a85fd9cb0b35b81dcc15f520e9d
-        currency:
-          type: string
-          description: The fiat currency you will receive from the payout.
-          example: USD
-        actual_payout_amount:
-          type: string
-          description: |
-            The total amount of cryptocurrency actually paid out for this payout.
-          example: '500.00'
-        bank_account:
-          $ref: '#/components/schemas/BankAccount'
-    PaymentPayoutDetail:
-      type: object
-      required:
-        - payout_id
-        - request_id
-        - status
-      properties:
-        payout_id:
-          type: string
-          description: The payout ID generated by Cobo.
-          example: 123e457-e89b-12d3-a456-426614174004
-        request_id:
-          type: string
-          description: The request ID provided by you when creating the payout.
-          example: 123e457-e89b-12d3-a456-426614174004
-        status:
-          $ref: '#/components/schemas/PaymentPayoutStatus'
-        payout_item_details:
-          type: array
-          items:
-            $ref: '#/components/schemas/PaymentPayoutItemDetail'
-        created_timestamp:
-          type: integer
-          description: 'The created time of the payout, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        updated_timestamp:
-          type: integer
-          description: 'The updated time of the payout, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        initiator:
-          type: string
-          description: 'The initiator of this payout, usually the API key used to create the payout.'
-          example: b2ae1b5aaade686c968ef2bbd31cc75ba94e5a85fd9cb0b35b81dcc15f520e9d
-        payout_channel:
-          $ref: '#/components/schemas/PayoutChannel'
-        currency:
-          type: string
-          description: The fiat currency you will receive from the payout.
-          example: USD
-        actual_payout_amount:
-          type: string
-          description: |
-            The total amount of cryptocurrency actually paid out for this payout.
-          example: '500.00'
-        bank_account:
-          $ref: '#/components/schemas/BankAccount'
-    PaymentPayoutItem:
-      type: object
-      required:
-        - payout_item_id
-        - payout_id
-        - source_account
-        - amount
-        - status
-      properties:
-        payout_item_id:
-          type: string
-          description: The payout item ID generated by Cobo.
-          example: 123e457-e89b-12d3-a456-426614174004
-        payout_id:
-          type: string
-          description: The payout ID generated by Cobo.
-          example: 123e457-e89b-12d3-a456-426614174004
-        token_id:
-          type: string
-          description: The ID of the cryptocurrency paid out.
-          example: ETH_USDT
-        chain_id:
-          type: string
-          description: The ID of the blockchain network on which the payout occurred.
-          example: ETH
-        amount:
-          type: string
-          description: |
-            The amount of the cryptocurrency to pay out.
-          example: '500.00'
-        status:
-          $ref: '#/components/schemas/PaymentPayoutItemStatus'
-        source_account:
-          type: string
-          description: |
-            The source account from which the payout was made.
-            - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
-            - If the source account is the developer account, use the string `"developer"`.
-          example: M1001
-        transactions:
-          type: array
-          description: An array of transactions associated with this payout item. Each transaction represents a separate blockchain operation related to the payout item process.
-          items:
-            $ref: '#/components/schemas/PaymentTransaction'
-        created_timestamp:
-          type: integer
-          description: 'The created time of the payout item, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        updated_timestamp:
-          type: integer
-          description: 'The updated time of the payout item, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        crypto_address_id:
-          type: string
-          description: The ID of the crypto address used for crypto payouts.
-          example: addr_ethusdt_20250429T134512_a8c31f
-        crypto_address:
-          type: string
-          description: The actual blockchain address to which funds were transferred.
-          example: '0xabc123456789def0000000000000000000000000'
-        commission_fee:
-          $ref: '#/components/schemas/CommissionFee'
-        bridging_fee:
-          $ref: '#/components/schemas/BridgingFee'
-    PaymentPayoutItemDetail:
-      type: object
-      required:
-        - payout_item_id
-        - payout_id
-        - source_account
-        - amount
-        - status
-      properties:
-        payout_item_id:
-          type: string
-          description: The payout item ID generated by Cobo.
-          example: 123e457-e89b-12d3-a456-426614174004
-        payout_id:
-          type: string
-          description: The payout ID generated by Cobo.
-          example: 123e457-e89b-12d3-a456-426614174004
-        token_id:
-          type: string
-          description: The ID of the cryptocurrency paid out.
-          example: ETH_USDT
-        chain_id:
-          type: string
-          description: The ID of the blockchain network on which the payout occurred.
-          example: ETH
-        source_account:
-          type: string
-          description: |
-            The source account from which the payout was made.
-            - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
-            - If the source account is the developer account, use the string `"developer"`.
-          example: M1001
-        amount:
-          type: string
-          description: |
-            The amount of the cryptocurrency paid out.
-          example: '500.00'
-        status:
-          $ref: '#/components/schemas/PaymentPayoutStatus'
-        transactions:
-          type: array
-          description: An array of transactions associated with this payout item. Each transaction represents a separate blockchain operation related to the payout process.
-          items:
-            $ref: '#/components/schemas/PaymentTransaction'
-        created_timestamp:
-          type: integer
-          description: 'The created time of the payout, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        updated_timestamp:
-          type: integer
-          description: 'The updated time of the payout, represented as a UNIX timestamp in seconds.'
-          example: 1744689600
-        crypto_address_id:
-          type: string
-          description: The ID of the crypto address used for crypto payouts.
-          example: addr_ethusdt_20250429T134512_a8c31f
-        crypto_address:
-          type: string
-          description: The actual blockchain address to which funds were transferred for crypto payouts.
-          example: '0xabc123456789def0000000000000000000000000'
-        commission_fee:
-          $ref: '#/components/schemas/CommissionFee'
-        bridging_fee:
-          $ref: '#/components/schemas/BridgingFee'
-    PaymentPayoutItemStatus:
-      type: string
-      enum:
-        - Pending
-        - Processing
-        - Completed
-        - PartiallyCompleted
-        - Failed
-      example: Pending
-      description: |
-        The current status of the payout item:
-        - `Pending`: The payout item has been created and is awaiting processing.
-        - `Processing`: The payout item is being processed.
-        - `Completed`: The funds have been successfully deposited into the bank account.
-        - `PartiallyCompleted`: Some payout item transactions have been completed successfully, while others have failed.
-        - `Failed`: The payout item could not be completed due to an error.
-    PaymentPayoutParam:
-      type: object
-      required:
-        - source_account
-        - token_id
-        - amount
-      properties:
         source_account:
           type: string
           description: |
             The source account from which the payout will be made.
             - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
             - If the source account is the developer account, use the string `"developer"`.
-          example: M1001
+        payout_items:
+          type: array
+          description: required
+          items:
+            $ref: '#/components/schemas/PaymentPayoutItem'
+        recipient_info:
+          $ref: '#/components/schemas/PaymentPayoutRecipientInfo'
+        initiator:
+          type: string
+          description: 'The initiator of this payout, usually the user''s API key.'
+          example: b2ae1b5aaade686c968ef2bbd31cc75ba94e5a85fd9cb0b35b81dcc15f520e9d
+        actual_payout_amount:
+          type: string
+          description: |
+            - For `Crypto` payouts: The amount of cryptocurrency sent to the recipient's address, denominated in the token specified in `recipient_info.token_id`.
+            - For `OffRamp` payouts: The amount of fiat currency sent to the recipient's bank account, denominated in the currency specified in `recipient_info.currency`. (Note: The actual amount received may be lower due to additional bank transfer fees.)
+          example: '500.00'
+        status:
+          $ref: '#/components/schemas/PaymentPayoutStatus'
+        remark:
+          type: string
+          description: A note or comment about the payout.
+          example: Payout for customer 123
+        created_timestamp:
+          type: integer
+          description: 'The created time of the payout, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the payout, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+    PaymentPayoutDetail:
+      allOf:
+        - $ref: '#/components/schemas/PaymentPayout'
+        - type: object
+          properties:
+            transactions:
+              type: array
+              description: An array of payout transactions.
+              items:
+                $ref: '#/components/schemas/PaymentTransaction'
+    PaymentPayoutItem:
+      type: object
+      required:
+        - token_id
+        - amount
+      properties:
+        token_id:
+          type: string
+          description: The token ID of the payout item.
+          example: ETH_USDT
+        amount:
+          type: string
+          description: |
+            The amount of the payout item.
+          example: '500.00'
+        bridging_fee:
+          $ref: '#/components/schemas/BridgingFee'
+    PaymentPayoutRecipientInfo:
+      type: object
+      properties:
+        address:
+          type: string
+          description: The recipient's wallet address where the payout will be sent.
+          example: '0x9876543210abcdef1234567890abcdef12345678'
+        token_id:
+          type: string
+          description: |
+            The token ID for the cryptocurrency to be sent to the recipient.
+
+            If `recipient_info.token_id` is on a different chain than `payout_param.token_id`, the token will be automatically bridged to the chain specified in `recipient_info.token_id`.
+          example: TRON_USDT
+        currency:
+          type: string
+          description: The fiat currency of the bank account to which the payout will be sent.
+          example: USD
+        bank_account_id:
+          type: string
+          format: uuid
+          description: 'The ID of the bank account to which the payout will be sent. You can retrieve the bank account ID by calling [List destination entries](https://www.cobo.com/payments/en/api-references/payment/list-destination-entries).'
+          example: 123e4567-e89b-12d3-a456-426614174003
+    PaymentPayoutParam:
+      type: object
+      required:
+        - token_id
+        - amount
+      properties:
         token_id:
           type: string
           description: |
@@ -17627,40 +17660,28 @@ components:
         amount:
           type: string
           description: |
-            The amount of the cryptocurrency to pay out.
+            The payout cryptocurrency amount.
           example: '500.00'
-        crypto_address_id:
-          type: string
-          description: |
-            The ID of the crypto address used for crypto payouts. Specify this field when `payout_channel` is set to `Crypto`.
-
-            Call [List crypto addresses](https://www.cobo.com/payments/en/api-references/payment/list-crypto-addresses) to retrieve registered crypto addresses.
-          example: addr_ethusdt_20250506T123456_ab12cd
-        crypto_address:
-          type: string
-          description: |
-            The actual blockchain address to which funds will be transferred. Specify this field when `payout_channel` is set to `Crypto`.
-            <Note>
-              If you have enabled the *Use Destinations as Payout Whitelist* toggle in *Destinations*, you can only transfer to registered destinations. For more details, see [Destinations](https://www.cobo.com/payments/en/guides/destinations).
-            </Note>
-          example: '0xabc123456789def0000000000000000000000000'
     PaymentPayoutStatus:
       type: string
       enum:
         - Pending
-        - Processing
+        - Preparing
+        - Transferring
         - Completed
         - PartiallyCompleted
         - Failed
-        - Canceled
+        - RejectedByBank
       example: Pending
       description: |
-        The current status of the payout:
+        The current status of the payout. Possible values include:
         - `Pending`: The payout has been created and is awaiting processing.
-        - `Processing`: The payout is currently being processed, with at least one payout item in progress.
-        - `Completed`: All requested payout items have been completed.
-        - `PartiallyCompleted`: Some requested payout items have been completed successfully, while others have failed.
-        - `Failed`: All requested payout items have failed.
+        - `Preparing`: The payout is being prepared for transfer.
+        - `Transferring`: The payout is currently being transferred to the recipient's destination.
+        - `Completed`: The payout has been successfully completed and all transactions have been processed.
+        - `PartiallyCompleted`: The payout has been partially completed, with some transactions succeeding and others failing.
+        - `Failed`: The payout has failed and no transactions were completed successfully.
+        - `RejectedByBank`: The payout was rejected by the recipient's bank (applicable to OffRamp payouts only).
     PaymentAllocationAmount:
       type: object
       required:
@@ -17699,6 +17720,133 @@ components:
         The type of the counterparty entry.
         - `Address`: The entry is a wallet address.
         - `BankAccount`: The entry is a bank account.
+    PaymentBulkSend:
+      type: object
+      required:
+        - bulk_send_id
+        - status
+        - source_account
+        - execution_mode
+        - created_timestamp
+        - updated_timestamp
+      properties:
+        bulk_send_id:
+          type: string
+          description: The bulk send ID.
+          example: 123e4567-e89b-12d3-a456-426614174003
+        source_account:
+          type: string
+          description: |
+            The source account from which the bulk send will be made.
+            - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
+            - If the source account is the developer account, use the string `"developer"`.
+          example: M1001
+        description:
+          type: string
+          description: The description for the entire bulk send batch.
+          example: Monthly vendor payments - January 2024
+        execution_mode:
+          $ref: '#/components/schemas/PaymentBulkSendExecutionMode'
+        status:
+          $ref: '#/components/schemas/PaymentBulkSendStatus'
+        created_timestamp:
+          type: integer
+          description: 'The created time of the bulk send, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+        updated_timestamp:
+          type: integer
+          description: 'The updated time of the bulk send, represented as a UNIX timestamp in seconds.'
+          example: 1744689600
+    PaymentBulkSendItem:
+      type: object
+      required:
+        - bulk_send_item_id
+        - token_id
+        - receiving_address
+        - amount
+        - status
+        - validation_status
+      properties:
+        bulk_send_item_id:
+          type: string
+          description: The bulk send item ID.
+          example: 123e4567-e89b-12d3-a456-426614174003
+        token_id:
+          type: string
+          description: The token ID of the cryptocurrency to be sent to the recipient.
+          example: ETH_USDT
+        receiving_address:
+          type: string
+          description: The receiving address.
+          example: '0xabc123456789def0000000000000000000000000'
+        amount:
+          type: string
+          description: The amount of the cryptocurrency to be sent to the recipient.
+          example: '500.00'
+        description:
+          type: string
+          description: A note or comment about the bulk send item.
+          example: 'Invoice #INV-2024-001'
+        status:
+          $ref: '#/components/schemas/PaymentBulkSendItemStatus'
+        validation_status:
+          $ref: '#/components/schemas/PaymentBulkSendItemValidationStatus'
+    PaymentBulkSendStatus:
+      type: string
+      enum:
+        - Pending
+        - Validating
+        - Transferring
+        - Completed
+        - PartiallyCompleted
+        - Failed
+      example: Pending
+      description: |
+        The current status of the bulk send. Possible values include:
+        - `Pending`: The bulk send has been created and is waiting to be processed.
+        - `Validating`: The bulk send items are being validated.
+        - `Transferring`: The bulk send items are being processed and funds are being transferred.
+        - `Completed`: All items in the bulk send have been successfully processed.
+        - `PartiallyCompleted`: Some items in the bulk send have been successfully processed, while others have failed.
+        - `Failed`: The bulk send has failed and no items were processed successfully.
+    PaymentBulkSendExecutionMode:
+      type: string
+      enum:
+        - Strict
+        - Partial
+      example: Strict
+      description: |
+        The execution mode of the bulk send.
+        - `Strict`: The bulk send is executed in strict mode, which means all bulk send items should be successfully executed or all failed.
+        - `Partial`: The bulk send is executed in partial mode, which means some bulk send items can be successfully executed and some can be failed.
+    PaymentBulkSendItemStatus:
+      type: string
+      enum:
+        - Pending
+        - Processing
+        - Completed
+        - Failed
+        - NotExecuted
+      example: Pending
+      description: |
+        The current status of the bulk send item. Possible values include:
+        - `Pending`: The bulk send item has been created and is waiting to be processed.
+        - `Processing`: The bulk send item is currently being processed and the transfer is in progress.
+        - `Completed`: The bulk send item has been successfully processed and the funds have been transferred.
+        - `Failed`: The bulk send item processing has failed and the funds were not transferred.
+        - `NotExecuted`: The bulk send item was not executed, typically due to the bulk send being cancelled or an earlier validation failure.
+    PaymentBulkSendItemValidationStatus:
+      type: string
+      enum:
+        - Pending
+        - Validated
+        - ValidationFailed
+      example: Pending
+      description: |
+        The current validation status of the bulk send item. Possible values include:
+        - `Pending`: The bulk send item has not yet been validated.
+        - `Validated`: The bulk send item has passed validation and is ready to be processed.
+        - `ValidationFailed`: The bulk send item has failed validation and cannot be processed.
     DispositionStatus:
       type: string
       description: The status of a disposition operation.
@@ -20337,6 +20485,31 @@ components:
           type: string
           description: A unique identifier assigned by the developer to track and identify individual payers in their system.
           example: payer_0001
+    CreateTopUpAddresses:
+      type: object
+      description: The request body to batch create top-up addresses.
+      required:
+        - token_id
+        - custom_payer_ids
+      properties:
+        merchant_id:
+          type: string
+          description: 'The merchant ID. If not provided, the default merchant created during organization initialization will be used.'
+          example: M1001
+        token_id:
+          type: string
+          description: |
+            The token ID, which identifies the cryptocurrency.
+          example: ETH_USDT
+        custom_payer_ids:
+          type: array
+          maxItems: 50
+          description: |
+            A list of unique custom payer IDs required to create top-up addresses.
+          items:
+            type: string
+            description: 'Unique customer identifier on the merchant side, used to allocate a dedicated top-up address.'
+            example: O20250304-P1001-1001
     SweepToAddress:
       type: object
       description: Information about the sweep-to address.
@@ -20488,6 +20661,16 @@ components:
         format: int32
         default: 10
       example: 10
+    limit500Param:
+      name: limit
+      in: query
+      description: 'The maximum number of objects to return. The value range is [1, 500].'
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+      example: 10
     beforeParam:
       name: before
       in: query
@@ -20555,6 +20738,15 @@ components:
       schema:
         type: string
       example: ETH
+    optionalChainIdListWithLimitParam:
+      name: chain_ids
+      in: query
+      required: false
+      description: 'A list of chain IDs(Supports up to 500), separated by comma. The chain ID is the unique identifier of a blockchain. You can retrieve the IDs of all the chains you can use by calling [List enabled chains](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-chains).'
+      schema:
+        type: string
+        description: 'A list of chain IDs, separated by comma.'
+      example: 'BTC,ETH'
     optionalChainIdListParam:
       name: chain_ids
       in: query
@@ -20589,6 +20781,15 @@ components:
       schema:
         type: string
       example: ETH_USDT
+    optionalTokenListIdWithLimitParam:
+      name: token_ids
+      in: query
+      required: false
+      description: 'A list of token IDs(Supports up to 500), separated by comma. The token ID is the unique identifier of a token. You can retrieve the IDs of all the tokens you can use by calling [List enabled tokens](https://www.cobo.com/developers/v2/api-references/wallets/list-enabled-tokens).'
+      schema:
+        type: string
+        description: 'A list of token IDs, separated by comma.'
+      example: 'ETH_USDT,ETH_USDC'
     optionalTokenListIdParam:
       name: token_ids
       in: query
@@ -21972,16 +22173,14 @@ components:
       name: acquiring_type
       in: query
       required: false
+      description: This parameter has been deprecated
       schema:
         $ref: '#/components/schemas/AcquiringType'
     AcquiringTypeRequiredParam:
       name: acquiring_type
       in: query
       required: true
-      description: |
-        The payment acquisition type.
-        - `Order`: Payers pay by fixed-amount orders. Ideal for specific purchases and one-time transactions.
-        - `TopUp`: Account recharge flow where payers deposit funds to their dedicated top-up addresses. Ideal for flexible or usage-based payment models.
+      description: This parameter has been deprecated
       schema:
         $ref: '#/components/schemas/AcquiringType'
     WalletIdRequiredParam:
@@ -22105,14 +22304,6 @@ components:
         type: string
         description: The destination ID.
       example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
-    WalletAddressOptionalParam:
-      name: wallet_address
-      in: query
-      required: false
-      description: The wallet address.
-      schema:
-        type: string
-      example: 0x1234567890abcdef...
     BatchAllocationIdOptionalParam:
       name: batch_allocation_id
       in: query
@@ -22130,6 +22321,14 @@ components:
         type: string
         description: The batch allocation ID.
       example: 5b0ed293-f728-40b4-b1f6-86b88cd51384
+    WalletAddressOptionalParam:
+      name: wallet_address
+      in: query
+      required: false
+      description: The wallet address.
+      schema:
+        type: string
+      example: 0x1234567890abcdef...
     PaymentPayoutsIdPathParam:
       name: payout_id
       in: path
@@ -22254,6 +22453,14 @@ components:
         type: string
         description: The destination ID.
       example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
+    PaymentBulkSendIdPathParam:
+      name: bulk_send_id
+      in: path
+      required: true
+      description: The bulk send ID.
+      schema:
+        type: string
+      example: 123e4567-e89b-12d3-a456-426614174003
     tokenizationActivityIdPathParam:
       name: activity_id
       in: path
@@ -22484,6 +22691,18 @@ components:
                 type: string
                 description: The sender's address. This property is required when using an EVM address in an MPC Wallet.
                 example: 2N2xFZtbCFB6Nb3Pj9Sxsx5mX2fxX3yEgkE
+    createAddressBooksRequestBody:
+      description: The request body of the create Address Books operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateAddressBooksParam'
+    updateAddressBookRequestBody:
+      description: The request body of the update Address Book operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateAddressBookParam'
     createKeyShareHolderGroupBody:
       description: The request body to create a key share holder group.
       content:
@@ -23103,6 +23322,7 @@ components:
               - merchant_id
               - fee_amount
               - psp_order_code
+              - payable_currency
             properties:
               merchant_id:
                 type: string
@@ -23118,7 +23338,9 @@ components:
                 example: P20240201001
               pricing_currency:
                 type: string
-                description: 'The pricing currency that denominates `pricing_amount` and `fee_amount`. If left empty, both values will be denominated in `payable_currency`. Currently, only `USD` is supported.'
+                description: |
+                  The pricing currency that denominates `pricing_amount` and `fee_amount`. If left empty, both values will be denominated in `payable_currency`. 
+                  Currently, For a complete list of supported currencies, see [Supported chains and tokens](https://www.cobo.com//payments/en/guides/supported-chains-and-tokens#pricing-currency).
                 example: USD
               pricing_amount:
                 type: string
@@ -23364,6 +23586,9 @@ components:
                 description: A list of token IDs and amounts for which fees will be calculated.
                 items:
                   $ref: '#/components/schemas/PaymentEstimateFee'
+              recipient_token_id:
+                type: string
+                description: The token ID that the recipient will receive. Required only when `fee_type` is `CryptoPayoutBridge`.
     createPaymentOrderLinkRequest:
       description: The request body to create a payment link for a pay-in order.
       content:
@@ -23665,17 +23890,16 @@ components:
             type: object
             required:
               - request_id
-              - source_type
-              - allocation_requests
+              - allocation_params
             properties:
               request_id:
                 type: string
                 description: The request ID that is used to track a batch allocation request. The request ID is provided by you and must be unique.
                 example: 123e457-e89b-12d3-a456-426614174004
-              allocation_requests:
+              allocation_params:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AllocationRequest'
+                  $ref: '#/components/schemas/AllocationParam'
     createPaymentPayoutBody:
       description: The request body to create a payout.
       content:
@@ -23684,37 +23908,32 @@ components:
             type: object
             required:
               - request_id
+              - source_account
               - payout_channel
               - payout_params
+              - recipient_info
             properties:
               request_id:
                 type: string
                 description: The request ID that is used to track a payout request. The request ID is provided by you and must be unique.
                 example: 123e457-e89b-12d3-a456-426614174004
+              source_account:
+                type: string
+                description: |
+                  The source account from which the payout will be made.
+                  - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
+                  - If the source account is the developer account, use the string `"developer"`.
               payout_channel:
                 $ref: '#/components/schemas/PayoutChannel'
               payout_params:
                 type: array
                 items:
                   $ref: '#/components/schemas/PaymentPayoutParam'
-              bank_account_id:
-                type: string
-                format: uuid
-                description: |
-                  The ID of the bank account where the funds will be deposited. Specify this field when `payout_channel` is set to `OffRamp`.
-
-                  You can call [List all bank accounts](https://www.cobo.com/payments/en/api-references/payment/list-all-bank-accounts) to retrieve the IDs of registered bank accounts. To add a new bank account, refer to [Destinations](https://www.cobo.com/payments/en/guides/destinations).
-                example: 123e457-e89b-12d3-a456-426614174004
-              currency:
-                type: string
-                description: |
-                  The fiat currency you will receive from the payout.
-                  - Required when `payout_channel` is set to `OffRamp`.
-                  - Currently, only `USD` is supported.
-                example: USD
+              recipient_info:
+                $ref: '#/components/schemas/PaymentPayoutRecipientInfo'
               remark:
                 type: string
-                description: The remark for the payout.
+                description: An optional note or comment about the payout for your internal reference.
                 example: Create payouts for customer 123
     createCounterpartyEntryBody:
       description: The request body to create counterparty entries.
@@ -23837,6 +24056,56 @@ components:
                 type: string
                 description: The updated contact address of the destination.
                 example: '123 Main St, Anytown, USA'
+    createPaymentBulkSendBody:
+      description: The request body to create a bulk send.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - source_account
+              - execution_mode
+              - payout_params
+            properties:
+              source_account:
+                type: string
+                description: |
+                  The source account from which the bulk send will be made.
+                  - If the source account is a merchant account, provide the merchant's ID (e.g., "M1001").
+                  - If the source account is the developer account, use the string `"developer"`.
+                example: M1001
+              execution_mode:
+                $ref: '#/components/schemas/PaymentBulkSendExecutionMode'
+              description:
+                type: string
+                description: The description for the entire bulk send batch.
+                example: Monthly vendor payments - January 2024
+              payout_params:
+                type: array
+                description: The bulk send items.
+                items:
+                  type: object
+                  required:
+                    - token_id
+                    - receiving_address
+                    - amount
+                  properties:
+                    token_id:
+                      type: string
+                      description: The token ID of the cryptocurrency to be sent to the recipient.
+                      example: ETH_USDT
+                    receiving_address:
+                      type: string
+                      description: The receiving address.
+                      example: '0xabc123456789def0000000000000000000000000'
+                    amount:
+                      type: string
+                      description: The amount of the cryptocurrency to be sent to the recipient.
+                      example: '500.00'
+                    description:
+                      type: string
+                      description: A note or comment about the bulk send item.
+                      example: 'Invoice #INV-2024-001'
     estimateFeeStationFeeBody:
       description: The information about a Fee Station top-up transaction.
       content:
@@ -23938,6 +24207,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateTopUpAddress'
+    createTopUpAddressesBody:
+      description: The request body of the create top-up addresses operation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateTopUpAddresses'
     createSweepAddressBody:
       description: The request body to generates a new sweep-to address within a specified wallet.
       content:
@@ -23968,18 +24243,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateKyaScreeningsBody'
-    createAddressBooksRequestBody:
-      description: The request body of the create Address Books operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CreateAddressBooksParam'
-    updateAddressBookRequestBody:
-      description: The request body of the update Address Book operation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateAddressBookParam'
   responses:
     badRequestError:
       description: Bad request. Your request contains malformed syntax or invalid parameters.
@@ -25705,6 +25968,17 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TopUpAddress'
+    createTopUpAddressesResponse:
+      description: The information about created top-up addresses.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TopUpAddress'
     listPayerAccountsResponse:
       description: The request was successful.
       content:
@@ -26000,8 +26274,8 @@ components:
                   $ref: '#/components/schemas/BatchAllocation'
               pagination:
                 $ref: '#/components/schemas/Pagination'
-    listAllocationRecordsResponse:
-      description: The allocation records were successfully retrieved.
+    listAllocationItemsResponse:
+      description: The request was successful.
       content:
         application/json:
           schema:
@@ -26010,7 +26284,7 @@ components:
               data:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AllocationRecord'
+                  $ref: '#/components/schemas/AllocationItem'
               pagination:
                 $ref: '#/components/schemas/Pagination'
     getBatchAllocationDetailResponse:
@@ -26020,7 +26294,7 @@ components:
           schema:
             $ref: '#/components/schemas/BatchAllocationDetail'
     createPaymentPayoutResponse:
-      description: The create payout was successfully created.
+      description: The payout request was successfully created.
       content:
         application/json:
           schema:
@@ -26044,19 +26318,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PaymentPayoutDetail'
-    listPaymentPayoutItemResponse:
-      description: The request was successful.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PaymentPayoutItem'
-              pagination:
-                $ref: '#/components/schemas/Pagination'
     getAllocationAmountResponse:
       description: The available allocation amount was successfully retrieved.
       content:
@@ -26164,58 +26425,31 @@ components:
             properties:
               bank_account:
                 $ref: '#/components/schemas/DestinationBankAccount'
-    deleteCounterpartyEntryResponse:
+    createPaymentBulkSendResponse:
+      description: The bulk send was successfully created.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentBulkSend'
+    paymentBulkSendDetailResponse:
+      description: The request was successful.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentBulkSend'
+    listPaymentBulkSendItemsResponse:
       description: The request was successful.
       content:
         application/json:
           schema:
             type: object
-            required:
-              - deleted_counterparty_entry_id
             properties:
-              deleted_counterparty_entry_id:
-                type: string
-                description: The deleted counterparty entry ID.
-                example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
-    deleteDestinationEntryResponse:
-      description: The request was successful.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - deleted_destination_entry_id
-            properties:
-              deleted_destination_entry_id:
-                type: string
-                description: The deleted destination entry ID.
-                example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
-    deleteDestinationByIdResponse:
-      description: The request was successful.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - deleted_destination_id
-            properties:
-              deleted_destination_id:
-                type: string
-                description: The deleted destination ID.
-                example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
-    deleteCounterpartyByIdResponse:
-      description: The request was successful.
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - deleted_counterparty_id
-            properties:
-              deleted_counterparty_id:
-                type: string
-                description: The deleted counterparty ID.
-                example: 46beeab4-6a8e-476e-bc69-99b89aacbc6f
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PaymentBulkSendItem'
+              pagination:
+                $ref: '#/components/schemas/Pagination'
     createDispositionResponse:
       description: Successfully created a disposition request.
       content:

@@ -22,7 +22,14 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = cobo_waas2.PaymentApi(api_client)
     create_payment_order_request = cobo_waas2.CreatePaymentOrderRequest(
-        merchant_id="1001", psp_order_code="P20240201001", fee_amount="2.00"
+        merchant_id="M1001", 
+        merchant_order_code="M20240201001",
+        psp_order_code="P20240201001", 
+        pricing_currency="USD",
+        pricing_amount="100.00",
+        payable_currency="ETH_USDT",
+        payable_amount="103.03",
+        fee_amount="2.00"
     )
 
     try:
@@ -57,9 +64,14 @@ public class Example {
     PaymentApi apiInstance = new PaymentApi();
     CreatePaymentOrderRequest createPaymentOrderRequest =
         new CreatePaymentOrderRequest()
-            .merchantId("1001")
-            .pspOrderCode("P20240201001")
-            .feeAmount("2.00");
+           .merchantId("1001")
+           .merchantOrderCode("M20240201001")
+           .pspOrderCode("P20240201001")
+           .pricingCurrency("USD")
+           .pricingAmount("100.00")
+           .payableCurrency("ETH_USDT")
+           .payableAmount("103.03")
+           .feeAmount("2.00");
     try {
       Order result = apiInstance.createPaymentOrder(createPaymentOrderRequest);
       System.out.println(result);
@@ -87,7 +99,13 @@ import (
 
 func main() {
 	createPaymentOrderRequest := *coboWaas2.NewCreatePaymentOrderRequest("1001", "P20240201001", "2.00")
-
+	createPaymentOrderRequest.SetMerchantOrderCode("M20240201001")
+	createPaymentOrderRequest.SetPricingCurrency("USD")
+	createPaymentOrderRequest.SetPricingAmount("100.00")
+	createPaymentOrderRequest.SetPayableCurrency("ETH_USDT")
+	createPaymentOrderRequest.SetPayableAmount("103.03")
+	createPaymentOrderRequest.SetFeeAmount("2.00")
+  
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
 	apiClient := coboWaas2.NewAPIClient(configuration)
@@ -124,10 +142,14 @@ const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
   CreatePaymentOrderRequest:
     CoboWaas2.CreatePaymentOrderRequest.constructFromObject({
-      merchant_id: "1001",
+      merchant_id: "M1001",
+      merchant_order_code: "M20240201001",
       psp_order_code: "P20240201001",
-      fee_amount: "2.00",
-      currency: "USD",
+      pricing_currency: "USD",
+      pricing_amount: "100.00",
+      payable_currency: "ETH_USDT",
+      payable_amount: "103.03",
+      fee_amount: "2.00"
     }),
 };
 apiInstance.createPaymentOrder(opts).then(

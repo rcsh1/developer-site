@@ -27,7 +27,7 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     before = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1"
     after = "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk"
     keyword = "keyword"
-    counterparty_type = cobo_waas2.CounterpartyType()
+    counterparty_type = "Individual"
     country = "USA"
 
     try:
@@ -148,7 +148,7 @@ const opts = {
   before: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGmk1",
   after: "RqeEoTkgKG5rpzqYzg2Hd3szmPoj2cE7w5jWwShz3C1vyGSAk",
   keyword: "keyword",
-  counterparty_type: new CoboWaas2.CounterpartyType(),
+  counterparty_type: "Individual",
   country: "USA",
 };
 apiInstance.listCounterparties(opts).then(
