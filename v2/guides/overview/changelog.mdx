@@ -8,6 +8,25 @@ This changelog details all additions and changes to the WaaS 2.0 API. You can do
 
 For changes specific to payment-related operations, please refer to the [Release history](/v2/payments/changelog) of the payment solution.
 
+## v1.30.0
+This version was released on January 22, 2026.
+
+### Compatibility changes
+
+- Enhanced the [List supported chains](/v2/api-references/wallets/list-supported-chains), [Get chain information](/v2/api-references/wallets/get-chain-information), [List enabled chains](/v2/api-references/wallets/list-enabled-chains), and [List supported tokens](/v2/api-references/wallets/list-supported-tokens) operations to allow requesting more items per call.
+  - Increased `limit` to **500**.
+  - Increased the maximum number of items in `chain_ids` and `token_ids` to **500** per request.
+
+### New features
+
+- Enhanced the [Get transaction information](/v2/api-references/transactions/get-transaction-information) and [List all transactions](/v2/api-references/transactions/list-all-transactions) operations to better identify WalletConnect-initiated transactions.
+  - Added `WalletConnect` as a new value for the `cobo_category` field.
+  - Added a new JSON payload to the `extra` field when `extra_type=TransactionWalletConnectInfo` to provide additional WalletConnect transaction details.
+
+### Improvements
+
+- Added the `request_id` query parameter to the [List swap activities](/v2/api-references/swaps/list-swap-activities) operation, allowing you to filter swap activities by a specific request ID.
+
 ## v1.29.0
 
 This version was released on December 30, 2025.

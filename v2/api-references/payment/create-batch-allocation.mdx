@@ -25,13 +25,13 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.PaymentApi(api_client)
     create_batch_allocation_request = cobo_waas2.CreateBatchAllocationRequest(
         request_id="123e457-e89b-12d3-a456-426614174004",
-        allocation_requests=[
-            cobo_waas2.AllocationRequest(
+        allocation_params=[
+            cobo_waas2.AllocationParam(
                 token_id="ETH_USDT",
                 amount="500.00",
                 source_account="M1001",
-                destination_account="M1001",
-                description="Allocation for merchant M1001",
+                destination_account="developer",
+                description="example_string",
             )
         ],
     )
@@ -70,14 +70,14 @@ public class Example {
     CreateBatchAllocationRequest createBatchAllocationRequest =
         new CreateBatchAllocationRequest()
             .requestId("123e457-e89b-12d3-a456-426614174004")
-            .allocationRequests(
+            .allocationParams(
                 Arrays.asList(
-                    new AllocationRequest()
+                    new AllocationParam()
                         .tokenId("ETH_USDT")
                         .amount("500.00")
                         .sourceAccount("M1001")
-                        .destinationAccount("M1001")
-                        .description("Allocation for merchant M1001")));
+                        .destinationAccount("developer")
+                        .description("example_string")));
     try {
       BatchAllocation result = apiInstance.createBatchAllocation(createBatchAllocationRequest);
       System.out.println(result);
@@ -104,7 +104,7 @@ import (
 )
 
 func main() {
-	createBatchAllocationRequest := *coboWaas2.NewCreateBatchAllocationRequest("123e457-e89b-12d3-a456-426614174004", []coboWaas2.AllocationRequest{*coboWaas2.NewAllocationRequest("ETH_USDT", "500.00", "M1001", "M1001", "Allocation for merchant M1001")})
+	createBatchAllocationRequest := *coboWaas2.NewCreateBatchAllocationRequest("123e457-e89b-12d3-a456-426614174004", []coboWaas2.AllocationParam{*coboWaas2.NewAllocationParam("ETH_USDT", "500.00", "M1001", "developer", "Description_example")})
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -143,13 +143,13 @@ const opts = {
   CreateBatchAllocationRequest:
     CoboWaas2.CreateBatchAllocationRequest.constructFromObject({
       request_id: "123e457-e89b-12d3-a456-426614174004",
-      allocation_requests: [
+      allocation_params: [
         {
           token_id: "ETH_USDT",
           amount: "500.00",
           source_account: "M1001",
-          destination_account: "M1001",
-          description: "Allocation for merchant M1001",
+          destination_account: "developer",
+          description: "example_string",
         },
       ],
     }),

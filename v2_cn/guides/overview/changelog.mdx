@@ -9,6 +9,26 @@ description: "详细列出 WaaS 2.0 API 的所有新增和变更。"
 
 有关支付相关操作的变更，请参阅支付解决方案的[发布历史](/v2_cn/payments/changelog)。
 
+
+## v1.30.0
+此版本于 2026-01-22 发布。
+
+### 兼容性变更
+
+- 增强 [List supported chains](/v2/api-references/wallets/list-supported-chains)、[Get chain information](/v2/api-references/wallets/get-chain-information)、[List enabled chains](/v2/api-references/wallets/list-enabled-chains) 和 [List supported tokens](/v2/api-references/wallets/list-supported-tokens) 操作，以支持单次请求返回更多条目。
+  - 将 `limit` 的最大值提升至 **500**。
+  - 将 `chain_ids` 和 `token_ids` 单次请求支持的最大条目数提升至 **500**。
+
+### 新功能
+
+- 增强 [Get transaction information](/v2/api-references/transactions/get-transaction-information) 和 [List all transactions](/v2/api-references/transactions/list-all-transactions) 操作，以便更好地识别由 WalletConnect 发起的交易。
+  - 在 `cobo_category` 字段中新增 `WalletConnect` 枚举值。
+  - 当 `extra_type=TransactionWalletConnectInfo` 时，在 `extra` 字段中新增 JSON 数据，用于提供 WalletConnect 交易的更多详情。
+
+### 优化
+
+- 在 [List swap activities](/v2/api-references/swaps/list-swap-activities) 操作中新增 `request_id` 查询参数，支持按指定 `request_id` 过滤 swap activities。
+
 ## v1.29.0
 
 本版本于 2025 年 12 月 30 日发布。

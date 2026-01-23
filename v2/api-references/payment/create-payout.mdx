@@ -23,12 +23,15 @@ with cobo_waas2.ApiClient(configuration) as api_client:
     api_instance = cobo_waas2.PaymentApi(api_client)
     create_payout_request = cobo_waas2.CreatePayoutRequest(
         request_id="123e457-e89b-12d3-a456-426614174004",
+        source_account="req_20260122135755",
         payout_channel="Crypto",
         payout_params=[
-            cobo_waas2.PaymentPayoutParam(
-                source_account="M1001", token_id="ETH_USDT", amount="500.00"
-            )
+            cobo_waas2.PaymentPayoutParam(token_id="ETH_USDT", amount="500.00")
         ],
+        recipient_info=cobo_waas2.PaymentPayoutRecipientInfo(
+            address="0xabc123456789def0000000000000000000000000",
+            token_id="ETH_USDT"
+        ),
     )
 
     try:
@@ -65,13 +68,11 @@ public class Example {
     CreatePayoutRequest createPayoutRequest =
         new CreatePayoutRequest()
             .requestId("123e457-e89b-12d3-a456-426614174004")
+            .sourceAccount("req_20260122135755")
             .payoutChannel(PayoutChannel.CRYPTO)
             .payoutParams(
-                Arrays.asList(
-                    new PaymentPayoutParam()
-                        .sourceAccount("M1001")
-                        .tokenId("ETH_USDT")
-                        .amount("500.00")));
+                Arrays.asList(new PaymentPayoutParam().tokenId("ETH_USDT").amount("500.00")))
+            .recipientInfo(new PaymentPayoutRecipientInfo().address("0xabc123456789def0000000000000000000000000").tokenId("ETH_USDT"));
     try {
       PaymentPayout result = apiInstance.createPayout(createPayoutRequest);
       System.out.println(result);
@@ -98,7 +99,7 @@ import (
 )
 
 func main() {
-	createPayoutRequest := *coboWaas2.NewCreatePayoutRequest("123e457-e89b-12d3-a456-426614174004", coboWaas2.PayoutChannel("Crypto"), []coboWaas2.PaymentPayoutParam{*coboWaas2.NewPaymentPayoutParam("M1001", "ETH_USDT", "500.00")})
+	createPayoutRequest := *coboWaas2.NewCreatePayoutRequest("123e457-e89b-12d3-a456-426614174004", "SourceAccount_example", coboWaas2.PayoutChannel("Crypto"), []coboWaas2.PaymentPayoutParam{*coboWaas2.NewPaymentPayoutParam("ETH_USDT", "500.00")}, *coboWaas2.NewPaymentPayoutRecipientInfo())
 
 	configuration := coboWaas2.NewConfiguration()
 	// Initialize the API client
@@ -136,10 +137,13 @@ const apiInstance = new CoboWaas2.PaymentApi();
 const opts = {
   CreatePayoutRequest: CoboWaas2.CreatePayoutRequest.constructFromObject({
     request_id: "123e457-e89b-12d3-a456-426614174004",
+    source_account: "req_20260122135755",
     payout_channel: "Crypto",
-    payout_params: [
-      { source_account: "M1001", token_id: "ETH_USDT", amount: "500.00" },
-    ],
+    payout_params: [{ token_id: "ETH_USDT", amount: "500.00" }],
+    recipient_info: {
+        address="0xabc123456789def0000000000000000000000000",
+        token_id="ETH_USDT"
+    },
   }),
 };
 apiInstance.createPayout(opts).then(
