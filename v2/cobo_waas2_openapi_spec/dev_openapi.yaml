@@ -4178,9 +4178,14 @@ paths:
       tags:
         - Payment
       operationId: list_payment_supported_tokens
-      summary: List all supported tokens
+      summary: List supported tokens
       description: |
-        This operation retrieves the information of all supported tokens.
+        This operation retrieves all tokens supported by Cobo Payments.
+
+        Use this operation to get token details such as token ID, symbol, decimal precision, 
+        contract address, and chain information before creating payment orders.
+
+        For more information about Cobo Payments, see [Cobo Payments Overview](https://www.cobo.com/payments/en/guides/overview).
       security:
         - CoboAuth: []
         - OAuth2:
@@ -4740,142 +4745,6 @@ paths:
           $ref: '#/components/responses/unauthorizedError'
         '403':
           $ref: '#/components/responses/forbiddenError'
-  '/payments/counterparty/{counterparty_id}/update':
-    put:
-      tags:
-        - Payment
-      operationId: update_counterparty_by_id
-      summary: Update counterparty (Deprecated)
-      description: |
-        This operation updates the information of a specified counterparty.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_counterparty.update
-      parameters:
-        - $ref: '#/components/parameters/CounterpartyIdPathParam'
-      requestBody:
-        $ref: '#/components/requestBodies/updateCounterpartyBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/counterpartyResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/counterparty/{counterparty_id}/detail':
-    get:
-      tags:
-        - Payment
-      operationId: get_counterparty_detail_by_id
-      summary: Get counterparty information (Deprecated)
-      description: |
-        This operation retrieves the detailed information about a specified counterparty.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_counterparty.read
-      parameters:
-        - $ref: '#/components/parameters/CounterpartyIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/counterPartyDetailResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/counterparty/{counterparty_id}/delete':
-    put:
-      tags:
-        - Payment
-      operationId: delete_counterparty
-      summary: Delete counterparty (Deprecated)
-      description: |
-        This operation deletes a counterparty.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_counterparty.delete
-      parameters:
-        - $ref: '#/components/parameters/CounterpartyIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/deleteCounterpartyResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
-  /payments/counterparty/wallet_address:
-    post:
-      tags:
-        - Payment
-      operationId: create_counterparty_wallet_address
-      summary: Create counterparty wallet address
-      description: |
-        This operation creates a counterparty wallet address.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_counterparty.create
-      requestBody:
-        $ref: '#/components/requestBodies/createCounterpartyWalletAddressBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/walletAddressDetailResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-    get:
-      tags:
-        - Payment
-      operationId: list_counterparty_wallet_address
-      summary: List counterparty wallet addresses
-      description: |
-        This operation retrieves the information of counterparty wallet addresses.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_counterparty.read
-      parameters:
-        - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/beforeParam'
-        - $ref: '#/components/parameters/afterParam'
-        - $ref: '#/components/parameters/CounterpartyIdOptionalParam'
-        - $ref: '#/components/parameters/ChainIdsOptionalParam'
-        - $ref: '#/components/parameters/WalletAddressOptionalParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/listCounterpartyWalletAddressResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/counterparty/wallet_address/{wallet_address_id}/delete':
-    put:
-      tags:
-        - Payment
-      operationId: delete_counterparty_wallet_address
-      summary: Delete counterparty wallet address
-      description: |
-        This operation deletes a counterparty wallet address.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_counterparty.delete
-      parameters:
-        - $ref: '#/components/parameters/WalletAddressIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/deleteCounterpartyWalletAddressResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
   /payments/destination:
     post:
       tags:
@@ -5132,294 +5001,6 @@ paths:
           $ref: '#/components/responses/unauthorizedError'
         '403':
           $ref: '#/components/responses/forbiddenError'
-  '/payments/destination/{destination_id}/update':
-    put:
-      tags:
-        - Payment
-      operationId: update_destination_by_id
-      summary: Update destination (Deprecated)
-      description: |
-        This operation updates the information of a specified destination.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.update
-      parameters:
-        - $ref: '#/components/parameters/DestinationIdPathParam'
-      requestBody:
-        $ref: '#/components/requestBodies/updateDestinationBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/destinationResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/destination/{destination_id}/detail':
-    get:
-      tags:
-        - Payment
-      operationId: get_destination_detail_by_id
-      summary: Get destination information (Deprecated)
-      description: |
-        This operation retrieves the detailed information about a specified destination.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.read
-      parameters:
-        - $ref: '#/components/parameters/DestinationIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/destinationDetailResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/destination/{destination_id}/delete':
-    put:
-      tags:
-        - Payment
-      operationId: delete_destination
-      summary: Delete destination (Deprecated)
-      description: |
-        This operation deletes a destination.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.delete
-      parameters:
-        - $ref: '#/components/parameters/DestinationIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/deleteDestinationResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
-  /payments/destination/bank_account:
-    post:
-      tags:
-        - Payment
-      operationId: create_destination_bank_account
-      summary: Create destination bank account
-      description: |
-        This operation creates a destination bank account.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.create
-      requestBody:
-        $ref: '#/components/requestBodies/createDestinationBankAccountBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/destinationBankAccountResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-    get:
-      tags:
-        - Payment
-      operationId: list_destination_bank_accounts
-      summary: List destination bank accounts
-      description: |
-        This operation retrieves the information of destination bank accounts.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.read
-      parameters:
-        - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/beforeParam'
-        - $ref: '#/components/parameters/afterParam'
-        - $ref: '#/components/parameters/KeywordOptionalParam'
-        - $ref: '#/components/parameters/DestinationIdOptionalParam'
-        - $ref: '#/components/parameters/BankAccountStatusOptionalParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/listDestinationBankAccountResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/destination/bank_account/{bank_account_id}/update':
-    put:
-      tags:
-        - Payment
-      operationId: update_destination_bank_account_by_id
-      summary: Update destination bank account
-      description: |
-        This operation updates the information of a specified destination bank account.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.update
-      parameters:
-        - $ref: '#/components/parameters/BankIdPathParam'
-      requestBody:
-        $ref: '#/components/requestBodies/updateDestinationBankAccountBody'
-      responses:
-        '200':
-          $ref: '#/components/responses/destinationBankAccountResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/destination/bank_account/{bank_account_id}/detail':
-    get:
-      tags:
-        - Payment
-      operationId: get_destination_bank_account_detail_by_id
-      summary: Get destination bank account information
-      description: |
-        This operation retrieves the detailed information about a specified destination bank account.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.read
-      parameters:
-        - $ref: '#/components/parameters/BankIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/destinationBankAccountDetailResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/destination/bank_account/{bank_account_id}/delete':
-    put:
-      tags:
-        - Payment
-      operationId: delete_destination_bank_account
-      summary: Delete destination bank account
-      description: |
-        This operation deletes a destination bank account.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.delete
-      parameters:
-        - $ref: '#/components/parameters/BankIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/deleteDestinationBankAccountResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
-  /payments/destination/wallet_address:
-    post:
-      tags:
-        - Payment
-      operationId: create_destination_wallet_address
-      summary: Create destination wallet address
-      description: |
-        This operation creates a destination wallet address.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.create
-      requestBody:
-        $ref: '#/components/requestBodies/createDestinationWalletAddressBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/walletAddressDetailResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-    get:
-      tags:
-        - Payment
-      operationId: list_destination_wallet_addresses
-      summary: List destination wallet addresses
-      description: |
-        This operation retrieves the information of destination wallet addresses.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.read
-      parameters:
-        - $ref: '#/components/parameters/limitParam'
-        - $ref: '#/components/parameters/beforeParam'
-        - $ref: '#/components/parameters/afterParam'
-        - $ref: '#/components/parameters/DestinationIdOptionalParam'
-        - $ref: '#/components/parameters/ChainIdsOptionalParam'
-        - $ref: '#/components/parameters/WalletAddressOptionalParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/listDestinationWalletAddressResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-  '/payments/destination/wallet_address/{wallet_address_id}/delete':
-    put:
-      tags:
-        - Payment
-      operationId: delete_destination_wallet_address
-      summary: Delete destination wallet address
-      description: |
-        This operation deletes a destination wallet address.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.delete
-      parameters:
-        - $ref: '#/components/parameters/WalletAddressIdPathParam'
-      responses:
-        '200':
-          $ref: '#/components/responses/deleteDestinationWalletAddressResponse'
-        '400':
-          $ref: '#/components/responses/badRequestError'
-        '401':
-          $ref: '#/components/responses/unauthorizedError'
-        '403':
-          $ref: '#/components/responses/forbiddenError'
-  /payments/destination/enable_whitelist:
-    post:
-      tags:
-        - Payment
-      operationId: enable_destination_whitelist
-      summary: Enable or disable destination whitelist
-      description: |
-        This operation enables or disables the whitelist for a destination.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.update
-      requestBody:
-        $ref: '#/components/requestBodies/enableDestinationWhitelistBody'
-      responses:
-        '201':
-          $ref: '#/components/responses/enableDestinationWhitelistResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
-    get:
-      tags:
-        - Payment
-      operationId: query_destination_whitelist_enabled
-      summary: Query destination whitelist enabled status
-      description: |
-        This operation retrieves the information of whether the destination whitelist is enabled.
-      security:
-        - CoboAuth: []
-        - OAuth2:
-            - payment_destination.read
-      responses:
-        '200':
-          $ref: '#/components/responses/enableDestinationWhitelistResponse'
-        4XX:
-          $ref: '#/components/responses/badRequestError'
-        5XX:
-          $ref: '#/components/responses/internalServerError'
   /payments/allocation_amount:
     get:
       tags:
@@ -6917,6 +6498,11 @@ components:
         locked:
           type: string
           description: 'For UTXO chains, this is the combined value of the selected UTXOs for the transaction. For other chains, it is equal to the Pending amount. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
+          default: '0'
+          example: '3.0'
+        frozen:
+          type: string
+          description: 'Amount frozen due to compliance inspection. To learn more, see [Balances and transaction amounts for MPC Wallets](https://www.cobo.com/developers/v2/guides/mpc-wallets/balance-amounts) for more details.'
           default: '0'
           example: '3.0'
     TokenBalance:
@@ -10355,6 +9941,23 @@ components:
         If this parameter is **not specified**, it defaults to the behavior of `UsePortalPreference`.
 
         **Note**: TRON and Solana does not support `PassiveAutoFuel` due to its fee delegation mechanism.
+    SkipCheckType:
+      type: string
+      enum:
+        - OnchainFeeBalance
+      example: OnchainFeeBalance
+      description: |
+        The skip check type. Possible values include:
+          - `OnchainFeeBalance`: The system does not verify whether the balance is sufficient to pay the on-chain transaction fees; currently, this only applies to the TRON chain for MPC and Custodial Web3 wallets.
+    PreCheck:
+      type: object
+      description: Some validation settings for creating a transaction.
+      properties:
+        skip_checks:
+          type: array
+          description: Selection to skip verification.
+          items:
+            $ref: '#/components/schemas/SkipCheckType'
     TransactionApprovalDetail:
       type: object
       description: The approval detail data for transaction.
@@ -11389,6 +10992,8 @@ components:
           $ref: '#/components/schemas/TransactionProcessType'
         auto_fuel:
           $ref: '#/components/schemas/AutoFuelType'
+        pre_check:
+          $ref: '#/components/schemas/PreCheck'
     EstimateFeeRequestType:
       type: string
       enum:
@@ -11827,6 +11432,8 @@ components:
           $ref: '#/components/schemas/TransactionProcessType'
         auto_fuel:
           $ref: '#/components/schemas/AutoFuelType'
+        pre_check:
+          $ref: '#/components/schemas/PreCheck'
     TransactionProcessType:
       type: string
       enum:
@@ -12468,6 +12075,7 @@ components:
         - payment.transaction.held
         - payment.transaction.failed
         - payment.status.updated
+        - payment.order.status.updated
         - payment.refund.status.updated
         - payment.settlement.status.updated
         - payment.payout.status.updated
@@ -12475,6 +12083,8 @@ components:
         - payment.subscription.status.updated
         - payment.charge.status.updated
         - payment.bulk_send.status.updated
+        - payment.transaction.external.created
+        - payment.transaction.external.completed
         - compliance.disposition.status.updated
         - compliance.kyt.screenings.status.updated
         - compliance.kya.screenings.status.updated
@@ -14747,7 +14357,7 @@ components:
         query:
           type: string
           description: The GraphQL query or mutation as a string.
-          example: "query { wallets { edges { node { id name } } } }"
+          example: 'query { wallets { edges { node { id name } } } }'
         variables:
           type: object
           description: Variables to use in the GraphQL operation. Can include dynamic values required for the query or mutation.
@@ -16114,47 +15724,53 @@ components:
       properties:
         token_id:
           type: string
-          description: Unique identifier of the token
+          description: 'The unique identifier of the token, in the format of `{chain_id}_{token_symbol}`.'
           example: ETH_USDT
         name:
           type: string
-          description: Full name of the token
+          description: The full name of the token.
           example: Tether USD
         symbol:
           type: string
-          description: Symbol representation of the token
+          description: The symbol of the token.
           example: USDT
         decimal:
           type: integer
-          description: Number of decimal places for the token
+          description: |
+            The number of decimal places for the token. This value is used to convert 
+            between the token's smallest unit and its display value.
           example: 6
         token_address:
           type: string
-          description: Contract address of the token (may be null for native coins)
+          description: |
+            The contract address of the token. This is `null` for native coins (e.g., ETH on Ethereum).
           example: '0xdac17f958d2ee523a2206206994597c13d831ec7'
           nullable: true
         chain_id:
           type: string
-          description: Identifier of the blockchain where the token exists
+          description: The ID of the chain on which the token exists.
           example: ETH
         chain_symbol:
           type: string
-          description: Symbol of the underlying blockchain
+          description: The symbol of the chain on which the token exists.
           example: ETH
           nullable: true
         chain_icon_url:
           type: string
-          description: URL to the blockchain's icon image
-          example: 'https://example.com/icons/eth.png'
+          description: The URL of the chain icon image.
+          example: 'https://d.cobo.com/public/logos/ETH.png'
           nullable: true
         token_icon_url:
           type: string
-          description: URL to the token's icon image
-          example: 'https://example.com/icons/usdt.png'
+          description: The URL of the token icon image.
+          example: 'https://d.cobo.com/public/logos/USDT.png'
           nullable: true
         can_off_ramp:
           type: boolean
-          description: Whether the token is supported by the off-ramp service.
+          description: |
+            Whether the token supports fiat off-ramp.
+            - `true`: The token can be used for fiat off-ramp.
+            - `false`: The token cannot be used for fiat off-ramp.
     Account:
       type: object
       description: 'Details of a payment account used for top-up operations, including address and balance metadata.'
@@ -16435,6 +16051,8 @@ components:
         received_amount:
           type: string
           description: The final amount of the token received after bridging.
+        bridge_status:
+          $ref: '#/components/schemas/PaymentBridgeStatus'
     CommissionFee:
       type: object
       required:
@@ -16997,7 +16615,13 @@ components:
           description: The wallet address.
         chain_id:
           type: string
-          description: The chain ID of the address.
+          description: |
+            The chain ID of the cryptocurrency.  Supported values in the development environment:
+              - Counterparty: `ARBITRUM_ETH`, `BASE_ETH`, `BSC_BNB`, `ETH`, `TRON`, `MATIC`, `SOL`, `TTRON`, `SOLDEV_SOL`, `SETH`
+              - Destination: `All EVM Networks`, `SOL`, `TRON`, `TTRON`, `SOLDEV_SOL`
+            Supported values in the production environment:
+              - Counterparty: `ARBITRUM_ETH`, `BASE_ETH`, `BSC_BNB`, `ETH`, `TRON`, `MATIC`, `SOL`
+              - Destination: `All EVM Networks`, `SOL`, `TRON`
           example: TRON
     IntermediaryBankInfo:
       type: object
@@ -17580,12 +17204,17 @@ components:
             - For `Crypto` payouts: The amount of cryptocurrency sent to the recipient's address, denominated in the token specified in `recipient_info.token_id`.
             - For `OffRamp` payouts: The amount of fiat currency sent to the recipient's bank account, denominated in the currency specified in `recipient_info.currency`. (Note: The actual amount received may be lower due to additional bank transfer fees.)
           example: '500.00'
-        status:
-          $ref: '#/components/schemas/PaymentPayoutStatus'
+        commission_fees:
+          type: array
+          description: The commission fees of the payout.
+          items:
+            $ref: '#/components/schemas/CommissionFee'
         remark:
           type: string
           description: A note or comment about the payout.
           example: Payout for customer 123
+        status:
+          $ref: '#/components/schemas/PaymentPayoutStatus'
         created_timestamp:
           type: integer
           description: 'The created time of the payout, represented as a UNIX timestamp in seconds.'
@@ -17847,6 +17476,16 @@ components:
         - `Pending`: The bulk send item has not yet been validated.
         - `Validated`: The bulk send item has passed validation and is ready to be processed.
         - `ValidationFailed`: The bulk send item has failed validation and cannot be processed.
+    PaymentBridgeStatus:
+      description: |
+        The current status of the payout bridge. Possible values include:
+        - `Completed`: The payout bridge has been completed successfully.
+        - `Failed`: The payout bridge has failed.
+      type: string
+      enum:
+        - Completed
+        - Failed
+      example: Completed
     DispositionStatus:
       type: string
       description: The status of a disposition operation.
@@ -23367,12 +23006,14 @@ components:
               expired_in:
                 type: integer
                 description: |
-                  The pay-in order will expire after approximately a certain number of seconds:
+                  The number of seconds until the pay-in order expires, counted from when the request is sent. For example, if set to `1800`, the order will expire in 30 minutes. Must be greater than zero and cannot exceed 3 hours (10800 seconds). After expiration:
+
                   - The order status becomes final and cannot be changed
                   - The `received_token_amount` field will no longer be updated
                   - Funds received after expiration will be categorized as late payments and can only be settled from the developer balance.
                   - A late payment will trigger a `transactionLate` webhook event.
                 example: 1800
+                default: 1800
               amount_tolerance:
                 type: string
                 description: |
