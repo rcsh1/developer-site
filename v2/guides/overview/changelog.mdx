@@ -8,6 +8,25 @@ This changelog details all additions and changes to the WaaS 2.0 API. You can do
 
 For changes specific to payment-related operations, please refer to the [Release history](/v2/payments/changelog) of the payment solution.
 
+## v1.31.0
+This version was released on February 4, 2026.
+
+### Compatibility changes
+
+- Enhanced the EOA wallet balance model to include a new `frozen` field, representing the frozen amount,Affected operations:
+  - [List token balances by address](/v2/api-references/wallets/list-token-balances-by-address)
+  - [List address balances by token](/v2/api-references/wallets/list-address-balances-by-token)
+  - [Retrieve event information](/v2/api-references/developers--webhooks/retrieve-event-information)
+  - [List all webhook events](/v2/api-references/developers--webhooks/list-all-webhook-events)
+  - [List asset balances](/v2/api-references/wallets--exchange-wallet/list-asset-balances)
+  - [List token balances by wallet](/v2/api-references/wallets/list-token-balances-by-wallet)
+  - [List Fee Station token balances](/v2/api-references/feestation/list-fee-station-token-balances)
+
+### New features
+
+- Enhanced the [Transfer token](/v2/api-references/transactions/transfer-token) and [Call smart contract](/v2/api-references/transactions/call-smart-contract) operations to support a new `pre_check` request parameter, allowing you to control the transaction precheck/validation logic.
+  - Currently supported for **TRON** only.
+
 ## v1.30.0
 This version was released on January 22, 2026.
 
