@@ -1,0 +1,103 @@
+---
+title: "Cobo WaaS Skill"
+sidebarTitle: "Cobo WaaS Skill"
+lang: "cn"
+description: "通过 Cobo WaaS Skill，您可以使用自然语言与 Cobo WaaS 2.0 API 交互并生成可用于生产环境的 SDK 代码。"
+---
+作为开发者，您可以在 Claude Code、Cursor 以及其他您熟悉的 AI 编程助手上安装 Cobo WaaS Skill，使用自然语言来调用 [Cobo WaaS 2.0 API](/v2_cn/guides/overview/introduction)，或生成 SDK 代码来开发您的应用。
+
+
+### 主要功能
+
+Cobo WaaS Skill 是一系列命令、参考文档、代码示例和最佳实践的集合，可以实现：
+
+- **通过命令行完成 WaaS 操作** - 通过简单的 CLI 命令执行 WaaS API 支持的所有操作，包括钱包操作、交易流程、地址管理等
+- **智能 SDK 代码生成** - 使用自然语言描述您的业务需求，Skill 将生成可用于生产环境的 Python、Node.js、Go 或 Java SDK 代码
+- **开发者友好的功能** - 通过 CLI 命令生成 API 密钥、测试 Webhook 事件和执行 GraphQL 查询
+
+## 快速开始
+
+### 前提条件
+
+- Python 3.9 或更高版本
+- 已安装 Claude Code 或 Cursor
+- Cobo Portal 账户
+
+### 安装
+
+安装 Cobo CLI 和 WaaS Skill：
+
+```bash
+# 安装 Cobo CLI
+pip install cobo-cli
+
+# 为 Claude Code 安装 Skill
+cobo skill install claude
+
+# 为 Cursor 安装 Skill
+cobo skill install cursor
+
+# 在当前项目目录中为所有支持的 AI 编程助手安装 Skill
+cobo skill install all --scope local
+
+# 验证安装
+cobo skill status
+```
+
+<Note>如果您已经安装了 Cobo CLI，则必须升级到 **0.1.1** 或更高版本才能使用 Cobo WaaS Skill。运行 `pip install --upgrade cobo-cli` 进行升级。</Note>
+
+### 开始您的第一个 WaaS 操作
+
+安装完成后，您可以在 AI 助手中使用自然语言来执行 WaaS 操作。以下是设置和进行首次 API 调用的示例：
+
+**您向 AI 助手提问：**
+```
+"为开发环境设置 Cobo WaaS 并列出我的钱包"
+```
+
+**AI 助手将执行：**
+```bash
+# 设置环境为 dev
+cobo env dev
+
+# 生成 API 密钥对
+cobo keys generate --key-type API
+# 输出：API Key (Public): abc123...
+#       API Secret (Private): def456...
+
+# 您需要在 Cobo Portal 开发者控制台中注册公钥
+# 详情见 https://manuals.cobo.com/cn/portal/developer-console/create-api-key
+
+# 配置身份验证
+cobo auth apikey
+
+# 测试 API 连接
+cobo get /wallets --limit 10
+```
+
+### 示例命令
+
+以下是您可以使用的自然语言请求示例：
+
+**CLI 操作：**
+- **"创建一个名为 'Treasury' 的资产钱包并生成一个以太坊地址"**
+- **"从钱包 f47ac10b-... 向地址 0x1234... 转账 0.01 ETH"**
+- **"触发一个交易成功的测试 webhook 事件"**
+
+
+**Vibe Coding（SDK 生成）：**
+ 
+- **"生成 Python 代码来创建钱包并轮询交易完成状态"**
+- **"编写 Node.js 代码用于处理交易事件的 webhook 处理程序"**
+- **"为交易所应用生成 Python 代码，为每个用户创建充值地址"**
+
+AI 助手将执行适当的 CLI 命令，处理错误并在每一步提供结构化的反馈。对于 SDK 生成请求，它会生成您所选语言的可用于生产环境的代码。
+
+## 后续步骤
+
+- [Cobo CLI 文档](/v2_cn/developer-tools/cobo-cli/introduction) - 完整的 Cobo CLI 参考和命令
+- [WaaS 2.0 API 参考](/v2/api-references) - 完整的 API 文档
+- [Cobo WaaS 2.0 概览](/v2_cn/guides/overview/introduction) - 平台概念和架构
+
+
+<Tip>欢迎[分享您的反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI?referrername=manuals)以帮助我们改进文档！</Tip>
