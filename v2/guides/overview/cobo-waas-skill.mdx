@@ -1,0 +1,103 @@
+---
+title: "Cobo WaaS Skill"
+sidebarTitle: "Cobo WaaS Skill"
+lang: "en"
+description: "A Skill that enables AI assistants to interact with the Cobo WaaS 2.0 API through natural language commands and generate production-ready SDK code."
+---
+As a developer, you can use Cobo WaaS Skill with Claude Code, Cursor, or other familiar AI coding assistants to interact with the [Cobo WaaS 2.0 API](/v2/guides/overview/introduction) via natural language, or to generate SDK invocation code for your applications.
+
+
+### Key Features
+
+Cobo WaaS Skill is a set of commands, reference documents, code examples, and best practices that enable:
+
+- **Performing WaaS operations via command line** – Use simple CLI commands to perform any WaaS API-supported operation, including wallet management, transaction flows, and address management.
+- **Intelligent SDK code generation** – Describe your business logic in natural language and the Skill will generate production-ready code for Python, Node.js, Go, or Java SDKs.
+- **Developer-friendly utilities** – Generate API keys, test webhook events, and execute GraphQL queries through CLI commands.
+
+
+## Getting started
+
+### Prerequisites
+
+- Python 3.9 or higher
+- Claude Code or Cursor installed
+- Cobo Portal account
+
+### Installation
+
+Install the Cobo CLI and the WaaS Skill:
+
+```bash
+# Install Cobo CLI
+pip install cobo-cli
+
+# Install Skill for Claude Code
+cobo skill install claude
+
+# Or for Cursor
+cobo skill install cursor
+
+# Install Skill for all supported AI assistants in the current project directory
+cobo skill install all --scope local
+
+# Verify installation
+cobo skill status
+```
+
+<Note>If you have already installed Cobo CLI, you must upgrade to version **0.1.1** or above to use the Cobo WaaS Skill. Run `pip install --upgrade cobo-cli` to upgrade.</Note>
+
+### Starting your first WaaS operation
+
+Once installed, you can use natural language in your AI assistant to perform WaaS operations. Here's an example of setting up and making your first API call:
+
+**What you ask your AI assistant:**
+```
+"Set up Cobo WaaS for the dev environment and list my wallets"
+```
+
+**What the AI assistant does:**
+```bash
+# Set environment to dev
+cobo env dev
+
+# Generate API key pair
+cobo keys generate --key-type API
+# Output: API Key (Public): abc123...
+#         API Secret (Private): def456...
+
+# You need to register the public key in the Cobo Portal developer console
+# See details at https://manuals.cobo.com/cn/portal/developer-console/create-api-key
+
+# Configure authentication
+cobo auth apikey
+
+# Test API connectivity
+cobo get /wallets --limit 10
+```
+
+### Example commands
+
+Here are examples of natural language requests you can make:
+
+**For CLI Operations:**
+- **"Create an Asset Wallet named 'Treasury' and generate an Ethereum address"**
+- **"Execute a transfer of 0.01 ETH from wallet f47ac10b-... to address 0x1234..."**
+- **"Trigger a test webhook event for transaction success"**
+
+
+**For Vibe Coding (SDK Generation):**
+ 
+- **"Generate Python code to create a wallet and poll for transaction completion"**
+- **"Write Node.js code for a webhook handler that processes transaction events"**
+- **"Generate Python code for an Exchange app that creates deposit addresses for each user"**
+
+The AI assistant will execute the appropriate CLI commands, handle errors, and provide structured feedback at each step. For SDK generation requests, it produces production-ready code in your chosen language.
+
+## Next steps
+
+- [Cobo CLI Documentation](/v2/developer-tools/cobo-cli/introduction) - Complete CLI reference and commands
+- [WaaS 2.0 API Reference](/v2/api-references) - Full API endpoint documentation
+- [Cobo WaaS 2.0 Overview](/v2/guides/overview/introduction) - Platform concepts and architecture
+
+<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI?referrername=manuals) to improve our documentation!</Tip>
