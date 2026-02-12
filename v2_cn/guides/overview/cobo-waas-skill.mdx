@@ -2,7 +2,6 @@
 title: "Cobo WaaS Skill"
 sidebarTitle: "Cobo WaaS Skill"
 lang: "cn"
-description: "通过 Cobo WaaS Skill，您可以使用自然语言与 Cobo WaaS 2.0 API 交互并生成可用于生产环境的 SDK 代码。"
 ---
 作为开发者，您可以在 Claude Code、Cursor 以及其他您熟悉的 AI 编程助手上安装 Cobo WaaS Skill，使用自然语言来调用 [Cobo WaaS 2.0 API](/v2_cn/guides/overview/introduction)，或生成 SDK 代码来开发您的应用。
 
@@ -50,9 +49,16 @@ cobo skill status
 
 安装完成后，您可以在 AI 助手中使用自然语言来执行 WaaS 操作。以下是设置和进行首次 API 调用的示例：
 
+<Tip>为了获得最佳效果，建议在提示词前加上 `/cobo-waas` 前缀，或在请求中包“使用 Cobo WaaS Skill” 字样来明确指定使用该 Skill。</Tip>
+
 **您向 AI 助手提问：**
 ```
-"为开发环境设置 Cobo WaaS 并列出我的钱包"
+"/cobo-waas 配置开发环境，并列出我所有的钱包"
+```
+
+或者：
+```
+"使用 Cobo WaaS skill 配置开发环境，并列出我所有的钱包"
 ```
 
 **AI 助手将执行：**
@@ -93,7 +99,27 @@ cobo get /wallets --limit 10
 
 AI 助手将执行适当的 CLI 命令，处理错误并在每一步提供结构化的反馈。对于 SDK 生成请求，它会生成您所选语言的可用于生产环境的代码。
 
+
+## 示例项目
+
+以下是使用 Cobo WaaS Skill 从零开始构建的一个 Web 钱包应用：
+
+<video controls preload="metadata" className="w-full aspect-video rounded-xl">
+  <source src="/v2_cn/images/guides/skill-demo.mp4#t=0.1" type="video/mp4" />
+  您的浏览器不支持视频播放。
+</video>
+
+
+关键提示语包括：
+
+- "帮我构建一个应用，让用户可以创建钱包并在 BTC、ETH、TRON 等区块链网络上生成地址"
+- "更新前端页面，添加钱包类型选择"
+- "获取每个钱包的余额并展示在前端页面"
+- "允许用户从选定的钱包中转出代币"
+
 ## 后续步骤
+
+您可以参考以下文档来了解更多关于 Cobo WaaS API 集成的信息：
 
 - [Cobo CLI 文档](/v2_cn/developer-tools/cobo-cli/introduction) - 完整的 Cobo CLI 参考和命令
 - [WaaS 2.0 API 参考](/v2/api-references) - 完整的 API 文档
