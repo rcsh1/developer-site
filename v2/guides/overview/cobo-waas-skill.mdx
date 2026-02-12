@@ -2,7 +2,6 @@
 title: "Cobo WaaS Skill"
 sidebarTitle: "Cobo WaaS Skill"
 lang: "en"
-description: "A Skill that enables AI assistants to interact with the Cobo WaaS 2.0 API through natural language commands and generate production-ready SDK code."
 ---
 As a developer, you can use Cobo WaaS Skill with Claude Code, Cursor, or other familiar AI coding assistants to interact with the [Cobo WaaS 2.0 API](/v2/guides/overview/introduction) via natural language, or to generate SDK invocation code for your applications.
 
@@ -51,9 +50,16 @@ cobo skill status
 
 Once installed, you can use natural language in your AI assistant to perform WaaS operations. Here's an example of setting up and making your first API call:
 
+<Tip>For best results, explicitly mention the skill by prefixing your prompt with `/cobo-waas` or including "Use Cobo WaaS skill" in your request.</Tip>
+
 **What you ask your AI assistant:**
 ```
-"Set up Cobo WaaS for the dev environment and list my wallets"
+"/cobo-waas set up the dev environment and list my wallets"
+```
+
+Or:
+```
+"Use Cobo WaaS skill to set up the dev environment and list my wallets"
 ```
 
 **What the AI assistant does:**
@@ -94,7 +100,26 @@ Here are examples of natural language requests you can make:
 
 The AI assistant will execute the appropriate CLI commands, handle errors, and provide structured feedback at each step. For SDK generation requests, it produces production-ready code in your chosen language.
 
+## Example project
+
+The video below showcases a web wallet application that was built from the ground up using the Cobo WaaS Skill:
+
+<video controls preload="metadata" className="w-full aspect-video rounded-xl">
+  <source src="/v2/images/guides/skill-demo.mp4#t=0.1" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+Key prompt examples include:
+
+- "Help me build an app where users can create wallets and generate addresses on blockchain networks like BTC, ETH, or TRON"
+- "Update the frontend to include wallet type selection"
+- "For each wallet, get the balance and display it accordingly"
+- "Allow users to transfer tokens out of a selected wallet"
+
+
 ## Next steps
+
+You can refer to the following documents to learn more about Cobo WaaS API integration:
 
 - [Cobo CLI Documentation](/v2/developer-tools/cobo-cli/introduction) - Complete CLI reference and commands
 - [WaaS 2.0 API Reference](/v2/api-references) - Full API endpoint documentation
