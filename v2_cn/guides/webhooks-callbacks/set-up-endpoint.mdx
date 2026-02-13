@@ -4,7 +4,7 @@ lang: "zh-hans"
 sidebarTitle: "设置 Callback 或 Webhook Endpoint"
 description: "在 WaaS 2.0 中设置 Callback 或 Webhook Endpoint 的分步指南，用于处理实时事件通知。"
 ---
-<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
 
 Webhook 事件和 Callback 消息对于确保 WaaS 服务与您的 App 之间的无缝数据集成和通信至关重要。本指南介绍如何搭建一个用于接收和处理 Webhook 事件和 Callback 消息的 Endpoint。
 
@@ -154,4 +154,3 @@ async def handle_webhook(
 - 由于 Webhook 事件存在重试机制，Webhook Endpoint 有时会多次接收到相同的事件。为了防止重复事件处理，请记录已处理的 Event ID，Transaction Hash 或 Transaction ID，并避免处理已记录的事件。
 </Warning>
 
-<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

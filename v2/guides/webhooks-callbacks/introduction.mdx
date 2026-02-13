@@ -65,4 +65,3 @@ When upgrading to WaaS 2.0, you need to do the following:
 
 <Note><p>If you configure WaaS 1.0 API callbacks for transaction notifications but do not set up WaaS 2.0 webhooks, your endpoint will still receive transaction notifications from WaaS 1.0.</p>If you configure both WaaS 1.0 API callbacks for transaction notifications and WaaS 2.0 webhooks, while continuing to use the WaaS 1.0 API, your endpoint will receive:<ul><li>From WaaS 1.0: Transaction notifications.</li><li>From WaaS 2.0: Webhook events.</li></ul>In this case, you need to implement deduplication using a unique ID (such as `cobo_id`) to avoid processing duplicate notifications.</Note>
 
-<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

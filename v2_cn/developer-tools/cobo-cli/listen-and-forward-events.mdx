@@ -3,7 +3,7 @@ title: '监听和转发事件'
 lang: "zh-hans"
 description: "使用 Cobo CLI 监听和转发 WaaS 2.0 服务的 Webhook 事件。"
 ---
-<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
 
 使用此命令与 WaaS 2.0 服务建立 WebSocket 连接并流式传输 webhook 事件，还可以选择将它们转发到指定的 URL。您可以使用 **Ctrl + C** 停止事件监听进程。
 
@@ -40,4 +40,3 @@ cobo webhook listen --events wallets.transaction.created,wallets.transaction.upd
 
 此命令监听 `wallets.transaction.created` 和 `wallets.transaction.updated` 事件类型，并将接收到的事件转发到 URL `https://your-endpoint.com/webhook`。
 
-<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>
