@@ -4,6 +4,10 @@ lang: "en"
 description: Use the `app status` command to verify the current status of your Cobo Portal Apps in production.
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 If you publish or update your Cobo Portal Apps in the production environment, a workflow is automatically triggered that requires approval from Cobo. Once approved, your app will be available to all users on Cobo Portal. You can use the `status` command to check the status of Cobo Portal Apps. 
 
 Ensure that you run the command from the project directory where the manifest file is located.
@@ -19,4 +23,3 @@ cobo app status
 ```
 
 This command displays the App ID and current status of the Cobo Portal App.
-

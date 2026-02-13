@@ -4,6 +4,10 @@ lang: "en"
 description: "Use the WaaS 2.0 API to call a batch transfer smart contract and complete multiple token transfers in a single transaction."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 A batch transfer smart contract allows you to execute multiple token transfers in a single on-chain transaction, making it suitable for scenarios such as batch payouts or batch withdrawals. Compared to repeatedly calling the transfer API, the batch method reduces the need for multiple signatures and requests, improving operational efficiency.  
 
 This guide explains how to use the [Call smart contract](/v2/api-references/transactions/call-smart-contract) API to invoke the batch transfer smart contract deployed by Cobo, enabling batch token transfers.
@@ -370,4 +374,3 @@ if __name__ == "__main__":
     # if run_interactive.lower() == 'y':
     #     interactive_mode()
 ```
-

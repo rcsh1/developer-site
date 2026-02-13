@@ -4,6 +4,10 @@ lang: "en"
 description: "Authenticate Cobo CLI with the WaaS 2.0 service using API keys, Org Access Tokens, or Cobo Portal accounts."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 This guide explains how to authenticate your Cobo CLI to Cobo Wallet-as-a-Service (WaaS) 2.0. You'll learn about the three available authentication methods, understand their key differences, and get step-by-step instructions for implementing each approach. Choose the authentication method that best suits your security requirements and use case.
 
 ## Manage authentication methods
@@ -153,4 +157,3 @@ You can specify the authentication method you want to log out from using the fol
 
 - Keep your keys and access tokens secure and never share them with others. Use environment variables or a secure configuration file to store them.
 - Regularly refresh your tokens and rotate your API keys to maintain security. Remember to update the API key in Cobo Portal every time you generate a new key pair.
-

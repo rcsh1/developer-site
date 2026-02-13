@@ -5,6 +5,9 @@ sidebarTitle: "简介"
 description: "了解 Cobo CLI 如何帮助您构建、测试和管理与 Cobo WaaS 2.0 的集成。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 Cobo 命令行界面（CLI）是一个强大的开发者工具，旨在帮助您直接从命令行构建、测试和管理与 [Cobo Wallet-as-a-Service (WaaS) 2.0](/v2_cn/guides/overview/introduction) 的集成。
 
@@ -66,4 +69,3 @@ cobo webhook trigger wallets.transaction.updated --override '{"wallet_id": "1234
 ```shell
 cobo webhook listen --events wallets.transaction.updated --forward http://localhost:9988
 ```
-

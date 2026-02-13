@@ -4,6 +4,10 @@ lang: "en"
 description: "Guide to inspect and modify Cobo CLI configurations for optimal command usage."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 This guide introduces how to inspect and modify the configurations of Cobo CLI. The configurations are used by various Cobo CLI commands, including `cobo env`, `cobo auth`, and `cobo keys`.
 
 By default, Cobo CLI stores its configurations in your home directory (`~/.cobo/config.toml`). You can override this location by using the `--config-file <path>` option. For more information about this option, see [Global options](/v2/developer-tools/cobo-cli/global-options#custom-configuration-file-config-file).
@@ -84,4 +88,3 @@ Cobo CLI supports three authentication methods:
 <Note>
 This command has the same effect as running `cobo auth apikey`.
 </Note>
-

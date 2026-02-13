@@ -5,6 +5,9 @@ sidebarTitle: "恢复私钥分片"
 description: "了解如何恢复您的私钥分片。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 恢复私钥分片意味着将备份的 TSS Node 数据移动到新主机并配置其以使用与以前相同的私钥分片。当您需要将 TSS Node 迁移到不同的服务器或从系统故障中恢复时，此过程是必要的。
 
@@ -36,5 +39,3 @@ sudo ./tss-node.sh info group
 1. 重启您的 TSS Node 
 2. 输入创建备份时使用的加密密码
 3. 如果密码正确，您的 TSS Node 将在新主机上正常运行
-
-

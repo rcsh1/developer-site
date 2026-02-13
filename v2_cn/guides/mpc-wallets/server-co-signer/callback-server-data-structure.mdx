@@ -5,6 +5,9 @@ sidebarTitle: "回调请求和响应格式"
 description: "TSS Node Callback 服务器通信中使用的 Payload。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 本文档规定了 TSS Node Callback服务器通信中使用的请求和响应 Payload 格式。
 
@@ -134,4 +137,3 @@ callback:
 - 如果 TSS Node未能收到 HTTP 响应，它将重试回调请求。
 - 超过最大重试次数后，风险控制结果将被设置为 `REJECT`。
 - 对于 `TypePing` 请求，需要成功响应（status = `0`）以表明服务器可用。
-

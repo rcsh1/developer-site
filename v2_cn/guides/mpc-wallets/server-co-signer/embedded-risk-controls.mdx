@@ -5,6 +5,9 @@ sidebarTitle: "嵌入式风险控制机制"
 description: "服务端签名人嵌入式风险控制的指南。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 嵌入式风险控制机制是内置于 TSS Node 的基本风险控制机制。它根据预定义的规则评估任务请求，这些规则无法自定义。任务请求必须得到嵌入式风险控制模块（如果启用）和所有配置的[回调服务器](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-overview)的批准后，才能继续进行。
 
@@ -70,5 +73,3 @@ embedded_risk_control_rules:
 ## 下一步
 
 - [部署您的回调服务器](/v2_cn/guides/mpc-wallets/server-co-signer/callback-server-overview)
-
-

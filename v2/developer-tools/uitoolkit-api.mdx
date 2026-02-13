@@ -393,6 +393,10 @@ The following example listens for the locale data of Cobo Portal and logs it to 
 ```typescript
 import { getPortalLocale } from '@cobo/cobo-ui-toolkit';
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 useEffect(() => {
   getPortalLocale((locale) => {
     console.log("locale", locale);
@@ -409,4 +413,3 @@ const removeGetLocaleListener: () => void;
 This function removes the listener for the current locale data of [Cobo Portal](https://manuals.cobo.com/en/portal/introduction).
 
 After you call [getPortalLocale](#getportallocale) to listen to the locale data, use this function to clean up the listener when it is no longer needed, especially in components that may unmount.
-

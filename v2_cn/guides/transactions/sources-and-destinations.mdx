@@ -4,6 +4,9 @@ lang: "zh-hans"
 description: "WaaS 2.0 API 中交易来源和目的地的概述，详细说明支持的类型和配置。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 在 WaaS 2.0 中，每笔交易都涉及一个来源和一个目的地。来源表示交易的起始位置，而目的地表示交易的去向，例如钱包地址、签名、合约等。每种交易类型对应一组特定的来源和目的地类型。例如，在提币交易中，来源将是 Cobo Portal 上创建的钱包，而目的地将是钱包地址或交易所钱包。
 
@@ -83,4 +86,3 @@ description: "WaaS 2.0 API 中交易来源和目的地的概述，详细说明�
 - `Raw_Message_Signature`：原始消息签名。
 - `DepositToAddress`：钱包地址。
 - `DepositToWallet`：交易所钱包。
-

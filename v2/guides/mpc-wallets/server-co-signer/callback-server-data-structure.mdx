@@ -5,6 +5,10 @@ sidebarTitle: "Callback request and response formats"
 description: "Detailed specifications of the payload formats used in TSS Node callback server interaction"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 This document specifies the request and response payload formats used in TSS Node callback server communication.
 
 ## Callback request
@@ -132,5 +136,3 @@ Your callback server must respond to all callback requests with the following st
 
 - If the TSS Node fails to receive an HTTP response, it will retry the callback request.
 - After exceeding the maximum retry attempts, the risk control result will be set to `REJECT`.
-
-

@@ -4,6 +4,9 @@ lang: "zh-hans"
 description: "使用 WaaS 2.0 API 估算交易费用的指南，包括影响费用的因素和计算方法。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 交易费用对于在区块链网络上处理和验证交易至关重要。它们确保网络安全，激励验证者，并保持效率。计算这些费用的方法取决于区块链的设计和当前的网络状况。Cobo 提供了特定功能来简化用户的交易费用估算。
 
@@ -183,4 +186,3 @@ Replace-By-Fee (RBF) 是一种允许您用新版本替换未确认交易的功�
 | [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)  | <ul><li>最大 gas 价格：根据第三方节点和自管理节点计算。</li><li>最大优先费用：根据第三方节点和自管理节点计算。</li><li>Gas 限制：根据来源和目的地从相应节点查询。</li></ul>  | 
 | UTXO 模型      | <ul><li>费率：根据第三方节点和自管理节点计算。</li><li>交易大小：根据来源的可花费输出 (UTXO) 和目的地计算。</li></ul> | 
 | 固定模型     | <ul><li>固定金额：根据自管理节点计算。</li></ul>  |
-

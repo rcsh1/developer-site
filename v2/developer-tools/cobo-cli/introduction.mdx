@@ -5,6 +5,10 @@ sidebarTitle: "Introduction"
 description: "Learn about Cobo CLI, a tool for building, testing, and managing WaaS 2.0 integrations."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 Cobo Command Line Interface (CLI) is a powerful developer tool designed to help you build, test, and manage your integration with [Cobo Wallet-as-a-Service (WaaS) 2.0](/v2/guides/overview/introduction) directly from the command line.
 
 ## Key features
@@ -66,4 +70,3 @@ cobo webhook trigger wallets.transaction.updated --override '{"wallet_id": "1234
 ```shell
 cobo webhook listen --events wallets.transaction.updated --forward http://localhost:9988
 ```
-

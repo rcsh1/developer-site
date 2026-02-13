@@ -4,6 +4,10 @@ lang: "en"
 description: Utilize the `test-template` command to ensure your template application functions correctly in specified paths.
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 Use the `test-template` command to test whether the template application functions as expected on a file or directory.
 
 
@@ -39,4 +43,3 @@ cobo app test-template --app-type web --auth org my_template_directory
 ```
 
 This command tests the template web application using Org Access Tokens as the authentication method in `my_template_directory`.
-

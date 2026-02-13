@@ -4,6 +4,10 @@ lang: "en"
 description: "Guide to implementing pagination in WaaS 2.0 API, including parameters and best practices."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 Pagination in the WaaS 2.0 API allows you to retrieve data in manageable chunks. You can control the page size and navigate through the dataset using three query parameters:
 
 - `limit`: This parameter defines the maximum number of objects you want to receive in each response.
@@ -19,4 +23,3 @@ Pagination in the WaaS 2.0 API allows you to retrieve data in manageable chunks.
 - If you set both `after` and `before`, an error will occur.
 - If you leave both `before` and `after` empty, the first page of data is returned.
 - If you set `before` to `infinity`, the last page of data is returned.
-

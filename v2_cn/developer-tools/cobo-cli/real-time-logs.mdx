@@ -4,6 +4,9 @@ lang: "zh-hans"
 description: "实时监控和排查与 WaaS 2.0 服务的 API 请求日志。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 使用此命令在终端中直接流式传输您对 WaaS 2.0 服务的 API 请求的实时日志。
 
@@ -31,4 +34,3 @@ cobo logs tail --http-method POST --status-code 404 --request-path /v2/wallets -
 ```
 
 此命令获取 HTTP 方法为 `POST`、状态码为 `404`、请求 `/v2/wallets` 端点且来自特定 IP `192.168.1.1` 的 API 日志。
-

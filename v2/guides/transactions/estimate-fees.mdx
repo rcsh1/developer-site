@@ -4,6 +4,10 @@ lang: "en"
 description: "Guide on estimating transaction fees in WaaS 2.0, including factors affecting fees and calculation methods."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 Transaction fees are essential for processing and validating transactions on a blockchain network. They ensure network security, incentivize validators, and maintain efficiency. The method of calculating these fees depends on the blockchain's design and current network conditions. Cobo offers specific features to streamline transaction fee estimation for users.
 - When you make a transfer on Cobo Portal, you can see the estimated transaction fee on the UI. 
 - You can call the [Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee) API operation. 
@@ -180,4 +184,3 @@ Below is how Cobo calculates the fees for each model:
 | [EIP-1559](https://eips.ethereum.org/EIPS/eip-1559)  | <ul><li>Maximum gas fee per gas unit: Calculated based on third-party nodes and self-managed nodes.</li><li>Maximum priority fee per gas unit: Calculated based on third-party nodes and self-managed nodes.</li><li>Gas limit: Queried from the corresponding node based on the source and destination.</li></ul>  | 
 | UTXO      | <ul><li>Fee rate: Calculated based on third-party nodes and self-managed nodes.</li><li>Transaction size: Calculated based on the source spendables (UTXOs) and destination.</li></ul> | 
 | Fixed     | <ul><li>Fixed fee amount: Calculated based on self-managed nodes.</li></ul>  |
-

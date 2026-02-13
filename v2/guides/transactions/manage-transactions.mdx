@@ -4,6 +4,10 @@ lang: "en"
 description: "Comprehensive guide on managing transactions in WaaS 2.0, covering canceling, speeding up, and dropping transactions."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 This guide outlines the processes for canceling, speeding up, and dropping transactions. By mastering these techniques, you can ensure that your transactions are processed promptly and accurately. 
 
 ## Cancel a transaction
@@ -129,4 +133,3 @@ This field `cobo_category` is defined by Cobo to indicate the logical category o
 | StellarChangeTrust | A transaction for establishing a trustline on the Stellar network. |
 | NonceAccountSign | A transaction signed using a Solana nonce account, enabling deterministic and replay-safe transaction execution on the Solana network. |
 | FeePayerSign | A transaction where a designated Solana fee payer account covers the transaction fees, separating the fee payment from the main signer or source account. |
-

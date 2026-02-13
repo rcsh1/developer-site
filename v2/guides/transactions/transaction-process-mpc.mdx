@@ -4,6 +4,10 @@ lang: "en"
 description: "Understand the detailed transaction status flow for deposits and withdrawals in MPC Wallets and Custodial Wallets (Web3 Wallets)"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 This article explains how deposit and withdrawal transactions are processed for MPC Wallets and Custodial Wallets (Web3 Wallets). It outlines the steps taken by you and Cobo, along with the various transaction statuses and sub-statuses your transaction might go through. You can refer to [Statuses and Sub-Statuses](/v2/guides/transactions/status) for a comprehensive list of statuses and sub-statuses, or call [Get transaction information](/v2/api-references/transactions/get-transaction-information) to query the current status and sub-status of your transaction.
 
 ## Deposit process
@@ -30,4 +34,3 @@ The following diagram illustrates how a withdrawal is processed. Colors are used
 
 - If a withdrawal is rejected or unsuccessful, the tokens will be returned to your wallet, and your balance will remain unchanged.
 - If your withdrawal amount is smaller than the minimum withdrawal threshold, the withdrawal request will receive an error. You can call the [Get token information](/v2/api-references/wallets/get-token-information) operation to retrieve the minimum withdrawal amount for each token type.
-

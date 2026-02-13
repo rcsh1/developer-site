@@ -4,6 +4,10 @@ lang: "en"
 description: "Discover how Org Access Tokens enable secure resource access in Cobo Portal Apps. Learn token acquisition, refresh, and permission management."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 When a Cobo Portal App needs to access the resources of an organization, the Org Access Token signals to the WaaS service that the app has received approval from the organization admin to access certain resources.
 
 For security purposes, Org Access Tokens will expire after a certain amount of time. The app can use a Refresh Token to get a new Org Access Token.
@@ -108,4 +112,3 @@ A sample Org Access Token is as follows:
  "refresh_token": "AMLABEIz4GgFknxniMEj2TTILXCqc6bXYKmrHg4Ms6TSjGGbPX4ipz5xFrcErmGg"
 }
 ```
-

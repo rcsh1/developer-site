@@ -5,6 +5,10 @@ lang: "en"
 og:description: "Learn essential security practices and implementation guidelines for configuring risk control mechanisms in your server co-signer."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 There are two risk control mechanisms for server co-signers: Embedded risk control and TSS Node callback. This guide introduces the security best practices for implementing these two mechanisms.
 
 - Embedded risk control provides basic, predefined rules that cannot be customized. You configure risk control rules in the `configs/cobo-tss-node-config.yaml` file.
@@ -150,6 +154,3 @@ The [TSS Node callback server template](https://github.com/CoboGlobal/cobo-mpc-c
 <Note>
 Future updates will expand the sample project to support additional blockchain networks. You can also extend support to more tokens using the [token_adapter](https://github.com/CoboGlobal/cobo-mpc-callback-server-v2-template/tree/master/cobo-mpc-callback-server-v2-golang/pkg/token_adapter) module in the repository.
 </Note>
-
-
-
