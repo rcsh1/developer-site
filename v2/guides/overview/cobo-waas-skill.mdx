@@ -7,14 +7,29 @@ lang: "en"
 
 As a developer, you can use Cobo WaaS Skill with Claude Code, Cursor, or other familiar AI coding assistants to interact with the [Cobo WaaS 2.0 API](/v2/guides/overview/introduction) via natural language, or to generate SDK invocation code for your applications.
 
+## Example project
+
+The video below showcases a web wallet application that was built from the ground up using the Cobo WaaS Skill:
+
+<video controls preload="metadata" className="w-full aspect-video rounded-xl">
+  <source src="/v2/images/guides/skill-demo.mp4#t=0.1" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+Key prompt examples include:
+
+- "Help me build an app where users can create wallets and generate addresses on blockchain networks like BTC, ETH, or TRON"
+- "Update the frontend to include wallet type selection"
+- "For each wallet, get the balance and display it accordingly"
+- "Allow users to transfer tokens out of a selected wallet"
 
 ### Key Features
 
 Cobo WaaS Skill is a set of commands, reference documents, code examples, and best practices that enable:
 
-- **Performing WaaS operations via command line** – Use simple CLI commands to perform any WaaS API-supported operation, including wallet management, transaction flows, and address management.
-- **Intelligent SDK code generation** – Describe your business logic in natural language and the Skill will generate production-ready code for Python, Node.js, Go, or Java SDKs.
-- **Developer-friendly utilities** – Generate API keys, test webhook events, and execute GraphQL queries through CLI commands.
+- **SDK code generation** – Describe your business requirements in natural language, and the Skill will generate production-ready SDK code in Python, Node.js, Go, or Java.
+- **Debugging and troubleshooting** – Intelligently monitor and troubleshoot issues with your API calls.
+- **Comprehensive CLI toolkit** – Execute all WaaS API operations plus developer utilities including API key management, webhook testing, and GraphQL queries.
 
 
 ## Getting started
@@ -101,22 +116,6 @@ Here are examples of natural language requests you can make:
 - **"Generate Python code for an Exchange app that creates deposit addresses for each user"**
 
 The AI assistant will execute the appropriate CLI commands, handle errors, and provide structured feedback at each step. For SDK generation requests, it produces production-ready code in your chosen language.
-
-## Example project
-
-The video below showcases a web wallet application that was built from the ground up using the Cobo WaaS Skill:
-
-<video controls preload="metadata" className="w-full aspect-video rounded-xl">
-  <source src="/v2/images/guides/skill-demo.mp4#t=0.1" type="video/mp4" />
-  Your browser does not support the video tag.
-</video>
-
-Key prompt examples include:
-
-- "Help me build an app where users can create wallets and generate addresses on blockchain networks like BTC, ETH, or TRON"
-- "Update the frontend to include wallet type selection"
-- "For each wallet, get the balance and display it accordingly"
-- "Allow users to transfer tokens out of a selected wallet"
 
 
 ## Next steps
