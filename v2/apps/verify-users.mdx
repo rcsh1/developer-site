@@ -4,6 +4,7 @@ lang: "en"
 description: "Learn how to use User Info Tokens in Cobo Portal Apps to verify user identity and control access with JWTs."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
 User Info Tokens are JSON Web Tokens (JWTs) signed by Cobo Portal. These tokens allow Cobo Portal Apps to retrieve information about users, including their user ID, email address, and permissions. A Cobo Portal App can use the information to verify a user's identity and control their access to the organization's resources based on the permissions. 
 
 ## How it works
@@ -43,6 +44,8 @@ To obtain a User Info Token, follow these steps:
 2. Use the `getAuthInfo` function provided by Cobo UI Toolkit:
     ```javascript
     import { getAuthInfo } from 'cobo-ui-toolkit';
+
+<WaasSkillReminder />
 
     const authInfo = await getAuthInfo();
 
@@ -93,5 +96,3 @@ Validate the User Info Token with the JWKS. To retrieve JWKS, send an HTTP GET r
 - Development environment: `https://api.dev.cobo.com/v2/oauth/authorize/jwks.json`
 
 Additionally, you need to verify the `iss` (issuer), `exp` (expiration ), and `aud` (audience) fields are correct.
-
-<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

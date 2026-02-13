@@ -3,6 +3,11 @@ title: "Balances and transaction amounts for MPC Wallets"
 lang: "en"
 description: "Understand balances and transaction amounts in MPC Wallets."
 ---
+
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 The [List token balances by address](/v2/api-references/wallets/list-token-balances-by-address) operation returns four types of balances and transaction amounts in the `data.balance` property. This article explains the definitions of these values and when they are updated during a transaction in MPC Wallets.
 
 ## Definitions
@@ -69,7 +74,3 @@ The maximum amount you can withdraw is affected by the transaction fee, availabl
 - (Withdrawal amount + transaction fee) > Available balance: The withdrawal request cannot be submitted.
 - (Withdrawal amount + transaction fee) ≤ (Current balance - locked amount): Your withdrawal request will be handled immediately.
 - (Current balance - locked amount) < (Withdrawal amount + transaction fee) ≤ Available balance: You can successfully submit your withdrawal request, but your transaction will be queued.
-
-
-
-<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

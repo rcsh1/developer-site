@@ -4,6 +4,10 @@ lang: "en"
 description: Use the `init` command to create and configure a WaaS application with Cobo CLI, specifying app type and frameworks.
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 Use the `init` command to create an application that integrates the WaaS 2.0 service.
 
 You can specify the details of the WaaS application you want to create through options, including the application type, authentication method, and development frameworks. You can also choose these parameters step by step and create the project using the prompts of Cobo CLI.
@@ -77,5 +81,3 @@ cobo app init --app-type web --auth org --directory my_project
 ```
 
 This command initializes a new WaaS application project of the `web` type (indicating a web application), using Org Access Tokens for authentication, and creates it in the directory named `my_project`.
-
-<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

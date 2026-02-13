@@ -3,7 +3,11 @@ title: "MPC 钱包的余额和交易金额"
 lang: "zh-hans"
 description: "了解 MPC 钱包中的余额和交易金额，包括定义和更新时间。"
 ---
-<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
+
 [按地址列出代币余额](/v2/api-references/wallets/list-token-balances-by-address) 操作在 `data.balance` 属性中返回四种类型的余额和交易金额。本文解释了这些值的定义以及它们在 MPC 钱包交易中何时更新。
 
 ## 定义
@@ -69,5 +73,3 @@ description: "了解 MPC 钱包中的余额和交易金额，包括定义和更�
 - (提币金额 + 交易费用) > 可用余额：无法提交提币请求。
 - (提币金额 + 交易费用) ≤ (当前余额 - 锁定金额)：您的提币请求将被立即处理。
 - (当前余额 - 锁定金额) < (提币金额 + 交易费用) ≤ 可用余额：您可以成功提交提币请求，但您的交易将被排队。
-
-<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

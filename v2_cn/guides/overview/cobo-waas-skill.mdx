@@ -3,16 +3,37 @@ title: "Cobo WaaS Skill"
 sidebarTitle: "Cobo WaaS Skill"
 lang: "cn"
 ---
-作为开发者，您可以在 Claude Code、Cursor 以及其他您熟悉的 AI 编程助手上安装 Cobo WaaS Skill，使用自然语言来调用 [Cobo WaaS 2.0 API](/v2_cn/guides/overview/introduction)，或生成 SDK 代码来开发您的应用。
 
+
+您可以在 Claude Code、Cursor 等 AI 编程助手中安装 Cobo WaaS Skill，通过自然语言描述需求即可调用 [Cobo WaaS 2.0 API](/v2_cn/guides/overview/introduction)、生成 SDK 代码、执行调试与故障排查。
+
+
+## 示例项目
+
+以下是使用 Cobo WaaS Skill 从零开始构建的一个 Web 钱包应用：
+
+<video controls preload="metadata" className="w-full aspect-video rounded-xl">
+  <source src="/v2_cn/images/guides/skill-demo.mp4#t=0.1" type="video/mp4" />
+  您的浏览器不支持视频播放。
+</video>
+
+
+关键提示语包括：
+
+- "帮我构建一个应用，让用户可以创建钱包并在 BTC、ETH、TRON 等区块链网络上生成地址"
+- "更新前端页面，添加钱包类型选择"
+- "获取每个钱包的余额并展示在前端页面"
+- "允许用户从选定的钱包中转出代币"
 
 ### 主要功能
 
 Cobo WaaS Skill 是一系列命令、参考文档、代码示例和最佳实践的集合，可以实现：
 
-- **通过命令行完成 WaaS 操作** - 通过简单的 CLI 命令执行 WaaS API 支持的所有操作，包括钱包操作、交易流程、地址管理等
-- **智能 SDK 代码生成** - 使用自然语言描述您的业务需求，Skill 将生成可用于生产环境的 Python、Node.js、Go 或 Java SDK 代码
-- **开发者友好的功能** - 通过 CLI 命令生成 API 密钥、测试 Webhook 事件和执行 GraphQL 查询
+
+- **智能 SDK 代码生成** - 用自然语言描述业务需求，自动生成生产级 Python、Node.js、Go 或 Java SDK 代码
+- **调试与故障排查** - 基于日志和错误信息，快速定位 API 调用问题，自动生成详细的调试日志和错误分析
+- **完整的 CLI 工具集** - 执行所有 WaaS API 操作（钱包、交易、地址管理等），以及进行 API Key 管理、Webhook 测试、GraphQL 查询
+
 
 ## 快速开始
 
@@ -100,22 +121,6 @@ cobo get /wallets --limit 10
 AI 助手将执行适当的 CLI 命令，处理错误并在每一步提供结构化的反馈。对于 SDK 生成请求，它会生成您所选语言的可用于生产环境的代码。
 
 
-## 示例项目
-
-以下是使用 Cobo WaaS Skill 从零开始构建的一个 Web 钱包应用：
-
-<video controls preload="metadata" className="w-full aspect-video rounded-xl">
-  <source src="/v2_cn/images/guides/skill-demo.mp4#t=0.1" type="video/mp4" />
-  您的浏览器不支持视频播放。
-</video>
-
-
-关键提示语包括：
-
-- "帮我构建一个应用，让用户可以创建钱包并在 BTC、ETH、TRON 等区块链网络上生成地址"
-- "更新前端页面，添加钱包类型选择"
-- "获取每个钱包的余额并展示在前端页面"
-- "允许用户从选定的钱包中转出代币"
 
 ## 后续步骤
 
@@ -124,6 +129,3 @@ AI 助手将执行适当的 CLI 命令，处理错误并在每一步提供结构
 - [Cobo CLI 文档](/v2_cn/developer-tools/cobo-cli/introduction) - 完整的 Cobo CLI 参考和命令
 - [WaaS 2.0 API 参考](/v2/api-references) - 完整的 API 文档
 - [Cobo WaaS 2.0 概览](/v2_cn/guides/overview/introduction) - 平台概念和架构
-
-
-<Tip>欢迎[分享您的反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI?referrername=manuals)以帮助我们改进文档！</Tip>

@@ -4,6 +4,10 @@ lang: "en"
 description: "Overview of transaction sources and destinations in WaaS 2.0."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 In WaaS 2.0, every transaction involves a source and a destination. The source indicates where the transaction originates, while the destination represents where the transaction is going, such as a wallet address, a signature, a contract, and more. Each transaction type corresponds to a specific set of source and destination types. For example, in a withdrawal transaction, the source will be a wallet created on Cobo Portal, and the destination will be either a wallet address or an Exchange Wallet. 
 
 ## Source and destination for each transaction type
@@ -85,6 +89,3 @@ The transaction destination types are as follows:
 - `Raw_Message_Signature`: A raw message signature.
 - `DepositToAddress`: A wallet address.
 - `DepositToWallet`: An Exchange Wallet.
-
-
-<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

@@ -4,7 +4,10 @@ lang: "zh-hans"
 sidebarTitle: "介绍"
 description: "WaaS 2.0 中的 Webhooks 和 Callback 的介绍，包含用途和实现步骤。"
 ---
-<Note>本文档由 AI 辅助翻译。如需确认内容准确性，请参考[英文官方文档](https://www.cobo.com/developers/v2/guides/overview/introduction)。</Note>
+
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
 
 Webhook 和 Callback 是 WaaS 服务与您的 App 进行通信的重要机制。在您设置并注册 Callback 和 Webhook Endpoint 后，当事件发生时，WaaS 服务会将推送消息发送到指定的 URL。它们允许您的 App 实时接收更新或通知，并相应地响应事件。
 
@@ -66,5 +69,3 @@ WaaS 1.0 服务使用 API Callback进行交易通知和提币确认，类似于 
 <Note>WaaS 1.0 API Callback使用的签名算法与 WaaS 2.0 webhook 和Callback不同。请勿直接在 Cobo Portal 上注册您的 WaaS 1.0 Endpoint。否则，由于 WaaS 1.0 和 WaaS 2.0 之间的签名算法和 webhook/Callback数据结构的差异，您的Endpoint将收到错误。请确保参考提供的 [示例代码](/v2_cn/guides/webhooks-callbacks/set-up-endpoint#code-samples) 正确配置您的 WaaS 2.0 Endpoint。</Note>
 
 <Note><p>如果您为交易通知配置了 WaaS 1.0 API Callback，但没有设置 WaaS 2.0 webhook，您的Endpoint仍将收到来自 WaaS 1.0 的交易通知。</p>如果您同时为交易通知配置了 WaaS 1.0 API Callback和 WaaS 2.0 webhook，并继续使用 WaaS 1.0 API，您的Endpoint将收到：<ul><li>来自 WaaS 1.0 的交易通知。</li><li>来自 WaaS 2.0 的 webhook 事件。</li></ul>在这种情况下，您需要使用唯一 ID（例如 `cobo_id`）实现去重，以避免处理重复通知。</Note>
-
-<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

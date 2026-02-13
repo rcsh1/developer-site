@@ -5,6 +5,10 @@ sidebarTitle: "Embedded risk control mechanism"
 description: "Configure basic risk controls in the server co-signer"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 The embedded risk control mechanism is a basic risk control mechanism built into the TSS Node. It evaluates task requests based on predefined rules that cannot be customized. A task request must be approved by both the embedded risk control module (if enabled) and all configured [callback servers](/v2/guides/mpc-wallets/server-co-signer/callback-server-overview) before it can proceed.
 
 ## Configurations
@@ -69,5 +73,3 @@ To learn more about the TSS Node configuration, see [Configure the TSS Node](/v2
 ## Next steps
 
 - [Deploy your callback server](/v2/guides/mpc-wallets/server-co-signer/callback-server-overview)
-
-<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>

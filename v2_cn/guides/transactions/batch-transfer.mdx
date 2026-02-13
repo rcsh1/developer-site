@@ -4,6 +4,10 @@ lang: "zh-hans"
 description: "使用 WaaS 2.0 API 调用批量转账智能合约，在一次交易中完成多笔代币转账。"
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder_cn.mdx';
+
+<WaasSkillReminder />
+
 批量转账智能合约可以在一次链上交易中完成多笔代币转账，适用于批量发放、批量提现等场景。相比循环多次调用转账接口，批量方式能减少多次签名与请求，提升操作效率。本指南将指引您如何使用[调用智能合约（Call smart contract）](/v2/api-references/transactions/call-smart-contract)接口调用 Cobo 部署的批量转账智能合约，实现批量代币转账。
 
 <Note>使用调用智能合约接口做批量转账的手续费，不一定低于多次调用转账接口逐笔完成的手续费。具体取决于链上 Gas Price 和批量笔数；在笔数较少时，批量方式甚至可能更贵。建议发起前使用预估手续费接口（[Estimate transaction fee](/v2/api-references/transactions/estimate-transaction-fee)）比较两种方式的成本。</Note>
@@ -369,5 +373,3 @@ if __name__ == "__main__":
     # if run_interactive.lower() == 'y':
     #     interactive_mode()
 ```
-
-<Tip>欢迎您[提交反馈](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI)来帮助改进我们的文档！</Tip>

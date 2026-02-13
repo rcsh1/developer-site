@@ -4,6 +4,10 @@ lang: "en"
 description: "Guide on automating the collection of farming rewards using Smart Contract Wallets in WaaS 2.0."
 ---
 
+import WaasSkillReminder from '/snippets/waas_skill_reminder.mdx';
+
+<WaasSkillReminder />
+
 For certain low-risk, high-frequency transactions, bypassing the multi-signature requirement can help streamline operations, especially when tasks are time-sensitive or require frequent interaction. Cobo’s Smart Contract Wallets (Safe\{Wallet\}) provide an efficient solution by allowing you to authorize a Delegate—either an address from your [MPC Wallet](https://manuals.cobo.com/en/portal/mpc-wallets/introduction) or an external EOA wallet—to initiate these actions with a single signature, simplifying execution without compromising control.
 
 In this guide, we’ll demonstrate how to configure both an MPC Wallet and an external EOA wallet to claim farming rewards automatically. 
@@ -230,5 +234,3 @@ tx_receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 print(f"Transaction sent with hash: {tx_hash.hex()}")
 ```
 </Accordion>
-
-<Tip>Feel free to [share your feedback](https://forms.zohopublic.com/cobo/form/DocumentFeedbackForm/formperma/QvLOhxJv1_JMsJ-1dleZ8Itb_7rzN-LtgvsDdxosoVI) to improve our documentation!</Tip>
